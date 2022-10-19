@@ -3,23 +3,23 @@
 package com.azure.cosmos.implementation.changefeed;
 
 import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
-import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
-import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.implementation.PartitionKeyRange;
+import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
+import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseRequestOptions;
+import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.azure.cosmos.implementation.PartitionKeyRange;
-import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 
 import java.net.URI;
 
@@ -43,8 +43,9 @@ public interface ChangeFeedContextClient {
      * @param requestOptions The options for processing the query results feed.
      * @return a {@link Flux} containing one or several feed response pages of the obtained items or an error.
      */
-    Flux<FeedResponse<JsonNode>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
-                                                               CosmosChangeFeedRequestOptions requestOptions);
+    <T> Flux<FeedResponse<T>> createDocumentChangeFeedQuery(CosmosAsyncContainer collectionLink,
+                                                            CosmosChangeFeedRequestOptions requestOptions,
+                                                            Class<T> klass);
 
     /**
      * Reads a database.
@@ -146,4 +147,18 @@ public interface ChangeFeedContextClient {
      * Closes the document client instance and cleans up the resources.
      */
     void close();
+
+    /**
+     * Gets the internal {@link Scheduler} that hosts a pool of ExecutorService-based workers for any change feed processor related tasks.
+     *
+     * @return a {@link Scheduler} that hosts a pool of ExecutorService-based workers..
+     */
+    Scheduler getScheduler();
+
+    /**
+     * Sets the internal {@link Scheduler} that hosts a pool of ExecutorService-based workers for any change feed processor related tasks.
+     *
+     * @param scheduler a {@link Scheduler} that hosts a pool of ExecutorService-based workers.
+     */
+    void setScheduler(Scheduler scheduler);
 }

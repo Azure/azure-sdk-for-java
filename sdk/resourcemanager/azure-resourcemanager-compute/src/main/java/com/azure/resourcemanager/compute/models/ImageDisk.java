@@ -6,15 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a image disk. */
 @Fluent
 public class ImageDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDisk.class);
-
     /*
      * The snapshot.
      */
@@ -34,32 +30,28 @@ public class ImageDisk {
     private String blobUri;
 
     /*
-     * Specifies the caching requirements. <br><br> Possible values are:
-     * <br><br> **None** <br><br> **ReadOnly** <br><br> **ReadWrite** <br><br>
-     * Default: **None for Standard storage. ReadOnly for Premium storage**
+     * Specifies the caching requirements. <br><br> Possible values are: <br><br> **None** <br><br> **ReadOnly**
+     * <br><br> **ReadWrite** <br><br> Default: **None for Standard storage. ReadOnly for Premium storage**
      */
     @JsonProperty(value = "caching")
     private CachingTypes caching;
 
     /*
-     * Specifies the size of empty data disks in gigabytes. This element can be
-     * used to overwrite the name of the disk in a virtual machine image.
-     * <br><br> This value cannot be larger than 1023 GB
+     * Specifies the size of empty data disks in gigabytes. This element can be used to overwrite the name of the disk
+     * in a virtual machine image. <br><br> This value cannot be larger than 1023 GB
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;
 
     /*
-     * Specifies the storage account type for the managed disk. NOTE:
-     * UltraSSD_LRS can only be used with data disks, it cannot be used with OS
-     * Disk.
+     * Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it
+     * cannot be used with OS Disk.
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountTypes storageAccountType;
 
     /*
-     * Specifies the customer managed disk encryption set resource id for the
-     * managed image disk.
+     * Specifies the customer managed disk encryption set resource id for the managed image disk.
      */
     @JsonProperty(value = "diskEncryptionSet")
     private DiskEncryptionSetParameters diskEncryptionSet;

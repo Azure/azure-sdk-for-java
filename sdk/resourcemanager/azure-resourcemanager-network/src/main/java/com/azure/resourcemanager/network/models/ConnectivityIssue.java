@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Information about an issue encountered in the process of checking for connectivity. */
 @Immutable
 public final class ConnectivityIssue {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityIssue.class);
-
     /*
      * The origin of the issue.
      */
@@ -39,6 +35,10 @@ public final class ConnectivityIssue {
      */
     @JsonProperty(value = "context", access = JsonProperty.Access.WRITE_ONLY)
     private List<Map<String, String>> context;
+
+    /** Creates an instance of ConnectivityIssue class. */
+    public ConnectivityIssue() {
+    }
 
     /**
      * Get the origin property: The origin of the issue.

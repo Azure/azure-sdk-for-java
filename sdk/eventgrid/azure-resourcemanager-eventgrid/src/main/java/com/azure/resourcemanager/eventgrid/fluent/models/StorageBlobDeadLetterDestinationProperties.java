@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the storage blob based dead letter destination. */
 @Fluent
 public final class StorageBlobDeadLetterDestinationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageBlobDeadLetterDestinationProperties.class);
-
     /*
      * The Azure Resource ID of the storage account that is the destination of
      * the deadletter events

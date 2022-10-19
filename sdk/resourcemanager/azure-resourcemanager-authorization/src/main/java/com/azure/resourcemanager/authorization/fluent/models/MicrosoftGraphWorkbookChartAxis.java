@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,30 +16,32 @@ import java.util.Map;
 /** workbookChartAxis. */
 @Fluent
 public final class MicrosoftGraphWorkbookChartAxis extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookChartAxis.class);
-
     /*
      * Json
      */
     @JsonProperty(value = "majorUnit")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> majorUnit;
 
     /*
      * Json
      */
     @JsonProperty(value = "maximum")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> maximum;
 
     /*
      * Json
      */
     @JsonProperty(value = "minimum")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> minimum;
 
     /*
      * Json
      */
     @JsonProperty(value = "minorUnit")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> minorUnit;
 
     /*

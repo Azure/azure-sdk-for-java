@@ -3,7 +3,6 @@
 
 package com.azure.storage.file.datalake.models;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.util.Locale;
@@ -15,8 +14,6 @@ import java.util.Objects;
  * Manipulating resource permissions is only supported when ADLS interop and Hierarchical Namespace are enabled.
  */
 public class PathPermissions {
-
-    private final ClientLogger logger = new ClientLogger(PathPermissions.class);
 
     private static final String PATH_PERMISSIONS_OCTAL_FORMAT_ERROR = "String cannot be null and must be four "
         + "characters (first bit--sticky bit--must be set to 0 for umask).";

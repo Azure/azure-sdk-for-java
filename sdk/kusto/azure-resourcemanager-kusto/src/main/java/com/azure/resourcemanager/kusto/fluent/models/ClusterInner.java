@@ -17,11 +17,11 @@ import com.azure.resourcemanager.kusto.models.KeyVaultProperties;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
 import com.azure.resourcemanager.kusto.models.OptimizedAutoscale;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
+import com.azure.resourcemanager.kusto.models.PublicIpType;
 import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import com.azure.resourcemanager.kusto.models.State;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
 import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -29,8 +29,6 @@ import java.util.Map;
 /** Class representing a Kusto cluster. */
 @Fluent
 public final class ClusterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
-
     /*
      * The SKU of the cluster.
      */
@@ -574,13 +572,70 @@ public final class ClusterInner extends Resource {
     }
 
     /**
+     * Get the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
+     * and IPv6).
+     *
+     * @return the publicIpType value.
+     */
+    public PublicIpType publicIpType() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpType();
+    }
+
+    /**
+     * Set the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
+     * and IPv6).
+     *
+     * @param publicIpType the publicIpType value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withPublicIpType(PublicIpType publicIpType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withPublicIpType(publicIpType);
+        return this;
+    }
+
+    /**
+     * Get the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
+     *
+     * @return the virtualClusterGraduationProperties value.
+     */
+    public String virtualClusterGraduationProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualClusterGraduationProperties();
+    }
+
+    /**
+     * Set the virtualClusterGraduationProperties property: Virtual Cluster graduation properties.
+     *
+     * @param virtualClusterGraduationProperties the virtualClusterGraduationProperties value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withVirtualClusterGraduationProperties(String virtualClusterGraduationProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withVirtualClusterGraduationProperties(virtualClusterGraduationProperties);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: A list of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model ClusterInner"));
         } else {
@@ -593,4 +648,6 @@ public final class ClusterInner extends Resource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ClusterInner.class);
 }

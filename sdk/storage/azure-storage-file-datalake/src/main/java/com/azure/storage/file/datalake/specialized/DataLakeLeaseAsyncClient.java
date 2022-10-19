@@ -88,7 +88,7 @@ public final class DataLakeLeaseAsyncClient {
     }
 
     /**
-     * Acquires a lease for write and delete operations. The lease duration must be between 15 to 60 seconds or
+     * Acquires a lease for write and delete operations. The lease duration must be between 15 and 60 seconds or
      * -1 for an infinite duration.
      *
      * <p><strong>Code Samples</strong></p>
@@ -99,7 +99,7 @@ public final class DataLakeLeaseAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.acquireLease#int -->
      *
-     * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
+     * @param duration The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
      * @return A reactive response containing the lease ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -108,7 +108,7 @@ public final class DataLakeLeaseAsyncClient {
     }
 
     /**
-     * Acquires a lease for write and delete operations. The lease duration must be between 15 to 60 seconds, or
+     * Acquires a lease for write and delete operations. The lease duration must be between 15 and 60 seconds, or
      * -1 for an infinite duration.
      *
      * <p><strong>Code Samples</strong></p>
@@ -123,7 +123,7 @@ public final class DataLakeLeaseAsyncClient {
      * </pre>
      * <!-- end com.azure.storage.file.datalake.specialized.DataLakeLeaseAsyncClient.acquireLeaseWithResponse#int-RequestConditions -->
      *
-     * @param duration The duration of the lease between 15 to 60 seconds or -1 for an infinite duration.
+     * @param duration The duration of the lease between 15 and 60 seconds or -1 for an infinite duration.
      * @param modifiedRequestConditions Standard HTTP Access conditions related to the modification of data. ETag and
      * LastModifiedTime are used to construct conditions related to when the resource was changed relative to the given
      * request. The request will fail if the specified condition is not satisfied.

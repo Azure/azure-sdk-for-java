@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ApplicationLogsConfig;
 import com.azure.resourcemanager.appservice.models.EnabledConfig;
 import com.azure.resourcemanager.appservice.models.HttpLogsConfig;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SiteLogsConfig resource specific properties. */
 @Fluent
 public final class SiteLogsConfigProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteLogsConfigProperties.class);
-
     /*
      * Application logs configuration.
      */

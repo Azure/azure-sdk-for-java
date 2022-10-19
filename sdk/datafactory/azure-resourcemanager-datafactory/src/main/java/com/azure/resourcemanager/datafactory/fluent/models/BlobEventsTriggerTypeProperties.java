@@ -7,29 +7,24 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.BlobEventTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Blob Events Trigger properties. */
 @Fluent
 public final class BlobEventsTriggerTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobEventsTriggerTypeProperties.class);
-
     /*
-     * The blob path must begin with the pattern provided for trigger to fire.
-     * For example, '/records/blobs/december/' will only fire the trigger for
-     * blobs in the december folder under the records container. At least one
-     * of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     * The blob path must begin with the pattern provided for trigger to fire. For example, '/records/blobs/december/'
+     * will only fire the trigger for blobs in the december folder under the records container. At least one of these
+     * must be provided: blobPathBeginsWith, blobPathEndsWith.
      */
     @JsonProperty(value = "blobPathBeginsWith")
     private String blobPathBeginsWith;
 
     /*
-     * The blob path must end with the pattern provided for trigger to fire.
-     * For example, 'december/boxes.csv' will only fire the trigger for blobs
-     * named boxes in a december folder. At least one of these must be
-     * provided: blobPathBeginsWith, blobPathEndsWith.
+     * The blob path must end with the pattern provided for trigger to fire. For example, 'december/boxes.csv' will
+     * only fire the trigger for blobs named boxes in a december folder. At least one of these must be provided:
+     * blobPathBeginsWith, blobPathEndsWith.
      */
     @JsonProperty(value = "blobPathEndsWith")
     private String blobPathEndsWith;
@@ -51,6 +46,10 @@ public final class BlobEventsTriggerTypeProperties {
      */
     @JsonProperty(value = "scope", required = true)
     private String scope;
+
+    /** Creates an instance of BlobEventsTriggerTypeProperties class. */
+    public BlobEventsTriggerTypeProperties() {
+    }
 
     /**
      * Get the blobPathBeginsWith property: The blob path must begin with the pattern provided for trigger to fire. For
@@ -167,16 +166,18 @@ public final class BlobEventsTriggerTypeProperties {
      */
     public void validate() {
         if (events() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property events in model BlobEventsTriggerTypeProperties"));
         }
         if (scope() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property scope in model BlobEventsTriggerTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BlobEventsTriggerTypeProperties.class);
 }

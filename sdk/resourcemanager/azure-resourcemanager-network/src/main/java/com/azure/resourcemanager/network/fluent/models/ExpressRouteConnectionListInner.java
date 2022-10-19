@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ExpressRouteConnection list. */
 @Fluent
 public final class ExpressRouteConnectionListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionListInner.class);
-
     /*
      * The list of ExpressRoute connections.
      */
     @JsonProperty(value = "value")
     private List<ExpressRouteConnectionInner> value;
+
+    /** Creates an instance of ExpressRouteConnectionListInner class. */
+    public ExpressRouteConnectionListInner() {
+    }
 
     /**
      * Get the value property: The list of ExpressRoute connections.

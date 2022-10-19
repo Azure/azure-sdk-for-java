@@ -40,7 +40,7 @@ public interface ProtectedItems {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
+     * @return base class for backup items along with {@link Response}.
      */
     Response<ProtectedItemResource> getWithResponse(
         String vaultName,
@@ -80,7 +80,7 @@ public interface ProtectedItems {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String vaultName,
@@ -98,7 +98,7 @@ public interface ProtectedItems {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
+     * @return base class for backup items along with {@link Response}.
      */
     ProtectedItemResource getById(String id);
 
@@ -112,7 +112,7 @@ public interface ProtectedItems {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
+     * @return base class for backup items along with {@link Response}.
      */
     Response<ProtectedItemResource> getByIdWithResponse(String id, String filter, Context context);
 
@@ -136,7 +136,7 @@ public interface ProtectedItems {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

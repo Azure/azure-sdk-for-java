@@ -7,6 +7,7 @@ import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
@@ -28,6 +29,8 @@ public final class AccessTokenCache {
     private static final Duration REFRESH_DELAY = Duration.ofSeconds(30);
     // the offset before token expiry to attempt proactive token refresh
     private static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
+    // AccessTokenCache is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(AccessTokenCache.class);
     private final AtomicReference<Sinks.One<AccessToken>> wip;
     private volatile AccessToken cache;
     private volatile OffsetDateTime nextTokenRefresh = OffsetDateTime.now();
@@ -35,7 +38,6 @@ public final class AccessTokenCache {
     // Stores the last authenticated token request context. The cached token is valid under this context.
     private TokenRequestContext tokenRequestContext;
     private final Predicate<AccessToken> shouldRefresh;
-    private final ClientLogger logger = new ClientLogger(AccessTokenCache.class);
 
     /**
      * Creates an instance of RefreshableTokenCredential with default scheme "Bearer".
@@ -58,7 +60,18 @@ public final class AccessTokenCache {
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         return Mono.defer(retrieveToken(tokenRequestContext, checkToForceFetchToken))
             // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
-            .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
+            .repeatWhenEmpty((Flux<Long> longFlux) ->
+                longFlux.concatMap(ignored -> Flux.just(true).delayElements(Duration.ofMillis(500))));
+    }
+
+    /**
+     * Synchronously get a token from either the cache or replenish the cache with a new token.
+     *
+     * @param tokenRequestContext The request context for token acquisition.
+     * @return The Publisher that emits an AccessToken
+     */
+    public AccessToken getTokenSync(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
+        return this.getToken(tokenRequestContext, checkToForceFetchToken).block();
     }
 
     private Supplier<Mono<? extends AccessToken>> retrieveToken(TokenRequestContext tokenRequestContext,
@@ -66,7 +79,7 @@ public final class AccessTokenCache {
         return () -> {
             try {
                 if (tokenRequestContext == null) {
-                    return Mono.error(logger.logExceptionAsError(
+                    return Mono.error(LOGGER.logExceptionAsError(
                         new IllegalArgumentException("The token request context input cannot be null.")));
                 }
                 if (wip.compareAndSet(null, Sinks.one())) {
@@ -136,11 +149,11 @@ public final class AccessTokenCache {
                         return Mono.just(cache);
                     } else {
                         // wait for refreshing thread to finish but defer to updated cache in case just missed onNext()
-                        return sinksOne.asMono().switchIfEmpty(Mono.defer(() -> Mono.just(cache)));
+                        return sinksOne.asMono().switchIfEmpty(Mono.fromSupplier(() -> cache));
                     }
                 }
-            } catch (Throwable t) {
-                return Mono.error(t);
+            } catch (Exception ex) {
+                return Mono.error(ex);
             }
         };
     }
@@ -159,15 +172,15 @@ public final class AccessTokenCache {
             AccessToken accessToken = signal.get();
             Throwable error = signal.getThrowable();
             if (signal.isOnNext() && accessToken != null) { // SUCCESS
-                logger.info(refreshLog(cache, now, "Acquired a new access token"));
+                LOGGER.log(LogLevel.INFORMATIONAL,  () -> refreshLog(cache, now, "Acquired a new access token"));
                 cache = accessToken;
                 sinksOne.tryEmitValue(accessToken);
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
                 return Mono.just(accessToken);
             } else if (signal.isOnError() && error != null) { // ERROR
-                logger.error(refreshLog(cache, now, "Failed to acquire a new access token"));
+                LOGGER.log(LogLevel.ERROR, () -> refreshLog(cache, now, "Failed to acquire a new access token"));
                 nextTokenRefresh = OffsetDateTime.now().plus(REFRESH_DELAY);
-                return fallback.switchIfEmpty(Mono.defer(() -> Mono.error(error)));
+                return fallback.switchIfEmpty(Mono.error(error));
             } else { // NO REFRESH
                 sinksOne.tryEmitEmpty();
                 return fallback;

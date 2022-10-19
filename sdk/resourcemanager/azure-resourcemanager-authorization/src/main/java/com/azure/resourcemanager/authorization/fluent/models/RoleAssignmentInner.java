@@ -5,240 +5,80 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.authorization.models.PrincipalType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.authorization.models.RoleAssignmentPropertiesWithScope;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.time.OffsetDateTime;
 
 /** Role Assignments. */
 @Fluent
-public final class RoleAssignmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentInner.class);
+public final class RoleAssignmentInner {
+    /*
+     * The role assignment ID.
+     */
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
+    private String id;
+
+    /*
+     * The role assignment name.
+     */
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    private String name;
+
+    /*
+     * The role assignment type.
+     */
+    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
+    private String type;
 
     /*
      * Role assignment properties.
      */
     @JsonProperty(value = "properties")
-    private RoleAssignmentProperties innerProperties;
+    private RoleAssignmentPropertiesWithScope properties;
 
     /**
-     * Get the innerProperties property: Role assignment properties.
+     * Get the id property: The role assignment ID.
      *
-     * @return the innerProperties value.
+     * @return the id value.
      */
-    private RoleAssignmentProperties innerProperties() {
-        return this.innerProperties;
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Get the scope property: The role assignment scope.
+     * Get the name property: The role assignment name.
      *
-     * @return the scope value.
+     * @return the name value.
      */
-    public String scope() {
-        return this.innerProperties() == null ? null : this.innerProperties().scope();
+    public String name() {
+        return this.name;
     }
 
     /**
-     * Get the roleDefinitionId property: The role definition ID.
+     * Get the type property: The role assignment type.
      *
-     * @return the roleDefinitionId value.
+     * @return the type value.
      */
-    public String roleDefinitionId() {
-        return this.innerProperties() == null ? null : this.innerProperties().roleDefinitionId();
+    public String type() {
+        return this.type;
     }
 
     /**
-     * Set the roleDefinitionId property: The role definition ID.
+     * Get the properties property: Role assignment properties.
      *
-     * @param roleDefinitionId the roleDefinitionId value to set.
+     * @return the properties value.
+     */
+    public RoleAssignmentPropertiesWithScope properties() {
+        return this.properties;
+    }
+
+    /**
+     * Set the properties property: Role assignment properties.
+     *
+     * @param properties the properties value to set.
      * @return the RoleAssignmentInner object itself.
      */
-    public RoleAssignmentInner withRoleDefinitionId(String roleDefinitionId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withRoleDefinitionId(roleDefinitionId);
-        return this;
-    }
-
-    /**
-     * Get the principalId property: The principal ID.
-     *
-     * @return the principalId value.
-     */
-    public String principalId() {
-        return this.innerProperties() == null ? null : this.innerProperties().principalId();
-    }
-
-    /**
-     * Set the principalId property: The principal ID.
-     *
-     * @param principalId the principalId value to set.
-     * @return the RoleAssignmentInner object itself.
-     */
-    public RoleAssignmentInner withPrincipalId(String principalId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withPrincipalId(principalId);
-        return this;
-    }
-
-    /**
-     * Get the principalType property: The principal type of the assigned principal ID.
-     *
-     * @return the principalType value.
-     */
-    public PrincipalType principalType() {
-        return this.innerProperties() == null ? null : this.innerProperties().principalType();
-    }
-
-    /**
-     * Set the principalType property: The principal type of the assigned principal ID.
-     *
-     * @param principalType the principalType value to set.
-     * @return the RoleAssignmentInner object itself.
-     */
-    public RoleAssignmentInner withPrincipalType(PrincipalType principalType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withPrincipalType(principalType);
-        return this;
-    }
-
-    /**
-     * Get the description property: Description of role assignment.
-     *
-     * @return the description value.
-     */
-    public String description() {
-        return this.innerProperties() == null ? null : this.innerProperties().description();
-    }
-
-    /**
-     * Set the description property: Description of role assignment.
-     *
-     * @param description the description value to set.
-     * @return the RoleAssignmentInner object itself.
-     */
-    public RoleAssignmentInner withDescription(String description) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withDescription(description);
-        return this;
-    }
-
-    /**
-     * Get the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-     * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
-     * @return the condition value.
-     */
-    public String condition() {
-        return this.innerProperties() == null ? null : this.innerProperties().condition();
-    }
-
-    /**
-     * Set the condition property: The conditions on the role assignment. This limits the resources it can be assigned
-     * to. e.g.: @Resource[Microsoft.Storage/storageAccounts/blobServices/containers:ContainerName]
-     * StringEqualsIgnoreCase 'foo_storage_container'.
-     *
-     * @param condition the condition value to set.
-     * @return the RoleAssignmentInner object itself.
-     */
-    public RoleAssignmentInner withCondition(String condition) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withCondition(condition);
-        return this;
-    }
-
-    /**
-     * Get the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
-     * @return the conditionVersion value.
-     */
-    public String conditionVersion() {
-        return this.innerProperties() == null ? null : this.innerProperties().conditionVersion();
-    }
-
-    /**
-     * Set the conditionVersion property: Version of the condition. Currently accepted value is '2.0'.
-     *
-     * @param conditionVersion the conditionVersion value to set.
-     * @return the RoleAssignmentInner object itself.
-     */
-    public RoleAssignmentInner withConditionVersion(String conditionVersion) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withConditionVersion(conditionVersion);
-        return this;
-    }
-
-    /**
-     * Get the createdOn property: Time it was created.
-     *
-     * @return the createdOn value.
-     */
-    public OffsetDateTime createdOn() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdOn();
-    }
-
-    /**
-     * Get the updatedOn property: Time it was updated.
-     *
-     * @return the updatedOn value.
-     */
-    public OffsetDateTime updatedOn() {
-        return this.innerProperties() == null ? null : this.innerProperties().updatedOn();
-    }
-
-    /**
-     * Get the createdBy property: Id of the user who created the assignment.
-     *
-     * @return the createdBy value.
-     */
-    public String createdBy() {
-        return this.innerProperties() == null ? null : this.innerProperties().createdBy();
-    }
-
-    /**
-     * Get the updatedBy property: Id of the user who updated the assignment.
-     *
-     * @return the updatedBy value.
-     */
-    public String updatedBy() {
-        return this.innerProperties() == null ? null : this.innerProperties().updatedBy();
-    }
-
-    /**
-     * Get the delegatedManagedIdentityResourceId property: Id of the delegated managed identity resource.
-     *
-     * @return the delegatedManagedIdentityResourceId value.
-     */
-    public String delegatedManagedIdentityResourceId() {
-        return this.innerProperties() == null ? null : this.innerProperties().delegatedManagedIdentityResourceId();
-    }
-
-    /**
-     * Set the delegatedManagedIdentityResourceId property: Id of the delegated managed identity resource.
-     *
-     * @param delegatedManagedIdentityResourceId the delegatedManagedIdentityResourceId value to set.
-     * @return the RoleAssignmentInner object itself.
-     */
-    public RoleAssignmentInner withDelegatedManagedIdentityResourceId(String delegatedManagedIdentityResourceId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new RoleAssignmentProperties();
-        }
-        this.innerProperties().withDelegatedManagedIdentityResourceId(delegatedManagedIdentityResourceId);
+    public RoleAssignmentInner withProperties(RoleAssignmentPropertiesWithScope properties) {
+        this.properties = properties;
         return this;
     }
 
@@ -248,8 +88,8 @@ public final class RoleAssignmentInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

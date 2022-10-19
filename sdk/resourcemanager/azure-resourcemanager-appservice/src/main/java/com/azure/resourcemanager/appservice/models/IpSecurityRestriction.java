@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** IP security restriction on an app. */
 @Fluent
 public final class IpSecurityRestriction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpSecurityRestriction.class);
-
     /*
      * IP address the security restriction is valid for.
      * It can be in form of pure ipv4 address (required SubnetMask property) or

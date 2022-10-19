@@ -42,7 +42,11 @@ public final class ScalingScheduleDaysOfWeekItem extends ExpandableStringEnum<Sc
         return fromString(name, ScalingScheduleDaysOfWeekItem.class);
     }
 
-    /** @return known ScalingScheduleDaysOfWeekItem values. */
+    /**
+     * Gets known ScalingScheduleDaysOfWeekItem values.
+     *
+     * @return known ScalingScheduleDaysOfWeekItem values.
+     */
     public static Collection<ScalingScheduleDaysOfWeekItem> values() {
         return values(ScalingScheduleDaysOfWeekItem.class);
     }

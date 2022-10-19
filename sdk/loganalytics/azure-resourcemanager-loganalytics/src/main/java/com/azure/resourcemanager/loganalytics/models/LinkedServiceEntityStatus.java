@@ -33,7 +33,11 @@ public final class LinkedServiceEntityStatus extends ExpandableStringEnum<Linked
         return fromString(name, LinkedServiceEntityStatus.class);
     }
 
-    /** @return known LinkedServiceEntityStatus values. */
+    /**
+     * Gets known LinkedServiceEntityStatus values.
+     *
+     * @return known LinkedServiceEntityStatus values.
+     */
     public static Collection<LinkedServiceEntityStatus> values() {
         return values(LinkedServiceEntityStatus.class);
     }

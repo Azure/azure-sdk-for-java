@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datafactory.fluent.TriggersClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TriggersClient. */
 public final class TriggersClientImpl implements TriggersClient {
-    private final ClientLogger logger = new ClientLogger(TriggersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TriggersService service;
 
@@ -363,7 +360,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources.
+     * @return a list of trigger resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TriggerResourceInner> listByFactoryAsync(String resourceGroupName, String factoryName) {
@@ -381,7 +378,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources.
+     * @return a list of trigger resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<TriggerResourceInner> listByFactoryAsync(
@@ -399,7 +396,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources.
+     * @return a list of trigger resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TriggerResourceInner> listByFactory(String resourceGroupName, String factoryName) {
@@ -415,7 +412,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger resources.
+     * @return a list of trigger resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<TriggerResourceInner> listByFactory(
@@ -548,31 +545,7 @@ public final class TriggersClientImpl implements TriggersClient {
     private Mono<TriggerQueryResponseInner> queryByFactoryAsync(
         String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters) {
         return queryByFactoryWithResponseAsync(resourceGroupName, factoryName, filterParameters)
-            .flatMap(
-                (Response<TriggerQueryResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Query triggers.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the triggers.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a query of triggers.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerQueryResponseInner queryByFactory(
-        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters) {
-        return queryByFactoryAsync(resourceGroupName, factoryName, filterParameters).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -591,6 +564,23 @@ public final class TriggersClientImpl implements TriggersClient {
     public Response<TriggerQueryResponseInner> queryByFactoryWithResponse(
         String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters, Context context) {
         return queryByFactoryWithResponseAsync(resourceGroupName, factoryName, filterParameters, context).block();
+    }
+
+    /**
+     * Query triggers.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param filterParameters Parameters to filter the triggers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a query of triggers.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TriggerQueryResponseInner queryByFactory(
+        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters) {
+        return queryByFactoryWithResponse(resourceGroupName, factoryName, filterParameters, Context.NONE).getValue();
     }
 
     /**
@@ -733,38 +723,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
      * @param trigger Trigger resource definition.
-     * @param ifMatch ETag of the trigger entity. Should only be specified for update, for which it should match
-     *     existing entity or can be * for unconditional update.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger resource type on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TriggerResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String factoryName,
-        String triggerName,
-        TriggerResourceInner trigger,
-        String ifMatch) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, triggerName, trigger, ifMatch)
-            .flatMap(
-                (Response<TriggerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a trigger.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param trigger Trigger resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -775,33 +733,7 @@ public final class TriggersClientImpl implements TriggersClient {
         String resourceGroupName, String factoryName, String triggerName, TriggerResourceInner trigger) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, triggerName, trigger, ifMatch)
-            .flatMap(
-                (Response<TriggerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a trigger.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param trigger Trigger resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return trigger resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerResourceInner createOrUpdate(
-        String resourceGroupName, String factoryName, String triggerName, TriggerResourceInner trigger) {
-        final String ifMatch = null;
-        return createOrUpdateAsync(resourceGroupName, factoryName, triggerName, trigger, ifMatch).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -829,6 +761,26 @@ public final class TriggersClientImpl implements TriggersClient {
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, factoryName, triggerName, trigger, ifMatch, context)
             .block();
+    }
+
+    /**
+     * Creates or updates a trigger.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param trigger Trigger resource definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return trigger resource type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TriggerResourceInner createOrUpdate(
+        String resourceGroupName, String factoryName, String triggerName, TriggerResourceInner trigger) {
+        final String ifMatch = null;
+        return createOrUpdateWithResponse(resourceGroupName, factoryName, triggerName, trigger, ifMatch, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -947,33 +899,6 @@ public final class TriggersClientImpl implements TriggersClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
-     * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<TriggerResourceInner> getAsync(
-        String resourceGroupName, String factoryName, String triggerName, String ifNoneMatch) {
-        return getWithResponseAsync(resourceGroupName, factoryName, triggerName, ifNoneMatch)
-            .flatMap(
-                (Response<TriggerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a trigger.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -983,31 +908,7 @@ public final class TriggersClientImpl implements TriggersClient {
     private Mono<TriggerResourceInner> getAsync(String resourceGroupName, String factoryName, String triggerName) {
         final String ifNoneMatch = null;
         return getWithResponseAsync(resourceGroupName, factoryName, triggerName, ifNoneMatch)
-            .flatMap(
-                (Response<TriggerResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Gets a trigger.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerResourceInner get(String resourceGroupName, String factoryName, String triggerName) {
-        final String ifNoneMatch = null;
-        return getAsync(resourceGroupName, factoryName, triggerName, ifNoneMatch).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1028,6 +929,23 @@ public final class TriggersClientImpl implements TriggersClient {
     public Response<TriggerResourceInner> getWithResponse(
         String resourceGroupName, String factoryName, String triggerName, String ifNoneMatch, Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, triggerName, ifNoneMatch, context).block();
+    }
+
+    /**
+     * Gets a trigger.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a trigger.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TriggerResourceInner get(String resourceGroupName, String factoryName, String triggerName) {
+        final String ifNoneMatch = null;
+        return getWithResponse(resourceGroupName, factoryName, triggerName, ifNoneMatch, Context.NONE).getValue();
     }
 
     /**
@@ -1147,23 +1065,7 @@ public final class TriggersClientImpl implements TriggersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String factoryName, String triggerName) {
-        return deleteWithResponseAsync(resourceGroupName, factoryName, triggerName)
-            .flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Deletes a trigger.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String factoryName, String triggerName) {
-        deleteAsync(resourceGroupName, factoryName, triggerName).block();
+        return deleteWithResponseAsync(resourceGroupName, factoryName, triggerName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1182,6 +1084,21 @@ public final class TriggersClientImpl implements TriggersClient {
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
         return deleteWithResponseAsync(resourceGroupName, factoryName, triggerName, context).block();
+    }
+
+    /**
+     * Deletes a trigger.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String factoryName, String triggerName) {
+        deleteWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     /**
@@ -1299,8 +1216,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of defines the response of a trigger subscription operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
@@ -1327,8 +1243,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of defines the response of a trigger subscription operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
@@ -1355,8 +1270,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
@@ -1374,8 +1288,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
@@ -1578,31 +1491,7 @@ public final class TriggersClientImpl implements TriggersClient {
     private Mono<TriggerSubscriptionOperationStatusInner> getEventSubscriptionStatusAsync(
         String resourceGroupName, String factoryName, String triggerName) {
         return getEventSubscriptionStatusWithResponseAsync(resourceGroupName, factoryName, triggerName)
-            .flatMap(
-                (Response<TriggerSubscriptionOperationStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a trigger's event subscription status.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a trigger's event subscription status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerSubscriptionOperationStatusInner getEventSubscriptionStatus(
-        String resourceGroupName, String factoryName, String triggerName) {
-        return getEventSubscriptionStatusAsync(resourceGroupName, factoryName, triggerName).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1622,6 +1511,24 @@ public final class TriggersClientImpl implements TriggersClient {
         String resourceGroupName, String factoryName, String triggerName, Context context) {
         return getEventSubscriptionStatusWithResponseAsync(resourceGroupName, factoryName, triggerName, context)
             .block();
+    }
+
+    /**
+     * Get a trigger's event subscription status.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a trigger's event subscription status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TriggerSubscriptionOperationStatusInner getEventSubscriptionStatus(
+        String resourceGroupName, String factoryName, String triggerName) {
+        return getEventSubscriptionStatusWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1739,8 +1646,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of defines the response of a trigger subscription operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
@@ -1767,8 +1673,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of defines the response of a trigger subscription operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
@@ -1796,8 +1701,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
@@ -1815,8 +1719,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines the response of a trigger subscription operation along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of defines the response of a trigger subscription operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<TriggerSubscriptionOperationStatusInner>, TriggerSubscriptionOperationStatusInner>
@@ -2011,7 +1914,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
@@ -2033,7 +1936,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
@@ -2055,7 +1958,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
@@ -2073,7 +1976,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
@@ -2262,7 +2165,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
@@ -2284,7 +2187,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
@@ -2306,7 +2209,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
@@ -2324,7 +2227,7 @@ public final class TriggersClientImpl implements TriggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
@@ -2403,7 +2306,8 @@ public final class TriggersClientImpl implements TriggersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2438,7 +2342,8 @@ public final class TriggersClientImpl implements TriggersClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

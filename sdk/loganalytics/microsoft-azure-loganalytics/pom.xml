@@ -13,7 +13,11 @@
     <version>1.0.0-beta.2</version> <!-- {x-version-update;com.microsoft.azure:azure-loganalytics;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Log Analytics</name>
-    <description>This package contains Microsoft Log Analytics SDK.</description>
+    <description>
+        Please note, a newer package azure-monitor-query for querying logs from Azure Monitor is available at
+        https://search.maven.org/artifact/com.azure/azure-monitor-query as of October 2021. While this package
+        will continue to receive critical bug fixes, we strongly encourage you to upgrade. Read the migration guide
+        at https://aka.ms/azsdk/java/migrate/monitorquery for more details.</description>
     <parent>
         <groupId>com.azure</groupId>
         <artifactId>azure-data-sdk-parent</artifactId>
@@ -71,7 +75,7 @@
         <dependency>
           <groupId>com.azure</groupId>
           <artifactId>azure-core-test</artifactId>
-          <version>1.7.7</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+          <version>1.12.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
           <scope>test</scope>
         </dependency>
     </dependencies>
@@ -116,7 +120,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+                <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
                 <configuration>
                     <source>1.7</source>
                     <target>1.7</target>
@@ -153,7 +157,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+                <version>3.0.0-M7</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
                 <configuration>
                     <reuseForks>false</reuseForks>
                     <includes>

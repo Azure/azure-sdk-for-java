@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AmazonRdsForSqlServerTableDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("AmazonRdsForSqlServerTable")
 @Fluent
 public final class AmazonRdsForSqlServerTableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonRdsForSqlServerTableDataset.class);
-
     /*
      * The Amazon RDS for SQL Server dataset properties.
      */
     @JsonProperty(value = "typeProperties")
     private AmazonRdsForSqlServerTableDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of AmazonRdsForSqlServerTableDataset class. */
+    public AmazonRdsForSqlServerTableDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: The Amazon RDS for SQL Server dataset properties.

@@ -17,7 +17,7 @@ import java.nio.ByteBuffer;
  * Provides an input stream to read a given storage file resource.
  */
 public class StorageFileInputStream extends StorageInputStream {
-    private final ClientLogger logger = new ClientLogger(StorageFileInputStream.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StorageFileInputStream.class);
 
     private final ShareFileAsyncClient shareFileAsyncClient;
 
@@ -70,7 +70,7 @@ public class StorageFileInputStream extends StorageInputStream {
             this.streamFaulted = true;
             this.lastError = new IOException(e);
 
-            throw logger.logExceptionAsError(new RuntimeException(this.lastError.getMessage()));
+            throw LOGGER.logExceptionAsError(new RuntimeException(this.lastError.getMessage(), e));
         }
     }
 }

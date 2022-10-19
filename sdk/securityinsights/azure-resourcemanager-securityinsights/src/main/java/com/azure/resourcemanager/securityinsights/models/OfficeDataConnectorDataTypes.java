@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The available data types for office data connector. */
 @Fluent
 public final class OfficeDataConnectorDataTypes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OfficeDataConnectorDataTypes.class);
-
     /*
      * Exchange data type connection.
      */
@@ -99,7 +96,7 @@ public final class OfficeDataConnectorDataTypes {
      */
     public void validate() {
         if (exchange() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property exchange in model OfficeDataConnectorDataTypes"));
@@ -107,7 +104,7 @@ public final class OfficeDataConnectorDataTypes {
             exchange().validate();
         }
         if (sharePoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sharePoint in model OfficeDataConnectorDataTypes"));
@@ -115,7 +112,7 @@ public final class OfficeDataConnectorDataTypes {
             sharePoint().validate();
         }
         if (teams() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property teams in model OfficeDataConnectorDataTypes"));
@@ -123,4 +120,6 @@ public final class OfficeDataConnectorDataTypes {
             teams().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OfficeDataConnectorDataTypes.class);
 }

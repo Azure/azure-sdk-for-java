@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ActionPropertiesBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Action property bag. */
 @Fluent
 public final class ActionResponseProperties extends ActionPropertiesBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActionResponseProperties.class);
-
     /*
      * The name of the logic app's workflow.
      */

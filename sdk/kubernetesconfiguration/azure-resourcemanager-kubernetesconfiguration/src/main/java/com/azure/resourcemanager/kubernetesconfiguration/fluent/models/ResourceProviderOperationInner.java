@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.kubernetesconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kubernetesconfiguration.models.ResourceProviderOperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Supported operation of this resource provider. */
 @Fluent
 public final class ResourceProviderOperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProviderOperationInner.class);
-
     /*
      * Operation name, in format of {provider}/{resource}/{operation}
      */

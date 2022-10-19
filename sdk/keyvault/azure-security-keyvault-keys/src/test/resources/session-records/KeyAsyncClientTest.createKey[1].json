@@ -1,0 +1,32 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://REDACTED.vault.azure.net/keys/javakeytemp769816f/create?api-version=7.3",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
+      "Content-Type" : "application/json"
+    },
+    "Response" : {
+      "content-length" : "748",
+      "x-ms-keyvault-rbac-assignment-id" : "f4e2dde1-5ff5-56c6-8923-012f34e01597",
+      "X-Content-Type-Options" : "nosniff",
+      "Pragma" : "no-cache",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 29 Mar 2022 03:03:35 GMT",
+      "x-ms-keyvault-rbac-cache" : "ra_age=4560;da_age=4560;rd_age=4560;brd_age=9636;ra_notif_age=7342;dec_lev=2;",
+      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
+      "Cache-Control" : "no-cache",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=InterNetwork;",
+      "Expires" : "-1",
+      "x-ms-request-id" : "9aa9198c-d235-4ceb-b11f-a0bd7f10ec3a",
+      "x-ms-keyvault-service-version" : "1.9.331.5",
+      "Body" : "{\"key\":{\"kid\":\"https://azsdktests.vault.azure.net/keys/javakeytemp769816f/6b78471f192f4dc4a9d0814773013b57\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"vWihyb7wCqWKf-6lxxL2g-sjcc1uRKRlgxthwUtFcKc9tOFRwzjohMwR4dAlMDfcCebtb76RDQC5hIRX_J8CNRdAPnY_4DGQrKh0TYwpB0mHR7MMzaKHaWvAQvmlr8OSiO65v0IRce6O9FbHs4pxMQg_LYEIeU2uOr7cQQ17qDmQlkoRsCzE0E-K81yM1mzCRz3_3vMOxOC3LWA6TFytv-5qkYSCpwso3Awxi0rAhwUZLS0T_4F9URs_ZuNrwVui1ojEzdwA5qTY73hTCgRZT9_ZOK-rsngC4QO4AiPqSS5RVX6kDGD_cvh_aZTCvICwwIqbaGE3g8J1cpk1NnDpNQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"nbf\":949237199,\"exp\":2527113600,\"created\":1648523015,\"updated\":1648523015,\"recoveryLevel\":\"CustomizedRecoverable+Purgeable\",\"recoverableDays\":7},\"tags\":{\"foo\":\"baz\"}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "X-Powered-By" : "ASP.NET"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "javakeytemp769816f" ]
+}

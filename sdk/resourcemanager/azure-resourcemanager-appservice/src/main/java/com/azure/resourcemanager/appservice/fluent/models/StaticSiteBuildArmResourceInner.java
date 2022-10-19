@@ -5,11 +5,10 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.BuildStatus;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
+import com.azure.resourcemanager.appservice.models.StaticSiteLinkedBackend;
 import com.azure.resourcemanager.appservice.models.StaticSiteUserProvidedFunctionApp;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.List;
 /** Static Site Build ARM resource. */
 @Fluent
 public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteBuildArmResourceInner.class);
-
     /*
      * StaticSiteBuildARMResource resource specific properties
      */
@@ -111,6 +108,15 @@ public final class StaticSiteBuildArmResourceInner extends ProxyOnlyResource {
      */
     public List<StaticSiteUserProvidedFunctionApp> userProvidedFunctionApps() {
         return this.innerProperties() == null ? null : this.innerProperties().userProvidedFunctionApps();
+    }
+
+    /**
+     * Get the linkedBackends property: Backends linked to the static side build.
+     *
+     * @return the linkedBackends value.
+     */
+    public List<StaticSiteLinkedBackend> linkedBackends() {
+        return this.innerProperties() == null ? null : this.innerProperties().linkedBackends();
     }
 
     /**

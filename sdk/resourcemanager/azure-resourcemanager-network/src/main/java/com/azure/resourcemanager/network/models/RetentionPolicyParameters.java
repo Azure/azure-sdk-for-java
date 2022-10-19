@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that define the retention policy for flow log. */
 @Fluent
 public final class RetentionPolicyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionPolicyParameters.class);
-
     /*
      * Number of days to retain flow log records.
      */
@@ -25,6 +21,10 @@ public final class RetentionPolicyParameters {
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
+
+    /** Creates an instance of RetentionPolicyParameters class. */
+    public RetentionPolicyParameters() {
+    }
 
     /**
      * Get the days property: Number of days to retain flow log records.

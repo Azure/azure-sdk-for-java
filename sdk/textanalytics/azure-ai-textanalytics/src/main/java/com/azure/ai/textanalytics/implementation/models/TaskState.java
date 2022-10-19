@@ -18,12 +18,6 @@ public class TaskState {
     private OffsetDateTime lastUpdateDateTime;
 
     /*
-     * The taskName property.
-     */
-    @JsonProperty(value = "taskName", required = true)
-    private String taskName;
-
-    /*
      * The status property.
      */
     @JsonProperty(value = "status", required = true)
@@ -46,26 +40,6 @@ public class TaskState {
      */
     public TaskState setLastUpdateDateTime(OffsetDateTime lastUpdateDateTime) {
         this.lastUpdateDateTime = lastUpdateDateTime;
-        return this;
-    }
-
-    /**
-     * Get the taskName property: The taskName property.
-     *
-     * @return the taskName value.
-     */
-    public String getTaskName() {
-        return this.taskName;
-    }
-
-    /**
-     * Set the taskName property: The taskName property.
-     *
-     * @param taskName the taskName value to set.
-     * @return the TaskState object itself.
-     */
-    public TaskState setTaskName(String taskName) {
-        this.taskName = taskName;
         return this;
     }
 

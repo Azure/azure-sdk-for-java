@@ -5,24 +5,26 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PacketCaptureFilter;
+import com.azure.resourcemanager.network.models.PacketCaptureMachineScope;
 import com.azure.resourcemanager.network.models.PacketCaptureStorageLocation;
+import com.azure.resourcemanager.network.models.PacketCaptureTargetType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a packet capture session. */
 @Fluent
 public final class PacketCaptureResultProperties extends PacketCaptureParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureResultProperties.class);
-
     /*
      * The provisioning state of the packet capture session.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of PacketCaptureResultProperties class. */
+    public PacketCaptureResultProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the packet capture session.
@@ -37,6 +39,20 @@ public final class PacketCaptureResultProperties extends PacketCaptureParameters
     @Override
     public PacketCaptureResultProperties withTarget(String target) {
         super.withTarget(target);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PacketCaptureResultProperties withScope(PacketCaptureMachineScope scope) {
+        super.withScope(scope);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PacketCaptureResultProperties withTargetType(PacketCaptureTargetType targetType) {
+        super.withTargetType(targetType);
         return this;
     }
 

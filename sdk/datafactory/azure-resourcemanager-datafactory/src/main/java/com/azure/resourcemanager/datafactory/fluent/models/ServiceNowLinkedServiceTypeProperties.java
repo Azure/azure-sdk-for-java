@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.ServiceNowAuthenticationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ServiceNow server linked service properties. */
 @Fluent
 public final class ServiceNowLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceNowLinkedServiceTypeProperties.class);
-
     /*
      * The endpoint of the ServiceNow server. (i.e. <instance>.service-now.com)
      */
@@ -29,15 +26,13 @@ public final class ServiceNowLinkedServiceTypeProperties {
     private ServiceNowAuthenticationType authenticationType;
 
     /*
-     * The user name used to connect to the ServiceNow server for Basic and
-     * OAuth2 authentication.
+     * The user name used to connect to the ServiceNow server for Basic and OAuth2 authentication.
      */
     @JsonProperty(value = "username")
     private Object username;
 
     /*
-     * The password corresponding to the user name for Basic and OAuth2
-     * authentication.
+     * The password corresponding to the user name for Basic and OAuth2 authentication.
      */
     @JsonProperty(value = "password")
     private SecretBase password;
@@ -55,34 +50,34 @@ public final class ServiceNowLinkedServiceTypeProperties {
     private SecretBase clientSecret;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
     @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of ServiceNowLinkedServiceTypeProperties class. */
+    public ServiceNowLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the endpoint property: The endpoint of the ServiceNow server. (i.e. &lt;instance&gt;.service-now.com).
@@ -302,13 +297,13 @@ public final class ServiceNowLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endpoint in model ServiceNowLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authenticationType in model ServiceNowLinkedServiceTypeProperties"));
@@ -320,4 +315,6 @@ public final class ServiceNowLinkedServiceTypeProperties {
             clientSecret().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceNowLinkedServiceTypeProperties.class);
 }

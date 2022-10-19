@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -27,18 +28,13 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.JobTargetGroupsClient;
 import com.azure.resourcemanager.sql.fluent.models.JobTargetGroupInner;
-import com.azure.resourcemanager.sql.models.JobTarget;
 import com.azure.resourcemanager.sql.models.JobTargetGroupListResult;
-import java.util.List;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobTargetGroupsClient. */
 public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
-    private final ClientLogger logger = new ClientLogger(JobTargetGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobTargetGroupsService service;
 
@@ -63,7 +59,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
     private interface JobTargetGroupsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/targetGroups")
@@ -76,9 +72,10 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
             @PathParam("jobAgentName") String jobAgentName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}")
@@ -92,9 +89,10 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
             @PathParam("targetGroupName") String targetGroupName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/targetGroups/{targetGroupName}")
@@ -109,6 +107,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") JobTargetGroupInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -127,12 +126,15 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobTargetGroupListResult>> listByAgentNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -145,7 +147,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all target groups in an agent.
+     * @return all target groups in an agent along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobTargetGroupInner>> listByAgentSinglePageAsync(
@@ -173,6 +175,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -184,6 +187,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                             jobAgentName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<JobTargetGroupInner>>map(
                 res ->
@@ -194,7 +198,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -208,7 +212,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all target groups in an agent.
+     * @return all target groups in an agent along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobTargetGroupInner>> listByAgentSinglePageAsync(
@@ -236,6 +240,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByAgent(
@@ -245,6 +250,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 jobAgentName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -267,7 +273,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all target groups in an agent.
+     * @return all target groups in an agent as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobTargetGroupInner> listByAgentAsync(
@@ -288,7 +294,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all target groups in an agent.
+     * @return all target groups in an agent as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobTargetGroupInner> listByAgentAsync(
@@ -308,7 +314,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all target groups in an agent.
+     * @return all target groups in an agent as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobTargetGroupInner> listByAgent(
@@ -327,7 +333,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all target groups in an agent.
+     * @return all target groups in an agent as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobTargetGroupInner> listByAgent(
@@ -346,7 +352,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a target group.
+     * @return a target group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobTargetGroupInner>> getWithResponseAsync(
@@ -378,6 +384,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -390,8 +397,9 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                             targetGroupName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -406,7 +414,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a target group.
+     * @return a target group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobTargetGroupInner>> getWithResponseAsync(
@@ -438,6 +446,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -448,6 +457,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 targetGroupName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -462,20 +472,13 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a target group.
+     * @return a target group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobTargetGroupInner> getAsync(
         String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName)
-            .flatMap(
-                (Response<JobTargetGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -509,7 +512,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a target group.
+     * @return a target group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobTargetGroupInner> getWithResponse(
@@ -525,11 +528,11 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
-     * @param members Members of the target group.
+     * @param parameters The requested state of the target group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a group of job targets.
+     * @return a group of job targets along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobTargetGroupInner>> createOrUpdateWithResponseAsync(
@@ -537,7 +540,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
         String serverName,
         String jobAgentName,
         String targetGroupName,
-        List<JobTarget> members) {
+        JobTargetGroupInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -564,12 +567,13 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (members != null) {
-            members.forEach(e -> e.validate());
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
-        JobTargetGroupInner parameters = new JobTargetGroupInner();
-        parameters.withMembers(members);
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -583,8 +587,9 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -595,12 +600,12 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
-     * @param members Members of the target group.
+     * @param parameters The requested state of the target group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a group of job targets.
+     * @return a group of job targets along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobTargetGroupInner>> createOrUpdateWithResponseAsync(
@@ -608,7 +613,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
         String serverName,
         String jobAgentName,
         String targetGroupName,
-        List<JobTarget> members,
+        JobTargetGroupInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -636,12 +641,13 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (members != null) {
-            members.forEach(e -> e.validate());
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
-        JobTargetGroupInner parameters = new JobTargetGroupInner();
-        parameters.withMembers(members);
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -653,6 +659,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -664,11 +671,11 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
-     * @param members Members of the target group.
+     * @param parameters The requested state of the target group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a group of job targets.
+     * @return a group of job targets on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobTargetGroupInner> createOrUpdateAsync(
@@ -676,16 +683,9 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
         String serverName,
         String jobAgentName,
         String targetGroupName,
-        List<JobTarget> members) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, members)
-            .flatMap(
-                (Response<JobTargetGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        JobTargetGroupInner parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -696,34 +696,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a group of job targets.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<JobTargetGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
-        final List<JobTarget> members = null;
-        return createOrUpdateWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, members)
-            .flatMap(
-                (Response<JobTargetGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates a target group.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param jobAgentName The name of the job agent.
-     * @param targetGroupName The name of the target group.
+     * @param parameters The requested state of the target group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -731,9 +704,12 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public JobTargetGroupInner createOrUpdate(
-        String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
-        final List<JobTarget> members = null;
-        return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, members).block();
+        String resourceGroupName,
+        String serverName,
+        String jobAgentName,
+        String targetGroupName,
+        JobTargetGroupInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, serverName, jobAgentName, targetGroupName, parameters).block();
     }
 
     /**
@@ -744,12 +720,12 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @param serverName The name of the server.
      * @param jobAgentName The name of the job agent.
      * @param targetGroupName The name of the target group.
-     * @param members Members of the target group.
+     * @param parameters The requested state of the target group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a group of job targets.
+     * @return a group of job targets along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobTargetGroupInner> createOrUpdateWithResponse(
@@ -757,10 +733,10 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
         String serverName,
         String jobAgentName,
         String targetGroupName,
-        List<JobTarget> members,
+        JobTargetGroupInner parameters,
         Context context) {
         return createOrUpdateWithResponseAsync(
-                resourceGroupName, serverName, jobAgentName, targetGroupName, members, context)
+                resourceGroupName, serverName, jobAgentName, targetGroupName, parameters, context)
             .block();
     }
 
@@ -775,7 +751,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -820,7 +796,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -835,7 +811,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -891,13 +867,13 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String serverName, String jobAgentName, String targetGroupName) {
         return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, targetGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -929,7 +905,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -944,15 +920,22 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of target groups.
+     * @return a list of target groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobTargetGroupInner>> listByAgentNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByAgentNext(nextLink, context))
+            .withContext(context -> service.listByAgentNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<JobTargetGroupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -962,7 +945,7 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -973,16 +956,23 @@ public final class JobTargetGroupsClientImpl implements JobTargetGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of target groups.
+     * @return a list of target groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobTargetGroupInner>> listByAgentNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAgentNext(nextLink, context)
+            .listByAgentNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayLoadDistributionTargetPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Load Distribution Target of an application gateway. */
 @Fluent
 public final class ApplicationGatewayLoadDistributionTarget extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayLoadDistributionTarget.class);
-
     /*
      * Properties of the application gateway load distribution target.
      */
@@ -23,8 +19,7 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
     private ApplicationGatewayLoadDistributionTargetPropertiesFormat innerProperties;
 
     /*
-     * Name of the load distribution policy that is unique within an
-     * Application Gateway.
+     * Name of the load distribution policy that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -40,6 +35,10 @@ public final class ApplicationGatewayLoadDistributionTarget extends SubResource 
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ApplicationGatewayLoadDistributionTarget class. */
+    public ApplicationGatewayLoadDistributionTarget() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the application gateway load distribution target.

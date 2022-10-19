@@ -8,18 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportItem;
 import com.azure.resourcemanager.network.models.AzureReachabilityReportLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Azure reachability report details. */
 @Fluent
 public final class AzureReachabilityReportInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureReachabilityReportInner.class);
-
     /*
-     * The aggregation level of Azure reachability report. Can be Country,
-     * State or City.
+     * The aggregation level of Azure reachability report. Can be Country, State or City.
      */
     @JsonProperty(value = "aggregationLevel", required = true)
     private String aggregationLevel;
@@ -35,6 +31,10 @@ public final class AzureReachabilityReportInner {
      */
     @JsonProperty(value = "reachabilityReport", required = true)
     private List<AzureReachabilityReportItem> reachabilityReport;
+
+    /** Creates an instance of AzureReachabilityReportInner class. */
+    public AzureReachabilityReportInner() {
+    }
 
     /**
      * Get the aggregationLevel property: The aggregation level of Azure reachability report. Can be Country, State or
@@ -105,13 +105,13 @@ public final class AzureReachabilityReportInner {
      */
     public void validate() {
         if (aggregationLevel() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property aggregationLevel in model AzureReachabilityReportInner"));
         }
         if (providerLocation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property providerLocation in model AzureReachabilityReportInner"));
@@ -119,7 +119,7 @@ public final class AzureReachabilityReportInner {
             providerLocation().validate();
         }
         if (reachabilityReport() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property reachabilityReport in model AzureReachabilityReportInner"));
@@ -127,4 +127,6 @@ public final class AzureReachabilityReportInner {
             reachabilityReport().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureReachabilityReportInner.class);
 }

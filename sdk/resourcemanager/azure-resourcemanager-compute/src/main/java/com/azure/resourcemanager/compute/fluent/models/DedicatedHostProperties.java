@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DedicatedHostInstanceView;
 import com.azure.resourcemanager.compute.models.DedicatedHostLicenseTypes;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.List;
 /** Properties of the dedicated host. */
 @Fluent
 public final class DedicatedHostProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostProperties.class);
-
     /*
      * Fault domain of the dedicated host within a dedicated host group.
      */
@@ -26,15 +22,15 @@ public final class DedicatedHostProperties {
     private Integer platformFaultDomain;
 
     /*
-     * Specifies whether the dedicated host should be replaced automatically in
-     * case of a failure. The value is defaulted to 'true' when not provided.
+     * Specifies whether the dedicated host should be replaced automatically in case of a failure. The value is
+     * defaulted to 'true' when not provided.
      */
     @JsonProperty(value = "autoReplaceOnFailure")
     private Boolean autoReplaceOnFailure;
 
     /*
-     * A unique id generated and assigned to the dedicated host by the
-     * platform. <br><br> Does not change throughout the lifetime of the host.
+     * A unique id generated and assigned to the dedicated host by the platform. <br><br> Does not change throughout
+     * the lifetime of the host.
      */
     @JsonProperty(value = "hostId", access = JsonProperty.Access.WRITE_ONLY)
     private String hostId;
@@ -46,10 +42,9 @@ public final class DedicatedHostProperties {
     private List<SubResourceReadOnly> virtualMachines;
 
     /*
-     * Specifies the software license type that will be applied to the VMs
-     * deployed on the dedicated host. <br><br> Possible values are: <br><br>
-     * **None** <br><br> **Windows_Server_Hybrid** <br><br>
-     * **Windows_Server_Perpetual** <br><br> Default: **None**
+     * Specifies the software license type that will be applied to the VMs deployed on the dedicated host. <br><br>
+     * Possible values are: <br><br> **None** <br><br> **Windows_Server_Hybrid** <br><br> **Windows_Server_Perpetual**
+     * <br><br> Default: **None**
      */
     @JsonProperty(value = "licenseType")
     private DedicatedHostLicenseTypes licenseType;
@@ -73,8 +68,7 @@ public final class DedicatedHostProperties {
     private DedicatedHostInstanceView instanceView;
 
     /*
-     * Specifies the time at which the Dedicated Host resource was
-     * created.<br><br>Minimum api-version: 2021-11-01.
+     * Specifies the time at which the Dedicated Host resource was created.<br><br>Minimum api-version: 2021-11-01.
      */
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;

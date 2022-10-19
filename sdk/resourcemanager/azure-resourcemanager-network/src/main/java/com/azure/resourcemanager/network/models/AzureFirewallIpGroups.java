@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IpGroups associated with azure firewall. */
 @Immutable
 public final class AzureFirewallIpGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallIpGroups.class);
-
     /*
      * Resource ID.
      */
@@ -25,6 +21,10 @@ public final class AzureFirewallIpGroups {
      */
     @JsonProperty(value = "changeNumber", access = JsonProperty.Access.WRITE_ONLY)
     private String changeNumber;
+
+    /** Creates an instance of AzureFirewallIpGroups class. */
+    public AzureFirewallIpGroups() {
+    }
 
     /**
      * Get the id property: Resource ID.

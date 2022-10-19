@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.PrivateDnsZoneGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for the ListPrivateDnsZoneGroups API service call. */
 @Fluent
 public final class PrivateDnsZoneGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateDnsZoneGroupListResult.class);
-
     /*
      * A list of private dns zone group resources in a private endpoint.
      */
@@ -27,6 +23,10 @@ public final class PrivateDnsZoneGroupListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of PrivateDnsZoneGroupListResult class. */
+    public PrivateDnsZoneGroupListResult() {
+    }
 
     /**
      * Get the value property: A list of private dns zone group resources in a private endpoint.

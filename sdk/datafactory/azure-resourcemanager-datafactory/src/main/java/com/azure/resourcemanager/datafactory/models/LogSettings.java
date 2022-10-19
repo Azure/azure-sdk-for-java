@@ -6,17 +6,13 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Log settings. */
 @Fluent
 public final class LogSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogSettings.class);
-
     /*
-     * Specifies whether to enable copy activity log. Type: boolean (or
-     * Expression with resultType boolean).
+     * Specifies whether to enable copy activity log. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableCopyActivityLog")
     private Object enableCopyActivityLog;
@@ -32,6 +28,10 @@ public final class LogSettings {
      */
     @JsonProperty(value = "logLocationSettings", required = true)
     private LogLocationSettings logLocationSettings;
+
+    /** Creates an instance of LogSettings class. */
+    public LogSettings() {
+    }
 
     /**
      * Get the enableCopyActivityLog property: Specifies whether to enable copy activity log. Type: boolean (or
@@ -105,11 +105,13 @@ public final class LogSettings {
             copyActivityLogSettings().validate();
         }
         if (logLocationSettings() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property logLocationSettings in model LogSettings"));
         } else {
             logLocationSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LogSettings.class);
 }

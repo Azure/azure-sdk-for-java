@@ -7,17 +7,14 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Concur Service linked service properties. */
 @Fluent
 public final class ConcurLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConcurLinkedServiceTypeProperties.class);
-
     /*
-     * Properties used to connect to Concur. It is mutually exclusive with any
-     * other properties in the linked service. Type: object.
+     * Properties used to connect to Concur. It is mutually exclusive with any other properties in the linked service.
+     * Type: object.
      */
     @JsonProperty(value = "connectionProperties")
     private Object connectionProperties;
@@ -35,41 +32,40 @@ public final class ConcurLinkedServiceTypeProperties {
     private Object username;
 
     /*
-     * The password corresponding to the user name that you provided in the
-     * username field.
+     * The password corresponding to the user name that you provided in the username field.
      */
     @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
     @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of ConcurLinkedServiceTypeProperties class. */
+    public ConcurLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionProperties property: Properties used to connect to Concur. It is mutually exclusive with any
@@ -248,13 +244,13 @@ public final class ConcurLinkedServiceTypeProperties {
      */
     public void validate() {
         if (clientId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clientId in model ConcurLinkedServiceTypeProperties"));
         }
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property username in model ConcurLinkedServiceTypeProperties"));
@@ -263,4 +259,6 @@ public final class ConcurLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConcurLinkedServiceTypeProperties.class);
 }

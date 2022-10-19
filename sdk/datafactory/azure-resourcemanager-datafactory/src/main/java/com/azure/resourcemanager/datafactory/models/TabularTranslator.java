@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,36 +14,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("TabularTranslator")
 @Fluent
 public final class TabularTranslator extends CopyTranslator {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TabularTranslator.class);
-
     /*
-     * Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name:
-     * MyName" Type: string (or Expression with resultType string). This
-     * property will be retired. Please use mappings property.
+     * Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type: string (or Expression with
+     * resultType string). This property will be retired. Please use mappings property.
      */
     @JsonProperty(value = "columnMappings")
     private Object columnMappings;
 
     /*
-     * The schema mapping to map between tabular data and hierarchical data.
-     * Example: {"Column1": "$.Column1", "Column2": "$.Column2.Property1",
-     * "Column3": "$.Column2.Property2"}. Type: object (or Expression with
-     * resultType object). This property will be retired. Please use mappings
-     * property.
+     * The schema mapping to map between tabular data and hierarchical data. Example: {"Column1": "$.Column1",
+     * "Column2": "$.Column2.Property1", "Column3": "$.Column2.Property2"}. Type: object (or Expression with resultType
+     * object). This property will be retired. Please use mappings property.
      */
     @JsonProperty(value = "schemaMapping")
     private Object schemaMapping;
 
     /*
-     * The JSON Path of the Nested Array that is going to do cross-apply. Type:
-     * object (or Expression with resultType object).
+     * The JSON Path of the Nested Array that is going to do cross-apply. Type: object (or Expression with resultType
+     * object).
      */
     @JsonProperty(value = "collectionReference")
     private Object collectionReference;
 
     /*
-     * Whether to map complex (array and object) values to simple strings in
-     * json format. Type: boolean (or Expression with resultType boolean).
+     * Whether to map complex (array and object) values to simple strings in json format. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "mapComplexValuesToString")
     private Object mapComplexValuesToString;
@@ -64,8 +57,8 @@ public final class TabularTranslator extends CopyTranslator {
     private Object mappings;
 
     /*
-     * Whether to enable the advanced type conversion feature in the Copy
-     * activity. Type: boolean (or Expression with resultType boolean).
+     * Whether to enable the advanced type conversion feature in the Copy activity. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "typeConversion")
     private Object typeConversion;
@@ -75,6 +68,10 @@ public final class TabularTranslator extends CopyTranslator {
      */
     @JsonProperty(value = "typeConversionSettings")
     private TypeConversionSettings typeConversionSettings;
+
+    /** Creates an instance of TabularTranslator class. */
+    public TabularTranslator() {
+    }
 
     /**
      * Get the columnMappings property: Column mappings. Example: "UserId: MyUserId, Group: MyGroup, Name: MyName" Type:

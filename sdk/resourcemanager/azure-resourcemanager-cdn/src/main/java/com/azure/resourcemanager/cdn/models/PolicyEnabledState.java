@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PolicyEnabledState. */
+/** describes if the policy is in enabled state or disabled state. */
 public final class PolicyEnabledState extends ExpandableStringEnum<PolicyEnabledState> {
     /** Static value Disabled for PolicyEnabledState. */
     public static final PolicyEnabledState DISABLED = fromString("Disabled");
@@ -27,7 +27,11 @@ public final class PolicyEnabledState extends ExpandableStringEnum<PolicyEnabled
         return fromString(name, PolicyEnabledState.class);
     }
 
-    /** @return known PolicyEnabledState values. */
+    /**
+     * Gets known PolicyEnabledState values.
+     *
+     * @return known PolicyEnabledState values.
+     */
     public static Collection<PolicyEnabledState> values() {
         return values(PolicyEnabledState.class);
     }

@@ -4,49 +4,43 @@
 
 package com.azure.analytics.purview.administration;
 
-import com.azure.analytics.purview.administration.implementation.ResourceSetRulesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /** Initializes a new instance of the synchronous PurviewAccountClient type. */
-@ServiceClient(builder = PurviewAccountClientBuilder.class)
+@ServiceClient(builder = ResourceSetRulesClientBuilder.class)
 public final class ResourceSetRulesClient {
-    @Generated private final ResourceSetRulesImpl serviceClient;
+    @Generated private final ResourceSetRulesAsyncClient client;
 
     /**
-     * Initializes an instance of ResourceSetRules client.
+     * Initializes an instance of ResourceSetRulesClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    ResourceSetRulesClient(ResourceSetRulesImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    ResourceSetRulesClient(ResourceSetRulesAsyncClient client) {
+        this.client = client;
     }
 
     /**
      * Get a resource set config service model.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     advancedResourceSet: {
-     *         modifiedAt: String
+     *         modifiedAt: OffsetDateTime
      *         resourceSetProcessing: String(Default/Advanced)
      *     }
      *     name: String
@@ -144,31 +138,26 @@ public final class ResourceSetRulesClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a resource set config service model along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getResourceSetRuleWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.getResourceSetRuleWithResponse(requestOptions);
+        return this.client.getResourceSetRuleWithResponse(requestOptions).block();
     }
 
     /**
      * Creates or updates an resource set config.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
      * {
      *     advancedResourceSet: {
-     *         modifiedAt: String
+     *         modifiedAt: OffsetDateTime
      *         resourceSetProcessing: String(Default/Advanced)
      *     }
      *     name: String
@@ -269,7 +258,7 @@ public final class ResourceSetRulesClient {
      * <pre>{@code
      * {
      *     advancedResourceSet: {
-     *         modifiedAt: String
+     *         modifiedAt: OffsetDateTime
      *         resourceSetProcessing: String(Default/Advanced)
      *     }
      *     name: String
@@ -368,34 +357,32 @@ public final class ResourceSetRulesClient {
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return resourceSetRuleConfig implementation class along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateResourceSetRuleWithResponse(resourceSetRuleConfig, requestOptions);
+        return this.client.createOrUpdateResourceSetRuleWithResponse(resourceSetRuleConfig, requestOptions).block();
     }
 
     /**
      * Deletes a ResourceSetRuleConfig resource.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteResourceSetRuleWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.deleteResourceSetRuleWithResponse(requestOptions);
+        return this.client.deleteResourceSetRuleWithResponse(requestOptions).block();
     }
 
     /**
@@ -406,8 +393,7 @@ public final class ResourceSetRulesClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     *     <tr><td>skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
+     *     <tr><td>$skipToken</td><td>String</td><td>No</td><td>The skipToken parameter</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -419,7 +405,7 @@ public final class ResourceSetRulesClient {
      *     value: [
      *         {
      *             advancedResourceSet: {
-     *                 modifiedAt: String
+     *                 modifiedAt: OffsetDateTime
      *                 resourceSetProcessing: String(Default/Advanced)
      *             }
      *             name: String
@@ -519,11 +505,14 @@ public final class ResourceSetRulesClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return a resource set config service model.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a resource set config service model as paginated response with {@link PagedIterable}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listResourceSetRules(RequestOptions requestOptions) {
-        return this.serviceClient.listResourceSetRules(requestOptions);
+        return new PagedIterable<>(this.client.listResourceSetRules(requestOptions));
     }
 }

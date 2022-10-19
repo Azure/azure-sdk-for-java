@@ -6,22 +6,17 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.IpVersions;
 import com.azure.resourcemanager.compute.models.PublicIpAllocationMethod;
 import com.azure.resourcemanager.compute.models.VirtualMachineIpTag;
 import com.azure.resourcemanager.compute.models.VirtualMachinePublicIpAddressDnsSettingsConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machines IP Configuration's PublicIPAddress configuration. */
 @Fluent
 public final class VirtualMachinePublicIpAddressConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachinePublicIpAddressConfigurationProperties.class);
-
     /*
      * The idle timeout of the public IP address.
      */
@@ -53,9 +48,8 @@ public final class VirtualMachinePublicIpAddressConfigurationProperties {
     private SubResource publicIpPrefix;
 
     /*
-     * Available from Api-Version 2019-07-01 onwards, it represents whether the
-     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
-     * Possible values are: 'IPv4' and 'IPv6'.
+     * Available from Api-Version 2019-07-01 onwards, it represents whether the specific ipconfiguration is IPv4 or
+     * IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
      */
     @JsonProperty(value = "publicIPAddressVersion")
     private IpVersions publicIpAddressVersion;

@@ -8,13 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for GallerySharingPermissionTypes. */
+/**
+ * This property allows you to specify the permission of sharing gallery. &lt;br&gt;&lt;br&gt; Possible values are:
+ * &lt;br&gt;&lt;br&gt; **Private** &lt;br&gt;&lt;br&gt; **Groups** &lt;br&gt;&lt;br&gt; **Community**.
+ */
 public final class GallerySharingPermissionTypes extends ExpandableStringEnum<GallerySharingPermissionTypes> {
     /** Static value Private for GallerySharingPermissionTypes. */
     public static final GallerySharingPermissionTypes PRIVATE = fromString("Private");
 
     /** Static value Groups for GallerySharingPermissionTypes. */
     public static final GallerySharingPermissionTypes GROUPS = fromString("Groups");
+
+    /** Static value Community for GallerySharingPermissionTypes. */
+    public static final GallerySharingPermissionTypes COMMUNITY = fromString("Community");
 
     /**
      * Creates or finds a GallerySharingPermissionTypes from its string representation.
@@ -27,7 +33,11 @@ public final class GallerySharingPermissionTypes extends ExpandableStringEnum<Ga
         return fromString(name, GallerySharingPermissionTypes.class);
     }
 
-    /** @return known GallerySharingPermissionTypes values. */
+    /**
+     * Gets known GallerySharingPermissionTypes values.
+     *
+     * @return known GallerySharingPermissionTypes values.
+     */
     public static Collection<GallerySharingPermissionTypes> values() {
         return values(GallerySharingPermissionTypes.class);
     }

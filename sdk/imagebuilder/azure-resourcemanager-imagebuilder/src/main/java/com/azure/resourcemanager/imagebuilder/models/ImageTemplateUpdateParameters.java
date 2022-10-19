@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Parameters for updating an image template. */
 @Fluent
 public final class ImageTemplateUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateUpdateParameters.class);
-
     /*
      * The identity of the image template, if configured.
      */

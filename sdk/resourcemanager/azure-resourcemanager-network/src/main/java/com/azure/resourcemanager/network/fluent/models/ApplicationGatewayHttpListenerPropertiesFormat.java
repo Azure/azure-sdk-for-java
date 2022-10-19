@@ -6,20 +6,15 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCustomError;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of HTTP listener of an application gateway. */
 @Fluent
 public final class ApplicationGatewayHttpListenerPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayHttpListenerPropertiesFormat.class);
-
     /*
      * Frontend IP configuration resource of an application gateway.
      */
@@ -81,11 +76,14 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     private SubResource firewallPolicy;
 
     /*
-     * List of Host names for HTTP Listener that allows special wildcard
-     * characters as well.
+     * List of Host names for HTTP Listener that allows special wildcard characters as well.
      */
     @JsonProperty(value = "hostNames")
     private List<String> hostNames;
+
+    /** Creates an instance of ApplicationGatewayHttpListenerPropertiesFormat class. */
+    public ApplicationGatewayHttpListenerPropertiesFormat() {
+    }
 
     /**
      * Get the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.

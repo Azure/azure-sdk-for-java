@@ -1,0 +1,45 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/a3f2b6c10a3f2b6c18451676277008bacdc3b45039fa?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "3e3e121b-ff06-4f72-94da-f9e9c29c95bd"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-ms-version" : "2021-04-10",
+      "eTag" : "0x8D9B496155BF612",
+      "Last-Modified" : "Wed, 01 Dec 2021 06:44:54 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "9362f9c1-a01e-0005-607e-e6f0c9000000",
+      "x-ms-client-request-id" : "3e3e121b-ff06-4f72-94da-f9e9c29c95bd",
+      "Date" : "Wed, 01 Dec 2021 06:44:54 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.blob.preprod.core.windows.net/a3f2b6c10a3f2b6c18451676277008bacdc3b45039fa?restype=container&comp=blobs&where=garbageTag",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.15.0-beta.2 (11.0.7; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c05fb9c0-4c9d-49f8-a542-cc5d9a7dcba8"
+    },
+    "Response" : {
+      "content-length" : "423",
+      "x-ms-version" : "2021-04-10",
+      "x-ms-error-code" : "InvalidQueryParameterValue",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "9362f9c4-a01e-0005-617e-e6f0c9000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Error><Code>InvalidQueryParameterValue</Code><Message>Error parsing query at or near character position 1: expected an operator\nRequestId:9362f9c4-a01e-0005-617e-e6f0c9000000\nTime:2021-12-01T06:44:54.9158269Z</Message><QueryParameterName>where</QueryParameterName><QueryParameterValue>garbageTag</QueryParameterValue><Reason>This query parameter value is invalid.</Reason></Error>",
+      "x-ms-client-request-id" : "c05fb9c0-4c9d-49f8-a542-cc5d9a7dcba8",
+      "Date" : "Wed, 01 Dec 2021 06:44:54 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "a3f2b6c10a3f2b6c18451676277008bacdc3b45039fa", "a3f2b6c114761088", "a3f2b6c187377308" ]
+}

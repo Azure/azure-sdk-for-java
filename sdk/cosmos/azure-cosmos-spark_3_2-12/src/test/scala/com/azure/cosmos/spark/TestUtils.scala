@@ -4,37 +4,54 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
 import com.azure.cosmos.models.{ChangeFeedPolicy, CosmosBulkOperations, CosmosContainerProperties, CosmosItemOperation, PartitionKey, ThroughputProperties}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, CosmosException}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import io.micrometer.core.instrument.MeterRegistry
+import io.micrometer.core.instrument.composite.CompositeMeterRegistry
 import org.apache.commons.lang3.RandomStringUtils
 import org.apache.spark.sql.SparkSession
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.{BeforeAndAfterAll, BeforeAndAfterEach, Suite}
-import reactor.core.publisher.{EmitterProcessor, Sinks}
+import reactor.core.publisher.Sinks
 import reactor.core.scala.publisher.SMono.PimpJFlux
 
 import java.time.Duration
 import java.util.UUID
 import java.util.concurrent.atomic.AtomicInteger
+import javax.annotation.concurrent.NotThreadSafe
 import scala.collection.mutable.ListBuffer
 import scala.jdk.CollectionConverters.iterableAsScalaIterableConverter
 // scalastyle:off underscore.import
+import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 // extending class will have a pre-created spark session
-trait Spark extends BeforeAndAfterAll {
+@NotThreadSafe // marking this as not thread safe because we have to stop Spark Context in some unit tests
+// there can only ever be one active Spark Context so running Spark tests in parallel could cause issues
+trait Spark extends BeforeAndAfterAll with BasicLoggingTrait {
   this: Suite =>
   //scalastyle:off
   var spark : SparkSession = _
 
-  def getSpark() = spark
+  def getSpark: SparkSession = spark
 
-  override def beforeAll(): Unit = {
-    System.out.println("spark started!!!!!!")
-    super.beforeAll()
+  def resetSpark: SparkSession = {
+    PartitionMetadataCache.clearCache()
+    CosmosClientCache.clearCache()
+
     spark = SparkSession.builder()
       .appName("spark connector sample")
       .master("local")
       .getOrCreate()
+
+    spark
+  }
+
+  override def beforeAll(): Unit = {
+    System.out.println("spark started!!!!!!")
+    super.beforeAll()
+    resetSpark
   }
 
   override def afterAll(): Unit = {
@@ -45,6 +62,68 @@ trait Spark extends BeforeAndAfterAll {
     finally {
       super.afterAll()
     }
+  }
+}
+
+trait SparkWithDropwizardAndSlf4jMetrics extends Spark {
+  this: Suite =>
+  //scalastyle:off
+
+  override def resetSpark: SparkSession = {
+    PartitionMetadataCache.clearCache()
+    CosmosClientCache.clearCache()
+    spark = SparkSession.builder()
+      .appName("spark connector sample")
+      .master("local")
+      .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
+      .config("spark.cosmos.metrics.intervalInSeconds", "10")
+      .getOrCreate()
+
+    spark
+  }
+}
+
+trait SparkWithJustDropwizardAndNoSlf4jMetrics extends Spark {
+  this: Suite =>
+  //scalastyle:off
+
+  override def resetSpark: SparkSession = {
+    PartitionMetadataCache.clearCache()
+    CosmosClientCache.clearCache()
+    spark = SparkSession.builder()
+      .appName("spark connector sample")
+      .master("local")
+      .config("spark.plugins", "com.azure.cosmos.spark.plugins.CosmosMetricsSparkPlugin")
+      .config("spark.cosmos.metrics.slf4j.enabled", "false")
+      .getOrCreate()
+
+    spark
+  }
+}
+
+trait MetricAssertions extends BasicLoggingTrait with Matchers {
+  def assertMetrics(meterRegistry: CompositeMeterRegistry, prefix: String, expectedToFind: Boolean): Unit = {
+    meterRegistry.getRegistries.size() > 0 shouldEqual true
+    val firstRegistry: MeterRegistry = meterRegistry.getRegistries.toArray()(0).asInstanceOf[MeterRegistry]
+    firstRegistry.isClosed shouldEqual false
+    val meters = firstRegistry.getMeters.asScala
+
+    if (expectedToFind) {
+      if (meters.size <= 0) {
+        logError("No meters found")
+      }
+
+      meters.nonEmpty shouldEqual true
+    }
+
+    val firstMatchedMetersIndex = meters
+      .indexWhere(meter => meter.getId.getName.startsWith(prefix))
+
+    if (firstMatchedMetersIndex >= 0 != expectedToFind) {
+      logError(s"Matched meter with index $firstMatchedMetersIndex does not reflect expectation $expectedToFind")
+    }
+
+    firstMatchedMetersIndex >= 0 shouldEqual expectedToFind
   }
 }
 
@@ -63,12 +142,8 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
   private val databasesToCleanUp = new ListBuffer[String]()
 
   override def beforeAll(): Unit = {
-    System.out.println("Cosmos Client started!!!!!!")
     super.beforeAll()
-    cosmosClient = new CosmosClientBuilder()
-      .endpoint(TestConfigurations.HOST)
-      .key(TestConfigurations.MASTER_KEY)
-      .buildAsyncClient()
+    createClient()
   }
 
   override def afterEach(): Unit = {
@@ -77,7 +152,7 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
         try {
           cosmosClient.getDatabase(dbName).delete().block()
         } catch {
-          case e : Exception => None
+          case _ : Exception =>
         }
       }
     }
@@ -95,7 +170,15 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
     }
   }
 
-  def databaseExists(databaseName: String) = {
+  def createClient(): Unit = {
+    System.out.println("Cosmos Client started!!!!!!")
+    cosmosClient = new CosmosClientBuilder()
+      .endpoint(TestConfigurations.HOST)
+      .key(TestConfigurations.MASTER_KEY)
+      .buildAsyncClient()
+  }
+
+  def databaseExists(databaseName: String): Boolean = {
     try {
       cosmosClient.getDatabase(databaseName).read().block()
       true
@@ -104,7 +187,7 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
     }
   }
 
-  def getAutoCleanableDatabaseName() : String = {
+  def getAutoCleanableDatabaseName: String = {
     val dbName = RandomStringUtils.randomAlphabetic(5)
     cleanupDatabaseLater(dbName)
     dbName
@@ -115,11 +198,24 @@ trait CosmosClient extends BeforeAndAfterAll with BeforeAndAfterEach {
   }
 }
 
+trait CosmosGatewayClient extends CosmosClient {
+  this: Suite =>
+
+  override def createClient(): Unit = {
+    System.out.println("Cosmos Gateway Client started!!!!!!")
+    cosmosClient = new CosmosClientBuilder()
+      .endpoint(TestConfigurations.HOST)
+      .key(TestConfigurations.MASTER_KEY)
+      .gatewayMode()
+      .buildAsyncClient()
+  }
+}
+
 trait CosmosDatabase extends CosmosClient {
   this: Suite =>
   //scalastyle:off
 
-  val cosmosDatabase = UUID.randomUUID().toString
+  val cosmosDatabase: String = UUID.randomUUID().toString
 
   override def beforeAll(): Unit = {
     super.beforeAll()
@@ -136,9 +232,9 @@ trait CosmosContainer extends CosmosDatabase {
   this: Suite =>
   //scalastyle:off
 
-  var cosmosContainer = UUID.randomUUID().toString
+  var cosmosContainer: String = UUID.randomUUID().toString
 
-  val partitionKeyPath = "/id"
+  val partitionKeyPath: String = "/id"
 
   def getPartitionKeyValue(objectNode: ObjectNode) : Object = {
     // assumes partitionKeyPath being "/id" hence pkValue is always string
@@ -155,8 +251,6 @@ trait CosmosContainer extends CosmosDatabase {
   }
 
   def reinitializeContainer(): Unit = {
-    val containerIdSnapshot = this.cosmosContainer
-
     try {
       cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer).delete().block()
     }
@@ -204,7 +298,7 @@ trait CosmosContainerWithRetention extends CosmosContainer {
     val properties: CosmosContainerProperties =
       new CosmosContainerProperties(cosmosContainer, partitionKeyPath)
     properties.setChangeFeedPolicy(
-      ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(10)))
+      ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)))
 
     val throughputProperties = ThroughputProperties.createManualThroughput(Defaults.DefaultContainerThroughput)
 
@@ -222,7 +316,7 @@ trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEa
     try {
       // wait for data to get replicated
       Thread.sleep(1000)
-      System.out.println(s"cleaning the items in container ${cosmosContainer}")
+      System.out.println(s"cleaning the items in container $cosmosContainer")
       val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
 
       try {
@@ -245,12 +339,11 @@ trait AutoCleanableCosmosContainer extends CosmosContainer with BeforeAndAfterEa
 
         bulkDeleteFlux.blockLast()
 
-        System.out.println(s"Deleted ${cnt.get()} in container ${cosmosContainer}")
+        System.out.println(s"Deleted ${cnt.get()} in container $cosmosContainer")
       } catch {
-        case e: Exception => {
+        case e: Exception =>
           System.err.println(s"${this.getClass.getName}#afterEach: failed:" + e.getMessage)
           throw e
-        }
       }
     } finally {
       super.afterEach() // To be stackable, must call super.afterEach
@@ -263,7 +356,19 @@ private object Defaults {
 }
 
 object Platform {
-  def isWindows(): Boolean = {
+  def isWindows: Boolean = {
     System.getProperty("os.name").toLowerCase.contains("win")
+  }
+
+  // Indicates whether a test is capable of running when it attempts to access DirectByteBuffer via reflection.
+  // Spark 3.1 was written in a way where it attempts to access DirectByteBuffer illegally via reflection in Java 16+.
+  def canRunTestAccessingDirectByteBuffer: (Boolean, Any) = {
+    val hasSparkVersion = util.Properties.propIsSet("cosmos-spark-version")
+    val sparkVersion = util.Properties.propOrElse("cosmos-spark-version", "unknown")
+
+    (!util.Properties.isJavaAtLeast("16") || (hasSparkVersion && !sparkVersion.equals("3.1")),
+      s"Test was skipped as it will attempt to reflectively access DirectByteBuffer while using JVM version ${util.Properties.javaSpecVersion} and Spark version $sparkVersion. "
+        + "These versions used together will result in an InaccessibleObjectException due to JVM changes on how internal APIs can be accessed by reflection,"
+        + " and the Spark version, or unknown version, attempts to access DirectByteBuffer via reflection.")
   }
 }

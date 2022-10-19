@@ -3,7 +3,7 @@ resources:
     - repository: azure-sdk-build-tools
       type: git
       name: internal/azure-sdk-build-tools
-      ref: refs/tags/azure-sdk-build-tools_20211215.1
+      ref: refs/tags/azure-sdk-build-tools_20220920.1
 
 parameters:
 - name: Artifacts
@@ -21,6 +21,12 @@ parameters:
 - name: TargetDocRepoName
   type: string
   default: azure-docs-sdk-java
+- name: EnableBatchRelease
+  type: boolean
+  default: false
+- name: UseEsrpRelease
+  type: boolean
+  default: true
 
 stages:
   - stage: Build
@@ -38,13 +44,12 @@ stages:
             NonSparseParameters: Agent
             GenerateVMJobs: true
         MatrixFilters:
-          - TestFromSource=^$
+          - TestFromSource=^$|false
         MatrixReplace:
-          - TestOptions=.*/-Punit
           - AZURE_TEST.*=.*/
-        MavenBuildInstallParallelization: 1
-        MavenBuildPackageParallelization: 1
-        SparkShading: '-DsparkShading'
+          - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
+        BuildParallelization: 1
+        TestOptions: '-Punit'
 
   - stage: TestEmulator
     displayName: Test Emulator
@@ -58,9 +63,10 @@ stages:
             Path: eng/pipelines/templates/stages/cosmos-emulator-matrix.json
             Selection: all
             GenerateVMJobs: true
+        MatrixReplace:
+          - JavaTestVersion=(.*1)\.17(.*)/$1.11$2
         AdditionalParameters:
-          MavenBuildInstallParallelization: 1
-          SparkShading: '-DsparkShading'
+          BuildParallelization: 1
           DisableAzureResourceCreation: true
           ServiceDirectory: cosmos
           Artifacts: ${{ parameters.Artifacts }}
@@ -71,17 +77,13 @@ stages:
           # Increased timeout to 90 because of cosmos emulator taking 25-30 mins to download emulator
           # Issue filed to improve download speed: https://github.com/Azure/azure-sdk-for-java/issues/12970
           TimeoutInMinutes: 90
-          TestStepMavenInputs:
-            goals: clean verify
-            options: '$(DefaultTestOptions) $(ProfileFlag) $(AdditionalArgs)'
-            mavenOptions: '$(DefaultTestMavenOptions)'
-            mavenAuthenticateFeed: true
-            jdkVersionOption: $(JavaTestVersion)
+          TestGoals: 'clean verify'
+          TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
 
           PreSteps:
           - template: /eng/common/pipelines/templates/steps/cosmos-emulator.yml
             parameters:
-              StartParameters: '/noexplorer /noui /enablepreview /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong'
+              StartParameters: '/noexplorer /noui /enablepreview /EnableSqlComputeEndpoint /disableratelimiting /enableaadauthentication /partitioncount=50 /consistency=Strong'
           - powershell: |
               $Key = 'C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=='
               $password = ConvertTo-SecureString -String $Key -Force -AsPlainText
@@ -99,9 +101,9 @@ stages:
           - powershell: |
               $downloadTarget = Join-Path -Path $env:temp -ChildPath "hadoopsource.zip"
               $targetDir = "D:\Hadoop"
-              Write-Host "Downloading and extracting Hadoop winutils - https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline"
+              Write-Host "Downloading and extracting Hadoop winutils - https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline2"
               Write-Host "Target: $targetDir"
-              Invoke-WebRequest "https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline" -OutFile $downloadTarget
+              Invoke-WebRequest "https://aka.ms/cosmos-hadoop-for-spark-ci-pipeline2" -OutFile $downloadTarget
               if (Test-Path $targetDir) { Remove-Item -Recurse -Force $targetDir }
               Expand-Archive -LiteralPath $downloadTarget -DestinationPath $targetDir
               Write-Host "Copying binaries to windows sytem32 folder"
@@ -120,13 +122,36 @@ stages:
 
   # The Prerelease and Release stages are conditioned on whether we are building a pull request and the branch.
   - ${{if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'))}}:
-    - template: archetype-java-release.yml
-      parameters:
-        DependsOn:
-          - Build
-          - TestEmulator
-        ServiceDirectory: ${{parameters.ServiceDirectory}}
-        SDKType: ${{parameters.SDKType}}
-        Artifacts: ${{parameters.Artifacts}}
-        ArtifactName: packages
-        TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+    - ${{ if eq(parameters.EnableBatchRelease, 'true') }}:
+      - template: archetype-java-release-batch.yml
+        parameters:
+          DependsOn:
+            - Build
+            - TestEmulator
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SDKType: ${{ parameters.SDKType }}
+          # By default, the Artifacts list will contain everything as we won't skip an artifact unless it,
+          # specifically, has releaseInBatch set to false. releaseInBatch should only be set libraries,
+          # not ready for release, in service directories that have batch release enabled. The if statement
+          # below, looking for releaseInBatch not equal false has to be set this way because if the library's
+          # metadata in the ci.yml doesn't have this variable then it defaults to being released.
+          Artifacts:
+            - ${{ each artifact in parameters.Artifacts }}:
+              - ${{ if ne(artifact.releaseInBatch, 'false') }}:
+                - ${{ artifact }}
+          TestPipeline: false
+          ArtifactName: packages
+          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+          UseEsrpRelease: ${{ parameters.UseEsrpRelease }}
+    - ${{ else }}:
+      - template: archetype-java-release.yml
+        parameters:
+          DependsOn:
+            - Build
+            - TestEmulator
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          SDKType: ${{ parameters.SDKType }}
+          Artifacts: ${{ parameters.Artifacts }}
+          ArtifactName: packages
+          TargetDocRepoName: ${{ parameters.TargetDocRepoName }}
+          UseEsrpRelease: ${{ parameters.UseEsrpRelease }}

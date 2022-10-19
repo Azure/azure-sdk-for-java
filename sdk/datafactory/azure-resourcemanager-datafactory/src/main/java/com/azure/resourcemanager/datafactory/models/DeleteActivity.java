@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.DeleteActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,13 +17,15 @@ import java.util.List;
 @JsonTypeName("Delete")
 @Fluent
 public final class DeleteActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeleteActivity.class);
-
     /*
      * Delete activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private DeleteActivityTypeProperties innerTypeProperties = new DeleteActivityTypeProperties();
+
+    /** Creates an instance of DeleteActivity class. */
+    public DeleteActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: Delete activity properties.
@@ -230,7 +231,7 @@ public final class DeleteActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model DeleteActivity"));
@@ -238,4 +239,6 @@ public final class DeleteActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeleteActivity.class);
 }

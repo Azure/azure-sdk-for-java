@@ -21,8 +21,7 @@ public interface InformationProtectionPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information protection policy.
      */
-    InformationProtectionPolicy get(
-        String scope, InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName);
+    InformationProtectionPolicy get(String scope, InformationProtectionPolicyName informationProtectionPolicyName);
 
     /**
      * Details of the information protection policy.
@@ -34,12 +33,10 @@ public interface InformationProtectionPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy along with {@link Response}.
      */
     Response<InformationProtectionPolicy> getWithResponse(
-        String scope,
-        InformationProtectionPoliciesInformationProtectionPolicyName informationProtectionPolicyName,
-        Context context);
+        String scope, InformationProtectionPolicyName informationProtectionPolicyName, Context context);
 
     /**
      * Information protection policies of a specific management group.
@@ -49,7 +46,7 @@ public interface InformationProtectionPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<InformationProtectionPolicy> list(String scope);
 
@@ -62,7 +59,7 @@ public interface InformationProtectionPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policies response.
+     * @return information protection policies response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<InformationProtectionPolicy> list(String scope, Context context);
 
@@ -73,7 +70,7 @@ public interface InformationProtectionPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy along with {@link Response}.
      */
     InformationProtectionPolicy getById(String id);
 
@@ -85,7 +82,7 @@ public interface InformationProtectionPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information protection policy.
+     * @return information protection policy along with {@link Response}.
      */
     Response<InformationProtectionPolicy> getByIdWithResponse(String id, Context context);
 
@@ -95,6 +92,5 @@ public interface InformationProtectionPolicies {
      * @param name resource name.
      * @return the first stage of the new InformationProtectionPolicy definition.
      */
-    InformationProtectionPolicy.DefinitionStages.Blank define(
-        InformationProtectionPoliciesInformationProtectionPolicyName name);
+    InformationProtectionPolicy.DefinitionStages.Blank define(InformationProtectionPolicyName name);
 }

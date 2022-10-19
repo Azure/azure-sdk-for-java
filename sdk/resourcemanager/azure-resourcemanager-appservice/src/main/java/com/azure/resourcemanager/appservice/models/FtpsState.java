@@ -30,7 +30,11 @@ public final class FtpsState extends ExpandableStringEnum<FtpsState> {
         return fromString(name, FtpsState.class);
     }
 
-    /** @return known FtpsState values. */
+    /**
+     * Gets known FtpsState values.
+     *
+     * @return known FtpsState values.
+     */
     public static Collection<FtpsState> values() {
         return values(FtpsState.class);
     }

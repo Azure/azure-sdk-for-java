@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SKU of a load balancer. */
 @Fluent
 public final class LoadBalancerSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerSku.class);
-
     /*
      * Name of a load balancer SKU.
      */
@@ -25,6 +21,10 @@ public final class LoadBalancerSku {
      */
     @JsonProperty(value = "tier")
     private LoadBalancerSkuTier tier;
+
+    /** Creates an instance of LoadBalancerSku class. */
+    public LoadBalancerSku() {
+    }
 
     /**
      * Get the name property: Name of a load balancer SKU.

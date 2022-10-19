@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
 import com.azure.cosmos.implementation.UserAgentContainer;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.micrometer.core.instrument.Tag;
@@ -65,6 +66,8 @@ public interface RntbdEndpoint extends AutoCloseable {
 
     Tag tag();
 
+    Tag clientMetricTag();
+
     long usedDirectMemory();
 
     long usedHeapMemory();
@@ -77,6 +80,8 @@ public interface RntbdEndpoint extends AutoCloseable {
     void close();
 
     RntbdRequestRecord request(RntbdRequestArgs requestArgs);
+
+    OpenConnectionRntbdRequestRecord openConnection(Uri addressUri);
 
     // endregion
 
@@ -236,6 +241,11 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         @JsonProperty
         public boolean preferTcpNative() { return this.options.preferTcpNative(); }
+
+        @JsonProperty
+        public long sslHandshakeTimeoutInMillis() {
+            return this.options.sslHandshakeTimeoutInMillis();
+        }
 
         @Override
         public String toString() {

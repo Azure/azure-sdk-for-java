@@ -13,10 +13,13 @@ import com.azure.resourcemanager.storagecache.fluent.CachesClient;
 import com.azure.resourcemanager.storagecache.fluent.models.CacheInner;
 import com.azure.resourcemanager.storagecache.models.Cache;
 import com.azure.resourcemanager.storagecache.models.Caches;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.storagecache.models.PrimingJob;
+import com.azure.resourcemanager.storagecache.models.PrimingJobIdParameter;
+import com.azure.resourcemanager.storagecache.models.StorageTargetSpaceAllocation;
+import java.util.List;
 
 public final class CachesImpl implements Caches {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CachesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CachesImpl.class);
 
     private final CachesClient innerClient;
 
@@ -111,6 +114,57 @@ public final class CachesImpl implements Caches {
         this.serviceClient().stop(resourceGroupName, cacheName, context);
     }
 
+    public void startPrimingJob(String resourceGroupName, String cacheName, PrimingJob primingjob) {
+        this.serviceClient().startPrimingJob(resourceGroupName, cacheName, primingjob);
+    }
+
+    public void startPrimingJob(String resourceGroupName, String cacheName) {
+        this.serviceClient().startPrimingJob(resourceGroupName, cacheName);
+    }
+
+    public void startPrimingJob(String resourceGroupName, String cacheName, PrimingJob primingjob, Context context) {
+        this.serviceClient().startPrimingJob(resourceGroupName, cacheName, primingjob, context);
+    }
+
+    public void stopPrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId) {
+        this.serviceClient().stopPrimingJob(resourceGroupName, cacheName, primingJobId);
+    }
+
+    public void stopPrimingJob(String resourceGroupName, String cacheName) {
+        this.serviceClient().stopPrimingJob(resourceGroupName, cacheName);
+    }
+
+    public void stopPrimingJob(
+        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId, Context context) {
+        this.serviceClient().stopPrimingJob(resourceGroupName, cacheName, primingJobId, context);
+    }
+
+    public void pausePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId) {
+        this.serviceClient().pausePrimingJob(resourceGroupName, cacheName, primingJobId);
+    }
+
+    public void pausePrimingJob(String resourceGroupName, String cacheName) {
+        this.serviceClient().pausePrimingJob(resourceGroupName, cacheName);
+    }
+
+    public void pausePrimingJob(
+        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId, Context context) {
+        this.serviceClient().pausePrimingJob(resourceGroupName, cacheName, primingJobId, context);
+    }
+
+    public void resumePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId) {
+        this.serviceClient().resumePrimingJob(resourceGroupName, cacheName, primingJobId);
+    }
+
+    public void resumePrimingJob(String resourceGroupName, String cacheName) {
+        this.serviceClient().resumePrimingJob(resourceGroupName, cacheName);
+    }
+
+    public void resumePrimingJob(
+        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId, Context context) {
+        this.serviceClient().resumePrimingJob(resourceGroupName, cacheName, primingJobId, context);
+    }
+
     public void upgradeFirmware(String resourceGroupName, String cacheName) {
         this.serviceClient().upgradeFirmware(resourceGroupName, cacheName);
     }
@@ -119,10 +173,27 @@ public final class CachesImpl implements Caches {
         this.serviceClient().upgradeFirmware(resourceGroupName, cacheName, context);
     }
 
+    public void spaceAllocation(
+        String resourceGroupName, String cacheName, List<StorageTargetSpaceAllocation> spaceAllocation) {
+        this.serviceClient().spaceAllocation(resourceGroupName, cacheName, spaceAllocation);
+    }
+
+    public void spaceAllocation(String resourceGroupName, String cacheName) {
+        this.serviceClient().spaceAllocation(resourceGroupName, cacheName);
+    }
+
+    public void spaceAllocation(
+        String resourceGroupName,
+        String cacheName,
+        List<StorageTargetSpaceAllocation> spaceAllocation,
+        Context context) {
+        this.serviceClient().spaceAllocation(resourceGroupName, cacheName, spaceAllocation, context);
+    }
+
     public Cache getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -130,7 +201,7 @@ public final class CachesImpl implements Caches {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
@@ -141,7 +212,7 @@ public final class CachesImpl implements Caches {
     public Response<Cache> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -149,7 +220,7 @@ public final class CachesImpl implements Caches {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
@@ -160,7 +231,7 @@ public final class CachesImpl implements Caches {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -168,7 +239,7 @@ public final class CachesImpl implements Caches {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));
@@ -179,7 +250,7 @@ public final class CachesImpl implements Caches {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,7 +258,7 @@ public final class CachesImpl implements Caches {
         }
         String cacheName = Utils.getValueFromIdByName(id, "caches");
         if (cacheName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'caches'.", id)));

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Get Insights result metadata. */
 @Fluent
 public final class GetInsightsResultsMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetInsightsResultsMetadata.class);
-
     /*
      * the total items found for the insights request
      */
@@ -25,7 +21,7 @@ public final class GetInsightsResultsMetadata {
      * information about the failed queries
      */
     @JsonProperty(value = "errors")
-    private List<GetInsightsError> errors;
+    private List<GetInsightsErrorKind> errors;
 
     /**
      * Get the totalCount property: the total items found for the insights request.
@@ -52,7 +48,7 @@ public final class GetInsightsResultsMetadata {
      *
      * @return the errors value.
      */
-    public List<GetInsightsError> errors() {
+    public List<GetInsightsErrorKind> errors() {
         return this.errors;
     }
 
@@ -62,7 +58,7 @@ public final class GetInsightsResultsMetadata {
      * @param errors the errors value to set.
      * @return the GetInsightsResultsMetadata object itself.
      */
-    public GetInsightsResultsMetadata withErrors(List<GetInsightsError> errors) {
+    public GetInsightsResultsMetadata withErrors(List<GetInsightsErrorKind> errors) {
         this.errors = errors;
         return this;
     }

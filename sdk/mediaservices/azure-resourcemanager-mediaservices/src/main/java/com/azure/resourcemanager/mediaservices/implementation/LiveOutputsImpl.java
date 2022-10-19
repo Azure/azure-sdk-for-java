@@ -10,13 +10,14 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.fluent.LiveOutputsClient;
+import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveOutputInner;
+import com.azure.resourcemanager.mediaservices.models.AsyncOperationResult;
 import com.azure.resourcemanager.mediaservices.models.LiveOutput;
 import com.azure.resourcemanager.mediaservices.models.LiveOutputs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LiveOutputsImpl implements LiveOutputs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveOutputsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LiveOutputsImpl.class);
 
     private final LiveOutputsClient innerClient;
 
@@ -75,10 +76,71 @@ public final class LiveOutputsImpl implements LiveOutputs {
         this.serviceClient().delete(resourceGroupName, accountName, liveEventName, liveOutputName, context);
     }
 
+    public AsyncOperationResult asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        AsyncOperationResultInner inner =
+            this.serviceClient().asyncOperation(resourceGroupName, accountName, operationId);
+        if (inner != null) {
+            return new AsyncOperationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<AsyncOperationResult> asyncOperationWithResponse(
+        String resourceGroupName, String accountName, String operationId, Context context) {
+        Response<AsyncOperationResultInner> inner =
+            this.serviceClient().asyncOperationWithResponse(resourceGroupName, accountName, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new AsyncOperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public LiveOutput operationLocation(
+        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId) {
+        LiveOutputInner inner =
+            this
+                .serviceClient()
+                .operationLocation(resourceGroupName, accountName, liveEventName, liveOutputName, operationId);
+        if (inner != null) {
+            return new LiveOutputImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<LiveOutput> operationLocationWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String liveEventName,
+        String liveOutputName,
+        String operationId,
+        Context context) {
+        Response<LiveOutputInner> inner =
+            this
+                .serviceClient()
+                .operationLocationWithResponse(
+                    resourceGroupName, accountName, liveEventName, liveOutputName, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new LiveOutputImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public LiveOutput getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -86,21 +148,21 @@ public final class LiveOutputsImpl implements LiveOutputs {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String liveEventName = Utils.getValueFromIdByName(id, "liveEvents");
         if (liveEventName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveEvents'.", id)));
         }
         String liveOutputName = Utils.getValueFromIdByName(id, "liveOutputs");
         if (liveOutputName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveOutputs'.", id)));
@@ -113,7 +175,7 @@ public final class LiveOutputsImpl implements LiveOutputs {
     public Response<LiveOutput> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -121,21 +183,21 @@ public final class LiveOutputsImpl implements LiveOutputs {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String liveEventName = Utils.getValueFromIdByName(id, "liveEvents");
         if (liveEventName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveEvents'.", id)));
         }
         String liveOutputName = Utils.getValueFromIdByName(id, "liveOutputs");
         if (liveOutputName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveOutputs'.", id)));
@@ -146,7 +208,7 @@ public final class LiveOutputsImpl implements LiveOutputs {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,21 +216,21 @@ public final class LiveOutputsImpl implements LiveOutputs {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String liveEventName = Utils.getValueFromIdByName(id, "liveEvents");
         if (liveEventName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveEvents'.", id)));
         }
         String liveOutputName = Utils.getValueFromIdByName(id, "liveOutputs");
         if (liveOutputName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveOutputs'.", id)));
@@ -179,7 +241,7 @@ public final class LiveOutputsImpl implements LiveOutputs {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -187,21 +249,21 @@ public final class LiveOutputsImpl implements LiveOutputs {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String liveEventName = Utils.getValueFromIdByName(id, "liveEvents");
         if (liveEventName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveEvents'.", id)));
         }
         String liveOutputName = Utils.getValueFromIdByName(id, "liveOutputs");
         if (liveOutputName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'liveOutputs'.", id)));

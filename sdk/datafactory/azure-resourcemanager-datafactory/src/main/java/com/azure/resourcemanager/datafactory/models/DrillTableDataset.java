@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.DrillDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("DrillTable")
 @Fluent
 public final class DrillTableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DrillTableDataset.class);
-
     /*
      * Properties specific to this dataset type.
      */
     @JsonProperty(value = "typeProperties")
     private DrillDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of DrillTableDataset class. */
+    public DrillTableDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.

@@ -123,12 +123,6 @@ public class SearchServiceCustomizations extends Customization {
         customizeSearchIndexerSkill(publicCustomization.getClass("SearchIndexerSkill"));
         customizeSentimentSkill(publicCustomization.getClass("SentimentSkill"),
             implCustomization.getClass("SentimentSkillV3"));
-
-        addKnowledgeStoreProjectionFluentSetterOverrides(
-            publicCustomization.getClass("SearchIndexerKnowledgeStoreBlobProjectionSelector"),
-            publicCustomization.getClass("SearchIndexerKnowledgeStoreFileProjectionSelector"),
-            publicCustomization.getClass("SearchIndexerKnowledgeStoreObjectProjectionSelector"),
-            publicCustomization.getClass("SearchIndexerKnowledgeStoreTableProjectionSelector"));
     }
 
     private void customizeSearchFieldDataType(ClassCustomization classCustomization) {
@@ -403,43 +397,6 @@ public class SearchServiceCustomizations extends Customization {
         addVarArgsOverload(classCustomization, "skills", "SearchIndexerSkill");
     }
 
-    private void addKnowledgeStoreProjectionFluentSetterOverrides(ClassCustomization... classCustomizations) {
-        for (ClassCustomization classCustomization : classCustomizations) {
-            String className = classCustomization.getClassName();
-
-            classCustomization.addMethod(joinWithNewline(
-                String.format("public %s setReferenceKeyName(String referenceKeyName) {", className),
-                "    super.setReferenceKeyName(referenceKeyName);",
-                "    return this;",
-                "}")).addAnnotation("@Override");
-
-            classCustomization.addMethod(joinWithNewline(
-                String.format("public %s setGeneratedKeyName(String generatedKeyName) {", className),
-                "    super.setGeneratedKeyName(generatedKeyName);",
-                "    return this;",
-                "}")).addAnnotation("@Override");
-
-            classCustomization.addMethod(joinWithNewline(
-                String.format("public %s setSource(String source) {", className),
-                "    super.setSource(source);\n",
-                "    return this;\n",
-                "}")).addAnnotation("@Override");
-
-            classCustomization.addMethod(joinWithNewline(
-                String.format("public %s setSourceContext(String sourceContext) {", className),
-                "    super.setSourceContext(sourceContext);",
-                "    return this;",
-                "}")).addAnnotation("@Override");
-
-            classCustomization.addMethod(joinWithNewline(
-                    String.format("public %s setInputs(List<InputFieldMappingEntry> inputs) {", className),
-                    "    super.setInputs(inputs);",
-                    "    return this;",
-                    "}"), Collections.singletonList("java.util.List"))
-                .addAnnotation("@Override");
-        }
-    }
-
     private void customizeSearchIndexerSkill(ClassCustomization classCustomization) {
         classCustomization.customizeAst(compilationUnit -> {
             ClassOrInterfaceDeclaration searchIndexerSkillClass = compilationUnit.getClassByName("SearchIndexerSkill")
@@ -645,9 +602,9 @@ public class SearchServiceCustomizations extends Customization {
             .addImport("com.fasterxml.jackson.annotation.JsonIgnore");
 
         FieldDeclaration clientLoggerDeclaration = new FieldDeclaration()
-            .addVariable(new VariableDeclarator(StaticJavaParser.parseType("ClientLogger"), "logger")
+            .addVariable(new VariableDeclarator(StaticJavaParser.parseType("ClientLogger"), "LOGGER")
                 .setInitializer("new ClientLogger(" + clazz.getName().asString() + ".class)"))
-            .setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.FINAL)
+            .setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL)
             .addMarkerAnnotation("JsonIgnore");
 
         // Always make ClientLogger the first field declaration in the class.
@@ -727,7 +684,7 @@ public class SearchServiceCustomizations extends Customization {
      *
      * <pre>
      * if (a != null && b == c) {
-     *     throw logger.logExceptionAsError(new Exception(exceptionMessage));
+     *     throw LOGGER.logExceptionAsError(new Exception(exceptionMessage));
      * }
      * </pre>
      *
@@ -746,7 +703,7 @@ public class SearchServiceCustomizations extends Customization {
 
         // Create throw block in the if.
         BlockStmt throwBlock = new BlockStmt(new NodeList<>(new ThrowStmt(
-            createLogAndThrowCall("logger", "logExceptionAsError",
+            createLogAndThrowCall("LOGGER", "logExceptionAsError",
                 createExceptionWithMessage(exceptionType, exceptionMessage)))));
 
         return new IfStmt(conditional, throwBlock, null);

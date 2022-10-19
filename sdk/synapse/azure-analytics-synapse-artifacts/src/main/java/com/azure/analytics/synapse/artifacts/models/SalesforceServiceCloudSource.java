@@ -27,9 +27,8 @@ public final class SalesforceServiceCloudSource extends CopySource {
     private SalesforceSourceReadBehavior readBehavior;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
@@ -93,6 +92,27 @@ public final class SalesforceServiceCloudSource extends CopySource {
      */
     public SalesforceServiceCloudSource setAdditionalColumns(Object additionalColumns) {
         this.additionalColumns = additionalColumns;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SalesforceServiceCloudSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

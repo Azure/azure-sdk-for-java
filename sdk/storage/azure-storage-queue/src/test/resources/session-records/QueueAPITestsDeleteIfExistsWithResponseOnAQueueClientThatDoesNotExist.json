@@ -1,0 +1,48 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.queue.core.windows.net/9a72cf9c9a72cf9c29d90529241e2097538f49debb",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "a4864aae-acac-45b6-a23e-8b59eb0201ae"
+    },
+    "Response" : {
+      "content-length" : "217",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "3695f7a7-a003-001e-1a72-51fe20000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:3695f7a7-a003-001e-1a72-51fe20000000\nTime:2022-04-16T09:15:08.4217480Z</Message></Error>",
+      "x-ms-client-request-id" : "a4864aae-acac-45b6-a23e-8b59eb0201ae",
+      "Date" : "Sat, 16 Apr 2022 09:15:07 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "GET",
+    "Uri" : "http://REDACTED.queue.core.windows.net/9a72cf9c9a72cf9c29d90529241e2097538f49debb?comp=metadata",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "432b81cf-22b0-4653-bb84-bb18b926187a"
+    },
+    "Response" : {
+      "content-length" : "217",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "eff8c234-0003-0007-2572-517e9b000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:eff8c234-0003-0007-2572-517e9b000000\nTime:2022-04-16T09:15:08.6393532Z</Message></Error>",
+      "x-ms-client-request-id" : "432b81cf-22b0-4653-bb84-bb18b926187a",
+      "Date" : "Sat, 16 Apr 2022 09:15:08 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "9a72cf9c9a72cf9c29d05976ca24ba3330e3444da7", "9a72cf9c9a72cf9c29d90529241e2097538f49debb" ]
+}

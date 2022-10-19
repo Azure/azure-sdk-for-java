@@ -3,9 +3,13 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextSentimentAnalysisInput;
+import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
+import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
@@ -17,11 +21,14 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
+
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentimentResultCollection;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -32,16 +39,22 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class AnalyzeSentimentAsyncClient {
     private final ClientLogger logger = new ClientLogger(AnalyzeSentimentAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
-    /**
-     * Create an {@link AnalyzeSentimentAsyncClient} that sends requests to the Text Analytics services's sentiment
-     * analysis endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    AnalyzeSentimentAsyncClient(TextAnalyticsClientImpl service) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    AnalyzeSentimentAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+        this.legacyService = legacyService;
+        this.service = null;
+        this.serviceVersion = serviceVersion;
+    }
+
+    AnalyzeSentimentAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+                                TextAnalyticsServiceVersion serviceVersion) {
+        this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -60,7 +73,6 @@ class AnalyzeSentimentAsyncClient {
     public Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatch(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options) {
         try {
-            inputDocumentsValidation(documents);
             return withContext(context -> getAnalyzedSentimentResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -81,7 +93,6 @@ class AnalyzeSentimentAsyncClient {
     Mono<Response<AnalyzeSentimentResultCollection>> analyzeSentimentBatchWithContext(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
         try {
-            inputDocumentsValidation(documents);
             return getAnalyzedSentimentResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -101,8 +112,35 @@ class AnalyzeSentimentAsyncClient {
      */
     private Mono<Response<AnalyzeSentimentResultCollection>> getAnalyzedSentimentResponse(
         Iterable<TextDocumentInput> documents, AnalyzeSentimentOptions options, Context context) {
+        throwIfCallingNotAvailableFeatureInOptions(options);
+        inputDocumentsValidation(documents);
         options = options == null ? new AnalyzeSentimentOptions() : options;
-        return service.sentimentWithResponseAsync(
+
+        if (service != null) {
+            return service
+                       .analyzeTextWithResponseAsync(
+                           new AnalyzeTextSentimentAnalysisInput()
+                               .setParameters(
+                                   new SentimentAnalysisTaskParameters()
+                                       .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                       .setOpinionMining(options.isIncludeOpinionMining())
+                                       .setModelVersion(options.getModelVersion())
+                                       .setLoggingOptOut(options.isServiceLogsDisabled()))
+                               .setAnalysisInput(
+                                   new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                           options.isIncludeStatistics(),
+                           getNotNullContext(context)
+                               .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                       .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                           getDocumentCount(documents)))
+                       .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}",
+                           response))
+                       .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
+                       .map(Utility::toAnalyzeSentimentResultCollectionResponse2)
+                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+        }
+
+        return legacyService.sentimentWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(),
             options.isIncludeStatistics(),
@@ -114,12 +152,23 @@ class AnalyzeSentimentAsyncClient {
                 getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("Analyzed sentiment for a batch of documents - {}", response))
             .doOnError(error -> logger.warning("Failed to analyze sentiment - {}", error))
-            .map(this::toAnalyzeSentimentResultCollectionResponse)
+            .map(Utility::toAnalyzeSentimentResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
     }
 
-    private Response<AnalyzeSentimentResultCollection> toAnalyzeSentimentResultCollectionResponse(
-        Response<SentimentResponse> response) {
-        return new SimpleResponse<>(response, toAnalyzeSentimentResultCollection(response.getValue()));
+    private void throwIfCallingNotAvailableFeatureInOptions(AnalyzeSentimentOptions options) {
+        if (options == null) {
+            return;
+        }
+        if (options.isIncludeOpinionMining()) {
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("AnalyzeSentimentOptions.includeOpinionMining",
+                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+        }
+        if (options.isServiceLogsDisabled()) {
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
+                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+        }
     }
 }

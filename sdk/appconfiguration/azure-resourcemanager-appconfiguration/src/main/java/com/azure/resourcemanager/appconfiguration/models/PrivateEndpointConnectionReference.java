@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.appconfiguration.fluent.models.PrivateEndpointConnectionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A reference to a related private endpoint connection. */
-@JsonFlatten
 @Fluent
-public class PrivateEndpointConnectionReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionReference.class);
-
+public final class PrivateEndpointConnectionReference {
     /*
      * The resource ID.
      */
@@ -35,23 +30,10 @@ public class PrivateEndpointConnectionReference {
     private String type;
 
     /*
-     * The provisioning status of the private endpoint connection.
+     * The properties of a private endpoint connection.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The resource of private endpoint.
-     */
-    @JsonProperty(value = "properties.privateEndpoint")
-    private PrivateEndpoint privateEndpoint;
-
-    /*
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
-     */
-    @JsonProperty(value = "properties.privateLinkServiceConnectionState")
-    private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+    @JsonProperty(value = "properties")
+    private PrivateEndpointConnectionProperties innerProperties;
 
     /**
      * Get the id property: The resource ID.
@@ -81,12 +63,21 @@ public class PrivateEndpointConnectionReference {
     }
 
     /**
+     * Get the innerProperties property: The properties of a private endpoint connection.
+     *
+     * @return the innerProperties value.
+     */
+    private PrivateEndpointConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning status of the private endpoint connection.
      *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -95,7 +86,7 @@ public class PrivateEndpointConnectionReference {
      * @return the privateEndpoint value.
      */
     public PrivateEndpoint privateEndpoint() {
-        return this.privateEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpoint();
     }
 
     /**
@@ -105,7 +96,10 @@ public class PrivateEndpointConnectionReference {
      * @return the PrivateEndpointConnectionReference object itself.
      */
     public PrivateEndpointConnectionReference withPrivateEndpoint(PrivateEndpoint privateEndpoint) {
-        this.privateEndpoint = privateEndpoint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
+        }
+        this.innerProperties().withPrivateEndpoint(privateEndpoint);
         return this;
     }
 
@@ -116,7 +110,7 @@ public class PrivateEndpointConnectionReference {
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
-        return this.privateLinkServiceConnectionState;
+        return this.innerProperties() == null ? null : this.innerProperties().privateLinkServiceConnectionState();
     }
 
     /**
@@ -128,7 +122,10 @@ public class PrivateEndpointConnectionReference {
      */
     public PrivateEndpointConnectionReference withPrivateLinkServiceConnectionState(
         PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
-        this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateEndpointConnectionProperties();
+        }
+        this.innerProperties().withPrivateLinkServiceConnectionState(privateLinkServiceConnectionState);
         return this;
     }
 
@@ -138,11 +135,8 @@ public class PrivateEndpointConnectionReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (privateEndpoint() != null) {
-            privateEndpoint().validate();
-        }
-        if (privateLinkServiceConnectionState() != null) {
-            privateLinkServiceConnectionState().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -16,10 +16,9 @@ import com.azure.resourcemanager.security.models.JitNetworkAccessPolicies;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicy;
 import com.azure.resourcemanager.security.models.JitNetworkAccessPolicyInitiateRequest;
 import com.azure.resourcemanager.security.models.JitNetworkAccessRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JitNetworkAccessPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessPoliciesImpl.class);
 
     private final JitNetworkAccessPoliciesClient innerClient;
 
@@ -150,7 +149,7 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
     public JitNetworkAccessPolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -158,14 +157,14 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
         }
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String jitNetworkAccessPolicyName = Utils.getValueFromIdByName(id, "jitNetworkAccessPolicies");
         if (jitNetworkAccessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -181,7 +180,7 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
     public Response<JitNetworkAccessPolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -189,14 +188,14 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
         }
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String jitNetworkAccessPolicyName = Utils.getValueFromIdByName(id, "jitNetworkAccessPolicies");
         if (jitNetworkAccessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -210,7 +209,7 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -218,14 +217,14 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
         }
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String jitNetworkAccessPolicyName = Utils.getValueFromIdByName(id, "jitNetworkAccessPolicies");
         if (jitNetworkAccessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -233,13 +232,13 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
                                 "The resource ID '%s' is not valid. Missing path segment 'jitNetworkAccessPolicies'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, ascLocation, jitNetworkAccessPolicyName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -247,14 +246,14 @@ public final class JitNetworkAccessPoliciesImpl implements JitNetworkAccessPolic
         }
         String ascLocation = Utils.getValueFromIdByName(id, "locations");
         if (ascLocation == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'locations'.", id)));
         }
         String jitNetworkAccessPolicyName = Utils.getValueFromIdByName(id, "jitNetworkAccessPolicies");
         if (jitNetworkAccessPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

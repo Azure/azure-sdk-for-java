@@ -16,19 +16,17 @@ import java.util.Map;
 @Fluent
 public final class SnowflakeExportCopyCommand extends ExportSettings {
     /*
-     * Additional copy options directly passed to snowflake Copy Command. Type:
-     * key value pairs (value should be string type) (or Expression with
-     * resultType object). Example: "additionalCopyOptions": { "DATE_FORMAT":
-     * "MM/DD/YYYY", "TIME_FORMAT": "'HH24:MI:SS.FF'" }
+     * Additional copy options directly passed to snowflake Copy Command. Type: key value pairs (value should be string
+     * type) (or Expression with resultType object). Example: "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY",
+     * "TIME_FORMAT": "'HH24:MI:SS.FF'" }
      */
     @JsonProperty(value = "additionalCopyOptions")
     private Map<String, Object> additionalCopyOptions;
 
     /*
-     * Additional format options directly passed to snowflake Copy Command.
-     * Type: key value pairs (value should be string type) (or Expression with
-     * resultType object). Example: "additionalFormatOptions": { "OVERWRITE":
-     * "TRUE", "MAX_FILE_SIZE": "'FALSE'" }
+     * Additional format options directly passed to snowflake Copy Command. Type: key value pairs (value should be
+     * string type) (or Expression with resultType object). Example: "additionalFormatOptions": { "OVERWRITE": "TRUE",
+     * "MAX_FILE_SIZE": "'FALSE'" }
      */
     @JsonProperty(value = "additionalFormatOptions")
     private Map<String, Object> additionalFormatOptions;

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CloudServiceRoleProperties;
 import com.azure.resourcemanager.compute.models.CloudServiceRoleSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a role of the cloud service. */
 @Fluent
 public final class CloudServiceRoleInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceRoleInner.class);
-
     /*
      * Resource id
      */
@@ -47,7 +43,7 @@ public final class CloudServiceRoleInner {
     private CloudServiceRoleSku sku;
 
     /*
-     * The properties property.
+     * The cloud service role properties.
      */
     @JsonProperty(value = "properties")
     private CloudServiceRoleProperties properties;
@@ -109,7 +105,7 @@ public final class CloudServiceRoleInner {
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: The cloud service role properties.
      *
      * @return the properties value.
      */
@@ -118,7 +114,7 @@ public final class CloudServiceRoleInner {
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Set the properties property: The cloud service role properties.
      *
      * @param properties the properties value to set.
      * @return the CloudServiceRoleInner object itself.

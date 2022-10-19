@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.Db2TableDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("Db2Table")
 @Fluent
 public final class Db2TableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Db2TableDataset.class);
-
     /*
      * Db2 table dataset properties.
      */
     @JsonProperty(value = "typeProperties")
     private Db2TableDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of Db2TableDataset class. */
+    public Db2TableDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Db2 table dataset properties.

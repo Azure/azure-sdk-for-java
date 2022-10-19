@@ -31,6 +31,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: healthbot
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-healthbot
         groupId: com.azure.resourcemanager

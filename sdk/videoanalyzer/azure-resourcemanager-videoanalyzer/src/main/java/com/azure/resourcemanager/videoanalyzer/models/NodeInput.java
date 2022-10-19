@@ -6,14 +6,11 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes an input signal to be used on a pipeline node. */
 @Fluent
 public final class NodeInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NodeInput.class);
-
     /*
      * The name of the upstream node in the pipeline which output is used as
      * input of the current node.
@@ -50,9 +47,11 @@ public final class NodeInput {
      */
     public void validate() {
         if (nodeName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property nodeName in model NodeInput"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NodeInput.class);
 }

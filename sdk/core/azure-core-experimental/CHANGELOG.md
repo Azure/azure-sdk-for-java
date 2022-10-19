@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.24 (Unreleased)
+## 1.0.0-beta.34 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,94 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.33 (2022-10-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+
+## 1.0.0-beta.32 (2022-09-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+
+## 1.0.0-beta.31 (2022-08-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
+
+## 1.0.0-beta.30 (2022-06-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+
+## 1.0.0-beta.29 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 1.0.0-beta.28 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+
+## 1.0.0-beta.27 (2022-05-06)
+
+### Breaking Changes
+
+- Move `MessageWithMetadata` to `com.azure.core` package as `com.azure.core.models.MessageContent`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
+
+## 1.0.0-beta.26 (2022-04-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
+
+## 1.0.0-beta.25 (2022-03-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+
+## 1.0.0-beta.24 (2022-02-04)
+
+### Features Added
+
+- Added `com.azure.core.experimental.models.MessageWithMetadata`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
 
 ## 1.0.0-beta.23 (2022-01-11)
 
@@ -64,7 +152,7 @@
 
 ### Breaking Changes
 
-- Moved `HttpAuthorization` into `azure-core`. 
+- Moved `HttpAuthorization` into `azure-core`.
 
 ### Other Changes
 
@@ -176,7 +264,7 @@
 
 - Added API `fromObject()` in `BinaryData` which uses `JsonSerializer` present in the classpath.
 - Added APIs to `JsonPatchDocument` which accept pre-serialized JSON.
-- Updated `azure-core` dependency to released version. 
+- Updated `azure-core` dependency to released version.
 
 ## 1.0.0-beta.6 (2020-10-06)
 

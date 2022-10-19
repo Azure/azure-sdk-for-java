@@ -4,7 +4,6 @@
 package com.azure.identity;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.RegionalAuthority;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.util.HashMap;
@@ -15,10 +14,11 @@ import java.util.HashMap;
  * @see OnBehalfOfCredential
  */
 public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBehalfOfCredentialBuilder> {
+    private static final ClientLogger LOGGER = new ClientLogger(OnBehalfOfCredentialBuilder.class);
+
     private String clientSecret;
     private String clientCertificatePath;
     private String clientCertificatePassword;
-    private final ClientLogger logger = new ClientLogger(OnBehalfOfCredentialBuilder.class);
 
     /**
      * Sets the client secret for the authentication.
@@ -91,19 +91,6 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
     }
 
     /**
-     * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to
-     * attempt to auto-detect the region. If unset, a non-regional authority will be used. This argument should be used
-     * only by applications deployed to Azure VMs.
-     *
-     * @param regionalAuthority the regional authority
-     * @return An updated instance of this builder with the regional authority configured.
-     */
-    OnBehalfOfCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
-        this.identityClientOptions.setRegionalAuthority(regionalAuthority);
-        return this;
-    }
-
-    /**
      * Configure the User Assertion Scope to be used for OnBehalfOf Authentication request.
      *
      * @param userAssertion the user assertion access token to be used for On behalf Of authentication flow
@@ -127,17 +114,17 @@ public class OnBehalfOfCredentialBuilder extends AadCredentialBuilderBase<OnBeha
                 put("clientId", clientId);
                 put("tenantId", tenantId);
             }
-        });
+        }, LOGGER);
 
         if (clientSecret == null && clientCertificatePath == null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("Atleast client secret or certificate "
-                + "path should provided in OnBhealfOfCredentialBuilder. Only one of them should "
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("At least client secret or certificate "
+                + "path should provided in OnBehalfOfCredentialBuilder. Only one of them should "
                 + "be provided."));
         }
 
         if (clientCertificatePath != null && clientSecret != null) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("Both client secret and certificate "
-                + "path are provided in OnBhealfCredentialBuilder. Only one of them should "
+            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException("Both client secret and certificate "
+                + "path are provided in OnBehalfCredentialBuilder. Only one of them should "
                 + "be provided."));
         }
 

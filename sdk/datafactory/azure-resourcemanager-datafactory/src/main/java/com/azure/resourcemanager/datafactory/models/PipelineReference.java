@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Pipeline reference type. */
 @Fluent
 public final class PipelineReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineReference.class);
-
     /*
      * Pipeline reference type.
      */
@@ -104,9 +101,11 @@ public final class PipelineReference {
      */
     public void validate() {
         if (referenceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property referenceName in model PipelineReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PipelineReference.class);
 }

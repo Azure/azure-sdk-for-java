@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/ac193a73ac193a73b12464790c2c81f43f5e40288e?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "c060f6a4-f928-402a-b157-8efd0f58f641"
+    },
+    "Response" : {
+      "content-length" : "278",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "EmptyMetadataKey",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "baaffba2-601a-005c-7643-4547a0000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>EmptyMetadataKey</Code><Message>The key for one of the metadata key-value pairs is empty.\nRequestId:baaffba2-601a-005c-7643-4547a0000000\nTime:2022-03-31T21:11:01.2890972Z</Message><MetadataValue>value</MetadataValue></Error>",
+      "x-ms-client-request-id" : "c060f6a4-f928-402a-b157-8efd0f58f641",
+      "Date" : "Thu, 31 Mar 2022 21:11:00 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "ac193a73ac193a73b12464790c2c81f43f5e40288e" ]
+}

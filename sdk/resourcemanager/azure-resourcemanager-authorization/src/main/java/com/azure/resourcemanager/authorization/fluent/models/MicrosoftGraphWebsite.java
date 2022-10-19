@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** website. */
 @Fluent
 public final class MicrosoftGraphWebsite {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWebsite.class);
-
     /*
      * The URL of the website.
      */
@@ -31,7 +28,7 @@ public final class MicrosoftGraphWebsite {
     private String displayName;
 
     /*
-     * The type property.
+     * websiteType
      */
     @JsonProperty(value = "type")
     private MicrosoftGraphWebsiteType type;
@@ -82,7 +79,7 @@ public final class MicrosoftGraphWebsite {
     }
 
     /**
-     * Get the type property: The type property.
+     * Get the type property: websiteType.
      *
      * @return the type value.
      */
@@ -91,7 +88,7 @@ public final class MicrosoftGraphWebsite {
     }
 
     /**
-     * Set the type property: The type property.
+     * Set the type property: websiteType.
      *
      * @param type the type value to set.
      * @return the MicrosoftGraphWebsite object itself.

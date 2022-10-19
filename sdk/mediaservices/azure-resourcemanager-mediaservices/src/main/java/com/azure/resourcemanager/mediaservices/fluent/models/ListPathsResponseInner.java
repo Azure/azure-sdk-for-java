@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.StreamingPath;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class of response for listPaths action. */
 @Fluent
 public final class ListPathsResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListPathsResponseInner.class);
-
     /*
      * Streaming Paths supported by current Streaming Locator
      */

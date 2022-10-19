@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MatchVariable. */
+/** The name of the condition for the delivery rule. */
 public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
     /** Static value RemoteAddress for MatchVariable. */
     public static final MatchVariable REMOTE_ADDRESS = fromString("RemoteAddress");
@@ -52,11 +52,20 @@ public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
     /** Static value IsDevice for MatchVariable. */
     public static final MatchVariable IS_DEVICE = fromString("IsDevice");
 
-    /** Static value RemoteAddr for MatchVariable. */
-    public static final MatchVariable REMOTE_ADDR = fromString("RemoteAddr");
-
     /** Static value SocketAddr for MatchVariable. */
     public static final MatchVariable SOCKET_ADDR = fromString("SocketAddr");
+
+    /** Static value ClientPort for MatchVariable. */
+    public static final MatchVariable CLIENT_PORT = fromString("ClientPort");
+
+    /** Static value ServerPort for MatchVariable. */
+    public static final MatchVariable SERVER_PORT = fromString("ServerPort");
+
+    /** Static value HostName for MatchVariable. */
+    public static final MatchVariable HOST_NAME = fromString("HostName");
+
+    /** Static value SslProtocol for MatchVariable. */
+    public static final MatchVariable SSL_PROTOCOL = fromString("SslProtocol");
 
     /**
      * Creates or finds a MatchVariable from its string representation.
@@ -69,7 +78,11 @@ public final class MatchVariable extends ExpandableStringEnum<MatchVariable> {
         return fromString(name, MatchVariable.class);
     }
 
-    /** @return known MatchVariable values. */
+    /**
+     * Gets known MatchVariable values.
+     *
+     * @return known MatchVariable values.
+     */
     public static Collection<MatchVariable> values() {
         return values(MatchVariable.class);
     }

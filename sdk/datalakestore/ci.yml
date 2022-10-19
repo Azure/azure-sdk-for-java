@@ -33,6 +33,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: datalakestore
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-datalakestore
         groupId: com.azure.resourcemanager

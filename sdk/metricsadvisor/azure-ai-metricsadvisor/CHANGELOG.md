@@ -1,14 +1,67 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
+## 1.1.8 (2022-10-12)
 
 ### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.33.0`.
+- Updated `azure-core-http-netty` to `1.12.6`.
+
+## 1.1.7 (2022-09-08)
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.32.0`.
+- Updated `azure-core-http-netty` to `1.12.5`.
+
+## 1.1.6 (2022-08-11)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.31.0`.
+- Updated `azure-core-http-netty` to `1.12.4`.
+
+## 1.1.5 (2022-07-07)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.30.0`.
+- Updated `azure-core-http-netty` to `1.12.3`.
+
+## 1.1.4 (2022-06-07)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.29.1`.
+- Updated `azure-core-http-netty` to `1.12.2`.
+
+## 1.1.3 (2022-05-11)
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.28.0`.
+- Updated `azure-core-http-netty` to `1.12.0`.
+
+## 1.1.2 (2022-04-07)
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.27.0`.
+- Updated `azure-core-http-netty` to `1.11.9`.
+
+## 1.1.1 (2022-03-09)
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.26.0`.
+- Updated `azure-core-http-netty` to `1.11.8`.
+
+## 1.1.0 (2022-02-17)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `MetricsAdvisorClientBuilder`
+  and `MetricsAdvisorAdministrationClientBuilder`
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
 
 ## 1.0.5 (2022-01-13)
 ### Other Changes

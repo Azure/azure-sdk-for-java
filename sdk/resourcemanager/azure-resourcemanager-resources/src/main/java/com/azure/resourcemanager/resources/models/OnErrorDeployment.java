@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Deployment on error behavior. */
 @Fluent
 public final class OnErrorDeployment {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OnErrorDeployment.class);
-
     /*
      * The deployment on error behavior type. Possible values are
      * LastSuccessful and SpecificDeployment.

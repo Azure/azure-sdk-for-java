@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.util.LoggingUtil;
 import reactor.core.publisher.Mono;
 
@@ -20,8 +21,10 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 public class AzureCliCredential implements TokenCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(AzureCliCredential.class);
+
     private final IdentityClient identityClient;
-    private final ClientLogger logger = new ClientLogger(AzureCliCredential.class);
+    private final IdentitySyncClient identitySyncClient;
 
     /**
      * Creates an AzureCliSecretCredential with default identity client options.
@@ -29,15 +32,31 @@ public class AzureCliCredential implements TokenCredential {
      * @param identityClientOptions the options to configure the identity client
      */
     AzureCliCredential(String tenantId, IdentityClientOptions identityClientOptions) {
-        identityClient = new IdentityClientBuilder()
+        IdentityClientBuilder builder = new IdentityClientBuilder()
             .tenantId(tenantId)
-            .identityClientOptions(identityClientOptions).build();
+            .identityClientOptions(identityClientOptions);
+
+        identityClient = builder.build();
+        identitySyncClient = builder.buildSyncClient();
     }
 
     @Override
     public Mono<AccessToken> getToken(TokenRequestContext request) {
         return identityClient.authenticateWithAzureCli(request)
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request,
+                error));
+    }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        try {
+            AccessToken accessToken = identitySyncClient.authenticateWithAzureCli(request);
+            LoggingUtil.logTokenSuccess(LOGGER, request);
+            return accessToken;
+        } catch (Exception e) {
+            LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
+            throw e;
+        }
     }
 }

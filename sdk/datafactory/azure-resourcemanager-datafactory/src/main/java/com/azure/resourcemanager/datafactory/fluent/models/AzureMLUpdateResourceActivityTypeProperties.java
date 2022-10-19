@@ -7,35 +7,34 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure ML Update Resource activity properties. */
 @Fluent
 public final class AzureMLUpdateResourceActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMLUpdateResourceActivityTypeProperties.class);
-
     /*
-     * Name of the Trained Model module in the Web Service experiment to be
-     * updated. Type: string (or Expression with resultType string).
+     * Name of the Trained Model module in the Web Service experiment to be updated. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "trainedModelName", required = true)
     private Object trainedModelName;
 
     /*
-     * Name of Azure Storage linked service holding the .ilearner file that
-     * will be uploaded by the update operation.
+     * Name of Azure Storage linked service holding the .ilearner file that will be uploaded by the update operation.
      */
     @JsonProperty(value = "trainedModelLinkedServiceName", required = true)
     private LinkedServiceReference trainedModelLinkedServiceName;
 
     /*
-     * The relative file path in trainedModelLinkedService to represent the
-     * .ilearner file that will be uploaded by the update operation.  Type:
-     * string (or Expression with resultType string).
+     * The relative file path in trainedModelLinkedService to represent the .ilearner file that will be uploaded by the
+     * update operation.  Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "trainedModelFilePath", required = true)
     private Object trainedModelFilePath;
+
+    /** Creates an instance of AzureMLUpdateResourceActivityTypeProperties class. */
+    public AzureMLUpdateResourceActivityTypeProperties() {
+    }
 
     /**
      * Get the trainedModelName property: Name of the Trained Model module in the Web Service experiment to be updated.
@@ -113,14 +112,14 @@ public final class AzureMLUpdateResourceActivityTypeProperties {
      */
     public void validate() {
         if (trainedModelName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property trainedModelName in model"
                             + " AzureMLUpdateResourceActivityTypeProperties"));
         }
         if (trainedModelLinkedServiceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property trainedModelLinkedServiceName in model"
@@ -129,11 +128,13 @@ public final class AzureMLUpdateResourceActivityTypeProperties {
             trainedModelLinkedServiceName().validate();
         }
         if (trainedModelFilePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property trainedModelFilePath in model"
                             + " AzureMLUpdateResourceActivityTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMLUpdateResourceActivityTypeProperties.class);
 }

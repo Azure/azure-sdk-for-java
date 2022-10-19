@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -33,6 +31,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "SapEccSource", value = SapEccSource.class),
     @JsonSubTypes.Type(name = "SapHanaSource", value = SapHanaSource.class),
     @JsonSubTypes.Type(name = "SapOpenHubSource", value = SapOpenHubSource.class),
+    @JsonSubTypes.Type(name = "SapOdpSource", value = SapOdpSource.class),
     @JsonSubTypes.Type(name = "SapTableSource", value = SapTableSource.class),
     @JsonSubTypes.Type(name = "SqlSource", value = SqlSource.class),
     @JsonSubTypes.Type(name = "SqlServerSource", value = SqlServerSource.class),
@@ -81,22 +80,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class TabularSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TabularSource.class);
-
     /*
-     * Query timeout. Type: string (or Expression with resultType string),
-     * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Query timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
+
+    /** Creates an instance of TabularSource class. */
+    public TabularSource() {
+    }
 
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:

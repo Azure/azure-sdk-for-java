@@ -30,7 +30,11 @@ public final class ExpandTypesForGetCapacityReservationGroups
         return fromString(name, ExpandTypesForGetCapacityReservationGroups.class);
     }
 
-    /** @return known ExpandTypesForGetCapacityReservationGroups values. */
+    /**
+     * Gets known ExpandTypesForGetCapacityReservationGroups values.
+     *
+     * @return known ExpandTypesForGetCapacityReservationGroups values.
+     */
     public static Collection<ExpandTypesForGetCapacityReservationGroups> values() {
         return values(ExpandTypesForGetCapacityReservationGroups.class);
     }

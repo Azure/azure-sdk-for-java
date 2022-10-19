@@ -17,10 +17,9 @@ import com.azure.resourcemanager.mediaservices.models.ListEdgePoliciesInput;
 import com.azure.resourcemanager.mediaservices.models.MediaService;
 import com.azure.resourcemanager.mediaservices.models.Mediaservices;
 import com.azure.resourcemanager.mediaservices.models.SyncStorageKeysInput;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class MediaservicesImpl implements Mediaservices {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MediaservicesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(MediaservicesImpl.class);
 
     private final MediaservicesClient innerClient;
 
@@ -121,7 +120,7 @@ public final class MediaservicesImpl implements Mediaservices {
     public MediaService getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,7 +128,7 @@ public final class MediaservicesImpl implements Mediaservices {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
@@ -140,7 +139,7 @@ public final class MediaservicesImpl implements Mediaservices {
     public Response<MediaService> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -148,7 +147,7 @@ public final class MediaservicesImpl implements Mediaservices {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
@@ -159,7 +158,7 @@ public final class MediaservicesImpl implements Mediaservices {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,18 +166,18 @@ public final class MediaservicesImpl implements Mediaservices {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -186,7 +185,7 @@ public final class MediaservicesImpl implements Mediaservices {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));

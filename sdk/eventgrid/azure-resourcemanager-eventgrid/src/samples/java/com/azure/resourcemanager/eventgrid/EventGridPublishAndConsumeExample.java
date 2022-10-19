@@ -33,11 +33,11 @@ import com.azure.resourcemanager.resources.models.ResourceGroup;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 
+import java.time.Duration;
 import java.util.Random;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
-import static com.azure.messaging.eventhubs.implementation.ClientConstants.OPERATION_TIMEOUT;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
 public class EventGridPublishAndConsumeExample {
@@ -46,13 +46,14 @@ public class EventGridPublishAndConsumeExample {
 
     private static final Random RANDOM = new Random();
     private static final int NUMBER_OF_EVENTS = 10;
-    private static final Region REGION = Region.US_WEST2;
+    private static final Region REGION = Region.US_CENTRAL;
     private static final String RESOURCE_GROUP_NAME = "rg" + randomPadding();
     private static final String EVENT_HUB_NAME = "eh" + randomPadding();
     private static final String EVENT_HUB_NAMESPACE = "ehNamespace" + randomPadding();
     private static final String TOPIC_NAME = "myTopicName" + randomPadding();
     private static final String EVENT_SUBSCRIPTION_NAME = "eventSubscription" + randomPadding();
     private static final String EVENT_HUB_RULE_NAME = "myManagementRule" + randomPadding();
+    private static final Duration OPERATION_TIMEOUT = Duration.ofSeconds(60);
 
     /**
      * Main entry point.
@@ -134,9 +135,9 @@ public class EventGridPublishAndConsumeExample {
             System.out.println("EventGrid topic created with name " + eventGridTopic.name());
 
             // 4. Create an event grid subscription.
-            EventSubscription eventSubscription = eventGridManager.eventSubscriptions()
+            EventSubscription eventSubscription = eventGridManager.topicEventSubscriptions()
                 .define(EVENT_SUBSCRIPTION_NAME)
-                .withExistingScope(eventGridTopic.id())
+                .withExistingTopic(resourceGroup.name(), eventGridTopic.name())
                 .withDestination(new EventHubEventSubscriptionDestination()
                     .withResourceId(eventHub.id()))
                 .withFilter(new EventSubscriptionFilter()

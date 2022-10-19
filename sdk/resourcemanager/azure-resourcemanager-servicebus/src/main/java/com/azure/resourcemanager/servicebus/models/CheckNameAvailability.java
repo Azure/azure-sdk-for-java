@@ -6,18 +6,14 @@ package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a Check Name availability request properties. */
 @Fluent
 public final class CheckNameAvailability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailability.class);
-
     /*
-     * The Name to check the namespace name availability and The namespace name
-     * can contain only letters, numbers, and hyphens. The namespace must start
-     * with a letter, and it must end with a letter or number.
+     * The Name to check the namespace name availability and The namespace name can contain only letters, numbers, and
+     * hyphens. The namespace must start with a letter, and it must end with a letter or number.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -51,9 +47,11 @@ public final class CheckNameAvailability {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model CheckNameAvailability"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailability.class);
 }

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.models.AzureFunctionEventSubscriptionDestinationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +16,6 @@ import java.util.List;
 @JsonTypeName("AzureFunction")
 @Fluent
 public final class AzureFunctionEventSubscriptionDestination extends EventSubscriptionDestination {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFunctionEventSubscriptionDestination.class);
-
     /*
      * Azure Function Properties of the event subscription destination.
      */

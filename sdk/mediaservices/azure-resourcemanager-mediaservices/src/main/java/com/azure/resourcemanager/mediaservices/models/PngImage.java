@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,13 +12,10 @@ import java.time.Duration;
 import java.util.List;
 
 /** Describes the properties for producing a series of PNG images from the input video. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.PngImage")
-@JsonFlatten
 @Fluent
-public class PngImage extends Image {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PngImage.class);
-
+public final class PngImage extends Image {
     /*
      * A collection of output PNG image layers to be produced by the encoder.
      */

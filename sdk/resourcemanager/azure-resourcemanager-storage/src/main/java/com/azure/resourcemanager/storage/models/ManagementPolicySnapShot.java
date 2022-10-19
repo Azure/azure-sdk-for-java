@@ -5,25 +5,19 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Management policy action for snapshot. */
 @Fluent
 public final class ManagementPolicySnapShot {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicySnapShot.class);
-
     /*
-     * The function to tier blob snapshot to cool storage. Support blob
-     * snapshot currently at Hot tier
+     * The function to tier blob snapshot to cool storage. Support blob snapshot currently at Hot tier
      */
     @JsonProperty(value = "tierToCool")
     private DateAfterCreation tierToCool;
 
     /*
-     * The function to tier blob snapshot to archive storage. Support blob
-     * snapshot currently at Hot or Cool tier
+     * The function to tier blob snapshot to archive storage. Support blob snapshot currently at Hot or Cool tier
      */
     @JsonProperty(value = "tierToArchive")
     private DateAfterCreation tierToArchive;

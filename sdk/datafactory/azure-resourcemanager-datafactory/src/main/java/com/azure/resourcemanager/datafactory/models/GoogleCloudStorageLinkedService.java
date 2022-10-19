@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.GoogleCloudStorageLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("GoogleCloudStorage")
 @Fluent
 public final class GoogleCloudStorageLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GoogleCloudStorageLinkedService.class);
-
     /*
      * Google Cloud Storage linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private GoogleCloudStorageLinkedServiceTypeProperties innerTypeProperties =
         new GoogleCloudStorageLinkedServiceTypeProperties();
+
+    /** Creates an instance of GoogleCloudStorageLinkedService class. */
+    public GoogleCloudStorageLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Google Cloud Storage linked service properties.
@@ -176,7 +177,7 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model GoogleCloudStorageLinkedService"));
@@ -184,4 +185,6 @@ public final class GoogleCloudStorageLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GoogleCloudStorageLinkedService.class);
 }

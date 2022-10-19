@@ -54,14 +54,14 @@ public final class RetriableDownloadFlux extends Flux<ByteBuffer> {
                 currentPosition[0] += buffer.remaining();
                 return buffer;
             })
-            .onErrorResume(throwable -> {
+            .onErrorResume(Exception.class, exception -> {
                 int updatedRetryCount = retryCount + 1;
 
                 if (updatedRetryCount > maxRetries) {
-                    return Flux.error(throwable);
+                    return Flux.error(exception);
                 }
 
-                return new RetriableDownloadFlux(() -> onDownloadErrorResume.apply(throwable, currentPosition[0]),
+                return new RetriableDownloadFlux(() -> onDownloadErrorResume.apply(exception, currentPosition[0]),
                     onDownloadErrorResume, maxRetries, currentPosition[0], updatedRetryCount);
             })
             .subscribe(actual);

@@ -25,7 +25,11 @@ public final class ManagedInstanceLongTermRetentionPolicyName
         return fromString(name, ManagedInstanceLongTermRetentionPolicyName.class);
     }
 
-    /** @return known ManagedInstanceLongTermRetentionPolicyName values. */
+    /**
+     * Gets known ManagedInstanceLongTermRetentionPolicyName values.
+     *
+     * @return known ManagedInstanceLongTermRetentionPolicyName values.
+     */
     public static Collection<ManagedInstanceLongTermRetentionPolicyName> values() {
         return values(ManagedInstanceLongTermRetentionPolicyName.class);
     }

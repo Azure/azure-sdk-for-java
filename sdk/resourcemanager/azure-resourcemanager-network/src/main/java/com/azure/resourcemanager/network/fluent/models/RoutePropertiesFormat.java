@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Route resource. */
 @Fluent
 public final class RoutePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutePropertiesFormat.class);
-
     /*
      * The destination CIDR to which the route applies.
      */
@@ -29,8 +26,8 @@ public final class RoutePropertiesFormat {
     private RouteNextHopType nextHopType;
 
     /*
-     * The IP address packets should be forwarded to. Next hop values are only
-     * allowed in routes where the next hop type is VirtualAppliance.
+     * The IP address packets should be forwarded to. Next hop values are only allowed in routes where the next hop
+     * type is VirtualAppliance.
      */
     @JsonProperty(value = "nextHopIpAddress")
     private String nextHopIpAddress;
@@ -42,11 +39,14 @@ public final class RoutePropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * A value indicating whether this route overrides overlapping BGP routes
-     * regardless of LPM.
+     * A value indicating whether this route overrides overlapping BGP routes regardless of LPM.
      */
     @JsonProperty(value = "hasBgpOverride")
     private Boolean hasBgpOverride;
+
+    /** Creates an instance of RoutePropertiesFormat class. */
+    public RoutePropertiesFormat() {
+    }
 
     /**
      * Get the addressPrefix property: The destination CIDR to which the route applies.
@@ -148,10 +148,12 @@ public final class RoutePropertiesFormat {
      */
     public void validate() {
         if (nextHopType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property nextHopType in model RoutePropertiesFormat"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoutePropertiesFormat.class);
 }

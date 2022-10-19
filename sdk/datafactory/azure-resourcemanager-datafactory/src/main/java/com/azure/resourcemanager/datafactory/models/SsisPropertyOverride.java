@@ -6,27 +6,26 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SSIS property override. */
 @Fluent
 public final class SsisPropertyOverride {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisPropertyOverride.class);
-
     /*
-     * SSIS package property override value. Type: string (or Expression with
-     * resultType string).
+     * SSIS package property override value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value", required = true)
     private Object value;
 
     /*
-     * Whether SSIS package property override value is sensitive data. Value
-     * will be encrypted in SSISDB if it is true
+     * Whether SSIS package property override value is sensitive data. Value will be encrypted in SSISDB if it is true
      */
     @JsonProperty(value = "isSensitive")
     private Boolean isSensitive;
+
+    /** Creates an instance of SsisPropertyOverride class. */
+    public SsisPropertyOverride() {
+    }
 
     /**
      * Get the value property: SSIS package property override value. Type: string (or Expression with resultType
@@ -79,9 +78,11 @@ public final class SsisPropertyOverride {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model SsisPropertyOverride"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SsisPropertyOverride.class);
 }

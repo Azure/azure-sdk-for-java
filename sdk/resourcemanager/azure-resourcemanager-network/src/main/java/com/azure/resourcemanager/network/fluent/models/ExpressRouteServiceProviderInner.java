@@ -6,10 +6,8 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteServiceProviderBandwidthsOffered;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** A ExpressRouteResourceProvider object. */
 @Fluent
 public final class ExpressRouteServiceProviderInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderInner.class);
-
     /*
      * Properties of the express route service provider.
      */
@@ -30,6 +26,10 @@ public final class ExpressRouteServiceProviderInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of ExpressRouteServiceProviderInner class. */
+    public ExpressRouteServiceProviderInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the express route service provider.

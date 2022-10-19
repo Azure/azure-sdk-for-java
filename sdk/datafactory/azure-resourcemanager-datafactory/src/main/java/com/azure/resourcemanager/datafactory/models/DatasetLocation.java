@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -40,18 +39,14 @@ import java.util.Map;
 })
 @Fluent
 public class DatasetLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatasetLocation.class);
-
     /*
-     * Specify the folder path of dataset. Type: string (or Expression with
-     * resultType string)
+     * Specify the folder path of dataset. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
-     * Specify the file name of dataset. Type: string (or Expression with
-     * resultType string).
+     * Specify the file name of dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileName")
     private Object fileName;
@@ -60,6 +55,10 @@ public class DatasetLocation {
      * Dataset location.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of DatasetLocation class. */
+    public DatasetLocation() {
+    }
 
     /**
      * Get the folderPath property: Specify the folder path of dataset. Type: string (or Expression with resultType

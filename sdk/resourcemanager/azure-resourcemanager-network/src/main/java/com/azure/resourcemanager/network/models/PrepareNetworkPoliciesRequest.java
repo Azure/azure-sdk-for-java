@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Details of PrepareNetworkPolicies for Subnet. */
 @Fluent
 public final class PrepareNetworkPoliciesRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrepareNetworkPoliciesRequest.class);
-
     /*
      * The name of the service for which subnet is being prepared for.
      */
@@ -26,6 +22,10 @@ public final class PrepareNetworkPoliciesRequest {
      */
     @JsonProperty(value = "networkIntentPolicyConfigurations")
     private List<NetworkIntentPolicyConfiguration> networkIntentPolicyConfigurations;
+
+    /** Creates an instance of PrepareNetworkPoliciesRequest class. */
+    public PrepareNetworkPoliciesRequest() {
+    }
 
     /**
      * Get the serviceName property: The name of the service for which subnet is being prepared for.

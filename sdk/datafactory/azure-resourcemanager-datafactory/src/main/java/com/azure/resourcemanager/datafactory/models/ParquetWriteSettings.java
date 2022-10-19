@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,23 +14,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ParquetWriteSettings")
 @Fluent
 public final class ParquetWriteSettings extends FormatWriteSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParquetWriteSettings.class);
-
     /*
-     * Limit the written file's row count to be smaller than or equal to the
-     * specified count. Type: integer (or Expression with resultType integer).
+     * Limit the written file's row count to be smaller than or equal to the specified count. Type: integer (or
+     * Expression with resultType integer).
      */
     @JsonProperty(value = "maxRowsPerFile")
     private Object maxRowsPerFile;
 
     /*
-     * Specifies the file name pattern
-     * <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file
-     * based store without partitionOptions. Type: string (or Expression with
-     * resultType string).
+     * Specifies the file name pattern <fileNamePrefix>_<fileIndex>.<fileExtension> when copy from non-file based store
+     * without partitionOptions. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileNamePrefix")
     private Object fileNamePrefix;
+
+    /** Creates an instance of ParquetWriteSettings class. */
+    public ParquetWriteSettings() {
+    }
 
     /**
      * Get the maxRowsPerFile property: Limit the written file's row count to be smaller than or equal to the specified

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cluster node details. */
 @Immutable
 public final class ClusterNode {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterNode.class);
-
     /*
      * Name of the cluster node.
      */
@@ -25,6 +21,12 @@ public final class ClusterNode {
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private Float id;
+
+    /*
+     * State of Windows Server Subscription.
+     */
+    @JsonProperty(value = "windowsServerSubscription", access = JsonProperty.Access.WRITE_ONLY)
+    private WindowsServerSubscription windowsServerSubscription;
 
     /*
      * Manufacturer of the cluster node hardware.
@@ -84,6 +86,15 @@ public final class ClusterNode {
      */
     public Float id() {
         return this.id;
+    }
+
+    /**
+     * Get the windowsServerSubscription property: State of Windows Server Subscription.
+     *
+     * @return the windowsServerSubscription value.
+     */
+    public WindowsServerSubscription windowsServerSubscription() {
+        return this.windowsServerSubscription;
     }
 
     /**

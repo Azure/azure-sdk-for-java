@@ -7,15 +7,12 @@ package com.azure.resourcemanager.applicationinsights.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the list of Application Insights Resources. */
 @Fluent
 public final class ApplicationInsightsComponentListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentListResult.class);
-
     /*
      * List of Application Insights component definitions.
      */
@@ -78,7 +75,7 @@ public final class ApplicationInsightsComponentListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model ApplicationInsightsComponentListResult"));
@@ -86,4 +83,6 @@ public final class ApplicationInsightsComponentListResult {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationInsightsComponentListResult.class);
 }

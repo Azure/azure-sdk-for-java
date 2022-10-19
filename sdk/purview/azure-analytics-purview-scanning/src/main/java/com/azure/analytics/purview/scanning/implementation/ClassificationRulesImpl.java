@@ -58,7 +58,7 @@ public final class ClassificationRulesImpl {
      */
     @Host("{Endpoint}")
     @ServiceInterface(name = "PurviewScanningClien")
-    private interface ClassificationRulesService {
+    public interface ClassificationRulesService {
         @Get("/classificationrules/{classificationRuleName}")
         @ExpectedResponses({200})
         Mono<Response<BinaryData>> get(

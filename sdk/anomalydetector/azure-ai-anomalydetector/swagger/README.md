@@ -8,6 +8,7 @@ java: true
 output-folder: ../
 namespace: com.azure.ai.anomalydetector
 generate-client-interfaces: false
+service-interface-as-public: true
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true

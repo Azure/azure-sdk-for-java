@@ -52,7 +52,7 @@ public final class ProxyAuthenticator implements Authenticator {
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
 
-    private final ClientLogger logger = new ClientLogger(ProxyAuthenticator.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProxyAuthenticator.class);
 
     private final AuthorizationChallengeHandler challengeHandler;
 
@@ -135,7 +135,7 @@ public final class ProxyAuthenticator implements Authenticator {
     /**
      * This class handles intercepting the response returned from the server when proxying.
      */
-    private class ProxyAuthenticationInfoInterceptor implements Interceptor {
+    private static class ProxyAuthenticationInfoInterceptor implements Interceptor {
         private final AuthorizationChallengeHandler challengeHandler;
 
         /**
@@ -189,14 +189,14 @@ public final class ProxyAuthenticator implements Authenticator {
      * 'Proxy-Authorization' header. If the values don't match an 'IllegalStateException' will be thrown with a message
      * outlining that the values didn't match.
      */
-    private void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
+    private static void validateProxyAuthenticationInfoValue(String name, Map<String, String> authenticationInfoPieces,
         Map<String, String> authorizationPieces) {
         if (authenticationInfoPieces.containsKey(name)) {
             String sentValue = authorizationPieces.get(name);
             String receivedValue = authenticationInfoPieces.get(name);
 
             if (!receivedValue.equalsIgnoreCase(sentValue)) {
-                throw logger.logExceptionAsError(new IllegalStateException(
+                throw LOGGER.logExceptionAsError(new IllegalStateException(
                     String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
             }
         }

@@ -146,4 +146,25 @@ public class MappingDataFlow extends DataFlow {
         this.scriptLines = scriptLines;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public MappingDataFlow setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MappingDataFlow setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MappingDataFlow setFolder(DataFlowFolder folder) {
+        super.setFolder(folder);
+        return this;
+    }
 }

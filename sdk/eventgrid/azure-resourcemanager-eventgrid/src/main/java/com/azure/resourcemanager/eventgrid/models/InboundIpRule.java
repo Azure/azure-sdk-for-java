@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The InboundIpRule model. */
 @Fluent
 public final class InboundIpRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundIpRule.class);
-
     /*
      * IP Address in CIDR notation e.g., 10.0.0.0/8.
      */

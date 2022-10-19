@@ -6,18 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of VirtualNetworkGatewayIPConfiguration. */
 @Fluent
 public final class VirtualNetworkGatewayIpConfigurationPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayIpConfigurationPropertiesFormat.class);
-
     /*
      * The private IP address allocation method.
      */
@@ -43,11 +38,14 @@ public final class VirtualNetworkGatewayIpConfigurationPropertiesFormat {
     private String privateIpAddress;
 
     /*
-     * The provisioning state of the virtual network gateway IP configuration
-     * resource.
+     * The provisioning state of the virtual network gateway IP configuration resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of VirtualNetworkGatewayIpConfigurationPropertiesFormat class. */
+    public VirtualNetworkGatewayIpConfigurationPropertiesFormat() {
+    }
 
     /**
      * Get the privateIpAllocationMethod property: The private IP address allocation method.

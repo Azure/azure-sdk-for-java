@@ -38,8 +38,9 @@ import com.azure.search.documents.indexes.models.TagScoringParameters;
 import com.azure.search.documents.indexes.models.TextWeights;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.node.TextNode;
-import reactor.core.Exceptions;
 
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
@@ -80,11 +81,7 @@ public abstract class SearchTestBase extends TestBase {
         new RetryPolicy(new ExponentialBackoff(3, Duration.ofSeconds(10), Duration.ofSeconds(30)));
 
     protected String createHotelIndex() {
-        try {
-            return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
-        } catch (Exception e) {
-            throw Exceptions.propagate(e);
-        }
+        return setupIndexFromJsonFile(HOTELS_TESTS_INDEX_DATA_JSON);
     }
 
     protected String setupIndexFromJsonFile(String jsonFile) {
@@ -92,8 +89,8 @@ public abstract class SearchTestBase extends TestBase {
             ObjectNode jsonData = (ObjectNode) MAPPER.readTree(TestHelpers.loadResource(jsonFile));
             jsonData.set("name", new TextNode(testResourceNamer.randomName(jsonData.get("name").asText(), 64)));
             return setupIndex(MAPPER.treeToValue(jsonData, SearchIndex.class));
-        } catch (Exception e) {
-            throw Exceptions.propagate(e);
+        } catch (IOException e) {
+            throw new UncheckedIOException(e);
         }
     }
 
@@ -345,7 +342,7 @@ public abstract class SearchTestBase extends TestBase {
                     .setInterpolation(ScoringFunctionInterpolation.QUADRATIC)),
             new ScoringProfile("ProfileFour")
                 .setFunctionAggregation(ScoringFunctionAggregation.FIRST_MATCHING)
-                .setFunctions(new MagnitudeScoringFunction("Rating", 3.14,
+                .setFunctions(new MagnitudeScoringFunction("Rating", 3.25,
                     new MagnitudeScoringParameters(1, 5)
                         .setShouldBoostBeyondRangeByConstant(false))
                     .setInterpolation(ScoringFunctionInterpolation.CONSTANT))

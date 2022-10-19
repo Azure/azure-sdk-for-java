@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A namespace junction. */
 @Fluent
 public final class NamespaceJunction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamespaceJunction.class);
-
     /*
      * Namespace path on a Cache for a Storage Target.
      */

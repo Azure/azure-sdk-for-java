@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDatabricksDeltaLakeDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("AzureDatabricksDeltaLakeDataset")
 @Fluent
 public final class AzureDatabricksDeltaLakeDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDatabricksDeltaLakeDataset.class);
-
     /*
      * Properties specific to this dataset type.
      */
     @JsonProperty(value = "typeProperties")
     private AzureDatabricksDeltaLakeDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of AzureDatabricksDeltaLakeDataset class. */
+    public AzureDatabricksDeltaLakeDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.

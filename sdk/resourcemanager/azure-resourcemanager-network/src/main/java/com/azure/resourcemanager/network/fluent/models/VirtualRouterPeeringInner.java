@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Router Peering resource. */
 @Fluent
 public final class VirtualRouterPeeringInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualRouterPeeringInner.class);
-
     /*
      * The properties of the Virtual Router Peering.
      */
@@ -23,8 +19,7 @@ public final class VirtualRouterPeeringInner extends SubResource {
     private VirtualRouterPeeringProperties innerProperties;
 
     /*
-     * Name of the virtual router peering that is unique within a virtual
-     * router.
+     * Name of the virtual router peering that is unique within a virtual router.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -40,6 +35,10 @@ public final class VirtualRouterPeeringInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of VirtualRouterPeeringInner class. */
+    public VirtualRouterPeeringInner() {
+    }
 
     /**
      * Get the innerProperties property: The properties of the Virtual Router Peering.

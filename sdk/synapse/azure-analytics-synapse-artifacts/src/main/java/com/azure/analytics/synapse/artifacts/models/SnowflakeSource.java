@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class SnowflakeSource extends CopySource {
     /*
-     * Snowflake Sql query. Type: string (or Expression with resultType
-     * string).
+     * Snowflake Sql query. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
@@ -64,6 +63,27 @@ public final class SnowflakeSource extends CopySource {
      */
     public SnowflakeSource setExportSettings(SnowflakeExportCopyCommand exportSettings) {
         this.exportSettings = exportSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SnowflakeSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

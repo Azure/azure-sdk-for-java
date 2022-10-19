@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,14 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("HttpServerLocation")
 @Fluent
 public final class HttpServerLocation extends DatasetLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpServerLocation.class);
-
     /*
-     * Specify the relativeUrl of http server. Type: string (or Expression with
-     * resultType string)
+     * Specify the relativeUrl of http server. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;
+
+    /** Creates an instance of HttpServerLocation class. */
+    public HttpServerLocation() {
+    }
 
     /**
      * Get the relativeUrl property: Specify the relativeUrl of http server. Type: string (or Expression with resultType

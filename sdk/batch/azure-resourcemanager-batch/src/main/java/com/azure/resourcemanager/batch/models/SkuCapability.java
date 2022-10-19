@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A SKU capability, such as the number of cores. */
 @Immutable
 public final class SkuCapability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuCapability.class);
-
     /*
      * The name of the feature.
      */

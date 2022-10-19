@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Start packet capture parameters. */
 @Fluent
 public final class VpnGatewayPacketCaptureStartParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnGatewayPacketCaptureStartParameters.class);
-
     /*
      * Start Packet capture parameters on vpn gateway.
      */
     @JsonProperty(value = "filterData")
     private String filterData;
+
+    /** Creates an instance of VpnGatewayPacketCaptureStartParameters class. */
+    public VpnGatewayPacketCaptureStartParameters() {
+    }
 
     /**
      * Get the filterData property: Start Packet capture parameters on vpn gateway.

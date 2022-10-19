@@ -19,7 +19,7 @@ public interface Pipelines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
+     * @return a list of pipeline resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PipelineResource> listByFactory(String resourceGroupName, String factoryName);
 
@@ -32,22 +32,9 @@ public interface Pipelines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of pipeline resources.
+     * @return a list of pipeline resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PipelineResource> listByFactory(String resourceGroupName, String factoryName, Context context);
-
-    /**
-     * Gets a pipeline.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param pipelineName The pipeline name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a pipeline.
-     */
-    PipelineResource get(String resourceGroupName, String factoryName, String pipelineName);
 
     /**
      * Gets a pipeline.
@@ -67,7 +54,7 @@ public interface Pipelines {
         String resourceGroupName, String factoryName, String pipelineName, String ifNoneMatch, Context context);
 
     /**
-     * Deletes a pipeline.
+     * Gets a pipeline.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -75,8 +62,9 @@ public interface Pipelines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a pipeline.
      */
-    void delete(String resourceGroupName, String factoryName, String pipelineName);
+    PipelineResource get(String resourceGroupName, String factoryName, String pipelineName);
 
     /**
      * Deletes a pipeline.
@@ -94,7 +82,7 @@ public interface Pipelines {
         String resourceGroupName, String factoryName, String pipelineName, Context context);
 
     /**
-     * Creates a run of a pipeline.
+     * Deletes a pipeline.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -102,9 +90,8 @@ public interface Pipelines {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response body with a run identifier.
      */
-    CreateRunResponse createRun(String resourceGroupName, String factoryName, String pipelineName);
+    void delete(String resourceGroupName, String factoryName, String pipelineName);
 
     /**
      * Creates a run of a pipeline.
@@ -138,6 +125,19 @@ public interface Pipelines {
         Boolean startFromFailure,
         Map<String, Object> parameters,
         Context context);
+
+    /**
+     * Creates a run of a pipeline.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param pipelineName The pipeline name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response body with a run identifier.
+     */
+    CreateRunResponse createRun(String resourceGroupName, String factoryName, String pipelineName);
 
     /**
      * Gets a pipeline.

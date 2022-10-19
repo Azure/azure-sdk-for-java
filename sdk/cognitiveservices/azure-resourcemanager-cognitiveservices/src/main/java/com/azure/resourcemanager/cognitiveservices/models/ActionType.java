@@ -24,7 +24,11 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
         return fromString(name, ActionType.class);
     }
 
-    /** @return known ActionType values. */
+    /**
+     * Gets known ActionType values.
+     *
+     * @return known ActionType values.
+     */
     public static Collection<ActionType> values() {
         return values(ActionType.class);
     }

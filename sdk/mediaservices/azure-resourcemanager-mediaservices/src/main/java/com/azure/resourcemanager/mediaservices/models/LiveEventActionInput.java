@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The LiveEvent action input parameter definition. */
 @Fluent
 public final class LiveEventActionInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveEventActionInput.class);
-
     /*
-     * The flag indicates whether live outputs are automatically deleted when
-     * live event is being stopped. Deleting live outputs do not delete the
-     * underlying assets.
+     * The flag indicates whether live outputs are automatically deleted when live event is being stopped. Deleting
+     * live outputs do not delete the underlying assets.
      */
     @JsonProperty(value = "removeOutputsOnStop")
     private Boolean removeOutputsOnStop;

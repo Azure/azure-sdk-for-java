@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for CheckIPAddressAvailability API service call. */
 @Fluent
 public final class IpAddressAvailabilityResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpAddressAvailabilityResultInner.class);
-
     /*
      * Private IP address availability.
      */
@@ -22,8 +18,7 @@ public final class IpAddressAvailabilityResultInner {
     private Boolean available;
 
     /*
-     * Contains other available private IP addresses if the asked for address
-     * is taken.
+     * Contains other available private IP addresses if the asked for address is taken.
      */
     @JsonProperty(value = "availableIPAddresses")
     private List<String> availableIpAddresses;
@@ -33,6 +28,10 @@ public final class IpAddressAvailabilityResultInner {
      */
     @JsonProperty(value = "isPlatformReserved")
     private Boolean isPlatformReserved;
+
+    /** Creates an instance of IpAddressAvailabilityResultInner class. */
+    public IpAddressAvailabilityResultInner() {
+    }
 
     /**
      * Get the available property: Private IP address availability.

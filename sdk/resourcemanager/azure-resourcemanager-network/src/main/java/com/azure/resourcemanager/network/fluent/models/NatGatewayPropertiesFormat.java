@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Nat Gateway properties. */
 @Fluent
 public final class NatGatewayPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NatGatewayPropertiesFormat.class);
-
     /*
      * The idle timeout of the nat gateway.
      */
@@ -24,8 +20,7 @@ public final class NatGatewayPropertiesFormat {
     private Integer idleTimeoutInMinutes;
 
     /*
-     * An array of public ip addresses associated with the nat gateway
-     * resource.
+     * An array of public ip addresses associated with the nat gateway resource.
      */
     @JsonProperty(value = "publicIpAddresses")
     private List<SubResource> publicIpAddresses;
@@ -53,6 +48,10 @@ public final class NatGatewayPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of NatGatewayPropertiesFormat class. */
+    public NatGatewayPropertiesFormat() {
+    }
 
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the nat gateway.

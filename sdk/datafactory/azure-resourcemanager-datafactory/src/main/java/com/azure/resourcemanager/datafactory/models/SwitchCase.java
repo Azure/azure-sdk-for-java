@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Switch cases with have a value and corresponding activities. */
 @Fluent
 public final class SwitchCase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwitchCase.class);
-
     /*
-     * Expected value that satisfies the expression result of the 'on'
-     * property.
+     * Expected value that satisfies the expression result of the 'on' property.
      */
     @JsonProperty(value = "value")
     private String value;
@@ -27,6 +22,10 @@ public final class SwitchCase {
      */
     @JsonProperty(value = "activities")
     private List<Activity> activities;
+
+    /** Creates an instance of SwitchCase class. */
+    public SwitchCase() {
+    }
 
     /**
      * Get the value property: Expected value that satisfies the expression result of the 'on' property.

@@ -45,6 +45,13 @@ public interface DatasetResource {
     String etag();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.DatasetResourceInner object.
      *
      * @return the inner object.

@@ -5,17 +5,14 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.KeyVaultSecretReference;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a VMSS VM Extension. */
 @Fluent
 public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceReadOnly {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMExtensionInner.class);
-
     /*
      * The name of the extension.
      */
@@ -320,7 +317,7 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
      *
      * @return the protectedSettingsFromKeyVault value.
      */
-    public Object protectedSettingsFromKeyVault() {
+    public KeyVaultSecretReference protectedSettingsFromKeyVault() {
         return this.innerProperties() == null ? null : this.innerProperties().protectedSettingsFromKeyVault();
     }
 
@@ -332,7 +329,7 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
      * @return the VirtualMachineScaleSetVMExtensionInner object itself.
      */
     public VirtualMachineScaleSetVMExtensionInner withProtectedSettingsFromKeyVault(
-        Object protectedSettingsFromKeyVault) {
+        KeyVaultSecretReference protectedSettingsFromKeyVault) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineExtensionProperties();
         }

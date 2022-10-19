@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.DiscoveredSecuritySolutionsClie
 import com.azure.resourcemanager.security.fluent.models.DiscoveredSecuritySolutionInner;
 import com.azure.resourcemanager.security.models.DiscoveredSecuritySolution;
 import com.azure.resourcemanager.security.models.DiscoveredSecuritySolutions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DiscoveredSecuritySolutionsImpl implements DiscoveredSecuritySolutions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiscoveredSecuritySolutionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DiscoveredSecuritySolutionsImpl.class);
 
     private final DiscoveredSecuritySolutionsClient innerClient;
 

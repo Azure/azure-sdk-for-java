@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CustomActivityReferenceObject;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,11 +15,8 @@ import java.util.Map;
 /** Custom activity properties. */
 @Fluent
 public final class CustomActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomActivityTypeProperties.class);
-
     /*
-     * Command for custom activity Type: string (or Expression with resultType
-     * string).
+     * Command for custom activity Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "command", required = true)
     private Object command;
@@ -32,8 +28,7 @@ public final class CustomActivityTypeProperties {
     private LinkedServiceReference resourceLinkedService;
 
     /*
-     * Folder path for resource files Type: string (or Expression with
-     * resultType string).
+     * Folder path for resource files Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "folderPath")
     private Object folderPath;
@@ -45,27 +40,30 @@ public final class CustomActivityTypeProperties {
     private CustomActivityReferenceObject referenceObjects;
 
     /*
-     * User defined property bag. There is no restriction on the keys or values
-     * that can be used. The user specified custom activity has the full
-     * responsibility to consume and interpret the content defined.
+     * User defined property bag. There is no restriction on the keys or values that can be used. The user specified
+     * custom activity has the full responsibility to consume and interpret the content defined.
      */
     @JsonProperty(value = "extendedProperties")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> extendedProperties;
 
     /*
-     * The retention time for the files submitted for custom activity. Type:
-     * double (or Expression with resultType double).
+     * The retention time for the files submitted for custom activity. Type: double (or Expression with resultType
+     * double).
      */
     @JsonProperty(value = "retentionTimeInDays")
     private Object retentionTimeInDays;
 
     /*
-     * Elevation level and scope for the user, default is nonadmin task. Type:
-     * string (or Expression with resultType double).
+     * Elevation level and scope for the user, default is nonadmin task. Type: string (or Expression with resultType
+     * double).
      */
     @JsonProperty(value = "autoUserSpecification")
     private Object autoUserSpecification;
+
+    /** Creates an instance of CustomActivityTypeProperties class. */
+    public CustomActivityTypeProperties() {
+    }
 
     /**
      * Get the command property: Command for custom activity Type: string (or Expression with resultType string).
@@ -222,7 +220,7 @@ public final class CustomActivityTypeProperties {
      */
     public void validate() {
         if (command() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property command in model CustomActivityTypeProperties"));
@@ -234,4 +232,6 @@ public final class CustomActivityTypeProperties {
             referenceObjects().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomActivityTypeProperties.class);
 }

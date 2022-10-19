@@ -1,0 +1,90 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.blob.core.windows.net/1b6db88301b6db88340d29093ef49ce2aa64f4df3803?restype=container",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-blob/12.17.0-beta.1 azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "d3febd9f-91a2-4e31-ad62-28c02ffb89eb"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Blob/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1F2A1DA599F6",
+      "Last-Modified" : "Fri, 15 Apr 2022 21:51:37 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "a9a51e0c-601e-0096-0312-514471000000",
+      "x-ms-client-request-id" : "d3febd9f-91a2-4e31-ad62-28c02ffb89eb",
+      "Date" : "Fri, 15 Apr 2022 21:51:36 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.dfs.core.windows.net/1b6db88301b6db88340d29093ef49ce2aa64f4df3803/1b6db88311b6db88340d7197336ae76b08eb0454fa86?resource=file",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "b3a8bf05-86dd-4fc6-8e3e-815520b8354d"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1F2A1DF094F8",
+      "Last-Modified" : "Fri, 15 Apr 2022 21:51:37 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-server-encrypted" : "true",
+      "x-ms-request-id" : "2d9e9162-901f-0066-6b12-510280000000",
+      "x-ms-client-request-id" : "b3a8bf05-86dd-4fc6-8e3e-815520b8354d",
+      "Date" : "Fri, 15 Apr 2022 21:51:37 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.dfs.core.windows.net/1b6db88301b6db88340d29093ef49ce2aa64f4df3803/1b6db88311b6db88340d7197336ae76b08eb0454fa86?recursive=false",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9194ff81-dfb2-4dd9-8e00-1a2d12cd2a6e"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-deletion-id" : "132945330979063518",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-delete-type-permanent" : "false",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "x-ms-request-id" : "501b448c-901f-0082-2612-510c1e000000",
+      "x-ms-client-request-id" : "9194ff81-dfb2-4dd9-8e00-1a2d12cd2a6e",
+      "Date" : "Fri, 15 Apr 2022 21:51:37 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.dfs.core.windows.net/1b6db88301b6db88340d29093ef49ce2aa64f4df3803/1b6db88311b6db88340d7197336ae76b08eb0454fa86?recursive=false",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-datalake/12.10.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "9b661164-a86a-42a9-9b69-20b3370e2b14"
+    },
+    "Response" : {
+      "content-length" : "163",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-HDFS/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "PathNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "501b448d-901f-0082-2712-510c1e000000",
+      "Body" : "{\"error\":{\"code\":\"PathNotFound\",\"message\":\"The specified path does not exist.\\nRequestId:501b448d-901f-0082-2712-510c1e000000\\nTime:2022-04-15T21:51:38.0746980Z\"}}",
+      "x-ms-client-request-id" : "9b661164-a86a-42a9-9b69-20b3370e2b14",
+      "Date" : "Fri, 15 Apr 2022 21:51:37 GMT",
+      "Content-Type" : "application/json;charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "1b6db88301b6db88340d29093ef49ce2aa64f4df3803", "1b6db88311b6db88340d7197336ae76b08eb0454fa86" ]
+}

@@ -9,25 +9,240 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
+@ServiceClient(builder = TypesClientBuilder.class, isAsync = true)
 public final class TypesAsyncClient {
     @Generated private final TypesImpl serviceClient;
 
     /**
-     * Initializes an instance of Types client.
+     * Initializes an instance of TypesAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
     @Generated
     TypesAsyncClient(TypesImpl serviceClient) {
         this.serviceClient = serviceClient;
+    }
+
+    /**
+     * Get the businessMetadata definition for the given guid.
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: (recursive schema, see dateInstance above)
+     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
+     *         instance: (recursive schema, see instance above)
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean
+     *             instance: (recursive schema, see instance above)
+     *             integerInstance: (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: (recursive schema, see timeInstance above)
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: (recursive schema, see defaultProperty above)
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param guid businessMetadata guid.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the businessMetadata definition for the given guid along with {@link Response} on successful completion
+     *     of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getBusinessMetadataDefByGuidWithResponse(
+            String guid, RequestOptions requestOptions) {
+        return this.serviceClient.getBusinessMetadataDefByGuidWithResponseAsync(guid, requestOptions);
+    }
+
+    /**
+     * Get the businessMetadata definition by it's name (unique).
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *     createTime: Float
+     *     createdBy: String
+     *     dateFormatter: {
+     *         availableLocales: [
+     *             String
+     *         ]
+     *         calendar: Float
+     *         dateInstance: (recursive schema, see dateInstance above)
+     *         dateTimeInstance: (recursive schema, see dateTimeInstance above)
+     *         instance: (recursive schema, see instance above)
+     *         lenient: Boolean
+     *         numberFormat: {
+     *             availableLocales: [
+     *                 String
+     *             ]
+     *             currency: String
+     *             currencyInstance: (recursive schema, see currencyInstance above)
+     *             groupingUsed: Boolean
+     *             instance: (recursive schema, see instance above)
+     *             integerInstance: (recursive schema, see integerInstance above)
+     *             maximumFractionDigits: Integer
+     *             maximumIntegerDigits: Integer
+     *             minimumFractionDigits: Integer
+     *             minimumIntegerDigits: Integer
+     *             numberInstance: (recursive schema, see numberInstance above)
+     *             parseIntegerOnly: Boolean
+     *             percentInstance: (recursive schema, see percentInstance above)
+     *             roundingMode: String(UP/DOWN/CEILING/FLOOR/HALF_UP/HALF_DOWN/HALF_EVEN/UNNECESSARY)
+     *         }
+     *         timeInstance: (recursive schema, see timeInstance above)
+     *         timeZone: {
+     *             dstSavings: Integer
+     *             id: String
+     *             availableIds: [
+     *                 String
+     *             ]
+     *             defaultProperty: (recursive schema, see defaultProperty above)
+     *             displayName: String
+     *             rawOffset: Integer
+     *         }
+     *     }
+     *     description: String
+     *     guid: String
+     *     name: String
+     *     options: {
+     *         String: String
+     *     }
+     *     serviceType: String
+     *     typeVersion: String
+     *     updateTime: Float
+     *     updatedBy: String
+     *     version: Float
+     *     lastModifiedTS: String
+     *     attributeDefs: [
+     *         {
+     *             cardinality: String(SINGLE/LIST/SET)
+     *             constraints: [
+     *                 {
+     *                     params: {
+     *                         String: Object
+     *                     }
+     *                     type: String
+     *                 }
+     *             ]
+     *             defaultValue: String
+     *             description: String
+     *             includeInNotification: Boolean
+     *             isIndexable: Boolean
+     *             isOptional: Boolean
+     *             isUnique: Boolean
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             typeName: String
+     *             valuesMaxCount: Integer
+     *             valuesMinCount: Integer
+     *         }
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param name businessMetadata name.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the businessMetadata definition by it's name (unique) along with {@link Response} on successful
+     *     completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> getBusinessMetadataDefByNameWithResponse(
+            String name, RequestOptions requestOptions) {
+        return this.serviceClient.getBusinessMetadataDefByNameWithResponseAsync(name, requestOptions);
     }
 
     /**
@@ -132,6 +347,9 @@ public final class TypesAsyncClient {
      * @param guid The globally unique identifier of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the classification definition for the given GUID along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
@@ -244,6 +462,9 @@ public final class TypesAsyncClient {
      * @param name The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the classification definition by its name (unique) along with {@link Response} on successful completion
      *     of {@link Mono}.
      */
@@ -376,6 +597,9 @@ public final class TypesAsyncClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the Entity definition for the given GUID along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
@@ -508,6 +732,9 @@ public final class TypesAsyncClient {
      * @param name The name of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the entity definition by its name (unique) along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
@@ -593,6 +820,9 @@ public final class TypesAsyncClient {
      * @param guid The globally unique identifier of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the enum definition for the given GUID along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
@@ -677,6 +907,9 @@ public final class TypesAsyncClient {
      * @param name The name of the enum.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the enum definition by its name (unique) along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
@@ -790,6 +1023,9 @@ public final class TypesAsyncClient {
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the relationship definition for the given GUID along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
@@ -903,6 +1139,9 @@ public final class TypesAsyncClient {
      * @param name The name of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the relationship definition by its name (unique) along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
@@ -1005,6 +1244,9 @@ public final class TypesAsyncClient {
      * @param guid The globally unique identifier of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the struct definition for the given GUID along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
@@ -1107,6 +1349,9 @@ public final class TypesAsyncClient {
      * @param name The name of the struct.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the struct definition by its name (unique) along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
@@ -1260,6 +1505,9 @@ public final class TypesAsyncClient {
      * @param guid The globally unique identifier of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the type definition for the given GUID along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
@@ -1413,6 +1661,9 @@ public final class TypesAsyncClient {
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the type definition by its name (unique) along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
@@ -1428,6 +1679,9 @@ public final class TypesAsyncClient {
      * @param name The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -1444,16 +1698,16 @@ public final class TypesAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -1534,6 +1788,29 @@ public final class TypesAsyncClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -1711,6 +1988,9 @@ public final class TypesAsyncClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all type definitions in Atlas in bulk along with {@link Response} on successful completion of {@link
      *     Mono}.
      */
@@ -1728,7 +2008,7 @@ public final class TypesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -1809,6 +2089,29 @@ public final class TypesAsyncClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -1988,7 +2291,7 @@ public final class TypesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -2069,6 +2372,29 @@ public final class TypesAsyncClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -2247,6 +2573,9 @@ public final class TypesAsyncClient {
      * @param typesDef A composite wrapper object with corresponding lists of the type definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasTypesDef along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -2263,7 +2592,7 @@ public final class TypesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -2344,6 +2673,29 @@ public final class TypesAsyncClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -2523,7 +2875,7 @@ public final class TypesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -2604,6 +2956,29 @@ public final class TypesAsyncClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -2782,6 +3157,9 @@ public final class TypesAsyncClient {
      * @param typesDef A composite object that captures all type definition changes.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasTypesDef along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -2798,7 +3176,7 @@ public final class TypesAsyncClient {
      *
      * <pre>{@code
      * {
-     *     classificationDefs: [
+     *     businessMetadataDefs: [
      *         {
      *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
      *             createTime: Float
@@ -2879,6 +3257,29 @@ public final class TypesAsyncClient {
      *                     valuesMaxCount: Integer
      *                     valuesMinCount: Integer
      *                 }
+     *             ]
+     *         }
+     *     ]
+     *     classificationDefs: [
+     *         {
+     *             category: String(PRIMITIVE/OBJECT_ID_TYPE/ENUM/STRUCT/CLASSIFICATION/ENTITY/ARRAY/MAP/RELATIONSHIP/TERM_TEMPLATE)
+     *             createTime: Float
+     *             createdBy: String
+     *             dateFormatter: (recursive schema, see dateFormatter above)
+     *             description: String
+     *             guid: String
+     *             name: String
+     *             options: {
+     *                 String: String
+     *             }
+     *             serviceType: String
+     *             typeVersion: String
+     *             updateTime: Float
+     *             updatedBy: String
+     *             version: Float
+     *             lastModifiedTS: String
+     *             attributeDefs: [
+     *                 (recursive schema, see above)
      *             ]
      *             entityTypes: [
      *                 String
@@ -3057,6 +3458,9 @@ public final class TypesAsyncClient {
      * @param typesDef A composite object that captures all types to be deleted.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
@@ -3073,9 +3477,9 @@ public final class TypesAsyncClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermTemplate</td><td>String</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
+     *     <tr><td>includeTermTemplate</td><td>Boolean</td><td>No</td><td>Whether include termtemplatedef when return all typedefs.
      * This is always true when search filter type=term_template</td></tr>
-     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs.</td></tr>
+     *     <tr><td>type</td><td>String</td><td>No</td><td>Typedef name as search filter when get typedefs. Allowed values: enum, entity, classification, relationship, struct, term_template.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3092,6 +3496,9 @@ public final class TypesAsyncClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match along with
      *     {@link Response} on successful completion of {@link Mono}.
      */
@@ -3103,14 +3510,6 @@ public final class TypesAsyncClient {
 
     /**
      * Get the term template definition for the given GUID.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3202,6 +3601,9 @@ public final class TypesAsyncClient {
      * @param guid The globally unique identifier of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the term template definition for the given GUID along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
@@ -3213,14 +3615,6 @@ public final class TypesAsyncClient {
 
     /**
      * Get the term template definition by its name (unique).
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3312,6 +3706,9 @@ public final class TypesAsyncClient {
      * @param name The name of the term template.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the term template definition by its name (unique) along with {@link Response} on successful completion of
      *     {@link Mono}.
      */

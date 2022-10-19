@@ -5,15 +5,12 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Configure backups for databases in your SQL virtual machine. */
 @Fluent
 public final class AutoBackupSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoBackupSettings.class);
-
     /*
      * Enable or disable autobackup on SQL virtual machine.
      */
@@ -27,7 +24,7 @@ public final class AutoBackupSettings {
     private Boolean enableEncryption;
 
     /*
-     * Retention period of backup: 1-30 days.
+     * Retention period of backup: 1-90 days.
      */
     @JsonProperty(value = "retentionPeriod")
     private Integer retentionPeriod;
@@ -37,6 +34,12 @@ public final class AutoBackupSettings {
      */
     @JsonProperty(value = "storageAccountUrl")
     private String storageAccountUrl;
+
+    /*
+     * Storage container name where backup will be taken to.
+     */
+    @JsonProperty(value = "storageContainerName")
+    private String storageContainerName;
 
     /*
      * Storage account key where backup will be taken to.
@@ -63,22 +66,25 @@ public final class AutoBackupSettings {
     private BackupScheduleType backupScheduleType;
 
     /*
-     * Frequency of full backups. In both cases, full backups begin during the
-     * next scheduled time window.
+     * Frequency of full backups. In both cases, full backups begin during the next scheduled time window.
      */
     @JsonProperty(value = "fullBackupFrequency")
     private FullBackupFrequencyType fullBackupFrequency;
 
     /*
-     * Start time of a given day during which full backups can take place. 0-23
-     * hours.
+     * Days of the week for the backups when FullBackupFrequency is set to Weekly.
+     */
+    @JsonProperty(value = "daysOfWeek")
+    private List<AutoBackupDaysOfWeek> daysOfWeek;
+
+    /*
+     * Start time of a given day during which full backups can take place. 0-23 hours.
      */
     @JsonProperty(value = "fullBackupStartTime")
     private Integer fullBackupStartTime;
 
     /*
-     * Duration of the time window of a given day during which full backups can
-     * take place. 1-23 hours.
+     * Duration of the time window of a given day during which full backups can take place. 1-23 hours.
      */
     @JsonProperty(value = "fullBackupWindowHours")
     private Integer fullBackupWindowHours;
@@ -130,7 +136,7 @@ public final class AutoBackupSettings {
     }
 
     /**
-     * Get the retentionPeriod property: Retention period of backup: 1-30 days.
+     * Get the retentionPeriod property: Retention period of backup: 1-90 days.
      *
      * @return the retentionPeriod value.
      */
@@ -139,7 +145,7 @@ public final class AutoBackupSettings {
     }
 
     /**
-     * Set the retentionPeriod property: Retention period of backup: 1-30 days.
+     * Set the retentionPeriod property: Retention period of backup: 1-90 days.
      *
      * @param retentionPeriod the retentionPeriod value to set.
      * @return the AutoBackupSettings object itself.
@@ -166,6 +172,26 @@ public final class AutoBackupSettings {
      */
     public AutoBackupSettings withStorageAccountUrl(String storageAccountUrl) {
         this.storageAccountUrl = storageAccountUrl;
+        return this;
+    }
+
+    /**
+     * Get the storageContainerName property: Storage container name where backup will be taken to.
+     *
+     * @return the storageContainerName value.
+     */
+    public String storageContainerName() {
+        return this.storageContainerName;
+    }
+
+    /**
+     * Set the storageContainerName property: Storage container name where backup will be taken to.
+     *
+     * @param storageContainerName the storageContainerName value to set.
+     * @return the AutoBackupSettings object itself.
+     */
+    public AutoBackupSettings withStorageContainerName(String storageContainerName) {
+        this.storageContainerName = storageContainerName;
         return this;
     }
 
@@ -268,6 +294,26 @@ public final class AutoBackupSettings {
      */
     public AutoBackupSettings withFullBackupFrequency(FullBackupFrequencyType fullBackupFrequency) {
         this.fullBackupFrequency = fullBackupFrequency;
+        return this;
+    }
+
+    /**
+     * Get the daysOfWeek property: Days of the week for the backups when FullBackupFrequency is set to Weekly.
+     *
+     * @return the daysOfWeek value.
+     */
+    public List<AutoBackupDaysOfWeek> daysOfWeek() {
+        return this.daysOfWeek;
+    }
+
+    /**
+     * Set the daysOfWeek property: Days of the week for the backups when FullBackupFrequency is set to Weekly.
+     *
+     * @param daysOfWeek the daysOfWeek value to set.
+     * @return the AutoBackupSettings object itself.
+     */
+    public AutoBackupSettings withDaysOfWeek(List<AutoBackupDaysOfWeek> daysOfWeek) {
+        this.daysOfWeek = daysOfWeek;
         return this;
     }
 

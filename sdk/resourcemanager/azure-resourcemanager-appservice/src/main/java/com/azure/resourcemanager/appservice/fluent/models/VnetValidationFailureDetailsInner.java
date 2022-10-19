@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.VnetValidationTestFailure;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A class that describes the reason for a validation failure. */
 @Fluent
 public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetValidationFailureDetailsInner.class);
-
     /*
      * VnetValidationFailureDetails resource specific properties
      */

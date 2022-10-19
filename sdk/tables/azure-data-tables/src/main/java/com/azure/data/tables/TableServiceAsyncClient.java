@@ -191,7 +191,9 @@ public final class TableServiceAsyncClient {
     }
 
     /**
-     * Gets a {@link TableAsyncClient} instance for the table in the account with the provided {@code tableName}.
+     * Gets a {@link TableAsyncClient} instance for the table in the account with the provided {@code tableName}. The
+     * resulting {@link TableAsyncClient} will use the same {@link HttpPipeline pipeline} and
+     * {@link TableServiceVersion service version} as this {@link TableServiceAsyncClient}.
      *
      * @param tableName The name of the table.
      *

@@ -4,47 +4,46 @@
 
 package com.azure.resourcemanager.cdn.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** Defines values for AfdQueryStringCachingBehavior. */
-public enum AfdQueryStringCachingBehavior {
-    /** Enum value IgnoreQueryString. */
-    IGNORE_QUERY_STRING("IgnoreQueryString"),
+/**
+ * Defines how Frontdoor caches requests that include query strings. You can ignore any query strings when caching,
+ * ignore specific query strings, cache every request with a unique URL, or cache specific query strings.
+ */
+public final class AfdQueryStringCachingBehavior extends ExpandableStringEnum<AfdQueryStringCachingBehavior> {
+    /** Static value IgnoreQueryString for AfdQueryStringCachingBehavior. */
+    public static final AfdQueryStringCachingBehavior IGNORE_QUERY_STRING = fromString("IgnoreQueryString");
 
-    /** Enum value UseQueryString. */
-    USE_QUERY_STRING("UseQueryString"),
+    /** Static value UseQueryString for AfdQueryStringCachingBehavior. */
+    public static final AfdQueryStringCachingBehavior USE_QUERY_STRING = fromString("UseQueryString");
 
-    /** Enum value NotSet. */
-    NOT_SET("NotSet");
+    /** Static value IgnoreSpecifiedQueryStrings for AfdQueryStringCachingBehavior. */
+    public static final AfdQueryStringCachingBehavior IGNORE_SPECIFIED_QUERY_STRINGS =
+        fromString("IgnoreSpecifiedQueryStrings");
 
-    /** The actual serialized value for a AfdQueryStringCachingBehavior instance. */
-    private final String value;
+    /** Static value IncludeSpecifiedQueryStrings for AfdQueryStringCachingBehavior. */
+    public static final AfdQueryStringCachingBehavior INCLUDE_SPECIFIED_QUERY_STRINGS =
+        fromString("IncludeSpecifiedQueryStrings");
 
-    AfdQueryStringCachingBehavior(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a AfdQueryStringCachingBehavior from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding AfdQueryStringCachingBehavior.
+     */
+    @JsonCreator
+    public static AfdQueryStringCachingBehavior fromString(String name) {
+        return fromString(name, AfdQueryStringCachingBehavior.class);
     }
 
     /**
-     * Parses a serialized value to a AfdQueryStringCachingBehavior instance.
+     * Gets known AfdQueryStringCachingBehavior values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed AfdQueryStringCachingBehavior object, or null if unable to parse.
+     * @return known AfdQueryStringCachingBehavior values.
      */
-    @JsonCreator
-    public static AfdQueryStringCachingBehavior fromString(String value) {
-        AfdQueryStringCachingBehavior[] items = AfdQueryStringCachingBehavior.values();
-        for (AfdQueryStringCachingBehavior item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<AfdQueryStringCachingBehavior> values() {
+        return values(AfdQueryStringCachingBehavior.class);
     }
 }

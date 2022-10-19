@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The IpGroups property information. */
 @Fluent
 public final class IpGroupPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpGroupPropertiesFormat.class);
-
     /*
      * The provisioning state of the IpGroups resource.
      */
@@ -30,18 +26,20 @@ public final class IpGroupPropertiesFormat {
     private List<String> ipAddresses;
 
     /*
-     * List of references to Firewall resources that this IpGroups is
-     * associated with.
+     * List of references to Firewall resources that this IpGroups is associated with.
      */
     @JsonProperty(value = "firewalls", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> firewalls;
 
     /*
-     * List of references to Firewall Policies resources that this IpGroups is
-     * associated with.
+     * List of references to Firewall Policies resources that this IpGroups is associated with.
      */
     @JsonProperty(value = "firewallPolicies", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> firewallPolicies;
+
+    /** Creates an instance of IpGroupPropertiesFormat class. */
+    public IpGroupPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the IpGroups resource.

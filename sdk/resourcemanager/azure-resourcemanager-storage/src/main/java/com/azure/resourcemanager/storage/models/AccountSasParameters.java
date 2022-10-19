@@ -6,35 +6,30 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The parameters to list SAS credentials of a storage account. */
 @Fluent
 public final class AccountSasParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountSasParameters.class);
-
     /*
-     * The signed services accessible with the account SAS. Possible values
-     * include: Blob (b), Queue (q), Table (t), File (f).
+     * The signed services accessible with the account SAS. Possible values include: Blob (b), Queue (q), Table (t),
+     * File (f).
      */
     @JsonProperty(value = "signedServices", required = true)
     private Services services;
 
     /*
-     * The signed resource types that are accessible with the account SAS.
-     * Service (s): Access to service-level APIs; Container (c): Access to
-     * container-level APIs; Object (o): Access to object-level APIs for blobs,
-     * queue messages, table entities, and files.
+     * The signed resource types that are accessible with the account SAS. Service (s): Access to service-level APIs;
+     * Container (c): Access to container-level APIs; Object (o): Access to object-level APIs for blobs, queue
+     * messages, table entities, and files.
      */
     @JsonProperty(value = "signedResourceTypes", required = true)
     private SignedResourceTypes resourceTypes;
 
     /*
-     * The signed permissions for the account SAS. Possible values include:
-     * Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update
-     * (u) and Process (p).
+     * The signed permissions for the account SAS. Possible values include: Read (r), Write (w), Delete (d), List (l),
+     * Add (a), Create (c), Update (u) and Process (p).
      */
     @JsonProperty(value = "signedPermission", required = true)
     private Permissions permissions;
@@ -244,27 +239,29 @@ public final class AccountSasParameters {
      */
     public void validate() {
         if (services() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property services in model AccountSasParameters"));
         }
         if (resourceTypes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceTypes in model AccountSasParameters"));
         }
         if (permissions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property permissions in model AccountSasParameters"));
         }
         if (sharedAccessExpiryTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sharedAccessExpiryTime in model AccountSasParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AccountSasParameters.class);
 }

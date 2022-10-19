@@ -6,15 +6,12 @@ package com.azure.resourcemanager.resourcegraph.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a query to be executed. */
 @Fluent
 public final class QueryRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryRequest.class);
-
     /*
      * Azure subscriptions against which to execute the query.
      */
@@ -155,7 +152,7 @@ public final class QueryRequest {
      */
     public void validate() {
         if (query() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property query in model QueryRequest"));
         }
@@ -166,4 +163,6 @@ public final class QueryRequest {
             facets().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QueryRequest.class);
 }

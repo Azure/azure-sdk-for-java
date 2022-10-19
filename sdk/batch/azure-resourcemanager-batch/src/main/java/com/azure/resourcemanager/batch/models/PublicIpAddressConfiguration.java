@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The public IP Address configuration of the networking configuration of a Pool. */
 @Fluent
 public final class PublicIpAddressConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressConfiguration.class);
-
     /*
      * The provisioning type for Public IP Addresses for the Batch Pool. The
      * default value is BatchManaged
@@ -25,10 +21,10 @@ public final class PublicIpAddressConfiguration {
     /*
      * The list of public IPs which the Batch service will use when
      * provisioning Compute Nodes. The number of IPs specified here limits the
-     * maximum size of the Pool - 100 dedicated nodes or 100 low-priority nodes
-     * can be allocated for each public IP. For example, a pool needing 250
-     * dedicated VMs would need at least 3 public IPs specified. Each element
-     * of this collection is of the form:
+     * maximum size of the Pool - 100 dedicated nodes or 100 Spot/low-priority
+     * nodes can be allocated for each public IP. For example, a pool needing
+     * 250 dedicated VMs would need at least 3 public IPs specified. Each
+     * element of this collection is of the form:
      * /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
      */
     @JsonProperty(value = "ipAddressIds")
@@ -59,8 +55,8 @@ public final class PublicIpAddressConfiguration {
     /**
      * Get the ipAddressIds property: The list of public IPs which the Batch service will use when provisioning Compute
      * Nodes. The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100
-     * low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would need
-     * at least 3 public IPs specified. Each element of this collection is of the form:
+     * Spot/low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would
+     * need at least 3 public IPs specified. Each element of this collection is of the form:
      * /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
      *
      * @return the ipAddressIds value.
@@ -72,8 +68,8 @@ public final class PublicIpAddressConfiguration {
     /**
      * Set the ipAddressIds property: The list of public IPs which the Batch service will use when provisioning Compute
      * Nodes. The number of IPs specified here limits the maximum size of the Pool - 100 dedicated nodes or 100
-     * low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would need
-     * at least 3 public IPs specified. Each element of this collection is of the form:
+     * Spot/low-priority nodes can be allocated for each public IP. For example, a pool needing 250 dedicated VMs would
+     * need at least 3 public IPs specified. Each element of this collection is of the form:
      * /subscriptions/{subscription}/resourceGroups/{group}/providers/Microsoft.Network/publicIPAddresses/{ip}.
      *
      * @param ipAddressIds the ipAddressIds value to set.

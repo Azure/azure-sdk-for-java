@@ -36,7 +36,11 @@ public final class ProtectedItemHealthStatus extends ExpandableStringEnum<Protec
         return fromString(name, ProtectedItemHealthStatus.class);
     }
 
-    /** @return known ProtectedItemHealthStatus values. */
+    /**
+     * Gets known ProtectedItemHealthStatus values.
+     *
+     * @return known ProtectedItemHealthStatus values.
+     */
     public static Collection<ProtectedItemHealthStatus> values() {
         return values(ProtectedItemHealthStatus.class);
     }

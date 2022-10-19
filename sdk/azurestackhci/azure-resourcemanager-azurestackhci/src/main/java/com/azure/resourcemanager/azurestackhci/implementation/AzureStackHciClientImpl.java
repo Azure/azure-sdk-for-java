@@ -15,14 +15,17 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.azurestackhci.fluent.ArcSettingsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.AzureStackHciClient;
 import com.azure.resourcemanager.azurestackhci.fluent.ClustersClient;
+import com.azure.resourcemanager.azurestackhci.fluent.ExtensionsClient;
 import com.azure.resourcemanager.azurestackhci.fluent.OperationsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -30,15 +33,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the AzureStackHciClientImpl type. */
 @ServiceClient(builder = AzureStackHciClientBuilder.class)
 public final class AzureStackHciClientImpl implements AzureStackHciClient {
-    private final ClientLogger logger = new ClientLogger(AzureStackHciClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -111,16 +111,16 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
         return this.defaultPollInterval;
     }
 
-    /** The OperationsClient object to access its operations. */
-    private final OperationsClient operations;
+    /** The ArcSettingsClient object to access its operations. */
+    private final ArcSettingsClient arcSettings;
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the ArcSettingsClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the ArcSettingsClient object.
      */
-    public OperationsClient getOperations() {
-        return this.operations;
+    public ArcSettingsClient getArcSettings() {
+        return this.arcSettings;
     }
 
     /** The ClustersClient object to access its operations. */
@@ -133,6 +133,30 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
      */
     public ClustersClient getClusters() {
         return this.clusters;
+    }
+
+    /** The ExtensionsClient object to access its operations. */
+    private final ExtensionsClient extensions;
+
+    /**
+     * Gets the ExtensionsClient object to access its operations.
+     *
+     * @return the ExtensionsClient object.
+     */
+    public ExtensionsClient getExtensions() {
+        return this.extensions;
+    }
+
+    /** The OperationsClient object to access its operations. */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
     }
 
     /**
@@ -157,9 +181,11 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2020-10-01";
-        this.operations = new OperationsClientImpl(this);
+        this.apiVersion = "2022-05-01";
+        this.arcSettings = new ArcSettingsClientImpl(this);
         this.clusters = new ClustersClientImpl(this);
+        this.extensions = new ExtensionsClientImpl(this);
+        this.operations = new OperationsClientImpl(this);
     }
 
     /**
@@ -178,10 +204,7 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -245,7 +268,7 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -304,4 +327,6 @@ public final class AzureStackHciClientImpl implements AzureStackHciClient {
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureStackHciClientImpl.class);
 }

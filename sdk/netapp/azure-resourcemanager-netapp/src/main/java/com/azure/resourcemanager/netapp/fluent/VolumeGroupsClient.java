@@ -17,20 +17,24 @@ import com.azure.resourcemanager.netapp.fluent.models.VolumeGroupInner;
 /** An instance of this class provides access to all the operations defined in VolumeGroupsClient. */
 public interface VolumeGroupsClient {
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume group resources.
+     * @return list of volume group resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VolumeGroupInner> listByNetAppAccount(String resourceGroupName, String accountName);
 
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -38,13 +42,15 @@ public interface VolumeGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume group resources.
+     * @return list of volume group resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VolumeGroupInner> listByNetAppAccount(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -58,7 +64,9 @@ public interface VolumeGroupsClient {
     VolumeGroupDetailsInner get(String resourceGroupName, String accountName, String volumeGroupName);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -67,14 +75,18 @@ public interface VolumeGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group.
+     * @return details of the specified volume group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VolumeGroupDetailsInner> getWithResponse(
         String resourceGroupName, String accountName, String volumeGroupName, Context context);
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -83,14 +95,18 @@ public interface VolumeGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume group resource for create.
+     * @return the {@link SyncPoller} for polling of volume group resource for create.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VolumeGroupDetailsInner>, VolumeGroupDetailsInner> beginCreate(
         String resourceGroupName, String accountName, String volumeGroupName, VolumeGroupDetailsInner body);
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -100,7 +116,7 @@ public interface VolumeGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return volume group resource for create.
+     * @return the {@link SyncPoller} for polling of volume group resource for create.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VolumeGroupDetailsInner>, VolumeGroupDetailsInner> beginCreate(
@@ -111,7 +127,11 @@ public interface VolumeGroupsClient {
         Context context);
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -127,7 +147,11 @@ public interface VolumeGroupsClient {
         String resourceGroupName, String accountName, String volumeGroupName, VolumeGroupDetailsInner body);
 
     /**
-     * Create a volume group along with specified volumes.
+     * Create the specified volume group and volumes. Creating volume group will create all the volumes specified in
+     * request body implicitly. Once volumes are created using volume group, those will be treated as regular volumes
+     * thereafter.
+     *
+     * <p>Create a volume group along with specified volumes.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -148,7 +172,9 @@ public interface VolumeGroupsClient {
         Context context);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -156,14 +182,16 @@ public interface VolumeGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String volumeGroupName);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -172,14 +200,16 @@ public interface VolumeGroupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String volumeGroupName, Context context);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -192,7 +222,9 @@ public interface VolumeGroupsClient {
     void delete(String resourceGroupName, String accountName, String volumeGroupName);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

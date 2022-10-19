@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ResourceInstanceViewStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The instance view of the role instance. */
 @Immutable
 public final class RoleInstanceViewInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleInstanceViewInner.class);
-
     /*
      * The Update Domain.
      */
@@ -29,10 +25,9 @@ public final class RoleInstanceViewInner {
     private Integer platformFaultDomain;
 
     /*
-     * Specifies a unique identifier generated internally for the cloud service
-     * associated with this role instance. <br /><br /> NOTE: If you are using
-     * Azure Diagnostics extension, this property can be used as 'DeploymentId'
-     * for querying details.
+     * Specifies a unique identifier generated internally for the cloud service associated with this role instance. <br
+     * /><br /> NOTE: If you are using Azure Diagnostics extension, this property can be used as 'DeploymentId' for
+     * querying details.
      */
     @JsonProperty(value = "privateId", access = JsonProperty.Access.WRITE_ONLY)
     private String privateId;

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.MSDeployCore;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Core resource properties. */
 @Fluent
 public final class MSDeployProperties extends MSDeployCore {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployProperties.class);
-
     /*
      * List of Add-On packages. Add-On packages implicitly enable the Do Not
      * Delete MSDeploy rule.

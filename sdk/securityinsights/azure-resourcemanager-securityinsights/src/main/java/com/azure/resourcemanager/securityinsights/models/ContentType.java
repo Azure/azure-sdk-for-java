@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ContentType. */
+/** The content type of a source control path. */
 public final class ContentType extends ExpandableStringEnum<ContentType> {
     /** Static value AnalyticRule for ContentType. */
     public static final ContentType ANALYTIC_RULE = fromString("AnalyticRule");
@@ -27,7 +27,11 @@ public final class ContentType extends ExpandableStringEnum<ContentType> {
         return fromString(name, ContentType.class);
     }
 
-    /** @return known ContentType values. */
+    /**
+     * Gets known ContentType values.
+     *
+     * @return known ContentType values.
+     */
     public static Collection<ContentType> values() {
         return values(ContentType.class);
     }

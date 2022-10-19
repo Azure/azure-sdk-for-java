@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Service Endpoint Policy resource. */
 @Fluent
 public final class ServiceEndpointPolicyPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyPropertiesFormat.class);
-
     /*
-     * A collection of service endpoint policy definitions of the service
-     * endpoint policy.
+     * A collection of service endpoint policy definitions of the service endpoint policy.
      */
     @JsonProperty(value = "serviceEndpointPolicyDefinitions")
     private List<ServiceEndpointPolicyDefinitionInner> serviceEndpointPolicyDefinitions;
@@ -52,6 +47,10 @@ public final class ServiceEndpointPolicyPropertiesFormat {
      */
     @JsonProperty(value = "contextualServiceEndpointPolicies")
     private List<String> contextualServiceEndpointPolicies;
+
+    /** Creates an instance of ServiceEndpointPolicyPropertiesFormat class. */
+    public ServiceEndpointPolicyPropertiesFormat() {
+    }
 
     /**
      * Get the serviceEndpointPolicyDefinitions property: A collection of service endpoint policy definitions of the

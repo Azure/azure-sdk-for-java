@@ -19,7 +19,9 @@ import com.azure.resourcemanager.netapp.models.BackupPatch;
 /** An instance of this class provides access to all the operations defined in BackupsClient. */
 public interface BackupsClient {
     /**
-     * Get the status of the backup for a volume.
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -34,7 +36,9 @@ public interface BackupsClient {
     BackupStatusInner getStatus(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * Get the status of the backup for a volume.
+     * Get volume's backup status
+     *
+     * <p>Get the status of the backup for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -44,14 +48,16 @@ public interface BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the backup for a volume.
+     * @return the status of the backup for a volume along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BackupStatusInner> getStatusWithResponse(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Get the status of the restore for a volume.
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -67,7 +73,9 @@ public interface BackupsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * Get the status of the restore for a volume.
+     * Get volume's restore status
+     *
+     * <p>Get the status of the restore for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -77,14 +85,16 @@ public interface BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume.
+     * @return the status of the restore for a volume along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RestoreStatusInner> getVolumeRestoreStatusWithResponse(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -93,13 +103,15 @@ public interface BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BackupInner> list(String resourceGroupName, String accountName, String poolName, String volumeName);
 
     /**
-     * List all backups for a volume.
+     * List Backups
+     *
+     * <p>List all backups for a volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -109,14 +121,16 @@ public interface BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BackupInner> list(
         String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -133,7 +147,9 @@ public interface BackupsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
 
     /**
-     * Gets the specified backup of the volume.
+     * Get a backup
+     *
+     * <p>Gets the specified backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -144,7 +160,7 @@ public interface BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup of the volume.
+     * @return the specified backup of the volume along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BackupInner> getWithResponse(
@@ -156,7 +172,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -167,7 +185,7 @@ public interface BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup of a Volume.
+     * @return the {@link SyncPoller} for polling of backup of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupInner>, BackupInner> beginCreate(
@@ -179,7 +197,9 @@ public interface BackupsClient {
         BackupInner body);
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -191,7 +211,7 @@ public interface BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup of a Volume.
+     * @return the {@link SyncPoller} for polling of backup of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupInner>, BackupInner> beginCreate(
@@ -204,7 +224,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -227,7 +249,9 @@ public interface BackupsClient {
         BackupInner body);
 
     /**
-     * Create a backup for the volume.
+     * Create a backup
+     *
+     * <p>Create a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -252,7 +276,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -263,7 +289,7 @@ public interface BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup of a Volume.
+     * @return the {@link SyncPoller} for polling of backup of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(
@@ -275,7 +301,9 @@ public interface BackupsClient {
         BackupPatch body);
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -287,7 +315,7 @@ public interface BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return backup of a Volume.
+     * @return the {@link SyncPoller} for polling of backup of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(
@@ -300,7 +328,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -323,7 +353,9 @@ public interface BackupsClient {
         BackupPatch body);
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -340,7 +372,9 @@ public interface BackupsClient {
         String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
 
     /**
-     * Patch a backup for the volume.
+     * Patch a backup
+     *
+     * <p>Patch a backup for the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -365,7 +399,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -375,14 +411,16 @@ public interface BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -393,7 +431,7 @@ public interface BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -405,7 +443,9 @@ public interface BackupsClient {
         Context context);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -420,7 +460,9 @@ public interface BackupsClient {
     void delete(String resourceGroupName, String accountName, String poolName, String volumeName, String backupName);
 
     /**
-     * Delete a backup of the volume.
+     * Delete backup
+     *
+     * <p>Delete a backup of the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

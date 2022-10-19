@@ -10,29 +10,29 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetIpConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetNetworkConfigurationDnsSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machine scale set network profile's IP configuration. */
 @Fluent
 public final class VirtualMachineScaleSetNetworkConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetNetworkConfigurationProperties.class);
-
     /*
-     * Specifies the primary network interface in case the virtual machine has
-     * more than 1 network interface.
+     * Specifies the primary network interface in case the virtual machine has more than 1 network interface.
      */
     @JsonProperty(value = "primary")
     private Boolean primary;
 
     /*
-     * Specifies whether the network interface is accelerated
-     * networking-enabled.
+     * Specifies whether the network interface is accelerated networking-enabled.
      */
     @JsonProperty(value = "enableAcceleratedNetworking")
     private Boolean enableAcceleratedNetworking;
+
+    /*
+     * Specifies whether the network interface is disabled for tcp state tracking.
+     */
+    @JsonProperty(value = "disableTcpStateTracking")
+    private Boolean disableTcpStateTracking;
 
     /*
      * Specifies whether the network interface is FPGA networking-enabled.
@@ -112,6 +112,29 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties {
     public VirtualMachineScaleSetNetworkConfigurationProperties withEnableAcceleratedNetworking(
         Boolean enableAcceleratedNetworking) {
         this.enableAcceleratedNetworking = enableAcceleratedNetworking;
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.disableTcpStateTracking;
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the VirtualMachineScaleSetNetworkConfigurationProperties object itself.
+     */
+    public VirtualMachineScaleSetNetworkConfigurationProperties withDisableTcpStateTracking(
+        Boolean disableTcpStateTracking) {
+        this.disableTcpStateTracking = disableTcpStateTracking;
         return this;
     }
 
@@ -248,7 +271,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties {
             dnsSettings().validate();
         }
         if (ipConfigurations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ipConfigurations in model"
@@ -257,4 +280,7 @@ public final class VirtualMachineScaleSetNetworkConfigurationProperties {
             ipConfigurations().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(VirtualMachineScaleSetNetworkConfigurationProperties.class);
 }

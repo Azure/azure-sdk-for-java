@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Vpn Client Parameters for package generation. */
 @Fluent
 public final class VpnClientParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientParameters.class);
-
     /*
      * VPN client Processor Architecture.
      */
@@ -28,20 +24,22 @@ public final class VpnClientParameters {
     private AuthenticationMethod authenticationMethod;
 
     /*
-     * The public certificate data for the radius server authentication
-     * certificate as a Base-64 encoded string. Required only if external
-     * radius authentication has been configured with EAPTLS authentication.
+     * The public certificate data for the radius server authentication certificate as a Base-64 encoded string.
+     * Required only if external radius authentication has been configured with EAPTLS authentication.
      */
     @JsonProperty(value = "radiusServerAuthCertificate")
     private String radiusServerAuthCertificate;
 
     /*
-     * A list of client root certificates public certificate data encoded as
-     * Base-64 strings. Optional parameter for external radius based
-     * authentication with EAPTLS.
+     * A list of client root certificates public certificate data encoded as Base-64 strings. Optional parameter for
+     * external radius based authentication with EAPTLS.
      */
     @JsonProperty(value = "clientRootCertificates")
     private List<String> clientRootCertificates;
+
+    /** Creates an instance of VpnClientParameters class. */
+    public VpnClientParameters() {
+    }
 
     /**
      * Get the processorArchitecture property: VPN client Processor Architecture.

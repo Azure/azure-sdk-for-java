@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuCapacity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes an available virtual machine scale set sku. */
 @Immutable
 public final class VirtualMachineScaleSetSkuInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetSkuInner.class);
-
     /*
      * The type of resource the sku applies to.
      */

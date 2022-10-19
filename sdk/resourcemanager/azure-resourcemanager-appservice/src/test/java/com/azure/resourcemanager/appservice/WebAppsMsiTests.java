@@ -6,8 +6,10 @@ package com.azure.resourcemanager.appservice;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.resourcemanager.appservice.models.AppServicePlan;
+import com.azure.resourcemanager.appservice.models.FtpsState;
 import com.azure.resourcemanager.appservice.models.JavaVersion;
 import com.azure.resourcemanager.appservice.models.PricingTier;
+import com.azure.resourcemanager.appservice.models.PublishingProfile;
 import com.azure.resourcemanager.appservice.models.RemoteVisualStudioVersion;
 import com.azure.resourcemanager.appservice.models.WebApp;
 import com.azure.resourcemanager.appservice.models.WebContainer;
@@ -79,15 +81,23 @@ public class WebAppsMsiTests extends AppServiceTest {
                 "appservicemsi.war",
                 WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
 
-            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
+            ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
-            Response<String> response = curl("http://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
+            Response<String> response = curl("https://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);
             Assertions.assertTrue(body.contains(webApp.resourceGroupName()));
             Assertions.assertTrue(body.contains(webApp.id()));
         }
+
+        webApp.update()
+            .withFtpsState(FtpsState.FTPS_ONLY)
+            .apply();
+        PublishingProfile publishingProfile = webApp.getPublishingProfile();
+        Assertions.assertNotNull(publishingProfile.ftpUrl());
+        Assertions.assertNotNull(publishingProfile.ftpUsername());
+        Assertions.assertNotNull(publishingProfile.ftpPassword());
     }
 
     @Test
@@ -163,9 +173,9 @@ public class WebAppsMsiTests extends AppServiceTest {
                 "appservicemsi.war",
                 WebAppsMsiTests.class.getResourceAsStream("/appservicemsi.war"));
 
-            ResourceManagerUtils.sleep(Duration.ofSeconds(30));
+            ResourceManagerUtils.sleep(Duration.ofMinutes(1));
 
-            Response<String> response = curl("http://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
+            Response<String> response = curl("https://" + webappName1 + "." + "azurewebsites.net/appservicemsi/");
             Assertions.assertEquals(200, response.getStatusCode());
             String body = response.getValue();
             Assertions.assertNotNull(body);

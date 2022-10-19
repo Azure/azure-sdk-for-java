@@ -29,7 +29,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.authorization.fluent.ApplicationsClient;
@@ -38,33 +37,21 @@ import com.azure.resourcemanager.authorization.fluent.models.ApplicationsAddPass
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsCheckMemberGroupsRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsCheckMemberObjectsRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsExpand;
-import com.azure.resourcemanager.authorization.fluent.models.ApplicationsGetAvailableExtensionPropertiesRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.ApplicationsGetByIdsRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsGetMemberGroupsRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsGetMemberObjectsRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsOrderby;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsRemoveKeyRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsRemovePasswordRequestBody;
 import com.azure.resourcemanager.authorization.fluent.models.ApplicationsSelect;
-import com.azure.resourcemanager.authorization.fluent.models.ApplicationsValidatePropertiesRequestBody;
-import com.azure.resourcemanager.authorization.fluent.models.CollectionOfDirectoryObject;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfExtensionProperty;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfHomeRealmDiscoveryPolicy;
-import com.azure.resourcemanager.authorization.fluent.models.CollectionOfLinksOfDirectoryObject;
 import com.azure.resourcemanager.authorization.fluent.models.CollectionOfLinksOfHomeRealmDiscoveryPolicy;
-import com.azure.resourcemanager.authorization.fluent.models.CollectionOfLinksOfTokenIssuancePolicy;
-import com.azure.resourcemanager.authorization.fluent.models.CollectionOfLinksOfTokenLifetimePolicy;
-import com.azure.resourcemanager.authorization.fluent.models.CollectionOfTokenIssuancePolicy;
-import com.azure.resourcemanager.authorization.fluent.models.CollectionOfTokenLifetimePolicy;
 import com.azure.resourcemanager.authorization.fluent.models.Get1ItemsItem;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphApplicationInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphDirectoryObjectInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphExtensionPropertyInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphHomeRealmDiscoveryPolicyInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphKeyCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphPasswordCredentialInner;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphTokenIssuancePolicyInner;
-import com.azure.resourcemanager.authorization.fluent.models.MicrosoftGraphTokenLifetimePolicyInner;
 import com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException;
 import java.util.List;
 import java.util.Map;
@@ -72,8 +59,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApplicationsClient. */
 public final class ApplicationsClientImpl implements ApplicationsClient {
-    private final ClientLogger logger = new ClientLogger(ApplicationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApplicationsService service;
 
@@ -351,178 +336,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get("/applications/{application-id}/owners")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfDirectoryObject>> listOwners(
-            @HostParam("$host") String endpoint,
-            @PathParam("application-id") String applicationId,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$search") String search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$select") String select,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("/applications/{application-id}/owners/$ref")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfLinksOfDirectoryObject>> listRefOwners(
-            @HostParam("$host") String endpoint,
-            @PathParam("application-id") String applicationId,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$search") String search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("$orderby") String orderby,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post("/applications/{application-id}/owners/$ref")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<Map<String, Object>>> createRefOwners(
-            @HostParam("$host") String endpoint,
-            @PathParam("application-id") String applicationId,
-            @BodyParam("application/json") Map<String, Object> body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("/applications/{application-id}/tokenIssuancePolicies")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfTokenIssuancePolicy>> listTokenIssuancePolicies(
-            @HostParam("$host") String endpoint,
-            @PathParam("application-id") String applicationId,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$search") String search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$select") String select,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("/applications/{application-id}/tokenIssuancePolicies/$ref")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfLinksOfTokenIssuancePolicy>> listRefTokenIssuancePolicies(
-            @HostParam("$host") String endpoint,
-            @PathParam("application-id") String applicationId,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$search") String search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("$orderby") String orderby,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post("/applications/{application-id}/tokenIssuancePolicies/$ref")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<Map<String, Object>>> createRefTokenIssuancePolicies(
-            @HostParam("$host") String endpoint,
-            @PathParam("application-id") String applicationId,
-            @BodyParam("application/json") Map<String, Object> body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("/applications/{application-id}/tokenLifetimePolicies")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfTokenLifetimePolicy>> listTokenLifetimePolicies(
-            @HostParam("$host") String endpoint,
-            @PathParam("application-id") String applicationId,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$search") String search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("$orderby") String orderby,
-            @QueryParam("$select") String select,
-            @QueryParam("$expand") String expand,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("/applications/{application-id}/tokenLifetimePolicies/$ref")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfLinksOfTokenLifetimePolicy>> listRefTokenLifetimePolicies(
-            @HostParam("$host") String endpoint,
-            @PathParam("application-id") String applicationId,
-            @QueryParam("$top") Integer top,
-            @QueryParam("$skip") Integer skip,
-            @QueryParam("$search") String search,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$count") Boolean count,
-            @QueryParam("$orderby") String orderby,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post("/applications/{application-id}/tokenLifetimePolicies/$ref")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<Map<String, Object>>> createRefTokenLifetimePolicies(
-            @HostParam("$host") String endpoint,
-            @PathParam("application-id") String applicationId,
-            @BodyParam("application/json") Map<String, Object> body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Get("/applications/microsoft.graph.delta()")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<List<MicrosoftGraphApplicationInner>>> delta(
-            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post("/applications/microsoft.graph.getAvailableExtensionProperties")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<List<MicrosoftGraphExtensionPropertyInner>>> getAvailableExtensionProperties(
-            @HostParam("$host") String endpoint,
-            @BodyParam("application/json") ApplicationsGetAvailableExtensionPropertiesRequestBody body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post("/applications/microsoft.graph.getByIds")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<List<MicrosoftGraphDirectoryObjectInner>>> getByIds(
-            @HostParam("$host") String endpoint,
-            @BodyParam("application/json") ApplicationsGetByIdsRequestBody body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post("/applications/microsoft.graph.validateProperties")
-        @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<Void>> validateProperties(
-            @HostParam("$host") String endpoint,
-            @BodyParam("application/json") ApplicationsValidatePropertiesRequestBody body,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
         @Headers({"Accept: application/json", "Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
@@ -543,48 +356,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         @UnexpectedResponseExceptionType(OdataErrorMainException.class)
         Mono<Response<CollectionOfLinksOfHomeRealmDiscoveryPolicy>> listRefHomeRealmDiscoveryPoliciesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfDirectoryObject>> listOwnersNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfLinksOfDirectoryObject>> listRefOwnersNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfTokenIssuancePolicy>> listTokenIssuancePoliciesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfLinksOfTokenIssuancePolicy>> listRefTokenIssuancePoliciesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfTokenLifetimePolicy>> listTokenLifetimePoliciesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
-
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
-        @Get("{nextLink}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(OdataErrorMainException.class)
-        Mono<Response<CollectionOfLinksOfTokenLifetimePolicy>> listRefTokenLifetimePoliciesNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
     }
 
     /**
@@ -596,7 +367,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from applications.
+     * @return createdOnBehalfOf from applications along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphDirectoryObjectInner>> getCreatedOnBehalfOfWithResponseAsync(
@@ -626,7 +397,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                             expandConverted,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -639,7 +410,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from applications.
+     * @return createdOnBehalfOf from applications along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphDirectoryObjectInner>> getCreatedOnBehalfOfWithResponseAsync(
@@ -673,7 +444,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from applications.
+     * @return createdOnBehalfOf from applications on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphDirectoryObjectInner> getCreatedOnBehalfOfAsync(
@@ -696,7 +467,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from applications.
+     * @return createdOnBehalfOf from applications on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphDirectoryObjectInner> getCreatedOnBehalfOfAsync(String applicationId) {
@@ -739,7 +510,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return createdOnBehalfOf from applications.
+     * @return createdOnBehalfOf from applications along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftGraphDirectoryObjectInner> getCreatedOnBehalfOfWithResponse(
@@ -754,7 +525,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of createdOnBehalfOf from applications.
+     * @return ref of createdOnBehalfOf from applications along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> getRefCreatedOnBehalfOfWithResponseAsync(String applicationId) {
@@ -771,7 +543,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         return FluxUtil
             .withContext(
                 context -> service.getRefCreatedOnBehalfOf(this.client.getEndpoint(), applicationId, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -782,7 +554,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of createdOnBehalfOf from applications.
+     * @return ref of createdOnBehalfOf from applications along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<String>> getRefCreatedOnBehalfOfWithResponseAsync(String applicationId, Context context) {
@@ -807,7 +580,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of createdOnBehalfOf from applications.
+     * @return ref of createdOnBehalfOf from applications on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> getRefCreatedOnBehalfOfAsync(String applicationId) {
@@ -844,7 +617,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of createdOnBehalfOf from applications.
+     * @return ref of createdOnBehalfOf from applications along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> getRefCreatedOnBehalfOfWithResponse(String applicationId, Context context) {
@@ -859,7 +632,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> setRefCreatedOnBehalfOfWithResponseAsync(
@@ -881,7 +654,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .withContext(
                 context ->
                     service.setRefCreatedOnBehalfOf(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -893,7 +666,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> setRefCreatedOnBehalfOfWithResponseAsync(
@@ -923,7 +696,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> setRefCreatedOnBehalfOfAsync(String applicationId, Map<String, Object> body) {
@@ -954,7 +727,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setRefCreatedOnBehalfOfWithResponse(
@@ -970,7 +743,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteRefCreatedOnBehalfOfWithResponseAsync(String applicationId, String ifMatch) {
@@ -989,7 +762,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                 context ->
                     service
                         .deleteRefCreatedOnBehalfOf(this.client.getEndpoint(), applicationId, ifMatch, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1001,7 +774,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteRefCreatedOnBehalfOfWithResponseAsync(
@@ -1028,7 +801,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRefCreatedOnBehalfOfAsync(String applicationId, String ifMatch) {
@@ -1043,7 +816,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteRefCreatedOnBehalfOfAsync(String applicationId) {
@@ -1075,7 +848,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRefCreatedOnBehalfOfWithResponse(
@@ -1098,7 +871,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphExtensionPropertyInner>> listExtensionPropertiesSinglePageAsync(
@@ -1153,7 +927,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1172,7 +946,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphExtensionPropertyInner>> listExtensionPropertiesSinglePageAsync(
@@ -1243,7 +1018,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MicrosoftGraphExtensionPropertyInner> listExtensionPropertiesAsync(
@@ -1270,7 +1045,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MicrosoftGraphExtensionPropertyInner> listExtensionPropertiesAsync(String applicationId) {
@@ -1305,7 +1080,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MicrosoftGraphExtensionPropertyInner> listExtensionPropertiesAsync(
@@ -1333,7 +1108,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftGraphExtensionPropertyInner> listExtensionProperties(String applicationId) {
@@ -1365,7 +1140,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftGraphExtensionPropertyInner> listExtensionProperties(
@@ -1392,7 +1167,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return extensionProperty along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphExtensionPropertyInner>> createExtensionPropertiesWithResponseAsync(
@@ -1416,7 +1191,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
             .withContext(
                 context ->
                     service.createExtensionProperties(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1428,7 +1203,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return extensionProperty along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphExtensionPropertyInner>> createExtensionPropertiesWithResponseAsync(
@@ -1460,7 +1235,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return extensionProperty on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphExtensionPropertyInner> createExtensionPropertiesAsync(
@@ -1484,7 +1259,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return extensionProperty.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MicrosoftGraphExtensionPropertyInner createExtensionProperties(
@@ -1501,7 +1276,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return extensionProperty along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftGraphExtensionPropertyInner> createExtensionPropertiesWithResponse(
@@ -1519,7 +1294,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphExtensionPropertyInner>> getExtensionPropertiesWithResponseAsync(
@@ -1554,7 +1330,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                             expandConverted,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1568,7 +1344,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphExtensionPropertyInner>> getExtensionPropertiesWithResponseAsync(
@@ -1617,7 +1394,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphExtensionPropertyInner> getExtensionPropertiesAsync(
@@ -1641,7 +1418,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphExtensionPropertyInner> getExtensionPropertiesAsync(
@@ -1688,7 +1465,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extensionProperties from applications.
+     * @return extensionProperties from applications along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftGraphExtensionPropertyInner> getExtensionPropertiesWithResponse(
@@ -1710,7 +1487,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateExtensionPropertiesWithResponseAsync(
@@ -1740,7 +1517,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                     service
                         .updateExtensionProperties(
                             this.client.getEndpoint(), applicationId, extensionPropertyId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1753,7 +1530,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateExtensionPropertiesWithResponseAsync(
@@ -1792,7 +1569,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> updateExtensionPropertiesAsync(
@@ -1827,7 +1604,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateExtensionPropertiesWithResponse(
@@ -1844,7 +1621,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteExtensionPropertiesWithResponseAsync(
@@ -1869,7 +1646,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                     service
                         .deleteExtensionProperties(
                             this.client.getEndpoint(), applicationId, extensionPropertyId, ifMatch, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1882,7 +1659,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteExtensionPropertiesWithResponseAsync(
@@ -1916,7 +1693,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteExtensionPropertiesAsync(String applicationId, String extensionPropertyId, String ifMatch) {
@@ -1932,7 +1709,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteExtensionPropertiesAsync(String applicationId, String extensionPropertyId) {
@@ -1966,7 +1743,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteExtensionPropertiesWithResponse(
@@ -1989,7 +1766,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return homeRealmDiscoveryPolicies from applications.
+     * @return homeRealmDiscoveryPolicies from applications along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphHomeRealmDiscoveryPolicyInner>>
@@ -2045,7 +1823,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2064,7 +1842,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return homeRealmDiscoveryPolicies from applications.
+     * @return homeRealmDiscoveryPolicies from applications along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphHomeRealmDiscoveryPolicyInner>>
@@ -2136,7 +1915,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return homeRealmDiscoveryPolicies from applications.
+     * @return homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPoliciesAsync(
@@ -2163,7 +1942,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return homeRealmDiscoveryPolicies from applications.
+     * @return homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPoliciesAsync(
@@ -2199,7 +1978,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return homeRealmDiscoveryPolicies from applications.
+     * @return homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPoliciesAsync(
@@ -2227,7 +2006,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return homeRealmDiscoveryPolicies from applications.
+     * @return homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPolicies(
@@ -2261,7 +2040,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return homeRealmDiscoveryPolicies from applications.
+     * @return homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MicrosoftGraphHomeRealmDiscoveryPolicyInner> listHomeRealmDiscoveryPolicies(
@@ -2293,7 +2072,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of homeRealmDiscoveryPolicies from applications.
+     * @return ref of homeRealmDiscoveryPolicies from applications along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listRefHomeRealmDiscoveryPoliciesSinglePageAsync(
@@ -2340,7 +2120,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2357,7 +2137,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of homeRealmDiscoveryPolicies from applications.
+     * @return ref of homeRealmDiscoveryPolicies from applications along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listRefHomeRealmDiscoveryPoliciesSinglePageAsync(
@@ -2418,7 +2199,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of homeRealmDiscoveryPolicies from applications.
+     * @return ref of homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listRefHomeRealmDiscoveryPoliciesAsync(
@@ -2443,7 +2224,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of homeRealmDiscoveryPolicies from applications.
+     * @return ref of homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<String> listRefHomeRealmDiscoveryPoliciesAsync(String applicationId) {
@@ -2474,7 +2255,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of homeRealmDiscoveryPolicies from applications.
+     * @return ref of homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<String> listRefHomeRealmDiscoveryPoliciesAsync(
@@ -2500,7 +2281,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of homeRealmDiscoveryPolicies from applications.
+     * @return ref of homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listRefHomeRealmDiscoveryPolicies(String applicationId) {
@@ -2528,7 +2309,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of homeRealmDiscoveryPolicies from applications.
+     * @return ref of homeRealmDiscoveryPolicies from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<String> listRefHomeRealmDiscoveryPolicies(
@@ -2552,7 +2333,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return dictionary of &lt;AnyObject&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Map<String, Object>>> createRefHomeRealmDiscoveryPoliciesWithResponseAsync(
@@ -2576,7 +2357,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                     service
                         .createRefHomeRealmDiscoveryPolicies(
                             this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2588,7 +2369,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return dictionary of &lt;AnyObject&gt; along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Map<String, Object>>> createRefHomeRealmDiscoveryPoliciesWithResponseAsync(
@@ -2619,7 +2400,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return dictionary of &lt;AnyObject&gt; on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Map<String, Object>> createRefHomeRealmDiscoveryPoliciesAsync(
@@ -2643,7 +2424,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return dictionary of &lt;AnyObject&gt;.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Map<String, Object> createRefHomeRealmDiscoveryPolicies(String applicationId, Map<String, Object> body) {
@@ -2659,7 +2440,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
+     * @return dictionary of &lt;AnyObject&gt; along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Map<String, Object>> createRefHomeRealmDiscoveryPoliciesWithResponse(
@@ -2675,7 +2456,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keyCredential.
+     * @return keyCredential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphKeyCredentialInner>> addKeyWithResponseAsync(
@@ -2697,7 +2478,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.addKey(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2709,7 +2490,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keyCredential.
+     * @return keyCredential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphKeyCredentialInner>> addKeyWithResponseAsync(
@@ -2741,7 +2522,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keyCredential.
+     * @return keyCredential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphKeyCredentialInner> addKeyAsync(
@@ -2781,7 +2562,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return keyCredential.
+     * @return keyCredential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftGraphKeyCredentialInner> addKeyWithResponse(
@@ -2797,7 +2578,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return passwordCredential.
+     * @return passwordCredential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphPasswordCredentialInner>> addPasswordWithResponseAsync(
@@ -2820,7 +2601,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         return FluxUtil
             .withContext(
                 context -> service.addPassword(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2832,7 +2613,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return passwordCredential.
+     * @return passwordCredential along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphPasswordCredentialInner>> addPasswordWithResponseAsync(
@@ -2864,7 +2645,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return passwordCredential.
+     * @return passwordCredential on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphPasswordCredentialInner> addPasswordAsync(
@@ -2905,7 +2686,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return passwordCredential.
+     * @return passwordCredential along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftGraphPasswordCredentialInner> addPasswordWithResponse(
@@ -2921,7 +2702,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
+     * @return array of Post200ApplicationJsonItemsItem along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<String>>> checkMemberGroupsWithResponseAsync(
@@ -2944,7 +2726,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         return FluxUtil
             .withContext(
                 context -> service.checkMemberGroups(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -2956,7 +2738,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
+     * @return array of Post200ApplicationJsonItemsItem along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<String>>> checkMemberGroupsWithResponseAsync(
@@ -2988,7 +2771,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
+     * @return array of Post200ApplicationJsonItemsItem on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> checkMemberGroupsAsync(
@@ -3028,7 +2811,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Post200ApplicationJsonItemsItem.
+     * @return array of Post200ApplicationJsonItemsItem along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<String>> checkMemberGroupsWithResponse(
@@ -3044,7 +2827,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<String>>> checkMemberObjectsWithResponseAsync(
@@ -3067,7 +2850,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         return FluxUtil
             .withContext(
                 context -> service.checkMemberObjects(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3079,7 +2862,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<String>>> checkMemberObjectsWithResponseAsync(
@@ -3111,7 +2894,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> checkMemberObjectsAsync(
@@ -3151,7 +2934,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<String>> checkMemberObjectsWithResponse(
@@ -3167,7 +2950,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<String>>> getMemberGroupsWithResponseAsync(
@@ -3190,7 +2973,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         return FluxUtil
             .withContext(
                 context -> service.getMemberGroups(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3202,7 +2985,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<String>>> getMemberGroupsWithResponseAsync(
@@ -3234,7 +3017,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> getMemberGroupsAsync(String applicationId, ApplicationsGetMemberGroupsRequestBody body) {
@@ -3273,7 +3056,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<String>> getMemberGroupsWithResponse(
@@ -3289,7 +3072,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<String>>> getMemberObjectsWithResponseAsync(
@@ -3312,7 +3095,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         return FluxUtil
             .withContext(
                 context -> service.getMemberObjects(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3324,7 +3107,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<String>>> getMemberObjectsWithResponseAsync(
@@ -3356,7 +3139,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<String>> getMemberObjectsAsync(
@@ -3396,7 +3179,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of String.
+     * @return array of String along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<String>> getMemberObjectsWithResponse(
@@ -3412,7 +3195,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeKeyWithResponseAsync(
@@ -3434,7 +3217,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.removeKey(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3446,7 +3229,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> removeKeyWithResponseAsync(
@@ -3478,7 +3261,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removeKeyAsync(String applicationId, ApplicationsRemoveKeyRequestBody body) {
@@ -3508,7 +3291,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeKeyWithResponse(
@@ -3524,7 +3307,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removePasswordWithResponseAsync(
@@ -3547,7 +3330,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         return FluxUtil
             .withContext(
                 context -> service.removePassword(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3559,7 +3342,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> removePasswordWithResponseAsync(
@@ -3591,7 +3374,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> removePasswordAsync(String applicationId, ApplicationsRemovePasswordRequestBody body) {
@@ -3621,7 +3404,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removePasswordWithResponse(
@@ -3636,7 +3419,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return directoryObject along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MicrosoftGraphDirectoryObjectInner>> restoreWithResponseAsync(String applicationId) {
@@ -3652,7 +3435,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.restore(this.client.getEndpoint(), applicationId, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -3663,7 +3446,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return directoryObject along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<MicrosoftGraphDirectoryObjectInner>> restoreWithResponseAsync(
@@ -3689,7 +3472,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return directoryObject on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MicrosoftGraphDirectoryObjectInner> restoreAsync(String applicationId) {
@@ -3711,7 +3494,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return directoryObject.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MicrosoftGraphDirectoryObjectInner restore(String applicationId) {
@@ -3726,2460 +3509,11 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return directoryObject along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MicrosoftGraphDirectoryObjectInner> restoreWithResponse(String applicationId, Context context) {
         return restoreWithResponseAsync(applicationId, context).block();
-    }
-
-    /**
-     * Get owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listOwnersSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<String> expand) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
-        String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOwners(
-                            this.client.getEndpoint(),
-                            applicationId,
-                            top,
-                            skip,
-                            search,
-                            filter,
-                            count,
-                            orderbyConverted,
-                            selectConverted,
-                            expandConverted,
-                            accept,
-                            context))
-            .<PagedResponse<MicrosoftGraphDirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listOwnersSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<String> expand,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
-        String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
-        context = this.client.mergeContext(context);
-        return service
-            .listOwners(
-                this.client.getEndpoint(),
-                applicationId,
-                top,
-                skip,
-                search,
-                filter,
-                count,
-                orderbyConverted,
-                selectConverted,
-                expandConverted,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MicrosoftGraphDirectoryObjectInner> listOwnersAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<String> expand) {
-        return new PagedFlux<>(
-            () -> listOwnersSinglePageAsync(applicationId, top, skip, search, filter, count, orderby, select, expand),
-            nextLink -> listOwnersNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MicrosoftGraphDirectoryObjectInner> listOwnersAsync(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        final List<ApplicationsSelect> select = null;
-        final List<String> expand = null;
-        return new PagedFlux<>(
-            () -> listOwnersSinglePageAsync(applicationId, top, skip, search, filter, count, orderby, select, expand),
-            nextLink -> listOwnersNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MicrosoftGraphDirectoryObjectInner> listOwnersAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<String> expand,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listOwnersSinglePageAsync(
-                    applicationId, top, skip, search, filter, count, orderby, select, expand, context),
-            nextLink -> listOwnersNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MicrosoftGraphDirectoryObjectInner> listOwners(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        final List<ApplicationsSelect> select = null;
-        final List<String> expand = null;
-        return new PagedIterable<>(
-            listOwnersAsync(applicationId, top, skip, search, filter, count, orderby, select, expand));
-    }
-
-    /**
-     * Get owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MicrosoftGraphDirectoryObjectInner> listOwners(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<String> expand,
-        Context context) {
-        return new PagedIterable<>(
-            listOwnersAsync(applicationId, top, skip, search, filter, count, orderby, select, expand, context));
-    }
-
-    /**
-     * Get ref of owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefOwnersSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRefOwners(
-                            this.client.getEndpoint(),
-                            applicationId,
-                            top,
-                            skip,
-                            search,
-                            filter,
-                            count,
-                            orderbyConverted,
-                            accept,
-                            context))
-            .<PagedResponse<String>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get ref of owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefOwnersSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        context = this.client.mergeContext(context);
-        return service
-            .listRefOwners(
-                this.client.getEndpoint(),
-                applicationId,
-                top,
-                skip,
-                search,
-                filter,
-                count,
-                orderbyConverted,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get ref of owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRefOwnersAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby) {
-        return new PagedFlux<>(
-            () -> listRefOwnersSinglePageAsync(applicationId, top, skip, search, filter, count, orderby),
-            nextLink -> listRefOwnersNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get ref of owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRefOwnersAsync(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        return new PagedFlux<>(
-            () -> listRefOwnersSinglePageAsync(applicationId, top, skip, search, filter, count, orderby),
-            nextLink -> listRefOwnersNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get ref of owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<String> listRefOwnersAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context) {
-        return new PagedFlux<>(
-            () -> listRefOwnersSinglePageAsync(applicationId, top, skip, search, filter, count, orderby, context),
-            nextLink -> listRefOwnersNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get ref of owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRefOwners(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        return new PagedIterable<>(listRefOwnersAsync(applicationId, top, skip, search, filter, count, orderby));
-    }
-
-    /**
-     * Get ref of owners from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of owners from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRefOwners(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context) {
-        return new PagedIterable<>(
-            listRefOwnersAsync(applicationId, top, skip, search, filter, count, orderby, context));
-    }
-
-    /**
-     * Create new navigation property ref to owners for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Map<String, Object>>> createRefOwnersWithResponseAsync(
-        String applicationId, Map<String, Object> body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.createRefOwners(this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create new navigation property ref to owners for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Map<String, Object>>> createRefOwnersWithResponseAsync(
-        String applicationId, Map<String, Object> body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createRefOwners(this.client.getEndpoint(), applicationId, body, accept, context);
-    }
-
-    /**
-     * Create new navigation property ref to owners for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> createRefOwnersAsync(String applicationId, Map<String, Object> body) {
-        return createRefOwnersWithResponseAsync(applicationId, body)
-            .flatMap(
-                (Response<Map<String, Object>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create new navigation property ref to owners for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> createRefOwners(String applicationId, Map<String, Object> body) {
-        return createRefOwnersAsync(applicationId, body).block();
-    }
-
-    /**
-     * Create new navigation property ref to owners for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Map<String, Object>> createRefOwnersWithResponse(
-        String applicationId, Map<String, Object> body, Context context) {
-        return createRefOwnersWithResponseAsync(applicationId, body, context).block();
-    }
-
-    /**
-     * Get tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphTokenIssuancePolicyInner>> listTokenIssuancePoliciesSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
-        String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listTokenIssuancePolicies(
-                            this.client.getEndpoint(),
-                            applicationId,
-                            top,
-                            skip,
-                            search,
-                            filter,
-                            count,
-                            orderbyConverted,
-                            selectConverted,
-                            expandConverted,
-                            accept,
-                            context))
-            .<PagedResponse<MicrosoftGraphTokenIssuancePolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphTokenIssuancePolicyInner>> listTokenIssuancePoliciesSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
-        String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
-        context = this.client.mergeContext(context);
-        return service
-            .listTokenIssuancePolicies(
-                this.client.getEndpoint(),
-                applicationId,
-                top,
-                skip,
-                search,
-                filter,
-                count,
-                orderbyConverted,
-                selectConverted,
-                expandConverted,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand) {
-        return new PagedFlux<>(
-            () ->
-                listTokenIssuancePoliciesSinglePageAsync(
-                    applicationId, top, skip, search, filter, count, orderby, select, expand),
-            nextLink -> listTokenIssuancePoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePoliciesAsync(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        final List<ApplicationsSelect> select = null;
-        final List<ApplicationsExpand> expand = null;
-        return new PagedFlux<>(
-            () ->
-                listTokenIssuancePoliciesSinglePageAsync(
-                    applicationId, top, skip, search, filter, count, orderby, select, expand),
-            nextLink -> listTokenIssuancePoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listTokenIssuancePoliciesSinglePageAsync(
-                    applicationId, top, skip, search, filter, count, orderby, select, expand, context),
-            nextLink -> listTokenIssuancePoliciesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePolicies(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        final List<ApplicationsSelect> select = null;
-        final List<ApplicationsExpand> expand = null;
-        return new PagedIterable<>(
-            listTokenIssuancePoliciesAsync(applicationId, top, skip, search, filter, count, orderby, select, expand));
-    }
-
-    /**
-     * Get tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MicrosoftGraphTokenIssuancePolicyInner> listTokenIssuancePolicies(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand,
-        Context context) {
-        return new PagedIterable<>(
-            listTokenIssuancePoliciesAsync(
-                applicationId, top, skip, search, filter, count, orderby, select, expand, context));
-    }
-
-    /**
-     * Get ref of tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefTokenIssuancePoliciesSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRefTokenIssuancePolicies(
-                            this.client.getEndpoint(),
-                            applicationId,
-                            top,
-                            skip,
-                            search,
-                            filter,
-                            count,
-                            orderbyConverted,
-                            accept,
-                            context))
-            .<PagedResponse<String>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get ref of tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefTokenIssuancePoliciesSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        context = this.client.mergeContext(context);
-        return service
-            .listRefTokenIssuancePolicies(
-                this.client.getEndpoint(),
-                applicationId,
-                top,
-                skip,
-                search,
-                filter,
-                count,
-                orderbyConverted,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get ref of tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRefTokenIssuancePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby) {
-        return new PagedFlux<>(
-            () -> listRefTokenIssuancePoliciesSinglePageAsync(applicationId, top, skip, search, filter, count, orderby),
-            nextLink -> listRefTokenIssuancePoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get ref of tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRefTokenIssuancePoliciesAsync(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        return new PagedFlux<>(
-            () -> listRefTokenIssuancePoliciesSinglePageAsync(applicationId, top, skip, search, filter, count, orderby),
-            nextLink -> listRefTokenIssuancePoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get ref of tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<String> listRefTokenIssuancePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listRefTokenIssuancePoliciesSinglePageAsync(
-                    applicationId, top, skip, search, filter, count, orderby, context),
-            nextLink -> listRefTokenIssuancePoliciesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get ref of tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRefTokenIssuancePolicies(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        return new PagedIterable<>(
-            listRefTokenIssuancePoliciesAsync(applicationId, top, skip, search, filter, count, orderby));
-    }
-
-    /**
-     * Get ref of tokenIssuancePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenIssuancePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRefTokenIssuancePolicies(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context) {
-        return new PagedIterable<>(
-            listRefTokenIssuancePoliciesAsync(applicationId, top, skip, search, filter, count, orderby, context));
-    }
-
-    /**
-     * Create new navigation property ref to tokenIssuancePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Map<String, Object>>> createRefTokenIssuancePoliciesWithResponseAsync(
-        String applicationId, Map<String, Object> body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createRefTokenIssuancePolicies(
-                            this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create new navigation property ref to tokenIssuancePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Map<String, Object>>> createRefTokenIssuancePoliciesWithResponseAsync(
-        String applicationId, Map<String, Object> body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createRefTokenIssuancePolicies(this.client.getEndpoint(), applicationId, body, accept, context);
-    }
-
-    /**
-     * Create new navigation property ref to tokenIssuancePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> createRefTokenIssuancePoliciesAsync(
-        String applicationId, Map<String, Object> body) {
-        return createRefTokenIssuancePoliciesWithResponseAsync(applicationId, body)
-            .flatMap(
-                (Response<Map<String, Object>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create new navigation property ref to tokenIssuancePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> createRefTokenIssuancePolicies(String applicationId, Map<String, Object> body) {
-        return createRefTokenIssuancePoliciesAsync(applicationId, body).block();
-    }
-
-    /**
-     * Create new navigation property ref to tokenIssuancePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Map<String, Object>> createRefTokenIssuancePoliciesWithResponse(
-        String applicationId, Map<String, Object> body, Context context) {
-        return createRefTokenIssuancePoliciesWithResponseAsync(applicationId, body, context).block();
-    }
-
-    /**
-     * Get tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphTokenLifetimePolicyInner>> listTokenLifetimePoliciesSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
-        String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listTokenLifetimePolicies(
-                            this.client.getEndpoint(),
-                            applicationId,
-                            top,
-                            skip,
-                            search,
-                            filter,
-                            count,
-                            orderbyConverted,
-                            selectConverted,
-                            expandConverted,
-                            accept,
-                            context))
-            .<PagedResponse<MicrosoftGraphTokenLifetimePolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphTokenLifetimePolicyInner>> listTokenLifetimePoliciesSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        String selectConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(select, CollectionFormat.CSV);
-        String expandConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(expand, CollectionFormat.CSV);
-        context = this.client.mergeContext(context);
-        return service
-            .listTokenLifetimePolicies(
-                this.client.getEndpoint(),
-                applicationId,
-                top,
-                skip,
-                search,
-                filter,
-                count,
-                orderbyConverted,
-                selectConverted,
-                expandConverted,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand) {
-        return new PagedFlux<>(
-            () ->
-                listTokenLifetimePoliciesSinglePageAsync(
-                    applicationId, top, skip, search, filter, count, orderby, select, expand),
-            nextLink -> listTokenLifetimePoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePoliciesAsync(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        final List<ApplicationsSelect> select = null;
-        final List<ApplicationsExpand> expand = null;
-        return new PagedFlux<>(
-            () ->
-                listTokenLifetimePoliciesSinglePageAsync(
-                    applicationId, top, skip, search, filter, count, orderby, select, expand),
-            nextLink -> listTokenLifetimePoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listTokenLifetimePoliciesSinglePageAsync(
-                    applicationId, top, skip, search, filter, count, orderby, select, expand, context),
-            nextLink -> listTokenLifetimePoliciesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePolicies(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        final List<ApplicationsSelect> select = null;
-        final List<ApplicationsExpand> expand = null;
-        return new PagedIterable<>(
-            listTokenLifetimePoliciesAsync(applicationId, top, skip, search, filter, count, orderby, select, expand));
-    }
-
-    /**
-     * Get tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param select Select properties to be returned.
-     * @param expand Expand related entities.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<MicrosoftGraphTokenLifetimePolicyInner> listTokenLifetimePolicies(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        List<ApplicationsSelect> select,
-        List<ApplicationsExpand> expand,
-        Context context) {
-        return new PagedIterable<>(
-            listTokenLifetimePoliciesAsync(
-                applicationId, top, skip, search, filter, count, orderby, select, expand, context));
-    }
-
-    /**
-     * Get ref of tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefTokenLifetimePoliciesSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listRefTokenLifetimePolicies(
-                            this.client.getEndpoint(),
-                            applicationId,
-                            top,
-                            skip,
-                            search,
-                            filter,
-                            count,
-                            orderbyConverted,
-                            accept,
-                            context))
-            .<PagedResponse<String>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get ref of tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefTokenLifetimePoliciesSinglePageAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        String orderbyConverted =
-            JacksonAdapter.createDefaultSerializerAdapter().serializeList(orderby, CollectionFormat.CSV);
-        context = this.client.mergeContext(context);
-        return service
-            .listRefTokenLifetimePolicies(
-                this.client.getEndpoint(),
-                applicationId,
-                top,
-                skip,
-                search,
-                filter,
-                count,
-                orderbyConverted,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get ref of tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRefTokenLifetimePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby) {
-        return new PagedFlux<>(
-            () -> listRefTokenLifetimePoliciesSinglePageAsync(applicationId, top, skip, search, filter, count, orderby),
-            nextLink -> listRefTokenLifetimePoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get ref of tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> listRefTokenLifetimePoliciesAsync(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        return new PagedFlux<>(
-            () -> listRefTokenLifetimePoliciesSinglePageAsync(applicationId, top, skip, search, filter, count, orderby),
-            nextLink -> listRefTokenLifetimePoliciesNextSinglePageAsync(nextLink));
-    }
-
-    /**
-     * Get ref of tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<String> listRefTokenLifetimePoliciesAsync(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listRefTokenLifetimePoliciesSinglePageAsync(
-                    applicationId, top, skip, search, filter, count, orderby, context),
-            nextLink -> listRefTokenLifetimePoliciesNextSinglePageAsync(nextLink, context));
-    }
-
-    /**
-     * Get ref of tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRefTokenLifetimePolicies(String applicationId) {
-        final Integer top = null;
-        final Integer skip = null;
-        final String search = null;
-        final String filter = null;
-        final Boolean count = null;
-        final List<ApplicationsOrderby> orderby = null;
-        return new PagedIterable<>(
-            listRefTokenLifetimePoliciesAsync(applicationId, top, skip, search, filter, count, orderby));
-    }
-
-    /**
-     * Get ref of tokenLifetimePolicies from applications.
-     *
-     * @param applicationId key: id of application.
-     * @param top Show only the first n items.
-     * @param skip Skip the first n items.
-     * @param search Search items by search phrases.
-     * @param filter Filter items by property values.
-     * @param count Include count of items.
-     * @param orderby Order items by property values.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ref of tokenLifetimePolicies from applications.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> listRefTokenLifetimePolicies(
-        String applicationId,
-        Integer top,
-        Integer skip,
-        String search,
-        String filter,
-        Boolean count,
-        List<ApplicationsOrderby> orderby,
-        Context context) {
-        return new PagedIterable<>(
-            listRefTokenLifetimePoliciesAsync(applicationId, top, skip, search, filter, count, orderby, context));
-    }
-
-    /**
-     * Create new navigation property ref to tokenLifetimePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Map<String, Object>>> createRefTokenLifetimePoliciesWithResponseAsync(
-        String applicationId, Map<String, Object> body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createRefTokenLifetimePolicies(
-                            this.client.getEndpoint(), applicationId, body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Create new navigation property ref to tokenLifetimePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Map<String, Object>>> createRefTokenLifetimePoliciesWithResponseAsync(
-        String applicationId, Map<String, Object> body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (applicationId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createRefTokenLifetimePolicies(this.client.getEndpoint(), applicationId, body, accept, context);
-    }
-
-    /**
-     * Create new navigation property ref to tokenLifetimePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Map<String, Object>> createRefTokenLifetimePoliciesAsync(
-        String applicationId, Map<String, Object> body) {
-        return createRefTokenLifetimePoliciesWithResponseAsync(applicationId, body)
-            .flatMap(
-                (Response<Map<String, Object>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create new navigation property ref to tokenLifetimePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Map<String, Object> createRefTokenLifetimePolicies(String applicationId, Map<String, Object> body) {
-        return createRefTokenLifetimePoliciesAsync(applicationId, body).block();
-    }
-
-    /**
-     * Create new navigation property ref to tokenLifetimePolicies for applications.
-     *
-     * @param applicationId key: id of application.
-     * @param body New navigation property ref value.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return dictionary of &lt;any&gt;.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Map<String, Object>> createRefTokenLifetimePoliciesWithResponse(
-        String applicationId, Map<String, Object> body, Context context) {
-        return createRefTokenLifetimePoliciesWithResponseAsync(applicationId, body, context).block();
-    }
-
-    /**
-     * Invoke function delta.
-     *
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<MicrosoftGraphApplicationInner>>> deltaWithResponseAsync() {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.delta(this.client.getEndpoint(), accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Invoke function delta.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<MicrosoftGraphApplicationInner>>> deltaWithResponseAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delta(this.client.getEndpoint(), accept, context);
-    }
-
-    /**
-     * Invoke function delta.
-     *
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<MicrosoftGraphApplicationInner>> deltaAsync() {
-        return deltaWithResponseAsync()
-            .flatMap(
-                (Response<List<MicrosoftGraphApplicationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Invoke function delta.
-     *
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<MicrosoftGraphApplicationInner> delta() {
-        return deltaAsync().block();
-    }
-
-    /**
-     * Invoke function delta.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<MicrosoftGraphApplicationInner>> deltaWithResponse(Context context) {
-        return deltaWithResponseAsync(context).block();
-    }
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<MicrosoftGraphExtensionPropertyInner>>> getAvailableExtensionPropertiesWithResponseAsync(
-        ApplicationsGetAvailableExtensionPropertiesRequestBody body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context -> service.getAvailableExtensionProperties(this.client.getEndpoint(), body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<MicrosoftGraphExtensionPropertyInner>>> getAvailableExtensionPropertiesWithResponseAsync(
-        ApplicationsGetAvailableExtensionPropertiesRequestBody body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getAvailableExtensionProperties(this.client.getEndpoint(), body, accept, context);
-    }
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<MicrosoftGraphExtensionPropertyInner>> getAvailableExtensionPropertiesAsync(
-        ApplicationsGetAvailableExtensionPropertiesRequestBody body) {
-        return getAvailableExtensionPropertiesWithResponseAsync(body)
-            .flatMap(
-                (Response<List<MicrosoftGraphExtensionPropertyInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<MicrosoftGraphExtensionPropertyInner> getAvailableExtensionProperties(
-        ApplicationsGetAvailableExtensionPropertiesRequestBody body) {
-        return getAvailableExtensionPropertiesAsync(body).block();
-    }
-
-    /**
-     * Invoke action getAvailableExtensionProperties.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<MicrosoftGraphExtensionPropertyInner>> getAvailableExtensionPropertiesWithResponse(
-        ApplicationsGetAvailableExtensionPropertiesRequestBody body, Context context) {
-        return getAvailableExtensionPropertiesWithResponseAsync(body, context).block();
-    }
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<MicrosoftGraphDirectoryObjectInner>>> getByIdsWithResponseAsync(
-        ApplicationsGetByIdsRequestBody body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.getByIds(this.client.getEndpoint(), body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<List<MicrosoftGraphDirectoryObjectInner>>> getByIdsWithResponseAsync(
-        ApplicationsGetByIdsRequestBody body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByIds(this.client.getEndpoint(), body, accept, context);
-    }
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<MicrosoftGraphDirectoryObjectInner>> getByIdsAsync(ApplicationsGetByIdsRequestBody body) {
-        return getByIdsWithResponseAsync(body)
-            .flatMap(
-                (Response<List<MicrosoftGraphDirectoryObjectInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<MicrosoftGraphDirectoryObjectInner> getByIds(ApplicationsGetByIdsRequestBody body) {
-        return getByIdsAsync(body).block();
-    }
-
-    /**
-     * Invoke action getByIds.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of microsoft.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<MicrosoftGraphDirectoryObjectInner>> getByIdsWithResponse(
-        ApplicationsGetByIdsRequestBody body, Context context) {
-        return getByIdsWithResponseAsync(body, context).block();
-    }
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> validatePropertiesWithResponseAsync(ApplicationsValidatePropertiesRequestBody body) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.validateProperties(this.client.getEndpoint(), body, accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> validatePropertiesWithResponseAsync(
-        ApplicationsValidatePropertiesRequestBody body, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (body == null) {
-            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
-        } else {
-            body.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.validateProperties(this.client.getEndpoint(), body, accept, context);
-    }
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> validatePropertiesAsync(ApplicationsValidatePropertiesRequestBody body) {
-        return validatePropertiesWithResponseAsync(body).flatMap((Response<Void> res) -> Mono.empty());
-    }
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void validateProperties(ApplicationsValidatePropertiesRequestBody body) {
-        validatePropertiesAsync(body).block();
-    }
-
-    /**
-     * Invoke action validateProperties.
-     *
-     * @param body Action parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> validatePropertiesWithResponse(
-        ApplicationsValidatePropertiesRequestBody body, Context context) {
-        return validatePropertiesWithResponseAsync(body, context).block();
     }
 
     /**
@@ -6189,7 +3523,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of extensionProperty.
+     * @return collection of extensionProperty along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphExtensionPropertyInner>> listMoreSinglePageAsync(String nextLink) {
@@ -6207,7 +3542,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -6218,7 +3553,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of extensionProperty.
+     * @return collection of extensionProperty along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphExtensionPropertyInner>> listMoreSinglePageAsync(
@@ -6247,7 +3583,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of homeRealmDiscoveryPolicy.
+     * @return collection of homeRealmDiscoveryPolicy along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphHomeRealmDiscoveryPolicyInner>>
@@ -6266,7 +3603,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -6277,7 +3614,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of homeRealmDiscoveryPolicy.
+     * @return collection of homeRealmDiscoveryPolicy along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<MicrosoftGraphHomeRealmDiscoveryPolicyInner>>
@@ -6306,7 +3644,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of links of homeRealmDiscoveryPolicy.
+     * @return collection of links of homeRealmDiscoveryPolicy along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listRefHomeRealmDiscoveryPoliciesNextSinglePageAsync(String nextLink) {
@@ -6324,7 +3663,7 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
                         res.getValue().value(),
                         res.getValue().odataNextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -6335,7 +3674,8 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws OdataErrorMainException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of links of homeRealmDiscoveryPolicy.
+     * @return collection of links of homeRealmDiscoveryPolicy along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<String>> listRefHomeRealmDiscoveryPoliciesNextSinglePageAsync(
@@ -6346,355 +3686,6 @@ public final class ApplicationsClientImpl implements ApplicationsClient {
         context = this.client.mergeContext(context);
         return service
             .listRefHomeRealmDiscoveryPoliciesNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of directoryObject.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listOwnersNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listOwnersNext(nextLink, context))
-            .<PagedResponse<MicrosoftGraphDirectoryObjectInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of directoryObject.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphDirectoryObjectInner>> listOwnersNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listOwnersNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of links of directoryObject.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefOwnersNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listRefOwnersNext(nextLink, context))
-            .<PagedResponse<String>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of links of directoryObject.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefOwnersNextSinglePageAsync(String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listRefOwnersNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of tokenIssuancePolicy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphTokenIssuancePolicyInner>> listTokenIssuancePoliciesNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listTokenIssuancePoliciesNext(nextLink, context))
-            .<PagedResponse<MicrosoftGraphTokenIssuancePolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of tokenIssuancePolicy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphTokenIssuancePolicyInner>> listTokenIssuancePoliciesNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listTokenIssuancePoliciesNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of links of tokenIssuancePolicy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefTokenIssuancePoliciesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listRefTokenIssuancePoliciesNext(nextLink, context))
-            .<PagedResponse<String>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of links of tokenIssuancePolicy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefTokenIssuancePoliciesNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listRefTokenIssuancePoliciesNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of tokenLifetimePolicy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphTokenLifetimePolicyInner>> listTokenLifetimePoliciesNextSinglePageAsync(
-        String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listTokenLifetimePoliciesNext(nextLink, context))
-            .<PagedResponse<MicrosoftGraphTokenLifetimePolicyInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of tokenLifetimePolicy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<MicrosoftGraphTokenLifetimePolicyInner>> listTokenLifetimePoliciesNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listTokenLifetimePoliciesNext(nextLink, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of links of tokenLifetimePolicy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefTokenLifetimePoliciesNextSinglePageAsync(String nextLink) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        return FluxUtil
-            .withContext(context -> service.listRefTokenLifetimePoliciesNext(nextLink, context))
-            .<PagedResponse<String>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().odataNextLink(),
-                        null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws OdataErrorMainException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of links of tokenLifetimePolicy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> listRefTokenLifetimePoliciesNextSinglePageAsync(
-        String nextLink, Context context) {
-        if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
-        }
-        context = this.client.mergeContext(context);
-        return service
-            .listRefTokenLifetimePoliciesNext(nextLink, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

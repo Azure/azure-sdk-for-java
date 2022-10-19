@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for the ListServiceTags API service call. */
 @Immutable
 public final class ServiceTagsListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceTagsListResultInner.class);
-
     /*
      * The name of the cloud.
      */
@@ -56,6 +52,10 @@ public final class ServiceTagsListResultInner {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ServiceTagsListResultInner class. */
+    public ServiceTagsListResultInner() {
+    }
 
     /**
      * Get the name property: The name of the cloud.

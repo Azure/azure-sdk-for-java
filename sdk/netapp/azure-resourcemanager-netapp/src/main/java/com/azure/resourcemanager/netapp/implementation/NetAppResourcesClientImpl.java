@@ -6,6 +6,7 @@ package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
+import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
@@ -22,9 +23,9 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourcesClient;
 import com.azure.resourcemanager.netapp.fluent.models.CheckAvailabilityResponseInner;
+import com.azure.resourcemanager.netapp.fluent.models.RegionInfoInner;
 import com.azure.resourcemanager.netapp.models.FilePathAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.QuotaAvailabilityRequest;
 import com.azure.resourcemanager.netapp.models.ResourceNameAvailabilityRequest;
@@ -32,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NetAppResourcesClient. */
 public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
-    private final ClientLogger logger = new ClientLogger(NetAppResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final NetAppResourcesService service;
 
@@ -97,17 +96,32 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
             @BodyParam("application/json") QuotaAvailabilityRequest body,
             @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/regionInfo")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RegionInfoInner>> queryRegionInfo(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
-     * Check if a resource name is available.
+     * Check resource name availability
+     *
+     * <p>Check if a resource name is available.
      *
      * @param location The location.
      * @param body Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
@@ -149,7 +163,9 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * Check if a resource name is available.
+     * Check resource name availability
+     *
+     * <p>Check if a resource name is available.
      *
      * @param location The location.
      * @param body Name availability request.
@@ -157,7 +173,8 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckAvailabilityResponseInner>> checkNameAvailabilityWithResponseAsync(
@@ -196,31 +213,27 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * Check if a resource name is available.
+     * Check resource name availability
+     *
+     * <p>Check if a resource name is available.
      *
      * @param location The location.
      * @param body Name availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckAvailabilityResponseInner> checkNameAvailabilityAsync(
         String location, ResourceNameAvailabilityRequest body) {
-        return checkNameAvailabilityWithResponseAsync(location, body)
-            .flatMap(
-                (Response<CheckAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return checkNameAvailabilityWithResponseAsync(location, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Check if a resource name is available.
+     * Check resource name availability
+     *
+     * <p>Check if a resource name is available.
      *
      * @param location The location.
      * @param body Name availability request.
@@ -235,7 +248,9 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * Check if a resource name is available.
+     * Check resource name availability
+     *
+     * <p>Check if a resource name is available.
      *
      * @param location The location.
      * @param body Name availability request.
@@ -243,7 +258,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckAvailabilityResponseInner> checkNameAvailabilityWithResponse(
@@ -252,14 +267,17 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * Check if a file path is available.
+     * Check file path availability
+     *
+     * <p>Check if a file path is available.
      *
      * @param location The location.
      * @param body File path availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckAvailabilityResponseInner>> checkFilePathAvailabilityWithResponseAsync(
@@ -301,7 +319,9 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * Check if a file path is available.
+     * Check file path availability
+     *
+     * <p>Check if a file path is available.
      *
      * @param location The location.
      * @param body File path availability request.
@@ -309,7 +329,8 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckAvailabilityResponseInner>> checkFilePathAvailabilityWithResponseAsync(
@@ -348,31 +369,28 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * Check if a file path is available.
+     * Check file path availability
+     *
+     * <p>Check if a file path is available.
      *
      * @param location The location.
      * @param body File path availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckAvailabilityResponseInner> checkFilePathAvailabilityAsync(
         String location, FilePathAvailabilityRequest body) {
         return checkFilePathAvailabilityWithResponseAsync(location, body)
-            .flatMap(
-                (Response<CheckAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Check if a file path is available.
+     * Check file path availability
+     *
+     * <p>Check if a file path is available.
      *
      * @param location The location.
      * @param body File path availability request.
@@ -387,7 +405,9 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * Check if a file path is available.
+     * Check file path availability
+     *
+     * <p>Check if a file path is available.
      *
      * @param location The location.
      * @param body File path availability request.
@@ -395,7 +415,7 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckAvailabilityResponseInner> checkFilePathAvailabilityWithResponse(
@@ -404,14 +424,17 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * Check if a quota is available.
+     * Check quota availability
+     *
+     * <p>Check if a quota is available.
      *
      * @param location The location.
      * @param body Quota availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckAvailabilityResponseInner>> checkQuotaAvailabilityWithResponseAsync(
@@ -453,7 +476,9 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * Check if a quota is available.
+     * Check quota availability
+     *
+     * <p>Check if a quota is available.
      *
      * @param location The location.
      * @param body Quota availability request.
@@ -461,7 +486,8 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CheckAvailabilityResponseInner>> checkQuotaAvailabilityWithResponseAsync(
@@ -500,31 +526,27 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * Check if a quota is available.
+     * Check quota availability
+     *
+     * <p>Check if a quota is available.
      *
      * @param location The location.
      * @param body Quota availability request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CheckAvailabilityResponseInner> checkQuotaAvailabilityAsync(
         String location, QuotaAvailabilityRequest body) {
-        return checkQuotaAvailabilityWithResponseAsync(location, body)
-            .flatMap(
-                (Response<CheckAvailabilityResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return checkQuotaAvailabilityWithResponseAsync(location, body).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Check if a quota is available.
+     * Check quota availability
+     *
+     * <p>Check if a quota is available.
      *
      * @param location The location.
      * @param body Quota availability request.
@@ -539,7 +561,9 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
     }
 
     /**
-     * Check if a quota is available.
+     * Check quota availability
+     *
+     * <p>Check if a quota is available.
      *
      * @param location The location.
      * @param body Quota availability request.
@@ -547,11 +571,146 @@ public final class NetAppResourcesClientImpl implements NetAppResourcesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information regarding availability of a resource.
+     * @return information regarding availability of a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CheckAvailabilityResponseInner> checkQuotaAvailabilityWithResponse(
         String location, QuotaAvailabilityRequest body, Context context) {
         return checkQuotaAvailabilityWithResponseAsync(location, body, context).block();
+    }
+
+    /**
+     * Describes region specific information.
+     *
+     * <p>Provides storage to network proximity and logical zone mapping information.
+     *
+     * @param location The location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides region specific information along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RegionInfoInner>> queryRegionInfoWithResponseAsync(String location) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .queryRegionInfo(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            location,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Describes region specific information.
+     *
+     * <p>Provides storage to network proximity and logical zone mapping information.
+     *
+     * @param location The location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides region specific information along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RegionInfoInner>> queryRegionInfoWithResponseAsync(String location, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (location == null) {
+            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .queryRegionInfo(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                location,
+                this.client.getApiVersion(),
+                accept,
+                context);
+    }
+
+    /**
+     * Describes region specific information.
+     *
+     * <p>Provides storage to network proximity and logical zone mapping information.
+     *
+     * @param location The location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides region specific information on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<RegionInfoInner> queryRegionInfoAsync(String location) {
+        return queryRegionInfoWithResponseAsync(location).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Describes region specific information.
+     *
+     * <p>Provides storage to network proximity and logical zone mapping information.
+     *
+     * @param location The location.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides region specific information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public RegionInfoInner queryRegionInfo(String location) {
+        return queryRegionInfoAsync(location).block();
+    }
+
+    /**
+     * Describes region specific information.
+     *
+     * <p>Provides storage to network proximity and logical zone mapping information.
+     *
+     * @param location The location.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return provides region specific information along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<RegionInfoInner> queryRegionInfoWithResponse(String location, Context context) {
+        return queryRegionInfoWithResponseAsync(location, context).block();
     }
 }

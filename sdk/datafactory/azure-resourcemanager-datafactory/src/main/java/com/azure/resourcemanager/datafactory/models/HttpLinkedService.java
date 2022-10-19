@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.HttpLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("HttpServer")
 @Fluent
 public final class HttpLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpLinkedService.class);
-
     /*
      * Properties specific to this linked service type.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private HttpLinkedServiceTypeProperties innerTypeProperties = new HttpLinkedServiceTypeProperties();
+
+    /** Creates an instance of HttpLinkedService class. */
+    public HttpLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
@@ -65,7 +66,7 @@ public final class HttpLinkedService extends LinkedService {
     }
 
     /**
-     * Get the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
+     * Get the url property: The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or
      * Expression with resultType string).
      *
      * @return the url value.
@@ -75,7 +76,7 @@ public final class HttpLinkedService extends LinkedService {
     }
 
     /**
-     * Set the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
+     * Set the url property: The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or
      * Expression with resultType string).
      *
      * @param url the url value to set.
@@ -302,7 +303,7 @@ public final class HttpLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model HttpLinkedService"));
@@ -310,4 +311,6 @@ public final class HttpLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HttpLinkedService.class);
 }

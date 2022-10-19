@@ -139,6 +139,65 @@ public interface MetadataModel {
     LocalDate lastPublishDate();
 
     /**
+     * Gets the customVersion property: The custom version of the content. A optional free text.
+     *
+     * @return the customVersion value.
+     */
+    String customVersion();
+
+    /**
+     * Gets the contentSchemaVersion property: Schema version of the content. Can be used to distinguish between
+     * different flow based on the schema version.
+     *
+     * @return the contentSchemaVersion value.
+     */
+    String contentSchemaVersion();
+
+    /**
+     * Gets the icon property: the icon identifier. this id can later be fetched from the solution template.
+     *
+     * @return the icon value.
+     */
+    String icon();
+
+    /**
+     * Gets the threatAnalysisTactics property: the tactics the resource covers.
+     *
+     * @return the threatAnalysisTactics value.
+     */
+    List<String> threatAnalysisTactics();
+
+    /**
+     * Gets the threatAnalysisTechniques property: the techniques the resource covers, these have to be aligned with the
+     * tactics being used.
+     *
+     * @return the threatAnalysisTechniques value.
+     */
+    List<String> threatAnalysisTechniques();
+
+    /**
+     * Gets the previewImages property: preview image file names. These will be taken from the solution artifacts.
+     *
+     * @return the previewImages value.
+     */
+    List<String> previewImages();
+
+    /**
+     * Gets the previewImagesDark property: preview image file names. These will be taken from the solution artifacts.
+     * used for dark theme support.
+     *
+     * @return the previewImagesDark value.
+     */
+    List<String> previewImagesDark();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.MetadataModelInner object.
      *
      * @return the inner object.
@@ -182,7 +241,14 @@ public interface MetadataModel {
                 DefinitionStages.WithCategories,
                 DefinitionStages.WithProviders,
                 DefinitionStages.WithFirstPublishDate,
-                DefinitionStages.WithLastPublishDate {
+                DefinitionStages.WithLastPublishDate,
+                DefinitionStages.WithCustomVersion,
+                DefinitionStages.WithContentSchemaVersion,
+                DefinitionStages.WithIcon,
+                DefinitionStages.WithThreatAnalysisTactics,
+                DefinitionStages.WithThreatAnalysisTechniques,
+                DefinitionStages.WithPreviewImages,
+                DefinitionStages.WithPreviewImagesDark {
             /**
              * Executes the create request.
              *
@@ -342,6 +408,84 @@ public interface MetadataModel {
              */
             WithCreate withLastPublishDate(LocalDate lastPublishDate);
         }
+        /** The stage of the MetadataModel definition allowing to specify customVersion. */
+        interface WithCustomVersion {
+            /**
+             * Specifies the customVersion property: The custom version of the content. A optional free text.
+             *
+             * @param customVersion The custom version of the content. A optional free text.
+             * @return the next definition stage.
+             */
+            WithCreate withCustomVersion(String customVersion);
+        }
+        /** The stage of the MetadataModel definition allowing to specify contentSchemaVersion. */
+        interface WithContentSchemaVersion {
+            /**
+             * Specifies the contentSchemaVersion property: Schema version of the content. Can be used to distinguish
+             * between different flow based on the schema version.
+             *
+             * @param contentSchemaVersion Schema version of the content. Can be used to distinguish between different
+             *     flow based on the schema version.
+             * @return the next definition stage.
+             */
+            WithCreate withContentSchemaVersion(String contentSchemaVersion);
+        }
+        /** The stage of the MetadataModel definition allowing to specify icon. */
+        interface WithIcon {
+            /**
+             * Specifies the icon property: the icon identifier. this id can later be fetched from the solution
+             * template.
+             *
+             * @param icon the icon identifier. this id can later be fetched from the solution template.
+             * @return the next definition stage.
+             */
+            WithCreate withIcon(String icon);
+        }
+        /** The stage of the MetadataModel definition allowing to specify threatAnalysisTactics. */
+        interface WithThreatAnalysisTactics {
+            /**
+             * Specifies the threatAnalysisTactics property: the tactics the resource covers.
+             *
+             * @param threatAnalysisTactics the tactics the resource covers.
+             * @return the next definition stage.
+             */
+            WithCreate withThreatAnalysisTactics(List<String> threatAnalysisTactics);
+        }
+        /** The stage of the MetadataModel definition allowing to specify threatAnalysisTechniques. */
+        interface WithThreatAnalysisTechniques {
+            /**
+             * Specifies the threatAnalysisTechniques property: the techniques the resource covers, these have to be
+             * aligned with the tactics being used.
+             *
+             * @param threatAnalysisTechniques the techniques the resource covers, these have to be aligned with the
+             *     tactics being used.
+             * @return the next definition stage.
+             */
+            WithCreate withThreatAnalysisTechniques(List<String> threatAnalysisTechniques);
+        }
+        /** The stage of the MetadataModel definition allowing to specify previewImages. */
+        interface WithPreviewImages {
+            /**
+             * Specifies the previewImages property: preview image file names. These will be taken from the solution
+             * artifacts.
+             *
+             * @param previewImages preview image file names. These will be taken from the solution artifacts.
+             * @return the next definition stage.
+             */
+            WithCreate withPreviewImages(List<String> previewImages);
+        }
+        /** The stage of the MetadataModel definition allowing to specify previewImagesDark. */
+        interface WithPreviewImagesDark {
+            /**
+             * Specifies the previewImagesDark property: preview image file names. These will be taken from the solution
+             * artifacts. used for dark theme support.
+             *
+             * @param previewImagesDark preview image file names. These will be taken from the solution artifacts. used
+             *     for dark theme support.
+             * @return the next definition stage.
+             */
+            WithCreate withPreviewImagesDark(List<String> previewImagesDark);
+        }
     }
     /**
      * Begins update for the MetadataModel resource.
@@ -364,7 +508,14 @@ public interface MetadataModel {
             UpdateStages.WithCategories,
             UpdateStages.WithProviders,
             UpdateStages.WithFirstPublishDate,
-            UpdateStages.WithLastPublishDate {
+            UpdateStages.WithLastPublishDate,
+            UpdateStages.WithCustomVersion,
+            UpdateStages.WithContentSchemaVersion,
+            UpdateStages.WithIcon,
+            UpdateStages.WithThreatAnalysisTactics,
+            UpdateStages.WithThreatAnalysisTechniques,
+            UpdateStages.WithPreviewImages,
+            UpdateStages.WithPreviewImagesDark {
         /**
          * Executes the update request.
          *
@@ -525,6 +676,84 @@ public interface MetadataModel {
              * @return the next definition stage.
              */
             Update withLastPublishDate(LocalDate lastPublishDate);
+        }
+        /** The stage of the MetadataModel update allowing to specify customVersion. */
+        interface WithCustomVersion {
+            /**
+             * Specifies the customVersion property: The custom version of the content. A optional free text.
+             *
+             * @param customVersion The custom version of the content. A optional free text.
+             * @return the next definition stage.
+             */
+            Update withCustomVersion(String customVersion);
+        }
+        /** The stage of the MetadataModel update allowing to specify contentSchemaVersion. */
+        interface WithContentSchemaVersion {
+            /**
+             * Specifies the contentSchemaVersion property: Schema version of the content. Can be used to distinguish
+             * between different flow based on the schema version.
+             *
+             * @param contentSchemaVersion Schema version of the content. Can be used to distinguish between different
+             *     flow based on the schema version.
+             * @return the next definition stage.
+             */
+            Update withContentSchemaVersion(String contentSchemaVersion);
+        }
+        /** The stage of the MetadataModel update allowing to specify icon. */
+        interface WithIcon {
+            /**
+             * Specifies the icon property: the icon identifier. this id can later be fetched from the solution
+             * template.
+             *
+             * @param icon the icon identifier. this id can later be fetched from the solution template.
+             * @return the next definition stage.
+             */
+            Update withIcon(String icon);
+        }
+        /** The stage of the MetadataModel update allowing to specify threatAnalysisTactics. */
+        interface WithThreatAnalysisTactics {
+            /**
+             * Specifies the threatAnalysisTactics property: the tactics the resource covers.
+             *
+             * @param threatAnalysisTactics the tactics the resource covers.
+             * @return the next definition stage.
+             */
+            Update withThreatAnalysisTactics(List<String> threatAnalysisTactics);
+        }
+        /** The stage of the MetadataModel update allowing to specify threatAnalysisTechniques. */
+        interface WithThreatAnalysisTechniques {
+            /**
+             * Specifies the threatAnalysisTechniques property: the techniques the resource covers, these have to be
+             * aligned with the tactics being used.
+             *
+             * @param threatAnalysisTechniques the techniques the resource covers, these have to be aligned with the
+             *     tactics being used.
+             * @return the next definition stage.
+             */
+            Update withThreatAnalysisTechniques(List<String> threatAnalysisTechniques);
+        }
+        /** The stage of the MetadataModel update allowing to specify previewImages. */
+        interface WithPreviewImages {
+            /**
+             * Specifies the previewImages property: preview image file names. These will be taken from the solution
+             * artifacts.
+             *
+             * @param previewImages preview image file names. These will be taken from the solution artifacts.
+             * @return the next definition stage.
+             */
+            Update withPreviewImages(List<String> previewImages);
+        }
+        /** The stage of the MetadataModel update allowing to specify previewImagesDark. */
+        interface WithPreviewImagesDark {
+            /**
+             * Specifies the previewImagesDark property: preview image file names. These will be taken from the solution
+             * artifacts. used for dark theme support.
+             *
+             * @param previewImagesDark preview image file names. These will be taken from the solution artifacts. used
+             *     for dark theme support.
+             * @return the next definition stage.
+             */
+            Update withPreviewImagesDark(List<String> previewImagesDark);
         }
     }
     /**

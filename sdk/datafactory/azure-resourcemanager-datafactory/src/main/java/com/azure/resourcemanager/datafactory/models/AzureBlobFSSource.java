@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,28 +14,28 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureBlobFSSource")
 @Fluent
 public final class AzureBlobFSSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobFSSource.class);
-
     /*
-     * Treat empty as null. Type: boolean (or Expression with resultType
-     * boolean).
+     * Treat empty as null. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "treatEmptyAsNull")
     private Object treatEmptyAsNull;
 
     /*
-     * Number of header lines to skip from each blob. Type: integer (or
-     * Expression with resultType integer).
+     * Number of header lines to skip from each blob. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "skipHeaderLineCount")
     private Object skipHeaderLineCount;
 
     /*
-     * If true, files under the folder path will be read recursively. Default
-     * is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;
+
+    /** Creates an instance of AzureBlobFSSource class. */
+    public AzureBlobFSSource() {
+    }
 
     /**
      * Get the treatEmptyAsNull property: Treat empty as null. Type: boolean (or Expression with resultType boolean).

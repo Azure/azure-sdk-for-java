@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
 import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
 import com.azure.resourcemanager.netapp.models.SubscriptionQuotaItemList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NetAppResourceQuotaLimitsClient. */
 public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResourceQuotaLimitsClient {
-    private final ClientLogger logger = new ClientLogger(NetAppResourceQuotaLimitsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final NetAppResourceQuotaLimitsService service;
 
@@ -90,13 +87,16 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas.
+     * @return the default and current limits for quotas along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionQuotaItemInner>> listSinglePageAsync(String location) {
@@ -135,14 +135,17 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas.
+     * @return the default and current limits for quotas along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionQuotaItemInner>> listSinglePageAsync(String location, Context context) {
@@ -178,13 +181,15 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas.
+     * @return the default and current limits for quotas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SubscriptionQuotaItemInner> listAsync(String location) {
@@ -192,14 +197,16 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas.
+     * @return the default and current limits for quotas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SubscriptionQuotaItemInner> listAsync(String location, Context context) {
@@ -207,13 +214,15 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas.
+     * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionQuotaItemInner> list(String location) {
@@ -221,14 +230,16 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas.
+     * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionQuotaItemInner> list(String location, Context context) {
@@ -236,14 +247,17 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current subscription quota limit.
+     * @return the default and current subscription quota limit along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubscriptionQuotaItemInner>> getWithResponseAsync(String location, String quotaLimitName) {
@@ -282,7 +296,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
@@ -290,7 +306,8 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current subscription quota limit.
+     * @return the default and current subscription quota limit along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubscriptionQuotaItemInner>> getWithResponseAsync(
@@ -327,30 +344,26 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current subscription quota limit.
+     * @return the default and current subscription quota limit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SubscriptionQuotaItemInner> getAsync(String location, String quotaLimitName) {
-        return getWithResponseAsync(location, quotaLimitName)
-            .flatMap(
-                (Response<SubscriptionQuotaItemInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(location, quotaLimitName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
@@ -365,7 +378,9 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
     }
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
@@ -373,7 +388,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current subscription quota limit.
+     * @return the default and current subscription quota limit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionQuotaItemInner> getWithResponse(

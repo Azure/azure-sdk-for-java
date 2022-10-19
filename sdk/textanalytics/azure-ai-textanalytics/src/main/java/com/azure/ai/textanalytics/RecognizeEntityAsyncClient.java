@@ -3,16 +3,16 @@
 
 package com.azure.ai.textanalytics;
 
-import com.azure.ai.textanalytics.implementation.CategorizedEntityPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
-import com.azure.ai.textanalytics.implementation.models.DocumentError;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextEntityRecognitionInput;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.EntitiesTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
-import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
-import com.azure.ai.textanalytics.models.EntityCategory;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -20,26 +20,21 @@ import com.azure.ai.textanalytics.util.RecognizeEntitiesResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
 import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsWarning;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -49,16 +44,22 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class RecognizeEntityAsyncClient {
     private final ClientLogger logger = new ClientLogger(RecognizeEntityAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
-    /**
-     * Create a {@link RecognizeEntityAsyncClient} that sends requests to the Text Analytics services's
-     * recognize entity endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    RecognizeEntityAsyncClient(TextAnalyticsClientImpl service) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    RecognizeEntityAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+        this.legacyService = legacyService;
+        this.service = null;
+        this.serviceVersion = serviceVersion;
+    }
+
+    RecognizeEntityAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+        TextAnalyticsServiceVersion serviceVersion) {
+        this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -104,7 +105,6 @@ class RecognizeEntityAsyncClient {
     Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatch(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
-            inputDocumentsValidation(documents);
             return withContext(context -> getRecognizedEntitiesResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -123,52 +123,10 @@ class RecognizeEntityAsyncClient {
     Mono<Response<RecognizeEntitiesResultCollection>> recognizeEntitiesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         try {
-            inputDocumentsValidation(documents);
             return getRecognizedEntitiesResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    /**
-     * Helper method to convert the service response of {@link EntitiesResult} to {@link Response} which contains
-     * {@link RecognizeEntitiesResultCollection}.
-     *
-     * @param response the {@link Response} of {@link EntitiesResult} returned by the service.
-     *
-     * @return A {@link Response} that contains {@link RecognizeEntitiesResultCollection}.
-     */
-    private Response<RecognizeEntitiesResultCollection> toRecognizeEntitiesResultCollectionResponse(
-        final Response<EntitiesResult> response) {
-        EntitiesResult entitiesResult = response.getValue();
-        // List of documents results
-        List<RecognizeEntitiesResult> recognizeEntitiesResults = new ArrayList<>();
-        entitiesResult.getDocuments().forEach(documentEntities ->
-            recognizeEntitiesResults.add(new RecognizeEntitiesResult(
-                documentEntities.getId(),
-                documentEntities.getStatistics() == null ? null
-                    : toTextDocumentStatistics(documentEntities.getStatistics()),
-                null,
-                new CategorizedEntityCollection(
-                    new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
-                        final CategorizedEntity categorizedEntity =
-                            new CategorizedEntity(entity.getText(), EntityCategory.fromString(entity.getCategory()),
-                                entity.getSubcategory(), entity.getConfidenceScore());
-                        CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
-                        CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
-                        return categorizedEntity;
-                    }).collect(Collectors.toList())),
-                    new IterableStream<>(documentEntities.getWarnings().stream()
-                        .map(warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))))));
-        // Document errors
-        for (DocumentError documentError : entitiesResult.getErrors()) {
-            recognizeEntitiesResults.add(new RecognizeEntitiesResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
-        }
-
-        return new SimpleResponse<>(response,
-            new RecognizeEntitiesResultCollection(recognizeEntitiesResults, entitiesResult.getModelVersion(),
-                entitiesResult.getStatistics() == null ? null : toBatchStatistics(entitiesResult.getStatistics())));
     }
 
     /**
@@ -183,19 +141,59 @@ class RecognizeEntityAsyncClient {
      */
     private Mono<Response<RecognizeEntitiesResultCollection>> getRecognizedEntitiesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        throwIfCallingNotAvailableFeatureInOptions(options);
+        inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
-        return service.entitiesRecognitionGeneralWithResponseAsync(
+        final Context finalContext = getNotNullContext(context)
+                                         .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE);
+        final StringIndexType finalStringIndexType = StringIndexType.UTF16CODE_UNIT;
+        final String finalModelVersion = options.getModelVersion();
+        final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
+        final boolean finalIncludeStatistics = options.isIncludeStatistics();
+
+        if (service != null) {
+            return service
+                       .analyzeTextWithResponseAsync(
+                           new AnalyzeTextEntityRecognitionInput()
+                               .setParameters(
+                                   new EntitiesTaskParameters()
+                                                                .setStringIndexType(finalStringIndexType)
+                                                                .setModelVersion(finalModelVersion)
+                                                                .setLoggingOptOut(finalLoggingOptOut))
+                               .setAnalysisInput(new MultiLanguageAnalysisInput()
+                                                     .setDocuments(toMultiLanguageInput(documents))),
+                           finalIncludeStatistics,
+                           finalContext)
+                       .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                           getDocumentCount(documents)))
+                       .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
+                           response.getValue()))
+                       .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
+                       .map(Utility::toRecognizeEntitiesResultCollection2)
+                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+        }
+
+        return legacyService.entitiesRecognitionGeneralWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
-            options.getModelVersion(), options.isIncludeStatistics(),
-            options.isServiceLogsDisabled(),
-            StringIndexType.UTF16CODE_UNIT,
-            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            finalModelVersion,
+            finalIncludeStatistics,
+            finalLoggingOptOut,
+            finalStringIndexType,
+            finalContext)
             .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
                 getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("Recognized entities for a batch of documents- {}",
                 response.getValue()))
             .doOnError(error -> logger.warning("Failed to recognize entities - {}", error))
-            .map(this::toRecognizeEntitiesResultCollectionResponse)
+            .map(Utility::toRecognizeEntitiesResultCollection)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+    }
+
+    private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {
+        if (options != null && options.isServiceLogsDisabled()) {
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
+                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+        }
     }
 }

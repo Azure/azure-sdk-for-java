@@ -5,31 +5,29 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Linked storage accounts top level resource container. */
-@JsonFlatten
 @Fluent
-public class LinkedStorageAccountsResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedStorageAccountsResourceInner.class);
-
+public final class LinkedStorageAccountsResourceInner extends ProxyResource {
     /*
-     * Linked storage accounts type.
+     * Linked storage accounts properties.
      */
-    @JsonProperty(value = "properties.dataSourceType", access = JsonProperty.Access.WRITE_ONLY)
-    private DataSourceType dataSourceType;
+    @JsonProperty(value = "properties", required = true)
+    private LinkedStorageAccountsProperties innerProperties = new LinkedStorageAccountsProperties();
 
-    /*
-     * Linked storage accounts resources ids.
+    /**
+     * Get the innerProperties property: Linked storage accounts properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.storageAccountIds")
-    private List<String> storageAccountIds;
+    private LinkedStorageAccountsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the dataSourceType property: Linked storage accounts type.
@@ -37,7 +35,7 @@ public class LinkedStorageAccountsResourceInner extends ProxyResource {
      * @return the dataSourceType value.
      */
     public DataSourceType dataSourceType() {
-        return this.dataSourceType;
+        return this.innerProperties() == null ? null : this.innerProperties().dataSourceType();
     }
 
     /**
@@ -46,7 +44,7 @@ public class LinkedStorageAccountsResourceInner extends ProxyResource {
      * @return the storageAccountIds value.
      */
     public List<String> storageAccountIds() {
-        return this.storageAccountIds;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountIds();
     }
 
     /**
@@ -56,7 +54,10 @@ public class LinkedStorageAccountsResourceInner extends ProxyResource {
      * @return the LinkedStorageAccountsResourceInner object itself.
      */
     public LinkedStorageAccountsResourceInner withStorageAccountIds(List<String> storageAccountIds) {
-        this.storageAccountIds = storageAccountIds;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LinkedStorageAccountsProperties();
+        }
+        this.innerProperties().withStorageAccountIds(storageAccountIds);
         return this;
     }
 
@@ -66,5 +67,15 @@ public class LinkedStorageAccountsResourceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model LinkedStorageAccountsResourceInner"));
+        } else {
+            innerProperties().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedStorageAccountsResourceInner.class);
 }

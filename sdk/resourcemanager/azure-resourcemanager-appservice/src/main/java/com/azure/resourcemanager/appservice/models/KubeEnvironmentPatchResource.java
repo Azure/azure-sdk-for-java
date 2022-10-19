@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.KubeEnvironmentPatchResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ARM resource for a KubeEnvironment when patching. */
 @Fluent
 public final class KubeEnvironmentPatchResource extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KubeEnvironmentPatchResource.class);
-
     /*
      * KubeEnvironmentPatchResource resource specific properties
      */

@@ -44,7 +44,9 @@ class EventHubProducerAsyncClientIntegrationTest extends IntegrationTestBase {
 
     @Override
     protected void afterTest() {
-        dispose(producer);
+        if (producer != null) {
+            producer.close();
+        }
     }
 
     /**

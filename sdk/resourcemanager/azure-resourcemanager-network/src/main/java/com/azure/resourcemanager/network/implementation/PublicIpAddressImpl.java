@@ -56,7 +56,7 @@ class PublicIpAddressImpl
             .manager()
             .serviceClient()
             .getPublicIpAddresses()
-            .getByResourceGroupAsync(this.resourceGroupName(), this.name(), null);
+            .getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
     // Setters (fluent)
@@ -368,4 +368,10 @@ class PublicIpAddressImpl
         this.innerModel().withPublicIpAddressVersion(ipVersion);
         return this;
     }
+
+//    @Override
+//    public PublicIpAddressImpl withDeleteOptions(DeleteOptions deleteOptions) {
+//        this.innerModel().withDeleteOption(deleteOptions);
+//        return this;
+//    }
 }

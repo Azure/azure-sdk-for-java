@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceIpConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceIpConfigurationInner;
 import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationListResult;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in NetworkInterfaceIpConfigurationsClient.
  */
 public final class NetworkInterfaceIpConfigurationsClientImpl implements NetworkInterfaceIpConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(NetworkInterfaceIpConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final NetworkInterfaceIpConfigurationsService service;
 
@@ -115,7 +112,8 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ip configurations in a network interface.
+     * @return all ip configurations in a network interface along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkInterfaceIpConfigurationInner>> listSinglePageAsync(
@@ -140,7 +138,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -175,7 +173,8 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ip configurations in a network interface.
+     * @return all ip configurations in a network interface along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkInterfaceIpConfigurationInner>> listSinglePageAsync(
@@ -200,7 +199,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -231,7 +230,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ip configurations in a network interface.
+     * @return all ip configurations in a network interface as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<NetworkInterfaceIpConfigurationInner> listAsync(
@@ -250,7 +249,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ip configurations in a network interface.
+     * @return all ip configurations in a network interface as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkInterfaceIpConfigurationInner> listAsync(
@@ -268,7 +267,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ip configurations in a network interface.
+     * @return all ip configurations in a network interface as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceIpConfigurationInner> list(
@@ -285,7 +284,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all ip configurations in a network interface.
+     * @return all ip configurations in a network interface as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkInterfaceIpConfigurationInner> list(
@@ -302,7 +301,8 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration.
+     * @return the specified network interface ip configuration along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<NetworkInterfaceIpConfigurationInner>> getWithResponseAsync(
@@ -331,7 +331,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -359,7 +359,8 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration.
+     * @return the specified network interface ip configuration along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<NetworkInterfaceIpConfigurationInner>> getWithResponseAsync(
@@ -388,7 +389,7 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -412,20 +413,31 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration.
+     * @return the specified network interface ip configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<NetworkInterfaceIpConfigurationInner> getAsync(
         String resourceGroupName, String networkInterfaceName, String ipConfigurationName) {
         return getWithResponseAsync(resourceGroupName, networkInterfaceName, ipConfigurationName)
-            .flatMap(
-                (Response<NetworkInterfaceIpConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the specified network interface ip configuration.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the ip configuration name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified network interface ip configuration along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<NetworkInterfaceIpConfigurationInner> getWithResponse(
+        String resourceGroupName, String networkInterfaceName, String ipConfigurationName, Context context) {
+        return getWithResponseAsync(resourceGroupName, networkInterfaceName, ipConfigurationName, context).block();
     }
 
     /**
@@ -442,35 +454,19 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
     @ServiceMethod(returns = ReturnType.SINGLE)
     public NetworkInterfaceIpConfigurationInner get(
         String resourceGroupName, String networkInterfaceName, String ipConfigurationName) {
-        return getAsync(resourceGroupName, networkInterfaceName, ipConfigurationName).block();
-    }
-
-    /**
-     * Gets the specified network interface ip configuration.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the ip configuration name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified network interface ip configuration.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkInterfaceIpConfigurationInner> getWithResponse(
-        String resourceGroupName, String networkInterfaceName, String ipConfigurationName, Context context) {
-        return getWithResponseAsync(resourceGroupName, networkInterfaceName, ipConfigurationName, context).block();
+        return getWithResponse(resourceGroupName, networkInterfaceName, ipConfigurationName, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list ip configurations API service call.
+     * @return response for list ip configurations API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkInterfaceIpConfigurationInner>> listNextSinglePageAsync(String nextLink) {
@@ -501,12 +497,14 @@ public final class NetworkInterfaceIpConfigurationsClientImpl implements Network
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for list ip configurations API service call.
+     * @return response for list ip configurations API service call along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkInterfaceIpConfigurationInner>> listNextSinglePageAsync(

@@ -7,15 +7,12 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.CsmPublishingCredentialsPoliciesEntityInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Publishing Credentials Policies entity collection ARM resource. */
 @Fluent
 public final class PublishingCredentialsPoliciesCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublishingCredentialsPoliciesCollection.class);
-
     /*
      * Collection of resources.
      */
@@ -64,7 +61,7 @@ public final class PublishingCredentialsPoliciesCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model PublishingCredentialsPoliciesCollection"));
@@ -72,4 +69,6 @@ public final class PublishingCredentialsPoliciesCollection {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PublishingCredentialsPoliciesCollection.class);
 }

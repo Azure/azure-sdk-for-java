@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EntityKind. */
+/** The kind of the entity. */
 public final class EntityKind extends ExpandableStringEnum<EntityKind> {
     /** Static value Account for EntityKind. */
     public static final EntityKind ACCOUNT = fromString("Account");
@@ -73,6 +73,9 @@ public final class EntityKind extends ExpandableStringEnum<EntityKind> {
     /** Static value SubmissionMail for EntityKind. */
     public static final EntityKind SUBMISSION_MAIL = fromString("SubmissionMail");
 
+    /** Static value Nic for EntityKind. */
+    public static final EntityKind NIC = fromString("Nic");
+
     /**
      * Creates or finds a EntityKind from its string representation.
      *
@@ -84,7 +87,11 @@ public final class EntityKind extends ExpandableStringEnum<EntityKind> {
         return fromString(name, EntityKind.class);
     }
 
-    /** @return known EntityKind values. */
+    /**
+     * Gets known EntityKind values.
+     *
+     * @return known EntityKind values.
+     */
     public static Collection<EntityKind> values() {
         return values(EntityKind.class);
     }

@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentDataVolumeCap;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An Application Insights component billing features. */
 @Fluent
 public final class ApplicationInsightsComponentBillingFeaturesInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentBillingFeaturesInner.class);
-
     /*
      * An Application Insights component daily data volume cap
      */

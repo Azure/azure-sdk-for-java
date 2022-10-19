@@ -5,28 +5,26 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure MySQL database dataset properties. */
 @Fluent
 public final class AzureMySqlTableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMySqlTableDatasetTypeProperties.class);
-
     /*
-     * The Azure MySQL database table name. Type: string (or Expression with
-     * resultType string).
+     * The Azure MySQL database table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
-     * The name of Azure MySQL database table. Type: string (or Expression with
-     * resultType string).
+     * The name of Azure MySQL database table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
+
+    /** Creates an instance of AzureMySqlTableDatasetTypeProperties class. */
+    public AzureMySqlTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: The Azure MySQL database table name. Type: string (or Expression with resultType

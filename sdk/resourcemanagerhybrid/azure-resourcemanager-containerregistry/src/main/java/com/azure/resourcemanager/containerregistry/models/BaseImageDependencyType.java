@@ -27,7 +27,11 @@ public final class BaseImageDependencyType extends ExpandableStringEnum<BaseImag
         return fromString(name, BaseImageDependencyType.class);
     }
 
-    /** @return known BaseImageDependencyType values. */
+    /**
+     * Gets known BaseImageDependencyType values.
+     *
+     * @return known BaseImageDependencyType values.
+     */
     public static Collection<BaseImageDependencyType> values() {
         return values(BaseImageDependencyType.class);
     }

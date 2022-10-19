@@ -3,15 +3,15 @@
 
 package com.azure.cosmos.implementation.directconnectivity.rntbd;
 
-import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.RxDocumentServiceRequest;
-import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.channels.ClosedChannelException;
 import java.time.Instant;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
@@ -20,65 +20,61 @@ public class RntbdConnectionStateListener {
 
     private static final Logger logger = LoggerFactory.getLogger(RntbdConnectionStateListener.class);
 
-    private final IAddressResolver addressResolver;
     private final RntbdEndpoint endpoint;
+    private final RntbdConnectionStateListenerMetrics metrics;
+    private final Set<Uri> addressUris;
 
     // endregion
 
     // region Constructors
 
-    public RntbdConnectionStateListener(final IAddressResolver addressResolver, final RntbdEndpoint endpoint) {
-        this.addressResolver = checkNotNull(addressResolver, "expected non-null addressResolver");
+    public RntbdConnectionStateListener(final RntbdEndpoint endpoint) {
         this.endpoint = checkNotNull(endpoint, "expected non-null endpoint");
+        this.metrics = new RntbdConnectionStateListenerMetrics();
+        this.addressUris = ConcurrentHashMap.newKeySet();
     }
 
     // endregion
 
     // region Methods
 
-    public void onException(final RxDocumentServiceRequest request, Throwable exception) {
-        checkNotNull(request, "expect non-null request");
+    public void onBeforeSendRequest(Uri addressUri) {
+        checkNotNull(addressUri, "Argument 'addressUri' should not be null");
+        this.addressUris.add(addressUri);
+    }
+
+    public void onException(Throwable exception) {
         checkNotNull(exception, "expect non-null exception");
 
-        if (exception instanceof GoneException) {
-            final Throwable cause = exception.getCause();
+        this.metrics.record();
 
-            if (cause != null) {
+        // * An operation could fail due to an IOException which indicates a connection reset by the server,
+        // * or a channel closes unexpectedly because the server stopped taking requests
+        //
+        // Currently, only ClosedChannelException will raise onConnectionEvent since it is more sure of a signal the server is going down.
 
-                // GoneException was produced by the client, not the server
-                //
-                // This could occur for example:
-                //
-                // * an operation fails due to an IOException which indicates a connection reset by the server,
-                // * a channel closes unexpectedly because the server stopped taking requests, or
-                // * an error was detected by the transport client (e.g., IllegalStateException)
-                // * a request timed out in pending acquisition queue
-                // * a request failed fast in admission control layer due to high load
-                // * channel connect timed out
-                //
-                // Currently, only ClosedChannelException will raise onConnectionEvent since it is more sure of a signal the server is going down.
+        if (exception instanceof IOException) {
 
-                if (cause instanceof IOException) {
-
-                    if (cause instanceof ClosedChannelException) {
-                        this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, request, exception);
-                    } else {
-                        if (logger.isDebugEnabled()) {
-                            logger.debug("Will not raise the connection state change event for error {}", cause);
-                        }
-                    }
+            if (exception instanceof ClosedChannelException) {
+                this.metrics.recordAddressUpdated(this.onConnectionEvent(RntbdConnectionEvent.READ_EOF, exception));
+            } else {
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Will not raise the connection state change event for error", exception);
                 }
             }
         }
+    }
+
+    public RntbdConnectionStateListenerMetrics getMetrics() {
+        return this.metrics;
     }
 
     // endregion
 
     // region Privates
 
-    private void onConnectionEvent(final RntbdConnectionEvent event, final RxDocumentServiceRequest request, final Throwable exception) {
+    private int onConnectionEvent(final RntbdConnectionEvent event, final Throwable exception) {
 
-        checkNotNull(request, "expected non-null request");
         checkNotNull(exception, "expected non-null exception");
 
         if (event == RntbdConnectionEvent.READ_EOF) {
@@ -92,11 +88,20 @@ public class RntbdConnectionStateListener {
                         RntbdObjectMapper.toJson(exception));
                 }
 
-                this.addressResolver.updateAddresses(request, this.endpoint.serverKey());
+                for (Uri addressUri : this.addressUris) {
+                    addressUri.setUnhealthy();
+                }
+
+                return addressUris.size();
+
             } else {
-                logger.warn("Endpoint closed while onConnectionEvent: {}", this.endpoint);
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Endpoint closed while onConnectionEvent: {}", this.endpoint);
+                }
             }
         }
+
+        return 0;
     }
     // endregion
 }

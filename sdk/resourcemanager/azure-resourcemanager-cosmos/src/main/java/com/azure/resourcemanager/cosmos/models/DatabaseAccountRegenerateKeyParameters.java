@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters to regenerate the keys within the database account. */
 @Fluent
 public final class DatabaseAccountRegenerateKeyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountRegenerateKeyParameters.class);
-
     /*
      * The access key to regenerate.
      */
@@ -47,10 +44,12 @@ public final class DatabaseAccountRegenerateKeyParameters {
      */
     public void validate() {
         if (keyKind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyKind in model DatabaseAccountRegenerateKeyParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabaseAccountRegenerateKeyParameters.class);
 }

@@ -3,11 +3,13 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
-import com.azure.ai.textanalytics.implementation.models.DocumentError;
-import com.azure.ai.textanalytics.implementation.models.DocumentKeyPhrases;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeTextKeyPhraseExtractionInput;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
+import com.azure.ai.textanalytics.implementation.models.KeyPhraseTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageBatchInput;
 import com.azure.ai.textanalytics.models.ExtractKeyPhraseResult;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
@@ -17,25 +19,21 @@ import com.azure.ai.textanalytics.util.ExtractKeyPhrasesResultCollection;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Mono;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static com.azure.ai.textanalytics.TextAnalyticsAsyncClient.COGNITIVE_TRACING_NAMESPACE_VALUE;
 import static com.azure.ai.textanalytics.implementation.Utility.getDocumentCount;
+import static com.azure.ai.textanalytics.implementation.Utility.getNotNullContext;
+import static com.azure.ai.textanalytics.implementation.Utility.getUnsupportedServiceApiVersionMessage;
 import static com.azure.ai.textanalytics.implementation.Utility.inputDocumentsValidation;
-import static com.azure.ai.textanalytics.implementation.Utility.toBatchStatistics;
+import static com.azure.ai.textanalytics.implementation.Utility.throwIfTargetServiceVersionFound;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsError;
 import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsException;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextAnalyticsWarning;
-import static com.azure.ai.textanalytics.implementation.Utility.toTextDocumentStatistics;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -45,16 +43,22 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 class ExtractKeyPhraseAsyncClient {
     private final ClientLogger logger = new ClientLogger(ExtractKeyPhraseAsyncClient.class);
-    private final TextAnalyticsClientImpl service;
+    private final TextAnalyticsClientImpl legacyService;
+    private final MicrosoftCognitiveLanguageServiceTextAnalysisImpl service;
 
-    /**
-     * Create an {@link ExtractKeyPhraseAsyncClient} that sends requests to the Text Analytics services's extract
-     * keyphrase endpoint.
-     *
-     * @param service The proxy service used to perform REST calls.
-     */
-    ExtractKeyPhraseAsyncClient(TextAnalyticsClientImpl service) {
+    private final TextAnalyticsServiceVersion serviceVersion;
+
+    ExtractKeyPhraseAsyncClient(TextAnalyticsClientImpl legacyService, TextAnalyticsServiceVersion serviceVersion) {
+        this.legacyService = legacyService;
+        this.service = null;
+        this.serviceVersion = serviceVersion;
+    }
+
+    ExtractKeyPhraseAsyncClient(MicrosoftCognitiveLanguageServiceTextAnalysisImpl service,
+        TextAnalyticsServiceVersion serviceVersion) {
+        this.legacyService = null;
         this.service = service;
+        this.serviceVersion = serviceVersion;
     }
 
     /**
@@ -100,7 +104,6 @@ class ExtractKeyPhraseAsyncClient {
     Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesWithResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options) {
         try {
-            inputDocumentsValidation(documents);
             return withContext(context -> getExtractedKeyPhrasesResponse(documents, options, context));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -120,47 +123,10 @@ class ExtractKeyPhraseAsyncClient {
     Mono<Response<ExtractKeyPhrasesResultCollection>> extractKeyPhrasesBatchWithContext(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
         try {
-            inputDocumentsValidation(documents);
             return getExtractedKeyPhrasesResponse(documents, options, context);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    /**
-     * Helper method to convert the service response of {@link KeyPhraseResult} to {@link Response}
-     * which contains {@link ExtractKeyPhrasesResultCollection}.
-     *
-     * @param response the {@link Response} returned by the service.
-     *
-     * @return A {@link Response} which contains {@link ExtractKeyPhrasesResultCollection}.
-     */
-    private Response<ExtractKeyPhrasesResultCollection> toExtractKeyPhrasesResultCollectionResponse(
-        final Response<KeyPhraseResult> response) {
-        final KeyPhraseResult keyPhraseResult = response.getValue();
-        // List of documents results
-        final List<ExtractKeyPhraseResult> keyPhraseResultList = new ArrayList<>();
-        for (DocumentKeyPhrases documentKeyPhrases : keyPhraseResult.getDocuments()) {
-            final String documentId = documentKeyPhrases.getId();
-            keyPhraseResultList.add(new ExtractKeyPhraseResult(
-                documentId,
-                documentKeyPhrases.getStatistics() == null ? null
-                    : toTextDocumentStatistics(documentKeyPhrases.getStatistics()), null,
-                new KeyPhrasesCollection(
-                    new IterableStream<>(documentKeyPhrases.getKeyPhrases()),
-                    new IterableStream<>(documentKeyPhrases.getWarnings().stream().map(
-                        warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList())))));
-        }
-        // Document errors
-        for (DocumentError documentError : keyPhraseResult.getErrors()) {
-            keyPhraseResultList.add(new ExtractKeyPhraseResult(documentError.getId(), null,
-                toTextAnalyticsError(documentError.getError()), null));
-        }
-
-        return new SimpleResponse<>(response,
-            new ExtractKeyPhrasesResultCollection(keyPhraseResultList, keyPhraseResult.getModelVersion(),
-                keyPhraseResult.getStatistics() == null ? null
-                    : toBatchStatistics(keyPhraseResult.getStatistics())));
     }
 
     /**
@@ -175,18 +141,50 @@ class ExtractKeyPhraseAsyncClient {
      */
     private Mono<Response<ExtractKeyPhrasesResultCollection>> getExtractedKeyPhrasesResponse(
         Iterable<TextDocumentInput> documents, TextAnalyticsRequestOptions options, Context context) {
+        throwIfCallingNotAvailableFeatureInOptions(options);
+        inputDocumentsValidation(documents);
         options = options == null ? new TextAnalyticsRequestOptions() : options;
-        return service.keyPhrasesWithResponseAsync(
+
+        if (service != null) {
+            return service
+                       .analyzeTextWithResponseAsync(
+                           new AnalyzeTextKeyPhraseExtractionInput()
+                               .setParameters(
+                                   new KeyPhraseTaskParameters()
+                                                                 .setModelVersion(options.getModelVersion())
+                                                                 .setLoggingOptOut(options.isServiceLogsDisabled()))
+                               .setAnalysisInput(
+                                   new MultiLanguageAnalysisInput().setDocuments(toMultiLanguageInput(documents))),
+                           options.isIncludeStatistics(),
+                           getNotNullContext(context)
+                               .addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+                       .doOnSubscribe(ignoredValue -> logger.info("A batch of documents with count - {}",
+                           getDocumentCount(documents)))
+                       .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
+                       .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
+                       .map(Utility::toExtractKeyPhrasesResultCollectionResponse2)
+                       .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+        }
+
+        return legacyService.keyPhrasesWithResponseAsync(
             new MultiLanguageBatchInput().setDocuments(toMultiLanguageInput(documents)),
             options.getModelVersion(),
             options.isIncludeStatistics(),
             options.isServiceLogsDisabled(),
-            context.addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
+            getNotNullContext(context).addData(AZ_TRACING_NAMESPACE_KEY, COGNITIVE_TRACING_NAMESPACE_VALUE))
             .doOnSubscribe(ignoredValue -> logger.info("A batch of document with count - {}",
                 getDocumentCount(documents)))
             .doOnSuccess(response -> logger.info("A batch of key phrases output - {}", response.getValue()))
             .doOnError(error -> logger.warning("Failed to extract key phrases - {}", error))
-            .map(this::toExtractKeyPhrasesResultCollectionResponse)
+            .map(Utility::toExtractKeyPhrasesResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
+    }
+
+    private void throwIfCallingNotAvailableFeatureInOptions(TextAnalyticsRequestOptions options) {
+        if (options != null && options.isServiceLogsDisabled()) {
+            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
+                getUnsupportedServiceApiVersionMessage("TextAnalyticsRequestOptions.disableServiceLogs",
+                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
+        }
     }
 }

@@ -7,14 +7,11 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.UsageName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes Compute Resource Usage. */
 @Fluent
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
-
     /*
      * An enum describing the unit of usage measurement.
      */
@@ -131,11 +128,13 @@ public final class UsageInner {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model UsageInner"));
         } else {
             name().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UsageInner.class);
 }

@@ -12,7 +12,7 @@ import com.azure.resourcemanager.iotcentral.models.SystemAssignedServiceIdentity
 /** Samples for Apps CreateOrUpdate. */
 public final class AppsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_CreateOrUpdate.json
+     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_CreateOrUpdate.json
      */
     /**
      * Sample code: Apps_CreateOrUpdate.

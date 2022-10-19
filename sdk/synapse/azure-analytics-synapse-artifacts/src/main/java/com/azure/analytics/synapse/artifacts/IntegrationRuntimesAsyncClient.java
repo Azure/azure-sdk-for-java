@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.artifacts.implementation.IntegrationRuntimesI
 import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeListResponse;
 import com.azure.analytics.synapse.artifacts.models.IntegrationRuntimeResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class IntegrationRuntimesAsyncClient {
-    private final IntegrationRuntimesImpl serviceClient;
+    @Generated private final IntegrationRuntimesImpl serviceClient;
 
     /**
-     * Initializes an instance of IntegrationRuntimes client.
+     * Initializes an instance of IntegrationRuntimesAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     IntegrationRuntimesAsyncClient(IntegrationRuntimesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -33,8 +35,10 @@ public final class IntegrationRuntimesAsyncClient {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeListResponse>> listWithResponse() {
         return this.serviceClient.listWithResponseAsync();
@@ -45,8 +49,9 @@ public final class IntegrationRuntimesAsyncClient {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of integration runtime resources.
+     * @return a list of integration runtime resources on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeListResponse> list() {
         return this.serviceClient.listAsync();
@@ -59,8 +64,9 @@ public final class IntegrationRuntimesAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime.
+     * @return integration Runtime along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<IntegrationRuntimeResource>> getWithResponse(String integrationRuntimeName) {
         return this.serviceClient.getWithResponseAsync(integrationRuntimeName);
@@ -73,8 +79,9 @@ public final class IntegrationRuntimesAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return integration Runtime.
+     * @return integration Runtime on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<IntegrationRuntimeResource> get(String integrationRuntimeName) {
         return this.serviceClient.getAsync(integrationRuntimeName);

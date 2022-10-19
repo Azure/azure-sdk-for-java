@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.models.AccountSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of cognitive services accounts operation response. */
 @Fluent
 public final class AccountSkuListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountSkuListResultInner.class);
-
     /*
      * Gets the list of Cognitive Services accounts and their properties.
      */

@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandScriptSource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the properties of a Virtual Machine run command. */
 @Fluent
 public final class VirtualMachineRunCommandProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandProperties.class);
-
     /*
      * The source of the run command script.
      */
@@ -37,8 +33,8 @@ public final class VirtualMachineRunCommandProperties {
     private List<RunCommandInputParameter> protectedParameters;
 
     /*
-     * Optional. If set to true, provisioning will complete as soon as the
-     * script starts and will not wait for script to complete.
+     * Optional. If set to true, provisioning will complete as soon as the script starts and will not wait for script
+     * to complete.
      */
     @JsonProperty(value = "asyncExecution")
     private Boolean asyncExecution;
@@ -50,8 +46,7 @@ public final class VirtualMachineRunCommandProperties {
     private String runAsUser;
 
     /*
-     * Specifies the user account password on the VM when executing the run
-     * command.
+     * Specifies the user account password on the VM when executing the run command.
      */
     @JsonProperty(value = "runAsPassword")
     private String runAsPassword;
@@ -63,15 +58,13 @@ public final class VirtualMachineRunCommandProperties {
     private Integer timeoutInSeconds;
 
     /*
-     * Specifies the Azure storage blob where script output stream will be
-     * uploaded.
+     * Specifies the Azure storage blob where script output stream will be uploaded.
      */
     @JsonProperty(value = "outputBlobUri")
     private String outputBlobUri;
 
     /*
-     * Specifies the Azure storage blob where script error stream will be
-     * uploaded.
+     * Specifies the Azure storage blob where script error stream will be uploaded.
      */
     @JsonProperty(value = "errorBlobUri")
     private String errorBlobUri;

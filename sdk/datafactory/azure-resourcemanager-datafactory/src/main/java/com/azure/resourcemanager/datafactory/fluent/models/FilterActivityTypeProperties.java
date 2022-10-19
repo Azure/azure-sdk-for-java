@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.Expression;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Filter activity properties. */
 @Fluent
 public final class FilterActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FilterActivityTypeProperties.class);
-
     /*
      * Input array on which filter should be applied.
      */
@@ -26,6 +23,10 @@ public final class FilterActivityTypeProperties {
      */
     @JsonProperty(value = "condition", required = true)
     private Expression condition;
+
+    /** Creates an instance of FilterActivityTypeProperties class. */
+    public FilterActivityTypeProperties() {
+    }
 
     /**
      * Get the items property: Input array on which filter should be applied.
@@ -74,7 +75,7 @@ public final class FilterActivityTypeProperties {
      */
     public void validate() {
         if (items() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property items in model FilterActivityTypeProperties"));
@@ -82,7 +83,7 @@ public final class FilterActivityTypeProperties {
             items().validate();
         }
         if (condition() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property condition in model FilterActivityTypeProperties"));
@@ -90,4 +91,6 @@ public final class FilterActivityTypeProperties {
             condition().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FilterActivityTypeProperties.class);
 }

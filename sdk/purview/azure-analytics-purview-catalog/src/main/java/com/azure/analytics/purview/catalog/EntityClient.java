@@ -4,29 +4,32 @@
 
 package com.azure.analytics.purview.catalog;
 
-import com.azure.analytics.purview.catalog.implementation.EntitiesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import java.util.List;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class)
+@ServiceClient(builder = EntityClientBuilder.class)
 public final class EntityClient {
-    @Generated private final EntitiesImpl serviceClient;
+    @Generated private final EntityAsyncClient client;
 
     /**
-     * Initializes an instance of Entities client.
+     * Initializes an instance of EntityClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    EntityClient(EntitiesImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    EntityClient(EntityAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -45,6 +48,9 @@ public final class EntityClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -70,8 +76,15 @@ public final class EntityClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -156,6 +169,10 @@ public final class EntityClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -186,12 +203,15 @@ public final class EntityClient {
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateWithResponse(BinaryData entity, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateWithResponse(entity, requestOptions);
+        return this.client.createOrUpdateWithResponse(entity, requestOptions).block();
     }
 
     /**
@@ -202,10 +222,9 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list.</td></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -219,6 +238,9 @@ public final class EntityClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -244,8 +266,15 @@ public final class EntityClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -289,14 +318,18 @@ public final class EntityClient {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasEntitiesWithExtInfo along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listByGuidsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listByGuidsWithResponse(requestOptions);
+    public Response<BinaryData> listByGuidsWithResponse(List<String> guids, RequestOptions requestOptions) {
+        return this.client.listByGuidsWithResponse(guids, requestOptions).block();
     }
 
     /**
@@ -315,6 +348,9 @@ public final class EntityClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -340,8 +376,15 @@ public final class EntityClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -428,6 +471,10 @@ public final class EntityClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -458,24 +505,19 @@ public final class EntityClient {
      * @param entities An array of entities to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createOrUpdateEntitiesWithResponse(BinaryData entities, RequestOptions requestOptions) {
-        return this.serviceClient.createOrUpdateEntitiesWithResponse(entities, requestOptions);
+        return this.client.createOrUpdateEntitiesWithResponse(entities, requestOptions).block();
     }
 
     /**
      * Delete a list of entities in bulk identified by their GUIDs or unique attributes.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete.</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -520,6 +562,10 @@ public final class EntityClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -547,14 +593,18 @@ public final class EntityClient {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteByGuidsWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.deleteByGuidsWithResponse(requestOptions);
+    public Response<BinaryData> deleteByGuidsWithResponse(List<String> guids, RequestOptions requestOptions) {
+        return this.client.deleteByGuidsWithResponse(guids, requestOptions).block();
     }
 
     /**
@@ -594,12 +644,15 @@ public final class EntityClient {
      * @param request The request to associate a classification to multiple entities.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationWithResponse(BinaryData request, RequestOptions requestOptions) {
-        return this.serviceClient.addClassificationWithResponse(request, requestOptions);
+        return this.client.addClassificationWithResponse(request, requestOptions).block();
     }
 
     /**
@@ -610,8 +663,8 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -625,6 +678,9 @@ public final class EntityClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -650,8 +706,15 @@ public final class EntityClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -696,26 +759,21 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return complete definition of an entity given its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getByGuidWithResponse(guid, requestOptions);
+        return this.client.getByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
      * Update entity partially - create or update entity attribute identified by its GUID. Supports only primitive
      * attribute type and entity references. It does not support updating complex types like arrays, and maps. Null
      * updates are not possible.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>name</td><td>String</td><td>Yes</td><td>The name of the attribute.</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -766,6 +824,10 @@ public final class EntityClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -794,16 +856,20 @@ public final class EntityClient {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param name The name of the attribute.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityAttributeByGuidWithResponse(
-            String guid, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateEntityAttributeByGuidWithResponse(guid, body, requestOptions);
+            String guid, String name, BinaryData body, RequestOptions requestOptions) {
+        return this.client.partialUpdateEntityAttributeByGuidWithResponse(guid, name, body, requestOptions).block();
     }
 
     /**
@@ -852,6 +918,10 @@ public final class EntityClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -882,12 +952,15 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteByGuidWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.deleteByGuidWithResponse(guid, requestOptions);
+        return this.client.deleteByGuidWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -923,13 +996,16 @@ public final class EntityClient {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasClassification along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationWithResponse(
             String guid, String classificationName, RequestOptions requestOptions) {
-        return this.serviceClient.getClassificationWithResponse(guid, classificationName, requestOptions);
+        return this.client.getClassificationWithResponse(guid, classificationName, requestOptions).block();
     }
 
     /**
@@ -939,13 +1015,16 @@ public final class EntityClient {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationWithResponse(
             String guid, String classificationName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteClassificationWithResponse(guid, classificationName, requestOptions);
+        return this.client.deleteClassificationWithResponse(guid, classificationName, requestOptions).block();
     }
 
     /**
@@ -969,12 +1048,15 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasClassifications along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getClassificationsWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getClassificationsWithResponse(guid, requestOptions);
+        return this.client.getClassificationsWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -1012,13 +1094,16 @@ public final class EntityClient {
      * @param classifications An array of classifications to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationsWithResponse(
             String guid, BinaryData classifications, RequestOptions requestOptions) {
-        return this.serviceClient.addClassificationsWithResponse(guid, classifications, requestOptions);
+        return this.client.addClassificationsWithResponse(guid, classifications, requestOptions).block();
     }
 
     /**
@@ -1056,13 +1141,16 @@ public final class EntityClient {
      * @param classifications An array of classifications to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateClassificationsWithResponse(
             String guid, BinaryData classifications, RequestOptions requestOptions) {
-        return this.serviceClient.updateClassificationsWithResponse(guid, classifications, requestOptions);
+        return this.client.updateClassificationsWithResponse(guid, classifications, requestOptions).block();
     }
 
     /**
@@ -1077,9 +1165,9 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1093,6 +1181,9 @@ public final class EntityClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -1118,8 +1209,15 @@ public final class EntityClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -1164,6 +1262,9 @@ public final class EntityClient {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return complete definition of an entity given its type and unique attribute. In addition to the typeName path
      *     parameter, attribute key-value pair(s) can be provided in the following format:
      *     attr:\&lt;attrName&gt;=&lt;attrValue&gt; along with {@link Response}.
@@ -1171,7 +1272,7 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getByUniqueAttributesWithResponse(String typeName, RequestOptions requestOptions) {
-        return this.serviceClient.getByUniqueAttributesWithResponse(typeName, requestOptions);
+        return this.client.getByUniqueAttributesWithResponse(typeName, requestOptions).block();
     }
 
     /**
@@ -1187,7 +1288,7 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -1201,6 +1302,9 @@ public final class EntityClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -1226,8 +1330,15 @@ public final class EntityClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -1312,6 +1423,10 @@ public final class EntityClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1343,14 +1458,18 @@ public final class EntityClient {
      * @param atlasEntityWithExtInfo Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityByUniqueAttributesWithResponse(
             String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateEntityByUniqueAttributesWithResponse(
-                typeName, atlasEntityWithExtInfo, requestOptions);
+        return this.client
+                .partialUpdateEntityByUniqueAttributesWithResponse(typeName, atlasEntityWithExtInfo, requestOptions)
+                .block();
     }
 
     /**
@@ -1364,7 +1483,7 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1410,6 +1529,10 @@ public final class EntityClient {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1440,12 +1563,15 @@ public final class EntityClient {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteByUniqueAttributeWithResponse(typeName, requestOptions);
+        return this.client.deleteByUniqueAttributeWithResponse(typeName, requestOptions).block();
     }
 
     /**
@@ -1456,21 +1582,25 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteClassificationByUniqueAttributeWithResponse(
             String typeName, String classificationName, RequestOptions requestOptions) {
-        return this.serviceClient.deleteClassificationByUniqueAttributeWithResponse(
-                typeName, classificationName, requestOptions);
+        return this.client
+                .deleteClassificationByUniqueAttributeWithResponse(typeName, classificationName, requestOptions)
+                .block();
     }
 
     /**
@@ -1481,7 +1611,7 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -1516,14 +1646,18 @@ public final class EntityClient {
      * @param atlasClassificationArray An array of classification to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addClassificationsByUniqueAttributeWithResponse(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
-        return this.serviceClient.addClassificationsByUniqueAttributeWithResponse(
-                typeName, atlasClassificationArray, requestOptions);
+        return this.client
+                .addClassificationsByUniqueAttributeWithResponse(typeName, atlasClassificationArray, requestOptions)
+                .block();
     }
 
     /**
@@ -1534,7 +1668,7 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -1569,14 +1703,18 @@ public final class EntityClient {
      * @param atlasClassificationArray An array of classification to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateClassificationsByUniqueAttributeWithResponse(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
-        return this.serviceClient.updateClassificationsByUniqueAttributeWithResponse(
-                typeName, atlasClassificationArray, requestOptions);
+        return this.client
+                .updateClassificationsByUniqueAttributeWithResponse(typeName, atlasClassificationArray, requestOptions)
+                .block();
     }
 
     /**
@@ -1621,6 +1759,10 @@ public final class EntityClient {
      *             ]
      *             displayText: String
      *             guid: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meaningNames: [
      *                 String
      *             ]
@@ -1655,13 +1797,16 @@ public final class EntityClient {
      * @param entityHeaders Atlas entity headers.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response that indicates each classification mutation result along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> setClassificationsWithResponse(
             BinaryData entityHeaders, RequestOptions requestOptions) {
-        return this.serviceClient.setClassificationsWithResponse(entityHeaders, requestOptions);
+        return this.client.setClassificationsWithResponse(entityHeaders, requestOptions).block();
     }
 
     /**
@@ -1684,9 +1829,9 @@ public final class EntityClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrNQualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1700,6 +1845,9 @@ public final class EntityClient {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -1725,8 +1873,15 @@ public final class EntityClient {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -1773,13 +1928,16 @@ public final class EntityClient {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasEntitiesWithExtInfo along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntitiesByUniqueAttributesWithResponse(
             String typeName, RequestOptions requestOptions) {
-        return this.serviceClient.getEntitiesByUniqueAttributesWithResponse(typeName, requestOptions);
+        return this.client.getEntitiesByUniqueAttributesWithResponse(typeName, requestOptions).block();
     }
 
     /**
@@ -1822,6 +1980,10 @@ public final class EntityClient {
      *     ]
      *     displayText: String
      *     guid: String
+     *     isIncomplete: Boolean
+     *     labels: [
+     *         String
+     *     ]
      *     meaningNames: [
      *         String
      *     ]
@@ -1846,11 +2008,369 @@ public final class EntityClient {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entity header given its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getHeaderWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getHeaderWithResponse(guid, requestOptions);
+        return this.client.getHeaderWithResponse(guid, requestOptions).block();
+    }
+
+    /**
+     * Remove business metadata from an entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteBusinessMetadataWithResponse(String guid, RequestOptions requestOptions) {
+        return this.client.deleteBusinessMetadataWithResponse(guid, requestOptions).block();
+    }
+
+    /**
+     * Add business metadata to an entity.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>isOverwrite</td><td>Boolean</td><td>No</td><td>Whether to overwrite the existing business metadata on the entity or not, default is false.</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addOrUpdateBusinessMetadataWithResponse(String guid, RequestOptions requestOptions) {
+        return this.client.addOrUpdateBusinessMetadataWithResponse(guid, requestOptions).block();
+    }
+
+    /**
+     * Delete business metadata attributes from an entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param bmName BusinessMetadata name.
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteBusinessMetadataAttributesWithResponse(
+            String bmName, String guid, RequestOptions requestOptions) {
+        return this.client.deleteBusinessMetadataAttributesWithResponse(bmName, guid, requestOptions).block();
+    }
+
+    /**
+     * Add or update business metadata attributes.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param bmName BusinessMetadata name.
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addOrUpdateBusinessMetadataAttributesWithResponse(
+            String bmName, String guid, RequestOptions requestOptions) {
+        return this.client.addOrUpdateBusinessMetadataAttributesWithResponse(bmName, guid, requestOptions).block();
+    }
+
+    /**
+     * Get the sample Template for uploading/creating bulk BusinessMetaData.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the sample Template for uploading/creating bulk BusinessMetaData along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> getSampleBusinessMetadataTemplateWithResponse(RequestOptions requestOptions) {
+        return this.client.getSampleBusinessMetadataTemplateWithResponse(requestOptions).block();
+    }
+
+    /**
+     * Upload the file for creating Business Metadata in BULK.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * Flux<ByteBuffer>
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     failedImportInfoList: [
+     *         {
+     *             childObjectName: String
+     *             importStatus: String(SUCCESS/FAILED)
+     *             parentObjectName: String
+     *             remarks: String
+     *         }
+     *     ]
+     *     successImportInfoList: [
+     *         (recursive schema, see above)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return bulkImportResponse along with {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> importBusinessMetadataWithResponse(RequestOptions requestOptions) {
+        return this.client.importBusinessMetadataWithResponse(requestOptions).block();
+    }
+
+    /**
+     * delete given labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteLabelsWithResponse(String guid, RequestOptions requestOptions) {
+        return this.client.deleteLabelsWithResponse(guid, requestOptions).block();
+    }
+
+    /**
+     * Set labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setLabelsWithResponse(String guid, RequestOptions requestOptions) {
+        return this.client.setLabelsWithResponse(guid, requestOptions).block();
+    }
+
+    /**
+     * add given labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addLabelWithResponse(String guid, RequestOptions requestOptions) {
+        return this.client.addLabelWithResponse(guid, requestOptions).block();
+    }
+
+    /**
+     * Delete given labels to a given entity identified by its type and unique attributes, if labels is null/empty, no
+     * labels will be removed. If any labels in labels set are non-existing labels, they will be ignored, only existing
+     * labels will be removed. In addition to the typeName path parameter, attribute key-value pair(s) can be provided
+     * in the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be
+     * unique across entities, eg. qualifiedName. The REST request would look something like this: DELETE
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.client.deleteLabelsByUniqueAttributeWithResponse(typeName, requestOptions).block();
+    }
+
+    /**
+     * Set labels to a given entity identified by its type and unique attributes, if labels is null/empty, existing
+     * labels will all be removed. In addition to the typeName path parameter, attribute key-value pair(s) can be
+     * provided in the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue
+     * should be unique across entities, eg. qualifiedName. The REST request would look something like this: POST
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.client.setLabelsByUniqueAttributeWithResponse(typeName, requestOptions).block();
+    }
+
+    /**
+     * Add given labels to a given entity identified by its type and unique attributes, if labels is null/empty, no
+     * labels will be added. In addition to the typeName path parameter, attribute key-value pair(s) can be provided in
+     * the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be unique
+     * across entities, eg. qualifiedName. The REST request would look something like this: PUT
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return this.client.addLabelsByUniqueAttributeWithResponse(typeName, requestOptions).block();
     }
 }

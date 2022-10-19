@@ -13,10 +13,9 @@ import com.azure.resourcemanager.datafactory.fluent.DatasetsClient;
 import com.azure.resourcemanager.datafactory.fluent.models.DatasetResourceInner;
 import com.azure.resourcemanager.datafactory.models.DatasetResource;
 import com.azure.resourcemanager.datafactory.models.Datasets;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DatasetsImpl implements Datasets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatasetsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DatasetsImpl.class);
 
     private final DatasetsClient innerClient;
 
@@ -39,15 +38,6 @@ public final class DatasetsImpl implements Datasets {
         return Utils.mapPage(inner, inner1 -> new DatasetResourceImpl(inner1, this.manager()));
     }
 
-    public DatasetResource get(String resourceGroupName, String factoryName, String datasetName) {
-        DatasetResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, datasetName);
-        if (inner != null) {
-            return new DatasetResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DatasetResource> getWithResponse(
         String resourceGroupName, String factoryName, String datasetName, String ifNoneMatch, Context context) {
         Response<DatasetResourceInner> inner =
@@ -63,8 +53,13 @@ public final class DatasetsImpl implements Datasets {
         }
     }
 
-    public void delete(String resourceGroupName, String factoryName, String datasetName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, datasetName);
+    public DatasetResource get(String resourceGroupName, String factoryName, String datasetName) {
+        DatasetResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, datasetName);
+        if (inner != null) {
+            return new DatasetResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -72,10 +67,14 @@ public final class DatasetsImpl implements Datasets {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, datasetName, context);
     }
 
+    public void delete(String resourceGroupName, String factoryName, String datasetName) {
+        this.serviceClient().delete(resourceGroupName, factoryName, datasetName);
+    }
+
     public DatasetResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -83,14 +82,14 @@ public final class DatasetsImpl implements Datasets {
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String datasetName = Utils.getValueFromIdByName(id, "datasets");
         if (datasetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'datasets'.", id)));
@@ -104,7 +103,7 @@ public final class DatasetsImpl implements Datasets {
     public Response<DatasetResource> getByIdWithResponse(String id, String ifNoneMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -112,14 +111,14 @@ public final class DatasetsImpl implements Datasets {
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String datasetName = Utils.getValueFromIdByName(id, "datasets");
         if (datasetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'datasets'.", id)));
@@ -130,7 +129,7 @@ public final class DatasetsImpl implements Datasets {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -138,14 +137,14 @@ public final class DatasetsImpl implements Datasets {
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String datasetName = Utils.getValueFromIdByName(id, "datasets");
         if (datasetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'datasets'.", id)));
@@ -156,7 +155,7 @@ public final class DatasetsImpl implements Datasets {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -164,14 +163,14 @@ public final class DatasetsImpl implements Datasets {
         }
         String factoryName = Utils.getValueFromIdByName(id, "factories");
         if (factoryName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'factories'.", id)));
         }
         String datasetName = Utils.getValueFromIdByName(id, "datasets");
         if (datasetName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'datasets'.", id)));

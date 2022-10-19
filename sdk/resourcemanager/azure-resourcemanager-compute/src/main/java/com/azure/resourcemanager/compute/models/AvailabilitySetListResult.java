@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.AvailabilitySetInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Availability Set operation response. */
 @Fluent
 public final class AvailabilitySetListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilitySetListResult.class);
-
     /*
      * The list of availability sets
      */
@@ -23,8 +20,8 @@ public final class AvailabilitySetListResult {
     private List<AvailabilitySetInner> value;
 
     /*
-     * The URI to fetch the next page of AvailabilitySets. Call ListNext() with
-     * this URI to fetch the next page of AvailabilitySets.
+     * The URI to fetch the next page of AvailabilitySets. Call ListNext() with this URI to fetch the next page of
+     * AvailabilitySets.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -78,11 +75,13 @@ public final class AvailabilitySetListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model AvailabilitySetListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AvailabilitySetListResult.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Geodata information for a given IP address. */
 @Fluent
 public final class EnrichmentIpGeodataInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrichmentIpGeodataInner.class);
-
     /*
      * The autonomous system number associated with this IP address
      */
@@ -33,8 +29,7 @@ public final class EnrichmentIpGeodataInner {
     private String city;
 
     /*
-     * A numeric rating of confidence that the value in the 'city' field is
-     * correct, on a scale of 0-100
+     * A numeric rating of confidence that the value in the 'city' field is correct, on a scale of 0-100
      */
     @JsonProperty(value = "cityCf")
     private Integer cityCf;
@@ -52,15 +47,13 @@ public final class EnrichmentIpGeodataInner {
     private String country;
 
     /*
-     * A numeric rating of confidence that the value in the 'country' field is
-     * correct on a scale of 0-100
+     * A numeric rating of confidence that the value in the 'country' field is correct on a scale of 0-100
      */
     @JsonProperty(value = "countryCf")
     private Integer countryCf;
 
     /*
-     * The dotted-decimal or colon-separated string representation of the IP
-     * address
+     * The dotted-decimal or colon-separated string representation of the IP address
      */
     @JsonProperty(value = "ipAddr")
     private String ipAddr;
@@ -108,8 +101,7 @@ public final class EnrichmentIpGeodataInner {
     private String state;
 
     /*
-     * A numeric rating of confidence that the value in the 'state' field is
-     * correct on a scale of 0-100
+     * A numeric rating of confidence that the value in the 'state' field is correct on a scale of 0-100
      */
     @JsonProperty(value = "stateCf")
     private Integer stateCf;

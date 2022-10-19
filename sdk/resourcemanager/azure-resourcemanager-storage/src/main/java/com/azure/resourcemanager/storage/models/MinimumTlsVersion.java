@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MinimumTlsVersion. */
+/**
+ * Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for this
+ * property.
+ */
 public final class MinimumTlsVersion extends ExpandableStringEnum<MinimumTlsVersion> {
     /** Static value TLS1_0 for MinimumTlsVersion. */
     public static final MinimumTlsVersion TLS1_0 = fromString("TLS1_0");
@@ -30,7 +33,11 @@ public final class MinimumTlsVersion extends ExpandableStringEnum<MinimumTlsVers
         return fromString(name, MinimumTlsVersion.class);
     }
 
-    /** @return known MinimumTlsVersion values. */
+    /**
+     * Gets known MinimumTlsVersion values.
+     *
+     * @return known MinimumTlsVersion values.
+     */
     public static Collection<MinimumTlsVersion> values() {
         return values(MinimumTlsVersion.class);
     }

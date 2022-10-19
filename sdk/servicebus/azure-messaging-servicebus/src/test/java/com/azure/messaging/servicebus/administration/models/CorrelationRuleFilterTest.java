@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -137,5 +138,74 @@ class CorrelationRuleFilterTest {
         assertTrue(toString.contains(value1));
         assertTrue(toString.contains(key2));
         assertTrue(toString.contains(value2));
+    }
+
+    @Test
+    void testEqualsAndHashCode() {
+        final CorrelationRuleFilter someFilter = new CorrelationRuleFilter("some-id");
+        final CorrelationRuleFilter otherFilter = new CorrelationRuleFilter("other-id");
+        assertNotEquals(someFilter, otherFilter);
+        assertNotEquals(someFilter.hashCode(), otherFilter.hashCode());
+
+        final CorrelationRuleFilter similarFilter = new CorrelationRuleFilter("some-id");
+        assertEquals(someFilter, similarFilter);
+        assertEquals(someFilter.hashCode(), similarFilter.hashCode());
+
+        someFilter.setMessageId("some-message-id");
+        assertNotEquals(someFilter, similarFilter);
+        assertNotEquals(someFilter.hashCode(), similarFilter.hashCode());
+        similarFilter.setMessageId("other-message-id");
+        assertNotEquals(someFilter, similarFilter);
+        assertNotEquals(someFilter.hashCode(), similarFilter.hashCode());
+        similarFilter.setMessageId("some-message-id");
+        assertEquals(someFilter, similarFilter);
+        assertEquals(someFilter.hashCode(), similarFilter.hashCode());
+
+        someFilter.setSessionId("some-session-id");
+        assertNotEquals(someFilter, similarFilter);
+        assertNotEquals(someFilter.hashCode(), similarFilter.hashCode());
+        similarFilter.setSessionId("other-session-id");
+        assertNotEquals(someFilter, similarFilter);
+        assertNotEquals(someFilter.hashCode(), similarFilter.hashCode());
+        similarFilter.setSessionId("some-session-id");
+        assertEquals(someFilter, similarFilter);
+        assertEquals(someFilter.hashCode(), similarFilter.hashCode());
+
+        someFilter.setContentType("some-content-type");
+        assertNotEquals(someFilter, similarFilter);
+        assertEquals(someFilter.hashCode(), similarFilter.hashCode());
+        similarFilter.setContentType("some-content-type");
+        assertEquals(someFilter, similarFilter);
+
+        someFilter.setLabel("some-label");
+        assertNotEquals(someFilter, similarFilter);
+        assertEquals(someFilter.hashCode(), similarFilter.hashCode());
+        similarFilter.setLabel("some-label");
+        assertEquals(someFilter, similarFilter);
+
+        someFilter.getProperties().put("some-key1", "some-value1");
+        assertNotEquals(someFilter, similarFilter);
+        assertEquals(someFilter.hashCode(), similarFilter.hashCode());
+        similarFilter.getProperties().put("some-key1", "some-value1");
+        assertEquals(someFilter, similarFilter);
+
+        someFilter.setReplyTo("some-reply-id");
+        assertNotEquals(someFilter, similarFilter);
+        assertEquals(someFilter.hashCode(), similarFilter.hashCode());
+        similarFilter.setReplyTo("some-reply-id");
+        assertEquals(someFilter, similarFilter);
+
+        someFilter.setReplyToSessionId("some-reply-session-id");
+        assertNotEquals(someFilter, similarFilter);
+        assertEquals(someFilter.hashCode(), similarFilter.hashCode());
+        similarFilter.setReplyToSessionId("some-reply-session-id");
+        assertEquals(someFilter, similarFilter);
+
+        someFilter.setTo("some-to");
+        assertNotEquals(someFilter, similarFilter);
+        assertEquals(someFilter.hashCode(), similarFilter.hashCode());
+        similarFilter.setTo("some-to");
+        assertEquals(someFilter, similarFilter);
+
     }
 }

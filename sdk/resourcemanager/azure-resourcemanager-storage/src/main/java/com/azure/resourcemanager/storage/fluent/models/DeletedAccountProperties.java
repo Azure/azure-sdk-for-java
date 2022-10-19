@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Attributes of a deleted storage account. */
 @Immutable
 public final class DeletedAccountProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedAccountProperties.class);
-
     /*
      * Full resource id of the original storage account.
      */
@@ -27,8 +23,7 @@ public final class DeletedAccountProperties {
     private String location;
 
     /*
-     * Can be used to attempt recovering this deleted account via
-     * PutStorageAccount API.
+     * Can be used to attempt recovering this deleted account via PutStorageAccount API.
      */
     @JsonProperty(value = "restoreReference", access = JsonProperty.Access.WRITE_ONLY)
     private String restoreReference;

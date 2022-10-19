@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Virtual Network Tap properties. */
 @Fluent
 public final class VirtualNetworkTapPropertiesFormatInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkTapPropertiesFormatInner.class);
-
     /*
-     * Specifies the list of resource IDs for the network interface IP
-     * configuration that needs to be tapped.
+     * Specifies the list of resource IDs for the network interface IP configuration that needs to be tapped.
      */
     @JsonProperty(value = "networkInterfaceTapConfigurations", access = JsonProperty.Access.WRITE_ONLY)
     private List<NetworkInterfaceTapConfigurationInner> networkInterfaceTapConfigurations;
@@ -36,15 +31,13 @@ public final class VirtualNetworkTapPropertiesFormatInner {
     private ProvisioningState provisioningState;
 
     /*
-     * The reference to the private IP Address of the collector nic that will
-     * receive the tap.
+     * The reference to the private IP Address of the collector nic that will receive the tap.
      */
     @JsonProperty(value = "destinationNetworkInterfaceIPConfiguration")
     private NetworkInterfaceIpConfigurationInner destinationNetworkInterfaceIpConfiguration;
 
     /*
-     * The reference to the private IP address on the internal Load Balancer
-     * that will receive the tap.
+     * The reference to the private IP address on the internal Load Balancer that will receive the tap.
      */
     @JsonProperty(value = "destinationLoadBalancerFrontEndIPConfiguration")
     private FrontendIpConfigurationInner destinationLoadBalancerFrontEndIpConfiguration;
@@ -54,6 +47,10 @@ public final class VirtualNetworkTapPropertiesFormatInner {
      */
     @JsonProperty(value = "destinationPort")
     private Integer destinationPort;
+
+    /** Creates an instance of VirtualNetworkTapPropertiesFormatInner class. */
+    public VirtualNetworkTapPropertiesFormatInner() {
+    }
 
     /**
      * Get the networkInterfaceTapConfigurations property: Specifies the list of resource IDs for the network interface

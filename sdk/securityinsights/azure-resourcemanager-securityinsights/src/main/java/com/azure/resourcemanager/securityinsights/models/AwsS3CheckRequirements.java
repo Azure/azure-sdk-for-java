@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AmazonWebServicesS3")
 @Immutable
 public final class AwsS3CheckRequirements extends DataConnectorsCheckRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AwsS3CheckRequirements.class);
-
     /**
      * Validates the instance.
      *

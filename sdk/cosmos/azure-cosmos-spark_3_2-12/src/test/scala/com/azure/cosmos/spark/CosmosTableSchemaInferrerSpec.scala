@@ -3,12 +3,10 @@
 package com.azure.cosmos.spark
 
 import com.fasterxml.jackson.databind.ObjectMapper
-
 import com.fasterxml.jackson.databind.node.ObjectNode
-import org.apache.spark.sql.types.{
-  ArrayType, BinaryType, BooleanType, DecimalType, DoubleType,
-  FloatType, LongType, NullType, StringType, StructType, IntegerType, StructField
-}
+import org.apache.spark.sql.types.{ArrayType, BinaryType, BooleanType, DecimalType, DoubleType, FloatType, IntegerType, LongType, NullType, StringType, StructField, StructType}
+
+import scala.language.postfixOps
 
 class CosmosTableSchemaInferrerSpec extends UnitSpec {
   //scalastyle:off null
@@ -175,6 +173,8 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
   }
 
   "nested array properties" should "handle different schema elements" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
 
     val jsonText = "{ \"Actions\": " +
       "[{ \"Condition\": [] }," +
@@ -301,6 +301,9 @@ class CosmosTableSchemaInferrerSpec extends UnitSpec {
   }
 
   it should "map nested objects properties when objects have different properties" in {
+    val canRun = Platform.canRunTestAccessingDirectByteBuffer
+    assume(canRun._1, canRun._2)
+
     val nodeValue = 10
     val objectNode: ObjectNode = objectMapper.createObjectNode()
     val subNode = objectNode.putObject("id")

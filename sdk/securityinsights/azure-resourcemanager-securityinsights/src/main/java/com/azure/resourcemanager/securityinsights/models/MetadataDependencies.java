@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class MetadataDependencies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataDependencies.class);
-
     /*
      * Id of the content item we depend on
      */
@@ -32,10 +28,8 @@ public final class MetadataDependencies {
     private Kind kind;
 
     /*
-     * Version of the the content item we depend on.  Can be blank, * or
-     * missing to indicate any version fulfills the dependency.  If version
-     * does not match our defined numeric format then an exact match is
-     * required.
+     * Version of the the content item we depend on.  Can be blank, * or missing to indicate any version fulfills the
+     * dependency.  If version does not match our defined numeric format then an exact match is required.
      */
     @JsonProperty(value = "version")
     private String version;
@@ -53,8 +47,7 @@ public final class MetadataDependencies {
     private Operator operator;
 
     /*
-     * This is the list of dependencies we must fulfill, according to the
-     * AND/OR operator
+     * This is the list of dependencies we must fulfill, according to the AND/OR operator
      */
     @JsonProperty(value = "criteria")
     private List<MetadataDependencies> criteria;

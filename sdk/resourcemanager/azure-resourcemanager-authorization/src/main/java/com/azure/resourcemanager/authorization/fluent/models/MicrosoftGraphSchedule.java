@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** schedule. */
 @Fluent
 public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphSchedule.class);
-
     /*
      * Indicates whether the schedule is enabled for the team. Required.
      */
@@ -38,7 +35,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
     private Boolean openShiftsEnabled;
 
     /*
-     * The provisionStatus property.
+     * operationStatus
      */
     @JsonProperty(value = "provisionStatus")
     private MicrosoftGraphOperationStatus provisionStatus;
@@ -200,7 +197,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the provisionStatus property: The provisionStatus property.
+     * Get the provisionStatus property: operationStatus.
      *
      * @return the provisionStatus value.
      */
@@ -209,7 +206,7 @@ public final class MicrosoftGraphSchedule extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the provisionStatus property: The provisionStatus property.
+     * Set the provisionStatus property: operationStatus.
      *
      * @param provisionStatus the provisionStatus value to set.
      * @return the MicrosoftGraphSchedule object itself.

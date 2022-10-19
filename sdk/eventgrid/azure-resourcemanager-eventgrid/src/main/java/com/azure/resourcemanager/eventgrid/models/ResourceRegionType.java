@@ -27,7 +27,11 @@ public final class ResourceRegionType extends ExpandableStringEnum<ResourceRegio
         return fromString(name, ResourceRegionType.class);
     }
 
-    /** @return known ResourceRegionType values. */
+    /**
+     * Gets known ResourceRegionType values.
+     *
+     * @return known ResourceRegionType values.
+     */
     public static Collection<ResourceRegionType> values() {
         return values(ResourceRegionType.class);
     }

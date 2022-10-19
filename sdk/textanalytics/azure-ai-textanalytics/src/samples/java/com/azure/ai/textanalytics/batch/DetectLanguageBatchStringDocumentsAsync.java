@@ -44,7 +44,7 @@ public class DetectLanguageBatchStringDocumentsAsync {
         AtomicInteger counter = new AtomicInteger();
         client.detectLanguageBatch(documents, "US", requestOptions).subscribe(
             detectedLanguageResultCollection -> {
-                System.out.printf("Results of Azure Text Analytics \"Language Detection\" Model, version: %s%n", detectedLanguageResultCollection.getModelVersion());
+                System.out.printf("Results of \"Language Detection\" Model, version: %s%n", detectedLanguageResultCollection.getModelVersion());
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = detectedLanguageResultCollection.getStatistics();

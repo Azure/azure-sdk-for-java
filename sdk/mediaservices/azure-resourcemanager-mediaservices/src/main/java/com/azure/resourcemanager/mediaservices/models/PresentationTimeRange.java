@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The presentation time range, this is asset related and not recommended for Account Filter. */
 @Fluent
 public final class PresentationTimeRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PresentationTimeRange.class);
-
     /*
      * The absolute start time boundary.
      */

@@ -29,8 +29,7 @@ public final class NotebookCellOutputItem {
     private CellOutputType outputType;
 
     /*
-     * For output_type=stream, the stream's text output, represented as a
-     * string or an array of strings.
+     * For output_type=stream, the stream's text output, represented as a string or an array of strings.
      */
     @JsonProperty(value = "text")
     private Object text;

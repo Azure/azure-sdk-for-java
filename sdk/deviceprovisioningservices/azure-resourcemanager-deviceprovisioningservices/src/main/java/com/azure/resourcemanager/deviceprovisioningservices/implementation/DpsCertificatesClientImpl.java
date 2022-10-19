@@ -25,12 +25,10 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.DpsCertificatesClient;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateListDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.VerificationCodeResponseInner;
-import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateBodyDescription;
 import com.azure.resourcemanager.deviceprovisioningservices.models.CertificatePurpose;
 import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException;
 import com.azure.resourcemanager.deviceprovisioningservices.models.VerificationCodeRequest;
@@ -39,8 +37,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DpsCertificatesClient. */
 public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
-    private final ClientLogger logger = new ClientLogger(DpsCertificatesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DpsCertificatesService service;
 
@@ -96,7 +92,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
             @PathParam("provisioningServiceName") String provisioningServiceName,
             @PathParam("certificateName") String certificateName,
             @HeaderParam("If-Match") String ifMatch,
-            @BodyParam("application/json") CertificateBodyDescription certificateDescription,
+            @BodyParam("application/json") CertificateResponseInner certificateDescription,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -329,14 +325,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
     private Mono<CertificateResponseInner> getAsync(
         String certificateName, String resourceGroupName, String provisioningServiceName, String ifMatch) {
         return getWithResponseAsync(certificateName, resourceGroupName, provisioningServiceName, ifMatch)
-            .flatMap(
-                (Response<CertificateResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -355,14 +344,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
         String certificateName, String resourceGroupName, String provisioningServiceName) {
         final String ifMatch = null;
         return getWithResponseAsync(certificateName, resourceGroupName, provisioningServiceName, ifMatch)
-            .flatMap(
-                (Response<CertificateResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -426,7 +408,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
         String resourceGroupName,
         String provisioningServiceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription,
+        CertificateResponseInner certificateDescription,
         String ifMatch) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -499,7 +481,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
         String resourceGroupName,
         String provisioningServiceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription,
+        CertificateResponseInner certificateDescription,
         String ifMatch,
         Context context) {
         if (this.client.getEndpoint() == null) {
@@ -569,18 +551,11 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
         String resourceGroupName,
         String provisioningServiceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription,
+        CertificateResponseInner certificateDescription,
         String ifMatch) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, provisioningServiceName, certificateName, certificateDescription, ifMatch)
-            .flatMap(
-                (Response<CertificateResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -600,18 +575,11 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
         String resourceGroupName,
         String provisioningServiceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription) {
+        CertificateResponseInner certificateDescription) {
         final String ifMatch = null;
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, provisioningServiceName, certificateName, certificateDescription, ifMatch)
-            .flatMap(
-                (Response<CertificateResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -631,7 +599,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
         String resourceGroupName,
         String provisioningServiceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription) {
+        CertificateResponseInner certificateDescription) {
         final String ifMatch = null;
         return createOrUpdateAsync(
                 resourceGroupName, provisioningServiceName, certificateName, certificateDescription, ifMatch)
@@ -658,7 +626,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
         String resourceGroupName,
         String provisioningServiceName,
         String certificateName,
-        CertificateBodyDescription certificateDescription,
+        CertificateResponseInner certificateDescription,
         String ifMatch,
         Context context) {
         return createOrUpdateWithResponseAsync(
@@ -893,7 +861,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
                 certificateLastUpdated,
                 certificateHasPrivateKey,
                 certificateNonce)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -933,7 +901,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
                 certificateLastUpdated,
                 certificateHasPrivateKey,
                 certificateNonce)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1142,14 +1110,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CertificateListDescriptionInner> listAsync(String resourceGroupName, String provisioningServiceName) {
         return listWithResponseAsync(resourceGroupName, provisioningServiceName)
-            .flatMap(
-                (Response<CertificateListDescriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1416,14 +1377,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
                 certificateLastUpdated,
                 certificateHasPrivateKey,
                 certificateNonce)
-            .flatMap(
-                (Response<VerificationCodeResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1464,14 +1418,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
                 certificateLastUpdated,
                 certificateHasPrivateKey,
                 certificateNonce)
-            .flatMap(
-                (Response<VerificationCodeResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1819,14 +1766,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
                 certificateLastUpdated,
                 certificateHasPrivateKey,
                 certificateNonce)
-            .flatMap(
-                (Response<CertificateResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1873,14 +1813,7 @@ public final class DpsCertificatesClientImpl implements DpsCertificatesClient {
                 certificateLastUpdated,
                 certificateHasPrivateKey,
                 certificateNonce)
-            .flatMap(
-                (Response<CertificateResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

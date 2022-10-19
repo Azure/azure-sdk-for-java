@@ -7,15 +7,12 @@ package com.azure.resourcemanager.apimanagement.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiManagementSkuInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Resource Skus operation response. */
 @Fluent
 public final class ApiManagementSkusResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiManagementSkusResult.class);
-
     /*
      * The list of skus available for the subscription.
      */
@@ -66,11 +63,13 @@ public final class ApiManagementSkusResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model ApiManagementSkusResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApiManagementSkusResult.class);
 }

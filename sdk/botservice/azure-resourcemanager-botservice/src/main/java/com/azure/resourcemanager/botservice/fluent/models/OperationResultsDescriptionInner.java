@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.botservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.botservice.models.OperationResultStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties indicating the operation result of an operation on a service. */
 @Immutable
 public final class OperationResultsDescriptionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultsDescriptionInner.class);
-
     /*
      * The ID of the operation returned.
      */

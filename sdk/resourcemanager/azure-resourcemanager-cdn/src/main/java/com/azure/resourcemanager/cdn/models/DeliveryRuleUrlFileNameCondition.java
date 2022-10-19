@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("UrlFileName")
 @Fluent
 public final class DeliveryRuleUrlFileNameCondition extends DeliveryRuleCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryRuleUrlFileNameCondition.class);
-
     /*
      * Defines the parameters for the condition.
      */
@@ -53,7 +50,7 @@ public final class DeliveryRuleUrlFileNameCondition extends DeliveryRuleConditio
     public void validate() {
         super.validate();
         if (parameters() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property parameters in model DeliveryRuleUrlFileNameCondition"));
@@ -61,4 +58,6 @@ public final class DeliveryRuleUrlFileNameCondition extends DeliveryRuleConditio
             parameters().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeliveryRuleUrlFileNameCondition.class);
 }

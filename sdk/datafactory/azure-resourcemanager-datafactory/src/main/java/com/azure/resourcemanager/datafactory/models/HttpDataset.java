@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.HttpDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("HttpFile")
 @Fluent
 public final class HttpDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpDataset.class);
-
     /*
      * Properties specific to this dataset type.
      */
     @JsonProperty(value = "typeProperties")
     private HttpDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of HttpDataset class. */
+    public HttpDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.

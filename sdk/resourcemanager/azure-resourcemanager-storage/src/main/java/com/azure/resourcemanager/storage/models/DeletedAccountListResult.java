@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.DeletedAccountInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response from the List Deleted Accounts operation. */
 @Immutable
 public final class DeletedAccountListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeletedAccountListResult.class);
-
     /*
      * Gets the list of deleted accounts and their properties.
      */
@@ -23,9 +19,8 @@ public final class DeletedAccountListResult {
     private List<DeletedAccountInner> value;
 
     /*
-     * Request URL that can be used to query next page of deleted accounts.
-     * Returned when total number of requested deleted accounts exceed maximum
-     * page size.
+     * Request URL that can be used to query next page of deleted accounts. Returned when total number of requested
+     * deleted accounts exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;

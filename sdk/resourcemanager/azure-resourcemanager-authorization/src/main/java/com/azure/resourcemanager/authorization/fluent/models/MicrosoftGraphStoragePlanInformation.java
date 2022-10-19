@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** storagePlanInformation. */
 @Fluent
 public final class MicrosoftGraphStoragePlanInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphStoragePlanInformation.class);
-
     /*
      * Indicates whether there are higher storage quota plans available.
      * Read-only.

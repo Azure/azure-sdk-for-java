@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("FactoryVSTSConfiguration")
 @Fluent
 public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FactoryVstsConfiguration.class);
-
     /*
      * VSTS project name.
      */
@@ -29,6 +26,10 @@ public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
      */
     @JsonProperty(value = "tenantId")
     private String tenantId;
+
+    /** Creates an instance of FactoryVstsConfiguration class. */
+    public FactoryVstsConfiguration() {
+    }
 
     /**
      * Get the projectName property: VSTS project name.
@@ -105,6 +106,13 @@ public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public FactoryVstsConfiguration withDisablePublish(Boolean disablePublish) {
+        super.withDisablePublish(disablePublish);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *
@@ -114,10 +122,12 @@ public final class FactoryVstsConfiguration extends FactoryRepoConfiguration {
     public void validate() {
         super.validate();
         if (projectName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property projectName in model FactoryVstsConfiguration"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FactoryVstsConfiguration.class);
 }

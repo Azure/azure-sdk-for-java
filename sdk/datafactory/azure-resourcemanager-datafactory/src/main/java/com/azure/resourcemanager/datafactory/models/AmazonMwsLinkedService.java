@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AmazonMwsLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("AmazonMWS")
 @Fluent
 public final class AmazonMwsLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonMwsLinkedService.class);
-
     /*
      * Amazon Marketplace Web Service linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private AmazonMwsLinkedServiceTypeProperties innerTypeProperties = new AmazonMwsLinkedServiceTypeProperties();
+
+    /** Creates an instance of AmazonMwsLinkedService class. */
+    public AmazonMwsLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Amazon Marketplace Web Service linked service properties.
@@ -313,7 +314,7 @@ public final class AmazonMwsLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AmazonMwsLinkedService"));
@@ -321,4 +322,6 @@ public final class AmazonMwsLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AmazonMwsLinkedService.class);
 }

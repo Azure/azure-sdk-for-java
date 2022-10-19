@@ -34,7 +34,11 @@ public final class DeploymentResourceProvisioningState
         return fromString(name, DeploymentResourceProvisioningState.class);
     }
 
-    /** @return known DeploymentResourceProvisioningState values. */
+    /**
+     * Gets known DeploymentResourceProvisioningState values.
+     *
+     * @return known DeploymentResourceProvisioningState values.
+     */
     public static Collection<DeploymentResourceProvisioningState> values() {
         return values(DeploymentResourceProvisioningState.class);
     }

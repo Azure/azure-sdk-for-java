@@ -5,35 +5,31 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that represents the operation. */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
-     * Service provider: Microsoft DigitalTwins
+     * Service provider: Microsoft DigitalTwins.
      */
     @JsonProperty(value = "provider", access = JsonProperty.Access.WRITE_ONLY)
     private String provider;
 
     /*
-     * Resource Type: DigitalTwinsInstances
+     * Resource Type: DigitalTwinsInstances.
      */
     @JsonProperty(value = "resource", access = JsonProperty.Access.WRITE_ONLY)
     private String resource;
 
     /*
-     * Name of the operation
+     * Name of the operation.
      */
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
 
     /*
-     * Friendly description for the operation,
+     * Friendly description for the operation.
      */
     @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
     private String description;
@@ -66,7 +62,7 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the description property: Friendly description for the operation,.
+     * Get the description property: Friendly description for the operation.
      *
      * @return the description value.
      */

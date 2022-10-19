@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The sku of this Bastion Host. */
 @Fluent
 public final class Sku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Sku.class);
-
     /*
      * The name of this Bastion Host.
      */
     @JsonProperty(value = "name")
     private BastionHostSkuName name;
+
+    /** Creates an instance of Sku class. */
+    public Sku() {
+    }
 
     /**
      * Get the name property: The name of this Bastion Host.

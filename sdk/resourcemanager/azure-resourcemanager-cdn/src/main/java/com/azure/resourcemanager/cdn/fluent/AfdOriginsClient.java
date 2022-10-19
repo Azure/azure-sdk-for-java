@@ -25,12 +25,13 @@ public interface AfdOriginsClient {
      * Lists all of the existing origins within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins.
+     * @return result of the request to list origins as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AfdOriginInner> listByOriginGroupAsync(
@@ -40,12 +41,13 @@ public interface AfdOriginsClient {
      * Lists all of the existing origins within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins.
+     * @return result of the request to list origins as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AfdOriginInner> listByOriginGroup(
@@ -55,13 +57,14 @@ public interface AfdOriginsClient {
      * Lists all of the existing origins within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list origins.
+     * @return result of the request to list origins as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AfdOriginInner> listByOriginGroup(
@@ -71,13 +74,15 @@ public interface AfdOriginsClient {
      * Gets an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an origin group.
+     * @return an existing origin within an origin group along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AfdOriginInner>> getWithResponseAsync(
@@ -87,13 +92,14 @@ public interface AfdOriginsClient {
      * Gets an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an origin group.
+     * @return an existing origin within an origin group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AfdOriginInner> getAsync(
@@ -103,7 +109,8 @@ public interface AfdOriginsClient {
      * Gets an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,14 +125,15 @@ public interface AfdOriginsClient {
      * Gets an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an existing origin within an origin group.
+     * @return an existing origin within an origin group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<AfdOriginInner> getWithResponse(
@@ -135,14 +143,16 @@ public interface AfdOriginsClient {
      * Creates a new origin within the specified origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -152,16 +162,17 @@ public interface AfdOriginsClient {
      * Creates a new origin within the specified origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginCreateAsync(
         String resourceGroupName, String profileName, String originGroupName, String originName, AfdOriginInner origin);
 
@@ -169,16 +180,17 @@ public interface AfdOriginsClient {
      * Creates a new origin within the specified origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginCreate(
         String resourceGroupName, String profileName, String originGroupName, String originName, AfdOriginInner origin);
 
@@ -186,7 +198,8 @@ public interface AfdOriginsClient {
      * Creates a new origin within the specified origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
@@ -194,9 +207,9 @@ public interface AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginCreate(
         String resourceGroupName,
         String profileName,
@@ -209,14 +222,15 @@ public interface AfdOriginsClient {
      * Creates a new origin within the specified origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AfdOriginInner> createAsync(
@@ -226,7 +240,8 @@ public interface AfdOriginsClient {
      * Creates a new origin within the specified origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
@@ -243,7 +258,8 @@ public interface AfdOriginsClient {
      * Creates a new origin within the specified origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin that is unique within the profile.
      * @param origin Origin properties.
@@ -266,14 +282,16 @@ public interface AfdOriginsClient {
      * Updates an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -287,16 +305,17 @@ public interface AfdOriginsClient {
      * Updates an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link PollerFlux} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdateAsync(
         String resourceGroupName,
         String profileName,
@@ -308,16 +327,17 @@ public interface AfdOriginsClient {
      * Updates an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -329,7 +349,8 @@ public interface AfdOriginsClient {
      * Updates an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
@@ -337,9 +358,9 @@ public interface AfdOriginsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return the {@link SyncPoller} for polling of cDN origin is the source of the content being delivered via CDN.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<AfdOriginInner>, AfdOriginInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -352,14 +373,15 @@ public interface AfdOriginsClient {
      * Updates an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN origin is the source of the content being delivered via CDN.
+     * @return cDN origin is the source of the content being delivered via CDN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AfdOriginInner> updateAsync(
@@ -373,7 +395,8 @@ public interface AfdOriginsClient {
      * Updates an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
@@ -394,7 +417,8 @@ public interface AfdOriginsClient {
      * Updates an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param originUpdateProperties Origin properties.
@@ -417,13 +441,14 @@ public interface AfdOriginsClient {
      * Deletes an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -433,15 +458,16 @@ public interface AfdOriginsClient {
      * Deletes an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String originGroupName, String originName);
 
@@ -449,15 +475,16 @@ public interface AfdOriginsClient {
      * Deletes an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String originGroupName, String originName);
 
@@ -465,16 +492,17 @@ public interface AfdOriginsClient {
      * Deletes an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String originGroupName, String originName, Context context);
 
@@ -482,13 +510,14 @@ public interface AfdOriginsClient {
      * Deletes an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String profileName, String originGroupName, String originName);
@@ -497,7 +526,8 @@ public interface AfdOriginsClient {
      * Deletes an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -511,7 +541,8 @@ public interface AfdOriginsClient {
      * Deletes an existing origin within an origin group.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param originGroupName Name of the origin group which is unique within the profile.
      * @param originName Name of the origin which is unique within the profile.
      * @param context The context to associate with this operation.

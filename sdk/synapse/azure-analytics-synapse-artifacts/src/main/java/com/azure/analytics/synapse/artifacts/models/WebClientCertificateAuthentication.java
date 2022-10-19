@@ -68,4 +68,11 @@ public final class WebClientCertificateAuthentication extends WebLinkedServiceTy
         this.password = password;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public WebClientCertificateAuthentication setUrl(Object url) {
+        super.setUrl(url);
+        return this;
+    }
 }

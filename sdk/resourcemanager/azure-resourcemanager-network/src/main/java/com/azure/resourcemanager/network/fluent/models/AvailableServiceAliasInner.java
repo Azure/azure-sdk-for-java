@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The available service alias. */
 @Fluent
 public final class AvailableServiceAliasInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableServiceAliasInner.class);
-
     /*
      * The name of the service alias.
      */
@@ -37,6 +33,10 @@ public final class AvailableServiceAliasInner {
      */
     @JsonProperty(value = "resourceName")
     private String resourceName;
+
+    /** Creates an instance of AvailableServiceAliasInner class. */
+    public AvailableServiceAliasInner() {
+    }
 
     /**
      * Get the name property: The name of the service alias.

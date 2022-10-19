@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The TerminateNotificationProfile model. */
 @Fluent
 public final class TerminateNotificationProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TerminateNotificationProfile.class);
-
     /*
-     * Configurable length of time a Virtual Machine being deleted will have to
-     * potentially approve the Terminate Scheduled Event before the event is
-     * auto approved (timed out). The configuration must be specified in ISO
-     * 8601 format, the default value is 5 minutes (PT5M)
+     * Configurable length of time a Virtual Machine being deleted will have to potentially approve the Terminate
+     * Scheduled Event before the event is auto approved (timed out). The configuration must be specified in ISO 8601
+     * format, the default value is 5 minutes (PT5M)
      */
     @JsonProperty(value = "notBeforeTimeout")
     private String notBeforeTimeout;

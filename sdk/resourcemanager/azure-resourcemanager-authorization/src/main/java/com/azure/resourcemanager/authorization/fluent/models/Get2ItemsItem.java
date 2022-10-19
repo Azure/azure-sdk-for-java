@@ -115,17 +115,188 @@ public final class Get2ItemsItem extends ExpandableStringEnum<Get2ItemsItem> {
     /** Static value tokenLifetimePolicies for Get2ItemsItem. */
     public static final Get2ItemsItem TOKEN_LIFETIME_POLICIES = fromString("tokenLifetimePolicies");
 
-    /** Static value * for Get2ItemsItem. */
-    public static final Get2ItemsItem ASTERISK = fromString("*");
+    /** Static value assignedLabels for Get2ItemsItem. */
+    public static final Get2ItemsItem ASSIGNED_LABELS = fromString("assignedLabels");
+
+    /** Static value assignedLicenses for Get2ItemsItem. */
+    public static final Get2ItemsItem ASSIGNED_LICENSES = fromString("assignedLicenses");
+
+    /** Static value classification for Get2ItemsItem. */
+    public static final Get2ItemsItem CLASSIFICATION = fromString("classification");
+
+    /** Static value expirationDateTime for Get2ItemsItem. */
+    public static final Get2ItemsItem EXPIRATION_DATE_TIME = fromString("expirationDateTime");
+
+    /** Static value groupTypes for Get2ItemsItem. */
+    public static final Get2ItemsItem GROUP_TYPES = fromString("groupTypes");
+
+    /** Static value hasMembersWithLicenseErrors for Get2ItemsItem. */
+    public static final Get2ItemsItem HAS_MEMBERS_WITH_LICENSE_ERRORS = fromString("hasMembersWithLicenseErrors");
+
+    /** Static value licenseProcessingState for Get2ItemsItem. */
+    public static final Get2ItemsItem LICENSE_PROCESSING_STATE = fromString("licenseProcessingState");
+
+    /** Static value mail for Get2ItemsItem. */
+    public static final Get2ItemsItem MAIL = fromString("mail");
+
+    /** Static value mailEnabled for Get2ItemsItem. */
+    public static final Get2ItemsItem MAIL_ENABLED = fromString("mailEnabled");
+
+    /** Static value mailNickname for Get2ItemsItem. */
+    public static final Get2ItemsItem MAIL_NICKNAME = fromString("mailNickname");
+
+    /** Static value membershipRule for Get2ItemsItem. */
+    public static final Get2ItemsItem MEMBERSHIP_RULE = fromString("membershipRule");
+
+    /** Static value membershipRuleProcessingState for Get2ItemsItem. */
+    public static final Get2ItemsItem MEMBERSHIP_RULE_PROCESSING_STATE = fromString("membershipRuleProcessingState");
+
+    /** Static value onPremisesDomainName for Get2ItemsItem. */
+    public static final Get2ItemsItem ON_PREMISES_DOMAIN_NAME = fromString("onPremisesDomainName");
+
+    /** Static value onPremisesLastSyncDateTime for Get2ItemsItem. */
+    public static final Get2ItemsItem ON_PREMISES_LAST_SYNC_DATE_TIME = fromString("onPremisesLastSyncDateTime");
+
+    /** Static value onPremisesNetBiosName for Get2ItemsItem. */
+    public static final Get2ItemsItem ON_PREMISES_NET_BIOS_NAME = fromString("onPremisesNetBiosName");
+
+    /** Static value onPremisesProvisioningErrors for Get2ItemsItem. */
+    public static final Get2ItemsItem ON_PREMISES_PROVISIONING_ERRORS = fromString("onPremisesProvisioningErrors");
+
+    /** Static value onPremisesSamAccountName for Get2ItemsItem. */
+    public static final Get2ItemsItem ON_PREMISES_SAM_ACCOUNT_NAME = fromString("onPremisesSamAccountName");
+
+    /** Static value onPremisesSecurityIdentifier for Get2ItemsItem. */
+    public static final Get2ItemsItem ON_PREMISES_SECURITY_IDENTIFIER = fromString("onPremisesSecurityIdentifier");
+
+    /** Static value onPremisesSyncEnabled for Get2ItemsItem. */
+    public static final Get2ItemsItem ON_PREMISES_SYNC_ENABLED = fromString("onPremisesSyncEnabled");
+
+    /** Static value preferredDataLocation for Get2ItemsItem. */
+    public static final Get2ItemsItem PREFERRED_DATA_LOCATION = fromString("preferredDataLocation");
+
+    /** Static value preferredLanguage for Get2ItemsItem. */
+    public static final Get2ItemsItem PREFERRED_LANGUAGE = fromString("preferredLanguage");
+
+    /** Static value proxyAddresses for Get2ItemsItem. */
+    public static final Get2ItemsItem PROXY_ADDRESSES = fromString("proxyAddresses");
+
+    /** Static value renewedDateTime for Get2ItemsItem. */
+    public static final Get2ItemsItem RENEWED_DATE_TIME = fromString("renewedDateTime");
+
+    /** Static value securityEnabled for Get2ItemsItem. */
+    public static final Get2ItemsItem SECURITY_ENABLED = fromString("securityEnabled");
+
+    /** Static value securityIdentifier for Get2ItemsItem. */
+    public static final Get2ItemsItem SECURITY_IDENTIFIER = fromString("securityIdentifier");
+
+    /** Static value theme for Get2ItemsItem. */
+    public static final Get2ItemsItem THEME = fromString("theme");
+
+    /** Static value visibility for Get2ItemsItem. */
+    public static final Get2ItemsItem VISIBILITY = fromString("visibility");
+
+    /** Static value allowExternalSenders for Get2ItemsItem. */
+    public static final Get2ItemsItem ALLOW_EXTERNAL_SENDERS = fromString("allowExternalSenders");
+
+    /** Static value autoSubscribeNewMembers for Get2ItemsItem. */
+    public static final Get2ItemsItem AUTO_SUBSCRIBE_NEW_MEMBERS = fromString("autoSubscribeNewMembers");
+
+    /** Static value hideFromAddressLists for Get2ItemsItem. */
+    public static final Get2ItemsItem HIDE_FROM_ADDRESS_LISTS = fromString("hideFromAddressLists");
+
+    /** Static value hideFromOutlookClients for Get2ItemsItem. */
+    public static final Get2ItemsItem HIDE_FROM_OUTLOOK_CLIENTS = fromString("hideFromOutlookClients");
+
+    /** Static value isSubscribedByMail for Get2ItemsItem. */
+    public static final Get2ItemsItem IS_SUBSCRIBED_BY_MAIL = fromString("isSubscribedByMail");
+
+    /** Static value unseenCount for Get2ItemsItem. */
+    public static final Get2ItemsItem UNSEEN_COUNT = fromString("unseenCount");
+
+    /** Static value isArchived for Get2ItemsItem. */
+    public static final Get2ItemsItem IS_ARCHIVED = fromString("isArchived");
+
+    /** Static value appRoleAssignments for Get2ItemsItem. */
+    public static final Get2ItemsItem APP_ROLE_ASSIGNMENTS = fromString("appRoleAssignments");
+
+    /** Static value memberOf for Get2ItemsItem. */
+    public static final Get2ItemsItem MEMBER_OF = fromString("memberOf");
+
+    /** Static value members for Get2ItemsItem. */
+    public static final Get2ItemsItem MEMBERS = fromString("members");
+
+    /** Static value membersWithLicenseErrors for Get2ItemsItem. */
+    public static final Get2ItemsItem MEMBERS_WITH_LICENSE_ERRORS = fromString("membersWithLicenseErrors");
+
+    /** Static value permissionGrants for Get2ItemsItem. */
+    public static final Get2ItemsItem PERMISSION_GRANTS = fromString("permissionGrants");
+
+    /** Static value settings for Get2ItemsItem. */
+    public static final Get2ItemsItem SETTINGS = fromString("settings");
+
+    /** Static value transitiveMemberOf for Get2ItemsItem. */
+    public static final Get2ItemsItem TRANSITIVE_MEMBER_OF = fromString("transitiveMemberOf");
+
+    /** Static value transitiveMembers for Get2ItemsItem. */
+    public static final Get2ItemsItem TRANSITIVE_MEMBERS = fromString("transitiveMembers");
+
+    /** Static value acceptedSenders for Get2ItemsItem. */
+    public static final Get2ItemsItem ACCEPTED_SENDERS = fromString("acceptedSenders");
+
+    /** Static value calendar for Get2ItemsItem. */
+    public static final Get2ItemsItem CALENDAR = fromString("calendar");
+
+    /** Static value calendarView for Get2ItemsItem. */
+    public static final Get2ItemsItem CALENDAR_VIEW = fromString("calendarView");
+
+    /** Static value conversations for Get2ItemsItem. */
+    public static final Get2ItemsItem CONVERSATIONS = fromString("conversations");
+
+    /** Static value events for Get2ItemsItem. */
+    public static final Get2ItemsItem EVENTS = fromString("events");
+
+    /** Static value photo for Get2ItemsItem. */
+    public static final Get2ItemsItem PHOTO = fromString("photo");
+
+    /** Static value photos for Get2ItemsItem. */
+    public static final Get2ItemsItem PHOTOS = fromString("photos");
+
+    /** Static value rejectedSenders for Get2ItemsItem. */
+    public static final Get2ItemsItem REJECTED_SENDERS = fromString("rejectedSenders");
+
+    /** Static value threads for Get2ItemsItem. */
+    public static final Get2ItemsItem THREADS = fromString("threads");
+
+    /** Static value drive for Get2ItemsItem. */
+    public static final Get2ItemsItem DRIVE = fromString("drive");
+
+    /** Static value drives for Get2ItemsItem. */
+    public static final Get2ItemsItem DRIVES = fromString("drives");
+
+    /** Static value sites for Get2ItemsItem. */
+    public static final Get2ItemsItem SITES = fromString("sites");
+
+    /** Static value extensions for Get2ItemsItem. */
+    public static final Get2ItemsItem EXTENSIONS = fromString("extensions");
+
+    /** Static value groupLifecyclePolicies for Get2ItemsItem. */
+    public static final Get2ItemsItem GROUP_LIFECYCLE_POLICIES = fromString("groupLifecyclePolicies");
+
+    /** Static value planner for Get2ItemsItem. */
+    public static final Get2ItemsItem PLANNER = fromString("planner");
+
+    /** Static value onenote for Get2ItemsItem. */
+    public static final Get2ItemsItem ONENOTE = fromString("onenote");
+
+    /** Static value team for Get2ItemsItem. */
+    public static final Get2ItemsItem TEAM = fromString("team");
 
     /** Static value accountEnabled for Get2ItemsItem. */
     public static final Get2ItemsItem ACCOUNT_ENABLED = fromString("accountEnabled");
 
     /** Static value ageGroup for Get2ItemsItem. */
     public static final Get2ItemsItem AGE_GROUP = fromString("ageGroup");
-
-    /** Static value assignedLicenses for Get2ItemsItem. */
-    public static final Get2ItemsItem ASSIGNED_LICENSES = fromString("assignedLicenses");
 
     /** Static value assignedPlans for Get2ItemsItem. */
     public static final Get2ItemsItem ASSIGNED_PLANS = fromString("assignedPlans");
@@ -197,12 +368,6 @@ public final class Get2ItemsItem extends ExpandableStringEnum<Get2ItemsItem> {
     /** Static value licenseAssignmentStates for Get2ItemsItem. */
     public static final Get2ItemsItem LICENSE_ASSIGNMENT_STATES = fromString("licenseAssignmentStates");
 
-    /** Static value mail for Get2ItemsItem. */
-    public static final Get2ItemsItem MAIL = fromString("mail");
-
-    /** Static value mailNickname for Get2ItemsItem. */
-    public static final Get2ItemsItem MAIL_NICKNAME = fromString("mailNickname");
-
     /** Static value mobilePhone for Get2ItemsItem. */
     public static final Get2ItemsItem MOBILE_PHONE = fromString("mobilePhone");
 
@@ -212,29 +377,11 @@ public final class Get2ItemsItem extends ExpandableStringEnum<Get2ItemsItem> {
     /** Static value onPremisesDistinguishedName for Get2ItemsItem. */
     public static final Get2ItemsItem ON_PREMISES_DISTINGUISHED_NAME = fromString("onPremisesDistinguishedName");
 
-    /** Static value onPremisesDomainName for Get2ItemsItem. */
-    public static final Get2ItemsItem ON_PREMISES_DOMAIN_NAME = fromString("onPremisesDomainName");
-
     /** Static value onPremisesExtensionAttributes for Get2ItemsItem. */
     public static final Get2ItemsItem ON_PREMISES_EXTENSION_ATTRIBUTES = fromString("onPremisesExtensionAttributes");
 
     /** Static value onPremisesImmutableId for Get2ItemsItem. */
     public static final Get2ItemsItem ON_PREMISES_IMMUTABLE_ID = fromString("onPremisesImmutableId");
-
-    /** Static value onPremisesLastSyncDateTime for Get2ItemsItem. */
-    public static final Get2ItemsItem ON_PREMISES_LAST_SYNC_DATE_TIME = fromString("onPremisesLastSyncDateTime");
-
-    /** Static value onPremisesProvisioningErrors for Get2ItemsItem. */
-    public static final Get2ItemsItem ON_PREMISES_PROVISIONING_ERRORS = fromString("onPremisesProvisioningErrors");
-
-    /** Static value onPremisesSamAccountName for Get2ItemsItem. */
-    public static final Get2ItemsItem ON_PREMISES_SAM_ACCOUNT_NAME = fromString("onPremisesSamAccountName");
-
-    /** Static value onPremisesSecurityIdentifier for Get2ItemsItem. */
-    public static final Get2ItemsItem ON_PREMISES_SECURITY_IDENTIFIER = fromString("onPremisesSecurityIdentifier");
-
-    /** Static value onPremisesSyncEnabled for Get2ItemsItem. */
-    public static final Get2ItemsItem ON_PREMISES_SYNC_ENABLED = fromString("onPremisesSyncEnabled");
 
     /** Static value onPremisesUserPrincipalName for Get2ItemsItem. */
     public static final Get2ItemsItem ON_PREMISES_USER_PRINCIPAL_NAME = fromString("onPremisesUserPrincipalName");
@@ -251,14 +398,8 @@ public final class Get2ItemsItem extends ExpandableStringEnum<Get2ItemsItem> {
     /** Static value postalCode for Get2ItemsItem. */
     public static final Get2ItemsItem POSTAL_CODE = fromString("postalCode");
 
-    /** Static value preferredLanguage for Get2ItemsItem. */
-    public static final Get2ItemsItem PREFERRED_LANGUAGE = fromString("preferredLanguage");
-
     /** Static value provisionedPlans for Get2ItemsItem. */
     public static final Get2ItemsItem PROVISIONED_PLANS = fromString("provisionedPlans");
-
-    /** Static value proxyAddresses for Get2ItemsItem. */
-    public static final Get2ItemsItem PROXY_ADDRESSES = fromString("proxyAddresses");
 
     /** Static value showInAddressList for Get2ItemsItem. */
     public static final Get2ItemsItem SHOW_IN_ADDRESS_LIST = fromString("showInAddressList");
@@ -321,9 +462,6 @@ public final class Get2ItemsItem extends ExpandableStringEnum<Get2ItemsItem> {
     /** Static value skills for Get2ItemsItem. */
     public static final Get2ItemsItem SKILLS = fromString("skills");
 
-    /** Static value appRoleAssignments for Get2ItemsItem. */
-    public static final Get2ItemsItem APP_ROLE_ASSIGNMENTS = fromString("appRoleAssignments");
-
     /** Static value createdObjects for Get2ItemsItem. */
     public static final Get2ItemsItem CREATED_OBJECTS = fromString("createdObjects");
 
@@ -335,9 +473,6 @@ public final class Get2ItemsItem extends ExpandableStringEnum<Get2ItemsItem> {
 
     /** Static value manager for Get2ItemsItem. */
     public static final Get2ItemsItem MANAGER = fromString("manager");
-
-    /** Static value memberOf for Get2ItemsItem. */
-    public static final Get2ItemsItem MEMBER_OF = fromString("memberOf");
 
     /** Static value oauth2PermissionGrants for Get2ItemsItem. */
     public static final Get2ItemsItem OAUTH2PERMISSION_GRANTS = fromString("oauth2PermissionGrants");
@@ -354,29 +489,17 @@ public final class Get2ItemsItem extends ExpandableStringEnum<Get2ItemsItem> {
     /** Static value scopedRoleMemberOf for Get2ItemsItem. */
     public static final Get2ItemsItem SCOPED_ROLE_MEMBER_OF = fromString("scopedRoleMemberOf");
 
-    /** Static value transitiveMemberOf for Get2ItemsItem. */
-    public static final Get2ItemsItem TRANSITIVE_MEMBER_OF = fromString("transitiveMemberOf");
-
-    /** Static value calendar for Get2ItemsItem. */
-    public static final Get2ItemsItem CALENDAR = fromString("calendar");
-
     /** Static value calendarGroups for Get2ItemsItem. */
     public static final Get2ItemsItem CALENDAR_GROUPS = fromString("calendarGroups");
 
     /** Static value calendars for Get2ItemsItem. */
     public static final Get2ItemsItem CALENDARS = fromString("calendars");
 
-    /** Static value calendarView for Get2ItemsItem. */
-    public static final Get2ItemsItem CALENDAR_VIEW = fromString("calendarView");
-
     /** Static value contactFolders for Get2ItemsItem. */
     public static final Get2ItemsItem CONTACT_FOLDERS = fromString("contactFolders");
 
     /** Static value contacts for Get2ItemsItem. */
     public static final Get2ItemsItem CONTACTS = fromString("contacts");
-
-    /** Static value events for Get2ItemsItem. */
-    public static final Get2ItemsItem EVENTS = fromString("events");
 
     /** Static value inferenceClassification for Get2ItemsItem. */
     public static final Get2ItemsItem INFERENCE_CLASSIFICATION = fromString("inferenceClassification");
@@ -393,23 +516,8 @@ public final class Get2ItemsItem extends ExpandableStringEnum<Get2ItemsItem> {
     /** Static value people for Get2ItemsItem. */
     public static final Get2ItemsItem PEOPLE = fromString("people");
 
-    /** Static value photo for Get2ItemsItem. */
-    public static final Get2ItemsItem PHOTO = fromString("photo");
-
-    /** Static value photos for Get2ItemsItem. */
-    public static final Get2ItemsItem PHOTOS = fromString("photos");
-
-    /** Static value drive for Get2ItemsItem. */
-    public static final Get2ItemsItem DRIVE = fromString("drive");
-
-    /** Static value drives for Get2ItemsItem. */
-    public static final Get2ItemsItem DRIVES = fromString("drives");
-
     /** Static value followedSites for Get2ItemsItem. */
     public static final Get2ItemsItem FOLLOWED_SITES = fromString("followedSites");
-
-    /** Static value extensions for Get2ItemsItem. */
-    public static final Get2ItemsItem EXTENSIONS = fromString("extensions");
 
     /** Static value managedDevices for Get2ItemsItem. */
     public static final Get2ItemsItem MANAGED_DEVICES = fromString("managedDevices");
@@ -421,17 +529,8 @@ public final class Get2ItemsItem extends ExpandableStringEnum<Get2ItemsItem> {
     public static final Get2ItemsItem DEVICE_MANAGEMENT_TROUBLESHOOTING_EVENTS =
         fromString("deviceManagementTroubleshootingEvents");
 
-    /** Static value planner for Get2ItemsItem. */
-    public static final Get2ItemsItem PLANNER = fromString("planner");
-
     /** Static value insights for Get2ItemsItem. */
     public static final Get2ItemsItem INSIGHTS = fromString("insights");
-
-    /** Static value settings for Get2ItemsItem. */
-    public static final Get2ItemsItem SETTINGS = fromString("settings");
-
-    /** Static value onenote for Get2ItemsItem. */
-    public static final Get2ItemsItem ONENOTE = fromString("onenote");
 
     /** Static value activities for Get2ItemsItem. */
     public static final Get2ItemsItem ACTIVITIES = fromString("activities");
@@ -451,11 +550,17 @@ public final class Get2ItemsItem extends ExpandableStringEnum<Get2ItemsItem> {
     /** Static value todo for Get2ItemsItem. */
     public static final Get2ItemsItem TODO = fromString("todo");
 
-    /** Static value addresses for Get2ItemsItem. */
-    public static final Get2ItemsItem ADDRESSES = fromString("addresses");
+    /** Static value * for Get2ItemsItem. */
+    public static final Get2ItemsItem ASTERISK = fromString("*");
 
-    /** Static value phones for Get2ItemsItem. */
-    public static final Get2ItemsItem PHONES = fromString("phones");
+    /** Static value domainNameReferences for Get2ItemsItem. */
+    public static final Get2ItemsItem DOMAIN_NAME_REFERENCES = fromString("domainNameReferences");
+
+    /** Static value serviceConfigurationRecords for Get2ItemsItem. */
+    public static final Get2ItemsItem SERVICE_CONFIGURATION_RECORDS = fromString("serviceConfigurationRecords");
+
+    /** Static value verificationDnsRecords for Get2ItemsItem. */
+    public static final Get2ItemsItem VERIFICATION_DNS_RECORDS = fromString("verificationDnsRecords");
 
     /**
      * Creates or finds a Get2ItemsItem from its string representation.

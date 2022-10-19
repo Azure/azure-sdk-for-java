@@ -9,10 +9,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobOperationResults;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobOperationResultsImpl implements JobOperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobOperationResultsImpl.class);
 
     private final JobOperationResultsClient innerClient;
 

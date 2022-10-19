@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.automation.fluent.models.CredentialCreateOrUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters supplied to the create or update credential operation. */
-@JsonFlatten
 @Fluent
-public class CredentialCreateOrUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CredentialCreateOrUpdateParameters.class);
-
+public final class CredentialCreateOrUpdateParameters {
     /*
      * Gets or sets the name of the credential.
      */
@@ -23,22 +19,10 @@ public class CredentialCreateOrUpdateParameters {
     private String name;
 
     /*
-     * Gets or sets the user name of the credential.
+     * Gets or sets the properties of the credential.
      */
-    @JsonProperty(value = "properties.userName", required = true)
-    private String username;
-
-    /*
-     * Gets or sets the password of the credential.
-     */
-    @JsonProperty(value = "properties.password", required = true)
-    private String password;
-
-    /*
-     * Gets or sets the description of the credential.
-     */
-    @JsonProperty(value = "properties.description")
-    private String description;
+    @JsonProperty(value = "properties", required = true)
+    private CredentialCreateOrUpdateProperties innerProperties = new CredentialCreateOrUpdateProperties();
 
     /**
      * Get the name property: Gets or sets the name of the credential.
@@ -61,12 +45,21 @@ public class CredentialCreateOrUpdateParameters {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the properties of the credential.
+     *
+     * @return the innerProperties value.
+     */
+    private CredentialCreateOrUpdateProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the username property: Gets or sets the user name of the credential.
      *
      * @return the username value.
      */
     public String username() {
-        return this.username;
+        return this.innerProperties() == null ? null : this.innerProperties().username();
     }
 
     /**
@@ -76,7 +69,10 @@ public class CredentialCreateOrUpdateParameters {
      * @return the CredentialCreateOrUpdateParameters object itself.
      */
     public CredentialCreateOrUpdateParameters withUsername(String username) {
-        this.username = username;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CredentialCreateOrUpdateProperties();
+        }
+        this.innerProperties().withUsername(username);
         return this;
     }
 
@@ -86,7 +82,7 @@ public class CredentialCreateOrUpdateParameters {
      * @return the password value.
      */
     public String password() {
-        return this.password;
+        return this.innerProperties() == null ? null : this.innerProperties().password();
     }
 
     /**
@@ -96,7 +92,10 @@ public class CredentialCreateOrUpdateParameters {
      * @return the CredentialCreateOrUpdateParameters object itself.
      */
     public CredentialCreateOrUpdateParameters withPassword(String password) {
-        this.password = password;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CredentialCreateOrUpdateProperties();
+        }
+        this.innerProperties().withPassword(password);
         return this;
     }
 
@@ -106,7 +105,7 @@ public class CredentialCreateOrUpdateParameters {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -116,7 +115,10 @@ public class CredentialCreateOrUpdateParameters {
      * @return the CredentialCreateOrUpdateParameters object itself.
      */
     public CredentialCreateOrUpdateParameters withDescription(String description) {
-        this.description = description;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CredentialCreateOrUpdateProperties();
+        }
+        this.innerProperties().withDescription(description);
         return this;
     }
 
@@ -127,22 +129,20 @@ public class CredentialCreateOrUpdateParameters {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model CredentialCreateOrUpdateParameters"));
         }
-        if (username() == null) {
-            throw logger
+        if (innerProperties() == null) {
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
-                        "Missing required property username in model CredentialCreateOrUpdateParameters"));
-        }
-        if (password() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model CredentialCreateOrUpdateParameters"));
+                        "Missing required property innerProperties in model CredentialCreateOrUpdateParameters"));
+        } else {
+            innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CredentialCreateOrUpdateParameters.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The object that represents the operation. */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * Service provider: Microsoft.Cdn
      */
@@ -31,6 +27,12 @@ public final class OperationDisplay {
      */
     @JsonProperty(value = "operation", access = JsonProperty.Access.WRITE_ONLY)
     private String operation;
+
+    /*
+     * Description of operation.
+     */
+    @JsonProperty(value = "description", access = JsonProperty.Access.WRITE_ONLY)
+    private String description;
 
     /**
      * Get the provider property: Service provider: Microsoft.Cdn.
@@ -57,6 +59,15 @@ public final class OperationDisplay {
      */
     public String operation() {
         return this.operation;
+    }
+
+    /**
+     * Get the description property: Description of operation.
+     *
+     * @return the description value.
+     */
+    public String description() {
+        return this.description;
     }
 
     /**

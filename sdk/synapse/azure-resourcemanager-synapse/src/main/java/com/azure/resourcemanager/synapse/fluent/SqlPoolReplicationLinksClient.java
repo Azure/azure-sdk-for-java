@@ -22,7 +22,8 @@ public interface SqlPoolReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List Sql pool replication link request.
+     * @return represents the response to a List Sql pool replication link request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReplicationLinkInner> list(String resourceGroupName, String workspaceName, String sqlPoolName);
@@ -37,7 +38,8 @@ public interface SqlPoolReplicationLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents the response to a List Sql pool replication link request.
+     * @return represents the response to a List Sql pool replication link request as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReplicationLinkInner> list(

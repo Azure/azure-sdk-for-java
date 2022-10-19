@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data used when creating a disk. */
 @Fluent
 public final class CreationData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreationData.class);
-
     /*
      * This enumerates the possible sources of a disk's creation.
      */
@@ -21,70 +18,69 @@ public final class CreationData {
     private DiskCreateOption createOption;
 
     /*
-     * Required if createOption is Import. The Azure Resource Manager
-     * identifier of the storage account containing the blob to import as a
-     * disk.
+     * Required if createOption is Import. The Azure Resource Manager identifier of the storage account containing the
+     * blob to import as a disk.
      */
     @JsonProperty(value = "storageAccountId")
     private String storageAccountId;
 
     /*
-     * Disk source information.
+     * Disk source information for PIR or user images.
      */
     @JsonProperty(value = "imageReference")
     private ImageDiskReference imageReference;
 
     /*
-     * Required if creating from a Gallery Image. The id of the
-     * ImageDiskReference will be the ARM id of the shared galley image version
-     * from which to create a disk.
+     * Required if creating from a Gallery Image. The id/sharedGalleryImageId/communityGalleryImageId of the
+     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
      */
     @JsonProperty(value = "galleryImageReference")
     private ImageDiskReference galleryImageReference;
 
     /*
-     * If createOption is Import, this is the URI of a blob to be imported into
-     * a managed disk.
+     * If createOption is Import, this is the URI of a blob to be imported into a managed disk.
      */
     @JsonProperty(value = "sourceUri")
     private String sourceUri;
 
     /*
-     * If createOption is Copy, this is the ARM id of the source snapshot or
-     * disk.
+     * If createOption is Copy, this is the ARM id of the source snapshot or disk.
      */
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
 
     /*
-     * If this field is set, this is the unique id identifying the source of
-     * this resource.
+     * If this field is set, this is the unique id identifying the source of this resource.
      */
     @JsonProperty(value = "sourceUniqueId", access = JsonProperty.Access.WRITE_ONLY)
     private String sourceUniqueId;
 
     /*
-     * If createOption is Upload, this is the size of the contents of the
-     * upload including the VHD footer. This value should be between 20972032
-     * (20 MiB + 512 bytes for the VHD footer) and 35183298347520 bytes (32 TiB
-     * + 512 bytes for the VHD footer).
+     * If createOption is Upload, this is the size of the contents of the upload including the VHD footer. This value
+     * should be between 20972032 (20 MiB + 512 bytes for the VHD footer) and 35183298347520 bytes (32 TiB + 512 bytes
+     * for the VHD footer).
      */
     @JsonProperty(value = "uploadSizeBytes")
     private Long uploadSizeBytes;
 
     /*
-     * Logical sector size in bytes for Ultra disks. Supported values are 512
-     * ad 4096. 4096 is the default.
+     * Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. 4096 is the default.
      */
     @JsonProperty(value = "logicalSectorSize")
     private Integer logicalSectorSize;
 
     /*
-     * If createOption is ImportSecure, this is the URI of a blob to be
-     * imported into VM guest state.
+     * If createOption is ImportSecure, this is the URI of a blob to be imported into VM guest state.
      */
     @JsonProperty(value = "securityDataUri")
     private String securityDataUri;
+
+    /*
+     * Set this flag to true to get a boost on the performance target of the disk deployed, see here on the respective
+     * performance target. This flag can only be set on disk creation time and cannot be disabled after enabled.
+     */
+    @JsonProperty(value = "performancePlus")
+    private Boolean performancePlus;
 
     /**
      * Get the createOption property: This enumerates the possible sources of a disk's creation.
@@ -129,7 +125,7 @@ public final class CreationData {
     }
 
     /**
-     * Get the imageReference property: Disk source information.
+     * Get the imageReference property: Disk source information for PIR or user images.
      *
      * @return the imageReference value.
      */
@@ -138,7 +134,7 @@ public final class CreationData {
     }
 
     /**
-     * Set the imageReference property: Disk source information.
+     * Set the imageReference property: Disk source information for PIR or user images.
      *
      * @param imageReference the imageReference value to set.
      * @return the CreationData object itself.
@@ -149,8 +145,9 @@ public final class CreationData {
     }
 
     /**
-     * Get the galleryImageReference property: Required if creating from a Gallery Image. The id of the
-     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
+     * Get the galleryImageReference property: Required if creating from a Gallery Image. The
+     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared galley
+     * image version from which to create a disk.
      *
      * @return the galleryImageReference value.
      */
@@ -159,8 +156,9 @@ public final class CreationData {
     }
 
     /**
-     * Set the galleryImageReference property: Required if creating from a Gallery Image. The id of the
-     * ImageDiskReference will be the ARM id of the shared galley image version from which to create a disk.
+     * Set the galleryImageReference property: Required if creating from a Gallery Image. The
+     * id/sharedGalleryImageId/communityGalleryImageId of the ImageDiskReference will be the ARM id of the shared galley
+     * image version from which to create a disk.
      *
      * @param galleryImageReference the galleryImageReference value to set.
      * @return the CreationData object itself.
@@ -291,13 +289,37 @@ public final class CreationData {
     }
 
     /**
+     * Get the performancePlus property: Set this flag to true to get a boost on the performance target of the disk
+     * deployed, see here on the respective performance target. This flag can only be set on disk creation time and
+     * cannot be disabled after enabled.
+     *
+     * @return the performancePlus value.
+     */
+    public Boolean performancePlus() {
+        return this.performancePlus;
+    }
+
+    /**
+     * Set the performancePlus property: Set this flag to true to get a boost on the performance target of the disk
+     * deployed, see here on the respective performance target. This flag can only be set on disk creation time and
+     * cannot be disabled after enabled.
+     *
+     * @param performancePlus the performancePlus value to set.
+     * @return the CreationData object itself.
+     */
+    public CreationData withPerformancePlus(Boolean performancePlus) {
+        this.performancePlus = performancePlus;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (createOption() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property createOption in model CreationData"));
         }
@@ -308,4 +330,6 @@ public final class CreationData {
             galleryImageReference().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CreationData.class);
 }

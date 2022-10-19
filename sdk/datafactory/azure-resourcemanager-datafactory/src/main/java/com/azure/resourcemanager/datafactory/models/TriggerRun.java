@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,8 +17,6 @@ import java.util.Map;
 /** Trigger runs. */
 @Fluent
 public final class TriggerRun {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerRun.class);
-
     /*
      * Trigger run id.
      */
@@ -57,8 +54,7 @@ public final class TriggerRun {
     private String message;
 
     /*
-     * List of property name and value related to trigger run. Name, value pair
-     * depends on type of trigger.
+     * List of property name and value related to trigger run. Name, value pair depends on type of trigger.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -89,6 +85,10 @@ public final class TriggerRun {
      * Trigger runs.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of TriggerRun class. */
+    public TriggerRun() {
+    }
 
     /**
      * Get the triggerRunId property: Trigger run id.

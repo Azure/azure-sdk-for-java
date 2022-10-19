@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that define the configuration of traffic analytics. */
 @Fluent
 public final class TrafficAnalyticsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficAnalyticsProperties.class);
-
     /*
      * Parameters that define the configuration of traffic analytics.
      */
     @JsonProperty(value = "networkWatcherFlowAnalyticsConfiguration")
     private TrafficAnalyticsConfigurationProperties networkWatcherFlowAnalyticsConfiguration;
+
+    /** Creates an instance of TrafficAnalyticsProperties class. */
+    public TrafficAnalyticsProperties() {
+    }
 
     /**
      * Get the networkWatcherFlowAnalyticsConfiguration property: Parameters that define the configuration of traffic

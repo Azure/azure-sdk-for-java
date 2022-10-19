@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.Reason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The result returned from a check name availability request. */
 @Fluent
 public final class CheckNameResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameResultInner.class);
-
     /*
      * Specifies a Boolean value that indicates if the name is available.
      */
@@ -28,8 +24,8 @@ public final class CheckNameResultInner {
     private String name;
 
     /*
-     * Message indicating an unavailable name due to a conflict, or a
-     * description of the naming rules that are violated.
+     * Message indicating an unavailable name due to a conflict, or a description of the naming rules that are
+     * violated.
      */
     @JsonProperty(value = "message")
     private String message;

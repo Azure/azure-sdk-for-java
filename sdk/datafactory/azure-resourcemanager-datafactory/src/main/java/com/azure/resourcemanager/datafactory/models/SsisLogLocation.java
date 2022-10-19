@@ -7,17 +7,13 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SsisLogLocationTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SSIS package execution log location. */
 @Fluent
 public final class SsisLogLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisLogLocation.class);
-
     /*
-     * The SSIS package execution log path. Type: string (or Expression with
-     * resultType string).
+     * The SSIS package execution log path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "logPath", required = true)
     private Object logPath;
@@ -33,6 +29,10 @@ public final class SsisLogLocation {
      */
     @JsonProperty(value = "typeProperties", required = true)
     private SsisLogLocationTypeProperties innerTypeProperties = new SsisLogLocationTypeProperties();
+
+    /** Creates an instance of SsisLogLocation class. */
+    public SsisLogLocation() {
+    }
 
     /**
      * Get the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
@@ -142,17 +142,17 @@ public final class SsisLogLocation {
      */
     public void validate() {
         if (logPath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property logPath in model SsisLogLocation"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model SsisLogLocation"));
         }
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model SsisLogLocation"));
@@ -160,4 +160,6 @@ public final class SsisLogLocation {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SsisLogLocation.class);
 }

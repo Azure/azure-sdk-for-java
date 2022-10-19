@@ -6,18 +6,14 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The private link service ip configuration. */
 @Fluent
 public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceIpConfigurationInner.class);
-
     /*
      * Properties of the private link service ip configuration.
      */
@@ -41,6 +37,10 @@ public final class PrivateLinkServiceIpConfigurationInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of PrivateLinkServiceIpConfigurationInner class. */
+    public PrivateLinkServiceIpConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the private link service ip configuration.

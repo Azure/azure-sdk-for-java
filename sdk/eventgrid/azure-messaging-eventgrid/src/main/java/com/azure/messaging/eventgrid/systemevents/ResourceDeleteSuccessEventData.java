@@ -5,7 +5,15 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.util.Map;
 
 /**
  * Schema of the Data property of an EventGridEvent for a Microsoft.Resources.ResourceDeleteSuccess event. This is
@@ -13,6 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class ResourceDeleteSuccessEventData {
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceDeleteSuccessEventData.class);
+    private static final SerializerAdapter DEFAULT_SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
+
     /*
      * The tenant ID of the resource.
      */
@@ -55,17 +66,19 @@ public final class ResourceDeleteSuccessEventData {
     @JsonProperty(value = "status")
     private String status;
 
+    private String authorizationString;
+
     /*
      * The requested authorization for the operation.
      */
     @JsonProperty(value = "authorization")
-    private String authorization;
+    private ResourceAuthorization authorization;
 
     /*
      * The properties of the claims.
      */
     @JsonProperty(value = "claims")
-    private String claims;
+    private Map<String, String> claims;
 
     /*
      * An operation ID used for troubleshooting.
@@ -77,7 +90,7 @@ public final class ResourceDeleteSuccessEventData {
      * The details of the operation.
      */
     @JsonProperty(value = "httpRequest")
-    private String httpRequest;
+    private ResourceHttpRequest httpRequest;
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
@@ -223,8 +236,45 @@ public final class ResourceDeleteSuccessEventData {
      * Get the authorization property: The requested authorization for the operation.
      *
      * @return the authorization value.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceDeleteSuccessEventData#getResourceAuthorization()} instead.
      */
+    @Deprecated
     public String getAuthorization() {
+        final ResourceAuthorization resourceAuthorization = getResourceAuthorization();
+        try {
+            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceAuthorization, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    /**
+     * Set the authorization property: The requested authorization for the operation.
+     *
+     * @param authorization the authorization value to set.
+     * @return the ResourceDeleteSuccessEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceDeleteSuccessEventData#setResourceAuthorization(ResourceAuthorization)} instead.
+     */
+    @Deprecated
+    public ResourceDeleteSuccessEventData setAuthorization(String authorization) {
+        try {
+            setResourceAuthorization(
+                DEFAULT_SERIALIZER_ADAPTER.deserialize(authorization, ResourceAuthorization.class,
+                    SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+        return this;
+    }
+
+    /**
+     * Get the authorization property: The requested authorization for the operation.
+     *
+     * @return the authorization value.
+     */
+    public ResourceAuthorization getResourceAuthorization() {
         return this.authorization;
     }
 
@@ -234,7 +284,7 @@ public final class ResourceDeleteSuccessEventData {
      * @param authorization the authorization value to set.
      * @return the ResourceDeleteSuccessEventData object itself.
      */
-    public ResourceDeleteSuccessEventData setAuthorization(String authorization) {
+    public ResourceDeleteSuccessEventData setResourceAuthorization(ResourceAuthorization authorization) {
         this.authorization = authorization;
         return this;
     }
@@ -243,8 +293,46 @@ public final class ResourceDeleteSuccessEventData {
      * Get the claims property: The properties of the claims.
      *
      * @return the claims value.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceDeleteSuccessEventData#getResourceClaims()} instead.
      */
+    @Deprecated
     public String getClaims() {
+        final Map<String, String> resourceClaims = getResourceClaims();
+        if (!resourceClaims.isEmpty()) {
+            try {
+                return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceClaims, SerializerEncoding.JSON);
+            } catch (IOException ex) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Set the claims property: The properties of the claims.
+     *
+     * @param claims the claims value to set.
+     * @return the ResourceDeleteSuccessEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceDeleteSuccessEventData#setResourceClaims(Map)} instead.
+     */
+    @Deprecated
+    public ResourceDeleteSuccessEventData setClaims(String claims) {
+        try {
+            setResourceClaims(DEFAULT_SERIALIZER_ADAPTER.deserialize(claims, Map.class, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+        return this;
+    }
+
+    /**
+     * Get the claims property: The properties of the claims.
+     *
+     * @return the claims value.
+     */
+    public Map<String, String> getResourceClaims() {
         return this.claims;
     }
 
@@ -254,7 +342,7 @@ public final class ResourceDeleteSuccessEventData {
      * @param claims the claims value to set.
      * @return the ResourceDeleteSuccessEventData object itself.
      */
-    public ResourceDeleteSuccessEventData setClaims(String claims) {
+    public ResourceDeleteSuccessEventData setResourceClaims(Map<String, String> claims) {
         this.claims = claims;
         return this;
     }
@@ -283,8 +371,44 @@ public final class ResourceDeleteSuccessEventData {
      * Get the httpRequest property: The details of the operation.
      *
      * @return the httpRequest value.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceDeleteSuccessEventData#getResourceHttpRequest()} instead.
      */
+    @Deprecated
     public String getHttpRequest() {
+        ResourceHttpRequest resourceHttpRequest = getResourceHttpRequest();
+        try {
+            return DEFAULT_SERIALIZER_ADAPTER.serialize(resourceHttpRequest, SerializerEncoding.JSON);
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+    }
+
+    /**
+     * Set the httpRequest property: The details of the operation.
+     *
+     * @param httpRequest the httpRequest value to set.
+     * @return the ResourceDeleteSuccessEventData object itself.
+     * @deprecated This method is no longer supported since v4.9.0.
+     * <p> Use {@link ResourceDeleteSuccessEventData#setResourceHttpRequest(ResourceHttpRequest)} instead.
+     */
+    @Deprecated
+    public ResourceDeleteSuccessEventData setHttpRequest(String httpRequest) {
+        try {
+            setResourceHttpRequest(
+                DEFAULT_SERIALIZER_ADAPTER.deserialize(httpRequest, ResourceHttpRequest.class, SerializerEncoding.JSON));
+        } catch (IOException ex) {
+            throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+        }
+        return this;
+    }
+
+    /**
+     * Get the httpRequest property: The details of the operation.
+     *
+     * @return the httpRequest value.
+     */
+    public ResourceHttpRequest getResourceHttpRequest() {
         return this.httpRequest;
     }
 
@@ -294,7 +418,7 @@ public final class ResourceDeleteSuccessEventData {
      * @param httpRequest the httpRequest value to set.
      * @return the ResourceDeleteSuccessEventData object itself.
      */
-    public ResourceDeleteSuccessEventData setHttpRequest(String httpRequest) {
+    public ResourceDeleteSuccessEventData setResourceHttpRequest(ResourceHttpRequest httpRequest) {
         this.httpRequest = httpRequest;
         return this;
     }

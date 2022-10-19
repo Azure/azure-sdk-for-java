@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagementLocks ListAtResourceLevel. */
 public final class ManagementLocksListAtResourceLevelSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2016-09-01/examples/ManagementLocks_ListAtResourceLevel.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/ManagementLocks_ListAtResourceLevel.json
      */
     /**
      * Sample code: List management locks at resource level.

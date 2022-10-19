@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,11 +15,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Basic")
 @Fluent
 public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebBasicAuthentication.class);
-
     /*
-     * User name for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username", required = true)
     private Object username;
@@ -30,6 +26,10 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
      */
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
+
+    /** Creates an instance of WebBasicAuthentication class. */
+    public WebBasicAuthentication() {
+    }
 
     /**
      * Get the username property: User name for Basic authentication. Type: string (or Expression with resultType
@@ -89,16 +89,18 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
     public void validate() {
         super.validate();
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property username in model WebBasicAuthentication"));
         }
         if (password() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property password in model WebBasicAuthentication"));
         } else {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebBasicAuthentication.class);
 }

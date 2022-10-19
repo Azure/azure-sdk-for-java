@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the token store. */
 @Fluent
 public final class TokenStore {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TokenStore.class);
-
     /*
      * <code>true</code> to durably store platform-specific security tokens
      * that are obtained during login flows; otherwise, <code>false</code>.

@@ -12,7 +12,7 @@ import java.util.Locale;
  */
 @Immutable
 public final class ShareFileRange {
-    final ClientLogger logger = new ClientLogger(ShareFileRange.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ShareFileRange.class);
     private static final String RANGE_HEADER_FORMAT = "bytes=%d-%d";
     private static final String BEGIN_RANGE_HEADER_FORMAT = "bytes=%d-";
     private final long start;
@@ -34,13 +34,13 @@ public final class ShareFileRange {
      */
     public ShareFileRange(final long start, final Long end) {
         if (start < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 "ShareFileRange offset must be greater than or equal to 0."));
         }
         this.start = start;
 
         if (end != null && end < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(new IllegalArgumentException(
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(new IllegalArgumentException(
                 "ShareFileRange end must be greater than or equal to 0 if specified.")));
         }
         this.end = end;

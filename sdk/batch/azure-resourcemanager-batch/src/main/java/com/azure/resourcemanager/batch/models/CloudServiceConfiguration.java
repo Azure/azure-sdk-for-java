@@ -6,14 +6,11 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration for nodes in a pool based on the Azure Cloud Services platform. */
 @Fluent
 public final class CloudServiceConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceConfiguration.class);
-
     /*
      * The Azure Guest OS family to be installed on the virtual machines in the
      * pool. Possible values are: 2 - OS Family 2, equivalent to Windows Server
@@ -91,10 +88,12 @@ public final class CloudServiceConfiguration {
      */
     public void validate() {
         if (osFamily() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property osFamily in model CloudServiceConfiguration"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CloudServiceConfiguration.class);
 }

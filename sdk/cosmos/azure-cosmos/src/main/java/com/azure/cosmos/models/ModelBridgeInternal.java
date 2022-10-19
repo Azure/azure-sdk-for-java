@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ClientEncryptionKey;
@@ -15,7 +14,6 @@ import com.azure.cosmos.implementation.DatabaseAccount;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.InternalObjectNode;
 import com.azure.cosmos.implementation.ItemDeserializer;
@@ -34,9 +32,9 @@ import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
 import com.azure.cosmos.implementation.Warning;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedMode;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedStartFromInternal;
-import com.azure.cosmos.implementation.changefeed.implementation.ChangeFeedState;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
+import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
@@ -52,6 +50,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentMap;
+import java.util.function.Function;
 
 import static com.azure.cosmos.implementation.Warning.INTERNAL_USE_ONLY_WARNING;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -338,9 +337,12 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> FeedResponse<T> toFeedResponsePage(RxDocumentServiceResponse response,
-                                                                          Class<T> cls) {
-        return new FeedResponse<T>(response.getQueryResponse(cls), response);
+    public static <T> FeedResponse<T> toFeedResponsePage(
+        RxDocumentServiceResponse response,
+        Function<JsonNode, T> factoryMethod,
+        Class<T> cls) {
+
+        return new FeedResponse<T>(response.getQueryResponse(factoryMethod, cls), response);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -349,9 +351,13 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T extends Resource> FeedResponse<T> toChaneFeedResponsePage(RxDocumentServiceResponse response,
-                                                                               Class<T> cls) {
-        return new FeedResponse<T>(noChanges(response) ? Collections.emptyList() : response.getQueryResponse(cls),
+    public static <T> FeedResponse<T> toChangeFeedResponsePage(
+        RxDocumentServiceResponse response,
+        Function<JsonNode, T> factoryMethod,
+        Class<T> cls) {
+
+        return new FeedResponse<T>(
+            noChanges(response) ? Collections.emptyList() : response.getQueryResponse(factoryMethod, cls),
             response.getResponseHeaders(), noChanges(response));
     }
 
@@ -708,7 +714,7 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static boolean getNoCHangesFromFeedResponse(FeedResponse<?> response) {
+    public static boolean getNoChangesFromFeedResponse(FeedResponse<?> response) {
         return response.getNoChanges();
     }
 
@@ -773,13 +779,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> int getPayloadLength(CosmosItemResponse<T> cosmosItemResponse) {
         return cosmosItemResponse.responseBodyAsByteArray != null ? cosmosItemResponse.responseBodyAsByteArray.length : 0;
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosChangeFeedRequestOptions createChangeFeedRequestOptionsForEtagAndFeedRange(
-        String etag, FeedRange feedRange) {
-
-        return CosmosChangeFeedRequestOptions.createForProcessingFromEtagAndFeedRange(etag, feedRange);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -944,5 +943,25 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static List<PatchOperation> getPatchOperationsFromCosmosPatch(CosmosPatchOperations cosmosPatchOperations) {
         return cosmosPatchOperations.getPatchOperations();
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void  initializeAllAccessors() {
+        CosmosBatch.initialize();
+        CosmosBatchOperationResult.initialize();
+        CosmosBatchRequestOptions.initialize();
+        CosmosBatchResponse.initialize();
+        CosmosBulkExecutionOptions.initialize();
+        CosmosBulkExecutionThresholdsState.initialize();
+        CosmosBulkItemResponse.initialize();
+        CosmosChangeFeedRequestOptions.initialize();
+        CosmosContainerProperties.initialize();
+        CosmosItemRequestOptions.initialize();
+        CosmosItemResponse.initialize();
+        CosmosPatchOperations.initialize();
+        CosmosQueryRequestOptions.initialize();
+        FeedResponse.initialize();
+        PartitionKey.initialize();
+        CosmosClientTelemetryConfig.initialize();
     }
 }

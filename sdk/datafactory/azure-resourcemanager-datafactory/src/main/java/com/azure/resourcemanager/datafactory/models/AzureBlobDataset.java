@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureBlobDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("AzureBlob")
 @Fluent
 public final class AzureBlobDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobDataset.class);
-
     /*
      * Azure Blob dataset properties.
      */
     @JsonProperty(value = "typeProperties")
     private AzureBlobDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of AzureBlobDataset class. */
+    public AzureBlobDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Azure Blob dataset properties.

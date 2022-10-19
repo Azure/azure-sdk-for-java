@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.ApiManagementServiceSkusClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.ResourceSkuResultInner;
 import com.azure.resourcemanager.apimanagement.models.ResourceSkuResults;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ApiManagementServiceSkusClient. */
 public final class ApiManagementServiceSkusClientImpl implements ApiManagementServiceSkusClient {
-    private final ClientLogger logger = new ClientLogger(ApiManagementServiceSkusClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ApiManagementServiceSkusService service;
 
@@ -94,7 +91,8 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available SKU for a given API Management service.
+     * @return all available SKU for a given API Management service along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSkuResultInner>> listAvailableServiceSkusSinglePageAsync(
@@ -152,7 +150,8 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available SKU for a given API Management service.
+     * @return all available SKU for a given API Management service along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSkuResultInner>> listAvailableServiceSkusSinglePageAsync(
@@ -206,7 +205,7 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available SKU for a given API Management service.
+     * @return all available SKU for a given API Management service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceSkuResultInner> listAvailableServiceSkusAsync(
@@ -225,7 +224,7 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available SKU for a given API Management service.
+     * @return all available SKU for a given API Management service as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceSkuResultInner> listAvailableServiceSkusAsync(
@@ -243,7 +242,7 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available SKU for a given API Management service.
+     * @return all available SKU for a given API Management service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSkuResultInner> listAvailableServiceSkus(
@@ -260,7 +259,7 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available SKU for a given API Management service.
+     * @return all available SKU for a given API Management service as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceSkuResultInner> listAvailableServiceSkus(
@@ -275,7 +274,8 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API Management service SKUs operation response.
+     * @return the API Management service SKUs operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSkuResultInner>> listAvailableServiceSkusNextSinglePageAsync(String nextLink) {
@@ -312,7 +312,8 @@ public final class ApiManagementServiceSkusClientImpl implements ApiManagementSe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the API Management service SKUs operation response.
+     * @return the API Management service SKUs operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceSkuResultInner>> listAvailableServiceSkusNextSinglePageAsync(

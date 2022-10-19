@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,17 +14,17 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("HttpSource")
 @Fluent
 public final class HttpSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpSource.class);
-
     /*
-     * Specifies the timeout for a HTTP client to get HTTP response from HTTP
-     * server. The default value is equivalent to
-     * System.Net.HttpWebRequest.Timeout. Type: string (or Expression with
-     * resultType string), pattern:
+     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server. The default value is equivalent
+     * to System.Net.HttpWebRequest.Timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
+
+    /** Creates an instance of HttpSource class. */
+    public HttpSource() {
+    }
 
     /**
      * Get the httpRequestTimeout property: Specifies the timeout for a HTTP client to get HTTP response from HTTP

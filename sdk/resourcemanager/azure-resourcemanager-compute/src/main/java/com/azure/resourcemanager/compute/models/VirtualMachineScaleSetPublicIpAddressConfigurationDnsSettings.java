@@ -6,20 +6,14 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a virtual machines scale sets network configuration's DNS settings. */
 @Fluent
 public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings.class);
-
     /*
-     * The Domain name label.The concatenation of the domain name label and vm
-     * index will be the domain name labels of the PublicIPAddress resources
-     * that will be created
+     * The Domain name label.The concatenation of the domain name label and vm index will be the domain name labels of
+     * the PublicIPAddress resources that will be created
      */
     @JsonProperty(value = "domainNameLabel", required = true)
     private String domainNameLabel;
@@ -53,11 +47,14 @@ public final class VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings
      */
     public void validate() {
         if (domainNameLabel() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property domainNameLabel in model"
                             + " VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings.class);
 }

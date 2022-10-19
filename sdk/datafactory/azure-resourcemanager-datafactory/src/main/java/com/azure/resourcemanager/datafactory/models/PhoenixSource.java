@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,14 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("PhoenixSource")
 @Fluent
 public final class PhoenixSource extends TabularSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PhoenixSource.class);
-
     /*
-     * A query to retrieve data from source. Type: string (or Expression with
-     * resultType string).
+     * A query to retrieve data from source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
+
+    /** Creates an instance of PhoenixSource class. */
+    public PhoenixSource() {
+    }
 
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType

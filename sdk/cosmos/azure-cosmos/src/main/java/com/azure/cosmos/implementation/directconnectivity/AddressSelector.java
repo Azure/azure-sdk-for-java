@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation.directconnectivity;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
@@ -81,5 +83,9 @@ public class AddressSelector {
                 }
             }
         );
+    }
+
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        return this.addressResolver.openConnectionsAndInitCaches(containerLink);
     }
 }

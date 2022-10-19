@@ -5,18 +5,16 @@
 package com.azure.resourcemanager.iotcentral.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iotcentral.fluent.models.AppProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.iotcentral.fluent.models.PrivateEndpointConnectionInner;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 import java.util.Map;
 
 /** The description of the IoT Central application. */
 @Fluent
 public final class AppPatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppPatch.class);
-
     /*
      * Instance tags
      */
@@ -112,6 +110,15 @@ public final class AppPatch {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of the application.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the applicationId property: The ID of the application.
      *
      * @return the applicationId value.
@@ -200,6 +207,62 @@ public final class AppPatch {
      */
     public AppState state() {
         return this.innerProperties() == null ? null : this.innerProperties().state();
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether requests from the public network are allowed.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether requests from the public network are allowed.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the AppPatch object itself.
+     */
+    public AppPatch withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
+     *
+     * @return the networkRuleSets value.
+     */
+    public NetworkRuleSets networkRuleSets() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkRuleSets();
+    }
+
+    /**
+     * Set the networkRuleSets property: Network Rule Set Properties of this IoT Central application.
+     *
+     * @param networkRuleSets the networkRuleSets value to set.
+     * @return the AppPatch object itself.
+     */
+    public AppPatch withNetworkRuleSets(NetworkRuleSets networkRuleSets) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AppProperties();
+        }
+        this.innerProperties().withNetworkRuleSets(networkRuleSets);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: Private endpoint connections created on this IoT Central
+     * application.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
     }
 
     /**

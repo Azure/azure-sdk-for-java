@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AccessControl model. */
 @Fluent
 public final class AccessControl {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessControl.class);
-
     /*
      * The behavior for IP access control in Key Delivery.
      */
@@ -22,8 +18,8 @@ public final class AccessControl {
     private DefaultAction defaultAction;
 
     /*
-     * The IP allow list for access control in Key Delivery. If the default
-     * action is set to 'Allow', the IP allow list must be empty.
+     * The IP allow list for access control in Key Delivery. If the default action is set to 'Allow', the IP allow list
+     * must be empty.
      */
     @JsonProperty(value = "ipAllowList")
     private List<String> ipAllowList;

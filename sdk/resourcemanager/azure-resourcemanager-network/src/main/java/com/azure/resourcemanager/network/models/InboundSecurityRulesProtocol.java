@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InboundSecurityRulesProtocol. */
+/** Protocol. This should be either TCP or UDP. */
 public final class InboundSecurityRulesProtocol extends ExpandableStringEnum<InboundSecurityRulesProtocol> {
     /** Static value TCP for InboundSecurityRulesProtocol. */
     public static final InboundSecurityRulesProtocol TCP = fromString("TCP");
@@ -27,7 +27,11 @@ public final class InboundSecurityRulesProtocol extends ExpandableStringEnum<Inb
         return fromString(name, InboundSecurityRulesProtocol.class);
     }
 
-    /** @return known InboundSecurityRulesProtocol values. */
+    /**
+     * Gets known InboundSecurityRulesProtocol values.
+     *
+     * @return known InboundSecurityRulesProtocol values.
+     */
     public static Collection<InboundSecurityRulesProtocol> values() {
         return values(InboundSecurityRulesProtocol.class);
     }

@@ -15,10 +15,9 @@ import com.azure.resourcemanager.apimanagement.models.ApiVersionSetContract;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSets;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetsGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApiVersionSetsImpl implements ApiVersionSets {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiVersionSetsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApiVersionSetsImpl.class);
 
     private final ApiVersionSetsClient innerClient;
 
@@ -88,7 +87,7 @@ public final class ApiVersionSetsImpl implements ApiVersionSets {
     public ApiVersionSetContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -96,14 +95,14 @@ public final class ApiVersionSetsImpl implements ApiVersionSets {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String versionSetId = Utils.getValueFromIdByName(id, "apiVersionSets");
         if (versionSetId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class ApiVersionSetsImpl implements ApiVersionSets {
     public Response<ApiVersionSetContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -123,14 +122,14 @@ public final class ApiVersionSetsImpl implements ApiVersionSets {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String versionSetId = Utils.getValueFromIdByName(id, "apiVersionSets");
         if (versionSetId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -142,7 +141,7 @@ public final class ApiVersionSetsImpl implements ApiVersionSets {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,27 +149,27 @@ public final class ApiVersionSetsImpl implements ApiVersionSets {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String versionSetId = Utils.getValueFromIdByName(id, "apiVersionSets");
         if (versionSetId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'apiVersionSets'.", id)));
         }
         String localIfMatch = null;
-        this.deleteWithResponse(resourceGroupName, serviceName, versionSetId, localIfMatch, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, serviceName, versionSetId, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -178,14 +177,14 @@ public final class ApiVersionSetsImpl implements ApiVersionSets {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String versionSetId = Utils.getValueFromIdByName(id, "apiVersionSets");
         if (versionSetId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.12.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,133 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.11.3 (2022-10-07)
+
+### Bugs Fixed
+
+- Fixed a bug where `HttpClientOptions.connectTimeout` wasn't being passed when using `HttpClientProvider(ClientOptions)`. ([#31079](https://github.com/Azure/azure-sdk-for-java/pull/31079))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+
+## 1.11.2 (2022-09-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+
+## 1.11.1 (2022-08-05)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
+
+## 1.11.0 (2022-06-30)
+
+### Features Added
+
+- Added ability to track progress by passing `ProgressReporter` in the `Context`. For example:
+  ```java
+  HttpClient httpClient = new OkHttpAsyncHttpClientBuilder().build();
+  ProgressReporter progressReporter = ProgressReporter.withProgressListener(progress -> System.out.println(progress));
+  Context context = Contexts.empty().setHttpRequestProgressReporter(progressReporter).getContext();
+  HttpRequest request = new HttpRequest(
+      HttpMethod.PUT, new URL("http://example.com"), new HttpHeaders(), BinaryData.fromString("sample body"))
+  httpClient.send(request, context).subscribe();
+  ```
+
+### Other Changes
+
+- Added synchronous implementation of `HttpClient.sendSync`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+- Upgraded OkHttp from `4.9.2` to `4.10.0`.
+
+## 1.10.1 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 1.10.0 (2022-06-03)
+
+### Features Added
+- Added `callTimeout` method to OkHttpAsyncHttpClientBuilder.
+- This client can now stream bodies larger than 2GB. The buffering for `Flux<ByteBuffer>` request bodies has been removed.
+
+### Other Changes
+
+- Added specialized consumption for `HttpRequest.getBodyAsBinaryData()`.
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+
+## 1.9.0 (2022-05-06)
+
+### Features Added
+
+- The `OkHttpAsyncClientProvider.createInstance()` now has the option to share a single shared `HttpClient`.
+  Set the environment variable `AZURE_ENABLE_HTTP_CLIENT_SHARING` to `true` before starting the process to use
+  the shared `HttpClient`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
+
+## 1.8.0 (2022-04-01)
+
+### Features Added
+ - Added `followRedirects` property on the `OkHttpClientBuilder`.
+
+### Breaking Changes
+
+- Okhttp-backed `HttpClient` client will no longer follow redirects automatically. ([#27960](https://github.com/Azure/azure-sdk-for-java/pull/27960)).
+  <br>To get the older behavior please create an instance of `HttpClient` as follows
+
+    ```java
+    HttpClient client = new OkHttpAsyncHttpClientBuilder()
+        .followRedirects(true)
+        .build();
+    ```
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
+
+## 1.7.10 (2022-03-04)
+
+### Other Changes
+
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+
+## 1.7.9 (2022-02-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
 
 ## 1.7.8 (2022-01-11)
 

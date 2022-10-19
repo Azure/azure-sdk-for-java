@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.VirtualMachineScaleSetExtensionsClient;
@@ -45,8 +44,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in VirtualMachineScaleSetExtensionsClient.
  */
 public final class VirtualMachineScaleSetExtensionsClientImpl implements VirtualMachineScaleSetExtensionsClient {
-    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetExtensionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VirtualMachineScaleSetExtensionsService service;
 
@@ -216,7 +213,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -285,7 +282,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -311,8 +308,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine Scale Set Extension.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
@@ -344,8 +340,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine Scale Set Extension.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
@@ -379,8 +374,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Scale Set Extension.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
@@ -404,8 +398,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Scale Set Extension.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
@@ -562,7 +555,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -631,7 +624,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         } else {
             extensionParameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -657,8 +650,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine Scale Set Extension.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
@@ -690,8 +682,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link PollerFlux} for polling of describes a Virtual Machine Scale Set Extension.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
@@ -724,8 +715,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Scale Set Extension.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
@@ -749,8 +739,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine Scale Set Extension along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * @return the {@link SyncPoller} for polling of describes a Virtual Machine Scale Set Extension.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetExtensionInner>, VirtualMachineScaleSetExtensionInner>
@@ -893,7 +882,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -949,7 +938,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -973,7 +962,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -996,7 +985,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1018,7 +1007,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1036,7 +1025,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1152,7 +1141,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1211,7 +1200,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1243,14 +1232,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
     public Mono<VirtualMachineScaleSetExtensionInner> getAsync(
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName, String expand) {
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, expand)
-            .flatMap(
-                (Response<VirtualMachineScaleSetExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1269,14 +1251,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
         String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
         final String expand = null;
         return getWithResponseAsync(resourceGroupName, vmScaleSetName, vmssExtensionName, expand)
-            .flatMap(
-                (Response<VirtualMachineScaleSetExtensionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1349,7 +1324,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1409,7 +1384,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1440,7 +1415,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all extensions in a VM scale set.
+     * @return a list of all extensions in a VM scale set as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualMachineScaleSetExtensionInner> listAsync(String resourceGroupName, String vmScaleSetName) {
@@ -1458,7 +1433,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all extensions in a VM scale set.
+     * @return a list of all extensions in a VM scale set as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualMachineScaleSetExtensionInner> listAsync(
@@ -1476,7 +1451,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all extensions in a VM scale set.
+     * @return a list of all extensions in a VM scale set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineScaleSetExtensionInner> list(String resourceGroupName, String vmScaleSetName) {
@@ -1492,7 +1467,7 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of all extensions in a VM scale set.
+     * @return a list of all extensions in a VM scale set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualMachineScaleSetExtensionInner> list(
@@ -1503,7 +1478,8 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1539,7 +1515,8 @@ public final class VirtualMachineScaleSetExtensionsClientImpl implements Virtual
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

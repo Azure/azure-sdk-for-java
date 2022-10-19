@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the Radius client root certificate of VpnServerConfiguration. */
 @Fluent
 public final class VpnServerConfigRadiusClientRootCertificate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnServerConfigRadiusClientRootCertificate.class);
-
     /*
      * The certificate name.
      */
@@ -25,6 +21,10 @@ public final class VpnServerConfigRadiusClientRootCertificate {
      */
     @JsonProperty(value = "thumbprint")
     private String thumbprint;
+
+    /** Creates an instance of VpnServerConfigRadiusClientRootCertificate class. */
+    public VpnServerConfigRadiusClientRootCertificate() {
+    }
 
     /**
      * Get the name property: The certificate name.

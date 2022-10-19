@@ -6,16 +6,16 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.Architecture;
 import com.azure.resourcemanager.compute.models.Disallowed;
 import com.azure.resourcemanager.compute.models.GalleryImageFeature;
 import com.azure.resourcemanager.compute.models.GalleryImageIdentifier;
-import com.azure.resourcemanager.compute.models.GalleryImagePropertiesProvisioningState;
+import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.ImagePurchasePlan;
 import com.azure.resourcemanager.compute.models.OperatingSystemStateTypes;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.RecommendedMachineConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -23,11 +23,8 @@ import java.util.List;
 /** Describes the properties of a gallery image definition. */
 @Fluent
 public final class GalleryImageProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryImageProperties.class);
-
     /*
-     * The description of this gallery image definition resource. This property
-     * is updatable.
+     * The description of this gallery image definition resource. This property is updatable.
      */
     @JsonProperty(value = "description")
     private String description;
@@ -51,30 +48,28 @@ public final class GalleryImageProperties {
     private String releaseNoteUri;
 
     /*
-     * This property allows you to specify the type of the OS that is included
-     * in the disk when creating a VM from a managed image. <br><br> Possible
-     * values are: <br><br> **Windows** <br><br> **Linux**
+     * This property allows you to specify the type of the OS that is included in the disk when creating a VM from a
+     * managed image. <br><br> Possible values are: <br><br> **Windows** <br><br> **Linux**
      */
     @JsonProperty(value = "osType", required = true)
     private OperatingSystemTypes osType;
 
     /*
-     * This property allows the user to specify whether the virtual machines
-     * created under this image are 'Generalized' or 'Specialized'.
+     * This property allows the user to specify whether the virtual machines created under this image are 'Generalized'
+     * or 'Specialized'.
      */
     @JsonProperty(value = "osState", required = true)
     private OperatingSystemStateTypes osState;
 
     /*
-     * The hypervisor generation of the Virtual Machine. Applicable to OS disks
-     * only.
+     * The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
      */
     @JsonProperty(value = "hyperVGeneration")
     private HyperVGeneration hyperVGeneration;
 
     /*
-     * The end of life date of the gallery image definition. This property can
-     * be used for decommissioning purposes. This property is updatable.
+     * The end of life date of the gallery image definition. This property can be used for decommissioning purposes.
+     * This property is updatable.
      */
     @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
@@ -86,8 +81,8 @@ public final class GalleryImageProperties {
     private GalleryImageIdentifier identifier;
 
     /*
-     * The properties describe the recommended machine configuration for this
-     * Image Definition. These properties are updatable.
+     * The properties describe the recommended machine configuration for this Image Definition. These properties are
+     * updatable.
      */
     @JsonProperty(value = "recommended")
     private RecommendedMachineConfiguration recommended;
@@ -99,24 +94,30 @@ public final class GalleryImageProperties {
     private Disallowed disallowed;
 
     /*
-     * Describes the gallery image definition purchase plan. This is used by
-     * marketplace images.
+     * Describes the gallery image definition purchase plan. This is used by marketplace images.
      */
     @JsonProperty(value = "purchasePlan")
     private ImagePurchasePlan purchasePlan;
 
     /*
-     * The current state of the gallery image definition. The provisioning
-     * state, which only appears in the response.
+     * The current state of the gallery or gallery artifact.
+     *
+     * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private GalleryImagePropertiesProvisioningState provisioningState;
+    private GalleryProvisioningState provisioningState;
 
     /*
      * A list of gallery image features.
      */
     @JsonProperty(value = "features")
     private List<GalleryImageFeature> features;
+
+    /*
+     * The architecture of the image. Applicable to OS disks only.
+     */
+    @JsonProperty(value = "architecture")
+    private Architecture architecture;
 
     /**
      * Get the description property: The description of this gallery image definition resource. This property is
@@ -373,12 +374,13 @@ public final class GalleryImageProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery image definition. The provisioning state,
-     * which only appears in the response.
+     * Get the provisioningState property: The current state of the gallery or gallery artifact.
+     *
+     * <p>The provisioning state, which only appears in the response.
      *
      * @return the provisioningState value.
      */
-    public GalleryImagePropertiesProvisioningState provisioningState() {
+    public GalleryProvisioningState provisioningState() {
         return this.provisioningState;
     }
 
@@ -403,23 +405,43 @@ public final class GalleryImageProperties {
     }
 
     /**
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @return the architecture value.
+     */
+    public Architecture architecture() {
+        return this.architecture;
+    }
+
+    /**
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
+     *
+     * @param architecture the architecture value to set.
+     * @return the GalleryImageProperties object itself.
+     */
+    public GalleryImageProperties withArchitecture(Architecture architecture) {
+        this.architecture = architecture;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property osType in model GalleryImageProperties"));
         }
         if (osState() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property osState in model GalleryImageProperties"));
         }
         if (identifier() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property identifier in model GalleryImageProperties"));
@@ -439,4 +461,6 @@ public final class GalleryImageProperties {
             features().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GalleryImageProperties.class);
 }

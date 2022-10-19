@@ -20,17 +20,20 @@ autorest --java --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs-pr/36c999237f4c0d0bae9c610976c4a2cb6e2c2ace/specification/cognitiveservices/data-plane/FormRecognizer/preview/2022-01-30-preview/FormRecognizer.json?token=GHSAT0AAAAAABJXDFRP4QTQNNWE3PJOPNDGYPGHGZA
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/cognitiveservices/data-plane/FormRecognizer/stable/v2.1/FormRecognizer.json
 java: true
 output-folder: ..\
 generate-client-as-impl: true
-namespace: com.azure.ai.formrecognizer
+namespace: com.azure.ai.formrecognizer.documentanalysis
 generate-client-interfaces: false
 sync-methods: all
 license-header: MICROSOFT_MIT_SMALL
 add-context-parameter: true
 models-subpackage: implementation.models
 context-client-method-parameter: true
-custom-types-subpackage: models
 service-interface-as-public: true
+custom-strongly-typed-header-deserialization: true
+generic-response-type: true
+custom-types-subpackage: models
 ```
+

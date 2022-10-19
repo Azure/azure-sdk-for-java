@@ -12,12 +12,12 @@ import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.models.VpnClientConfiguration;
 import com.azure.resourcemanager.network.models.VpnGatewayGeneration;
 import com.azure.resourcemanager.network.models.VpnType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +25,6 @@ import java.util.Map;
 /** A common class for general resource information. */
 @Fluent
 public final class VirtualNetworkGatewayInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayInner.class);
-
     /*
      * Properties of the virtual network gateway.
      */
@@ -50,6 +48,10 @@ public final class VirtualNetworkGatewayInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of VirtualNetworkGatewayInner class. */
+    public VirtualNetworkGatewayInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the virtual network gateway.
@@ -388,6 +390,32 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
+     * Get the virtualNetworkGatewayPolicyGroups property: The reference to the VirtualNetworkGatewayPolicyGroup
+     * resource which represents the available VirtualNetworkGatewayPolicyGroup for the gateway.
+     *
+     * @return the virtualNetworkGatewayPolicyGroups value.
+     */
+    public List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualNetworkGatewayPolicyGroups();
+    }
+
+    /**
+     * Set the virtualNetworkGatewayPolicyGroups property: The reference to the VirtualNetworkGatewayPolicyGroup
+     * resource which represents the available VirtualNetworkGatewayPolicyGroup for the gateway.
+     *
+     * @param virtualNetworkGatewayPolicyGroups the virtualNetworkGatewayPolicyGroups value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withVirtualNetworkGatewayPolicyGroups(
+        List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withVirtualNetworkGatewayPolicyGroups(virtualNetworkGatewayPolicyGroups);
+        return this;
+    }
+
+    /**
      * Get the bgpSettings property: Virtual network gateway's BGP speaker settings.
      *
      * @return the bgpSettings value.
@@ -558,13 +586,63 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
+     * Get the allowVirtualWanTraffic property: Configures this gateway to accept traffic from remote Virtual WAN
+     * networks.
+     *
+     * @return the allowVirtualWanTraffic value.
+     */
+    public Boolean allowVirtualWanTraffic() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowVirtualWanTraffic();
+    }
+
+    /**
+     * Set the allowVirtualWanTraffic property: Configures this gateway to accept traffic from remote Virtual WAN
+     * networks.
+     *
+     * @param allowVirtualWanTraffic the allowVirtualWanTraffic value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withAllowVirtualWanTraffic(Boolean allowVirtualWanTraffic) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withAllowVirtualWanTraffic(allowVirtualWanTraffic);
+        return this;
+    }
+
+    /**
+     * Get the allowRemoteVnetTraffic property: Configure this gateway to accept traffic from other Azure Virtual
+     * Networks. This configuration does not support connectivity to Azure Virtual WAN.
+     *
+     * @return the allowRemoteVnetTraffic value.
+     */
+    public Boolean allowRemoteVnetTraffic() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowRemoteVnetTraffic();
+    }
+
+    /**
+     * Set the allowRemoteVnetTraffic property: Configure this gateway to accept traffic from other Azure Virtual
+     * Networks. This configuration does not support connectivity to Azure Virtual WAN.
+     *
+     * @param allowRemoteVnetTraffic the allowRemoteVnetTraffic value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withAllowRemoteVnetTraffic(Boolean allowRemoteVnetTraffic) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withAllowRemoteVnetTraffic(allowRemoteVnetTraffic);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model VirtualNetworkGatewayInner"));
@@ -575,4 +653,6 @@ public final class VirtualNetworkGatewayInner extends Resource {
             extendedLocation().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualNetworkGatewayInner.class);
 }

@@ -41,4 +41,11 @@ public class SelfHostedIntegrationRuntime extends IntegrationRuntime {
         this.linkedInfo = linkedInfo;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public SelfHostedIntegrationRuntime setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
 }

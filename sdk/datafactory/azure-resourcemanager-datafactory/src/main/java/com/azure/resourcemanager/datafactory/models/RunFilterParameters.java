@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,25 +13,20 @@ import java.util.List;
 /** Query parameters for listing runs. */
 @Fluent
 public final class RunFilterParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunFilterParameters.class);
-
     /*
-     * The continuation token for getting the next page of results. Null for
-     * first page.
+     * The continuation token for getting the next page of results. Null for first page.
      */
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
     /*
-     * The time at or after which the run event was updated in 'ISO 8601'
-     * format.
+     * The time at or after which the run event was updated in 'ISO 8601' format.
      */
     @JsonProperty(value = "lastUpdatedAfter", required = true)
     private OffsetDateTime lastUpdatedAfter;
 
     /*
-     * The time at or before which the run event was updated in 'ISO 8601'
-     * format.
+     * The time at or before which the run event was updated in 'ISO 8601' format.
      */
     @JsonProperty(value = "lastUpdatedBefore", required = true)
     private OffsetDateTime lastUpdatedBefore;
@@ -48,6 +42,10 @@ public final class RunFilterParameters {
      */
     @JsonProperty(value = "orderBy")
     private List<RunQueryOrderBy> orderBy;
+
+    /** Creates an instance of RunFilterParameters class. */
+    public RunFilterParameters() {
+    }
 
     /**
      * Get the continuationToken property: The continuation token for getting the next page of results. Null for first
@@ -158,13 +156,13 @@ public final class RunFilterParameters {
      */
     public void validate() {
         if (lastUpdatedAfter() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property lastUpdatedAfter in model RunFilterParameters"));
         }
         if (lastUpdatedBefore() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property lastUpdatedBefore in model RunFilterParameters"));
@@ -176,4 +174,6 @@ public final class RunFilterParameters {
             orderBy().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RunFilterParameters.class);
 }

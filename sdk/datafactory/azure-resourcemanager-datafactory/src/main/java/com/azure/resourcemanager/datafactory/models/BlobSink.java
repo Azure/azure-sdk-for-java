@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,25 +15,20 @@ import java.util.List;
 @JsonTypeName("BlobSink")
 @Fluent
 public final class BlobSink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobSink.class);
-
     /*
-     * Blob writer overwrite files. Type: boolean (or Expression with
-     * resultType boolean).
+     * Blob writer overwrite files. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "blobWriterOverwriteFiles")
     private Object blobWriterOverwriteFiles;
 
     /*
-     * Blob writer date time format. Type: string (or Expression with
-     * resultType string).
+     * Blob writer date time format. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "blobWriterDateTimeFormat")
     private Object blobWriterDateTimeFormat;
 
     /*
-     * Blob writer add header. Type: boolean (or Expression with resultType
-     * boolean).
+     * Blob writer add header. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "blobWriterAddHeader")
     private Object blobWriterAddHeader;
@@ -47,11 +40,15 @@ public final class BlobSink extends CopySink {
     private Object copyBehavior;
 
     /*
-     * Specify the custom metadata to be added to sink data. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * Specify the custom metadata to be added to sink data. Type: array of objects (or Expression with resultType
+     * array of objects).
      */
     @JsonProperty(value = "metadata")
     private List<MetadataItem> metadata;
+
+    /** Creates an instance of BlobSink class. */
+    public BlobSink() {
+    }
 
     /**
      * Get the blobWriterOverwriteFiles property: Blob writer overwrite files. Type: boolean (or Expression with

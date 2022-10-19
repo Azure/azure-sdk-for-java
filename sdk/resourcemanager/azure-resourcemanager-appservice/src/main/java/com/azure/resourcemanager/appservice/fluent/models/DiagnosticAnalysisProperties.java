@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AbnormalTimePeriod;
 import com.azure.resourcemanager.appservice.models.AnalysisData;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** DiagnosticAnalysis resource specific properties. */
 @Fluent
 public final class DiagnosticAnalysisProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticAnalysisProperties.class);
-
     /*
      * Start time of the period
      */

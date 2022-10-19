@@ -16,15 +16,12 @@ import com.azure.resourcemanager.labservices.models.ProvisioningState;
 import com.azure.resourcemanager.labservices.models.RosterProfile;
 import com.azure.resourcemanager.labservices.models.SecurityProfile;
 import com.azure.resourcemanager.labservices.models.VirtualMachineProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The lab resource. */
 @Fluent
 public final class LabInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the lab.
      */
@@ -311,11 +308,13 @@ public final class LabInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property innerProperties in model LabInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LabInner.class);
 }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** BGP settings details. */
 @Fluent
 public final class BgpSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpSettings.class);
-
     /*
      * The BGP speaker's ASN.
      */
@@ -34,11 +30,14 @@ public final class BgpSettings {
     private Integer peerWeight;
 
     /*
-     * BGP peering address with IP configuration ID for virtual network
-     * gateway.
+     * BGP peering address with IP configuration ID for virtual network gateway.
      */
     @JsonProperty(value = "bgpPeeringAddresses")
     private List<IpConfigurationBgpPeeringAddress> bgpPeeringAddresses;
+
+    /** Creates an instance of BgpSettings class. */
+    public BgpSettings() {
+    }
 
     /**
      * Get the asn property: The BGP speaker's ASN.

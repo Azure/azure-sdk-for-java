@@ -6,14 +6,11 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Lease Container request schema. */
 @Fluent
 public final class LeaseContainerRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LeaseContainerRequest.class);
-
     /*
      * Specifies the lease action. Can be one of the available actions.
      */
@@ -27,22 +24,21 @@ public final class LeaseContainerRequest {
     private String leaseId;
 
     /*
-     * Optional. For a break action, proposed duration the lease should
-     * continue before it is broken, in seconds, between 0 and 60.
+     * Optional. For a break action, proposed duration the lease should continue before it is broken, in seconds,
+     * between 0 and 60.
      */
     @JsonProperty(value = "breakPeriod")
     private Integer breakPeriod;
 
     /*
-     * Required for acquire. Specifies the duration of the lease, in seconds,
-     * or negative one (-1) for a lease that never expires.
+     * Required for acquire. Specifies the duration of the lease, in seconds, or negative one (-1) for a lease that
+     * never expires.
      */
     @JsonProperty(value = "leaseDuration")
     private Integer leaseDuration;
 
     /*
-     * Optional for acquire, required for change. Proposed lease ID, in a GUID
-     * string format.
+     * Optional for acquire, required for change. Proposed lease ID, in a GUID string format.
      */
     @JsonProperty(value = "proposedLeaseId")
     private String proposedLeaseId;
@@ -160,9 +156,11 @@ public final class LeaseContainerRequest {
      */
     public void validate() {
         if (action() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property action in model LeaseContainerRequest"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LeaseContainerRequest.class);
 }

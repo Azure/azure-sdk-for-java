@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -17,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class Plan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Plan.class);
-
     /*
      * The plan ID.
      */
@@ -32,8 +28,8 @@ public final class Plan {
     private String publisher;
 
     /*
-     * Specifies the product of the image from the marketplace. This is the
-     * same value as Offer under the imageReference element.
+     * Specifies the product of the image from the marketplace. This is the same value as Offer under the
+     * imageReference element.
      */
     @JsonProperty(value = "product")
     private String product;

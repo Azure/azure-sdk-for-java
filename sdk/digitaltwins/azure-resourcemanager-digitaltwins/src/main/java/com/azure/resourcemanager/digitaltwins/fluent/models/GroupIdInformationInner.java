@@ -7,16 +7,13 @@ package com.azure.resourcemanager.digitaltwins.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.digitaltwins.models.GroupIdInformationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The group information for creating a private endpoint on Digital Twin. */
 @Fluent
 public final class GroupIdInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupIdInformationInner.class);
-
     /*
-     * The properties for a group information object.
+     * The group information properties.
      */
     @JsonProperty(value = "properties", required = true)
     private GroupIdInformationProperties properties;
@@ -40,7 +37,7 @@ public final class GroupIdInformationInner {
     private String type;
 
     /**
-     * Get the properties property: The properties for a group information object.
+     * Get the properties property: The group information properties.
      *
      * @return the properties value.
      */
@@ -49,7 +46,7 @@ public final class GroupIdInformationInner {
     }
 
     /**
-     * Set the properties property: The properties for a group information object.
+     * Set the properties property: The group information properties.
      *
      * @param properties the properties value to set.
      * @return the GroupIdInformationInner object itself.
@@ -104,7 +101,7 @@ public final class GroupIdInformationInner {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model GroupIdInformationInner"));
@@ -112,4 +109,6 @@ public final class GroupIdInformationInner {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GroupIdInformationInner.class);
 }

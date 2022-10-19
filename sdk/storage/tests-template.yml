@@ -39,9 +39,9 @@ stages:
           groupId: com.azure
           safeName: azurestoragequeue
       AdditionalModules:
-        - name: perf-test-core
-          groupId: com.azure
         - name: azure-storage-perf
+          groupId: com.azure
+        - name: perf-test-core
           groupId: com.azure
       TestMode: 'LIVE'
       TimeoutInMinutes: 60
@@ -53,9 +53,6 @@ stages:
           SubscriptionConfiguration: $(sub-config-storage-test-resources)
       Clouds: Preview
       SupportedClouds: Preview
-      TestStepMavenInputs:
-        options: '$(DefaultTestOptions) $(AdditionalOptions) -T 1C'
-        mavenOptions: '$(DefaultTestMavenOptions)'
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
         - Pool=(.*)-general/$1-storage
@@ -100,6 +97,9 @@ stages:
             Copy-Item sdk/storage/azure-storage-queue/target/test.log $(Build.ArtifactStagingDirectory)/test-logs/azure-storage-queue-test.log -ErrorAction SilentlyContinue
           displayName: 'Copy test logs to artifact staging'
           condition: always()
+        - template: ../steps/retain-heap-dump-hprofs.yml
+          parameters:
+            OomArtifactName: 'perf-hprofs'
         - publish: $(Build.ArtifactStagingDirectory)/test-logs
           displayName: 'Publish test logs'
           artifact: test-log-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)

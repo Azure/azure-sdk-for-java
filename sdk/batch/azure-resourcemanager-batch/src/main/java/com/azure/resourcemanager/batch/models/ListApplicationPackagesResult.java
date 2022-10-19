@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationPackageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The result of performing list application packages. */
 @Fluent
 public final class ListApplicationPackagesResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListApplicationPackagesResult.class);
-
     /*
      * The list of application packages.
      */

@@ -125,7 +125,11 @@ public final class DataSourceKind extends ExpandableStringEnum<DataSourceKind> {
         return fromString(name, DataSourceKind.class);
     }
 
-    /** @return known DataSourceKind values. */
+    /**
+     * Gets known DataSourceKind values.
+     *
+     * @return known DataSourceKind values.
+     */
     public static Collection<DataSourceKind> values() {
         return values(DataSourceKind.class);
     }

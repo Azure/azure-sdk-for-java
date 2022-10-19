@@ -2,9 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.spark.CosmosPredicates.{assertNotNull, assertNotNullOrEmpty, assertOnSparkDriver}
-import com.azure.cosmos.spark.diagnostics.LoggerHelper
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.streaming.{MicroBatchStream, Offset, ReadLimit, SupportsAdmissionControl}
@@ -21,7 +21,7 @@ private class ChangeFeedMicroBatchStream
   val session: SparkSession,
   val schema: StructType,
   val config: Map[String, String],
-  val cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+  val cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
   val checkpointLocation: String,
   diagnosticsConfig: DiagnosticsConfig
 ) extends MicroBatchStream
@@ -29,7 +29,8 @@ private class ChangeFeedMicroBatchStream
 
   @transient private lazy val log = LoggerHelper.getLogger(diagnosticsConfig, this.getClass)
 
-  private val streamId = UUID.randomUUID().toString
+  private val correlationActivityId = UUID.randomUUID()
+  private val streamId = correlationActivityId.toString
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}.$streamId")
 
   private val defaultParallelism = session.sparkContext.defaultParallelism
@@ -40,9 +41,21 @@ private class ChangeFeedMicroBatchStream
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
   private val clientCacheItem = CosmosClientCache(
     clientConfiguration,
-    Some(cosmosClientStateHandle),
-    s"ChangeFeedMicroBatchStream(streamId ${streamId})")
-  private val container = ThroughputControlHelper.getContainer(config, containerConfig, clientCacheItem.client)
+    Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
+    s"ChangeFeedMicroBatchStream(streamId $streamId)")
+
+  private val throughputControlClientCacheItemOpt =
+    ThroughputControlHelper.getThroughputControlClientCacheItem(
+      config,
+      clientCacheItem.context,
+      Some(cosmosClientStateHandles))
+
+  private val container =
+    ThroughputControlHelper.getContainer(
+      config,
+      containerConfig,
+      clientCacheItem,
+      throughputControlClientCacheItemOpt)
   SparkUtils.safeOpenConnectionInitCaches(container, log)
 
   private var latestOffsetSnapshot: Option[ChangeFeedOffset] = None
@@ -74,15 +87,15 @@ private class ChangeFeedMicroBatchStream
     assert(startOffset.isInstanceOf[ChangeFeedOffset], "Argument 'startOffset' is not a change feed offset.")
     assert(endOffset.isInstanceOf[ChangeFeedOffset], "Argument 'endOffset' is not a change feed offset.")
 
-    log.logInfo(s"--> planInputPartitions.$streamId, startOffset: ${startOffset.json()} - endOffset: ${endOffset.json()}")
+    log.logDebug(s"--> planInputPartitions.$streamId, startOffset: ${startOffset.json()} - endOffset: ${endOffset.json()}")
     val start = startOffset.asInstanceOf[ChangeFeedOffset]
     val end = endOffset.asInstanceOf[ChangeFeedOffset]
 
     val startChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(start.changeFeedState))
-    log.logInfo(s"Start-ChangeFeedState.$streamId: $startChangeFeedState")
+    log.logDebug(s"Start-ChangeFeedState.$streamId: $startChangeFeedState")
 
     val endChangeFeedState = new String(java.util.Base64.getUrlDecoder.decode(end.changeFeedState))
-    log.logInfo(s"End-ChangeFeedState.$streamId: $endChangeFeedState")
+    log.logDebug(s"End-ChangeFeedState.$streamId: $endChangeFeedState")
 
     assert(end.inputPartitions.isDefined, "Argument 'endOffset.inputPartitions' must not be null or empty.")
 
@@ -100,8 +113,13 @@ private class ChangeFeedMicroBatchStream
    * Returns a factory to create a `PartitionReader` for each `InputPartition`.
    */
   override def createReaderFactory(): PartitionReaderFactory = {
-    log.logInfo(s"--> createReaderFactory.$streamId")
-    ChangeFeedScanPartitionReaderFactory(config, schema, cosmosClientStateHandle, diagnosticsConfig)
+    log.logDebug(s"--> createReaderFactory.$streamId")
+    ChangeFeedScanPartitionReaderFactory(
+      config,
+      schema,
+      DiagnosticsContext(correlationActivityId, checkpointLocation),
+      cosmosClientStateHandles,
+      diagnosticsConfig)
   }
 
   /**
@@ -121,7 +139,7 @@ private class ChangeFeedMicroBatchStream
   // serialize them in the end offset returned to avoid any IO calls for the actual partitioning
   override def latestOffset(startOffset: Offset, readLimit: ReadLimit): Offset = {
 
-    log.logInfo(s"--> latestOffset.$streamId")
+    log.logDebug(s"--> latestOffset.$streamId")
 
     val startChangeFeedOffset = startOffset.asInstanceOf[ChangeFeedOffset]
     val offset = CosmosPartitionPlanner.getLatestOffset(
@@ -130,7 +148,7 @@ private class ChangeFeedMicroBatchStream
       readLimit,
       Duration.ZERO,
       this.clientConfiguration,
-      this.cosmosClientStateHandle,
+      this.cosmosClientStateHandles,
       this.containerConfig,
       this.partitioningConfig,
       this.defaultParallelism,
@@ -138,11 +156,11 @@ private class ChangeFeedMicroBatchStream
     )
 
     if (offset.changeFeedState != startChangeFeedOffset.changeFeedState) {
-      log.logInfo(s"<-- latestOffset.$streamId - new offset ${offset.json()}")
+      log.logDebug(s"<-- latestOffset.$streamId - new offset ${offset.json()}")
       this.latestOffsetSnapshot = Some(offset)
       offset
     } else {
-      log.logInfo(s"<-- latestOffset.$streamId - Finished returning null")
+      log.logDebug(s"<-- latestOffset.$streamId - Finished returning null")
 
       this.latestOffsetSnapshot = None
 
@@ -168,12 +186,13 @@ private class ChangeFeedMicroBatchStream
         assertNotNull(session, "session"),
         assertNotNullOrEmpty(checkpointLocation, "checkpointLocation"))
     val offsetJson = metadataLog.get(0).getOrElse {
-      val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(container, changeFeedConfig, Some(streamId))
+      val newOffsetJson = CosmosPartitionPlanner.createInitialOffset(
+        container, changeFeedConfig, partitioningConfig, Some(streamId))
       metadataLog.add(0, newOffsetJson)
       newOffsetJson
     }
 
-    log.logInfo(s"MicroBatch stream $streamId: Initial offset '$offsetJson'.")
+    log.logDebug(s"MicroBatch stream $streamId: Initial offset '$offsetJson'.")
     ChangeFeedOffset(offsetJson, None)
   }
 
@@ -210,7 +229,7 @@ private class ChangeFeedMicroBatchStream
    * equal to `end` and will only request offsets greater than `end` in the future.
    */
   override def commit(offset: Offset): Unit = {
-    log.logInfo(s"MicroBatch stream $streamId: Committed offset '${offset.json()}'.")
+    log.logDebug(s"MicroBatch stream $streamId: Committed offset '${offset.json()}'.")
   }
 
   /**
@@ -218,7 +237,10 @@ private class ChangeFeedMicroBatchStream
    */
   override def stop(): Unit = {
     clientCacheItem.close()
-    log.logInfo(s"MicroBatch stream $streamId: stopped.")
+    if (throughputControlClientCacheItemOpt.isDefined) {
+      throughputControlClientCacheItemOpt.get.close()
+    }
+    log.logDebug(s"MicroBatch stream $streamId: stopped.")
   }
 }
 // scalastyle:on multiple.string.literals

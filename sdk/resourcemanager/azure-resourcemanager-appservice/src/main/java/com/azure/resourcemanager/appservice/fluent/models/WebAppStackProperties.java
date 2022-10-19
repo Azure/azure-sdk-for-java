@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.StackPreferredOs;
 import com.azure.resourcemanager.appservice.models.WebAppMajorVersion;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** WebAppStack resource specific properties. */
 @Immutable
 public final class WebAppStackProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebAppStackProperties.class);
-
     /*
      * Web App stack (display only).
      */

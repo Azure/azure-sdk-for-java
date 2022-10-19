@@ -48,7 +48,7 @@ public final class NotebookOperationResultsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientNoteb")
-    private interface NotebookOperationResultsService {
+    public interface NotebookOperationResultsService {
         @Get("/notebookOperationResults/{operationId}")
         @ExpectedResponses({200, 201, 202, 204})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
@@ -67,7 +67,7 @@ public final class NotebookOperationResultsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook operation result.
+     * @return notebook operation result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getWithResponseAsync(String operationId) {
@@ -85,7 +85,7 @@ public final class NotebookOperationResultsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook operation result.
+     * @return notebook operation result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getWithResponseAsync(String operationId, Context context) {
@@ -101,11 +101,11 @@ public final class NotebookOperationResultsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook operation result.
+     * @return notebook operation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getAsync(String operationId) {
-        return getWithResponseAsync(operationId).flatMap((Response<Void> res) -> Mono.empty());
+        return getWithResponseAsync(operationId).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -116,11 +116,11 @@ public final class NotebookOperationResultsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook operation result.
+     * @return notebook operation result on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getAsync(String operationId, Context context) {
-        return getWithResponseAsync(operationId, context).flatMap((Response<Void> res) -> Mono.empty());
+        return getWithResponseAsync(operationId, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -144,7 +144,7 @@ public final class NotebookOperationResultsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return notebook operation result.
+     * @return notebook operation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getWithResponse(String operationId, Context context) {

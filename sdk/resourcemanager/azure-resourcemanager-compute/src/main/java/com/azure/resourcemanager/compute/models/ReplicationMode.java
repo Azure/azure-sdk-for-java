@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ReplicationMode. */
+/** Optional parameter which specifies the mode to be used for replication. This property is not updatable. */
 public final class ReplicationMode extends ExpandableStringEnum<ReplicationMode> {
     /** Static value Full for ReplicationMode. */
     public static final ReplicationMode FULL = fromString("Full");
@@ -27,7 +27,11 @@ public final class ReplicationMode extends ExpandableStringEnum<ReplicationMode>
         return fromString(name, ReplicationMode.class);
     }
 
-    /** @return known ReplicationMode values. */
+    /**
+     * Gets known ReplicationMode values.
+     *
+     * @return known ReplicationMode values.
+     */
     public static Collection<ReplicationMode> values() {
         return values(ReplicationMode.class);
     }

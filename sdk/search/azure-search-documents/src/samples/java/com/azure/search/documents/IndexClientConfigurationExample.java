@@ -11,7 +11,7 @@ import com.azure.core.util.Configuration;
  * This example shows how to use the {@link SearchClientBuilder} to create an index client
  * <p>
  * This sample is based on the hotels-sample index available to install from the portal.
- * See instructions here](https://docs.microsoft.com/en-us/azure/search/search-get-started-portal
+ * See <a href="https://docs.microsoft.com/azure/search/search-get-started-portal">Search getting started portal</a>
  */
 public class IndexClientConfigurationExample {
 
@@ -23,8 +23,8 @@ public class IndexClientConfigurationExample {
     private static final String API_KEY = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_API_KEY");
 
     public static void main(String[] args) {
-        SearchClient minimalClient = createMinimalClient();
-        SearchAsyncClient advancedClient = createAdvancedClient();
+        createMinimalClient();
+        createAdvancedClient();
     }
 
     /**

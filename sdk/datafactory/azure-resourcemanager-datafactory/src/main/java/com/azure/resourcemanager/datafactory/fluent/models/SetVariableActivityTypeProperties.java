@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SetVariable activity properties. */
 @Fluent
 public final class SetVariableActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SetVariableActivityTypeProperties.class);
-
     /*
      * Name of the variable whose value needs to be set.
      */
@@ -25,6 +21,10 @@ public final class SetVariableActivityTypeProperties {
      */
     @JsonProperty(value = "value")
     private Object value;
+
+    /** Creates an instance of SetVariableActivityTypeProperties class. */
+    public SetVariableActivityTypeProperties() {
+    }
 
     /**
      * Get the variableName property: Name of the variable whose value needs to be set.

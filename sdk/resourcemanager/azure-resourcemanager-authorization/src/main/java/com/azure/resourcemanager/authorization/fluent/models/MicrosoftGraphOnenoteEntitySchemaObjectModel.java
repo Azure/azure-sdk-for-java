@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,9 +16,6 @@ import java.util.Map;
 /** onenoteEntitySchemaObjectModel. */
 @Fluent
 public class MicrosoftGraphOnenoteEntitySchemaObjectModel extends MicrosoftGraphOnenoteEntityBaseModel {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphOnenoteEntitySchemaObjectModel.class);
-
     /*
      * The date and time when the page was created. The timestamp represents
      * date and time information using ISO 8601 format and is always in UTC

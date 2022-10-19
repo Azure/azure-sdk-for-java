@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.IdentityProviderContractInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of all the Identity Providers configured on the service instance. */
 @Fluent
 public final class IdentityProviderList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProviderList.class);
-
     /*
      * Identity Provider configuration values.
      */

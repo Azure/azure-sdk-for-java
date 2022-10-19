@@ -5,34 +5,26 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An error response from the pod identity provisioning. */
 @Fluent
 public final class ManagedClusterPodIdentityProvisioningErrorBody {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentityProvisioningErrorBody.class);
-
     /*
-     * An identifier for the error. Codes are invariant and are intended to be
-     * consumed programmatically.
+     * An identifier for the error. Codes are invariant and are intended to be consumed programmatically.
      */
     @JsonProperty(value = "code")
     private String code;
 
     /*
-     * A message describing the error, intended to be suitable for display in a
-     * user interface.
+     * A message describing the error, intended to be suitable for display in a user interface.
      */
     @JsonProperty(value = "message")
     private String message;
 
     /*
-     * The target of the particular error. For example, the name of the
-     * property in error.
+     * The target of the particular error. For example, the name of the property in error.
      */
     @JsonProperty(value = "target")
     private String target;

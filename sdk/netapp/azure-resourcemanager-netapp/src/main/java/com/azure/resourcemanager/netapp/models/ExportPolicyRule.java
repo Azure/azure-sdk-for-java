@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Volume Export Policy Rule. */
 @Fluent
 public final class ExportPolicyRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportPolicyRule.class);
-
     /*
      * Order index
      */
@@ -33,43 +29,37 @@ public final class ExportPolicyRule {
     private Boolean unixReadWrite;
 
     /*
-     * Kerberos5 Read only access. To be use with swagger version 2020-05-01 or
-     * later
+     * Kerberos5 Read only access. To be use with swagger version 2020-05-01 or later
      */
     @JsonProperty(value = "kerberos5ReadOnly")
     private Boolean kerberos5ReadOnly;
 
     /*
-     * Kerberos5 Read and write access. To be use with swagger version
-     * 2020-05-01 or later
+     * Kerberos5 Read and write access. To be use with swagger version 2020-05-01 or later
      */
     @JsonProperty(value = "kerberos5ReadWrite")
     private Boolean kerberos5ReadWrite;
 
     /*
-     * Kerberos5i Read only access. To be use with swagger version 2020-05-01
-     * or later
+     * Kerberos5i Read only access. To be use with swagger version 2020-05-01 or later
      */
     @JsonProperty(value = "kerberos5iReadOnly")
     private Boolean kerberos5IReadOnly;
 
     /*
-     * Kerberos5i Read and write access. To be use with swagger version
-     * 2020-05-01 or later
+     * Kerberos5i Read and write access. To be use with swagger version 2020-05-01 or later
      */
     @JsonProperty(value = "kerberos5iReadWrite")
     private Boolean kerberos5IReadWrite;
 
     /*
-     * Kerberos5p Read only access. To be use with swagger version 2020-05-01
-     * or later
+     * Kerberos5p Read only access. To be use with swagger version 2020-05-01 or later
      */
     @JsonProperty(value = "kerberos5pReadOnly")
     private Boolean kerberos5PReadOnly;
 
     /*
-     * Kerberos5p Read and write access. To be use with swagger version
-     * 2020-05-01 or later
+     * Kerberos5p Read and write access. To be use with swagger version 2020-05-01 or later
      */
     @JsonProperty(value = "kerberos5pReadWrite")
     private Boolean kerberos5PReadWrite;
@@ -93,8 +83,7 @@ public final class ExportPolicyRule {
     private Boolean nfsv41;
 
     /*
-     * Client ingress specification as comma separated string with IPv4 CIDRs,
-     * IPv4 host addresses and host names
+     * Client ingress specification as comma separated string with IPv4 CIDRs, IPv4 host addresses and host names
      */
     @JsonProperty(value = "allowedClients")
     private String allowedClients;
@@ -106,10 +95,8 @@ public final class ExportPolicyRule {
     private Boolean hasRootAccess;
 
     /*
-     * This parameter specifies who is authorized to change the ownership of a
-     * file. restricted - Only root user can change the ownership of the file.
-     * unrestricted - Non-root users can change ownership of files that they
-     * own.
+     * This parameter specifies who is authorized to change the ownership of a file. restricted - Only root user can
+     * change the ownership of the file. unrestricted - Non-root users can change ownership of files that they own.
      */
     @JsonProperty(value = "chownMode")
     private ChownMode chownMode;

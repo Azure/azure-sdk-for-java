@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the connection monitor endpoint filter. */
 @Fluent
 public final class ConnectionMonitorEndpointFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorEndpointFilter.class);
-
     /*
-     * The behavior of the endpoint filter. Currently only 'Include' is
-     * supported.
+     * The behavior of the endpoint filter. Currently only 'Include' is supported.
      */
     @JsonProperty(value = "type")
     private ConnectionMonitorEndpointFilterType type;
@@ -27,6 +22,10 @@ public final class ConnectionMonitorEndpointFilter {
      */
     @JsonProperty(value = "items")
     private List<ConnectionMonitorEndpointFilterItem> items;
+
+    /** Creates an instance of ConnectionMonitorEndpointFilter class. */
+    public ConnectionMonitorEndpointFilter() {
+    }
 
     /**
      * Get the type property: The behavior of the endpoint filter. Currently only 'Include' is supported.

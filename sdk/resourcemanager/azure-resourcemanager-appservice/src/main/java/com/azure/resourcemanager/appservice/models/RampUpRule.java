@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class RampUpRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RampUpRule.class);
-
     /*
      * Hostname of a slot to which the traffic will be redirected if decided
      * to. E.g. myapp-stage.azurewebsites.net.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.deviceprovisioningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.models.NameUnavailabilityReason;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of name availability. */
 @Fluent
 public final class NameAvailabilityInfoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameAvailabilityInfoInner.class);
-
     /*
      * specifies if a name is available or not
      */

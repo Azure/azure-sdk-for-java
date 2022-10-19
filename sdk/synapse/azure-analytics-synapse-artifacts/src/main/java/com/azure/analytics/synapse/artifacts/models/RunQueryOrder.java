@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RunQueryOrder. */
+/** Sorting order of the parameter. */
 public final class RunQueryOrder extends ExpandableStringEnum<RunQueryOrder> {
     /** Static value ASC for RunQueryOrder. */
     public static final RunQueryOrder ASC = fromString("ASC");
@@ -27,7 +27,11 @@ public final class RunQueryOrder extends ExpandableStringEnum<RunQueryOrder> {
         return fromString(name, RunQueryOrder.class);
     }
 
-    /** @return known RunQueryOrder values. */
+    /**
+     * Gets known RunQueryOrder values.
+     *
+     * @return known RunQueryOrder values.
+     */
     public static Collection<RunQueryOrder> values() {
         return values(RunQueryOrder.class);
     }

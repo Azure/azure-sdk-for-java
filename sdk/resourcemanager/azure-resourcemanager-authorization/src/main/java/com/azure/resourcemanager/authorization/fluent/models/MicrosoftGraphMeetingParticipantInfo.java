@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** meetingParticipantInfo. */
 @Fluent
 public final class MicrosoftGraphMeetingParticipantInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphMeetingParticipantInfo.class);
-
     /*
      * identitySet
      */
@@ -25,7 +22,7 @@ public final class MicrosoftGraphMeetingParticipantInfo {
     private MicrosoftGraphIdentitySet identity;
 
     /*
-     * The role property.
+     * onlineMeetingRole
      */
     @JsonProperty(value = "role")
     private MicrosoftGraphOnlineMeetingRole role;
@@ -62,7 +59,7 @@ public final class MicrosoftGraphMeetingParticipantInfo {
     }
 
     /**
-     * Get the role property: The role property.
+     * Get the role property: onlineMeetingRole.
      *
      * @return the role value.
      */
@@ -71,7 +68,7 @@ public final class MicrosoftGraphMeetingParticipantInfo {
     }
 
     /**
-     * Set the role property: The role property.
+     * Set the role property: onlineMeetingRole.
      *
      * @param role the role value to set.
      * @return the MicrosoftGraphMeetingParticipantInfo object itself.

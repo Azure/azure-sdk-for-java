@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed identity type properties. */
 @Fluent
 public final class ManagedIdentityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIdentityTypeProperties.class);
-
     /*
      * The resource id of user assigned managed identity
      */
     @JsonProperty(value = "resourceId")
     private String resourceId;
+
+    /** Creates an instance of ManagedIdentityTypeProperties class. */
+    public ManagedIdentityTypeProperties() {
+    }
 
     /**
      * Get the resourceId property: The resource id of user assigned managed identity.

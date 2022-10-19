@@ -7,22 +7,28 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ContentType;
+import com.azure.resourcemanager.securityinsights.models.DeploymentInfo;
 import com.azure.resourcemanager.securityinsights.models.RepoType;
 import com.azure.resourcemanager.securityinsights.models.Repository;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.securityinsights.models.RepositoryResourceInfo;
+import com.azure.resourcemanager.securityinsights.models.Version;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes source control properties. */
 @Fluent
 public final class SourceControlProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceControlProperties.class);
-
     /*
      * The id (a Guid) of the source control
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /*
+     * The version number associated with the source control
+     */
+    @JsonProperty(value = "version")
+    private Version version;
 
     /*
      * The display name of the source control
@@ -54,6 +60,18 @@ public final class SourceControlProperties {
     @JsonProperty(value = "repository", required = true)
     private Repository repository;
 
+    /*
+     * Information regarding the resources created in user's repository.
+     */
+    @JsonProperty(value = "repositoryResourceInfo")
+    private RepositoryResourceInfo repositoryResourceInfo;
+
+    /*
+     * Information regarding the latest deployment for the source control.
+     */
+    @JsonProperty(value = "lastDeploymentInfo")
+    private DeploymentInfo lastDeploymentInfo;
+
     /**
      * Get the id property: The id (a Guid) of the source control.
      *
@@ -71,6 +89,26 @@ public final class SourceControlProperties {
      */
     public SourceControlProperties withId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the version property: The version number associated with the source control.
+     *
+     * @return the version value.
+     */
+    public Version version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: The version number associated with the source control.
+     *
+     * @param version the version value to set.
+     * @return the SourceControlProperties object itself.
+     */
+    public SourceControlProperties withVersion(Version version) {
+        this.version = version;
         return this;
     }
 
@@ -175,36 +213,84 @@ public final class SourceControlProperties {
     }
 
     /**
+     * Get the repositoryResourceInfo property: Information regarding the resources created in user's repository.
+     *
+     * @return the repositoryResourceInfo value.
+     */
+    public RepositoryResourceInfo repositoryResourceInfo() {
+        return this.repositoryResourceInfo;
+    }
+
+    /**
+     * Set the repositoryResourceInfo property: Information regarding the resources created in user's repository.
+     *
+     * @param repositoryResourceInfo the repositoryResourceInfo value to set.
+     * @return the SourceControlProperties object itself.
+     */
+    public SourceControlProperties withRepositoryResourceInfo(RepositoryResourceInfo repositoryResourceInfo) {
+        this.repositoryResourceInfo = repositoryResourceInfo;
+        return this;
+    }
+
+    /**
+     * Get the lastDeploymentInfo property: Information regarding the latest deployment for the source control.
+     *
+     * @return the lastDeploymentInfo value.
+     */
+    public DeploymentInfo lastDeploymentInfo() {
+        return this.lastDeploymentInfo;
+    }
+
+    /**
+     * Set the lastDeploymentInfo property: Information regarding the latest deployment for the source control.
+     *
+     * @param lastDeploymentInfo the lastDeploymentInfo value to set.
+     * @return the SourceControlProperties object itself.
+     */
+    public SourceControlProperties withLastDeploymentInfo(DeploymentInfo lastDeploymentInfo) {
+        this.lastDeploymentInfo = lastDeploymentInfo;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayName in model SourceControlProperties"));
         }
         if (repoType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property repoType in model SourceControlProperties"));
         }
         if (contentTypes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property contentTypes in model SourceControlProperties"));
         }
         if (repository() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property repository in model SourceControlProperties"));
         } else {
             repository().validate();
         }
+        if (repositoryResourceInfo() != null) {
+            repositoryResourceInfo().validate();
+        }
+        if (lastDeploymentInfo() != null) {
+            lastDeploymentInfo().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SourceControlProperties.class);
 }

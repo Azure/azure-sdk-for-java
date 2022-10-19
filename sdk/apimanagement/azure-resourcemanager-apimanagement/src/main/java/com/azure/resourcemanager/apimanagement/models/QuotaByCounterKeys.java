@@ -40,7 +40,7 @@ public interface QuotaByCounterKeys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Quota Counter list representation.
+     * @return paged Quota Counter list representation along with {@link Response}.
      */
     Response<QuotaCounterCollection> listByServiceWithResponse(
         String resourceGroupName, String serviceName, String quotaCounterKey, Context context);
@@ -82,7 +82,7 @@ public interface QuotaByCounterKeys {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Quota Counter list representation.
+     * @return paged Quota Counter list representation along with {@link Response}.
      */
     Response<QuotaCounterCollection> updateWithResponse(
         String resourceGroupName,

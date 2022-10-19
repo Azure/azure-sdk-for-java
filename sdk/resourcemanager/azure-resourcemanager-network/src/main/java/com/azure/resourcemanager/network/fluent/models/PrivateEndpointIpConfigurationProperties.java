@@ -5,25 +5,19 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of an IP Configuration of the private endpoint. */
 @Fluent
 public final class PrivateEndpointIpConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointIpConfigurationProperties.class);
-
     /*
-     * The ID of a group obtained from the remote resource that this private
-     * endpoint should connect to.
+     * The ID of a group obtained from the remote resource that this private endpoint should connect to.
      */
     @JsonProperty(value = "groupId")
     private String groupId;
 
     /*
-     * The member name of a group obtained from the remote resource that this
-     * private endpoint should connect to.
+     * The member name of a group obtained from the remote resource that this private endpoint should connect to.
      */
     @JsonProperty(value = "memberName")
     private String memberName;
@@ -33,6 +27,10 @@ public final class PrivateEndpointIpConfigurationProperties {
      */
     @JsonProperty(value = "privateIPAddress")
     private String privateIpAddress;
+
+    /** Creates an instance of PrivateEndpointIpConfigurationProperties class. */
+    public PrivateEndpointIpConfigurationProperties() {
+    }
 
     /**
      * Get the groupId property: The ID of a group obtained from the remote resource that this private endpoint should

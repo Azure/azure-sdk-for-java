@@ -3,7 +3,6 @@
 
 package com.azure.core.amqp.implementation.handler;
 
-import com.azure.core.util.logging.ClientLogger;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.reactor.Reactor;
@@ -14,7 +13,6 @@ import java.util.Objects;
  * Base class that executes work on reactor.
  */
 public class DispatchHandler extends BaseHandler {
-    private final ClientLogger logger = new ClientLogger(DispatchHandler.class);
     private final Runnable work;
 
     /**

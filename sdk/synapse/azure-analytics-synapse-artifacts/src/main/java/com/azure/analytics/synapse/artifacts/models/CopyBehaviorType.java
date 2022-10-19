@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CopyBehaviorType. */
+/** All available types of copy behavior. */
 public final class CopyBehaviorType extends ExpandableStringEnum<CopyBehaviorType> {
     /** Static value PreserveHierarchy for CopyBehaviorType. */
     public static final CopyBehaviorType PRESERVE_HIERARCHY = fromString("PreserveHierarchy");
@@ -30,7 +30,11 @@ public final class CopyBehaviorType extends ExpandableStringEnum<CopyBehaviorTyp
         return fromString(name, CopyBehaviorType.class);
     }
 
-    /** @return known CopyBehaviorType values. */
+    /**
+     * Gets known CopyBehaviorType values.
+     *
+     * @return known CopyBehaviorType values.
+     */
     public static Collection<CopyBehaviorType> values() {
         return values(CopyBehaviorType.class);
     }

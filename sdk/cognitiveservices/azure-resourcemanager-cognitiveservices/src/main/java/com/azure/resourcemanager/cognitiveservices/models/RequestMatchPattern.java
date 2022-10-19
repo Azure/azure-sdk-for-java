@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The RequestMatchPattern model. */
 @Fluent
 public final class RequestMatchPattern {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestMatchPattern.class);
-
     /*
      * The path property.
      */

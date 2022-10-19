@@ -50,6 +50,22 @@ public final class AzureDataLakeStorageRestAPIImpl {
         return this.version;
     }
 
+    /**
+     * The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds. The lease
+     * duration must be between 15 and 60 seconds or -1 for infinite lease.
+     */
+    private final int xMsLeaseDuration;
+
+    /**
+     * Gets The lease duration is required to acquire a lease, and specifies the duration of the lease in seconds. The
+     * lease duration must be between 15 and 60 seconds or -1 for infinite lease.
+     *
+     * @return the xMsLeaseDuration value.
+     */
+    public int getXMsLeaseDuration() {
+        return this.xMsLeaseDuration;
+    }
+
     /** The filesystem identifier. */
     private final String fileSystem;
 
@@ -140,10 +156,13 @@ public final class AzureDataLakeStorageRestAPIImpl {
      * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param resource The value must be "filesystem" for all filesystem operations.
      * @param version Specifies the version of the operation to use for this request.
+     * @param xMsLeaseDuration The lease duration is required to acquire a lease, and specifies the duration of the
+     *     lease in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param fileSystem The filesystem identifier.
      * @param path The file or directory path.
      */
-    AzureDataLakeStorageRestAPIImpl(String url, String resource, String version, String fileSystem, String path) {
+    AzureDataLakeStorageRestAPIImpl(
+            String url, String resource, String version, int xMsLeaseDuration, String fileSystem, String path) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -152,6 +171,7 @@ public final class AzureDataLakeStorageRestAPIImpl {
                 url,
                 resource,
                 version,
+                xMsLeaseDuration,
                 fileSystem,
                 path);
     }
@@ -163,12 +183,28 @@ public final class AzureDataLakeStorageRestAPIImpl {
      * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param resource The value must be "filesystem" for all filesystem operations.
      * @param version Specifies the version of the operation to use for this request.
+     * @param xMsLeaseDuration The lease duration is required to acquire a lease, and specifies the duration of the
+     *     lease in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param fileSystem The filesystem identifier.
      * @param path The file or directory path.
      */
     AzureDataLakeStorageRestAPIImpl(
-            HttpPipeline httpPipeline, String url, String resource, String version, String fileSystem, String path) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), url, resource, version, fileSystem, path);
+            HttpPipeline httpPipeline,
+            String url,
+            String resource,
+            String version,
+            int xMsLeaseDuration,
+            String fileSystem,
+            String path) {
+        this(
+                httpPipeline,
+                JacksonAdapter.createDefaultSerializerAdapter(),
+                url,
+                resource,
+                version,
+                xMsLeaseDuration,
+                fileSystem,
+                path);
     }
 
     /**
@@ -179,6 +215,8 @@ public final class AzureDataLakeStorageRestAPIImpl {
      * @param url The URL of the service account, container, or blob that is the target of the desired operation.
      * @param resource The value must be "filesystem" for all filesystem operations.
      * @param version Specifies the version of the operation to use for this request.
+     * @param xMsLeaseDuration The lease duration is required to acquire a lease, and specifies the duration of the
+     *     lease in seconds. The lease duration must be between 15 and 60 seconds or -1 for infinite lease.
      * @param fileSystem The filesystem identifier.
      * @param path The file or directory path.
      */
@@ -188,6 +226,7 @@ public final class AzureDataLakeStorageRestAPIImpl {
             String url,
             String resource,
             String version,
+            int xMsLeaseDuration,
             String fileSystem,
             String path) {
         this.httpPipeline = httpPipeline;
@@ -195,6 +234,7 @@ public final class AzureDataLakeStorageRestAPIImpl {
         this.url = url;
         this.resource = resource;
         this.version = version;
+        this.xMsLeaseDuration = xMsLeaseDuration;
         this.fileSystem = fileSystem;
         this.path = path;
         this.services = new ServicesImpl(this);

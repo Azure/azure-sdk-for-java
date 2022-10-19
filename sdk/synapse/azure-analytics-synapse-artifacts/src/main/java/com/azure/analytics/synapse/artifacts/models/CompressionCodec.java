@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CompressionCodec. */
+/** All available compressionCodec values. */
 public final class CompressionCodec extends ExpandableStringEnum<CompressionCodec> {
     /** Static value none for CompressionCodec. */
     public static final CompressionCodec NONE = fromString("none");
@@ -51,7 +51,11 @@ public final class CompressionCodec extends ExpandableStringEnum<CompressionCode
         return fromString(name, CompressionCodec.class);
     }
 
-    /** @return known CompressionCodec values. */
+    /**
+     * Gets known CompressionCodec values.
+     *
+     * @return known CompressionCodec values.
+     */
     public static Collection<CompressionCodec> values() {
         return values(CompressionCodec.class);
     }

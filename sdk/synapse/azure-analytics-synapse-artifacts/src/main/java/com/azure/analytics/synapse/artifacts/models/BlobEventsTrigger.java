@@ -18,19 +18,17 @@ import java.util.List;
 @Fluent
 public class BlobEventsTrigger extends MultiplePipelineTrigger {
     /*
-     * The blob path must begin with the pattern provided for trigger to fire.
-     * For example, '/records/blobs/december/' will only fire the trigger for
-     * blobs in the december folder under the records container. At least one
-     * of these must be provided: blobPathBeginsWith, blobPathEndsWith.
+     * The blob path must begin with the pattern provided for trigger to fire. For example, '/records/blobs/december/'
+     * will only fire the trigger for blobs in the december folder under the records container. At least one of these
+     * must be provided: blobPathBeginsWith, blobPathEndsWith.
      */
     @JsonProperty(value = "typeProperties.blobPathBeginsWith")
     private String blobPathBeginsWith;
 
     /*
-     * The blob path must end with the pattern provided for trigger to fire.
-     * For example, 'december/boxes.csv' will only fire the trigger for blobs
-     * named boxes in a december folder. At least one of these must be
-     * provided: blobPathBeginsWith, blobPathEndsWith.
+     * The blob path must end with the pattern provided for trigger to fire. For example, 'december/boxes.csv' will
+     * only fire the trigger for blobs named boxes in a december folder. At least one of these must be provided:
+     * blobPathBeginsWith, blobPathEndsWith.
      */
     @JsonProperty(value = "typeProperties.blobPathEndsWith")
     private String blobPathEndsWith;
@@ -158,6 +156,27 @@ public class BlobEventsTrigger extends MultiplePipelineTrigger {
      */
     public BlobEventsTrigger setScope(String scope) {
         this.scope = scope;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobEventsTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
+        super.setPipelines(pipelines);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobEventsTrigger setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public BlobEventsTrigger setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

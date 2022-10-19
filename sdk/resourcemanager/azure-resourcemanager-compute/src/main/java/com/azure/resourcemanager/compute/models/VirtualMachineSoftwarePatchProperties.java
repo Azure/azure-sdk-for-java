@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** Describes the properties of a Virtual Machine software patch. */
 @Immutable
 public final class VirtualMachineSoftwarePatchProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSoftwarePatchProperties.class);
-
     /*
      * A unique identifier for the patch.
      */
@@ -29,8 +25,7 @@ public final class VirtualMachineSoftwarePatchProperties {
     private String name;
 
     /*
-     * The version number of the patch. This property applies only to Linux
-     * patches.
+     * The version number of the patch. This property applies only to Linux patches.
      */
     @JsonProperty(value = "version", access = JsonProperty.Access.WRITE_ONLY)
     private String version;
@@ -54,8 +49,8 @@ public final class VirtualMachineSoftwarePatchProperties {
     private VMGuestPatchRebootBehavior rebootBehavior;
 
     /*
-     * The activity ID of the operation that produced this result. It is used
-     * to correlate across CRP and extension logs.
+     * The activity ID of the operation that produced this result. It is used to correlate across CRP and extension
+     * logs.
      */
     @JsonProperty(value = "activityId", access = JsonProperty.Access.WRITE_ONLY)
     private String activityId;

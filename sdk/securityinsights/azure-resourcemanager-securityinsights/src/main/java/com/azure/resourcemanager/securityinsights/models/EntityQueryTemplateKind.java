@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EntityQueryTemplateKind. */
+/** The kind of the entity query template. */
 public final class EntityQueryTemplateKind extends ExpandableStringEnum<EntityQueryTemplateKind> {
     /** Static value Activity for EntityQueryTemplateKind. */
     public static final EntityQueryTemplateKind ACTIVITY = fromString("Activity");
@@ -24,7 +24,11 @@ public final class EntityQueryTemplateKind extends ExpandableStringEnum<EntityQu
         return fromString(name, EntityQueryTemplateKind.class);
     }
 
-    /** @return known EntityQueryTemplateKind values. */
+    /**
+     * Gets known EntityQueryTemplateKind values.
+     *
+     * @return known EntityQueryTemplateKind values.
+     */
     public static Collection<EntityQueryTemplateKind> values() {
         return values(EntityQueryTemplateKind.class);
     }

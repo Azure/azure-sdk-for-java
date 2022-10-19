@@ -27,7 +27,11 @@ public final class SyncConflictResolutionPolicy extends ExpandableStringEnum<Syn
         return fromString(name, SyncConflictResolutionPolicy.class);
     }
 
-    /** @return known SyncConflictResolutionPolicy values. */
+    /**
+     * Gets known SyncConflictResolutionPolicy values.
+     *
+     * @return known SyncConflictResolutionPolicy values.
+     */
     public static Collection<SyncConflictResolutionPolicy> values() {
         return values(SyncConflictResolutionPolicy.class);
     }

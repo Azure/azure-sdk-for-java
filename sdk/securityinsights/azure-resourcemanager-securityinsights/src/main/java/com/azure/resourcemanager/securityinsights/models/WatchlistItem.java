@@ -8,6 +8,7 @@ import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.WatchlistItemInner;
 import java.time.OffsetDateTime;
+import java.util.Map;
 
 /** An immutable client-side representation of WatchlistItem. */
 public interface WatchlistItem {
@@ -107,14 +108,21 @@ public interface WatchlistItem {
      *
      * @return the itemsKeyValue value.
      */
-    Object itemsKeyValue();
+    Map<String, Object> itemsKeyValue();
 
     /**
      * Gets the entityMapping property: key-value pairs for a watchlist item entity mapping.
      *
      * @return the entityMapping value.
      */
-    Object entityMapping();
+    Map<String, Object> entityMapping();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.WatchlistItemInner object.
@@ -273,7 +281,7 @@ public interface WatchlistItem {
              * @param itemsKeyValue key-value pairs for a watchlist item.
              * @return the next definition stage.
              */
-            WithCreate withItemsKeyValue(Object itemsKeyValue);
+            WithCreate withItemsKeyValue(Map<String, Object> itemsKeyValue);
         }
         /** The stage of the WatchlistItem definition allowing to specify entityMapping. */
         interface WithEntityMapping {
@@ -283,7 +291,7 @@ public interface WatchlistItem {
              * @param entityMapping key-value pairs for a watchlist item entity mapping.
              * @return the next definition stage.
              */
-            WithCreate withEntityMapping(Object entityMapping);
+            WithCreate withEntityMapping(Map<String, Object> entityMapping);
         }
     }
     /**
@@ -421,7 +429,7 @@ public interface WatchlistItem {
              * @param itemsKeyValue key-value pairs for a watchlist item.
              * @return the next definition stage.
              */
-            Update withItemsKeyValue(Object itemsKeyValue);
+            Update withItemsKeyValue(Map<String, Object> itemsKeyValue);
         }
         /** The stage of the WatchlistItem update allowing to specify entityMapping. */
         interface WithEntityMapping {
@@ -431,7 +439,7 @@ public interface WatchlistItem {
              * @param entityMapping key-value pairs for a watchlist item entity mapping.
              * @return the next definition stage.
              */
-            Update withEntityMapping(Object entityMapping);
+            Update withEntityMapping(Map<String, Object> entityMapping);
         }
     }
     /**

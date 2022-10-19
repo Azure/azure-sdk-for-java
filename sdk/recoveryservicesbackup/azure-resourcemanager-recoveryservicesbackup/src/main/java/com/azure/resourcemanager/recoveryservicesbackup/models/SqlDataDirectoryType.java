@@ -30,7 +30,11 @@ public final class SqlDataDirectoryType extends ExpandableStringEnum<SqlDataDire
         return fromString(name, SqlDataDirectoryType.class);
     }
 
-    /** @return known SqlDataDirectoryType values. */
+    /**
+     * Gets known SqlDataDirectoryType values.
+     *
+     * @return known SqlDataDirectoryType values.
+     */
     public static Collection<SqlDataDirectoryType> values() {
         return values(SqlDataDirectoryType.class);
     }

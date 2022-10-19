@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the PrivateLinkServiceConnection. */
 @Fluent
 public final class PrivateLinkServiceConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnectionProperties.class);
-
     /*
      * The provisioning state of the private link service connection resource.
      */
@@ -30,25 +26,26 @@ public final class PrivateLinkServiceConnectionProperties {
     private String privateLinkServiceId;
 
     /*
-     * The ID(s) of the group(s) obtained from the remote resource that this
-     * private endpoint should connect to.
+     * The ID(s) of the group(s) obtained from the remote resource that this private endpoint should connect to.
      */
     @JsonProperty(value = "groupIds")
     private List<String> groupIds;
 
     /*
-     * A message passed to the owner of the remote resource with this
-     * connection request. Restricted to 140 chars.
+     * A message passed to the owner of the remote resource with this connection request. Restricted to 140 chars.
      */
     @JsonProperty(value = "requestMessage")
     private String requestMessage;
 
     /*
-     * A collection of read-only information about the state of the connection
-     * to the remote resource.
+     * A collection of read-only information about the state of the connection to the remote resource.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
+
+    /** Creates an instance of PrivateLinkServiceConnectionProperties class. */
+    public PrivateLinkServiceConnectionProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the private link service connection resource.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Used for establishing the purchase context of any 3rd Party artifact through MarketPlace. */
 @Fluent
 public final class PurchasePlan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PurchasePlan.class);
-
     /*
      * The plan ID.
      */
@@ -21,8 +17,8 @@ public final class PurchasePlan {
     private String name;
 
     /*
-     * Specifies the product of the image from the marketplace. This is the
-     * same value as Offer under the imageReference element.
+     * Specifies the product of the image from the marketplace. This is the same value as Offer under the
+     * imageReference element.
      */
     @JsonProperty(value = "product")
     private String product;

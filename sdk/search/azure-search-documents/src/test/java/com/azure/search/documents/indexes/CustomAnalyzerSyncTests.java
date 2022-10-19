@@ -172,22 +172,6 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         SearchIndex res = searchIndexClient.createIndex(index);
 
         assertObjectEquals(index, res, true, "etag");
-
-        // Add language analyzers to searchAnalyzer and indexAnalyzer properties and expect failure
-        try {
-            new SearchField("field", SearchFieldDataType.STRING)
-                .setSearchAnalyzerName(LexicalAnalyzerName.EN_LUCENE);
-        } catch (Exception ex) {
-            assertEquals(IllegalArgumentException.class, ex.getClass());
-            assertEquals("Only non-language analyzer can be used as search analyzer.", ex.getMessage());
-        }
-        try {
-            new SearchField("field", SearchFieldDataType.STRING)
-                .setIndexAnalyzerName(LexicalAnalyzerName.AR_MICROSOFT);
-        } catch (Exception ex) {
-            assertEquals(IllegalArgumentException.class, ex.getClass());
-            assertEquals("Only non-language analyzer can be used as index analyzer.", ex.getMessage());
-        }
     }
 
     @Test
@@ -612,15 +596,12 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
                 .setMinGram(1)
                 .setMaxGram(2)
                 .setTokenChars(TokenCharacterKind.values()));
-        tokenizers.addAll(
-            Arrays.stream(MicrosoftStemmingTokenizerLanguage.values())
-                .map(mtl -> new MicrosoftLanguageStemmingTokenizer(generateName())
-                    .setMaxTokenLength(200)
-                    .setIsSearchTokenizerUsed(false)
-                    .setLanguage(mtl)
-                )
-                .collect(Collectors.toList())
-        );
+        Arrays.stream(MicrosoftStemmingTokenizerLanguage.values())
+            .map(mtl -> new MicrosoftLanguageStemmingTokenizer(generateName())
+                .setMaxTokenLength(200)
+                .setIsSearchTokenizerUsed(false)
+                .setLanguage(mtl))
+            .forEach(tokenizers::add);
         index.setTokenizers(tokenizers);
 
         // Set token filters
@@ -628,42 +609,35 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         tokenFilters.add(new CjkBigramTokenFilter(generateName())
             .setIgnoreScripts(CjkBigramTokenFilterScripts.values())
             .setOutputUnigrams(true));
-        tokenFilters.addAll(
-            Arrays.stream(EdgeNGramTokenFilterSide.values())
-                .map(s -> new EdgeNGramTokenFilter(generateName())
-                    .setMinGram(1)
-                    .setMaxGram(2)
-                    .setSide(s)
-                )
-                .collect(Collectors.toList())
-        );
-        tokenFilters.addAll(
-            Arrays.stream(PhoneticEncoder.values())
-                .map(pe -> new PhoneticTokenFilter(generateName())
-                    .setEncoder(pe)
-                    .setOriginalTokensReplaced(false)
-                )
-                .collect(Collectors.toList())
-        );
-        tokenFilters.addAll(
-            Arrays.stream(SnowballTokenFilterLanguage.values())
-                .map(l -> new SnowballTokenFilter(generateName(), l))
-                .collect(Collectors.toList())
-        );
-        tokenFilters.addAll(
-            Arrays.stream(StemmerTokenFilterLanguage.values())
-                .map(l -> new StemmerTokenFilter(generateName(), l))
-                .collect(Collectors.toList())
-        );
-        tokenFilters.addAll(
-            Arrays.stream(StopwordsList.values())
-                .map(l -> new StopwordsTokenFilter(generateName())
-                    .setStopwordsList(l)
-                    .setCaseIgnored(false)
-                    .setTrailingStopWordsRemoved(true)
-                )
-                .collect(Collectors.toList())
-        );
+
+        Arrays.stream(EdgeNGramTokenFilterSide.values())
+            .map(s -> new EdgeNGramTokenFilter(generateName())
+                .setMinGram(1)
+                .setMaxGram(2)
+                .setSide(s))
+            .forEach(tokenFilters::add);
+
+        Arrays.stream(PhoneticEncoder.values())
+            .map(pe -> new PhoneticTokenFilter(generateName())
+                .setEncoder(pe)
+                .setOriginalTokensReplaced(false))
+            .forEach(tokenFilters::add);
+
+        Arrays.stream(SnowballTokenFilterLanguage.values())
+            .map(l -> new SnowballTokenFilter(generateName(), l))
+            .forEach(tokenFilters::add);
+
+        Arrays.stream(StemmerTokenFilterLanguage.values())
+            .map(l -> new StemmerTokenFilter(generateName(), l))
+            .forEach(tokenFilters::add);
+
+        Arrays.stream(StopwordsList.values())
+            .map(l -> new StopwordsTokenFilter(generateName())
+                .setStopwordsList(l)
+                .setCaseIgnored(false)
+                .setTrailingStopWordsRemoved(true))
+            .forEach(tokenFilters::add);
+
         index.setTokenFilters(tokenFilters);
 
         return splitIndex(index);
@@ -722,9 +696,9 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
         List<LexicalTokenizerName> analyzerNames = LEXICAL_TOKENIZER_NAMES;
         analyzerNames.sort(Comparator.comparing(LexicalTokenizerName::toString));
 
-        analyzers.addAll(analyzerNames.stream()
+        analyzerNames.stream()
             .map(tn -> new CustomAnalyzer(nameBase + tn, tn))
-            .collect(Collectors.toList()));
+            .forEach(analyzers::add);
 
         analyzers.sort(Comparator.comparing(LexicalAnalyzer::getName));
         index.setAnalyzers(analyzers);
@@ -742,23 +716,17 @@ public class CustomAnalyzerSyncTests extends SearchTestBase {
             .stream()
             .map(a -> createTestIndex(null).setAnalyzers(a)).collect(Collectors.toList());
 
-        Collection<List<LexicalTokenizer>> tokenizersLists = splitAnalysisComponents(index.getTokenizers());
-        indexes.addAll(tokenizersLists
-            .stream()
+        splitAnalysisComponents(index.getTokenizers()).stream()
             .map(t -> createTestIndex(null).setTokenizers(t))
-            .collect(Collectors.toList()));
+            .forEach(indexes::add);
 
-        Collection<List<TokenFilter>> tokenFiltersLists = splitAnalysisComponents(index.getTokenFilters());
-        indexes.addAll(tokenFiltersLists
-            .stream()
+        splitAnalysisComponents(index.getTokenFilters()).stream()
             .map(tf -> createTestIndex(null).setTokenFilters(tf))
-            .collect(Collectors.toList()));
+            .forEach(indexes::add);
 
-        Collection<List<CharFilter>> charFiltersLists = splitAnalysisComponents(index.getCharFilters());
-        indexes.addAll(charFiltersLists
-            .stream()
+        splitAnalysisComponents(index.getCharFilters()).stream()
             .map(cf -> createTestIndex(null).setCharFilters(cf))
-            .collect(Collectors.toList()));
+            .forEach(indexes::add);
 
         return indexes;
     }

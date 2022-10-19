@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeUpdateResult;
 import com.azure.resourcemanager.synapse.models.SelfHostedIntegrationRuntimeNodeStatus;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
@@ -20,8 +19,6 @@ import java.util.Map;
 /** Properties of Self-hosted integration runtime node. */
 @Fluent
 public final class SelfHostedIntegrationRuntimeNodeInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SelfHostedIntegrationRuntimeNodeInner.class);
-
     /*
      * Name of the integration runtime node.
      */

@@ -5,22 +5,19 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.TimeInWeek;
 import com.azure.resourcemanager.containerservice.models.TimeSpan;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties used to configure planned maintenance for a Managed Cluster. */
 @Fluent
 public final class MaintenanceConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationProperties.class);
-
     /*
-     * Time slots during the week when planned maintenance is allowed to
-     * proceed. If two array entries specify the same day of the week, the
-     * applied configuration is the union of times in both entries.
+     * Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      */
     @JsonProperty(value = "timeInWeek")
     private List<TimeInWeek> timeInWeek;
@@ -32,8 +29,10 @@ public final class MaintenanceConfigurationProperties {
     private List<TimeSpan> notAllowedTime;
 
     /**
-     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
-     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      *
      * @return the timeInWeek value.
      */
@@ -42,8 +41,10 @@ public final class MaintenanceConfigurationProperties {
     }
 
     /**
-     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
-     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      *
      * @param timeInWeek the timeInWeek value to set.
      * @return the MaintenanceConfigurationProperties object itself.

@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.ServiceAssociationLinksClient;
 import com.azure.resourcemanager.network.fluent.models.ServiceAssociationLinksListResultInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServiceAssociationLinksClient. */
 public final class ServiceAssociationLinksClientImpl implements ServiceAssociationLinksClient {
-    private final ClientLogger logger = new ClientLogger(ServiceAssociationLinksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ServiceAssociationLinksService service;
 
@@ -81,7 +78,8 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service association links for a subnet.
+     * @return a list of service association links for a subnet along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ServiceAssociationLinksListResultInner>> listWithResponseAsync(
@@ -109,7 +107,7 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -137,7 +135,8 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service association links for a subnet.
+     * @return a list of service association links for a subnet along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ServiceAssociationLinksListResultInner>> listWithResponseAsync(
@@ -165,7 +164,7 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -189,20 +188,31 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service association links for a subnet.
+     * @return a list of service association links for a subnet on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ServiceAssociationLinksListResultInner> listAsync(
         String resourceGroupName, String virtualNetworkName, String subnetName) {
         return listWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName)
-            .flatMap(
-                (Response<ServiceAssociationLinksListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a list of service association links for a subnet.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of service association links for a subnet along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ServiceAssociationLinksListResultInner> listWithResponse(
+        String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
+        return listWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, context).block();
     }
 
     /**
@@ -219,24 +229,6 @@ public final class ServiceAssociationLinksClientImpl implements ServiceAssociati
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ServiceAssociationLinksListResultInner list(
         String resourceGroupName, String virtualNetworkName, String subnetName) {
-        return listAsync(resourceGroupName, virtualNetworkName, subnetName).block();
-    }
-
-    /**
-     * Gets a list of service association links for a subnet.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of service association links for a subnet.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServiceAssociationLinksListResultInner> listWithResponse(
-        String resourceGroupName, String virtualNetworkName, String subnetName, Context context) {
-        return listWithResponseAsync(resourceGroupName, virtualNetworkName, subnetName, context).block();
+        return listWithResponse(resourceGroupName, virtualNetworkName, subnetName, Context.NONE).getValue();
     }
 }

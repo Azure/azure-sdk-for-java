@@ -18,6 +18,9 @@ public enum DataSourceType {
     /** Enum value Query. */
     QUERY("Query"),
 
+    /** Enum value Ingestion. */
+    INGESTION("Ingestion"),
+
     /** Enum value Alerts. */
     ALERTS("Alerts");
 

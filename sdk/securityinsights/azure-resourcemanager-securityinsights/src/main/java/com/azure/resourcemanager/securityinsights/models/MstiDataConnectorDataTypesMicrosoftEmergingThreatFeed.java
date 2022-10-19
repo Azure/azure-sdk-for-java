@@ -6,15 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data type for Microsoft Threat Intelligence Platforms data connector. */
 @Fluent
 public final class MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed extends DataConnectorDataTypeCommon {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed.class);
-
     /*
      * lookback period
      */
@@ -57,11 +53,14 @@ public final class MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed extends
     public void validate() {
         super.validate();
         if (lookbackPeriod() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property lookbackPeriod in model"
                             + " MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed"));
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(MstiDataConnectorDataTypesMicrosoftEmergingThreatFeed.class);
 }

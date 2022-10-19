@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TemplateStatus. */
+/** The alert rule template status. */
 public final class TemplateStatus extends ExpandableStringEnum<TemplateStatus> {
     /** Static value Installed for TemplateStatus. */
     public static final TemplateStatus INSTALLED = fromString("Installed");
@@ -30,7 +30,11 @@ public final class TemplateStatus extends ExpandableStringEnum<TemplateStatus> {
         return fromString(name, TemplateStatus.class);
     }
 
-    /** @return known TemplateStatus values. */
+    /**
+     * Gets known TemplateStatus values.
+     *
+     * @return known TemplateStatus values.
+     */
     public static Collection<TemplateStatus> values() {
         return values(TemplateStatus.class);
     }

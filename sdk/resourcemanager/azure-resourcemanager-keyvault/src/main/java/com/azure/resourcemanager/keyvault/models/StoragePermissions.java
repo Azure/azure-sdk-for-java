@@ -66,7 +66,11 @@ public final class StoragePermissions extends ExpandableStringEnum<StoragePermis
         return fromString(name, StoragePermissions.class);
     }
 
-    /** @return known StoragePermissions values. */
+    /**
+     * Gets known StoragePermissions values.
+     *
+     * @return known StoragePermissions values.
+     */
     public static Collection<StoragePermissions> values() {
         return values(StoragePermissions.class);
     }

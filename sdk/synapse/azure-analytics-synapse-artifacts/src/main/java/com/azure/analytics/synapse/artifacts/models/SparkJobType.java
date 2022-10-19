@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SparkJobType. */
+/** The job type. */
 public final class SparkJobType extends ExpandableStringEnum<SparkJobType> {
     /** Static value SparkBatch for SparkJobType. */
     public static final SparkJobType SPARK_BATCH = fromString("SparkBatch");
@@ -27,7 +27,11 @@ public final class SparkJobType extends ExpandableStringEnum<SparkJobType> {
         return fromString(name, SparkJobType.class);
     }
 
-    /** @return known SparkJobType values. */
+    /**
+     * Gets known SparkJobType values.
+     *
+     * @return known SparkJobType values.
+     */
     public static Collection<SparkJobType> values() {
         return values(SparkJobType.class);
     }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,18 +13,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class UefiSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UefiSettings.class);
-
     /*
-     * Specifies whether secure boot should be enabled on the virtual machine.
-     * <br><br>Minimum api-version: 2020-12-01
+     * Specifies whether secure boot should be enabled on the virtual machine. <br><br>Minimum api-version: 2020-12-01
      */
     @JsonProperty(value = "secureBootEnabled")
     private Boolean secureBootEnabled;
 
     /*
-     * Specifies whether vTPM should be enabled on the virtual machine.
-     * <br><br>Minimum api-version: 2020-12-01
+     * Specifies whether vTPM should be enabled on the virtual machine. <br><br>Minimum api-version: 2020-12-01
      */
     @JsonProperty(value = "vTpmEnabled")
     private Boolean vTpmEnabled;

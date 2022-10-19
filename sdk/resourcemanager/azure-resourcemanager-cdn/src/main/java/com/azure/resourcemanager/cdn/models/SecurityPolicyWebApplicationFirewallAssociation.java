@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** settings for security policy patterns to match. */
 @Fluent
 public final class SecurityPolicyWebApplicationFirewallAssociation {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SecurityPolicyWebApplicationFirewallAssociation.class);
-
     /*
      * List of domains.
      */
     @JsonProperty(value = "domains")
-    private List<ResourceReference> domains;
+    private List<ActivatedResourceReference> domains;
 
     /*
      * List of paths
@@ -33,7 +28,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
      *
      * @return the domains value.
      */
-    public List<ResourceReference> domains() {
+    public List<ActivatedResourceReference> domains() {
         return this.domains;
     }
 
@@ -43,7 +38,7 @@ public final class SecurityPolicyWebApplicationFirewallAssociation {
      * @param domains the domains value to set.
      * @return the SecurityPolicyWebApplicationFirewallAssociation object itself.
      */
-    public SecurityPolicyWebApplicationFirewallAssociation withDomains(List<ResourceReference> domains) {
+    public SecurityPolicyWebApplicationFirewallAssociation withDomains(List<ActivatedResourceReference> domains) {
         this.domains = domains;
         return this;
     }

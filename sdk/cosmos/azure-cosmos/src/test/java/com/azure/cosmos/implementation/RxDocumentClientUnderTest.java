@@ -5,9 +5,11 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.cosmos.ClientUnderTestBuilder;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import reactor.core.publisher.Mono;
@@ -16,6 +18,7 @@ import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EnumSet;
 import java.util.List;
 
 import static org.mockito.Mockito.doAnswer;
@@ -38,9 +41,24 @@ public class RxDocumentClientUnderTest extends RxDocumentClientImpl {
                                      Configs configs,
                                      AzureKeyCredential credential,
                                      boolean contentResponseOnWriteEnabled,
-                                     ApiType apiType) {
-        super(serviceEndpoint, masterKey, connectionPolicy, consistencyLevel, configs, credential, null, false,
-              false, contentResponseOnWriteEnabled, null, apiType);
+                                     ApiType apiType,
+                                     CosmosClientTelemetryConfig clientTelemetryConfig) {
+        super(
+                serviceEndpoint,
+                masterKey,
+                connectionPolicy,
+                consistencyLevel,
+                configs,
+                credential,
+                null,
+                false,
+                false,
+                contentResponseOnWriteEnabled,
+                null,
+                apiType,
+                clientTelemetryConfig,
+                null,
+                EnumSet.allOf(TagName.class));
         init(null, null);
     }
 

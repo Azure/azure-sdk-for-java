@@ -5,15 +5,14 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specify either the userName or autoUser property, but not both. */
+/**
+ * The definition of the user identity under which the task is run. Specify either the userName or autoUser property,
+ * but not both.
+ */
 @Fluent
 public class UserIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserIdentity.class);
-
     /*
      * The name of the user identity under which the task is run. The userName
      * and autoUser properties are mutually exclusive; you must specify one but

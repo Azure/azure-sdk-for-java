@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for the ListVirtualNetworkGatewayConnections API service call. */
 @Fluent
 public final class VirtualNetworkGatewayConnectionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayConnectionListResult.class);
-
     /*
-     * A list of VirtualNetworkGatewayConnection resources that exists in a
-     * resource group.
+     * A list of VirtualNetworkGatewayConnection resources that exists in a resource group.
      */
     @JsonProperty(value = "value")
     private List<VirtualNetworkGatewayConnectionInner> value;
@@ -28,6 +23,10 @@ public final class VirtualNetworkGatewayConnectionListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of VirtualNetworkGatewayConnectionListResult class. */
+    public VirtualNetworkGatewayConnectionListResult() {
+    }
 
     /**
      * Get the value property: A list of VirtualNetworkGatewayConnection resources that exists in a resource group.

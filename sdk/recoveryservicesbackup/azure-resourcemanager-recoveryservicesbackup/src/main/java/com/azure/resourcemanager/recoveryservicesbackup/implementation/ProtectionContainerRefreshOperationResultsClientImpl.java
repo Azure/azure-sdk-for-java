@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContainerRefreshOperationResultsClient;
 import reactor.core.publisher.Mono;
 
@@ -31,8 +30,6 @@ import reactor.core.publisher.Mono;
  */
 public final class ProtectionContainerRefreshOperationResultsClientImpl
     implements ProtectionContainerRefreshOperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(ProtectionContainerRefreshOperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProtectionContainerRefreshOperationResultsService service;
 
@@ -90,7 +87,7 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> getWithResponseAsync(
@@ -149,7 +146,7 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> getWithResponseAsync(
@@ -204,12 +201,12 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getAsync(String vaultName, String resourceGroupName, String fabricName, String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, fabricName, operationId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -239,7 +236,7 @@ public final class ProtectionContainerRefreshOperationResultsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getWithResponse(

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,12 +19,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Activity", value = ActivityTimelineItem.class),
     @JsonSubTypes.Type(name = "Bookmark", value = BookmarkTimelineItem.class),
+    @JsonSubTypes.Type(name = "Anomaly", value = AnomalyTimelineItem.class),
     @JsonSubTypes.Type(name = "SecurityAlert", value = SecurityAlertTimelineItem.class)
 })
 @Immutable
 public class EntityTimelineItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityTimelineItem.class);
-
     /**
      * Validates the instance.
      *

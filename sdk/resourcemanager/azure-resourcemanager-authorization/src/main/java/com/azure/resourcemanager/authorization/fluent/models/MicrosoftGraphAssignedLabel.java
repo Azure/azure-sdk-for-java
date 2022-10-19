@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** assignedLabel. */
 @Fluent
 public final class MicrosoftGraphAssignedLabel {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphAssignedLabel.class);
-
     /*
      * The display name of the label. Read-only.
      */

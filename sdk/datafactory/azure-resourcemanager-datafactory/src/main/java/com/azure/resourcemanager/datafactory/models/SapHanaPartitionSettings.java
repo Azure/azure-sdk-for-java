@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The settings that will be leveraged for SAP HANA source partitioning. */
 @Fluent
 public final class SapHanaPartitionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SapHanaPartitionSettings.class);
-
     /*
-     * The name of the column that will be used for proceeding range
-     * partitioning. Type: string (or Expression with resultType string).
+     * The name of the column that will be used for proceeding range partitioning. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;
+
+    /** Creates an instance of SapHanaPartitionSettings class. */
+    public SapHanaPartitionSettings() {
+    }
 
     /**
      * Get the partitionColumnName property: The name of the column that will be used for proceeding range partitioning.

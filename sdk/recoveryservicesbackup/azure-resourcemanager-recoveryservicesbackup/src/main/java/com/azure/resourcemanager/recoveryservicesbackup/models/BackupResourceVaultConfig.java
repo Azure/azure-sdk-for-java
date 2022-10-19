@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Backup resource vault config details. */
 @Fluent
 public final class BackupResourceVaultConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceVaultConfig.class);
-
     /*
      * Storage type.
      */
@@ -51,6 +47,12 @@ public final class BackupResourceVaultConfig {
      */
     @JsonProperty(value = "resourceGuardOperationRequests")
     private List<String> resourceGuardOperationRequests;
+
+    /*
+     * Is soft delete feature state editable
+     */
+    @JsonProperty(value = "isSoftDeleteFeatureStateEditable")
+    private Boolean isSoftDeleteFeatureStateEditable;
 
     /**
      * Get the storageModelType property: Storage type.
@@ -171,6 +173,26 @@ public final class BackupResourceVaultConfig {
      */
     public BackupResourceVaultConfig withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         this.resourceGuardOperationRequests = resourceGuardOperationRequests;
+        return this;
+    }
+
+    /**
+     * Get the isSoftDeleteFeatureStateEditable property: Is soft delete feature state editable.
+     *
+     * @return the isSoftDeleteFeatureStateEditable value.
+     */
+    public Boolean isSoftDeleteFeatureStateEditable() {
+        return this.isSoftDeleteFeatureStateEditable;
+    }
+
+    /**
+     * Set the isSoftDeleteFeatureStateEditable property: Is soft delete feature state editable.
+     *
+     * @param isSoftDeleteFeatureStateEditable the isSoftDeleteFeatureStateEditable value to set.
+     * @return the BackupResourceVaultConfig object itself.
+     */
+    public BackupResourceVaultConfig withIsSoftDeleteFeatureStateEditable(Boolean isSoftDeleteFeatureStateEditable) {
+        this.isSoftDeleteFeatureStateEditable = isSoftDeleteFeatureStateEditable;
         return this;
     }
 

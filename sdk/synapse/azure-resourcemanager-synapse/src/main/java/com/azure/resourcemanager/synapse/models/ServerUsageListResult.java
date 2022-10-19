@@ -7,15 +7,12 @@ package com.azure.resourcemanager.synapse.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.ServerUsageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents the response to a list server metrics request. */
 @Fluent
 public final class ServerUsageListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerUsageListResult.class);
-
     /*
      * The list of server metrics for the server.
      */
@@ -64,11 +61,13 @@ public final class ServerUsageListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model ServerUsageListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServerUsageListResult.class);
 }

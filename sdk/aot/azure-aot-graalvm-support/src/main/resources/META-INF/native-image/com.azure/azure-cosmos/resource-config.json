@@ -1,0 +1,10 @@
+{
+  "resources": {
+    "includes": [
+      {
+        "pattern": "\\Qazure-cosmos.properties\\E"
+      }
+    ]
+  },
+  "bundles": []
+}

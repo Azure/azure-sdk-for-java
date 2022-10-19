@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.CustomActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("Custom")
 @Fluent
 public final class CustomActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomActivity.class);
-
     /*
      * Custom activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private CustomActivityTypeProperties innerTypeProperties = new CustomActivityTypeProperties();
+
+    /** Creates an instance of CustomActivity class. */
+    public CustomActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: Custom activity properties.
@@ -256,7 +257,7 @@ public final class CustomActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model CustomActivity"));
@@ -264,4 +265,6 @@ public final class CustomActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CustomActivity.class);
 }

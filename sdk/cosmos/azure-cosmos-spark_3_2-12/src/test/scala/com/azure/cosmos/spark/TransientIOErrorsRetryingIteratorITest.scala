@@ -2,12 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.implementation.{ServiceUnavailableException, Strings, Utils}
+import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, ServiceUnavailableException, SparkRowItem, Strings, Utils}
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, ModelBridgeInternal}
 import com.azure.cosmos.spark.TransientIOErrorsRetryingIteratorITest.maxRetryCountPerIOOperation
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
+import reactor.util.concurrent.Queues
 
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -36,7 +37,7 @@ class TransientIOErrorsRetryingIteratorITest
       for (state <- Array(true, false)) {
         val id = UUID.randomUUID().toString
         val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-        objectNode.put("name", "Shrodigner's cat")
+        objectNode.put("name", "Schrodinger's cat")
         objectNode.put("type", "cat")
         objectNode.put("age", age)
         objectNode.put("isAlive", state)
@@ -46,7 +47,26 @@ class TransientIOErrorsRetryingIteratorITest
       }
     }
 
+    val cosmosSerializationConfig = CosmosSerializationConfig(
+        SerializationInclusionModes.Always,
+        SerializationDateTimeConversionModes.Default
+      )
+
+    val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
+    ImplementationBridgeHelpers
+      .CosmosQueryRequestOptionsHelper
+      .getCosmosQueryRequestOptionsAccessor
+      .setItemFactoryMethod(
+        queryOptions,
+        jsonNode => {
+          val row = cosmosRowConverter.fromObjectNodeToRow(
+            ItemsTable.defaultSchemaForInferenceDisabled,
+            jsonNode.asInstanceOf[ObjectNode],
+            SchemaConversionModes.Strict)
+
+          SparkRowItem(row)
+        })
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
@@ -59,10 +79,11 @@ class TransientIOErrorsRetryingIteratorITest
           // scalastyle:on null
         }
         container
-          .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode])
+          .queryItems("SELECT * FROM c", queryOptions, classOf[SparkRowItem])
           .handle(r => {
             val lastId = if (r.getResults.size() > 0) {
-              r.getResults.get(r.getResults.size() - 1).get("id").asText()
+              val row = r.getResults.get(r.getResults.size() - 1).row
+              row.get(row.fieldIndex("id")).asInstanceOf[String]
             } else {
               ""
             }
@@ -70,7 +91,9 @@ class TransientIOErrorsRetryingIteratorITest
             lastIdOfPage.set(lastId)
           })
       },
-      2
+      2,
+      Queues.XS_BUFFER_SIZE,
+      None
     )
     retryingIterator.maxRetryIntervalInMs = 5
     retryingIterator.maxRetryCount = maxRetryCountPerIOOperation
@@ -84,8 +107,9 @@ class TransientIOErrorsRetryingIteratorITest
         idsWithRetries,
         () => retryingIterator.hasNext))) {
 
-      val node = retryingIterator.currentIterator.next
-      val idRetrieved = node.get("id").asText()
+      val node = retryingIterator.next()
+      val row = node.row
+      val idRetrieved = row.get(row.fieldIndex("id")).asInstanceOf[String]
       logInfo(s"Last ID retrieved: $idRetrieved")
       lastIdRetrieved.set(idRetrieved)
       recordCount.incrementAndGet()
@@ -104,7 +128,7 @@ class TransientIOErrorsRetryingIteratorITest
     for (age <- 1 to 20) {
       for (state <- Array(true, false)) {
         val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-        objectNode.put("name", "Shrodigner's cat")
+        objectNode.put("name", "Schrodinger's cat")
         objectNode.put("type", "cat")
         objectNode.put("age", age)
         objectNode.put("isAlive", state)
@@ -117,7 +141,9 @@ class TransientIOErrorsRetryingIteratorITest
     val iterator = new CosmosPagedIterable[ObjectNode](
         container
           .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode]),
-      2).iterator()
+      2,
+      1
+    ).iterator()
 
     while (iterator.hasNext) {
       iterator.next
@@ -139,7 +165,7 @@ class TransientIOErrorsRetryingIteratorITest
     for (age <- 1 to 20) {
       for (state <- Array(true, false)) {
         val objectNode = Utils.getSimpleObjectMapper.createObjectNode()
-        objectNode.put("name", "Shrodigner's cat")
+        objectNode.put("name", "Schrodinger's cat")
         objectNode.put("type", "cat")
         objectNode.put("age", age)
         objectNode.put("isAlive", state)
@@ -148,7 +174,25 @@ class TransientIOErrorsRetryingIteratorITest
       }
     }
 
+    val cosmosSerializationConfig = CosmosSerializationConfig(
+      SerializationInclusionModes.Always,
+      SerializationDateTimeConversionModes.Default
+    )
+    val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
     val queryOptions = new CosmosQueryRequestOptions()
+    ImplementationBridgeHelpers
+      .CosmosQueryRequestOptionsHelper
+      .getCosmosQueryRequestOptionsAccessor
+      .setItemFactoryMethod(
+        queryOptions,
+        jsonNode => {
+          val row = cosmosRowConverter.fromObjectNodeToRow(
+            ItemsTable.defaultSchemaForInferenceDisabled,
+            jsonNode.asInstanceOf[ObjectNode],
+            SchemaConversionModes.Strict)
+
+          SparkRowItem(row)
+        })
     val retryingIterator = new TransientIOErrorsRetryingIterator(
       continuationToken => {
         if (!Strings.isNullOrWhiteSpace(continuationToken)) {
@@ -161,16 +205,19 @@ class TransientIOErrorsRetryingIteratorITest
           // scalastyle:on null
         }
         container
-          .queryItems("SELECT * FROM c", queryOptions, classOf[ObjectNode])
+          .queryItems("SELECT * FROM c", queryOptions, classOf[SparkRowItem])
           .handle(r => {
             if (r.getResults.size() > 0) {
-              lastIdOfPage.set(r.getResults.get(r.getResults.size() - 1).get("id").asText())
+              val row = r.getResults.get(r.getResults.size() - 1).row
+              row.get(row.fieldIndex("id")).asInstanceOf[String]
             } else {
               lastIdOfPage.set("")
             }
           })
       },
-      2
+      2,
+      Queues.XS_BUFFER_SIZE,
+      None
     )
     retryingIterator.maxRetryIntervalInMs = 5
     retryingIterator.maxRetryCount = maxRetryCountPerIOOperation
@@ -180,13 +227,15 @@ class TransientIOErrorsRetryingIteratorITest
     while (retryingIterator.executeWithRetry(
       "hasNext",
       () => simulateExecutionWithNonTransientErrors(
-        lastIdOfPage,
         lastIdRetrieved,
         idsWithRetries,
         () => retryingIterator.hasNext))) {
 
-      val node = retryingIterator.currentIterator.next
-      lastIdRetrieved.set(node.get("id").asText())
+      val node = retryingIterator.next()
+      val row = node.row
+      val idRetrieved = row.get(row.fieldIndex("id")).asInstanceOf[String]
+      logInfo(s"Last ID retrieved: $idRetrieved")
+      lastIdRetrieved.set(idRetrieved)
       recordCount.incrementAndGet()
     }
     })
@@ -206,12 +255,12 @@ class TransientIOErrorsRetryingIteratorITest
     // transient I/O errors can only happen in reality between
     // pages - and the retry logic depends on this assertion
     // so the test here will only ever inject an error after retrieving the
-    // last document of one page (and before retrieving teh next one)
+    // last document of one page (and before retrieving the next one)
     if (!idSnapshot.equals("") &&
       idSnapshot.equals(lastIdOfPage.get()) &&
-        idsWithRetries.computeIfAbsent(idSnapshot, id => 0) < maxRetryCountPerIOOperation &&
+        idsWithRetries.computeIfAbsent(idSnapshot, _ => 0) < maxRetryCountPerIOOperation &&
         idsWithRetries.computeIfPresent(
-          idSnapshot, (id, currentRetryCount) => currentRetryCount + 1) < maxRetryCountPerIOOperation) {
+          idSnapshot, (_, currentRetryCount) => currentRetryCount + 1) < maxRetryCountPerIOOperation) {
 
       //scalastyle:off null
       throw new ServiceUnavailableException("Dummy 503", null, null)
@@ -223,7 +272,6 @@ class TransientIOErrorsRetryingIteratorITest
 
   private def simulateExecutionWithNonTransientErrors[T]
   (
-    lastIdOfPage: AtomicReference[String],
     lastIdRetrieved: AtomicReference[String],
     idsWithRetries: ConcurrentHashMap[String, Long],
     func: () => T): T = {
@@ -233,11 +281,11 @@ class TransientIOErrorsRetryingIteratorITest
     // transient I/O errors can only happen in reality between
     // pages - and the retry logic depends on this assertion
     // so the test here will only ever inject an error after retrieving the
-    // last document of one page (and before retrieving teh next one)
+    // last document of one page (and before retrieving the next one)
     if (
-      idsWithRetries.computeIfAbsent(idSnapshot, id => 0) <= maxRetryCountPerIOOperation * 100 &&
+      idsWithRetries.computeIfAbsent(idSnapshot, _ => 0) <= maxRetryCountPerIOOperation * 100 &&
       idsWithRetries.computeIfPresent(
-        idSnapshot, (id, currentRetryCount) => currentRetryCount + 1) <= maxRetryCountPerIOOperation * 100) {
+        idSnapshot, (_, currentRetryCount) => currentRetryCount + 1) <= maxRetryCountPerIOOperation * 100) {
 
       //scalastyle:off null
       throw new ServiceUnavailableException("Dummy 503", null, null)

@@ -188,7 +188,7 @@ class DiagnosticSettingImpl
     @Override
     public List<MetricSettings> metrics() {
         if (this.innerModel().metrics() == null) {
-            return null;
+            return Collections.emptyList();
         }
         return Collections.unmodifiableList(this.innerModel().metrics());
     }
@@ -196,7 +196,7 @@ class DiagnosticSettingImpl
     @Override
     public List<LogSettings> logs() {
         if (this.innerModel().logs() == null) {
-            return null;
+            return Collections.emptyList();
         }
         return Collections.unmodifiableList(this.innerModel().logs());
     }
@@ -223,14 +223,14 @@ class DiagnosticSettingImpl
         return this
             .manager()
             .serviceClient()
-            .getDiagnosticSettings()
+            .getDiagnosticSettingsOperations()
             .createOrUpdateAsync(this.resourceId, this.name(), this.innerModel())
             .map(innerToFluentMap(this));
     }
 
     @Override
     protected Mono<DiagnosticSettingsResourceInner> getInnerAsync() {
-        return this.manager().serviceClient().getDiagnosticSettings().getAsync(this.resourceId, this.name());
+        return this.manager().serviceClient().getDiagnosticSettingsOperations().getAsync(this.resourceId, this.name());
     }
 
     @Override
@@ -247,10 +247,10 @@ class DiagnosticSettingImpl
                         0,
                         this.innerModel().id().length()
                             - (DiagnosticSettingImpl.DIAGNOSTIC_SETTINGS_URI + this.innerModel().name()).length());
-            for (MetricSettings ms : this.innerModel().metrics()) {
+            for (MetricSettings ms : this.metrics()) {
                 this.metricSet.put(ms.category(), ms);
             }
-            for (LogSettings ls : this.innerModel().logs()) {
+            for (LogSettings ls : this.logs()) {
                 this.logSet.put(ls.category(), ls);
             }
         }

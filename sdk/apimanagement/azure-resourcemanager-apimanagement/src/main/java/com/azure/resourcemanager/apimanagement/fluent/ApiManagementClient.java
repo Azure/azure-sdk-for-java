@@ -193,6 +193,13 @@ public interface ApiManagementClient {
     CertificatesClient getCertificates();
 
     /**
+     * Gets the ResourceProvidersClient object to access its operations.
+     *
+     * @return the ResourceProvidersClient object.
+     */
+    ResourceProvidersClient getResourceProviders();
+
+    /**
      * Gets the ContentTypesClient object to access its operations.
      *
      * @return the ContentTypesClient object.
@@ -354,6 +361,13 @@ public interface ApiManagementClient {
     OpenIdConnectProvidersClient getOpenIdConnectProviders();
 
     /**
+     * Gets the OutboundNetworkDependenciesEndpointsClient object to access its operations.
+     *
+     * @return the OutboundNetworkDependenciesEndpointsClient object.
+     */
+    OutboundNetworkDependenciesEndpointsClient getOutboundNetworkDependenciesEndpoints();
+
+    /**
      * Gets the PoliciesClient object to access its operations.
      *
      * @return the PoliciesClient object.
@@ -401,6 +415,13 @@ public interface ApiManagementClient {
      * @return the DelegationSettingsClient object.
      */
     DelegationSettingsClient getDelegationSettings();
+
+    /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
 
     /**
      * Gets the ProductsClient object to access its operations.
@@ -464,6 +485,13 @@ public interface ApiManagementClient {
      * @return the ReportsClient object.
      */
     ReportsClient getReports();
+
+    /**
+     * Gets the GlobalSchemasClient object to access its operations.
+     *
+     * @return the GlobalSchemasClient object.
+     */
+    GlobalSchemasClient getGlobalSchemas();
 
     /**
      * Gets the TenantSettingsClient object to access its operations.

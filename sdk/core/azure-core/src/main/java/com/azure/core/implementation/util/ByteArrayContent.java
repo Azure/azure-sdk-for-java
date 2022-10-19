@@ -6,6 +6,7 @@ package com.azure.core.implementation.util;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -61,6 +62,21 @@ public final class ByteArrayContent extends BinaryDataContent {
 
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(toBytes()).asReadOnlyBuffer()));
+        return Mono.fromSupplier(() -> ByteBuffer.wrap(toBytes()).asReadOnlyBuffer()).flux();
+    }
+
+    @Override
+    public boolean isReplayable() {
+        return true;
+    }
+
+    @Override
+    public BinaryDataContent toReplayableContent() {
+        return this;
+    }
+
+    @Override
+    public Mono<BinaryDataContent> toReplayableContentAsync() {
+        return Mono.just(this);
     }
 }

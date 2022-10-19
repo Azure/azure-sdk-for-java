@@ -11,10 +11,9 @@ import com.azure.resourcemanager.synapse.fluent.KustoOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.OperationInner;
 import com.azure.resourcemanager.synapse.models.KustoOperations;
 import com.azure.resourcemanager.synapse.models.Operation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KustoOperationsImpl implements KustoOperations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoOperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KustoOperationsImpl.class);
 
     private final KustoOperationsClient innerClient;
 

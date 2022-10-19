@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -30,11 +31,11 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.SnapshotsClient;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotInner;
+import com.azure.resourcemanager.netapp.models.SnapshotRestoreFiles;
 import com.azure.resourcemanager.netapp.models.SnapshotsList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -42,8 +43,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SnapshotsClient. */
 public final class SnapshotsClientImpl implements SnapshotsClient {
-    private final ClientLogger logger = new ClientLogger(SnapshotsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SnapshotsService service;
 
@@ -161,10 +160,31 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
             @PathParam("snapshotName") String snapshotName,
             @QueryParam("api-version") String apiVersion,
             Context context);
+
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp"
+                + "/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/snapshots/{snapshotName}"
+                + "/restoreFiles")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> restoreFiles(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName,
+            @PathParam("volumeName") String volumeName,
+            @PathParam("snapshotName") String snapshotName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") SnapshotRestoreFiles body,
+            Context context);
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -173,7 +193,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshots.
+     * @return list of Snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SnapshotInner>> listSinglePageAsync(
@@ -226,7 +246,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -236,7 +258,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshots.
+     * @return list of Snapshots along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SnapshotInner>> listSinglePageAsync(
@@ -286,7 +308,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -295,7 +319,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshots.
+     * @return list of Snapshots as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SnapshotInner> listAsync(
@@ -304,7 +328,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -314,7 +340,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshots.
+     * @return list of Snapshots as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SnapshotInner> listAsync(
@@ -324,7 +350,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -333,7 +361,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshots.
+     * @return list of Snapshots as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotInner> list(
@@ -342,7 +370,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * List all snapshots associated with the volume.
+     * Describe all snapshots
+     *
+     * <p>List all snapshots associated with the volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -352,7 +382,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Snapshots.
+     * @return list of Snapshots as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SnapshotInner> list(
@@ -361,7 +391,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -371,7 +403,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified snapshot.
+     * @return details of the specified snapshot along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SnapshotInner>> getWithResponseAsync(
@@ -424,7 +456,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -435,7 +469,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified snapshot.
+     * @return details of the specified snapshot along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SnapshotInner>> getWithResponseAsync(
@@ -490,7 +524,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -500,24 +536,19 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified snapshot.
+     * @return details of the specified snapshot on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SnapshotInner> getAsync(
         String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName) {
         return getWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName)
-            .flatMap(
-                (Response<SnapshotInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -536,7 +567,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Get details of the specified snapshot.
+     * Describe a snapshot
+     *
+     * <p>Get details of the specified snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -547,7 +580,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified snapshot.
+     * @return details of the specified snapshot along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SnapshotInner> getWithResponse(
@@ -562,7 +595,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -573,7 +608,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return snapshot of a Volume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -637,7 +672,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -649,7 +686,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return snapshot of a Volume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -711,7 +748,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -722,7 +761,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return the {@link PollerFlux} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginCreateAsync(
@@ -745,7 +784,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -757,7 +798,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return the {@link PollerFlux} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginCreateAsync(
@@ -778,7 +819,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -789,7 +832,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return the {@link SyncPoller} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(
@@ -804,7 +847,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -816,7 +861,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return the {@link SyncPoller} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(
@@ -832,7 +877,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -843,7 +890,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return snapshot of a Volume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SnapshotInner> createAsync(
@@ -859,7 +906,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -871,7 +920,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return snapshot of a Volume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SnapshotInner> createAsync(
@@ -888,7 +937,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -913,7 +964,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Create the specified snapshot within the given volume.
+     * Create a snapshot
+     *
+     * <p>Create the specified snapshot within the given volume.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -940,7 +993,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -951,7 +1006,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return snapshot of a Volume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1013,7 +1068,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1025,7 +1082,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return snapshot of a Volume along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1085,7 +1142,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1096,7 +1155,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return the {@link PollerFlux} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateAsync(
@@ -1119,7 +1178,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1131,7 +1192,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return the {@link PollerFlux} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SnapshotInner>, SnapshotInner> beginUpdateAsync(
@@ -1152,7 +1213,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1163,7 +1226,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return the {@link SyncPoller} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
@@ -1178,7 +1241,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1190,7 +1255,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return the {@link SyncPoller} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
@@ -1206,7 +1271,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1217,7 +1284,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return snapshot of a Volume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SnapshotInner> updateAsync(
@@ -1233,7 +1300,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1245,7 +1314,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return snapshot of a Volume.
+     * @return snapshot of a Volume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SnapshotInner> updateAsync(
@@ -1262,7 +1331,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1287,7 +1358,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Patch a snapshot.
+     * Update a snapshot
+     *
+     * <p>Patch a snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1314,7 +1387,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1324,7 +1399,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1375,7 +1450,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1386,7 +1463,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1439,7 +1516,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1449,7 +1528,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1463,7 +1542,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1474,7 +1555,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1493,7 +1574,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1503,7 +1586,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1512,7 +1595,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1523,7 +1608,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1538,7 +1623,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1548,7 +1635,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1559,7 +1646,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1570,7 +1659,7 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1586,7 +1675,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1604,7 +1695,9 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
     }
 
     /**
-     * Delete snapshot.
+     * Delete a snapshot
+     *
+     * <p>Delete snapshot.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -1625,5 +1718,393 @@ public final class SnapshotsClientImpl implements SnapshotsClient {
         String snapshotName,
         Context context) {
         deleteAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, context).block();
+    }
+
+    /**
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> restoreFilesWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (snapshotName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .restoreFiles(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            poolName,
+                            volumeName,
+                            snapshotName,
+                            this.client.getApiVersion(),
+                            body,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> restoreFilesWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        if (snapshotName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter snapshotName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        context = this.client.mergeContext(context);
+        return service
+            .restoreFiles(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                poolName,
+                volumeName,
+                snapshotName,
+                this.client.getApiVersion(),
+                body,
+                context);
+    }
+
+    /**
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRestoreFilesAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            restoreFilesWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body);
+        return this
+            .client
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    }
+
+    /**
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRestoreFilesAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body,
+        Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            restoreFilesWithResponseAsync(
+                resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+    }
+
+    /**
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRestoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body) {
+        return beginRestoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRestoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body,
+        Context context) {
+        return beginRestoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> restoreFilesAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body) {
+        return beginRestoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> restoreFilesAsync(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body,
+        Context context) {
+        return beginRestoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @param body Restore payload supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body) {
+        restoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body).block();
+    }
+
+    /**
+     * Create a new Snapshot Restore Files request
+     *
+     * <p>Restore the specified files from the specified snapshot to the active filesystem.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param snapshotName The name of the snapshot.
+     * @param body Restore payload supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void restoreFiles(
+        String resourceGroupName,
+        String accountName,
+        String poolName,
+        String volumeName,
+        String snapshotName,
+        SnapshotRestoreFiles body,
+        Context context) {
+        restoreFilesAsync(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context).block();
     }
 }

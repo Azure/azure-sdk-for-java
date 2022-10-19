@@ -7,10 +7,15 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.directconnectivity.IAddressResolver;
 import com.azure.cosmos.implementation.directconnectivity.RntbdTransportClient;
 import com.azure.cosmos.implementation.directconnectivity.TransportException;
+import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableMap;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -36,6 +41,8 @@ import java.net.SocketAddress;
 import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
@@ -71,14 +78,14 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final AtomicLong lastSuccessfulRequestNanoTime;
 
     private final Instant createdTime;
-    private final RntbdMetrics metrics;
+    private final RntbdMetricsCompletionRecorder metricsComplectionRecorder;
     private final Provider provider;
     private final URI serverKey;
     private final SocketAddress remoteAddress;
     private final RntbdRequestTimer requestTimer;
     private final Tag tag;
+    private final Tag clientMetricTag;
     private final int maxConcurrentRequests;
-    private final boolean channelAcquisitionContextEnabled;
 
     private final RntbdConnectionStateListener connectionStateListener;
 
@@ -91,14 +98,14 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final Config config,
         final EventLoopGroup group,
         final RntbdRequestTimer timer,
-        final URI physicalAddress) {
+        final URI physicalAddress,
+        final ClientTelemetry clientTelemetry) {
 
         this.serverKey = RntbdUtils.getServerKey(physicalAddress);
 
         final Bootstrap bootstrap = this.getBootStrap(group, config);
 
         this.createdTime = Instant.now();
-        this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
         this.remoteAddress = bootstrap.config().remoteAddress();
         this.concurrentRequests = new AtomicInteger();
         // if no request has been sent over this endpoint we want to make sure we don't trigger a connection close
@@ -112,17 +119,38 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.requestTimer = timer;
 
         this.tag = Tag.of(TAG_NAME, RntbdMetrics.escape(this.remoteAddress.toString()));
+        this.clientMetricTag = Tag.of(
+            TagName.ServiceEndpoint.toString(),
+            String.format("%s_%d", this.serverKey.getHost(), this.serverKey.getPort()));
         this.id = instanceCount.incrementAndGet();
         this.provider = provider;
 
-        this.metrics = new RntbdMetrics(provider.transportClient, this);
         this.maxConcurrentRequests = config.maxConcurrentRequestsPerEndpoint();
 
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
-            ? new RntbdConnectionStateListener(this.provider.addressResolver, this)
-            : null;
+            ? new RntbdConnectionStateListener(this) : null;
 
-        this.channelAcquisitionContextEnabled = config.isChannelAcquisitionContextEnabled();
+        this.channelPool = new RntbdClientChannelPool(this, bootstrap, config, clientTelemetry, this.connectionStateListener);
+
+        if (clientTelemetry != null &&
+            clientTelemetry.isClientMetricsEnabled()) {
+
+            RntbdMetricsCompletionRecorder rntbdMetricsV2 =
+                ClientTelemetryMetrics.createRntbdMetrics(provider.transportClient, this);
+            if (RntbdMetrics.isEmpty()) {
+                this.metricsComplectionRecorder = rntbdMetricsV2;
+            } else {
+                List<RntbdMetricsCompletionRecorder> metricCompletionRecorders = new ArrayList<>();
+                metricCompletionRecorders.add(RntbdMetrics.create(provider.transportClient, this));
+                metricCompletionRecorders.add(rntbdMetricsV2);
+                this.metricsComplectionRecorder = new RntbdMetricsDelegatingCompletionRecorder(
+                    metricCompletionRecorders
+                );
+            }
+
+        } else {
+            this.metricsComplectionRecorder = RntbdMetrics.create(provider.transportClient, this);
+        }
     }
 
     private Bootstrap getBootStrap(EventLoopGroup eventLoopGroup, Config config) {
@@ -238,6 +266,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     }
 
     @Override
+    public Tag clientMetricTag() { return this.clientMetricTag;}
+
+    @Override
     public long usedDirectMemory() {
         return this.channelPool.usedDirectMemory();
     }
@@ -265,6 +296,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         int concurrentRequestSnapshot = this.concurrentRequests.incrementAndGet();
 
+        if (this.connectionStateListener != null) {
+            this.connectionStateListener.onBeforeSendRequest(args.physicalAddressUri());
+        }
+
         RntbdEndpointStatistics stat = endpointMetricsSnapshot(concurrentRequestSnapshot);
 
         if (concurrentRequestSnapshot > this.maxConcurrentRequests) {
@@ -272,7 +307,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 FailFastRntbdRequestRecord requestRecord = FailFastRntbdRequestRecord.createAndFailFast(
                     args,
                     concurrentRequestSnapshot,
-                    metrics,
+                    metricsComplectionRecorder,
                     remoteAddress);
                 requestRecord.serviceEndpointStatistics(stat);
                 return requestRecord;
@@ -289,21 +324,64 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         record.whenComplete((response, error) -> {
             this.concurrentRequests.decrementAndGet();
-            this.metrics.markComplete(record);
-            onResponse(error, record);
+            this.metricsComplectionRecorder.markComplete(record);
+            onResponse(error);
         });
 
         return record;
     }
 
-    private void onResponse(Throwable exception, RntbdRequestRecord record) {
+    @Override
+    public OpenConnectionRntbdRequestRecord openConnection(Uri addressUri) {
+        checkNotNull(addressUri, "Argument 'addressUri' should not be null");
+
+        this.throwIfClosed();
+
+        if (this.connectionStateListener != null) {
+            this.connectionStateListener.onBeforeSendRequest(addressUri);
+        }
+
+        OpenConnectionRntbdRequestRecord requestRecord = new OpenConnectionRntbdRequestRecord(addressUri);
+        final Future<Channel> openChannelFuture = this.channelPool.acquire(requestRecord);
+
+        if (openChannelFuture.isDone()) {
+            return processWhenConnectionOpened(requestRecord, openChannelFuture);
+        } else {
+            openChannelFuture.addListener(ignored -> processWhenConnectionOpened(requestRecord, openChannelFuture));
+        }
+
+        return requestRecord;
+    }
+
+    private OpenConnectionRntbdRequestRecord processWhenConnectionOpened(
+            final OpenConnectionRntbdRequestRecord requestRecord,
+            final Future<Channel> openChannelFuture) {
+
+        OpenConnectionResponse openConnectionResponse;
+
+        if (openChannelFuture.isSuccess()) {
+            final Channel channel = openChannelFuture.getNow();
+            assert channel != null : "impossible";
+
+            // This is a very important step
+            // Releasing the channel back to the pool so other requests can use it
+            this.releaseToPool(channel);
+
+            requestRecord.getAddressUri().setConnected();
+
+            openConnectionResponse = new OpenConnectionResponse(requestRecord.getAddressUri(), true);
+        } else {
+            openConnectionResponse = new OpenConnectionResponse(requestRecord.getAddressUri(), false, openChannelFuture.cause());
+        }
+
+        requestRecord.complete(openConnectionResponse);
+        return requestRecord;
+    }
+
+    private void onResponse(Throwable exception) {
         if (exception == null) {
             this.lastSuccessfulRequestNanoTime.set(System.nanoTime());
             return;
-        }
-
-        if (this.connectionStateListener != null) {
-            this.connectionStateListener.onException(record.args().serviceRequest(), exception);
         }
 
         // exception != null
@@ -331,6 +409,11 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             .lastRequestNanoTime(this.lastRequestNanoTime())
             .closed(this.closed.get())
             .inflightRequests(concurrentRequestSnapshot);
+
+        if (this.connectionStateListener != null) {
+            stats.connectionStateListenerMetrics(this.connectionStateListener.getMetrics());
+        }
+
         return stats;
     }
 
@@ -374,9 +457,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
 
         final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
-        requestRecord.channelAcquisitionContextEnabled(this.channelAcquisitionContextEnabled);
         requestRecord.stage(RntbdRequestRecord.Stage.CHANNEL_ACQUISITION_STARTED);
-        final Future<Channel> connectedChannel = this.channelPool.acquire(requestRecord.getChannelAcquisitionTimeline());
+        final Future<Channel> connectedChannel = this.channelPool.acquire(requestRecord);
 
         logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);
 
@@ -398,6 +480,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.releaseToPool(channel);
             requestRecord.channelTaskQueueLength(RntbdUtils.tryGetExecutorTaskQueueSize(channel.eventLoop()));
             channel.write(requestRecord.stage(RntbdRequestRecord.Stage.PIPELINED));
+
+            // mark address connected
+            requestRecord.args().physicalAddressUri().setConnected();
             return requestRecord;
         }
 
@@ -406,13 +491,17 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         final Throwable cause = connected.cause();
 
         if (connected.isCancelled()) {
-
-            logger.debug("\n  [{}]\n  {}\n  write cancelled: {}", this, requestArgs, cause);
+            if(logger.isDebugEnabled()) {
+                logger.debug("\n  [{}]\n  {}\n  write cancelled: {}", this, requestArgs, cause);
+            }
             requestRecord.cancel(true);
 
         } else {
 
-            logger.debug("\n  [{}]\n  {}\n  write failed due to {} ", this, requestArgs, cause);
+            if (logger.isDebugEnabled()) {
+                logger.debug("\n  [{}]\n  {}\n  write failed due to {} ", this, requestArgs, cause);
+            }
+
             final String reason = cause.toString();
 
             final GoneException goneException = new GoneException(
@@ -476,12 +565,14 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final RntbdRequestTimer requestTimer;
         private final RntbdTransportClient transportClient;
         private final IAddressResolver addressResolver;
+        private final ClientTelemetry clientTelemetry;
 
         public Provider(
             final RntbdTransportClient transportClient,
             final Options options,
             final SslContext sslContext,
-            final IAddressResolver addressResolver) {
+            final IAddressResolver addressResolver,
+            final ClientTelemetry clientTelemetry) {
 
             checkNotNull(transportClient, "expected non-null provider");
             checkNotNull(options, "expected non-null options");
@@ -507,6 +598,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.endpoints = new ConcurrentHashMap<>();
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
+            this.clientTelemetry = clientTelemetry;
             this.monitoring = new RntbdEndpointMonitoringProvider(this);
             this.monitoring.init();
         }
@@ -575,7 +667,8 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
                 this.config,
                 this.eventLoopGroup,
                 this.requestTimer,
-                physicalAddress));
+                physicalAddress,
+                this.clientTelemetry));
         }
 
         @Override
@@ -615,9 +708,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         synchronized void init() {
             logger.info("Starting RntbdClientChannelPoolMonitoringProvider ...");
-            this.future = RntbdEndpointMonitoringProvider.monitoringRntbdChannelPool.scheduleAtFixedRate(() -> {
-                logAllPools();
-            }, 0, MONITORING_PERIOD.toMillis(), TimeUnit.MILLISECONDS);
+            this.future = RntbdEndpointMonitoringProvider
+                .monitoringRntbdChannelPool
+                .scheduleAtFixedRate(this::logAllPools, 0, MONITORING_PERIOD.toMillis(), TimeUnit.MILLISECONDS);
         }
 
         @Override
@@ -629,7 +722,10 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
 
         synchronized void logAllPools() {
             try {
-                logger.debug("Total number of RntbdClientChannelPool [{}].", provider.endpoints.size());
+                if (logger.isDebugEnabled()) {
+                    logger.debug("Total number of RntbdClientChannelPool [{}].", provider.endpoints.size());
+                }
+
                 for (RntbdEndpoint endpoint : provider.endpoints.values()) {
                     logEndpoint(endpoint);
                 }

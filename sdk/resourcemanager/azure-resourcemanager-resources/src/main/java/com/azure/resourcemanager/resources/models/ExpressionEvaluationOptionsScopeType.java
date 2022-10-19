@@ -31,7 +31,11 @@ public final class ExpressionEvaluationOptionsScopeType
         return fromString(name, ExpressionEvaluationOptionsScopeType.class);
     }
 
-    /** @return known ExpressionEvaluationOptionsScopeType values. */
+    /**
+     * Gets known ExpressionEvaluationOptionsScopeType values.
+     *
+     * @return known ExpressionEvaluationOptionsScopeType values.
+     */
     public static Collection<ExpressionEvaluationOptionsScopeType> values() {
         return values(ExpressionEvaluationOptionsScopeType.class);
     }

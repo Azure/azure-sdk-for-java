@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,8 +17,6 @@ import java.util.List;
 @JsonTypeName("AzureIaaSVMJob")
 @Fluent
 public final class AzureIaaSvmJob extends Job {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSvmJob.class);
-
     /*
      * Time elapsed during the execution of this job.
      */
@@ -51,6 +47,18 @@ public final class AzureIaaSvmJob extends Job {
      */
     @JsonProperty(value = "extendedInfo")
     private AzureIaaSvmJobExtendedInfo extendedInfo;
+
+    /*
+     * Container name of the entity on which the current job is executing.
+     */
+    @JsonProperty(value = "containerName")
+    private String containerName;
+
+    /*
+     * Indicated that whether the job is adhoc(true) or scheduled(false)
+     */
+    @JsonProperty(value = "isUserTriggered")
+    private Boolean isUserTriggered;
 
     /**
      * Get the duration property: Time elapsed during the execution of this job.
@@ -151,6 +159,46 @@ public final class AzureIaaSvmJob extends Job {
      */
     public AzureIaaSvmJob withExtendedInfo(AzureIaaSvmJobExtendedInfo extendedInfo) {
         this.extendedInfo = extendedInfo;
+        return this;
+    }
+
+    /**
+     * Get the containerName property: Container name of the entity on which the current job is executing.
+     *
+     * @return the containerName value.
+     */
+    public String containerName() {
+        return this.containerName;
+    }
+
+    /**
+     * Set the containerName property: Container name of the entity on which the current job is executing.
+     *
+     * @param containerName the containerName value to set.
+     * @return the AzureIaaSvmJob object itself.
+     */
+    public AzureIaaSvmJob withContainerName(String containerName) {
+        this.containerName = containerName;
+        return this;
+    }
+
+    /**
+     * Get the isUserTriggered property: Indicated that whether the job is adhoc(true) or scheduled(false).
+     *
+     * @return the isUserTriggered value.
+     */
+    public Boolean isUserTriggered() {
+        return this.isUserTriggered;
+    }
+
+    /**
+     * Set the isUserTriggered property: Indicated that whether the job is adhoc(true) or scheduled(false).
+     *
+     * @param isUserTriggered the isUserTriggered value to set.
+     * @return the AzureIaaSvmJob object itself.
+     */
+    public AzureIaaSvmJob withIsUserTriggered(Boolean isUserTriggered) {
+        this.isUserTriggered = isUserTriggered;
         return this;
     }
 

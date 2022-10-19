@@ -6,27 +6,28 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Web table dataset properties. */
 @Fluent
 public final class WebTableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebTableDatasetTypeProperties.class);
-
     /*
-     * The zero-based index of the table in the web page. Type: integer (or
-     * Expression with resultType integer), minimum: 0.
+     * The zero-based index of the table in the web page. Type: integer (or Expression with resultType integer),
+     * minimum: 0.
      */
     @JsonProperty(value = "index", required = true)
     private Object index;
 
     /*
-     * The relative URL to the web page from the linked service URL. Type:
-     * string (or Expression with resultType string).
+     * The relative URL to the web page from the linked service URL. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "path")
     private Object path;
+
+    /** Creates an instance of WebTableDatasetTypeProperties class. */
+    public WebTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the index property: The zero-based index of the table in the web page. Type: integer (or Expression with
@@ -79,10 +80,12 @@ public final class WebTableDatasetTypeProperties {
      */
     public void validate() {
         if (index() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property index in model WebTableDatasetTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebTableDatasetTypeProperties.class);
 }

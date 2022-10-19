@@ -48,4 +48,12 @@ public class HttpProxyServer {
             bossGroup.shutdownGracefully();
         }
     }
+
+    public int getPort() {
+        return port;
+    }
+
+    public String getHost() {
+        return "localHost";
+    }
 }

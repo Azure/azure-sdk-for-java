@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Default value. */
 @Fluent
 public final class DWCopyCommandDefaultValue {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DWCopyCommandDefaultValue.class);
-
     /*
      * Column name. Type: object (or Expression with resultType string).
      */
@@ -21,11 +17,14 @@ public final class DWCopyCommandDefaultValue {
     private Object columnName;
 
     /*
-     * The default value of the column. Type: object (or Expression with
-     * resultType string).
+     * The default value of the column. Type: object (or Expression with resultType string).
      */
     @JsonProperty(value = "defaultValue")
     private Object defaultValue;
+
+    /** Creates an instance of DWCopyCommandDefaultValue class. */
+    public DWCopyCommandDefaultValue() {
+    }
 
     /**
      * Get the columnName property: Column name. Type: object (or Expression with resultType string).

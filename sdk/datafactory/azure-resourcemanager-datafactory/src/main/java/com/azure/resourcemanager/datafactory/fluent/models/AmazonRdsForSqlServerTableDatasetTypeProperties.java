@@ -5,29 +5,26 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Amazon RDS for SQL Server dataset properties. */
 @Fluent
 public final class AmazonRdsForSqlServerTableDatasetTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AmazonRdsForSqlServerTableDatasetTypeProperties.class);
-
     /*
-     * The schema name of the SQL Server dataset. Type: string (or Expression
-     * with resultType string).
+     * The schema name of the SQL Server dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "schema")
     private Object schema;
 
     /*
-     * The table name of the SQL Server dataset. Type: string (or Expression
-     * with resultType string).
+     * The table name of the SQL Server dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
+
+    /** Creates an instance of AmazonRdsForSqlServerTableDatasetTypeProperties class. */
+    public AmazonRdsForSqlServerTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the schema property: The schema name of the SQL Server dataset. Type: string (or Expression with resultType

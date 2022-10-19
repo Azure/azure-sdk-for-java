@@ -6,10 +6,9 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureFirewallThreatIntelMode;
 import com.azure.resourcemanager.network.models.DnsSettings;
-import com.azure.resourcemanager.network.models.ExplicitProxySettings;
+import com.azure.resourcemanager.network.models.ExplicitProxy;
 import com.azure.resourcemanager.network.models.FirewallPolicyInsights;
 import com.azure.resourcemanager.network.models.FirewallPolicyIntrusionDetection;
 import com.azure.resourcemanager.network.models.FirewallPolicySku;
@@ -18,15 +17,12 @@ import com.azure.resourcemanager.network.models.FirewallPolicySql;
 import com.azure.resourcemanager.network.models.FirewallPolicyThreatIntelWhitelist;
 import com.azure.resourcemanager.network.models.FirewallPolicyTransportSecurity;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Firewall Policy definition. */
 @Fluent
 public final class FirewallPolicyPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyPropertiesFormat.class);
-
     /*
      * List of references to FirewallPolicyRuleCollectionGroups.
      */
@@ -46,8 +42,7 @@ public final class FirewallPolicyPropertiesFormat {
     private SubResource basePolicy;
 
     /*
-     * List of references to Azure Firewalls that this Firewall Policy is
-     * associated with.
+     * List of references to Azure Firewalls that this Firewall Policy is associated with.
      */
     @JsonProperty(value = "firewalls", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> firewalls;
@@ -97,8 +92,8 @@ public final class FirewallPolicyPropertiesFormat {
     /*
      * Explicit Proxy Settings definition.
      */
-    @JsonProperty(value = "explicitProxySettings")
-    private ExplicitProxySettings explicitProxySettings;
+    @JsonProperty(value = "explicitProxy")
+    private ExplicitProxy explicitProxy;
 
     /*
      * The configuration for Intrusion detection.
@@ -117,6 +112,10 @@ public final class FirewallPolicyPropertiesFormat {
      */
     @JsonProperty(value = "sku")
     private FirewallPolicySku sku;
+
+    /** Creates an instance of FirewallPolicyPropertiesFormat class. */
+    public FirewallPolicyPropertiesFormat() {
+    }
 
     /**
      * Get the ruleCollectionGroups property: List of references to FirewallPolicyRuleCollectionGroups.
@@ -296,22 +295,22 @@ public final class FirewallPolicyPropertiesFormat {
     }
 
     /**
-     * Get the explicitProxySettings property: Explicit Proxy Settings definition.
+     * Get the explicitProxy property: Explicit Proxy Settings definition.
      *
-     * @return the explicitProxySettings value.
+     * @return the explicitProxy value.
      */
-    public ExplicitProxySettings explicitProxySettings() {
-        return this.explicitProxySettings;
+    public ExplicitProxy explicitProxy() {
+        return this.explicitProxy;
     }
 
     /**
-     * Set the explicitProxySettings property: Explicit Proxy Settings definition.
+     * Set the explicitProxy property: Explicit Proxy Settings definition.
      *
-     * @param explicitProxySettings the explicitProxySettings value to set.
+     * @param explicitProxy the explicitProxy value to set.
      * @return the FirewallPolicyPropertiesFormat object itself.
      */
-    public FirewallPolicyPropertiesFormat withExplicitProxySettings(ExplicitProxySettings explicitProxySettings) {
-        this.explicitProxySettings = explicitProxySettings;
+    public FirewallPolicyPropertiesFormat withExplicitProxy(ExplicitProxy explicitProxy) {
+        this.explicitProxy = explicitProxy;
         return this;
     }
 
@@ -396,8 +395,8 @@ public final class FirewallPolicyPropertiesFormat {
         if (dnsSettings() != null) {
             dnsSettings().validate();
         }
-        if (explicitProxySettings() != null) {
-            explicitProxySettings().validate();
+        if (explicitProxy() != null) {
+            explicitProxy().validate();
         }
         if (intrusionDetection() != null) {
             intrusionDetection().validate();

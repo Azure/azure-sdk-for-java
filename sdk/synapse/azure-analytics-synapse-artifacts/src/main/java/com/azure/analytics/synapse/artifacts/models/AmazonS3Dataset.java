@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** A single Amazon Simple Storage Service (S3) object or a set of S3 objects. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,43 +19,37 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AmazonS3Dataset extends Dataset {
     /*
-     * The name of the Amazon S3 bucket. Type: string (or Expression with
-     * resultType string).
+     * The name of the Amazon S3 bucket. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.bucketName", required = true)
     private Object bucketName;
 
     /*
-     * The key of the Amazon S3 object. Type: string (or Expression with
-     * resultType string).
+     * The key of the Amazon S3 object. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.key")
     private Object key;
 
     /*
-     * The prefix filter for the S3 object name. Type: string (or Expression
-     * with resultType string).
+     * The prefix filter for the S3 object name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.prefix")
     private Object prefix;
 
     /*
-     * The version for the S3 object. Type: string (or Expression with
-     * resultType string).
+     * The version for the S3 object. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.version")
     private Object version;
 
     /*
-     * The start of S3 object's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The start of S3 object's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of S3 object's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The end of S3 object's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
@@ -235,6 +231,55 @@ public class AmazonS3Dataset extends Dataset {
      */
     public AmazonS3Dataset setCompression(DatasetCompression compression) {
         this.compression = compression;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonS3Dataset setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonS3Dataset setStructure(Object structure) {
+        super.setStructure(structure);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonS3Dataset setSchema(Object schema) {
+        super.setSchema(schema);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonS3Dataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
+        super.setLinkedServiceName(linkedServiceName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonS3Dataset setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonS3Dataset setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AmazonS3Dataset setFolder(DatasetFolder folder) {
+        super.setFolder(folder);
         return this;
     }
 }

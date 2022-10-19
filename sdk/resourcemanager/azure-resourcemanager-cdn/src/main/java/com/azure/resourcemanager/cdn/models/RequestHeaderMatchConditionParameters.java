@@ -6,20 +6,17 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the parameters for RequestHeader match conditions. */
 @Fluent
 public final class RequestHeaderMatchConditionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestHeaderMatchConditionParameters.class);
-
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleRequestHeaderConditionParameters";
 
     /*
      * Name of Header to be matched
@@ -53,26 +50,26 @@ public final class RequestHeaderMatchConditionParameters {
 
     /** Creates an instance of RequestHeaderMatchConditionParameters class. */
     public RequestHeaderMatchConditionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestHeaderConditionParameters";
+        typeName = "DeliveryRuleRequestHeaderConditionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the RequestHeaderMatchConditionParameters object itself.
      */
-    public RequestHeaderMatchConditionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public RequestHeaderMatchConditionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
@@ -183,10 +180,12 @@ public final class RequestHeaderMatchConditionParameters {
      */
     public void validate() {
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operator in model RequestHeaderMatchConditionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RequestHeaderMatchConditionParameters.class);
 }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ServiceBus")
 @Fluent
 public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceBus.class);
-
     /*
      * PrimaryConnectionString of the endpoint for key-based authentication.
      * Will be obfuscated during read.
@@ -34,13 +30,13 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
 
     /*
      * The URL of the ServiceBus namespace for identity-based authentication.
-     * It must include the protocol sb://
+     * It must include the protocol 'sb://'.
      */
     @JsonProperty(value = "endpointUri")
     private String endpointUri;
 
     /*
-     * The ServiceBus Topic name for identity-based authentication
+     * The ServiceBus Topic name for identity-based authentication.
      */
     @JsonProperty(value = "entityPath")
     private String entityPath;
@@ -91,7 +87,7 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Get the endpointUri property: The URL of the ServiceBus namespace for identity-based authentication. It must
-     * include the protocol sb://.
+     * include the protocol 'sb://'.
      *
      * @return the endpointUri value.
      */
@@ -101,7 +97,7 @@ public final class ServiceBus extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Set the endpointUri property: The URL of the ServiceBus namespace for identity-based authentication. It must
-     * include the protocol sb://.
+     * include the protocol 'sb://'.
      *
      * @param endpointUri the endpointUri value to set.
      * @return the ServiceBus object itself.

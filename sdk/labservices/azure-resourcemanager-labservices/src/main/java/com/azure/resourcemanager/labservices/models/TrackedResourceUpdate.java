@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Base tracked resource type for all PATCH updates. */
 @Fluent
 public class TrackedResourceUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackedResourceUpdate.class);
-
     /*
      * Resource tags.
      */

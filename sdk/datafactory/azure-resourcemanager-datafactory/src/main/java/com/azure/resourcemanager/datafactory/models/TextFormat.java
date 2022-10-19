@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,11 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("TextFormat")
 @Fluent
 public final class TextFormat extends DatasetStorageFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TextFormat.class);
-
     /*
-     * The column delimiter. Type: string (or Expression with resultType
-     * string).
+     * The column delimiter. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "columnDelimiter")
     private Object columnDelimiter;
@@ -32,60 +27,57 @@ public final class TextFormat extends DatasetStorageFormat {
     private Object rowDelimiter;
 
     /*
-     * The escape character. Type: string (or Expression with resultType
-     * string).
+     * The escape character. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "escapeChar")
     private Object escapeChar;
 
     /*
-     * The quote character. Type: string (or Expression with resultType
-     * string).
+     * The quote character. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "quoteChar")
     private Object quoteChar;
 
     /*
-     * The null value string. Type: string (or Expression with resultType
-     * string).
+     * The null value string. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "nullValue")
     private Object nullValue;
 
     /*
-     * The code page name of the preferred encoding. If miss, the default value
-     * is ΓÇ£utf-8ΓÇ¥, unless BOM denotes another Unicode encoding. Refer to
-     * the ΓÇ£NameΓÇ¥ column of the table in the following link to set
-     * supported values:
-     * https://msdn.microsoft.com/library/system.text.encoding.aspx. Type:
-     * string (or Expression with resultType string).
+     * The code page name of the preferred encoding. If miss, the default value is ΓÇ£utf-8ΓÇ¥, unless BOM denotes
+     * another Unicode encoding. Refer to the ΓÇ£NameΓÇ¥ column of the table in the following link to set supported
+     * values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "encodingName")
     private Object encodingName;
 
     /*
-     * Treat empty column values in the text file as null. The default value is
-     * true. Type: boolean (or Expression with resultType boolean).
+     * Treat empty column values in the text file as null. The default value is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "treatEmptyAsNull")
     private Object treatEmptyAsNull;
 
     /*
-     * The number of lines/rows to be skipped when parsing text files. The
-     * default value is 0. Type: integer (or Expression with resultType
-     * integer).
+     * The number of lines/rows to be skipped when parsing text files. The default value is 0. Type: integer (or
+     * Expression with resultType integer).
      */
     @JsonProperty(value = "skipLineCount")
     private Object skipLineCount;
 
     /*
-     * When used as input, treat the first row of data as headers. When used as
-     * output,write the headers into the output as the first row of data. The
-     * default value is false. Type: boolean (or Expression with resultType
+     * When used as input, treat the first row of data as headers. When used as output,write the headers into the
+     * output as the first row of data. The default value is false. Type: boolean (or Expression with resultType
      * boolean).
      */
     @JsonProperty(value = "firstRowAsHeader")
     private Object firstRowAsHeader;
+
+    /** Creates an instance of TextFormat class. */
+    public TextFormat() {
+    }
 
     /**
      * Get the columnDelimiter property: The column delimiter. Type: string (or Expression with resultType string).

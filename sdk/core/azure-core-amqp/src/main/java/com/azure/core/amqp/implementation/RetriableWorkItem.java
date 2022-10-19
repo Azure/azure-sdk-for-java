@@ -7,6 +7,7 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import reactor.core.publisher.MonoSink;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -20,24 +21,27 @@ class RetriableWorkItem {
     private final int messageFormat;
     private final int encodedMessageSize;
     private final DeliveryState deliveryState;
-
     private boolean waitingForAck;
     private Exception lastKnownException;
 
+    private final AmqpMetricsProvider metricsProvider;
+    private long tryStartTime = 0;
+
     RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
-                      Duration timeout, DeliveryState deliveryState) {
+                      Duration timeout, DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
         this(amqpMessage, encodedMessageSize, messageFormat, monoSink, new TimeoutTracker(timeout,
-            false), deliveryState);
+            false), deliveryState, metricsProvider);
     }
 
     private RetriableWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState>
-        monoSink, TimeoutTracker timeout, DeliveryState deliveryState) {
+        monoSink, TimeoutTracker timeout, DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
         this.amqpMessage = amqpMessage;
         this.encodedMessageSize = encodedMessageSize;
         this.messageFormat = messageFormat;
         this.monoSink = monoSink;
         this.timeoutTracker = timeout;
         this.deliveryState = deliveryState;
+        this.metricsProvider = metricsProvider;
     }
 
     byte[] getMessage() {
@@ -57,15 +61,23 @@ class RetriableWorkItem {
     }
 
     void success(DeliveryState deliveryState) {
+        reportMetrics(deliveryState);
         monoSink.success(deliveryState);
     }
 
-    void error(Throwable error) {
+    void error(Throwable error, DeliveryState deliveryState) {
+        reportMetrics(deliveryState);
         monoSink.error(error);
     }
 
     int incrementRetryAttempts() {
         return retryAttempts.incrementAndGet();
+    }
+
+    void beforeTry() {
+        if (metricsProvider.isSendDeliveryEnabled()) {
+            this.tryStartTime = Instant.now().toEpochMilli();
+        }
     }
 
     boolean hasBeenRetried() {
@@ -94,5 +106,11 @@ class RetriableWorkItem {
 
     boolean isWaitingForAck() {
         return this.waitingForAck;
+    }
+
+    private void reportMetrics(DeliveryState deliveryState) {
+        if (metricsProvider.isSendDeliveryEnabled()) {
+            metricsProvider.recordSend(tryStartTime, deliveryState == null ? null : deliveryState.getType());
+        }
     }
 }

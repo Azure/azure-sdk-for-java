@@ -16,6 +16,8 @@ import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
+import java.util.Objects;
+
 /** Entry point to Azure KeyVault resource management. */
 public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
     // Service managers
@@ -42,6 +44,8 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
      * @return the KeyVaultManager
      */
     public static KeyVaultManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(
             HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
@@ -53,7 +57,9 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
      * @param profile the profile to use
      * @return the KeyVaultManager
      */
-    private static KeyVaultManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static KeyVaultManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new KeyVaultManager(httpPipeline, profile);
     }
 
@@ -88,9 +94,7 @@ public final class KeyVaultManager extends Manager<KeyVaultManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        authorizationManager = AzureConfigurableImpl
-            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
-            .authenticate(null, profile);
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
         this.tenantId = profile.getTenantId();
     }
 

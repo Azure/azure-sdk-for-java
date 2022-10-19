@@ -15,7 +15,7 @@ public interface HttpRequestLogger {
     /**
      * Gets the {@link LogLevel} used to log the HTTP request.
      * <p>
-     * By default this will return {@link LogLevel#INFORMATIONAL}.
+     * By default, this will return {@link LogLevel#INFORMATIONAL}.
      *
      * @param loggingOptions The information available during request logging.
      * @return The {@link LogLevel} used to log the HTTP request.
@@ -34,4 +34,15 @@ public interface HttpRequestLogger {
      * @return A reactive response that indicates that the HTTP request has been logged.
      */
     Mono<Void> logRequest(ClientLogger logger, HttpRequestLoggingContext loggingOptions);
+
+    /**
+     * Logs the HTTP request.
+     * To get the {@link LogLevel} used to log the HTTP request use {@link #getLogLevel(HttpRequestLoggingContext)}.
+     *
+     * @param logger The {@link ClientLogger} used to log the HTTP request.
+     * @param loggingOptions The information available during request logging.
+     */
+    default void logRequestSync(ClientLogger logger, HttpRequestLoggingContext loggingOptions) {
+        logRequest(logger, loggingOptions).block();
+    }
 }

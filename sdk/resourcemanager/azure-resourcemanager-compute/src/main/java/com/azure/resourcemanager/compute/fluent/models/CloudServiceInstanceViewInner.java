@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceViewStatusesSummary;
 import com.azure.resourcemanager.compute.models.ResourceInstanceViewStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** InstanceView of CloudService as a whole. */
 @Fluent
 public final class CloudServiceInstanceViewInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceInstanceViewInner.class);
-
     /*
      * Instance view statuses.
      */
@@ -24,17 +20,14 @@ public final class CloudServiceInstanceViewInner {
     private InstanceViewStatusesSummary roleInstance;
 
     /*
-     * The version of the SDK that was used to generate the package for the
-     * cloud service.
+     * The version of the SDK that was used to generate the package for the cloud service.
      */
     @JsonProperty(value = "sdkVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String sdkVersion;
 
     /*
-     * Specifies a list of unique identifiers generated internally for the
-     * cloud service. <br /><br /> NOTE: If you are using Azure Diagnostics
-     * extension, this property can be used as 'DeploymentId' for querying
-     * details.
+     * Specifies a list of unique identifiers generated internally for the cloud service. <br /><br /> NOTE: If you are
+     * using Azure Diagnostics extension, this property can be used as 'DeploymentId' for querying details.
      */
     @JsonProperty(value = "privateIds", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> privateIds;

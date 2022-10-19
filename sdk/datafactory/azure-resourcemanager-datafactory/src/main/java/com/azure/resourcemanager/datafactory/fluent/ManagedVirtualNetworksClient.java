@@ -21,7 +21,7 @@ public interface ManagedVirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources.
+     * @return a list of managed Virtual Network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedVirtualNetworkResourceInner> listByFactory(String resourceGroupName, String factoryName);
@@ -35,30 +35,11 @@ public interface ManagedVirtualNetworksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed Virtual Network resources.
+     * @return a list of managed Virtual Network resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedVirtualNetworkResourceInner> listByFactory(
         String resourceGroupName, String factoryName, Context context);
-
-    /**
-     * Creates or updates a managed Virtual Network.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedVirtualNetwork Managed Virtual Network resource definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return managed Virtual Network resource type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedVirtualNetworkResourceInner createOrUpdate(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        ManagedVirtualNetworkResourceInner managedVirtualNetwork);
 
     /**
      * Creates or updates a managed Virtual Network.
@@ -85,19 +66,23 @@ public interface ManagedVirtualNetworksClient {
         Context context);
 
     /**
-     * Gets a managed Virtual Network.
+     * Creates or updates a managed Virtual Network.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedVirtualNetwork Managed Virtual Network resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed Virtual Network.
+     * @return managed Virtual Network resource type.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ManagedVirtualNetworkResourceInner get(
-        String resourceGroupName, String factoryName, String managedVirtualNetworkName);
+    ManagedVirtualNetworkResourceInner createOrUpdate(
+        String resourceGroupName,
+        String factoryName,
+        String managedVirtualNetworkName,
+        ManagedVirtualNetworkResourceInner managedVirtualNetwork);
 
     /**
      * Gets a managed Virtual Network.
@@ -120,4 +105,19 @@ public interface ManagedVirtualNetworksClient {
         String managedVirtualNetworkName,
         String ifNoneMatch,
         Context context);
+
+    /**
+     * Gets a managed Virtual Network.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed Virtual Network.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ManagedVirtualNetworkResourceInner get(
+        String resourceGroupName, String factoryName, String managedVirtualNetworkName);
 }

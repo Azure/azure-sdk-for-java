@@ -34,6 +34,10 @@ public final class DatasetResourceImpl implements DatasetResource, DatasetResour
         return this.innerModel().etag();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DatasetResourceInner innerModel() {
         return this.innerObject;
     }

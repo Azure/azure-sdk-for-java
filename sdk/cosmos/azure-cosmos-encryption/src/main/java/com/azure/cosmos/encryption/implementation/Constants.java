@@ -11,4 +11,8 @@ public class Constants {
     public static final String IS_CLIENT_ENCRYPTED_HEADER = "x-ms-cosmos-is-client-encrypted";
 
     public static final String INCORRECT_CONTAINER_RID_SUB_STATUS = "1024";
+
+    public static final String ALLOW_CACHED_READS_HEADER = "x-ms-cosmos-allow-cachedreads";
+
+    public static final String DATABASE_RID_HEADER = "x-ms-cosmos-database-rid";
 }

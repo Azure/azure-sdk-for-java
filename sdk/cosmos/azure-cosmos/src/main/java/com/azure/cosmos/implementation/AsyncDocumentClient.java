@@ -10,8 +10,10 @@ import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfo;
 import com.azure.cosmos.implementation.throughputControl.config.ThroughputControlGroupInternal;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -27,6 +29,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 
@@ -92,6 +95,9 @@ public interface AsyncDocumentClient {
         boolean contentResponseOnWriteEnabled;
         private CosmosClientMetadataCachesSnapshot state;
         private ApiType apiType;
+        CosmosClientTelemetryConfig clientTelemetryConfig;
+        private String clientCorrelationId = null;
+        private EnumSet<TagName> metricTagNames = EnumSet.allOf(TagName.class);
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -109,6 +115,18 @@ public interface AsyncDocumentClient {
 
         public Builder withApiType(ApiType apiType) {
             this.apiType = apiType;
+            return this;
+        }
+
+        public Builder withClientCorrelationId(String clientCorrelationId) {
+            this.clientCorrelationId = clientCorrelationId;
+
+            return this;
+        }
+
+        public Builder withMetricTagNames(EnumSet<TagName> tagNames) {
+            this.metricTagNames = tagNames;
+
             return this;
         }
 
@@ -210,6 +228,18 @@ public interface AsyncDocumentClient {
             return this;
         }
 
+        /***
+         * Set the client telemetry config.
+         *
+         * @param clientTelemetryConfig the {@link CosmosClientTelemetryConfig}.
+         *
+         * @return the current builder.
+         */
+        public Builder withClientTelemetryConfig(CosmosClientTelemetryConfig clientTelemetryConfig) {
+            this.clientTelemetryConfig = clientTelemetryConfig;
+            return this;
+        }
+
         private void ifThrowIllegalArgException(boolean value, String error) {
             if (value) {
                 throw new IllegalArgumentException(error);
@@ -240,7 +270,10 @@ public interface AsyncDocumentClient {
                 transportClientSharing,
                 contentResponseOnWriteEnabled,
                 state,
-                apiType);
+                apiType,
+                clientTelemetryConfig,
+                clientCorrelationId,
+                metricTagNames);
 
             client.init(state, null);
             return client;
@@ -341,6 +374,10 @@ public interface AsyncDocumentClient {
      * @return the client telemetry
      */
     ClientTelemetry getClientTelemetry();
+
+    String getClientCorrelationId();
+
+    String getMachineId();
 
     /**
      * Gets the boolean which indicates whether to only return the headers and status code in Cosmos DB response
@@ -658,9 +695,11 @@ public interface AsyncDocumentClient {
      *
      * @param collectionLink the collection link.
      * @param options        the query request options.
+     * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the read documents or an error.
      */
-    Flux<FeedResponse<Document>> readDocuments(String collectionLink, CosmosQueryRequestOptions options);
+    <T> Flux<FeedResponse<T>>  readDocuments(
+        String collectionLink, CosmosQueryRequestOptions options, Class<T> classOfT);
 
 
     /**
@@ -673,9 +712,11 @@ public interface AsyncDocumentClient {
      * @param collectionLink the link to the parent document collection.
      * @param query          the query.
      * @param options        the query request options.
+     * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained document or an error.
      */
-    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, String query, CosmosQueryRequestOptions options);
+    <T> Flux<FeedResponse<T>> queryDocuments(
+        String collectionLink, String query, CosmosQueryRequestOptions options, Class<T> classOfT);
 
     /**
      * Query for documents in a document collection.
@@ -687,9 +728,11 @@ public interface AsyncDocumentClient {
      * @param collectionLink the link to the parent document collection.
      * @param querySpec      the SQL query specification.
      * @param options        the query request options.
+     * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
-    Flux<FeedResponse<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options);
+    <T> Flux<FeedResponse<T>> queryDocuments(
+        String collectionLink, SqlQuerySpec querySpec, CosmosQueryRequestOptions options, Class<T> classOfT);
 
     /**
      * Query for documents change feed in a document collection.
@@ -699,11 +742,13 @@ public interface AsyncDocumentClient {
      *
      * @param collection    the parent document collection.
      * @param requestOptions the change feed request options.
+     * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
-    Flux<FeedResponse<Document>> queryDocumentChangeFeed(
+    <T> Flux<FeedResponse<T>> queryDocumentChangeFeed(
         DocumentCollection collection,
-        CosmosChangeFeedRequestOptions requestOptions);
+        CosmosChangeFeedRequestOptions requestOptions,
+        Class<T> classOfT);
 
     /**
      * Reads all partition key ranges in a document collection.
@@ -1570,12 +1615,14 @@ public interface AsyncDocumentClient {
      * @param collectionLink the link to the parent document collection.
      * @param partitionKey   the logical partition key.
      * @param options        the query request options.
+     * @param <T> the type parameter
      * @return a {@link Flux} containing one or several feed response pages of the obtained documents or an error.
      */
-    Flux<FeedResponse<Document>> readAllDocuments(
+    <T> Flux<FeedResponse<T>> readAllDocuments(
         String collectionLink,
         PartitionKey partitionKey,
-        CosmosQueryRequestOptions options
+        CosmosQueryRequestOptions options,
+        Class<T> classOfT
     );
 
     Map<String, PartitionedQueryExecutionInfo> getQueryPlanCache();
@@ -1607,4 +1654,11 @@ public interface AsyncDocumentClient {
      * @param group the throughput control group.
      */
     void enableThroughputControlGroup(ThroughputControlGroupInternal group);
+
+    /***
+     *  Warming up the caches and connections to all replicas of the container for the current read region.
+     *
+     * @param containerLink the container link.
+     */
+    Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink);
 }

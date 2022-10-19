@@ -10,14 +10,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringId;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ExpressRouteConnection resource. */
 @Fluent
 public final class ExpressRouteConnectionInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionInner.class);
-
     /*
      * Properties of the express route connection.
      */
@@ -29,6 +26,10 @@ public final class ExpressRouteConnectionInner extends SubResource {
      */
     @JsonProperty(value = "name", required = true)
     private String name;
+
+    /** Creates an instance of ExpressRouteConnectionInner class. */
+    public ExpressRouteConnectionInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the express route connection.
@@ -192,6 +193,31 @@ public final class ExpressRouteConnectionInner extends SubResource {
     }
 
     /**
+     * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @return the enablePrivateLinkFastPath value.
+     */
+    public Boolean enablePrivateLinkFastPath() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePrivateLinkFastPath();
+    }
+
+    /**
+     * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
+     * @return the ExpressRouteConnectionInner object itself.
+     */
+    public ExpressRouteConnectionInner withEnablePrivateLinkFastPath(Boolean enablePrivateLinkFastPath) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteConnectionProperties();
+        }
+        this.innerProperties().withEnablePrivateLinkFastPath(enablePrivateLinkFastPath);
+        return this;
+    }
+
+    /**
      * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
      *
@@ -226,10 +252,12 @@ public final class ExpressRouteConnectionInner extends SubResource {
             innerProperties().validate();
         }
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ExpressRouteConnectionInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteConnectionInner.class);
 }

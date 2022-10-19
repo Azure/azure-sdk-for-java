@@ -16,10 +16,9 @@ import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeResponse;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgeStatusResponse;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurges;
 import com.azure.resourcemanager.loganalytics.models.WorkspacePurgesPurgeResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspacePurgesImpl implements WorkspacePurges {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspacePurgesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspacePurgesImpl.class);
 
     private final WorkspacePurgesClient innerClient;
 

@@ -8,7 +8,12 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScaleSetEvictionPolicy. */
+/**
+ * The Virtual Machine Scale Set eviction policy.
+ *
+ * <p>The eviction policy specifies what to do with the VM when it is evicted. The default is Delete. For more
+ * information about eviction see [spot VMs](https://docs.microsoft.com/azure/virtual-machines/spot-vms).
+ */
 public final class ScaleSetEvictionPolicy extends ExpandableStringEnum<ScaleSetEvictionPolicy> {
     /** Static value Delete for ScaleSetEvictionPolicy. */
     public static final ScaleSetEvictionPolicy DELETE = fromString("Delete");
@@ -27,7 +32,11 @@ public final class ScaleSetEvictionPolicy extends ExpandableStringEnum<ScaleSetE
         return fromString(name, ScaleSetEvictionPolicy.class);
     }
 
-    /** @return known ScaleSetEvictionPolicy values. */
+    /**
+     * Gets known ScaleSetEvictionPolicy values.
+     *
+     * @return known ScaleSetEvictionPolicy values.
+     */
     public static Collection<ScaleSetEvictionPolicy> values() {
         return values(ScaleSetEvictionPolicy.class);
     }

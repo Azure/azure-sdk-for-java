@@ -39,7 +39,11 @@ public final class UnitDefinitionType extends ExpandableStringEnum<UnitDefinitio
         return fromString(name, UnitDefinitionType.class);
     }
 
-    /** @return known UnitDefinitionType values. */
+    /**
+     * Gets known UnitDefinitionType values.
+     *
+     * @return known UnitDefinitionType values.
+     */
     public static Collection<UnitDefinitionType> values() {
         return values(UnitDefinitionType.class);
     }

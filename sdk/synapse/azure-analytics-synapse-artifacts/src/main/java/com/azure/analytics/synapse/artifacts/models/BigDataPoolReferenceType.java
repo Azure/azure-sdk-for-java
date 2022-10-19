@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BigDataPoolReferenceType. */
+/** Big data pool reference type. */
 public final class BigDataPoolReferenceType extends ExpandableStringEnum<BigDataPoolReferenceType> {
     /** Static value BigDataPoolReference for BigDataPoolReferenceType. */
     public static final BigDataPoolReferenceType BIG_DATA_POOL_REFERENCE = fromString("BigDataPoolReference");
@@ -24,7 +24,11 @@ public final class BigDataPoolReferenceType extends ExpandableStringEnum<BigData
         return fromString(name, BigDataPoolReferenceType.class);
     }
 
-    /** @return known BigDataPoolReferenceType values. */
+    /**
+     * Gets known BigDataPoolReferenceType values.
+     *
+     * @return known BigDataPoolReferenceType values.
+     */
     public static Collection<BigDataPoolReferenceType> values() {
         return values(BigDataPoolReferenceType.class);
     }

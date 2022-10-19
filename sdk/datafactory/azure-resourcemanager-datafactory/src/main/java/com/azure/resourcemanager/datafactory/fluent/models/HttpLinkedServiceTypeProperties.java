@@ -8,17 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.HttpAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to this linked service type. */
 @Fluent
 public final class HttpLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpLinkedServiceTypeProperties.class);
-
     /*
-     * The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type:
-     * string (or Expression with resultType string).
+     * The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
@@ -30,62 +27,60 @@ public final class HttpLinkedServiceTypeProperties {
     private HttpAuthenticationType authenticationType;
 
     /*
-     * User name for Basic, Digest, or Windows authentication. Type: string (or
-     * Expression with resultType string).
+     * User name for Basic, Digest, or Windows authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
 
     /*
-     * Password for Basic, Digest, Windows, or ClientCertificate with
-     * EmbeddedCertData authentication.
+     * Password for Basic, Digest, Windows, or ClientCertificate with EmbeddedCertData authentication.
      */
     @JsonProperty(value = "password")
     private SecretBase password;
 
     /*
-     * The additional HTTP headers in the request to RESTful API used for
-     * authorization. Type: object (or Expression with resultType object).
+     * The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression
+     * with resultType object).
      */
     @JsonProperty(value = "authHeaders")
     private Object authHeaders;
 
     /*
-     * Base64 encoded certificate data for ClientCertificate authentication.
-     * For on-premises copy with ClientCertificate authentication, either
-     * CertThumbprint or EmbeddedCertData/Password should be specified. Type:
+     * Base64 encoded certificate data for ClientCertificate authentication. For on-premises copy with
+     * ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be specified. Type:
      * string (or Expression with resultType string).
      */
     @JsonProperty(value = "embeddedCertData")
     private Object embeddedCertData;
 
     /*
-     * Thumbprint of certificate for ClientCertificate authentication. Only
-     * valid for on-premises copy. For on-premises copy with ClientCertificate
-     * authentication, either CertThumbprint or EmbeddedCertData/Password
-     * should be specified. Type: string (or Expression with resultType
-     * string).
+     * Thumbprint of certificate for ClientCertificate authentication. Only valid for on-premises copy. For on-premises
+     * copy with ClientCertificate authentication, either CertThumbprint or EmbeddedCertData/Password should be
+     * specified. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "certThumbprint")
     private Object certThumbprint;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * If true, validate the HTTPS server SSL certificate. Default value is
-     * true. Type: boolean (or Expression with resultType boolean).
+     * If true, validate the HTTPS server SSL certificate. Default value is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
 
+    /** Creates an instance of HttpLinkedServiceTypeProperties class. */
+    public HttpLinkedServiceTypeProperties() {
+    }
+
     /**
-     * Get the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
+     * Get the url property: The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or
      * Expression with resultType string).
      *
      * @return the url value.
@@ -95,7 +90,7 @@ public final class HttpLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the url property: The base URL of the HTTP endpoint, e.g. http://www.microsoft.com. Type: string (or
+     * Set the url property: The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or
      * Expression with resultType string).
      *
      * @param url the url value to set.
@@ -292,7 +287,7 @@ public final class HttpLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model HttpLinkedServiceTypeProperties"));
@@ -301,4 +296,6 @@ public final class HttpLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HttpLinkedServiceTypeProperties.class);
 }

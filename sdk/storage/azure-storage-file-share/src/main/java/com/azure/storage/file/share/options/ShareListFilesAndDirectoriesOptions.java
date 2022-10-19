@@ -3,14 +3,10 @@
 
 package com.azure.storage.file.share.options;
 
-import com.azure.core.util.logging.ClientLogger;
-
 /**
  * Extended options for a directory listing operation.
  */
 public final class ShareListFilesAndDirectoriesOptions {
-    private final ClientLogger logger = new ClientLogger(ShareListFilesAndDirectoriesOptions.class);
-
     private String prefix;
     private Integer maxResultsPerPage;
     private boolean includeTimestamps;

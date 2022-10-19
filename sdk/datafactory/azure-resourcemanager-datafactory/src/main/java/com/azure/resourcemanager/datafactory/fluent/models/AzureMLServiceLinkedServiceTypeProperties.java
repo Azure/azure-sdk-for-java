@@ -7,64 +7,60 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure ML Service linked service properties. */
 @Fluent
 public final class AzureMLServiceLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMLServiceLinkedServiceTypeProperties.class);
-
     /*
-     * Azure ML Service workspace subscription ID. Type: string (or Expression
-     * with resultType string).
+     * Azure ML Service workspace subscription ID. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "subscriptionId", required = true)
     private Object subscriptionId;
 
     /*
-     * Azure ML Service workspace resource group name. Type: string (or
-     * Expression with resultType string).
+     * Azure ML Service workspace resource group name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "resourceGroupName", required = true)
     private Object resourceGroupName;
 
     /*
-     * Azure ML Service workspace name. Type: string (or Expression with
-     * resultType string).
+     * Azure ML Service workspace name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "mlWorkspaceName", required = true)
     private Object mlWorkspaceName;
 
     /*
-     * The ID of the service principal used to authenticate against the
-     * endpoint of a published Azure ML Service pipeline. Type: string (or
-     * Expression with resultType string).
+     * The ID of the service principal used to authenticate against the endpoint of a published Azure ML Service
+     * pipeline. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against the
-     * endpoint of a published Azure ML Service pipeline.
+     * The key of the service principal used to authenticate against the endpoint of a published Azure ML Service
+     * pipeline.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of AzureMLServiceLinkedServiceTypeProperties class. */
+    public AzureMLServiceLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the subscriptionId property: Azure ML Service workspace subscription ID. Type: string (or Expression with
@@ -227,20 +223,20 @@ public final class AzureMLServiceLinkedServiceTypeProperties {
      */
     public void validate() {
         if (subscriptionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property subscriptionId in model AzureMLServiceLinkedServiceTypeProperties"));
         }
         if (resourceGroupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceGroupName in model"
                             + " AzureMLServiceLinkedServiceTypeProperties"));
         }
         if (mlWorkspaceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property mlWorkspaceName in model"
@@ -250,4 +246,6 @@ public final class AzureMLServiceLinkedServiceTypeProperties {
             servicePrincipalKey().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMLServiceLinkedServiceTypeProperties.class);
 }

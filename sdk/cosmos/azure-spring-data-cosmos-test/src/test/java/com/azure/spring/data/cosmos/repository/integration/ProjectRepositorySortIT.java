@@ -227,7 +227,7 @@ public class ProjectRepositorySortIT {
 
         Assert.assertEquals(references.size(), result.getContent().size());
         Assert.assertEquals(references, result.getContent());
-        validateLastPage(result, result.getContent().size());
+        validateLastPage(result, 5);
     }
 }
 

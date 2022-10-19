@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.AatpCheckRequirementsProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureAdvancedThreatProtection")
 @Fluent
 public final class AatpCheckRequirements extends DataConnectorsCheckRequirements {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AatpCheckRequirements.class);
-
     /*
      * AATP (Azure Advanced Threat Protection) requirements check properties.
      */

@@ -6,15 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains IPv6 peering config. */
 @Fluent
 public final class Ipv6ExpressRouteCircuitPeeringConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Ipv6ExpressRouteCircuitPeeringConfig.class);
-
     /*
      * The primary address prefix.
      */
@@ -44,6 +40,10 @@ public final class Ipv6ExpressRouteCircuitPeeringConfig {
      */
     @JsonProperty(value = "state")
     private ExpressRouteCircuitPeeringState state;
+
+    /** Creates an instance of Ipv6ExpressRouteCircuitPeeringConfig class. */
+    public Ipv6ExpressRouteCircuitPeeringConfig() {
+    }
 
     /**
      * Get the primaryPeerAddressPrefix property: The primary address prefix.

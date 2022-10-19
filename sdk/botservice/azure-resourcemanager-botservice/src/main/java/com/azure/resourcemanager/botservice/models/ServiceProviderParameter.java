@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.botservice.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Extra Parameters specific to each Service Provider. */
 @Immutable
 public final class ServiceProviderParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceProviderParameter.class);
-
     /*
      * Name of the Service Provider
      */

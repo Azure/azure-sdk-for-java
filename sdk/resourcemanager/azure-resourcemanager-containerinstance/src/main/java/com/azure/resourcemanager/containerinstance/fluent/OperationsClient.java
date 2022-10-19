@@ -18,7 +18,8 @@ public interface OperationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation list response that contains all operations for Azure Container Instance service.
+     * @return the operation list response that contains all operations for Azure Container Instance service as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<Operation> listAsync();
@@ -28,7 +29,8 @@ public interface OperationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation list response that contains all operations for Azure Container Instance service.
+     * @return the operation list response that contains all operations for Azure Container Instance service as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<Operation> list();
@@ -40,7 +42,8 @@ public interface OperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation list response that contains all operations for Azure Container Instance service.
+     * @return the operation list response that contains all operations for Azure Container Instance service as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<Operation> list(Context context);

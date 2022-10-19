@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters supplied to the Update Identity Provider operation. */
 @Fluent
 public final class IdentityProviderUpdateProperties extends IdentityProviderBaseParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProviderUpdateProperties.class);
-
     /*
      * Client Id of the Application in the external Identity Provider. It is
      * App ID for Facebook login, Client ID for Google login, App ID for

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Monthly Schedule properties. */
 @Fluent
 public final class MonthlySchedule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MonthlySchedule.class);
-
     /*
      * Monthly snapshot count to keep
      */
@@ -21,8 +17,7 @@ public final class MonthlySchedule {
     private Integer snapshotsToKeep;
 
     /*
-     * Indicates which days of the month snapshot should be taken. A comma
-     * delimited string.
+     * Indicates which days of the month snapshot should be taken. A comma delimited string.
      */
     @JsonProperty(value = "daysOfMonth")
     private String daysOfMonth;

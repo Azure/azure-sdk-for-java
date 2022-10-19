@@ -6,17 +6,13 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SSIS embedded child package. */
 @Fluent
 public final class SsisChildPackage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisChildPackage.class);
-
     /*
-     * Path for embedded child package. Type: string (or Expression with
-     * resultType string).
+     * Path for embedded child package. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "packagePath", required = true)
     private Object packagePath;
@@ -28,8 +24,7 @@ public final class SsisChildPackage {
     private String packageName;
 
     /*
-     * Content for embedded child package. Type: string (or Expression with
-     * resultType string).
+     * Content for embedded child package. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "packageContent", required = true)
     private Object packageContent;
@@ -39,6 +34,10 @@ public final class SsisChildPackage {
      */
     @JsonProperty(value = "packageLastModifiedDate")
     private String packageLastModifiedDate;
+
+    /** Creates an instance of SsisChildPackage class. */
+    public SsisChildPackage() {
+    }
 
     /**
      * Get the packagePath property: Path for embedded child package. Type: string (or Expression with resultType
@@ -131,14 +130,16 @@ public final class SsisChildPackage {
      */
     public void validate() {
         if (packagePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property packagePath in model SsisChildPackage"));
         }
         if (packageContent() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property packageContent in model SsisChildPackage"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SsisChildPackage.class);
 }

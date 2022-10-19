@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes related incident information for the bookmark. */
 @Fluent
 public final class IncidentInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentInfo.class);
-
     /*
      * Incident Id
      */

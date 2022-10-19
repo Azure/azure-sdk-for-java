@@ -21,7 +21,7 @@ public class NonRestCallTests {
         StepVerifier.create(apiCall).verifyError(NullPointerException.class);
     }
 
-    private static Stream<Publisher<?>> apiCallReturnsErrorSupplier() {
+    static Stream<Publisher<?>> apiCallReturnsErrorSupplier() {
         SearchIndexerAsyncClient client = new SearchIndexerClientBuilder()
             .endpoint("https://fake.com")
             .credential(new AzureKeyCredential("fake"))

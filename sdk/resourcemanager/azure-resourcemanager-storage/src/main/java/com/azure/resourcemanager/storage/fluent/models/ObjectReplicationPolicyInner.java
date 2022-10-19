@@ -6,9 +6,7 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyRule;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** The replication policy between two storage accounts. Multiple rules can be defined in one policy. */
 @Fluent
 public final class ObjectReplicationPolicyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyInner.class);
-
     /*
      * Returns the Storage Account Object Replication Policy.
      */

@@ -25,7 +25,8 @@ public interface RecoverableDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable database, which is a resource representing a database's geo backup.
+     * @return a recoverable database, which is a resource representing a database's geo backup along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RecoverableDatabaseInner>> getWithResponseAsync(
@@ -41,7 +42,8 @@ public interface RecoverableDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable database, which is a resource representing a database's geo backup.
+     * @return a recoverable database, which is a resource representing a database's geo backup on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<RecoverableDatabaseInner> getAsync(String resourceGroupName, String serverName, String databaseName);
@@ -72,7 +74,8 @@ public interface RecoverableDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a recoverable database, which is a resource representing a database's geo backup.
+     * @return a recoverable database, which is a resource representing a database's geo backup along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<RecoverableDatabaseInner> getWithResponse(
@@ -87,7 +90,7 @@ public interface RecoverableDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable databases.
+     * @return a list of recoverable databases as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RecoverableDatabaseInner> listByServerAsync(String resourceGroupName, String serverName);
@@ -101,7 +104,7 @@ public interface RecoverableDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable databases.
+     * @return a list of recoverable databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecoverableDatabaseInner> listByServer(String resourceGroupName, String serverName);
@@ -116,7 +119,7 @@ public interface RecoverableDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of recoverable databases.
+     * @return a list of recoverable databases as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RecoverableDatabaseInner> listByServer(String resourceGroupName, String serverName, Context context);

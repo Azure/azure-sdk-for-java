@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallNatRuleCollectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NAT rule collection resource. */
 @Fluent
 public final class AzureFirewallNatRuleCollection extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallNatRuleCollection.class);
-
     /*
      * Properties of the azure firewall NAT rule collection.
      */
@@ -24,8 +20,7 @@ public final class AzureFirewallNatRuleCollection extends SubResource {
     private AzureFirewallNatRuleCollectionProperties innerProperties;
 
     /*
-     * The name of the resource that is unique within the Azure firewall. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within the Azure firewall. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -35,6 +30,10 @@ public final class AzureFirewallNatRuleCollection extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of AzureFirewallNatRuleCollection class. */
+    public AzureFirewallNatRuleCollection() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the azure firewall NAT rule collection.

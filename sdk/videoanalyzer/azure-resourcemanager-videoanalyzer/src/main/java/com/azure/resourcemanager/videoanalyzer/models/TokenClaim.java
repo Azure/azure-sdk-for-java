@@ -6,14 +6,11 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties for expected token claims. */
 @Fluent
 public final class TokenClaim {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TokenClaim.class);
-
     /*
      * Name of the claim which must be present on the token.
      */
@@ -73,14 +70,16 @@ public final class TokenClaim {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model TokenClaim"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model TokenClaim"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TokenClaim.class);
 }

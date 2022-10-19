@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VpnSiteInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class ListVpnSitesResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListVpnSitesResult.class);
-
     /*
      * List of VpnSites.
      */
@@ -30,6 +26,10 @@ public final class ListVpnSitesResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ListVpnSitesResult class. */
+    public ListVpnSitesResult() {
+    }
 
     /**
      * Get the value property: List of VpnSites.

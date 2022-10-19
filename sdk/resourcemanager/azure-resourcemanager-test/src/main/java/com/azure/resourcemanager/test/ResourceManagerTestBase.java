@@ -7,7 +7,6 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
-import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -45,7 +44,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
-import java.security.PrivilegedAction;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.time.Duration;
@@ -55,14 +53,16 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
  * Test base for resource manager SDK.
  */
 public abstract class ResourceManagerTestBase extends TestBase {
-    private static final String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
-    private static final String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    private static final String ZERO_UUID = "00000000-0000-0000-0000-000000000000";
+    private static final String ZERO_SUBSCRIPTION = ZERO_UUID;
+    private static final String ZERO_TENANT = ZERO_UUID;
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     private static final String AZURE_AUTH_LOCATION = "AZURE_AUTH_LOCATION";
     private static final String AZURE_TEST_LOG_LEVEL = "AZURE_TEST_LOG_LEVEL";
@@ -164,7 +164,8 @@ public abstract class ResourceManagerTestBase extends TestBase {
      * @return A client ID loaded from a file.
      */
     protected String clientIdFromFile() {
-        return testAuthFile.getClientId();
+        String clientId = testAuthFile == null ? null : testAuthFile.getClientId();
+        return testResourceNamer.recordValueFromConfig(clientId);
     }
 
     /**
@@ -204,10 +205,10 @@ public abstract class ResourceManagerTestBase extends TestBase {
         } catch (Exception e) {
             if (isPlaybackMode()) {
                 httpLogDetailLevel = HttpLogDetailLevel.NONE;
-                LOGGER.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", new Object[]{AZURE_TEST_LOG_LEVEL});
+                LOGGER.error("Environment variable '{}' has not been set yet. Using 'NONE' for PLAYBACK.", AZURE_TEST_LOG_LEVEL);
             } else {
                 httpLogDetailLevel = HttpLogDetailLevel.BODY_AND_HEADERS;
-                LOGGER.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", new Object[]{AZURE_TEST_LOG_LEVEL});
+                LOGGER.error("Environment variable '{}' has not been set yet. Using 'BODY_AND_HEADERS' for RECORD/LIVE.", AZURE_TEST_LOG_LEVEL);
             }
         }
 
@@ -228,7 +229,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
             testProfile = PLAYBACK_PROFILE;
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
-            policies.add(new CookiePolicy());
             httpPipeline = buildHttpPipeline(
                 null,
                 testProfile,
@@ -243,7 +243,7 @@ public abstract class ResourceManagerTestBase extends TestBase {
                 try {
                     testAuthFile = AuthFile.parse(credFile);
                 } catch (IOException e) {
-                    throw LOGGER.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format."));
+                    throw LOGGER.logExceptionAsError(new RuntimeException("Cannot parse auth file. Please check file format.", e));
                 }
                 credential = testAuthFile.getCredential();
                 testProfile = new AzureProfile(testAuthFile.getTenantId(), testAuthFile.getSubscriptionId(), testAuthFile.getEnvironment());
@@ -269,7 +269,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
 
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new TimeoutPolicy(Duration.ofMinutes(1)));
-            policies.add(new CookiePolicy());
             if (!interceptorManager.isLiveMode() && !testContextManager.doNotRecordTest()) {
                 policies.add(new TextReplacementPolicy(interceptorManager.getRecordedData(), textReplacementRules));
             }
@@ -286,8 +285,14 @@ public abstract class ResourceManagerTestBase extends TestBase {
 
             textReplacementRules.put(testProfile.getSubscriptionId(), ZERO_SUBSCRIPTION);
             textReplacementRules.put(testProfile.getTenantId(), ZERO_TENANT);
-            textReplacementRules.put(AzureEnvironment.AZURE.getResourceManagerEndpoint(), PLAYBACK_URI + "/");
-            textReplacementRules.put(AzureEnvironment.AZURE.getMicrosoftGraphEndpoint(), PLAYBACK_URI + "/");
+            // ARM endpoint
+            textReplacementRules.put(Pattern.quote(AzureEnvironment.AZURE.getResourceManagerEndpoint()), PLAYBACK_URI + "/");
+            // MSGraph endpoint
+            textReplacementRules.put(Pattern.quote(AzureEnvironment.AZURE.getMicrosoftGraphEndpoint()), PLAYBACK_URI + "/");
+            // vault endpoint
+            textReplacementRules.put("https://[a-zA-Z0-9]+?" + AzureEnvironment.AZURE.getKeyVaultDnsSuffix().replace(".", "\\.") + "/", PLAYBACK_URI + "/");
+            // storage account endpoint
+            textReplacementRules.put("https://[a-zA-Z0-9]+?" + AzureEnvironment.AZURE.getStorageEndpointSuffix().replace(".", "\\.") + "/", PLAYBACK_URI + "/");
             addTextReplacementRules(textReplacementRules);
         }
         initializeClients(httpPipeline, testProfile);
@@ -384,19 +389,15 @@ public abstract class ResourceManagerTestBase extends TestBase {
                     }
                 }
             }
-        } catch (IllegalAccessException ex) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(ex));
-        } catch (NoSuchFieldException ex) {
+        } catch (IllegalAccessException | NoSuchFieldException ex) {
             throw LOGGER.logExceptionAsError(new RuntimeException(ex));
         }
     }
 
-    @SuppressWarnings("removal")
     private void setAccessible(final AccessibleObject accessibleObject) {
-        java.security.AccessController.doPrivileged((PrivilegedAction<Object>) () -> {
-            accessibleObject.setAccessible(true);
-            return null;
-        });
+        // avoid bug in Java8
+        Runnable runnable = () -> accessibleObject.setAccessible(true);
+        runnable.run();
     }
 
     /**
@@ -409,7 +410,6 @@ public abstract class ResourceManagerTestBase extends TestBase {
      * @return the manager instance
      * @throws RuntimeException when field cannot be found or set.
      */
-    @SuppressWarnings("removal")
     protected <T> T buildManager(Class<T> manager, HttpPipeline httpPipeline, AzureProfile profile) {
         try {
             Constructor<T> constructor = manager.getDeclaredConstructor(httpPipeline.getClass(), profile.getClass());

@@ -14,7 +14,9 @@ import com.azure.resourcemanager.compute.models.DiskCreateOption;
 import com.azure.resourcemanager.compute.models.DiskSku;
 import com.azure.resourcemanager.compute.models.DiskSkuTypes;
 import com.azure.resourcemanager.compute.models.DiskStorageAccountTypes;
+import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
+import com.azure.resourcemanager.compute.models.EncryptionType;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
@@ -100,6 +102,11 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public EncryptionSettingsCollection encryptionSettings() {
         return this.innerModel().encryptionSettingsCollection();
+    }
+
+    @Override
+    public Encryption encryption() {
+        return this.innerModel().encryption();
     }
 
     @Override
@@ -355,6 +362,29 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
             this.innerModel().withZones(new ArrayList<String>());
         }
         this.innerModel().zones().add(zoneId.toString());
+        return this;
+    }
+
+    @Override
+    public DiskImpl withDiskEncryptionSet(String diskEncryptionSetId) {
+        Encryption encryption = this.innerModel().encryption();
+        if (encryption == null) {
+            encryption = new Encryption();
+            this.innerModel().withEncryption(encryption);
+        }
+        encryption.withDiskEncryptionSetId(diskEncryptionSetId);
+        return this;
+    }
+
+    @Override
+    public DiskImpl withDiskEncryptionSet(String diskEncryptionSetId, EncryptionType encryptionType) {
+        Encryption encryption = this.innerModel().encryption();
+        if (encryption == null) {
+            encryption = new Encryption();
+            this.innerModel().withEncryption(encryption);
+        }
+        encryption.withType(encryptionType);
+        encryption.withDiskEncryptionSetId(diskEncryptionSetId);
         return this;
     }
 

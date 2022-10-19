@@ -20,7 +20,7 @@ autorest --java --use=C:/work/autorest.java
 
 ## Generate autorest code
 ```yaml
-input-file: https://github.com/Azure/azure-rest-api-specs/blob/main/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/preview/2021-06-01-preview/deviceupdate.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/d7c9be23749467be1aea18f02ba2f4948a39db6a/specification/deviceupdate/data-plane/Microsoft.DeviceUpdate/stable/2022-10-01/deviceupdate.json
 java: true
 output-folder: ../
 regenerate-pom: false
@@ -28,9 +28,10 @@ title: DeviceUpdateClient
 generate-sync-async-clients: true
 generate-client-as-impl: true
 generate-client-interfaces: false
+service-interface-as-public: true
 add-context-parameter: true
 artifact-id: azure-iot-deviceupdate
-low-level-client: true
+data-plane: true
 sync-methods: all
 generate-samples: true
 license-header: MICROSOFT_MIT_SMALL
@@ -41,5 +42,9 @@ azure-arm: false
 credential-types: tokencredential
 credential-scopes: https://api.adu.microsoft.com/.default
 service-versions:
-  - '2021-06-01-preview'
+  - '2022-10-01'
+polling:
+    default:
+        strategy: >-
+                  new OperationResourcePollingStrategyWithEndpoint<>({httpPipeline}, "https://" + this.client.getEndpoint(), null, null, {context})
 ```

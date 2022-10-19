@@ -12,10 +12,9 @@ import com.azure.resourcemanager.applicationinsights.fluent.ComponentAvailableFe
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentAvailableFeaturesInner;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentAvailableFeatures;
 import com.azure.resourcemanager.applicationinsights.models.ComponentAvailableFeatures;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ComponentAvailableFeaturesImpl implements ComponentAvailableFeatures {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComponentAvailableFeaturesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ComponentAvailableFeaturesImpl.class);
 
     private final ComponentAvailableFeaturesClient innerClient;
 

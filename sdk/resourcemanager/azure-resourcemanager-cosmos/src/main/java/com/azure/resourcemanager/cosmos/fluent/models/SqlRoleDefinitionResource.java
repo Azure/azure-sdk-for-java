@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.Permission;
 import com.azure.resourcemanager.cosmos.models.RoleDefinitionType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Azure Cosmos DB SQL Role Definition resource object. */
 @Fluent
 public final class SqlRoleDefinitionResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRoleDefinitionResource.class);
-
     /*
-     * A user-friendly name for the Role Definition. Must be unique for the
-     * database account.
+     * A user-friendly name for the Role Definition. Must be unique for the database account.
      */
     @JsonProperty(value = "roleName")
     private String roleName;
@@ -31,12 +26,10 @@ public final class SqlRoleDefinitionResource {
     private RoleDefinitionType type;
 
     /*
-     * A set of fully qualified Scopes at or below which Role Assignments may
-     * be created using this Role Definition. This will allow application of
-     * this Role Definition on the entire database account or any underlying
-     * Database / Collection. Must have at least one element. Scopes higher
-     * than Database account are not enforceable as assignable Scopes. Note
-     * that resources referenced in assignable Scopes need not exist.
+     * A set of fully qualified Scopes at or below which Role Assignments may be created using this Role Definition.
+     * This will allow application of this Role Definition on the entire database account or any underlying Database /
+     * Collection. Must have at least one element. Scopes higher than Database account are not enforceable as
+     * assignable Scopes. Note that resources referenced in assignable Scopes need not exist.
      */
     @JsonProperty(value = "assignableScopes")
     private List<String> assignableScopes;

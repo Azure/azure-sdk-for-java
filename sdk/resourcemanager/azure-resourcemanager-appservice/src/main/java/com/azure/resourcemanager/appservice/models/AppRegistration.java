@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the app registration for providers that have app ids and app secrets. */
 @Fluent
 public final class AppRegistration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppRegistration.class);
-
     /*
      * The App ID of the app used for login.
      */

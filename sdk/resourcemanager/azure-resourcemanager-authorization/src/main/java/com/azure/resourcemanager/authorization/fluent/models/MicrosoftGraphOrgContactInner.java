@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,13 +15,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents an Azure Active Directory object. The directoryObject type is the base type for many other directory
- * entity types.
+ * orgContact Represents an Azure Active Directory object. The directoryObject type is the base type for many other
+ * directory entity types.
  */
 @Fluent
 public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectoryObjectInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOrgContactInner.class);
-
     /*
      * The addresses property.
      */
@@ -114,8 +111,9 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     private List<MicrosoftGraphDirectoryObjectInner> directReports;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * directoryObject Represents an Azure Active Directory object. The
+     * directoryObject type is the base type for many other directory entity
+     * types.
      */
     @JsonProperty(value = "manager")
     private MicrosoftGraphDirectoryObjectInner manager;
@@ -440,8 +438,8 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     }
 
     /**
-     * Get the manager property: Represents an Azure Active Directory object. The directoryObject type is the base type
-     * for many other directory entity types.
+     * Get the manager property: directoryObject Represents an Azure Active Directory object. The directoryObject type
+     * is the base type for many other directory entity types.
      *
      * @return the manager value.
      */
@@ -450,8 +448,8 @@ public final class MicrosoftGraphOrgContactInner extends MicrosoftGraphDirectory
     }
 
     /**
-     * Set the manager property: Represents an Azure Active Directory object. The directoryObject type is the base type
-     * for many other directory entity types.
+     * Set the manager property: directoryObject Represents an Azure Active Directory object. The directoryObject type
+     * is the base type for many other directory entity types.
      *
      * @param manager the manager value to set.
      * @return the MicrosoftGraphOrgContactInner object itself.

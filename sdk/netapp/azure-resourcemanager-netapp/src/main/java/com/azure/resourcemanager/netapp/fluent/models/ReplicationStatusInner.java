@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.MirrorState;
 import com.azure.resourcemanager.netapp.models.RelationshipStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Replication status. */
 @Fluent
 public final class ReplicationStatusInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationStatusInner.class);
-
     /*
      * Replication health check
      */

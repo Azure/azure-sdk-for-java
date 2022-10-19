@@ -21,13 +21,15 @@ public interface VendorNetworkFunctionsClient {
      * @param locationName The Azure region where the network function resource was created by the customer.
      * @param vendorName The name of the vendor.
      * @param serviceKey The GUID for the vendor network function.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified vendor network function.
+     * @return information about the specified vendor network function along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VendorNetworkFunctionInner get(String locationName, String vendorName, String serviceKey);
+    Response<VendorNetworkFunctionInner> getWithResponse(
+        String locationName, String vendorName, String serviceKey, Context context);
 
     /**
      * Gets information about the specified vendor network function.
@@ -35,15 +37,13 @@ public interface VendorNetworkFunctionsClient {
      * @param locationName The Azure region where the network function resource was created by the customer.
      * @param vendorName The name of the vendor.
      * @param serviceKey The GUID for the vendor network function.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified vendor network function.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VendorNetworkFunctionInner> getWithResponse(
-        String locationName, String vendorName, String serviceKey, Context context);
+    VendorNetworkFunctionInner get(String locationName, String vendorName, String serviceKey);
 
     /**
      * Creates or updates a vendor network function. This operation can take up to 6 hours to complete. This is expected
@@ -56,9 +56,9 @@ public interface VendorNetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor network function sub resource.
+     * @return the {@link SyncPoller} for polling of vendor network function sub resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VendorNetworkFunctionInner>, VendorNetworkFunctionInner> beginCreateOrUpdate(
         String locationName, String vendorName, String serviceKey, VendorNetworkFunctionInner parameters);
 
@@ -74,9 +74,9 @@ public interface VendorNetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vendor network function sub resource.
+     * @return the {@link SyncPoller} for polling of vendor network function sub resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VendorNetworkFunctionInner>, VendorNetworkFunctionInner> beginCreateOrUpdate(
         String locationName,
         String vendorName,
@@ -132,7 +132,7 @@ public interface VendorNetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VendorNetworkFunctionInner> list(String locationName, String vendorName);
@@ -149,7 +149,7 @@ public interface VendorNetworkFunctionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for vendors API service call.
+     * @return response for vendors API service call as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VendorNetworkFunctionInner> list(

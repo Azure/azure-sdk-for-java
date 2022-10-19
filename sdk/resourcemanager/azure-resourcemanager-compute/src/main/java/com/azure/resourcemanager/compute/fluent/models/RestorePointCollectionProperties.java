@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.RestorePointCollectionSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The restore point collection properties. */
 @Fluent
 public final class RestorePointCollectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointCollectionProperties.class);
-
     /*
-     * The properties of the source resource that this restore point collection
-     * is created from.
+     * The properties of the source resource that this restore point collection is created from.
      */
     @JsonProperty(value = "source")
     private RestorePointCollectionSourceProperties source;
@@ -36,8 +31,7 @@ public final class RestorePointCollectionProperties {
     private String restorePointCollectionId;
 
     /*
-     * A list containing all restore points created under this restore point
-     * collection.
+     * A list containing all restore points created under this restore point collection.
      */
     @JsonProperty(value = "restorePoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorePointInner> restorePoints;

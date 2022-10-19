@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Network Virtual Appliance NIC properties. */
 @Immutable
 public final class VirtualApplianceNicProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualApplianceNicProperties.class);
-
     /*
      * NIC name.
      */
@@ -31,6 +27,10 @@ public final class VirtualApplianceNicProperties {
      */
     @JsonProperty(value = "privateIpAddress", access = JsonProperty.Access.WRITE_ONLY)
     private String privateIpAddress;
+
+    /** Creates an instance of VirtualApplianceNicProperties class. */
+    public VirtualApplianceNicProperties() {
+    }
 
     /**
      * Get the name property: NIC name.

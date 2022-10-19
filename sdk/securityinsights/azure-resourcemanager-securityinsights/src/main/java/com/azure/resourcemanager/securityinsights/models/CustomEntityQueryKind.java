@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CustomEntityQueryKind. */
+/** The kind of the entity query that supports put request. */
 public final class CustomEntityQueryKind extends ExpandableStringEnum<CustomEntityQueryKind> {
     /** Static value Activity for CustomEntityQueryKind. */
     public static final CustomEntityQueryKind ACTIVITY = fromString("Activity");
@@ -24,7 +24,11 @@ public final class CustomEntityQueryKind extends ExpandableStringEnum<CustomEnti
         return fromString(name, CustomEntityQueryKind.class);
     }
 
-    /** @return known CustomEntityQueryKind values. */
+    /**
+     * Gets known CustomEntityQueryKind values.
+     *
+     * @return known CustomEntityQueryKind values.
+     */
     public static Collection<CustomEntityQueryKind> values() {
         return values(CustomEntityQueryKind.class);
     }

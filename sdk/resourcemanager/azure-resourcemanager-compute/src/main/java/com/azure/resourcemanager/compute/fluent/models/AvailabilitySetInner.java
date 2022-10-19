@@ -7,10 +7,8 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +24,6 @@ import java.util.Map;
  */
 @Fluent
 public final class AvailabilitySetInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilitySetInner.class);
-
     /*
      * The instance view of a resource.
      */
@@ -35,10 +31,9 @@ public final class AvailabilitySetInner extends Resource {
     private AvailabilitySetProperties innerProperties;
 
     /*
-     * Sku of the availability set, only name is required to be set. See
-     * AvailabilitySetSkuTypes for possible set of values. Use 'Aligned' for
-     * virtual machines with managed disks and 'Classic' for virtual machines
-     * with unmanaged disks. Default value is 'Classic'.
+     * Sku of the availability set, only name is required to be set. See AvailabilitySetSkuTypes for possible set of
+     * values. Use 'Aligned' for virtual machines with managed disks and 'Classic' for virtual machines with unmanaged
+     * disks. Default value is 'Classic'.
      */
     @JsonProperty(value = "sku")
     private Sku sku;

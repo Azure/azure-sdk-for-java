@@ -59,6 +59,10 @@ public final class ProtectedItemResourceImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ProtectedItemResourceInner innerModel() {
         return this.innerObject;
     }

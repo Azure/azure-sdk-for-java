@@ -5,33 +5,27 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.ChangeFeed;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
 import com.azure.resourcemanager.storage.models.LastAccessTimeTrackingPolicy;
 import com.azure.resourcemanager.storage.models.RestorePolicyProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a storage account’s Blob service. */
 @Fluent
 public final class BlobServicePropertiesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobServicePropertiesProperties.class);
-
     /*
-     * Specifies CORS rules for the Blob service. You can include up to five
-     * CorsRule elements in the request. If no CorsRule elements are included
-     * in the request body, all CORS rules will be deleted, and CORS will be
-     * disabled for the Blob service.
+     * Specifies CORS rules for the Blob service. You can include up to five CorsRule elements in the request. If no
+     * CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS will be disabled
+     * for the Blob service.
      */
     @JsonProperty(value = "cors")
     private CorsRules cors;
 
     /*
-     * DefaultServiceVersion indicates the default version to use for requests
-     * to the Blob service if an incoming request’s version is not specified.
-     * Possible values include version 2008-10-27 and all more recent versions.
+     * DefaultServiceVersion indicates the default version to use for requests to the Blob service if an incoming
+     * request’s version is not specified. Possible values include version 2008-10-27 and all more recent versions.
      */
     @JsonProperty(value = "defaultServiceVersion")
     private String defaultServiceVersion;
@@ -73,8 +67,7 @@ public final class BlobServicePropertiesProperties {
     private DeleteRetentionPolicy containerDeleteRetentionPolicy;
 
     /*
-     * The blob service property to configure last access time based tracking
-     * policy.
+     * The blob service property to configure last access time based tracking policy.
      */
     @JsonProperty(value = "lastAccessTimeTrackingPolicy")
     private LastAccessTimeTrackingPolicy lastAccessTimeTrackingPolicy;

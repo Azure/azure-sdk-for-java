@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Volume group properties. */
 @Fluent
 public final class VolumeGroupMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeGroupMetadata.class);
-
     /*
      * Group Description
      */
@@ -34,8 +30,9 @@ public final class VolumeGroupMetadata {
     private String applicationIdentifier;
 
     /*
-     * Global volume placement rules Application specific placement rules for
-     * the volume group
+     * Global volume placement rules
+     *
+     * Application specific placement rules for the volume group
      */
     @JsonProperty(value = "globalPlacementRules")
     private List<PlacementKeyValuePairs> globalPlacementRules;
@@ -113,8 +110,9 @@ public final class VolumeGroupMetadata {
     }
 
     /**
-     * Get the globalPlacementRules property: Global volume placement rules Application specific placement rules for the
-     * volume group.
+     * Get the globalPlacementRules property: Global volume placement rules
+     *
+     * <p>Application specific placement rules for the volume group.
      *
      * @return the globalPlacementRules value.
      */
@@ -123,8 +121,9 @@ public final class VolumeGroupMetadata {
     }
 
     /**
-     * Set the globalPlacementRules property: Global volume placement rules Application specific placement rules for the
-     * volume group.
+     * Set the globalPlacementRules property: Global volume placement rules
+     *
+     * <p>Application specific placement rules for the volume group.
      *
      * @param globalPlacementRules the globalPlacementRules value to set.
      * @return the VolumeGroupMetadata object itself.

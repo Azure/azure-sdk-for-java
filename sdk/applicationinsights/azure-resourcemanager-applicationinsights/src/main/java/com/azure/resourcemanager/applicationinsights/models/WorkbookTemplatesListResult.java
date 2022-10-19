@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WorkbookTemplateInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** WorkbookTemplate list result. */
 @Fluent
 public final class WorkbookTemplatesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkbookTemplatesListResult.class);
-
     /*
      * An array of workbook templates.
      */

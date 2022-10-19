@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that define the configuration of traffic analytics. */
 @Fluent
 public final class TrafficAnalyticsConfigurationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficAnalyticsConfigurationProperties.class);
-
     /*
      * Flag to enable/disable traffic analytics.
      */
@@ -39,11 +35,14 @@ public final class TrafficAnalyticsConfigurationProperties {
     private String workspaceResourceId;
 
     /*
-     * The interval in minutes which would decide how frequently TA service
-     * should do flow analytics.
+     * The interval in minutes which would decide how frequently TA service should do flow analytics.
      */
     @JsonProperty(value = "trafficAnalyticsInterval")
     private Integer trafficAnalyticsInterval;
+
+    /** Creates an instance of TrafficAnalyticsConfigurationProperties class. */
+    public TrafficAnalyticsConfigurationProperties() {
+    }
 
     /**
      * Get the enabled property: Flag to enable/disable traffic analytics.

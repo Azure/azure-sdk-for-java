@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WebApplicationFirewallAction. */
+/** Type of Actions. */
 public final class WebApplicationFirewallAction extends ExpandableStringEnum<WebApplicationFirewallAction> {
     /** Static value Allow for WebApplicationFirewallAction. */
     public static final WebApplicationFirewallAction ALLOW = fromString("Allow");
@@ -30,7 +30,11 @@ public final class WebApplicationFirewallAction extends ExpandableStringEnum<Web
         return fromString(name, WebApplicationFirewallAction.class);
     }
 
-    /** @return known WebApplicationFirewallAction values. */
+    /**
+     * Gets known WebApplicationFirewallAction values.
+     *
+     * @return known WebApplicationFirewallAction values.
+     */
     public static Collection<WebApplicationFirewallAction> values() {
         return values(WebApplicationFirewallAction.class);
     }

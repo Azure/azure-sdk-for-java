@@ -14,60 +14,69 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.labservices.fluent.models.LabPlanInner;
 import com.azure.resourcemanager.labservices.models.LabPlanUpdate;
 import com.azure.resourcemanager.labservices.models.SaveImageBody;
-import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LabPlansClient. */
 public interface LabPlansClient {
     /**
-     * Returns a list of all lab plans within a subscription.
+     * Get all lab plans for a subscription.
+     *
+     * <p>Returns a list of all lab plans within a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab plans.
+     * @return paged list of lab plans as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabPlanInner> list();
 
     /**
-     * Returns a list of all lab plans within a subscription.
+     * Get all lab plans for a subscription.
+     *
+     * <p>Returns a list of all lab plans within a subscription.
      *
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab plans.
+     * @return paged list of lab plans as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabPlanInner> list(String filter, Context context);
 
     /**
-     * Returns a list of all lab plans for a subscription and resource group.
+     * Get all lab plans for a subscription and resource group.
+     *
+     * <p>Returns a list of all lab plans for a subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab plans.
+     * @return paged list of lab plans as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabPlanInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Returns a list of all lab plans for a subscription and resource group.
+     * Get all lab plans for a subscription and resource group.
+     *
+     * <p>Returns a list of all lab plans for a subscription and resource group.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of lab plans.
+     * @return paged list of lab plans as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LabPlanInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Retrieves the properties of a Lab Plan.
+     * Retrieves a Lab Plan resource.
+     *
+     * <p>Retrieves the properties of a Lab Plan.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -81,7 +90,9 @@ public interface LabPlansClient {
     LabPlanInner getByResourceGroup(String resourceGroupName, String labPlanName);
 
     /**
-     * Retrieves the properties of a Lab Plan.
+     * Retrieves a Lab Plan resource.
+     *
+     * <p>Retrieves the properties of a Lab Plan.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -97,7 +108,9 @@ public interface LabPlansClient {
         String resourceGroupName, String labPlanName, Context context);
 
     /**
-     * Operation to create or update a Lab Plan resource.
+     * Updates or creates a Lab Plan resource.
+     *
+     * <p>Operation to create or update a Lab Plan resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -106,15 +119,17 @@ public interface LabPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab Plans act as a permission container for creating labs via labs.azure.com along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of lab Plans act as a permission container for creating labs via
+     *     labs.azure.com.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LabPlanInner>, LabPlanInner> beginCreateOrUpdate(
         String resourceGroupName, String labPlanName, LabPlanInner body);
 
     /**
-     * Operation to create or update a Lab Plan resource.
+     * Updates or creates a Lab Plan resource.
+     *
+     * <p>Operation to create or update a Lab Plan resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -124,15 +139,17 @@ public interface LabPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab Plans act as a permission container for creating labs via labs.azure.com along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of lab Plans act as a permission container for creating labs via
+     *     labs.azure.com.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LabPlanInner>, LabPlanInner> beginCreateOrUpdate(
         String resourceGroupName, String labPlanName, LabPlanInner body, Context context);
 
     /**
-     * Operation to create or update a Lab Plan resource.
+     * Updates or creates a Lab Plan resource.
+     *
+     * <p>Operation to create or update a Lab Plan resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -147,7 +164,9 @@ public interface LabPlansClient {
     LabPlanInner createOrUpdate(String resourceGroupName, String labPlanName, LabPlanInner body);
 
     /**
-     * Operation to create or update a Lab Plan resource.
+     * Updates or creates a Lab Plan resource.
+     *
+     * <p>Operation to create or update a Lab Plan resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -163,7 +182,9 @@ public interface LabPlansClient {
     LabPlanInner createOrUpdate(String resourceGroupName, String labPlanName, LabPlanInner body, Context context);
 
     /**
-     * Operation to update a Lab Plan resource.
+     * Updates a Lab Plan resource.
+     *
+     * <p>Operation to update a Lab Plan resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -172,15 +193,17 @@ public interface LabPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab Plans act as a permission container for creating labs via labs.azure.com along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of lab Plans act as a permission container for creating labs via
+     *     labs.azure.com.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LabPlanInner>, LabPlanInner> beginUpdate(
         String resourceGroupName, String labPlanName, LabPlanUpdate body);
 
     /**
-     * Operation to update a Lab Plan resource.
+     * Updates a Lab Plan resource.
+     *
+     * <p>Operation to update a Lab Plan resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -190,15 +213,17 @@ public interface LabPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lab Plans act as a permission container for creating labs via labs.azure.com along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of lab Plans act as a permission container for creating labs via
+     *     labs.azure.com.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<LabPlanInner>, LabPlanInner> beginUpdate(
         String resourceGroupName, String labPlanName, LabPlanUpdate body, Context context);
 
     /**
-     * Operation to update a Lab Plan resource.
+     * Updates a Lab Plan resource.
+     *
+     * <p>Operation to update a Lab Plan resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -213,7 +238,9 @@ public interface LabPlansClient {
     LabPlanInner update(String resourceGroupName, String labPlanName, LabPlanUpdate body);
 
     /**
-     * Operation to update a Lab Plan resource.
+     * Updates a Lab Plan resource.
+     *
+     * <p>Operation to update a Lab Plan resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -229,8 +256,10 @@ public interface LabPlansClient {
     LabPlanInner update(String resourceGroupName, String labPlanName, LabPlanUpdate body, Context context);
 
     /**
-     * Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan, nor
-     * does it delete shared images added to a gallery via the lab plan permission container.
+     * Deletes a Lab Plan resource.
+     *
+     * <p>Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan,
+     * nor does it delete shared images added to a gallery via the lab plan permission container.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -238,14 +267,16 @@ public interface LabPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labPlanName);
 
     /**
-     * Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan, nor
-     * does it delete shared images added to a gallery via the lab plan permission container.
+     * Deletes a Lab Plan resource.
+     *
+     * <p>Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan,
+     * nor does it delete shared images added to a gallery via the lab plan permission container.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -254,14 +285,16 @@ public interface LabPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String labPlanName, Context context);
 
     /**
-     * Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan, nor
-     * does it delete shared images added to a gallery via the lab plan permission container.
+     * Deletes a Lab Plan resource.
+     *
+     * <p>Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan,
+     * nor does it delete shared images added to a gallery via the lab plan permission container.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -274,8 +307,10 @@ public interface LabPlansClient {
     void delete(String resourceGroupName, String labPlanName);
 
     /**
-     * Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan, nor
-     * does it delete shared images added to a gallery via the lab plan permission container.
+     * Deletes a Lab Plan resource.
+     *
+     * <p>Operation to delete a Lab Plan resource. Deleting a lab plan does not delete labs associated with a lab plan,
+     * nor does it delete shared images added to a gallery via the lab plan permission container.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -289,7 +324,9 @@ public interface LabPlansClient {
     void delete(String resourceGroupName, String labPlanName, Context context);
 
     /**
-     * Saves an image from a lab VM to the attached shared image gallery.
+     * Save an image from a lab VM to the attached shared image gallery.
+     *
+     * <p>Saves an image from a lab VM to the attached shared image gallery.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -298,13 +335,15 @@ public interface LabPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSaveImage(String resourceGroupName, String labPlanName, SaveImageBody body);
 
     /**
-     * Saves an image from a lab VM to the attached shared image gallery.
+     * Save an image from a lab VM to the attached shared image gallery.
+     *
+     * <p>Saves an image from a lab VM to the attached shared image gallery.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -314,14 +353,16 @@ public interface LabPlansClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginSaveImage(
         String resourceGroupName, String labPlanName, SaveImageBody body, Context context);
 
     /**
-     * Saves an image from a lab VM to the attached shared image gallery.
+     * Save an image from a lab VM to the attached shared image gallery.
+     *
+     * <p>Saves an image from a lab VM to the attached shared image gallery.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in
@@ -335,7 +376,9 @@ public interface LabPlansClient {
     void saveImage(String resourceGroupName, String labPlanName, SaveImageBody body);
 
     /**
-     * Saves an image from a lab VM to the attached shared image gallery.
+     * Save an image from a lab VM to the attached shared image gallery.
+     *
+     * <p>Saves an image from a lab VM to the attached shared image gallery.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param labPlanName The name of the lab plan that uniquely identifies it within containing resource group. Used in

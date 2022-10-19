@@ -6,28 +6,21 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the peer express route circuit connection. */
 @Fluent
 public final class PeerExpressRouteCircuitConnectionPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PeerExpressRouteCircuitConnectionPropertiesFormat.class);
-
     /*
-     * Reference to Express Route Circuit Private Peering Resource of the
-     * circuit.
+     * Reference to Express Route Circuit Private Peering Resource of the circuit.
      */
     @JsonProperty(value = "expressRouteCircuitPeering")
     private SubResource expressRouteCircuitPeering;
 
     /*
-     * Reference to Express Route Circuit Private Peering Resource of the
-     * peered circuit.
+     * Reference to Express Route Circuit Private Peering Resource of the peered circuit.
      */
     @JsonProperty(value = "peerExpressRouteCircuitPeering")
     private SubResource peerExpressRouteCircuitPeering;
@@ -51,18 +44,20 @@ public final class PeerExpressRouteCircuitConnectionPropertiesFormat {
     private String connectionName;
 
     /*
-     * The resource guid of the authorization used for the express route
-     * circuit connection.
+     * The resource guid of the authorization used for the express route circuit connection.
      */
     @JsonProperty(value = "authResourceGuid")
     private String authResourceGuid;
 
     /*
-     * The provisioning state of the peer express route circuit connection
-     * resource.
+     * The provisioning state of the peer express route circuit connection resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of PeerExpressRouteCircuitConnectionPropertiesFormat class. */
+    public PeerExpressRouteCircuitConnectionPropertiesFormat() {
+    }
 
     /**
      * Get the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the

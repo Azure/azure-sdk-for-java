@@ -10,8 +10,8 @@ import java.util.Collection;
 
 /** Defines values for StringIndexType. */
 public final class StringIndexType extends ExpandableStringEnum<StringIndexType> {
-    /** Static value TextElement_v8 for StringIndexType. */
-    public static final StringIndexType TEXT_ELEMENT_V8 = fromString("TextElement_v8");
+    /** Static value TextElements_v8 for StringIndexType. */
+    public static final StringIndexType TEXT_ELEMENTS_V8 = fromString("TextElements_v8");
 
     /** Static value UnicodeCodePoint for StringIndexType. */
     public static final StringIndexType UNICODE_CODE_POINT = fromString("UnicodeCodePoint");
@@ -30,7 +30,11 @@ public final class StringIndexType extends ExpandableStringEnum<StringIndexType>
         return fromString(name, StringIndexType.class);
     }
 
-    /** @return known StringIndexType values. */
+    /**
+     * Gets known StringIndexType values.
+     *
+     * @return known StringIndexType values.
+     */
     public static Collection<StringIndexType> values() {
         return values(StringIndexType.class);
     }

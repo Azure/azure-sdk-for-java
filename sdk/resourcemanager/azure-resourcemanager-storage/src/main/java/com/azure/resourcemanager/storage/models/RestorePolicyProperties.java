@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The blob service properties for blob restore policy. */
 @Fluent
 public final class RestorePolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePolicyProperties.class);
-
     /*
      * Blob restore is enabled if set to true.
      */
@@ -22,8 +18,7 @@ public final class RestorePolicyProperties {
     private boolean enabled;
 
     /*
-     * how long this blob can be restored. It should be great than zero and
-     * less than DeleteRetentionPolicy.days.
+     * how long this blob can be restored. It should be great than zero and less than DeleteRetentionPolicy.days.
      */
     @JsonProperty(value = "days")
     private Integer days;

@@ -39,7 +39,11 @@ public final class DomainProvisioningState extends ExpandableStringEnum<DomainPr
         return fromString(name, DomainProvisioningState.class);
     }
 
-    /** @return known DomainProvisioningState values. */
+    /**
+     * Gets known DomainProvisioningState values.
+     *
+     * @return known DomainProvisioningState values.
+     */
     public static Collection<DomainProvisioningState> values() {
         return values(DomainProvisioningState.class);
     }

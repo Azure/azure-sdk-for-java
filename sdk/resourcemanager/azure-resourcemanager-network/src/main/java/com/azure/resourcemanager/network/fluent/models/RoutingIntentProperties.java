@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a RoutingIntent resource. */
 @Fluent
 public final class RoutingIntentProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingIntentProperties.class);
-
     /*
      * List of routing policies.
      */
@@ -28,6 +24,10 @@ public final class RoutingIntentProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of RoutingIntentProperties class. */
+    public RoutingIntentProperties() {
+    }
 
     /**
      * Get the routingPolicies property: List of routing policies.

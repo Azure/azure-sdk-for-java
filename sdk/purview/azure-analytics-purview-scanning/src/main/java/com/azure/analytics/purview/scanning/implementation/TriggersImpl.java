@@ -49,7 +49,7 @@ public final class TriggersImpl {
      */
     @Host("{Endpoint}")
     @ServiceInterface(name = "PurviewScanningClien")
-    private interface TriggersService {
+    public interface TriggersService {
         @Get("/datasources/{dataSourceName}/scans/{scanName}/triggers/default")
         @ExpectedResponses({200})
         Mono<Response<BinaryData>> getTrigger(

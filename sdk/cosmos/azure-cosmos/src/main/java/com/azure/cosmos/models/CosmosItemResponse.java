@@ -25,7 +25,9 @@ public class CosmosItemResponse<T> {
     private final Class<T> itemClassType;
     private final ItemDeserializer itemDeserializer;
     byte[] responseBodyAsByteArray;
-    private T item;
+    //  Converting item to volatile to fix Double-checked locking - https://en.wikipedia.org/wiki/Double-checked_locking
+    //  http://www.cs.umd.edu/~pugh/java/memoryModel/DoubleCheckedLocking.html
+    private volatile T item;
     final ResourceResponse<Document> resourceResponse;
     private InternalObjectNode props;
 
@@ -205,8 +207,7 @@ public class CosmosItemResponse<T> {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosItemResponseHelper.setCosmosItemResponseBuilderAccessor(
             new ImplementationBridgeHelpers.CosmosItemResponseHelper.CosmosItemResponseBuilderAccessor() {
                 public <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
@@ -229,4 +230,6 @@ public class CosmosItemResponse<T> {
                 }
             });
     }
+
+    static { initialize(); }
 }

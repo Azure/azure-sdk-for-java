@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the parameters for the Url Signing action. */
 @Fluent
 public final class UrlSigningActionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UrlSigningActionParameters.class);
-
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleUrlSigningActionParameters";
 
     /*
      * Algorithm to use for URL signing
@@ -28,34 +24,33 @@ public final class UrlSigningActionParameters {
     private Algorithm algorithm;
 
     /*
-     * Defines which query string parameters in the url to be considered for
-     * expires, key id etc.
+     * Defines which query string parameters in the url to be considered for expires, key id etc.
      */
     @JsonProperty(value = "parameterNameOverride")
     private List<UrlSigningParamIdentifier> parameterNameOverride;
 
     /** Creates an instance of UrlSigningActionParameters class. */
     public UrlSigningActionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlSigningActionParameters";
+        typeName = "DeliveryRuleUrlSigningActionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the UrlSigningActionParameters object itself.
      */
-    public UrlSigningActionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public UrlSigningActionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 

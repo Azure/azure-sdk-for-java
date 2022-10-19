@@ -16,10 +16,9 @@ import com.azure.resourcemanager.synapse.models.CheckNameResult;
 import com.azure.resourcemanager.synapse.models.ClusterPrincipalAssignment;
 import com.azure.resourcemanager.synapse.models.ClusterPrincipalAssignmentCheckNameRequest;
 import com.azure.resourcemanager.synapse.models.KustoPoolPrincipalAssignments;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincipalAssignments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolPrincipalAssignmentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KustoPoolPrincipalAssignmentsImpl.class);
 
     private final KustoPoolPrincipalAssignmentsClient innerClient;
 
@@ -133,21 +132,21 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
     public ClusterPrincipalAssignment getById(String id) {
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -157,7 +156,7 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,21 +170,21 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
     public Response<ClusterPrincipalAssignment> getByIdWithResponse(String id, Context context) {
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -195,7 +194,7 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -207,21 +206,21 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
     public void deleteById(String id) {
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -231,7 +230,7 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -243,21 +242,21 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
     public void deleteByIdWithResponse(String id, Context context) {
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String kustoPoolName = Utils.getValueFromIdByName(id, "kustoPools");
         if (kustoPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'kustoPools'.", id)));
         }
         String principalAssignmentName = Utils.getValueFromIdByName(id, "principalAssignments");
         if (principalAssignmentName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -267,7 +266,7 @@ public final class KustoPoolPrincipalAssignmentsImpl implements KustoPoolPrincip
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.UsageName;
 import com.azure.resourcemanager.storage.models.UsageUnit;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes Storage Resource Usage. */
 @Immutable
 public final class UsageInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
-
     /*
      * Gets the unit of measurement.
      */
@@ -29,8 +25,7 @@ public final class UsageInner {
     private Integer currentValue;
 
     /*
-     * Gets the maximum count of the resources that can be allocated in the
-     * subscription.
+     * Gets the maximum count of the resources that can be allocated in the subscription.
      */
     @JsonProperty(value = "limit", access = JsonProperty.Access.WRITE_ONLY)
     private Integer limit;

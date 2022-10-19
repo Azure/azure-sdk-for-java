@@ -4,29 +4,31 @@
 
 package com.azure.analytics.purview.catalog;
 
-import com.azure.analytics.purview.catalog.implementation.RelationshipsImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class)
+@ServiceClient(builder = RelationshipClientBuilder.class)
 public final class RelationshipClient {
-    @Generated private final RelationshipsImpl serviceClient;
+    @Generated private final RelationshipAsyncClient client;
 
     /**
-     * Initializes an instance of Relationships client.
+     * Initializes an instance of RelationshipClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    RelationshipClient(RelationshipsImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    RelationshipClient(RelationshipAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -95,12 +97,15 @@ public final class RelationshipClient {
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasRelationship along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createWithResponse(BinaryData relationship, RequestOptions requestOptions) {
-        return this.serviceClient.createWithResponse(relationship, requestOptions);
+        return this.client.createWithResponse(relationship, requestOptions).block();
     }
 
     /**
@@ -169,12 +174,15 @@ public final class RelationshipClient {
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasRelationship along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateWithResponse(BinaryData relationship, RequestOptions requestOptions) {
-        return this.serviceClient.updateWithResponse(relationship, requestOptions);
+        return this.client.updateWithResponse(relationship, requestOptions).block();
     }
 
     /**
@@ -185,7 +193,7 @@ public final class RelationshipClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>extendedInfo</td><td>String</td><td>No</td><td>Limits whether includes extended information.</td></tr>
+     *     <tr><td>extendedInfo</td><td>Boolean</td><td>No</td><td>Limits whether includes extended information.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -227,6 +235,10 @@ public final class RelationshipClient {
      *             ]
      *             displayText: String
      *             guid: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meaningNames: [
      *                 String
      *             ]
@@ -278,12 +290,15 @@ public final class RelationshipClient {
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return relationship information between entities by its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.getWithResponse(guid, requestOptions);
+        return this.client.getWithResponse(guid, requestOptions).block();
     }
 
     /**
@@ -292,11 +307,14 @@ public final class RelationshipClient {
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String guid, RequestOptions requestOptions) {
-        return this.serviceClient.deleteWithResponse(guid, requestOptions);
+        return this.client.deleteWithResponse(guid, requestOptions).block();
     }
 }

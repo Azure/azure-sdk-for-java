@@ -6,16 +6,12 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The ListQueue model. */
 @Fluent
 public final class ListQueueInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListQueueInner.class);
-
     /*
      * List Queue resource properties.
      */

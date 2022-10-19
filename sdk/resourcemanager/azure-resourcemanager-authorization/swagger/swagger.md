@@ -17,10 +17,12 @@ tag: v1.0
 
 These settings apply only when `--tag=v1.0` is specified on the command line.
 
+Modification based on https://github.com/microsoftgraph/msgraph-sdk-powershell/tree/543ce61a713b9efacbf65c5d58e52c2f9659391a/openApiDocs/v1.0
+
 ``` yaml $(tag) == 'v1.0'
 input-file:
-- https://github.com/microsoftgraph/msgraph-sdk-powershell/raw/543ce61/openApiDocs/v1.0/Applications.yml
+- Applications.yml
 - Groups.yml
-- https://github.com/microsoftgraph/msgraph-sdk-powershell/raw/543ce61/openApiDocs/v1.0/Users.yml
-- https://github.com/microsoftgraph/msgraph-sdk-powershell/raw/543ce61/openApiDocs/v1.0/Identity.DirectoryManagement.yml
+- Users.yml
+- Identity.DirectoryManagement.yml
 ```

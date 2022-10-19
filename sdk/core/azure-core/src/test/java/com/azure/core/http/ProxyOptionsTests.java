@@ -4,15 +4,21 @@
 package com.azure.core.http;
 
 import com.azure.core.util.Configuration;
+import com.azure.core.util.ConfigurationBuilder;
+import com.azure.core.util.ConfigurationSource;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.TestConfigurationSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.junit.jupiter.params.provider.NullSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -64,7 +70,7 @@ public class ProxyOptionsTests {
         PROXY_PASSWORD, PROXY_HOST);
     private static final String AZURE_HTTP_PROXY_WITH_USER_AND_PASS = String.format("%s://%s:%s@%s", HTTP, PROXY_USER,
         PROXY_PASSWORD, PROXY_HOST);
-
+    private static final ConfigurationSource EMPTY_SOURCE = new TestConfigurationSource();
     /**
      * Tests that loading a basic configuration from the environment works.
      */
@@ -102,48 +108,179 @@ public class ProxyOptionsTests {
         assertEquals(expectedNonProxyHosts, proxyOptions.getNonProxyHosts());
     }
 
+    @ParameterizedTest
+    @MethodSource("loadFromExplicitConfigurationSupplier")
+    public void loadFromExplicitConfiguration(Configuration configuration, String expectedHost, int expectedPort,
+                                    String expectedUsername, String expectedPassword, String expectedNonProxyHosts) {
+        ProxyOptions proxyOptions = fromConfiguration(configuration);
+
+        assertNotNull(proxyOptions);
+        assertFalse(proxyOptions.getAddress().isUnresolved());
+        assertEquals(expectedHost, proxyOptions.getAddress().getHostName());
+        assertEquals(expectedPort, proxyOptions.getAddress().getPort());
+        assertEquals(expectedUsername, proxyOptions.getUsername());
+        assertEquals(expectedPassword, proxyOptions.getPassword());
+        assertEquals(expectedNonProxyHosts, proxyOptions.getNonProxyHosts());
+    }
+
+    @ParameterizedTest
+    @MethodSource("loadFromExplicitConfigurationSupplier")
+    public void loadFromExplicitUnresolved(Configuration configuration, String expectedHost, int expectedPort,
+                                              String expectedUsername, String expectedPassword, String expectedNonProxyHosts) {
+        ProxyOptions proxyOptions = fromConfiguration(configuration, true);
+
+        assertNotNull(proxyOptions);
+        assertTrue(proxyOptions.getAddress().isUnresolved());
+        assertEquals(expectedHost, proxyOptions.getAddress().getHostName());
+        assertEquals(expectedPort, proxyOptions.getAddress().getPort());
+        assertEquals(expectedUsername, proxyOptions.getUsername());
+        assertEquals(expectedPassword, proxyOptions.getPassword());
+        assertEquals(expectedNonProxyHosts, proxyOptions.getNonProxyHosts());
+    }
+
+    @Test
+    public void mixedExplicitAndEnvironmentConfigurationIsNotSupported() {
+        ConfigurationSource systemProps = new TestConfigurationSource()
+            .put("https.proxyHost", "ignored")
+            .put("https.proxyPort", "42");
+
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, systemProps, EMPTY_SOURCE)
+            .putProperty("foo.http.proxy.username", PROXY_USER)
+            .putProperty("http.proxy.password", PROXY_PASSWORD)
+            .putProperty("foo.http.proxy.hostname", PROXY_HOST)
+            .buildSection("foo");
+
+        ProxyOptions proxyOptions = fromConfiguration(configuration, true);
+
+        assertNotNull(proxyOptions);
+        assertTrue(proxyOptions.getAddress().isUnresolved());
+        assertEquals(Proxy.Type.HTTP, proxyOptions.getType().toProxyType());
+        assertEquals(PROXY_HOST, proxyOptions.getAddress().getHostName());
+        assertEquals(443, proxyOptions.getAddress().getPort());
+        assertEquals(PROXY_USER, proxyOptions.getUsername());
+        assertEquals(PROXY_PASSWORD, proxyOptions.getPassword());
+    }
+
+    @Test
+    public void envConfigurationInExplicit() {
+        Configuration configuration = new ConfigurationBuilder()
+            .putProperty("https.proxyHost", PROXY_HOST)
+            .putProperty("https.proxyPort", "8080")
+            .putProperty("http.proxy.username", PROXY_USER)
+            .putProperty("http.proxy.password", PROXY_PASSWORD)
+            .buildSection("foo");
+
+        ProxyOptions proxyOptions = fromConfiguration(configuration, true);
+
+        assertNull(proxyOptions);
+    }
+
+    @ParameterizedTest
+    @NullSource
+    public void defaultHttpPortNull(String port) {
+        ConfigurationBuilder configBuilder = new ConfigurationBuilder()
+            .putProperty("http.proxy.hostname", PROXY_HOST)
+            .putProperty("http.proxy.username", PROXY_USER)
+            .putProperty("http.proxy.password", PROXY_PASSWORD);
+
+        if (port != null) {
+            configBuilder.putProperty("http.proxy.port", port);
+        }
+
+        ProxyOptions proxyOptions = fromConfiguration(configBuilder.build());
+
+        assertNotNull(proxyOptions);
+        assertEquals(443, proxyOptions.getAddress().getPort());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", "   ", "not-an-int"})
+    public void invalidHttpPortExplicitConfigThrows(String port) {
+        Configuration configuration = new ConfigurationBuilder()
+            .putProperty("http.proxy.hostname", PROXY_HOST)
+            .putProperty("http.proxy.username", PROXY_USER)
+            .putProperty("http.proxy.password", PROXY_PASSWORD)
+            .putProperty("http.proxy.port", port)
+            .build();
+
+        assertThrows(NumberFormatException.class, () -> fromConfiguration(configuration));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"", "   ", "not-an-int"})
+    public void invalidHttpsPortEnvironmentConfigDefault(String port) {
+        ConfigurationSource systemProps = new TestConfigurationSource()
+            .put("https.proxyHost", PROXY_HOST)
+            .put("https.proxyPort", port);
+
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, systemProps, EMPTY_SOURCE).build();
+
+        ProxyOptions proxyOptions = fromConfiguration(configuration);
+
+        assertNotNull(proxyOptions);
+        assertEquals(443, proxyOptions.getAddress().getPort());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"   ", "not-an-int"})
+    public void invalidHttpPortEnvironmentConfigDefault(String port) {
+        ConfigurationSource systemProps = new TestConfigurationSource()
+            .put("http.proxyHost", PROXY_HOST)
+            .put("http.proxyPort", port);
+
+        Configuration configuration = new ConfigurationBuilder(EMPTY_SOURCE, systemProps, EMPTY_SOURCE)
+            .build();
+
+        ProxyOptions proxyOptions = fromConfiguration(configuration);
+
+        assertNotNull(proxyOptions);
+        assertEquals(80, proxyOptions.getAddress().getPort());
+    }
+
     private static Stream<Arguments> loadFromEnvironmentSupplier() {
         return Stream.of(
             // Basic Azure HTTPS proxy.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
-                new Configuration().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_HOST_ONLY)),
+                    new TestConfigurationSource().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_HOST_ONLY)),
                 PROXY_HOST, 443, null, null, null),
 
             // Username only Azure HTTPS proxy.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
-                new Configuration().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_WITH_USERNAME)),
+                    new TestConfigurationSource().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_WITH_USERNAME)),
                 PROXY_HOST, 443, null, null, null),
 
             // Complete Azure HTTPS proxy.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
-                new Configuration().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_WITH_USER_AND_PASS)),
+                    new TestConfigurationSource().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_WITH_USER_AND_PASS)),
                 PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, null),
 
             // Azure HTTPS proxy with non-proxying hosts.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
-                new Configuration().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_HOST_ONLY)
-                    .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS)),
+                    new TestConfigurationSource()
+                        .put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_HOST_ONLY)
+                        .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS)),
                 PROXY_HOST, 443, null, null, "(" + NON_PROXY_HOSTS + ")"),
 
             // Basic Azure HTTP proxy.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
-                new Configuration().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY)),
+                        new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY)),
                 PROXY_HOST, 80, null, null, null),
 
             // Username only Azure HTTP proxy.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
-                new Configuration().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_WITH_USERNAME)),
+                    new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_WITH_USERNAME)),
                 PROXY_HOST, 80, null, null, null),
 
             // Complete Azure HTTP proxy.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
-                new Configuration().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_WITH_USER_AND_PASS)),
+                    new TestConfigurationSource().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_WITH_USER_AND_PASS)),
                 PROXY_HOST, 80, PROXY_USER, PROXY_PASSWORD, null),
 
             // Azure HTTP proxy with non-proxying hosts.
             Arguments.of(setJavaSystemProxyPrerequisiteToTrue(
-                new Configuration().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY)
-                    .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS)),
+                    new TestConfigurationSource()
+                        .put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY)
+                        .put(Configuration.PROPERTY_NO_PROXY, NON_PROXY_HOSTS)),
                 PROXY_HOST, 80, null, null, "(" + NON_PROXY_HOSTS + ")"),
 
             /*
@@ -154,47 +291,74 @@ public class ProxyOptionsTests {
              */
 
             // Basic Java HTTPS proxy.
-            Arguments.of(createJavaConfiguration(443, null, null, null, true),
+            Arguments.of(createJavaEnvConfiguration(443, null, null, null, true),
                 PROXY_HOST, 443, null, null, null),
 
             // Username only Java HTTPS proxy.
-            Arguments.of(createJavaConfiguration(443, PROXY_USER, null, null, true),
+            Arguments.of(createJavaEnvConfiguration(443, PROXY_USER, null, null, true),
                 PROXY_HOST, 443, null, null, null),
 
             // Complete Java HTTPS proxy.
-            Arguments.of(createJavaConfiguration(443, PROXY_USER, PROXY_PASSWORD, null, true),
+            Arguments.of(createJavaEnvConfiguration(443, PROXY_USER, PROXY_PASSWORD, null, true),
                 PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, null),
 
             // Java HTTPS proxy with non-proxying hosts.
-            Arguments.of(createJavaConfiguration(443, null, null, NON_PROXY_HOSTS, true),
+            Arguments.of(createJavaEnvConfiguration(443, null, null, NON_PROXY_HOSTS, true),
                 PROXY_HOST, 443, null, null, "(" + NON_PROXY_HOSTS + ")"),
 
             // Basic Java HTTP proxy.
-            Arguments.of(createJavaConfiguration(80, null, null, null, false),
+            Arguments.of(createJavaEnvConfiguration(80, null, null, null, false),
                 PROXY_HOST, 80, null, null, null),
 
             // Username only Java HTTP proxy.
-            Arguments.of(createJavaConfiguration(80, PROXY_USER, null, null, false),
+            Arguments.of(createJavaEnvConfiguration(80, PROXY_USER, null, null, false),
                 PROXY_HOST, 80, null, null, null),
 
             // Complete Java HTTP proxy.
-            Arguments.of(createJavaConfiguration(80, PROXY_USER, PROXY_PASSWORD, null, false),
+            Arguments.of(createJavaEnvConfiguration(80, PROXY_USER, PROXY_PASSWORD, null, false),
                 PROXY_HOST, 80, PROXY_USER, PROXY_PASSWORD, null),
 
             // Java HTTP proxy with non-proxying hosts.
-            Arguments.of(createJavaConfiguration(80, null, null, NON_PROXY_HOSTS, false),
+            Arguments.of(createJavaEnvConfiguration(80, null, null, NON_PROXY_HOSTS, false),
                 PROXY_HOST, 80, null, null, "(" + NON_PROXY_HOSTS + ")")
+        );
+    }
+
+    private static Stream<Arguments> loadFromExplicitConfigurationSupplier() {
+        return Stream.of(
+            /*
+             * Setting up tests for loading the Java exokicit proxy configurations takes additional work as each
+             * piece of the proxy configuration is a separate environment value. The non-proxy hosts will be checked
+             * against the global environment value when it is not being set by the configuration passed by the test
+             * as this value may be setup by the JVM.
+             */
+
+            // Basic Java HTTPS proxy.
+            Arguments.of(createExplicitConfiguration(443, null, null, null),
+                PROXY_HOST, 443, null, null, null),
+
+            // Username only Java HTTPS proxy.
+            Arguments.of(createExplicitConfiguration(443, PROXY_USER, null, null),
+                PROXY_HOST, 443, null, null, null),
+
+            // Complete Java HTTPS proxy.
+            Arguments.of(createExplicitConfiguration(443, PROXY_USER, PROXY_PASSWORD, null),
+                PROXY_HOST, 443, PROXY_USER, PROXY_PASSWORD, null),
+
+            // Java HTTPS proxy with non-proxying hosts.
+            Arguments.of(createExplicitConfiguration(443, null, null, NON_PROXY_HOSTS),
+                PROXY_HOST, 443, null, null, "(" + NON_PROXY_HOSTS + ")")
         );
     }
 
     /**
      * Tests that passing {@link Configuration#NONE} into {@link ProxyOptions#fromConfiguration(Configuration)} will
-     * throw an {@link IllegalArgumentException}.
+     * return null/
      */
     @Test
     public void loadFromEnvironmentThrowsWhenPassedConfigurationNone() {
-        assertThrows(IllegalArgumentException.class, () -> fromConfiguration(Configuration.NONE));
-        assertThrows(IllegalArgumentException.class, () -> fromConfiguration(Configuration.NONE, true));
+        assertNull(fromConfiguration(Configuration.NONE));
+        assertNull(fromConfiguration(Configuration.NONE, true));
     }
 
     /**
@@ -208,46 +372,53 @@ public class ProxyOptionsTests {
     }
 
     private static Stream<Arguments> systemProxiesRequireUseSystemProxiesSupplier() {
+        ConfigurationSource envVarHttpsSource = new TestConfigurationSource()
+            .put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_HOST_ONLY)
+            .put(JAVA_NON_PROXY_HOSTS, null);
+        ConfigurationSource envVarHttpSource = new TestConfigurationSource()
+            .put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY)
+            .put(JAVA_NON_PROXY_HOSTS, null);
+
         return Stream.of(
             // Java HTTPS configuration without 'java.net.useSystemProxies' set.
-            Arguments.of(new Configuration().put(Configuration.PROPERTY_HTTPS_PROXY, AZURE_HTTPS_PROXY_HOST_ONLY)),
+            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, envVarHttpsSource).build()),
 
             // Java HTTP configuration without 'java.net.useSystemProxies' set.
-            Arguments.of(new Configuration().put(Configuration.PROPERTY_HTTP_PROXY, AZURE_HTTP_PROXY_HOST_ONLY))
+            Arguments.of(new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, envVarHttpSource).build())
         );
     }
 
-    private static Configuration createJavaConfiguration(int port, String username, String password,
+    private static Configuration createJavaEnvConfiguration(int port, String username, String password,
         String nonProxyHosts, boolean isHttps) {
-        Configuration configuration = new Configuration()
-            .put(JAVA_NON_PROXY_HOSTS, CoreUtils.isNullOrEmpty(nonProxyHosts) ? "" : nonProxyHosts);
-
+        TestConfigurationSource testSource = new TestConfigurationSource()
+            .put(JAVA_NON_PROXY_HOSTS, nonProxyHosts);
 
         if (isHttps) {
-            configuration.put(JAVA_HTTPS_PROXY_HOST, PROXY_HOST).put(JAVA_HTTPS_PROXY_PORT, String.valueOf(port));
-            configuration = putIfNotNull(configuration, JAVA_HTTPS_PROXY_USER, username);
-            configuration = putIfNotNull(configuration, JAVA_HTTPS_PROXY_PASSWORD, password);
+            testSource
+                .put(JAVA_HTTPS_PROXY_HOST, PROXY_HOST)
+                .put(JAVA_HTTPS_PROXY_PORT, String.valueOf(port))
+                .put(JAVA_HTTPS_PROXY_USER, username)
+                .put(JAVA_HTTPS_PROXY_PASSWORD, password);
         } else {
-            configuration.put(JAVA_HTTP_PROXY_HOST, PROXY_HOST).put(JAVA_HTTP_PROXY_PORT, String.valueOf(port));
-            configuration = putIfNotNull(configuration, JAVA_HTTP_PROXY_USER, username);
-            configuration = putIfNotNull(configuration, JAVA_HTTP_PROXY_PASSWORD, password);
+            testSource
+                .put(JAVA_HTTP_PROXY_HOST, PROXY_HOST)
+                .put(JAVA_HTTP_PROXY_PORT, String.valueOf(port))
+                .put(JAVA_HTTP_PROXY_USER, username)
+                .put(JAVA_HTTP_PROXY_PASSWORD, password);
         }
 
-        return configuration;
+        return new ConfigurationBuilder(EMPTY_SOURCE, testSource, EMPTY_SOURCE).build();
     }
 
-    private static Configuration putIfNotNull(Configuration configuration, String name, String value) {
-        /*
-         * If the passed value is null attempt to use the global configuration value. This is done as the Configuration
-         * object will attempt to load the environment if it has no value for a given name.
-         */
-        if (value == null) {
-            value = Configuration.getGlobalConfiguration().get(name);
-        }
+    private static Configuration createExplicitConfiguration(int port, String username, String password, String nonProxyHosts) {
+        TestConfigurationSource explicitSource = new TestConfigurationSource()
+            .put("http.proxy.non-proxy-hosts", CoreUtils.isNullOrEmpty(nonProxyHosts) ? "" : nonProxyHosts)
+            .put("http.proxy.hostname", PROXY_HOST)
+            .put("http.proxy.port", String.valueOf(port))
+            .put("http.proxy.username", username)
+            .put("http.proxy.password", password);
 
-        return CoreUtils.isNullOrEmpty(value)
-            ? configuration
-            : configuration.put(name, value);
+        return new ConfigurationBuilder(explicitSource, EMPTY_SOURCE, EMPTY_SOURCE).build();
     }
 
     @ParameterizedTest
@@ -267,10 +438,11 @@ public class ProxyOptionsTests {
         /*
          * This emulates loading a Java formatted proxy.
          */
-        Configuration javaProxyConfiguration = new Configuration()
+        TestConfigurationSource sysPropSource = new TestConfigurationSource()
             .put("http.proxyHost", "localhost")
             .put("http.proxyPort", "7777")
             .put("http.nonProxyHosts", javaNonProxyHosts);
+        Configuration javaProxyConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, sysPropSource, EMPTY_SOURCE).build();
 
         Pattern javaProxyConfigurationPattern = compile(fromConfiguration(javaProxyConfiguration)
             .getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
@@ -278,9 +450,10 @@ public class ProxyOptionsTests {
         /*
          * This emulates loading an environment formatted proxy.
          */
-        Configuration environmentProxyConfiguration = setJavaSystemProxyPrerequisiteToTrue(new Configuration()
-            .put(Configuration.PROPERTY_HTTP_PROXY, "http://localhost:7777")
-            .put(Configuration.PROPERTY_NO_PROXY, noProxyNonProxyHosts));
+        TestConfigurationSource envSource = new TestConfigurationSource()
+            .put(Configuration.PROPERTY_HTTPS_PROXY, "http://localhost:7777")
+            .put(Configuration.PROPERTY_NO_PROXY, noProxyNonProxyHosts);
+        Configuration environmentProxyConfiguration = setJavaSystemProxyPrerequisiteToTrue(envSource);
 
         Pattern environmentProxyConfigurationPattern = compile(fromConfiguration(environmentProxyConfiguration)
             .getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
@@ -334,7 +507,7 @@ public class ProxyOptionsTests {
         assertEquals("(" + nonProxyHosts + ")", ProxyOptions.sanitizeNoProxy(nonProxyHosts));
     }
 
-    private static Configuration setJavaSystemProxyPrerequisiteToTrue(Configuration configuration) {
-        return configuration.put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true");
+    private static Configuration setJavaSystemProxyPrerequisiteToTrue(TestConfigurationSource source) {
+        return new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, source.put(JAVA_SYSTEM_PROXY_PREREQUISITE, "true")).build();
     }
 }

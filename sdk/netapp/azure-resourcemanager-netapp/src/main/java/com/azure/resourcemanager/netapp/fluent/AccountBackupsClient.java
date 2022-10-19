@@ -16,20 +16,24 @@ import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
 /** An instance of this class provides access to all the operations defined in AccountBackupsClient. */
 public interface AccountBackupsClient {
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BackupInner> list(String resourceGroupName, String accountName);
 
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -37,13 +41,15 @@ public interface AccountBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<BackupInner> list(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Gets the specified backup for a Netapp Account.
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -57,7 +63,9 @@ public interface AccountBackupsClient {
     BackupInner get(String resourceGroupName, String accountName, String backupName);
 
     /**
-     * Gets the specified backup for a Netapp Account.
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -66,14 +74,16 @@ public interface AccountBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup for a Netapp Account.
+     * @return the specified backup for a Netapp Account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BackupInner> getWithResponse(
         String resourceGroupName, String accountName, String backupName, Context context);
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -81,13 +91,15 @@ public interface AccountBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String backupName);
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -96,14 +108,16 @@ public interface AccountBackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String backupName, Context context);
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -116,7 +130,9 @@ public interface AccountBackupsClient {
     void delete(String resourceGroupName, String accountName, String backupName);
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

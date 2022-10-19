@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.implementation.EventHubSharedKeyCredential;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -32,6 +33,8 @@ public class EventHubSharedKeyCredentialTest {
     private static final String KEY_NAME = "some-key-name";
     private static final String KEY_VALUE = "ctzMq410TV3wS7upTBcunJTDLEJwMAZuFPfr0mrrA08=";
     private static final Duration TOKEN_DURATION = Duration.ofMinutes(10);
+    private static final String ENDPOINT_SUFFIX = Configuration.getGlobalConfiguration()
+        .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
 
     @Test
     public void constructorNullDuration() {
@@ -112,8 +115,8 @@ public class EventHubSharedKeyCredentialTest {
     @MethodSource("getSas")
     public void testSharedAccessSignatureCredential(String sas, OffsetDateTime expectedExpirationTime) {
         EventHubSharedKeyCredential eventHubSharedKeyCredential = new EventHubSharedKeyCredential(sas);
-        StepVerifier.create(eventHubSharedKeyCredential.getToken(new TokenRequestContext().addScopes("sb://test"
-            + "-entity.servicebus.windows.net/.default")))
+        StepVerifier.create(eventHubSharedKeyCredential.getToken(new TokenRequestContext().addScopes(
+            String.format("sb://test-entity%s/.default", ENDPOINT_SUFFIX))))
             .assertNext(token -> {
                 assertNotNull(token.getToken());
                 assertEquals(sas, token.getToken());
@@ -124,16 +127,16 @@ public class EventHubSharedKeyCredentialTest {
 
     private static Stream<Arguments> getSas() {
         String validSas = "SharedAccessSignature "
-            + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
             + "&sig=encodedsignature%3D"
             + "&se=1599537084"
             + "&skn=test-sas-key";
         String validSasWithNoExpirationTime = "SharedAccessSignature "
-            + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
             + "&sig=encodedsignature%3D"
             + "&skn=test-sas-key";
         String validSasInvalidExpirationTimeFormat = "SharedAccessSignature "
-            + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
             + "&sig=encodedsignature%3D"
             + "&se=se=2020-12-31T13:37:45Z"
             + "&skn=test-sas-key";

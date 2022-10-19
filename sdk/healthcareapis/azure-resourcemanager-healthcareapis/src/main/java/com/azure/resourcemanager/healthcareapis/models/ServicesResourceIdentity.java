@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Setting indicating whether the service has a managed identity associated with it. */
 @Fluent
 public class ServicesResourceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicesResourceIdentity.class);
-
     /*
      * The principal ID of the resource identity.
      */

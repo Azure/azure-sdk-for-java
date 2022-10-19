@@ -41,7 +41,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
 import static com.azure.core.util.tracing.Tracer.MESSAGE_ENQUEUED_TIME;
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -120,6 +120,7 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
@@ -146,7 +147,7 @@ public class EventProcessorClientTest {
                 return passed.addData(SPAN_CONTEXT_KEY, "value1")
                     .addData("scope", (AutoCloseable) () -> {
                     })
-                    .addData(PARENT_SPAN_KEY, "value2");
+                    .addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
 
@@ -213,6 +214,7 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventData1.getSequenceNumber()).thenReturn(1L);
         when(eventData1.getOffset()).thenReturn(1L);
         when(eventData1.getOffset()).thenReturn(100L);
@@ -237,7 +239,7 @@ public class EventProcessorClientTest {
                 assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
                 return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
                     return;
-                }).addData(PARENT_SPAN_KEY, "value2");
+                }).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
 
@@ -274,6 +276,7 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
@@ -286,6 +289,7 @@ public class EventProcessorClientTest {
         when(eventData3.getSequenceNumber()).thenReturn(3L);
         when(eventData3.getOffset()).thenReturn(150L);
         when(eventData3.getEnqueuedTime()).thenReturn(Instant.ofEpochSecond(1560639208));
+        final int numberOfEvents = 3;
 
         Map<String, Object> properties = new HashMap<>();
 
@@ -299,13 +303,13 @@ public class EventProcessorClientTest {
                 assertTrue(passed.getData(MESSAGE_ENQUEUED_TIME).isPresent());
                 return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
                     return;
-                }).addData(PARENT_SPAN_KEY, "value2");
+                }).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
 
-        CountDownLatch countDownLatch = new CountDownLatch(3);
+        CountDownLatch countDownLatch = new CountDownLatch(numberOfEvents);
         TestPartitionProcessor testPartitionProcessor = new TestPartitionProcessor();
         testPartitionProcessor.countDownLatch = countDownLatch;
         //Act
@@ -319,9 +323,10 @@ public class EventProcessorClientTest {
 
         assertTrue(success);
 
-        //Assert
-        verify(tracer1, times(3)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
-        verify(tracer1, times(3)).end(eq("success"), isNull(), any());
+        // This is one less because the processEvent is called before the end span call, so it is possible for
+        // to reach this line without calling it the 5th time yet. (Timing issue.)
+        verify(tracer1, times(numberOfEvents)).start(eq("EventHubs.process"), any(), eq(ProcessKind.PROCESS));
+        verify(tracer1, atLeast(numberOfEvents - 1)).end(eq("success"), isNull(), any());
     }
 
     /**
@@ -350,6 +355,7 @@ public class EventProcessorClientTest {
 
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.fromIterable(identifiers));
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
 
         when(consumer1.receiveFromPartition(argThat(arg -> identifiers.remove(arg)), eq(position), any()))
             .thenReturn(Mono.fromRunnable(() -> count.countDown())
@@ -412,6 +418,7 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(eq(consumerGroup), eq(prefetch)))
             .thenReturn(consumer1);
@@ -456,6 +463,7 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(eq(consumerGroup), eq(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT)))
             .thenReturn(consumer1);
@@ -501,6 +509,7 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
@@ -544,6 +553,7 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
@@ -588,6 +598,7 @@ public class EventProcessorClientTest {
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
         when(eventHubAsyncClient
             .createConsumer(anyString(), anyInt()))
             .thenReturn(consumer1);
@@ -617,7 +628,7 @@ public class EventProcessorClientTest {
                 Context passed = invocation.getArgument(1, Context.class);
                 return passed.addData(SPAN_CONTEXT_KEY, "value1").addData("scope", (AutoCloseable) () -> {
                     return;
-                }).addData(PARENT_SPAN_KEY, "value2");
+                }).addData(PARENT_TRACE_CONTEXT_KEY, "value2");
             }
         );
 

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AlertsDataTypeOfDataConnector;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** AATP (Azure Advanced Threat Protection) data connector properties. */
 @Fluent
 public final class AatpDataConnectorProperties extends DataConnectorTenantId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AatpDataConnectorProperties.class);
-
     /*
      * The available data types for the connector.
      */

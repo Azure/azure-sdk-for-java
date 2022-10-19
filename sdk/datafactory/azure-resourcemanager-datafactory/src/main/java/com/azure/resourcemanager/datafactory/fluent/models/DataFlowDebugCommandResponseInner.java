@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response body structure of data flow result for data preview, statistics or expression preview. */
 @Fluent
 public final class DataFlowDebugCommandResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowDebugCommandResponseInner.class);
-
     /*
      * The run status of data preview, statistics or expression preview.
      */
@@ -25,6 +21,10 @@ public final class DataFlowDebugCommandResponseInner {
      */
     @JsonProperty(value = "data")
     private String data;
+
+    /** Creates an instance of DataFlowDebugCommandResponseInner class. */
+    public DataFlowDebugCommandResponseInner() {
+    }
 
     /**
      * Get the status property: The run status of data preview, statistics or expression preview.

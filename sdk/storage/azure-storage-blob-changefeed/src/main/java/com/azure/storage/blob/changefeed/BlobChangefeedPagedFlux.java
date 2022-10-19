@@ -26,7 +26,7 @@ import java.util.List;
 public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, BlobChangefeedEvent,
     BlobChangefeedPagedResponse> {
 
-    private final ClientLogger logger = new ClientLogger(BlobChangefeedPagedFlux.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobChangefeedPagedFlux.class);
 
     private final Changefeed changefeed;
 
@@ -39,7 +39,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
      */
     BlobChangefeedPagedFlux(ChangefeedFactory changefeedFactory, OffsetDateTime startTime, OffsetDateTime endTime) {
         StorageImplUtils.assertNotNull("changefeedFactory", changefeedFactory);
-        this.changefeed = changefeedFactory.getChangefeed(startTime, endTime);
+        this.changefeed = changefeedFactory.getChangefeed(startTime, endTime); 
     }
 
     /**
@@ -97,11 +97,11 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
     public Flux<BlobChangefeedPagedResponse> byPage(String continuationToken, int preferredPageSize) {
 
         if (continuationToken != null) {
-            return FluxUtil.pagedFluxError(logger, new UnsupportedOperationException("continuationToken not "
+            return FluxUtil.pagedFluxError(LOGGER, new UnsupportedOperationException("continuationToken not "
                 + "supported. Use client.getEvents(String) to pass in a cursor."));
         }
         if (preferredPageSize <= 0) {
-            return FluxUtil.pagedFluxError(logger, new IllegalArgumentException("preferredPageSize > 0 required but "
+            return FluxUtil.pagedFluxError(LOGGER, new IllegalArgumentException("preferredPageSize > 0 required but "
                 + "provided: " + preferredPageSize));
         }
         preferredPageSize = Integer.min(preferredPageSize, DEFAULT_PAGE_SIZE);
@@ -130,7 +130,7 @@ public final class BlobChangefeedPagedFlux extends ContinuablePagedFlux<String, 
             })
             /* Construct the BlobChangefeedPagedResponse. */
             .map(tuple2 -> new BlobChangefeedPagedResponse(tuple2.getT1(), tuple2.getT2()))
-            .subscriberContext(FluxUtil.toReactorContext(this.context));
+            .contextWrite(FluxUtil.toReactorContext(this.context));
     }
 
     @Override

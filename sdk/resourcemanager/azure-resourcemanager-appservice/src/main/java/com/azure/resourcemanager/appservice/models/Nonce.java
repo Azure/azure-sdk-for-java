@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the nonce used in the login flow. */
 @Fluent
 public final class Nonce {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Nonce.class);
-
     /*
      * <code>false</code> if the nonce should not be validated while completing
      * the login flow; otherwise, <code>true</code>.

@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Public IP addresses associated with azure firewall. */
 @Fluent
 public final class HubPublicIpAddresses {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubPublicIpAddresses.class);
-
     /*
-     * The list of Public IP addresses associated with azure firewall or IP
-     * addresses to be retained.
+     * The list of Public IP addresses associated with azure firewall or IP addresses to be retained.
      */
     @JsonProperty(value = "addresses")
     private List<AzureFirewallPublicIpAddress> addresses;
@@ -27,6 +22,10 @@ public final class HubPublicIpAddresses {
      */
     @JsonProperty(value = "count")
     private Integer count;
+
+    /** Creates an instance of HubPublicIpAddresses class. */
+    public HubPublicIpAddresses() {
+    }
 
     /**
      * Get the addresses property: The list of Public IP addresses associated with azure firewall or IP addresses to be

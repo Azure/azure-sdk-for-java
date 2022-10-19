@@ -49,7 +49,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                 RecognizeEntitiesResultCollection recognizeEntitiesResultCollection = entitiesBatchResultResponse.getValue();
 
                 // Model version
-                System.out.printf("Results of Azure Text Analytics \"Entities Recognition\" Model, version: %s%n", recognizeEntitiesResultCollection.getModelVersion());
+                System.out.printf("Results of \"Entities Recognition\" Model, version: %s%n", recognizeEntitiesResultCollection.getModelVersion());
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = recognizeEntitiesResultCollection.getStatistics();

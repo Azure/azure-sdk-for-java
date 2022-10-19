@@ -73,7 +73,7 @@ public interface Extension {
     String releaseTrain();
 
     /**
-     * Gets the version property: Version of the extension for this extension, if it is 'pinned' to a specific version.
+     * Gets the version property: User-specified version of the extension for this extension to 'pin'. To use 'version',
      * autoUpgradeMinorVersion must be 'false'.
      *
      * @return the version value.
@@ -104,7 +104,14 @@ public interface Extension {
     Map<String, String> configurationProtectedSettings();
 
     /**
-     * Gets the provisioningState property: The provisioning state of the extension resource.
+     * Gets the installedVersion property: Installed version of the extension.
+     *
+     * @return the installedVersion value.
+     */
+    String installedVersion();
+
+    /**
+     * Gets the provisioningState property: Status of installation of this extension.
      *
      * @return the provisioningState value.
      */
@@ -118,7 +125,7 @@ public interface Extension {
     List<ExtensionStatus> statuses();
 
     /**
-     * Gets the errorInfo property: The error detail.
+     * Gets the errorInfo property: Error information from the Agent - e.g. errors during installation.
      *
      * @return the errorInfo value.
      */

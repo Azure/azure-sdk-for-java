@@ -9,7 +9,7 @@
 # Use case: Generate the dependency graph data file (data.js) for track 2 (client) libraries.
 #
 # Output:
-# This scipt will create a data.js file which contains the data entries that the dependency graph html
+# This script will create a data.js file which contains the data entries that the dependency graph html
 # file needs to correctly graph the interdependency data
 # This script can be run locally from the root of the repo. .\eng\DependencyGraph\gen-dep-graph-data.ps1
 
@@ -53,7 +53,7 @@ class Library {
                 $retString += ",`n"
             }
             $first = $false
-            $retString += "      { name: `"$($item.Value.name)`", version: `"$($item.Value.version)`" }"
+            $retString += "      { `"name`": `"$($item.Value.name)`", `"version`": `"$($item.Value.version)`" }"
         }
         $retString += "`n"
         $retString += "     ]`n"

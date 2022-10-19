@@ -30,7 +30,11 @@ public final class InfrastructureEncryptionState extends ExpandableStringEnum<In
         return fromString(name, InfrastructureEncryptionState.class);
     }
 
-    /** @return known InfrastructureEncryptionState values. */
+    /**
+     * Gets known InfrastructureEncryptionState values.
+     *
+     * @return known InfrastructureEncryptionState values.
+     */
     public static Collection<InfrastructureEncryptionState> values() {
         return values(InfrastructureEncryptionState.class);
     }

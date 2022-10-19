@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SqlServerTableDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("SqlServerTable")
 @Fluent
 public final class SqlServerTableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlServerTableDataset.class);
-
     /*
      * On-premises SQL Server dataset properties.
      */
     @JsonProperty(value = "typeProperties")
     private SqlServerTableDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of SqlServerTableDataset class. */
+    public SqlServerTableDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: On-premises SQL Server dataset properties.

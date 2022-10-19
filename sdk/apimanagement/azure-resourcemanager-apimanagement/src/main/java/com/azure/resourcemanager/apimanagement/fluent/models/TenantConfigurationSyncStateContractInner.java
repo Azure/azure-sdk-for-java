@@ -5,16 +5,13 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Result of Tenant Configuration Sync State. */
 @Fluent
-public final class TenantConfigurationSyncStateContractInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantConfigurationSyncStateContractInner.class);
-
+public final class TenantConfigurationSyncStateContractInner extends ProxyResource {
     /*
      * Properties returned Tenant Configuration Sync State check.
      */

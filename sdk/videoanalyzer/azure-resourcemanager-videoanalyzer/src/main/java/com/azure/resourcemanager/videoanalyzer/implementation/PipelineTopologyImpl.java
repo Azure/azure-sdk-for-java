@@ -88,6 +88,10 @@ public final class PipelineTopologyImpl
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PipelineTopologyInner innerModel() {
         return this.innerObject;
     }

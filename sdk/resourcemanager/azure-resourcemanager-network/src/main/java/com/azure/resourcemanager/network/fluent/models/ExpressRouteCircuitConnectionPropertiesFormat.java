@@ -6,29 +6,22 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
 import com.azure.resourcemanager.network.models.Ipv6CircuitConnectionConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the express route circuit connection. */
 @Fluent
 public final class ExpressRouteCircuitConnectionPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitConnectionPropertiesFormat.class);
-
     /*
-     * Reference to Express Route Circuit Private Peering Resource of the
-     * circuit initiating connection.
+     * Reference to Express Route Circuit Private Peering Resource of the circuit initiating connection.
      */
     @JsonProperty(value = "expressRouteCircuitPeering")
     private SubResource expressRouteCircuitPeering;
 
     /*
-     * Reference to Express Route Circuit Private Peering Resource of the
-     * peered circuit.
+     * Reference to Express Route Circuit Private Peering Resource of the peered circuit.
      */
     @JsonProperty(value = "peerExpressRouteCircuitPeering")
     private SubResource peerExpressRouteCircuitPeering;
@@ -62,6 +55,10 @@ public final class ExpressRouteCircuitConnectionPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ExpressRouteCircuitConnectionPropertiesFormat class. */
+    public ExpressRouteCircuitConnectionPropertiesFormat() {
+    }
 
     /**
      * Get the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the

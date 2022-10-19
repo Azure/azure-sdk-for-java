@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.BuiltInAuthenticationProvider;
 import com.azure.resourcemanager.appservice.models.UnauthenticatedClientAction;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SiteAuthSettings resource specific properties. */
 @Fluent
 public final class SiteAuthSettingsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteAuthSettingsProperties.class);
-
     /*
      * <code>true</code> if the Authentication / Authorization feature is
      * enabled for the current app; otherwise, <code>false</code>.

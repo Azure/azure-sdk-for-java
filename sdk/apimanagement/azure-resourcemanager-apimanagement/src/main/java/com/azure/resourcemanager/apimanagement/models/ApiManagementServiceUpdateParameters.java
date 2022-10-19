@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiManagementServiceUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Parameter supplied to Update Api Management Service. */
 @Fluent
 public final class ApiManagementServiceUpdateParameters extends ApimResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiManagementServiceUpdateParameters.class);
-
     /*
      * Properties of the API Management service.
      */
@@ -41,6 +37,13 @@ public final class ApiManagementServiceUpdateParameters extends ApimResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /*
+     * A list of availability zones denoting where the resource needs to come
+     * from.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
 
     /**
      * Get the innerProperties property: Properties of the API Management service.
@@ -98,6 +101,26 @@ public final class ApiManagementServiceUpdateParameters extends ApimResource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the zones property: A list of availability zones denoting where the resource needs to come from.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones property: A list of availability zones denoting where the resource needs to come from.
+     *
+     * @param zones the zones value to set.
+     * @return the ApiManagementServiceUpdateParameters object itself.
+     */
+    public ApiManagementServiceUpdateParameters withZones(List<String> zones) {
+        this.zones = zones;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -303,6 +326,60 @@ public final class ApiManagementServiceUpdateParameters extends ApimResource {
      */
     public List<String> privateIpAddresses() {
         return this.innerProperties() == null ? null : this.innerProperties().privateIpAddresses();
+    }
+
+    /**
+     * Get the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
+     * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
+     * Network.
+     *
+     * @return the publicIpAddressId value.
+     */
+    public String publicIpAddressId() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddressId();
+    }
+
+    /**
+     * Set the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
+     * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
+     * Network.
+     *
+     * @param publicIpAddressId the publicIpAddressId value to set.
+     * @return the ApiManagementServiceUpdateParameters object itself.
+     */
+    public ApiManagementServiceUpdateParameters withPublicIpAddressId(String publicIpAddressId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withPublicIpAddressId(publicIpAddressId);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
+     * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
+     * are the exclusive access method. Default value is 'Enabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
+     * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
+     * are the exclusive access method. Default value is 'Enabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ApiManagementServiceUpdateParameters object itself.
+     */
+    public ApiManagementServiceUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
     }
 
     /**
@@ -571,6 +648,39 @@ public final class ApiManagementServiceUpdateParameters extends ApimResource {
         }
         this.innerProperties().withRestore(restore);
         return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of Private Endpoint Connections of this service.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Set the privateEndpointConnections property: List of Private Endpoint Connections of this service.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set.
+     * @return the ApiManagementServiceUpdateParameters object itself.
+     */
+    public ApiManagementServiceUpdateParameters withPrivateEndpointConnections(
+        List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceUpdateProperties();
+        }
+        this.innerProperties().withPrivateEndpointConnections(privateEndpointConnections);
+        return this;
+    }
+
+    /**
+     * Get the platformVersion property: Compute Platform Version running the service in this location.
+     *
+     * @return the platformVersion value.
+     */
+    public PlatformVersion platformVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().platformVersion();
     }
 
     /**

@@ -85,7 +85,7 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * IndexDocumentsResult result = searchClient.uploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
+     * IndexDocumentsResult result = SEARCH_CLIENT.uploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
      * for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s upload successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
      *         indexingResult.isSucceeded&#40;&#41;&#41;;
@@ -120,8 +120,8 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * Response&lt;IndexDocumentsResult&gt; resultResponse = searchClient.uploadDocumentsWithResponse&#40;
-     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;IndexDocumentsResult&gt; resultResponse = SEARCH_CLIENT.uploadDocumentsWithResponse&#40;
+     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s upload successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -166,7 +166,7 @@ public final class SearchClient {
      * <pre>
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;merge&quot;&#41;;
-     * IndexDocumentsResult result = searchClient.mergeDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
+     * IndexDocumentsResult result = SEARCH_CLIENT.mergeDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
      * for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s merge successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
      *         indexingResult.isSucceeded&#40;&#41;&#41;;
@@ -207,8 +207,8 @@ public final class SearchClient {
      * <pre>
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * Response&lt;IndexDocumentsResult&gt; resultResponse = searchClient.mergeDocumentsWithResponse&#40;
-     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;IndexDocumentsResult&gt; resultResponse = SEARCH_CLIENT.mergeDocumentsWithResponse&#40;
+     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s merge successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -255,7 +255,7 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * IndexDocumentsResult result = searchClient.mergeOrUploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
+     * IndexDocumentsResult result = SEARCH_CLIENT.mergeOrUploadDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
      * for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s mergeOrUpload successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
      *         indexingResult.isSucceeded&#40;&#41;&#41;;
@@ -298,8 +298,8 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * Response&lt;IndexDocumentsResult&gt; resultResponse = searchClient.mergeOrUploadDocumentsWithResponse&#40;
-     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;IndexDocumentsResult&gt; resultResponse = SEARCH_CLIENT.mergeOrUploadDocumentsWithResponse&#40;
+     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s mergeOrUpload successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -338,7 +338,7 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * IndexDocumentsResult result = searchClient.deleteDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
+     * IndexDocumentsResult result = SEARCH_CLIENT.deleteDocuments&#40;Collections.singletonList&#40;searchDocument&#41;&#41;;
      * for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s delete successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
      *         indexingResult.isSucceeded&#40;&#41;&#41;;
@@ -373,8 +373,8 @@ public final class SearchClient {
      * SearchDocument searchDocument = new SearchDocument&#40;&#41;;
      * searchDocument.put&#40;&quot;hotelId&quot;, &quot;1&quot;&#41;;
      * searchDocument.put&#40;&quot;hotelName&quot;, &quot;test&quot;&#41;;
-     * Response&lt;IndexDocumentsResult&gt; resultResponse = searchClient.deleteDocumentsWithResponse&#40;
-     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;IndexDocumentsResult&gt; resultResponse = SEARCH_CLIENT.deleteDocumentsWithResponse&#40;
+     *     Collections.singletonList&#40;searchDocument&#41;, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s delete successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -419,7 +419,7 @@ public final class SearchClient {
      * IndexDocumentsBatch&lt;SearchDocument&gt; indexDocumentsBatch = new IndexDocumentsBatch&lt;&gt;&#40;&#41;;
      * indexDocumentsBatch.addUploadActions&#40;Collections.singletonList&#40;searchDocument1&#41;&#41;;
      * indexDocumentsBatch.addDeleteActions&#40;Collections.singletonList&#40;searchDocument2&#41;&#41;;
-     * IndexDocumentsResult result = searchClient.indexDocuments&#40;indexDocumentsBatch&#41;;
+     * IndexDocumentsResult result = SEARCH_CLIENT.indexDocuments&#40;indexDocumentsBatch&#41;;
      * for &#40;IndexingResult indexingResult : result.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s finish successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
      *         indexingResult.isSucceeded&#40;&#41;&#41;;
@@ -460,8 +460,8 @@ public final class SearchClient {
      * IndexDocumentsBatch&lt;SearchDocument&gt; indexDocumentsBatch = new IndexDocumentsBatch&lt;&gt;&#40;&#41;;
      * indexDocumentsBatch.addUploadActions&#40;Collections.singletonList&#40;searchDocument1&#41;&#41;;
      * indexDocumentsBatch.addDeleteActions&#40;Collections.singletonList&#40;searchDocument2&#41;&#41;;
-     * Response&lt;IndexDocumentsResult&gt; resultResponse = searchClient.indexDocumentsWithResponse&#40;indexDocumentsBatch,
-     *     null, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;IndexDocumentsResult&gt; resultResponse = SEARCH_CLIENT.indexDocumentsWithResponse&#40;indexDocumentsBatch,
+     *     null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;IndexingResult indexingResult : resultResponse.getValue&#40;&#41;.getResults&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Does document with key %s finish successfully? %b%n&quot;, indexingResult.getKey&#40;&#41;,
@@ -500,7 +500,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.getDocuments#String-Class -->
      * <pre>
-     * SearchDocument result = searchClient.getDocument&#40;&quot;hotelId&quot;, SearchDocument.class&#41;;
+     * SearchDocument result = SEARCH_CLIENT.getDocument&#40;&quot;hotelId&quot;, SearchDocument.class&#41;;
      * for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : result.entrySet&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Document key %s, Document value %s&quot;, keyValuePair.getKey&#40;&#41;, keyValuePair.getValue&#40;&#41;&#41;;
      * &#125;
@@ -530,8 +530,8 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.getDocumentWithResponse#String-Class-List-Context -->
      * <pre>
-     * Response&lt;SearchDocument&gt; resultResponse = searchClient.getDocumentWithResponse&#40;&quot;hotelId&quot;,
-     *     SearchDocument.class, null, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SearchDocument&gt; resultResponse = SEARCH_CLIENT.getDocumentWithResponse&#40;&quot;hotelId&quot;,
+     *     SearchDocument.class, null, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
      * for &#40;Map.Entry&lt;String, Object&gt; keyValuePair : resultResponse.getValue&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
      *     System.out.printf&#40;&quot;Document key %s, Document value %s&quot;, keyValuePair.getKey&#40;&#41;, keyValuePair.getValue&#40;&#41;&#41;;
@@ -563,7 +563,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.getDocumentCount -->
      * <pre>
-     * long count = searchClient.getDocumentCount&#40;&#41;;
+     * long count = SEARCH_CLIENT.getDocumentCount&#40;&#41;;
      * System.out.printf&#40;&quot;There are %d documents in service.&quot;, count&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.SearchClient.getDocumentCount -->
@@ -584,7 +584,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.getDocumentCountWithResponse#Context -->
      * <pre>
-     * Response&lt;Long&gt; countResponse = searchClient.getDocumentCountWithResponse&#40;new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;Long&gt; countResponse = SEARCH_CLIENT.getDocumentCountWithResponse&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot; + countResponse.getStatusCode&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;There are %d documents in service.&quot;, countResponse.getValue&#40;&#41;&#41;;
      * </pre>
@@ -611,7 +611,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.search#String -->
      * <pre>
-     * SearchPagedIterable searchPagedIterable = searchClient.search&#40;&quot;searchText&quot;&#41;;
+     * SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search&#40;&quot;searchText&quot;&#41;;
      * System.out.printf&#40;&quot;There are around %d results.&quot;, searchPagedIterable.getTotalCount&#40;&#41;&#41;;
      *
      * for &#40;SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage&#40;&#41;&#41; &#123;
@@ -651,8 +651,8 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.search#String-SearchOptions-Context -->
      * <pre>
-     * SearchPagedIterable searchPagedIterable = searchClient.search&#40;&quot;searchText&quot;,
-     *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * SearchPagedIterable searchPagedIterable = SEARCH_CLIENT.search&#40;&quot;searchText&quot;,
+     *     new SearchOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;There are around %d results.&quot;, searchPagedIterable.getTotalCount&#40;&#41;&#41;;
      * for &#40;SearchPagedResponse resultResponse: searchPagedIterable.iterableByPage&#40;&#41;&#41; &#123;
      *     System.out.println&#40;&quot;The status code of the response is &quot; + resultResponse.getStatusCode&#40;&#41;&#41;;
@@ -689,7 +689,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.suggest#String-String -->
      * <pre>
-     * SuggestPagedIterable suggestPagedIterable = searchClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+     * SuggestPagedIterable suggestPagedIterable = SEARCH_CLIENT.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
      * for &#40;SuggestResult result: suggestPagedIterable&#41; &#123;
      *     SearchDocument searchDocument = result.getDocument&#40;SearchDocument.class&#41;;
      *     for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchDocument.entrySet&#40;&#41;&#41; &#123;
@@ -720,8 +720,8 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.suggest#String-String-SuggestOptions-Context -->
      * <pre>
-     * SuggestPagedIterable suggestPagedIterable = searchClient.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;,
-     *     new SuggestOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * SuggestPagedIterable suggestPagedIterable = SEARCH_CLIENT.suggest&#40;&quot;searchText&quot;, &quot;sg&quot;,
+     *     new SuggestOptions&#40;&#41;.setOrderBy&#40;&quot;hotelId desc&quot;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * for &#40;SuggestResult result: suggestPagedIterable&#41; &#123;
      *     SearchDocument searchDocument = result.getDocument&#40;SearchDocument.class&#41;;
      *     for &#40;Map.Entry&lt;String, Object&gt; keyValuePair: searchDocument.entrySet&#40;&#41;&#41; &#123;
@@ -755,7 +755,7 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.autocomplete#String-String -->
      * <pre>
-     * AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
+     * AutocompletePagedIterable autocompletePagedIterable = SEARCH_CLIENT.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;&#41;;
      * for &#40;AutocompleteItem result: autocompletePagedIterable&#41; &#123;
      *     System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;;
      * &#125;
@@ -780,9 +780,9 @@ public final class SearchClient {
      *
      * <!-- src_embed com.azure.search.documents.SearchClient.autocomplete#String-String-AutocompleteOptions-Context -->
      * <pre>
-     * AutocompletePagedIterable autocompletePagedIterable = searchClient.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;,
+     * AutocompletePagedIterable autocompletePagedIterable = SEARCH_CLIENT.autocomplete&#40;&quot;searchText&quot;, &quot;sg&quot;,
      *     new AutocompleteOptions&#40;&#41;.setAutocompleteMode&#40;AutocompleteMode.ONE_TERM_WITH_CONTEXT&#41;,
-     *     new Context&#40;key1, value1&#41;&#41;;
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * for &#40;AutocompleteItem result: autocompletePagedIterable&#41; &#123;
      *     System.out.printf&#40;&quot;The complete term is %s&quot;, result.getText&#40;&#41;&#41;;
      * &#125;

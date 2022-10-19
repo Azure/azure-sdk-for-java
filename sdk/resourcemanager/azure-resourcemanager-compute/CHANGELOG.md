@@ -1,11 +1,102 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
+## 2.20.0-beta.1 (Unreleased)
+
+### Bugs Fixed
+
+- Fixed bug where `getInstanceView()` in `VirtualMachineExtension` throws NPE if the VM is in deallocated state.
+
+## 2.19.0 (2022-09-23)
+
+### Breaking Changes
+
+- Property `protectedSettingsFromKeyVault` in `VirtualMachineExtensionUpdate` changed from `Object` to `KeyVaultSecretReference`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-08-01`.
+
+## 2.18.0 (2022-08-26)
+
+### Bugs Fixed
+
+- Fixed bug where `withDataFromDisk(Disk managedDisk)` in `Snapshot` mistakenly used SKU from Disk. ([#29811](https://github.com/Azure/azure-sdk-for-java/issues/29811))
+
+## 2.17.0 (2022-07-25)
+
+### Breaking Changes
+
+- Property `protectedSettings` in `CloudServiceExtensionProperties` changed from `String` to `Object`.
+- Property `settings` in `CloudServiceExtensionProperties` changed from `String` to `Object`.
+- Property `communityGalleryInfo` in `SharingProfile` changed from `Object` to `CommunityGalleryInfo`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-04-04`.
+
+## 2.16.0 (2022-06-24)
+
+### Features Added
+
+- Supported swapping OS disk in `VirtualMachine`.
+
+### Breaking Changes
+
+- Provisioning state in gallery changed to `GalleryProvisioningState`.
+- User assigned identity in virtual machine scale set changed to `VirtualMachineIdentityUserAssignedIdentities`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-02`.
+
+## 2.15.0 (2022-05-25)
+
+### Features Added
+
+- Supported `DiskEncryptionSet` for disk encryption set.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-03-01`.
+
+## 2.14.0 (2022-04-11)
+
+### Features Added
+
+- Supported `virtualMachineSizeType()` in `VirtualMachineSize` as a typed alias of `name`.
+- Supported ephemeral OS disk in `VirtualMachineScaleSet`.
+
+## 2.13.0 (2022-03-11)
+
+### Features Added
+
+- Supported disk encryption set in `Disk` and `VirtualMachine`.
+- Changed to use PATCH for `GalleryImage` update.
+- Supported ephemeral OS disk in `VirtualMachine`.
+- Supported creating `VirtualMachine` with existing `VirtualMachineScaleSet`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-12-01`.
+
+## 2.12.0 (2022-02-14)
 
 ### Features Added
 
 - Supported option of `filter` and `expand` for list instances of virtual machines by `VirtualMachineScaleSetVMs.list`.
 - Changed to include the instance view of the virtual machine, when getting the virtual machine by `VirtualMachineScaleSetVMs.getInstance`.
+- Supported batch deallocate, powerOff, start, restart, redeploy for `VirtualMachineScaleSetVMs`.
+- Supported deep deletion on virtual machine via `withPrimaryNetworkInterfaceDeleteOptions`, `withOSDiskDeleteOptions`, `withDataDiskDefaultDeleteOptions` in `VirtualMachine` during create.
 
 ### Other Changes
 

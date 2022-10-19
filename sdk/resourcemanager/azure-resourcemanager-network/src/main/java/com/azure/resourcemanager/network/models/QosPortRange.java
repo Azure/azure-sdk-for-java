@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Qos Traffic Profiler Port range properties. */
 @Fluent
 public final class QosPortRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QosPortRange.class);
-
     /*
      * Qos Port Range start.
      */
@@ -25,6 +21,10 @@ public final class QosPortRange {
      */
     @JsonProperty(value = "end")
     private Integer end;
+
+    /** Creates an instance of QosPortRange class. */
+    public QosPortRange() {
+    }
 
     /**
      * Get the start property: Qos Port Range start.

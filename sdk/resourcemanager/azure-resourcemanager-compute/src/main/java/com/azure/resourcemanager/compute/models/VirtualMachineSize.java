@@ -22,4 +22,14 @@ public interface VirtualMachineSize extends HasName {
 
     /** @return the maximum number of data disks allowed by a VM size */
     int maxDataDiskCount();
+
+    /**
+     * The virtual machine size type if the sku describes sku for virtual machine resource type.
+     *
+     * <p>The size can be used for {@link VirtualMachine.DefinitionStages.WithVMSize#withSize(VirtualMachineSizeTypes)}
+     * and {@link VirtualMachine.Update#withSize(VirtualMachineSizeTypes)}.
+     *
+     * @return the virtual machine size type
+     */
+    VirtualMachineSizeTypes virtualMachineSizeType();
 }

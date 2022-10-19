@@ -109,7 +109,7 @@ public class HttpTransportClientTest {
                                                                       HttpClient httpClient) {
         class HttpTransportClientUnderTest extends HttpTransportClient {
             public HttpTransportClientUnderTest(ConnectionPolicy connectionPolicy, UserAgentContainer userAgent) {
-                super(configs, connectionPolicy, userAgent);
+                super(configs, connectionPolicy, userAgent, null);
             }
 
             @Override

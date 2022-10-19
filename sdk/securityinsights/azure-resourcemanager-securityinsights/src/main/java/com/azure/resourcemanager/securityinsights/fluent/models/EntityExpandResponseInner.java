@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityExpandResponseValue;
 import com.azure.resourcemanager.securityinsights.models.ExpansionResultsMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The entity expansion result operation response. */
 @Fluent
 public final class EntityExpandResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityExpandResponseInner.class);
-
     /*
      * The metadata from the expansion operation results.
      */

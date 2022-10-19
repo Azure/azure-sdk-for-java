@@ -14,7 +14,7 @@ import java.util.Map;
 /** Samples for Topics CreateOrUpdate. */
 public final class TopicsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/Topics_CreateOrUpdate.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Topics_CreateOrUpdate.json
      */
     /**
      * Sample code: Topics_CreateOrUpdate.

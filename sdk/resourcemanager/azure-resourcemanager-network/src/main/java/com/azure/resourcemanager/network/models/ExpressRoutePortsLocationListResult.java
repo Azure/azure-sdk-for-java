@@ -5,17 +5,17 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ExpressRoutePortsLocationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ExpressRoutePorts Location List Result Response for ListExpressRoutePortsLocations API service call. */
+/**
+ * ExpressRoutePorts Location List Result
+ *
+ * <p>Response for ListExpressRoutePortsLocations API service call.
+ */
 @Fluent
 public final class ExpressRoutePortsLocationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationListResult.class);
-
     /*
      * The list of all ExpressRoutePort peering locations.
      */
@@ -27,6 +27,10 @@ public final class ExpressRoutePortsLocationListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ExpressRoutePortsLocationListResult class. */
+    public ExpressRoutePortsLocationListResult() {
+    }
 
     /**
      * Get the value property: The list of all ExpressRoutePort peering locations.

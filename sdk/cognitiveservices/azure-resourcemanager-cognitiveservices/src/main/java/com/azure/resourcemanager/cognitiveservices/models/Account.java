@@ -105,6 +105,13 @@ public interface Account {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.cognitiveservices.fluent.models.AccountInner object.
      *
      * @return the inner object.
@@ -338,7 +345,7 @@ public interface Account {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys for the cognitive services account.
+     * @return the access keys for the cognitive services account along with {@link Response}.
      */
     Response<ApiKeys> listKeysWithResponse(Context context);
 
@@ -361,7 +368,7 @@ public interface Account {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the access keys for the cognitive services account.
+     * @return the access keys for the cognitive services account along with {@link Response}.
      */
     Response<ApiKeys> regenerateKeyWithResponse(RegenerateKeyParameters parameters, Context context);
 }

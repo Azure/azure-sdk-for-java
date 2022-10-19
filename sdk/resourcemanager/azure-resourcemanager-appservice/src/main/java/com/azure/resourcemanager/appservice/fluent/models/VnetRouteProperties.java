@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.RouteType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** VnetRoute resource specific properties. */
 @Fluent
 public final class VnetRouteProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetRouteProperties.class);
-
     /*
      * The starting address for this route. This may also include a CIDR
      * notation, in which case the end address must not be specified.

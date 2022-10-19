@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.ResourceMetricAvailability;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Metadata for the metrics. */
 @Fluent
 public final class ResourceMetricDefinitionInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMetricDefinitionInner.class);
-
     /*
      * ResourceMetricDefinition resource specific properties
      */

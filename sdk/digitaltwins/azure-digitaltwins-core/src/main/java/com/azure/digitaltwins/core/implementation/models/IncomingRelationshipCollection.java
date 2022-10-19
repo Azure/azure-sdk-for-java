@@ -5,8 +5,8 @@
 package com.azure.digitaltwins.core.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 
 /** A collection of incoming relationships which relate digital twins together. */
@@ -15,7 +15,7 @@ public final class IncomingRelationshipCollection {
     /*
      * The value property.
      */
-    @JsonProperty(value = "value")
+    @JsonProperty(value = "value", required = true)
     private List<IncomingRelationship> value;
 
     /*
@@ -25,23 +25,23 @@ public final class IncomingRelationshipCollection {
     private String nextLink;
 
     /**
+     * Creates an instance of IncomingRelationshipCollection class.
+     *
+     * @param value the value value to set.
+     */
+    @JsonCreator
+    public IncomingRelationshipCollection(
+            @JsonProperty(value = "value", required = true) List<IncomingRelationship> value) {
+        this.value = value;
+    }
+
+    /**
      * Get the value property: The value property.
      *
      * @return the value value.
      */
     public List<IncomingRelationship> getValue() {
         return this.value;
-    }
-
-    /**
-     * Set the value property: The value property.
-     *
-     * @param value the value value to set.
-     * @return the IncomingRelationshipCollection object itself.
-     */
-    public IncomingRelationshipCollection setValue(List<IncomingRelationship> value) {
-        this.value = value;
-        return this;
     }
 
     /**
@@ -70,7 +70,10 @@ public final class IncomingRelationshipCollection {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (getValue() != null) {
+        if (getValue() == null) {
+            throw new IllegalArgumentException(
+                    "Missing required property value in model IncomingRelationshipCollection");
+        } else {
             getValue().forEach(e -> e.validate());
         }
     }

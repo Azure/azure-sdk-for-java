@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** The ArmIdentity model. */
 @Fluent
 public class ArmIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ArmIdentity.class);
-
     /*
      * Principal Id
      */
@@ -29,10 +25,9 @@ public class ArmIdentity {
     private String tenantId;
 
     /*
-     * The type of identity used for the resource. The type 'SystemAssigned,
-     * UserAssigned' includes both an implicitly created identity and a set of
-     * user assigned identities. The type 'None' will remove any identities
-     * from the service.
+     * The type of identity used for the resource. The type 'SystemAssigned,UserAssigned' includes both an implicitly
+     * created identity and a set of user assigned identities. The type 'None' will remove any identities from the
+     * service.
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
@@ -63,7 +58,7 @@ public class ArmIdentity {
     }
 
     /**
-     * Get the type property: The type of identity used for the resource. The type 'SystemAssigned, UserAssigned'
+     * Get the type property: The type of identity used for the resource. The type 'SystemAssigned,UserAssigned'
      * includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove
      * any identities from the service.
      *
@@ -74,7 +69,7 @@ public class ArmIdentity {
     }
 
     /**
-     * Set the type property: The type of identity used for the resource. The type 'SystemAssigned, UserAssigned'
+     * Set the type property: The type of identity used for the resource. The type 'SystemAssigned,UserAssigned'
      * includes both an implicitly created identity and a set of user assigned identities. The type 'None' will remove
      * any identities from the service.
      *

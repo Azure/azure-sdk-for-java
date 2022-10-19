@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for AuthorizationOperations List. */
 public final class AuthorizationOperationsListSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2016-09-01/examples/ListProviderOperations.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/ListProviderOperations.json
      */
     /**
      * Sample code: List provider operations.

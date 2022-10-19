@@ -31,11 +31,12 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingEndpointsClient;
+import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointSkuInfoListResultInner;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpointListResult;
 import com.azure.resourcemanager.mediaservices.models.StreamingEntityScaleUnit;
 import java.nio.ByteBuffer;
@@ -44,8 +45,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in StreamingEndpointsClient. */
 public final class StreamingEndpointsClientImpl implements StreamingEndpointsClient {
-    private final ClientLogger logger = new ClientLogger(StreamingEndpointsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final StreamingEndpointsService service;
 
@@ -153,6 +152,22 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+                + "/{accountName}/streamingEndpoints/{streamingEndpointName}/skus")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StreamingEndpointSkuInfoListResultInner>> skus(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("streamingEndpointName") String streamingEndpointName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
                 + "/{accountName}/streamingEndpoints/{streamingEndpointName}/start")
@@ -202,6 +217,39 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+                + "/{accountName}/streamingEndpointOperations/{operationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AsyncOperationResultInner>> asyncOperation(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+                + "/{accountName}/streamingEndpoints/{streamingEndpointName}/operationLocations/{operationId}")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<StreamingEndpointInner>> operationLocation(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("streamingEndpointName") String streamingEndpointName,
+            @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -213,14 +261,16 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Lists the streaming endpoints in the account.
+     * List StreamingEndpoints
+     *
+     * <p>Lists the streaming endpoints in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint list result.
+     * @return streamingEndpointListResult along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingEndpointInner>> listSinglePageAsync(
@@ -244,6 +294,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -254,7 +305,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                             this.client.getSubscriptionId(),
                             resourceGroupName,
                             accountName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<StreamingEndpointInner>>map(
@@ -270,7 +321,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Lists the streaming endpoints in the account.
+     * List StreamingEndpoints
+     *
+     * <p>Lists the streaming endpoints in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -278,7 +331,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint list result.
+     * @return streamingEndpointListResult along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingEndpointInner>> listSinglePageAsync(
@@ -302,6 +355,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -310,7 +364,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                 this.client.getSubscriptionId(),
                 resourceGroupName,
                 accountName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -325,14 +379,16 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Lists the streaming endpoints in the account.
+     * List StreamingEndpoints
+     *
+     * <p>Lists the streaming endpoints in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint list result.
+     * @return streamingEndpointListResult as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StreamingEndpointInner> listAsync(String resourceGroupName, String accountName) {
@@ -341,7 +397,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Lists the streaming endpoints in the account.
+     * List StreamingEndpoints
+     *
+     * <p>Lists the streaming endpoints in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -349,7 +407,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint list result.
+     * @return streamingEndpointListResult as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StreamingEndpointInner> listAsync(String resourceGroupName, String accountName, Context context) {
@@ -359,14 +417,16 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Lists the streaming endpoints in the account.
+     * List StreamingEndpoints
+     *
+     * <p>Lists the streaming endpoints in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint list result.
+     * @return streamingEndpointListResult as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StreamingEndpointInner> list(String resourceGroupName, String accountName) {
@@ -374,7 +434,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Lists the streaming endpoints in the account.
+     * List StreamingEndpoints
+     *
+     * <p>Lists the streaming endpoints in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -382,7 +444,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint list result.
+     * @return streamingEndpointListResult as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StreamingEndpointInner> list(String resourceGroupName, String accountName, Context context) {
@@ -390,7 +452,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Gets a streaming endpoint.
+     * Get StreamingEndpoint
+     *
+     * <p>Gets a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -398,7 +462,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming endpoint.
+     * @return a streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StreamingEndpointInner>> getWithResponseAsync(
@@ -426,6 +490,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -437,14 +502,16 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                             resourceGroupName,
                             accountName,
                             streamingEndpointName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a streaming endpoint.
+     * Get StreamingEndpoint
+     *
+     * <p>Gets a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -453,7 +520,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming endpoint.
+     * @return a streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<StreamingEndpointInner>> getWithResponseAsync(
@@ -481,6 +548,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -490,13 +558,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                 resourceGroupName,
                 accountName,
                 streamingEndpointName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Gets a streaming endpoint.
+     * Get StreamingEndpoint
+     *
+     * <p>Gets a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -504,24 +574,19 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming endpoint.
+     * @return a streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StreamingEndpointInner> getAsync(
         String resourceGroupName, String accountName, String streamingEndpointName) {
         return getWithResponseAsync(resourceGroupName, accountName, streamingEndpointName)
-            .flatMap(
-                (Response<StreamingEndpointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets a streaming endpoint.
+     * Get StreamingEndpoint
+     *
+     * <p>Gets a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -537,7 +602,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Gets a streaming endpoint.
+     * Get StreamingEndpoint
+     *
+     * <p>Gets a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -546,7 +613,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming endpoint.
+     * @return a streaming endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StreamingEndpointInner> getWithResponse(
@@ -555,7 +622,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -565,7 +634,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -602,6 +671,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -613,7 +683,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                             resourceGroupName,
                             accountName,
                             streamingEndpointName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             autoStart,
                             parameters,
                             accept,
@@ -622,7 +692,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -633,7 +705,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -671,6 +743,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -680,7 +753,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                 resourceGroupName,
                 accountName,
                 streamingEndpointName,
-                this.client.getApiVersion(),
+                apiVersion,
                 autoStart,
                 parameters,
                 accept,
@@ -688,7 +761,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -698,9 +773,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link PollerFlux} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreateAsync(
         String resourceGroupName,
         String accountName,
@@ -716,11 +791,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                 this.client.getHttpPipeline(),
                 StreamingEndpointInner.class,
                 StreamingEndpointInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -731,9 +808,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link PollerFlux} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreateAsync(
         String resourceGroupName,
         String accountName,
@@ -756,7 +833,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -766,9 +845,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(
         String resourceGroupName,
         String accountName,
@@ -780,7 +859,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -791,9 +872,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(
         String resourceGroupName,
         String accountName,
@@ -806,7 +887,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -816,7 +899,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StreamingEndpointInner> createAsync(
@@ -831,7 +914,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -840,7 +925,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StreamingEndpointInner> createAsync(
@@ -852,7 +937,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -863,7 +950,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StreamingEndpointInner> createAsync(
@@ -879,7 +966,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -902,7 +991,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -921,7 +1012,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -947,7 +1040,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -956,7 +1051,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -989,6 +1084,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1000,7 +1096,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                             resourceGroupName,
                             accountName,
                             streamingEndpointName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -1008,7 +1104,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1018,7 +1116,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the streaming endpoint along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1055,6 +1153,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1064,14 +1163,16 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                 resourceGroupName,
                 accountName,
                 streamingEndpointName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1080,9 +1181,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link PollerFlux} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdateAsync(
         String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1094,11 +1195,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                 this.client.getHttpPipeline(),
                 StreamingEndpointInner.class,
                 StreamingEndpointInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1108,9 +1211,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link PollerFlux} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdateAsync(
         String resourceGroupName,
         String accountName,
@@ -1131,7 +1234,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1140,16 +1245,18 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(
         String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters) {
         return beginUpdateAsync(resourceGroupName, accountName, streamingEndpointName, parameters).getSyncPoller();
     }
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1159,9 +1266,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(
         String resourceGroupName,
         String accountName,
@@ -1173,7 +1280,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1182,7 +1291,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StreamingEndpointInner> updateAsync(
@@ -1193,7 +1302,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1203,7 +1314,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the streaming endpoint on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<StreamingEndpointInner> updateAsync(
@@ -1218,7 +1329,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1236,7 +1349,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1259,7 +1374,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1267,7 +1384,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1295,6 +1412,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1306,14 +1424,16 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                             resourceGroupName,
                             accountName,
                             streamingEndpointName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1322,7 +1442,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1350,6 +1470,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1359,13 +1480,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                 resourceGroupName,
                 accountName,
                 streamingEndpointName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1373,20 +1496,23 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String streamingEndpointName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, accountName, streamingEndpointName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1395,9 +1521,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
         context = this.client.mergeContext(context);
@@ -1409,7 +1535,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1417,16 +1545,18 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String streamingEndpointName) {
         return beginDeleteAsync(resourceGroupName, accountName, streamingEndpointName).getSyncPoller();
     }
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1435,16 +1565,18 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, streamingEndpointName, context).getSyncPoller();
     }
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1452,7 +1584,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String streamingEndpointName) {
@@ -1462,7 +1594,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1471,7 +1605,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1482,7 +1616,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1497,7 +1633,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1513,7 +1651,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Starts an existing streaming endpoint.
+     * List StreamingEndpoint skus
+     *
+     * <p>List streaming endpoint supported skus.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1521,7 +1661,178 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<StreamingEndpointSkuInfoListResultInner>> skusWithResponseAsync(
+        String resourceGroupName, String accountName, String streamingEndpointName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (streamingEndpointName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .skus(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            streamingEndpointName,
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List StreamingEndpoint skus
+     *
+     * <p>List streaming endpoint supported skus.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<StreamingEndpointSkuInfoListResultInner>> skusWithResponseAsync(
+        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (streamingEndpointName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .skus(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                streamingEndpointName,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * List StreamingEndpoint skus
+     *
+     * <p>List streaming endpoint supported skus.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<StreamingEndpointSkuInfoListResultInner> skusAsync(
+        String resourceGroupName, String accountName, String streamingEndpointName) {
+        return skusWithResponseAsync(resourceGroupName, accountName, streamingEndpointName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List StreamingEndpoint skus
+     *
+     * <p>List streaming endpoint supported skus.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StreamingEndpointSkuInfoListResultInner skus(
+        String resourceGroupName, String accountName, String streamingEndpointName) {
+        return skusAsync(resourceGroupName, accountName, streamingEndpointName).block();
+    }
+
+    /**
+     * List StreamingEndpoint skus
+     *
+     * <p>List streaming endpoint supported skus.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StreamingEndpointSkuInfoListResultInner> skusWithResponse(
+        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+        return skusWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, context).block();
+    }
+
+    /**
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1549,6 +1860,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1560,14 +1872,16 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                             resourceGroupName,
                             accountName,
                             streamingEndpointName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1576,7 +1890,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
@@ -1604,6 +1918,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1613,13 +1928,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                 resourceGroupName,
                 accountName,
                 streamingEndpointName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1627,20 +1944,23 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String accountName, String streamingEndpointName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             startWithResponseAsync(resourceGroupName, accountName, streamingEndpointName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1649,9 +1969,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
         context = this.client.mergeContext(context);
@@ -1663,7 +1983,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1671,16 +1993,18 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String accountName, String streamingEndpointName) {
         return beginStartAsync(resourceGroupName, accountName, streamingEndpointName).getSyncPoller();
     }
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1689,16 +2013,18 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
         return beginStartAsync(resourceGroupName, accountName, streamingEndpointName, context).getSyncPoller();
     }
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1706,7 +2032,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(String resourceGroupName, String accountName, String streamingEndpointName) {
@@ -1716,7 +2042,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1725,7 +2053,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> startAsync(
@@ -1736,7 +2064,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1751,7 +2081,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1767,7 +2099,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1775,7 +2109,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
@@ -1803,6 +2137,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1814,14 +2149,16 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                             resourceGroupName,
                             accountName,
                             streamingEndpointName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1830,7 +2167,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
@@ -1858,6 +2195,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             return Mono
                 .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1867,13 +2205,15 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                 resourceGroupName,
                 accountName,
                 streamingEndpointName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1881,20 +2221,23 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String accountName, String streamingEndpointName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             stopWithResponseAsync(resourceGroupName, accountName, streamingEndpointName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1903,9 +2246,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStopAsync(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
         context = this.client.mergeContext(context);
@@ -1917,7 +2260,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1925,16 +2270,18 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String accountName, String streamingEndpointName) {
         return beginStopAsync(resourceGroupName, accountName, streamingEndpointName).getSyncPoller();
     }
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1943,16 +2290,18 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
         return beginStopAsync(resourceGroupName, accountName, streamingEndpointName, context).getSyncPoller();
     }
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1960,7 +2309,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(String resourceGroupName, String accountName, String streamingEndpointName) {
@@ -1970,7 +2319,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1979,7 +2330,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> stopAsync(
@@ -1990,7 +2341,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2005,7 +2358,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2021,7 +2376,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2030,7 +2387,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> scaleWithResponseAsync(
@@ -2066,6 +2423,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2077,7 +2435,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                             resourceGroupName,
                             accountName,
                             streamingEndpointName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -2085,7 +2443,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2095,7 +2455,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> scaleWithResponseAsync(
@@ -2132,6 +2492,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2141,14 +2502,16 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
                 resourceGroupName,
                 accountName,
                 streamingEndpointName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2157,9 +2520,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginScaleAsync(
         String resourceGroupName,
         String accountName,
@@ -2169,11 +2532,14 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
             scaleWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, parameters);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2183,9 +2549,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginScaleAsync(
         String resourceGroupName,
         String accountName,
@@ -2201,7 +2567,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2210,9 +2578,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginScale(
         String resourceGroupName,
         String accountName,
@@ -2222,7 +2590,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2232,9 +2602,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginScale(
         String resourceGroupName,
         String accountName,
@@ -2246,7 +2616,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2255,7 +2627,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> scaleAsync(
@@ -2269,7 +2641,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2279,7 +2653,7 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> scaleAsync(
@@ -2294,7 +2668,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2314,7 +2690,9 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -2336,13 +2714,380 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     }
 
     /**
-     * Get the next page of items.
+     * Get operation status.
      *
-     * @param nextLink The nextLink parameter.
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint list result.
+     * @return a streaming endpoint operation status along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AsyncOperationResultInner>> asyncOperationWithResponseAsync(
+        String resourceGroupName, String accountName, String operationId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .asyncOperation(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            operationId,
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AsyncOperationResultInner>> asyncOperationWithResponseAsync(
+        String resourceGroupName, String accountName, String operationId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .asyncOperation(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                operationId,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AsyncOperationResultInner> asyncOperationAsync(
+        String resourceGroupName, String accountName, String operationId) {
+        return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationResultInner asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        return asyncOperationAsync(resourceGroupName, accountName, operationId).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AsyncOperationResultInner> asyncOperationWithResponse(
+        String resourceGroupName, String accountName, String operationId, Context context) {
+        return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId, context).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<StreamingEndpointInner>> operationLocationWithResponseAsync(
+        String resourceGroupName, String accountName, String streamingEndpointName, String operationId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (streamingEndpointName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .operationLocation(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            streamingEndpointName,
+                            operationId,
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<StreamingEndpointInner>> operationLocationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String streamingEndpointName,
+        String operationId,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (streamingEndpointName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter streamingEndpointName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .operationLocation(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                streamingEndpointName,
+                operationId,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<StreamingEndpointInner> operationLocationAsync(
+        String resourceGroupName, String accountName, String streamingEndpointName, String operationId) {
+        return operationLocationWithResponseAsync(resourceGroupName, accountName, streamingEndpointName, operationId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public StreamingEndpointInner operationLocation(
+        String resourceGroupName, String accountName, String streamingEndpointName, String operationId) {
+        return operationLocationAsync(resourceGroupName, accountName, streamingEndpointName, operationId).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<StreamingEndpointInner> operationLocationWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String streamingEndpointName,
+        String operationId,
+        Context context) {
+        return operationLocationWithResponseAsync(
+                resourceGroupName, accountName, streamingEndpointName, operationId, context)
+            .block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return streamingEndpointListResult along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingEndpointInner>> listNextSinglePageAsync(String nextLink) {
@@ -2373,12 +3118,13 @@ public final class StreamingEndpointsClientImpl implements StreamingEndpointsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint list result.
+     * @return streamingEndpointListResult along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StreamingEndpointInner>> listNextSinglePageAsync(String nextLink, Context context) {

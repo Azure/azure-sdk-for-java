@@ -45,7 +45,11 @@ public final class LastUpdateStatus extends ExpandableStringEnum<LastUpdateStatu
         return fromString(name, LastUpdateStatus.class);
     }
 
-    /** @return known LastUpdateStatus values. */
+    /**
+     * Gets known LastUpdateStatus values.
+     *
+     * @return known LastUpdateStatus values.
+     */
     public static Collection<LastUpdateStatus> values() {
         return values(LastUpdateStatus.class);
     }

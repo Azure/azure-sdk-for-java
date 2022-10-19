@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BmsPrepareDataMov
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStorageConfigOperationResultResponseInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BmsPrepareDataMoveOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.VaultStorageConfigOperationResultResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BmsPrepareDataMoveOperationResultsImpl implements BmsPrepareDataMoveOperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BmsPrepareDataMoveOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BmsPrepareDataMoveOperationResultsImpl.class);
 
     private final BmsPrepareDataMoveOperationResultsClient innerClient;
 

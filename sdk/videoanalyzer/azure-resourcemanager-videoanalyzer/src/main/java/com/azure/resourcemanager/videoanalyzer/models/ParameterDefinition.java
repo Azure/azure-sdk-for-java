@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class ParameterDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParameterDefinition.class);
-
     /*
      * Name of the parameter declared in the pipeline topology.
      */
@@ -76,9 +73,11 @@ public final class ParameterDefinition {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ParameterDefinition"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ParameterDefinition.class);
 }

@@ -6,16 +6,12 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.ProductState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Product details. */
 @Fluent
 public final class ProductContractInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductContractInner.class);
-
     /*
      * Product entity contract properties.
      */

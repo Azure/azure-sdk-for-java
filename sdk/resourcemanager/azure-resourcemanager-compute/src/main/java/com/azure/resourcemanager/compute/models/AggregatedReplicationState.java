@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AggregatedReplicationState. */
+/** This is the aggregated replication status based on all the regional replication status flags. */
 public final class AggregatedReplicationState extends ExpandableStringEnum<AggregatedReplicationState> {
     /** Static value Unknown for AggregatedReplicationState. */
     public static final AggregatedReplicationState UNKNOWN = fromString("Unknown");
@@ -33,7 +33,11 @@ public final class AggregatedReplicationState extends ExpandableStringEnum<Aggre
         return fromString(name, AggregatedReplicationState.class);
     }
 
-    /** @return known AggregatedReplicationState values. */
+    /**
+     * Gets known AggregatedReplicationState values.
+     *
+     * @return known AggregatedReplicationState values.
+     */
     public static Collection<AggregatedReplicationState> values() {
         return values(AggregatedReplicationState.class);
     }

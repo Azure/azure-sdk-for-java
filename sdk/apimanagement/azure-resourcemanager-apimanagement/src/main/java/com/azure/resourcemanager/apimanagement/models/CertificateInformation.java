@@ -6,15 +6,12 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** SSL certificate information. */
 @Fluent
 public final class CertificateInformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateInformation.class);
-
     /*
      * Expiration date of the certificate. The date conforms to the following
      * format: `yyyy-MM-ddTHH:mm:ssZ` as specified by the ISO 8601 standard.
@@ -103,20 +100,22 @@ public final class CertificateInformation {
      */
     public void validate() {
         if (expiry() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property expiry in model CertificateInformation"));
         }
         if (thumbprint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property thumbprint in model CertificateInformation"));
         }
         if (subject() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property subject in model CertificateInformation"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateInformation.class);
 }

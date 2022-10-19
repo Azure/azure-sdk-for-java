@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateGallery;
 import com.azure.resourcemanager.applicationinsights.models.WorkbookTemplateLocalizedGallery;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** Properties that contain a workbook template. */
 @Fluent
 public final class WorkbookTemplateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkbookTemplateProperties.class);
-
     /*
      * Priority of the template. Determines which template to open when a
      * workbook gallery is opened in viewer mode.
@@ -163,13 +160,13 @@ public final class WorkbookTemplateProperties {
      */
     public void validate() {
         if (templateData() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property templateData in model WorkbookTemplateProperties"));
         }
         if (galleries() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property galleries in model WorkbookTemplateProperties"));
@@ -187,4 +184,6 @@ public final class WorkbookTemplateProperties {
                     });
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WorkbookTemplateProperties.class);
 }

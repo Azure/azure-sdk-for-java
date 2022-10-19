@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** operation. */
 @Fluent
 public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphOperation.class);
-
     /*
      * The start time of the operation.
      */
@@ -32,7 +29,7 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
     private OffsetDateTime lastActionDateTime;
 
     /*
-     * The status property.
+     * operationStatus
      */
     @JsonProperty(value = "status")
     private MicrosoftGraphOperationStatus status;
@@ -83,7 +80,7 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
     }
 
     /**
-     * Get the status property: The status property.
+     * Get the status property: operationStatus.
      *
      * @return the status value.
      */
@@ -92,7 +89,7 @@ public class MicrosoftGraphOperation extends MicrosoftGraphEntity {
     }
 
     /**
-     * Set the status property: The status property.
+     * Set the status property: operationStatus.
      *
      * @param status the status value to set.
      * @return the MicrosoftGraphOperation object itself.

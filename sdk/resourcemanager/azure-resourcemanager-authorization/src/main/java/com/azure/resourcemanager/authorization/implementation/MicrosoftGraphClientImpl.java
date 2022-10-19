@@ -7,41 +7,15 @@ package com.azure.resourcemanager.authorization.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.authorization.fluent.ApplicationsApplicationsClient;
 import com.azure.resourcemanager.authorization.fluent.ApplicationsClient;
-import com.azure.resourcemanager.authorization.fluent.ContactsClient;
-import com.azure.resourcemanager.authorization.fluent.ContactsOrgContactsClient;
-import com.azure.resourcemanager.authorization.fluent.ContractsClient;
-import com.azure.resourcemanager.authorization.fluent.ContractsContractsClient;
-import com.azure.resourcemanager.authorization.fluent.DevicesClient;
-import com.azure.resourcemanager.authorization.fluent.DevicesDevicesClient;
-import com.azure.resourcemanager.authorization.fluent.DirectoriesClient;
-import com.azure.resourcemanager.authorization.fluent.DirectoryAdministrativeUnitsClient;
-import com.azure.resourcemanager.authorization.fluent.DirectoryDirectoriesClient;
-import com.azure.resourcemanager.authorization.fluent.DirectoryRoleTemplatesClient;
-import com.azure.resourcemanager.authorization.fluent.DirectoryRoleTemplatesDirectoryRoleTemplatesClient;
-import com.azure.resourcemanager.authorization.fluent.DirectoryRolesClient;
-import com.azure.resourcemanager.authorization.fluent.DirectoryRolesDirectoryRolesClient;
-import com.azure.resourcemanager.authorization.fluent.DomainsClient;
 import com.azure.resourcemanager.authorization.fluent.DomainsDomainsClient;
-import com.azure.resourcemanager.authorization.fluent.GroupLifecyclePoliciesClient;
-import com.azure.resourcemanager.authorization.fluent.GroupLifecyclePoliciesGroupLifecyclePoliciesClient;
 import com.azure.resourcemanager.authorization.fluent.GroupsClient;
 import com.azure.resourcemanager.authorization.fluent.GroupsGroupsClient;
 import com.azure.resourcemanager.authorization.fluent.MicrosoftGraphClient;
-import com.azure.resourcemanager.authorization.fluent.OrganizationOrganizationsClient;
-import com.azure.resourcemanager.authorization.fluent.OrganizationsClient;
 import com.azure.resourcemanager.authorization.fluent.ServicePrincipalsClient;
 import com.azure.resourcemanager.authorization.fluent.ServicePrincipalsServicePrincipalsClient;
-import com.azure.resourcemanager.authorization.fluent.SubscribedSkusSubscribedSkusClient;
-import com.azure.resourcemanager.authorization.fluent.UsersClient;
-import com.azure.resourcemanager.authorization.fluent.UsersOutlooksClient;
-import com.azure.resourcemanager.authorization.fluent.UsersSettingsClient;
-import com.azure.resourcemanager.authorization.fluent.UsersTodoListsClient;
-import com.azure.resourcemanager.authorization.fluent.UsersTodoListsTasksClient;
-import com.azure.resourcemanager.authorization.fluent.UsersTodosClient;
 import com.azure.resourcemanager.authorization.fluent.UsersUsersClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
@@ -49,8 +23,6 @@ import java.time.Duration;
 /** Initializes a new instance of the MicrosoftGraphClientImpl type. */
 @ServiceClient(builder = MicrosoftGraphClientBuilder.class)
 public final class MicrosoftGraphClientImpl extends AzureServiceClient implements MicrosoftGraphClient {
-    private final ClientLogger logger = new ClientLogger(MicrosoftGraphClientImpl.class);
-
     /** server parameter. */
     private final String endpoint;
 
@@ -123,18 +95,6 @@ public final class MicrosoftGraphClientImpl extends AzureServiceClient implement
         return this.applications;
     }
 
-    /** The GroupsClient object to access its operations. */
-    private final GroupsClient groups;
-
-    /**
-     * Gets the GroupsClient object to access its operations.
-     *
-     * @return the GroupsClient object.
-     */
-    public GroupsClient getGroups() {
-        return this.groups;
-    }
-
     /** The ServicePrincipalsServicePrincipalsClient object to access its operations. */
     private final ServicePrincipalsServicePrincipalsClient servicePrincipalsServicePrincipals;
 
@@ -159,42 +119,6 @@ public final class MicrosoftGraphClientImpl extends AzureServiceClient implement
         return this.servicePrincipals;
     }
 
-    /** The UsersClient object to access its operations. */
-    private final UsersClient users;
-
-    /**
-     * Gets the UsersClient object to access its operations.
-     *
-     * @return the UsersClient object.
-     */
-    public UsersClient getUsers() {
-        return this.users;
-    }
-
-    /** The GroupLifecyclePoliciesGroupLifecyclePoliciesClient object to access its operations. */
-    private final GroupLifecyclePoliciesGroupLifecyclePoliciesClient groupLifecyclePoliciesGroupLifecyclePolicies;
-
-    /**
-     * Gets the GroupLifecyclePoliciesGroupLifecyclePoliciesClient object to access its operations.
-     *
-     * @return the GroupLifecyclePoliciesGroupLifecyclePoliciesClient object.
-     */
-    public GroupLifecyclePoliciesGroupLifecyclePoliciesClient getGroupLifecyclePoliciesGroupLifecyclePolicies() {
-        return this.groupLifecyclePoliciesGroupLifecyclePolicies;
-    }
-
-    /** The GroupLifecyclePoliciesClient object to access its operations. */
-    private final GroupLifecyclePoliciesClient groupLifecyclePolicies;
-
-    /**
-     * Gets the GroupLifecyclePoliciesClient object to access its operations.
-     *
-     * @return the GroupLifecyclePoliciesClient object.
-     */
-    public GroupLifecyclePoliciesClient getGroupLifecyclePolicies() {
-        return this.groupLifecyclePolicies;
-    }
-
     /** The GroupsGroupsClient object to access its operations. */
     private final GroupsGroupsClient groupsGroups;
 
@@ -205,6 +129,18 @@ public final class MicrosoftGraphClientImpl extends AzureServiceClient implement
      */
     public GroupsGroupsClient getGroupsGroups() {
         return this.groupsGroups;
+    }
+
+    /** The GroupsClient object to access its operations. */
+    private final GroupsClient groups;
+
+    /**
+     * Gets the GroupsClient object to access its operations.
+     *
+     * @return the GroupsClient object.
+     */
+    public GroupsClient getGroups() {
+        return this.groups;
     }
 
     /** The UsersUsersClient object to access its operations. */
@@ -219,222 +155,6 @@ public final class MicrosoftGraphClientImpl extends AzureServiceClient implement
         return this.usersUsers;
     }
 
-    /** The UsersOutlooksClient object to access its operations. */
-    private final UsersOutlooksClient usersOutlooks;
-
-    /**
-     * Gets the UsersOutlooksClient object to access its operations.
-     *
-     * @return the UsersOutlooksClient object.
-     */
-    public UsersOutlooksClient getUsersOutlooks() {
-        return this.usersOutlooks;
-    }
-
-    /** The UsersSettingsClient object to access its operations. */
-    private final UsersSettingsClient usersSettings;
-
-    /**
-     * Gets the UsersSettingsClient object to access its operations.
-     *
-     * @return the UsersSettingsClient object.
-     */
-    public UsersSettingsClient getUsersSettings() {
-        return this.usersSettings;
-    }
-
-    /** The UsersTodosClient object to access its operations. */
-    private final UsersTodosClient usersTodos;
-
-    /**
-     * Gets the UsersTodosClient object to access its operations.
-     *
-     * @return the UsersTodosClient object.
-     */
-    public UsersTodosClient getUsersTodos() {
-        return this.usersTodos;
-    }
-
-    /** The UsersTodoListsClient object to access its operations. */
-    private final UsersTodoListsClient usersTodoLists;
-
-    /**
-     * Gets the UsersTodoListsClient object to access its operations.
-     *
-     * @return the UsersTodoListsClient object.
-     */
-    public UsersTodoListsClient getUsersTodoLists() {
-        return this.usersTodoLists;
-    }
-
-    /** The UsersTodoListsTasksClient object to access its operations. */
-    private final UsersTodoListsTasksClient usersTodoListsTasks;
-
-    /**
-     * Gets the UsersTodoListsTasksClient object to access its operations.
-     *
-     * @return the UsersTodoListsTasksClient object.
-     */
-    public UsersTodoListsTasksClient getUsersTodoListsTasks() {
-        return this.usersTodoListsTasks;
-    }
-
-    /** The ContactsOrgContactsClient object to access its operations. */
-    private final ContactsOrgContactsClient contactsOrgContacts;
-
-    /**
-     * Gets the ContactsOrgContactsClient object to access its operations.
-     *
-     * @return the ContactsOrgContactsClient object.
-     */
-    public ContactsOrgContactsClient getContactsOrgContacts() {
-        return this.contactsOrgContacts;
-    }
-
-    /** The ContactsClient object to access its operations. */
-    private final ContactsClient contacts;
-
-    /**
-     * Gets the ContactsClient object to access its operations.
-     *
-     * @return the ContactsClient object.
-     */
-    public ContactsClient getContacts() {
-        return this.contacts;
-    }
-
-    /** The ContractsContractsClient object to access its operations. */
-    private final ContractsContractsClient contractsContracts;
-
-    /**
-     * Gets the ContractsContractsClient object to access its operations.
-     *
-     * @return the ContractsContractsClient object.
-     */
-    public ContractsContractsClient getContractsContracts() {
-        return this.contractsContracts;
-    }
-
-    /** The ContractsClient object to access its operations. */
-    private final ContractsClient contracts;
-
-    /**
-     * Gets the ContractsClient object to access its operations.
-     *
-     * @return the ContractsClient object.
-     */
-    public ContractsClient getContracts() {
-        return this.contracts;
-    }
-
-    /** The DevicesDevicesClient object to access its operations. */
-    private final DevicesDevicesClient devicesDevices;
-
-    /**
-     * Gets the DevicesDevicesClient object to access its operations.
-     *
-     * @return the DevicesDevicesClient object.
-     */
-    public DevicesDevicesClient getDevicesDevices() {
-        return this.devicesDevices;
-    }
-
-    /** The DevicesClient object to access its operations. */
-    private final DevicesClient devices;
-
-    /**
-     * Gets the DevicesClient object to access its operations.
-     *
-     * @return the DevicesClient object.
-     */
-    public DevicesClient getDevices() {
-        return this.devices;
-    }
-
-    /** The DirectoryDirectoriesClient object to access its operations. */
-    private final DirectoryDirectoriesClient directoryDirectories;
-
-    /**
-     * Gets the DirectoryDirectoriesClient object to access its operations.
-     *
-     * @return the DirectoryDirectoriesClient object.
-     */
-    public DirectoryDirectoriesClient getDirectoryDirectories() {
-        return this.directoryDirectories;
-    }
-
-    /** The DirectoriesClient object to access its operations. */
-    private final DirectoriesClient directories;
-
-    /**
-     * Gets the DirectoriesClient object to access its operations.
-     *
-     * @return the DirectoriesClient object.
-     */
-    public DirectoriesClient getDirectories() {
-        return this.directories;
-    }
-
-    /** The DirectoryAdministrativeUnitsClient object to access its operations. */
-    private final DirectoryAdministrativeUnitsClient directoryAdministrativeUnits;
-
-    /**
-     * Gets the DirectoryAdministrativeUnitsClient object to access its operations.
-     *
-     * @return the DirectoryAdministrativeUnitsClient object.
-     */
-    public DirectoryAdministrativeUnitsClient getDirectoryAdministrativeUnits() {
-        return this.directoryAdministrativeUnits;
-    }
-
-    /** The DirectoryRolesDirectoryRolesClient object to access its operations. */
-    private final DirectoryRolesDirectoryRolesClient directoryRolesDirectoryRoles;
-
-    /**
-     * Gets the DirectoryRolesDirectoryRolesClient object to access its operations.
-     *
-     * @return the DirectoryRolesDirectoryRolesClient object.
-     */
-    public DirectoryRolesDirectoryRolesClient getDirectoryRolesDirectoryRoles() {
-        return this.directoryRolesDirectoryRoles;
-    }
-
-    /** The DirectoryRolesClient object to access its operations. */
-    private final DirectoryRolesClient directoryRoles;
-
-    /**
-     * Gets the DirectoryRolesClient object to access its operations.
-     *
-     * @return the DirectoryRolesClient object.
-     */
-    public DirectoryRolesClient getDirectoryRoles() {
-        return this.directoryRoles;
-    }
-
-    /** The DirectoryRoleTemplatesDirectoryRoleTemplatesClient object to access its operations. */
-    private final DirectoryRoleTemplatesDirectoryRoleTemplatesClient directoryRoleTemplatesDirectoryRoleTemplates;
-
-    /**
-     * Gets the DirectoryRoleTemplatesDirectoryRoleTemplatesClient object to access its operations.
-     *
-     * @return the DirectoryRoleTemplatesDirectoryRoleTemplatesClient object.
-     */
-    public DirectoryRoleTemplatesDirectoryRoleTemplatesClient getDirectoryRoleTemplatesDirectoryRoleTemplates() {
-        return this.directoryRoleTemplatesDirectoryRoleTemplates;
-    }
-
-    /** The DirectoryRoleTemplatesClient object to access its operations. */
-    private final DirectoryRoleTemplatesClient directoryRoleTemplates;
-
-    /**
-     * Gets the DirectoryRoleTemplatesClient object to access its operations.
-     *
-     * @return the DirectoryRoleTemplatesClient object.
-     */
-    public DirectoryRoleTemplatesClient getDirectoryRoleTemplates() {
-        return this.directoryRoleTemplates;
-    }
-
     /** The DomainsDomainsClient object to access its operations. */
     private final DomainsDomainsClient domainsDomains;
 
@@ -445,54 +165,6 @@ public final class MicrosoftGraphClientImpl extends AzureServiceClient implement
      */
     public DomainsDomainsClient getDomainsDomains() {
         return this.domainsDomains;
-    }
-
-    /** The DomainsClient object to access its operations. */
-    private final DomainsClient domains;
-
-    /**
-     * Gets the DomainsClient object to access its operations.
-     *
-     * @return the DomainsClient object.
-     */
-    public DomainsClient getDomains() {
-        return this.domains;
-    }
-
-    /** The OrganizationOrganizationsClient object to access its operations. */
-    private final OrganizationOrganizationsClient organizationOrganizations;
-
-    /**
-     * Gets the OrganizationOrganizationsClient object to access its operations.
-     *
-     * @return the OrganizationOrganizationsClient object.
-     */
-    public OrganizationOrganizationsClient getOrganizationOrganizations() {
-        return this.organizationOrganizations;
-    }
-
-    /** The OrganizationsClient object to access its operations. */
-    private final OrganizationsClient organizations;
-
-    /**
-     * Gets the OrganizationsClient object to access its operations.
-     *
-     * @return the OrganizationsClient object.
-     */
-    public OrganizationsClient getOrganizations() {
-        return this.organizations;
-    }
-
-    /** The SubscribedSkusSubscribedSkusClient object to access its operations. */
-    private final SubscribedSkusSubscribedSkusClient subscribedSkusSubscribedSkus;
-
-    /**
-     * Gets the SubscribedSkusSubscribedSkusClient object to access its operations.
-     *
-     * @return the SubscribedSkusSubscribedSkusClient object.
-     */
-    public SubscribedSkusSubscribedSkusClient getSubscribedSkusSubscribedSkus() {
-        return this.subscribedSkusSubscribedSkus;
     }
 
     /**
@@ -517,38 +189,11 @@ public final class MicrosoftGraphClientImpl extends AzureServiceClient implement
         this.endpoint = endpoint;
         this.applicationsApplications = new ApplicationsApplicationsClientImpl(this);
         this.applications = new ApplicationsClientImpl(this);
-        this.groups = new GroupsClientImpl(this);
         this.servicePrincipalsServicePrincipals = new ServicePrincipalsServicePrincipalsClientImpl(this);
         this.servicePrincipals = new ServicePrincipalsClientImpl(this);
-        this.users = new UsersClientImpl(this);
-        this.groupLifecyclePoliciesGroupLifecyclePolicies =
-            new GroupLifecyclePoliciesGroupLifecyclePoliciesClientImpl(this);
-        this.groupLifecyclePolicies = new GroupLifecyclePoliciesClientImpl(this);
         this.groupsGroups = new GroupsGroupsClientImpl(this);
+        this.groups = new GroupsClientImpl(this);
         this.usersUsers = new UsersUsersClientImpl(this);
-        this.usersOutlooks = new UsersOutlooksClientImpl(this);
-        this.usersSettings = new UsersSettingsClientImpl(this);
-        this.usersTodos = new UsersTodosClientImpl(this);
-        this.usersTodoLists = new UsersTodoListsClientImpl(this);
-        this.usersTodoListsTasks = new UsersTodoListsTasksClientImpl(this);
-        this.contactsOrgContacts = new ContactsOrgContactsClientImpl(this);
-        this.contacts = new ContactsClientImpl(this);
-        this.contractsContracts = new ContractsContractsClientImpl(this);
-        this.contracts = new ContractsClientImpl(this);
-        this.devicesDevices = new DevicesDevicesClientImpl(this);
-        this.devices = new DevicesClientImpl(this);
-        this.directoryDirectories = new DirectoryDirectoriesClientImpl(this);
-        this.directories = new DirectoriesClientImpl(this);
-        this.directoryAdministrativeUnits = new DirectoryAdministrativeUnitsClientImpl(this);
-        this.directoryRolesDirectoryRoles = new DirectoryRolesDirectoryRolesClientImpl(this);
-        this.directoryRoles = new DirectoryRolesClientImpl(this);
-        this.directoryRoleTemplatesDirectoryRoleTemplates =
-            new DirectoryRoleTemplatesDirectoryRoleTemplatesClientImpl(this);
-        this.directoryRoleTemplates = new DirectoryRoleTemplatesClientImpl(this);
         this.domainsDomains = new DomainsDomainsClientImpl(this);
-        this.domains = new DomainsClientImpl(this);
-        this.organizationOrganizations = new OrganizationOrganizationsClientImpl(this);
-        this.organizations = new OrganizationsClientImpl(this);
-        this.subscribedSkusSubscribedSkus = new SubscribedSkusSubscribedSkusClientImpl(this);
     }
 }

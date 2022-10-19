@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** BEK is bitlocker encryption key. */
 @Fluent
 public final class BekDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BekDetails.class);
-
     /*
      * Secret is BEK.
      */

@@ -51,4 +51,18 @@ public class MultiplePipelineTrigger extends Trigger {
         this.pipelines = pipelines;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public MultiplePipelineTrigger setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MultiplePipelineTrigger setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
+        return this;
+    }
 }

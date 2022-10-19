@@ -6,15 +6,12 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The parameters to list service SAS credentials of a specific resource. */
 @Fluent
 public final class ServiceSasParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceSasParameters.class);
-
     /*
      * The canonical path to the signed resource.
      */
@@ -22,16 +19,15 @@ public final class ServiceSasParameters {
     private String canonicalizedResource;
 
     /*
-     * The signed services accessible with the service SAS. Possible values
-     * include: Blob (b), Container (c), File (f), Share (s).
+     * The signed services accessible with the service SAS. Possible values include: Blob (b), Container (c), File (f),
+     * Share (s).
      */
     @JsonProperty(value = "signedResource")
     private SignedResource resource;
 
     /*
-     * The signed permissions for the service SAS. Possible values include:
-     * Read (r), Write (w), Delete (d), List (l), Add (a), Create (c), Update
-     * (u) and Process (p).
+     * The signed permissions for the service SAS. Possible values include: Read (r), Write (w), Delete (d), List (l),
+     * Add (a), Create (c), Update (u) and Process (p).
      */
     @JsonProperty(value = "signedPermission")
     private Permissions permissions;
@@ -61,8 +57,8 @@ public final class ServiceSasParameters {
     private OffsetDateTime sharedAccessExpiryTime;
 
     /*
-     * A unique value up to 64 characters in length that correlates to an
-     * access policy specified for the container, queue, or table.
+     * A unique value up to 64 characters in length that correlates to an access policy specified for the container,
+     * queue, or table.
      */
     @JsonProperty(value = "signedIdentifier")
     private String identifier;
@@ -500,10 +496,12 @@ public final class ServiceSasParameters {
      */
     public void validate() {
         if (canonicalizedResource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property canonicalizedResource in model ServiceSasParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceSasParameters.class);
 }

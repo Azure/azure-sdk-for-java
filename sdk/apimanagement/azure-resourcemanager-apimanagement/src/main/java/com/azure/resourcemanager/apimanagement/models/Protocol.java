@@ -4,44 +4,37 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for Protocol. */
-public enum Protocol {
-    /** Enum value http. */
-    HTTP("http"),
+public final class Protocol extends ExpandableStringEnum<Protocol> {
+    /** Static value http for Protocol. */
+    public static final Protocol HTTP = fromString("http");
 
-    /** Enum value https. */
-    HTTPS("https");
+    /** Static value https for Protocol. */
+    public static final Protocol HTTPS = fromString("https");
 
-    /** The actual serialized value for a Protocol instance. */
-    private final String value;
+    /** Static value ws for Protocol. */
+    public static final Protocol WS = fromString("ws");
 
-    Protocol(String value) {
-        this.value = value;
-    }
+    /** Static value wss for Protocol. */
+    public static final Protocol WSS = fromString("wss");
 
     /**
-     * Parses a serialized value to a Protocol instance.
+     * Creates or finds a Protocol from its string representation.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed Protocol object, or null if unable to parse.
+     * @param name a name to look for.
+     * @return the corresponding Protocol.
      */
     @JsonCreator
-    public static Protocol fromString(String value) {
-        Protocol[] items = Protocol.values();
-        for (Protocol item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static Protocol fromString(String name) {
+        return fromString(name, Protocol.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /** @return known Protocol values. */
+    public static Collection<Protocol> values() {
+        return values(Protocol.class);
     }
 }

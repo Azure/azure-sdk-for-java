@@ -6,15 +6,12 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of available upgrade versions. */
 @Fluent
 public final class ManagedClusterPoolUpgradeProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);
-
     /*
      * The Kubernetes version (major.minor.patch).
      */
@@ -28,8 +25,7 @@ public final class ManagedClusterPoolUpgradeProfile {
     private String name;
 
     /*
-     * OsType to be used to specify os type. Choose from Linux and Windows.
-     * Default to Linux.
+     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
     @JsonProperty(value = "osType", required = true)
     private OSType osType;
@@ -127,13 +123,13 @@ public final class ManagedClusterPoolUpgradeProfile {
      */
     public void validate() {
         if (kubernetesVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property kubernetesVersion in model ManagedClusterPoolUpgradeProfile"));
         }
         if (osType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property osType in model ManagedClusterPoolUpgradeProfile"));
@@ -142,4 +138,6 @@ public final class ManagedClusterPoolUpgradeProfile {
             upgrades().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);
 }

@@ -15,6 +15,7 @@ import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
+import com.azure.search.documents.indexes.models.SearchAlias;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
 import com.azure.search.documents.indexes.models.SearchIndexStatistics;
@@ -82,7 +83,7 @@ public final class SearchIndexClient {
      *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;.setSearchable&#40;true&#41;
      * &#41;;
      * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
-     * SearchIndex indexFromService = searchIndexClient.createIndex&#40;searchIndex&#41;;
+     * SearchIndex indexFromService = SEARCH_INDEX_CLIENT.createIndex&#40;searchIndex&#41;;
      * System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
      *     indexFromService.getETag&#40;&#41;&#41;;
      * </pre>
@@ -112,7 +113,7 @@ public final class SearchIndexClient {
      * SearchIndex searchIndex = new SearchIndex&#40;&quot;searchIndex&quot;, searchFields&#41;;
      *
      * Response&lt;SearchIndex&gt; indexFromServiceResponse =
-     *     searchIndexClient.createIndexWithResponse&#40;searchIndex, new Context&#40;key1, value1&#41;&#41;;
+     *     SEARCH_INDEX_CLIENT.createIndexWithResponse&#40;searchIndex, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %s. The index name is %s.%n&quot;,
      *     indexFromServiceResponse.getStatusCode&#40;&#41;, indexFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
      * </pre>
@@ -137,7 +138,7 @@ public final class SearchIndexClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getIndex#String -->
      * <pre>
      * SearchIndex indexFromService =
-     *     searchIndexClient.getIndex&#40;&quot;searchIndex&quot;&#41;;
+     *     SEARCH_INDEX_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;;
      * System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, indexFromService.getName&#40;&#41;,
      *     indexFromService.getETag&#40;&#41;&#41;;
      * </pre>
@@ -161,7 +162,7 @@ public final class SearchIndexClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getIndexWithResponse#String-Context -->
      * <pre>
      * Response&lt;SearchIndex&gt; indexFromServiceResponse =
-     *     searchIndexClient.getIndexWithResponse&#40;&quot;searchIndex&quot;, new Context&#40;key1, value1&#41;&#41;;
+     *     SEARCH_INDEX_CLIENT.getIndexWithResponse&#40;&quot;searchIndex&quot;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      *
      * System.out.printf&#40;&quot;The status code of the response is %s. The index name is %s.%n&quot;,
      *     indexFromServiceResponse.getStatusCode&#40;&#41;, indexFromServiceResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
@@ -186,7 +187,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getIndexStatistics#String -->
      * <pre>
-     * SearchIndexStatistics statistics = searchIndexClient.getIndexStatistics&#40;&quot;searchIndex&quot;&#41;;
+     * SearchIndexStatistics statistics = SEARCH_INDEX_CLIENT.getIndexStatistics&#40;&quot;searchIndex&quot;&#41;;
      * System.out.printf&#40;&quot;There are %d documents and storage size of %d available in 'searchIndex'.%n&quot;,
      *     statistics.getDocumentCount&#40;&#41;, statistics.getStorageSize&#40;&#41;&#41;;
      * </pre>
@@ -209,8 +210,8 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getIndexStatisticsWithResponse#String-Context -->
      * <pre>
-     * Response&lt;SearchIndexStatistics&gt; statistics = searchIndexClient.getIndexStatisticsWithResponse&#40;&quot;searchIndex&quot;,
-     *     new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SearchIndexStatistics&gt; statistics = SEARCH_INDEX_CLIENT.getIndexStatisticsWithResponse&#40;&quot;searchIndex&quot;,
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %s.%n&quot;
      *         + &quot;There are %d documents and storage size of %d available in 'searchIndex'.%n&quot;,
      *     statistics.getStatusCode&#40;&#41;, statistics.getValue&#40;&#41;.getDocumentCount&#40;&#41;,
@@ -236,7 +237,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listIndexes -->
      * <pre>
-     * PagedIterable&lt;SearchIndex&gt; indexes = searchIndexClient.listIndexes&#40;&#41;;
+     * PagedIterable&lt;SearchIndex&gt; indexes = SEARCH_INDEX_CLIENT.listIndexes&#40;&#41;;
      * for &#40;SearchIndex index: indexes&#41; &#123;
      *     System.out.printf&#40;&quot;The index name is %s. The ETag of index is %s.%n&quot;, index.getName&#40;&#41;,
      *         index.getETag&#40;&#41;&#41;;
@@ -260,7 +261,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listIndexesWithResponse#Context -->
      * <pre>
-     * PagedIterable&lt;SearchIndex&gt; indexes = searchIndexClient.listIndexes&#40;new Context&#40;key1, value1&#41;&#41;;
+     * PagedIterable&lt;SearchIndex&gt; indexes = SEARCH_INDEX_CLIENT.listIndexes&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is&quot;
      *     + indexes.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
      * for &#40;SearchIndex index: indexes&#41; &#123;
@@ -286,7 +287,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listIndexNames -->
      * <pre>
-     * PagedIterable&lt;String&gt; indexes = searchIndexClient.listIndexNames&#40;&#41;;
+     * PagedIterable&lt;String&gt; indexes = SEARCH_INDEX_CLIENT.listIndexNames&#40;&#41;;
      * for &#40;String indexName: indexes&#41; &#123;
      *     System.out.printf&#40;&quot;The index name is %s.%n&quot;, indexName&#41;;
      * &#125;
@@ -309,7 +310,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listIndexNames#Context -->
      * <pre>
-     * PagedIterable&lt;String&gt; indexes = searchIndexClient.listIndexNames&#40;new Context&#40;key1, value1&#41;&#41;;
+     * PagedIterable&lt;String&gt; indexes = SEARCH_INDEX_CLIENT.listIndexNames&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is&quot;
      *     + indexes.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
      * for &#40;String indexName: indexes&#41; &#123;
@@ -335,10 +336,10 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndex#SearchIndex -->
      * <pre>
-     * SearchIndex indexFromService = searchIndexClient.getIndex&#40;&quot;searchIndex&quot;&#41;;
+     * SearchIndex indexFromService = SEARCH_INDEX_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;;
      * indexFromService.setSuggesters&#40;Collections.singletonList&#40;new SearchSuggester&#40;&quot;sg&quot;,
      *     Collections.singletonList&#40;&quot;hotelName&quot;&#41;&#41;&#41;&#41;;
-     * SearchIndex updatedIndex = searchIndexClient.createOrUpdateIndex&#40;indexFromService&#41;;
+     * SearchIndex updatedIndex = SEARCH_INDEX_CLIENT.createOrUpdateIndex&#40;indexFromService&#41;;
      * System.out.printf&#40;&quot;The index name is %s. The suggester name of index is %s.%n&quot;, updatedIndex.getName&#40;&#41;,
      *     updatedIndex.getSuggesters&#40;&#41;.get&#40;0&#41;.getName&#40;&#41;&#41;;
      * </pre>
@@ -361,11 +362,11 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateIndexWithResponse#SearchIndex-boolean-boolean-Context -->
      * <pre>
-     * SearchIndex indexFromService = searchIndexClient.getIndex&#40;&quot;searchIndex&quot;&#41;;
+     * SearchIndex indexFromService = SEARCH_INDEX_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;;
      * indexFromService.setSuggesters&#40;Collections.singletonList&#40;new SearchSuggester&#40;&quot;sg&quot;,
      *     Collections.singletonList&#40;&quot;hotelName&quot;&#41;&#41;&#41;&#41;;
-     * Response&lt;SearchIndex&gt; updatedIndexResponse = searchIndexClient.createOrUpdateIndexWithResponse&#40;indexFromService, true,
-     *     false, new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SearchIndex&gt; updatedIndexResponse = SEARCH_INDEX_CLIENT.createOrUpdateIndexWithResponse&#40;indexFromService, true,
+     *     false, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the normal response is %s.%n&quot;
      *         + &quot;The index name is %s. The ETag of index is %s.%n&quot;, updatedIndexResponse.getStatusCode&#40;&#41;,
      *     updatedIndexResponse.getValue&#40;&#41;.getName&#40;&#41;, updatedIndexResponse.getValue&#40;&#41;.getETag&#40;&#41;&#41;;
@@ -397,7 +398,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteIndex#String -->
      * <pre>
-     * searchIndexClient.deleteIndex&#40;&quot;searchIndex&quot;&#41;;
+     * SEARCH_INDEX_CLIENT.deleteIndex&#40;&quot;searchIndex&quot;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteIndex#String -->
      *
@@ -405,7 +406,7 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteIndex(String indexName) {
-        deleteIndexWithResponse(new SearchIndex(indexName), false, Context.NONE);
+        asyncClient.deleteIndexWithResponse(indexName, null, Context.NONE).block();
     }
 
     /**
@@ -417,9 +418,9 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteIndexWithResponse#SearchIndex-boolean-Context -->
      * <pre>
-     * SearchIndex indexFromService = searchIndexClient.getIndex&#40;&quot;searchIndex&quot;&#41;;
-     * Response&lt;Void&gt; deleteResponse = searchIndexClient.deleteIndexWithResponse&#40;indexFromService, true,
-     *     new Context&#40;key1, value1&#41;&#41;;
+     * SearchIndex indexFromService = SEARCH_INDEX_CLIENT.getIndex&#40;&quot;searchIndex&quot;&#41;;
+     * Response&lt;Void&gt; deleteResponse = SEARCH_INDEX_CLIENT.deleteIndexWithResponse&#40;indexFromService, true,
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;, deleteResponse.getStatusCode&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteIndexWithResponse#SearchIndex-boolean-Context -->
@@ -445,7 +446,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.analyzeText#String-AnalyzeTextOptions -->
      * <pre>
-     * PagedIterable&lt;AnalyzedTokenInfo&gt; tokenInfos = searchIndexClient.analyzeText&#40;&quot;searchIndex&quot;,
+     * PagedIterable&lt;AnalyzedTokenInfo&gt; tokenInfos = SEARCH_INDEX_CLIENT.analyzeText&#40;&quot;searchIndex&quot;,
      *     new AnalyzeTextOptions&#40;&quot;The quick brown fox&quot;, LexicalTokenizerName.CLASSIC&#41;&#41;;
      * for &#40;AnalyzedTokenInfo tokenInfo : tokenInfos&#41; &#123;
      *     System.out.printf&#40;&quot;The token emitted by the analyzer is %s.%n&quot;, tokenInfo.getToken&#40;&#41;&#41;;
@@ -472,8 +473,8 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.analyzeText#String-AnalyzeTextOptions-Context -->
      * <pre>
-     * PagedIterable&lt;AnalyzedTokenInfo&gt; tokenInfos = searchIndexClient.analyzeText&#40;&quot;searchIndex&quot;,
-     *     new AnalyzeTextOptions&#40;&quot;The quick brown fox&quot;, LexicalTokenizerName.CLASSIC&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * PagedIterable&lt;AnalyzedTokenInfo&gt; tokenInfos = SEARCH_INDEX_CLIENT.analyzeText&#40;&quot;searchIndex&quot;,
+     *     new AnalyzeTextOptions&#40;&quot;The quick brown fox&quot;, LexicalTokenizerName.CLASSIC&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is &quot;
      *     + tokenInfos.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
      * for &#40;AnalyzedTokenInfo tokenInfo : tokenInfos&#41; &#123;
@@ -505,7 +506,7 @@ public final class SearchIndexClient {
      * <pre>
      * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMap&quot;,
      *     &quot;United States, United States of America, USA&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
-     * SynonymMap synonymMapFromService = searchIndexClient.createSynonymMap&#40;synonymMap&#41;;
+     * SynonymMap synonymMapFromService = SEARCH_INDEX_CLIENT.createSynonymMap&#40;synonymMap&#41;;
      * System.out.printf&#40;&quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;,
      *     synonymMapFromService.getName&#40;&#41;, synonymMapFromService.getETag&#40;&#41;&#41;;
      * </pre>
@@ -530,8 +531,8 @@ public final class SearchIndexClient {
      * <pre>
      * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMap&quot;,
      *     &quot;United States, United States of America, USA&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
-     * Response&lt;SynonymMap&gt; synonymMapFromService = searchIndexClient.createSynonymMapWithResponse&#40;synonymMap,
-     *     new Context&#40;key1, value1&#41;&#41;;
+     * Response&lt;SynonymMap&gt; synonymMapFromService = SEARCH_INDEX_CLIENT.createSynonymMapWithResponse&#40;synonymMap,
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;
      *         + &quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;, synonymMapFromService.getStatusCode&#40;&#41;,
      *     synonymMapFromService.getValue&#40;&#41;.getName&#40;&#41;, synonymMapFromService.getValue&#40;&#41;.getETag&#40;&#41;&#41;;
@@ -557,7 +558,7 @@ public final class SearchIndexClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getSynonymMap#String -->
      * <pre>
      * SynonymMap synonymMapFromService =
-     *     searchIndexClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;;
+     *     SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;synonymMap&quot;&#41;;
      * System.out.printf&#40;&quot;The synonym map is %s. The ETag of synonym map is %s.%n&quot;, synonymMapFromService.getName&#40;&#41;,
      *     synonymMapFromService.getETag&#40;&#41;&#41;;
      * </pre>
@@ -581,7 +582,7 @@ public final class SearchIndexClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getSynonymMapWithResponse#String-Context -->
      * <pre>
      * Response&lt;SynonymMap&gt; synonymMapFromService =
-     *     searchIndexClient.getSynonymMapWithResponse&#40;&quot;synonymMap&quot;, new Context&#40;key1, value1&#41;&#41;;
+     *     SEARCH_INDEX_CLIENT.getSynonymMapWithResponse&#40;&quot;synonymMap&quot;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %d.%n&quot;
      *         + &quot;The synonym map name is %s. The ETag of synonym map is %s.%n&quot;, synonymMapFromService.getStatusCode&#40;&#41;,
      *     synonymMapFromService.getValue&#40;&#41;.getName&#40;&#41;, synonymMapFromService.getValue&#40;&#41;.getETag&#40;&#41;&#41;;
@@ -606,7 +607,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listSynonymMaps -->
      * <pre>
-     * PagedIterable&lt;SynonymMap&gt; synonymMaps = searchIndexClient.listSynonymMaps&#40;&#41;;
+     * PagedIterable&lt;SynonymMap&gt; synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMaps&#40;&#41;;
      * for &#40;SynonymMap synonymMap: synonymMaps&#41; &#123;
      *     System.out.printf&#40;&quot;The synonymMap name is %s. The ETag of synonymMap is %s.%n&quot;, synonymMap.getName&#40;&#41;,
      *         synonymMap.getETag&#40;&#41;&#41;;
@@ -630,7 +631,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapsWithResponse#Context -->
      * <pre>
-     * PagedIterable&lt;SynonymMap&gt; synonymMaps = searchIndexClient.listSynonymMaps&#40;new Context&#40;key1, value1&#41;&#41;;
+     * PagedIterable&lt;SynonymMap&gt; synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMaps&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is&quot;
      *     + synonymMaps.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
      * for &#40;SynonymMap index: synonymMaps&#41; &#123;
@@ -656,7 +657,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNames -->
      * <pre>
-     * PagedIterable&lt;String&gt; synonymMaps = searchIndexClient.listSynonymMapNames&#40;&#41;;
+     * PagedIterable&lt;String&gt; synonymMaps = SEARCH_INDEX_CLIENT.listSynonymMapNames&#40;&#41;;
      * for &#40;String synonymMap: synonymMaps&#41; &#123;
      *     System.out.printf&#40;&quot;The synonymMap name is %s.%n&quot;, synonymMap&#41;;
      * &#125;
@@ -679,7 +680,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listSynonymMapNamesWithResponse#Context -->
      * <pre>
-     * PagedIterable&lt;String&gt; synonymMaps = searchIndexClient.listIndexNames&#40;new Context&#40;key1, value1&#41;&#41;;
+     * PagedIterable&lt;String&gt; synonymMaps = SEARCH_INDEX_CLIENT.listIndexNames&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is&quot;
      *     + synonymMaps.iterableByPage&#40;&#41;.iterator&#40;&#41;.next&#40;&#41;.getStatusCode&#40;&#41;&#41;;
      * for &#40;String synonymMapNames: synonymMaps&#41; &#123;
@@ -705,9 +706,9 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMap#SynonymMap -->
      * <pre>
-     * SynonymMap synonymMap = searchIndexClient.getSynonymMap&#40;&quot;searchIndex&quot;&#41;;
+     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;searchIndex&quot;&#41;;
      * synonymMap.setSynonyms&#40;&quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
-     * SynonymMap updatedSynonymMap = searchIndexClient.createOrUpdateSynonymMap&#40;synonymMap&#41;;
+     * SynonymMap updatedSynonymMap = SEARCH_INDEX_CLIENT.createOrUpdateSynonymMap&#40;synonymMap&#41;;
      * System.out.printf&#40;&quot;The synonym map name is %s. The synonyms are %s.%n&quot;, updatedSynonymMap.getName&#40;&#41;,
      *     updatedSynonymMap.getSynonyms&#40;&#41;&#41;;
      * </pre>
@@ -730,11 +731,11 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateSynonymMapWithResponse#SynonymMap-boolean-Context -->
      * <pre>
-     * SynonymMap synonymMap = searchIndexClient.getSynonymMap&#40;&quot;searchIndex&quot;&#41;;
+     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;searchIndex&quot;&#41;;
      * synonymMap.setSynonyms&#40;&quot;United States, United States of America, USA, America&#92;nWashington, Wash. =&gt; WA&quot;&#41;;
      * Response&lt;SynonymMap&gt; updatedSynonymMap =
-     *     searchIndexClient.createOrUpdateSynonymMapWithResponse&#40;synonymMap, true,
-     *         new Context&#40;key1, value1&#41;&#41;;
+     *     SEARCH_INDEX_CLIENT.createOrUpdateSynonymMapWithResponse&#40;synonymMap, true,
+     *         new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the normal response is %s.%n&quot;
      *         + &quot;The synonym map name is %s. The synonyms are %s.%n&quot;, updatedSynonymMap.getStatusCode&#40;&#41;,
      *     updatedSynonymMap.getValue&#40;&#41;.getName&#40;&#41;, updatedSynonymMap.getValue&#40;&#41;.getSynonyms&#40;&#41;&#41;;
@@ -763,7 +764,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMap#String -->
      * <pre>
-     * searchIndexClient.deleteSynonymMap&#40;&quot;synonymMap&quot;&#41;;
+     * SEARCH_INDEX_CLIENT.deleteSynonymMap&#40;&quot;synonymMap&quot;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMap#String -->
      *
@@ -771,7 +772,7 @@ public final class SearchIndexClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteSynonymMap(String synonymMapName) {
-        deleteSynonymMapWithResponse(new SynonymMap(synonymMapName), false, Context.NONE);
+        asyncClient.deleteSynonymMapWithResponse(synonymMapName, null, Context.NONE).block();
     }
 
     /**
@@ -783,9 +784,9 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SynonymMap-boolean-Context -->
      * <pre>
-     * SynonymMap synonymMap = searchIndexClient.getSynonymMap&#40;&quot;synonymMap&quot;&#41;;
-     * Response&lt;Void&gt; response = searchIndexClient.deleteSynonymMapWithResponse&#40;synonymMap, true,
-     *     new Context&#40;key1, value1&#41;&#41;;
+     * SynonymMap synonymMap = SEARCH_INDEX_CLIENT.getSynonymMap&#40;&quot;synonymMap&quot;&#41;;
+     * Response&lt;Void&gt; response = SEARCH_INDEX_CLIENT.deleteSynonymMapWithResponse&#40;synonymMap, true,
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.println&#40;&quot;The status code of the response is&quot; + response.getStatusCode&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteSynonymMapWithResponse#SynonymMap-boolean-Context -->
@@ -812,7 +813,7 @@ public final class SearchIndexClient {
      *
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getServiceStatistics -->
      * <pre>
-     * SearchServiceStatistics serviceStatistics = searchIndexClient.getServiceStatistics&#40;&#41;;
+     * SearchServiceStatistics serviceStatistics = SEARCH_INDEX_CLIENT.getServiceStatistics&#40;&#41;;
      * System.out.printf&#40;&quot;There are %s search indexes in your service.%n&quot;,
      *     serviceStatistics.getCounters&#40;&#41;.getIndexCounter&#40;&#41;&#41;;
      * </pre>
@@ -835,7 +836,7 @@ public final class SearchIndexClient {
      * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getServiceStatisticsWithResponse#Context -->
      * <pre>
      * Response&lt;SearchServiceStatistics&gt; serviceStatistics =
-     *     searchIndexClient.getServiceStatisticsWithResponse&#40;new Context&#40;key1, value1&#41;&#41;;
+     *     SEARCH_INDEX_CLIENT.getServiceStatisticsWithResponse&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;;
      * System.out.printf&#40;&quot;The status code of the response is %s.%nThere are %s search indexes in your service.%n&quot;,
      *     serviceStatistics.getStatusCode&#40;&#41;,
      *     serviceStatistics.getValue&#40;&#41;.getCounters&#40;&#41;.getIndexCounter&#40;&#41;&#41;;
@@ -863,4 +864,255 @@ public final class SearchIndexClient {
         return SearchIndexAsyncClient.buildSearchFields(model, options);
     }
 
+    /**
+     * Creates a new Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAlias#SearchAlias -->
+     * <pre>
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createAlias&#40;new SearchAlias&#40;&quot;my-alias&quot;,
+     *     Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;;
+     * System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
+     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchClient.createAlias#SearchAlias -->
+     *
+     * @param alias definition of the alias to create.
+     * @return the created alias.
+     */
+    public SearchAlias createAlias(SearchAlias alias) {
+        return createAliasWithResponse(alias, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a new Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createAliasWithResponse#SearchAlias-Context -->
+     * <pre>
+     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.createAliasWithResponse&#40;new SearchAlias&#40;&quot;my-alias&quot;,
+     *         Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchClient.createAliasWithResponse#SearchAlias-Context -->
+     *
+     * @param alias definition of the alias to create.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the created alias.
+     */
+    public Response<SearchAlias> createAliasWithResponse(SearchAlias alias, Context context) {
+        return asyncClient.createAliasWithResponse(alias, context).block();
+    }
+
+    /**
+     * Creates or updates an Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create then update the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias -->
+     * <pre>
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias&#40;
+     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Created alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
+     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     *
+     * searchAlias = SEARCH_INDEX_CLIENT.createOrUpdateAlias&#40;new SearchAlias&#40;searchAlias.getName&#40;&#41;,
+     *     Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Updated alias '%s' to aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
+     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAlias#SearchAlias -->
+     *
+     * @param alias definition of the alias to create or update.
+     * @return the created or updated alias.
+     */
+    public SearchAlias createOrUpdateAlias(SearchAlias alias) {
+        return createOrUpdateAliasWithResponse(alias, false, Context.NONE).getValue();
+    }
+
+    /**
+     * Creates or updates an Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Create then update the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context -->
+     * <pre>
+     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse&#40;
+     *     new SearchAlias&#40;&quot;my-alias&quot;, Collections.singletonList&#40;&quot;index-to-alias&quot;&#41;&#41;, false, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response status code %d. Created alias '%s' that aliases index '%s'.&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     *
+     * response = SEARCH_INDEX_CLIENT.createOrUpdateAliasWithResponse&#40;
+     *     new SearchAlias&#40;response.getValue&#40;&#41;.getName&#40;&#41;, Collections.singletonList&#40;&quot;new-index-to-alias&quot;&#41;&#41;
+     *         .setETag&#40;response.getValue&#40;&#41;.getETag&#40;&#41;&#41;, true, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response status code %d. Updated alias '%s' that aliases index '%s'.&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.createOrUpdateAliasWithResponse#SearchAlias-boolean-Context -->
+     *
+     * @param alias definition of the alias to create or update.
+     * @param onlyIfUnchanged only update the alias if the eTag matches the alias on the service.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the created or updated alias.
+     */
+    public Response<SearchAlias> createOrUpdateAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged,
+        Context context) {
+        return asyncClient.createOrUpdateAliasWithResponse(alias, onlyIfUnchanged ? alias.getETag() : null, context)
+            .block();
+    }
+
+    /**
+     * Gets the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAlias#String -->
+     * <pre>
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved alias '%s' that aliases index '%s'.&quot;, searchAlias.getName&#40;&#41;,
+     *     searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.getAlias#String -->
+     *
+     * @param aliasName name of the alias to get.
+     * @return the retrieved alias.
+     */
+    public SearchAlias getAlias(String aliasName) {
+        return getAliasWithResponse(aliasName, Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Get the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context -->
+     * <pre>
+     * Response&lt;SearchAlias&gt; response = SEARCH_INDEX_CLIENT.getAliasWithResponse&#40;&quot;my-alias&quot;, new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response status code %d. Retrieved alias '%s' that aliases index '%s'.&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.getIndexes&#40;&#41;.get&#40;0&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.getAliasWithResponse#String-Context -->
+     *
+     * @param aliasName name of the alias to get.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return the retrieved alias.
+     */
+    public Response<SearchAlias> getAliasWithResponse(String aliasName, Context context) {
+        return asyncClient.getAliasWithResponse(aliasName, context).block();
+    }
+
+    /**
+     * Deletes the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String -->
+     * <pre>
+     * SEARCH_INDEX_CLIENT.deleteAlias&#40;&quot;my-alias&quot;&#41;;
+     *
+     * System.out.println&#40;&quot;Deleted alias 'my-alias'.&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteAlias#String -->
+     *
+     * @param aliasName name of the alias to delete.
+     */
+    public void deleteAlias(String aliasName) {
+        asyncClient.deleteAliasWithResponse(aliasName, null, Context.NONE).block();
+    }
+
+    /**
+     * Deletes the Azure Cognitive Search alias.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> Delete the search alias named "my-alias". </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context -->
+     * <pre>
+     * SearchAlias searchAlias = SEARCH_INDEX_CLIENT.getAlias&#40;&quot;my-alias&quot;&#41;;
+     *
+     * Response&lt;Void&gt; response = SEARCH_INDEX_CLIENT.deleteAliasWithResponse&#40;searchAlias, true,
+     *     new Context&#40;KEY_1, VALUE_1&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Response status code %d. Deleted alias 'my-alias'.&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.deleteAliasWithResponse#SearchAlias-boolean-Context -->
+     *
+     * @param alias the alias to delete.
+     * @param onlyIfUnchanged only delete the alias if the eTag matches the alias on the service.
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a response indicating the alias has been deleted.
+     */
+    public Response<Void> deleteAliasWithResponse(SearchAlias alias, boolean onlyIfUnchanged, Context context) {
+        return asyncClient.deleteAliasWithResponse(alias.getName(), onlyIfUnchanged ? alias.getETag() : null, context)
+            .block();
+    }
+
+    /**
+     * Lists all aliases in the Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List aliases </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listAliases -->
+     * <pre>
+     * SEARCH_INDEX_CLIENT.listAliases&#40;&#41;
+     *     .forEach&#40;searchAlias -&gt; System.out.printf&#40;&quot;Listed alias '%s' that aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.listAliases -->
+     *
+     * @return a list of aliases in the service.
+     */
+    public PagedIterable<SearchAlias> listAliases() {
+        return listAliases(Context.NONE);
+    }
+
+    /**
+     * Lists all aliases in the Azure Cognitive Search service.
+     *
+     * <p><strong>Code Sample</strong></p>
+     *
+     * <p> List aliases </p>
+     *
+     * <!-- src_embed com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context -->
+     * <pre>
+     * SEARCH_INDEX_CLIENT.listAliases&#40;new Context&#40;KEY_1, VALUE_1&#41;&#41;
+     *     .forEach&#40;searchAlias -&gt; System.out.printf&#40;&quot;Listed alias '%s' that aliases index '%s'.&quot;,
+     *         searchAlias.getName&#40;&#41;, searchAlias.getIndexes&#40;&#41;.get&#40;0&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.search.documents.indexes.SearchIndexClient.listAliases#Context -->
+     *
+     * @param context additional context that is passed through the HTTP pipeline during the service call
+     * @return a list of aliases in the service.
+     */
+    public PagedIterable<SearchAlias> listAliases(Context context) {
+        return new PagedIterable<>(asyncClient.listAliases(context));
+    }
 }

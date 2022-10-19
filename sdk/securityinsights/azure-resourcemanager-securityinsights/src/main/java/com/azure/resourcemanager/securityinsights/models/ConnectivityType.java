@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectivityType. */
+/** type of connectivity. */
 public final class ConnectivityType extends ExpandableStringEnum<ConnectivityType> {
     /** Static value IsConnectedQuery for ConnectivityType. */
     public static final ConnectivityType IS_CONNECTED_QUERY = fromString("IsConnectedQuery");
@@ -24,7 +24,11 @@ public final class ConnectivityType extends ExpandableStringEnum<ConnectivityTyp
         return fromString(name, ConnectivityType.class);
     }
 
-    /** @return known ConnectivityType values. */
+    /**
+     * Gets known ConnectivityType values.
+     *
+     * @return known ConnectivityType values.
+     */
     public static Collection<ConnectivityType> values() {
         return values(ConnectivityType.class);
     }

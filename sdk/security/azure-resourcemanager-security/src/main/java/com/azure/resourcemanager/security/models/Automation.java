@@ -102,6 +102,13 @@ public interface Automation {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.security.fluent.models.AutomationInner object.
      *
      * @return the inner object.
@@ -381,7 +388,7 @@ public interface Automation {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security automation model state property bag.
+     * @return the security automation model state property bag along with {@link Response}.
      */
     Response<AutomationValidationStatus> validateWithResponse(AutomationInner automation, Context context);
 }

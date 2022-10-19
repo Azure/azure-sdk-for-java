@@ -13,10 +13,9 @@ import com.azure.resourcemanager.videoanalyzer.fluent.PipelineTopologiesClient;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.PipelineTopologyInner;
 import com.azure.resourcemanager.videoanalyzer.models.PipelineTopologies;
 import com.azure.resourcemanager.videoanalyzer.models.PipelineTopology;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PipelineTopologiesImpl implements PipelineTopologies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineTopologiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PipelineTopologiesImpl.class);
 
     private final PipelineTopologiesClient innerClient;
 
@@ -77,7 +76,7 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
     public PipelineTopology getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -85,7 +84,7 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -93,7 +92,7 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
         }
         String pipelineTopologyName = Utils.getValueFromIdByName(id, "pipelineTopologies");
         if (pipelineTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -106,7 +105,7 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
     public Response<PipelineTopology> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -114,7 +113,7 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,7 +121,7 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
         }
         String pipelineTopologyName = Utils.getValueFromIdByName(id, "pipelineTopologies");
         if (pipelineTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -135,7 +134,7 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -143,7 +142,7 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,20 +150,20 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
         }
         String pipelineTopologyName = Utils.getValueFromIdByName(id, "pipelineTopologies");
         if (pipelineTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'pipelineTopologies'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, accountName, pipelineTopologyName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, accountName, pipelineTopologyName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -172,7 +171,7 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
         }
         String accountName = Utils.getValueFromIdByName(id, "videoAnalyzers");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,7 +179,7 @@ public final class PipelineTopologiesImpl implements PipelineTopologies {
         }
         String pipelineTopologyName = Utils.getValueFromIdByName(id, "pipelineTopologies");
         if (pipelineTopologyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

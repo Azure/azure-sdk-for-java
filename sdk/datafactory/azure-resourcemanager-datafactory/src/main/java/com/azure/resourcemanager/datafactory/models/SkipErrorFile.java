@@ -5,28 +5,28 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Skip error file. */
 @Fluent
 public final class SkipErrorFile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkipErrorFile.class);
-
     /*
-     * Skip if file is deleted by other client during copy. Default is true.
-     * Type: boolean (or Expression with resultType boolean).
+     * Skip if file is deleted by other client during copy. Default is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "fileMissing")
     private Object fileMissing;
 
     /*
-     * Skip if source/sink file changed by other concurrent write. Default is
-     * false. Type: boolean (or Expression with resultType boolean).
+     * Skip if source/sink file changed by other concurrent write. Default is false. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "dataInconsistency")
     private Object dataInconsistency;
+
+    /** Creates an instance of SkipErrorFile class. */
+    public SkipErrorFile() {
+    }
 
     /**
      * Get the fileMissing property: Skip if file is deleted by other client during copy. Default is true. Type: boolean

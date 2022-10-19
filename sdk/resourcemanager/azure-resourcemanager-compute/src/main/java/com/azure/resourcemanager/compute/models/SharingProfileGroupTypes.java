@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SharingProfileGroupTypes. */
+/**
+ * This property allows you to specify the type of sharing group. &lt;br&gt;&lt;br&gt; Possible values are:
+ * &lt;br&gt;&lt;br&gt; **Subscriptions** &lt;br&gt;&lt;br&gt; **AADTenants**.
+ */
 public final class SharingProfileGroupTypes extends ExpandableStringEnum<SharingProfileGroupTypes> {
     /** Static value Subscriptions for SharingProfileGroupTypes. */
     public static final SharingProfileGroupTypes SUBSCRIPTIONS = fromString("Subscriptions");
@@ -27,7 +30,11 @@ public final class SharingProfileGroupTypes extends ExpandableStringEnum<Sharing
         return fromString(name, SharingProfileGroupTypes.class);
     }
 
-    /** @return known SharingProfileGroupTypes values. */
+    /**
+     * Gets known SharingProfileGroupTypes values.
+     *
+     * @return known SharingProfileGroupTypes values.
+     */
     public static Collection<SharingProfileGroupTypes> values() {
         return values(SharingProfileGroupTypes.class);
     }

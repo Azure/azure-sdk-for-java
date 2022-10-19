@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** imageInfo. */
 @Fluent
 public final class MicrosoftGraphImageInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphImageInfo.class);
-
     /*
      * Optional; parameter used to indicate the server is able to render image
      * dynamically in response to parameterization. For example – a high

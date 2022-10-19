@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The insight chart query. */
 @Fluent
 public final class InsightQueryItemPropertiesDefaultTimeRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InsightQueryItemPropertiesDefaultTimeRange.class);
-
     /*
      * The padding for the start time of the query.
      */

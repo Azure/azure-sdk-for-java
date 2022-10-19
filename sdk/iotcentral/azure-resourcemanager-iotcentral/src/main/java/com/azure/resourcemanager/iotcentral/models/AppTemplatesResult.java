@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.iotcentral.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.iotcentral.fluent.models.AppTemplateInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of IoT Central Application Templates with a next link. */
 @Fluent
 public final class AppTemplatesResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppTemplatesResult.class);
-
     /*
      * The link used to get the next page of IoT Central application templates.
      */

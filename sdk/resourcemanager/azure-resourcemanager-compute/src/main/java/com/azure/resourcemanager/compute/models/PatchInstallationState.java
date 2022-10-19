@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PatchInstallationState. */
+/** The state of the patch after the installation operation completed. */
 public final class PatchInstallationState extends ExpandableStringEnum<PatchInstallationState> {
     /** Static value Unknown for PatchInstallationState. */
     public static final PatchInstallationState UNKNOWN = fromString("Unknown");
@@ -39,7 +39,11 @@ public final class PatchInstallationState extends ExpandableStringEnum<PatchInst
         return fromString(name, PatchInstallationState.class);
     }
 
-    /** @return known PatchInstallationState values. */
+    /**
+     * Gets known PatchInstallationState values.
+     *
+     * @return known PatchInstallationState values.
+     */
     public static Collection<PatchInstallationState> values() {
         return values(PatchInstallationState.class);
     }

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzurePostgreSqlLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("AzurePostgreSql")
 @Fluent
 public final class AzurePostgreSqlLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzurePostgreSqlLinkedService.class);
-
     /*
      * Azure PostgreSQL linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private AzurePostgreSqlLinkedServiceTypeProperties innerTypeProperties =
         new AzurePostgreSqlLinkedServiceTypeProperties();
+
+    /** Creates an instance of AzurePostgreSqlLinkedService class. */
+    public AzurePostgreSqlLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Azure PostgreSQL linked service properties.
@@ -147,7 +148,7 @@ public final class AzurePostgreSqlLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzurePostgreSqlLinkedService"));
@@ -155,4 +156,6 @@ public final class AzurePostgreSqlLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzurePostgreSqlLinkedService.class);
 }

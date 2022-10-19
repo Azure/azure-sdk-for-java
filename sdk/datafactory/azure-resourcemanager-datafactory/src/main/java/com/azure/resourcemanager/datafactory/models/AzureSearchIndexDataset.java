@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureSearchIndexDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("AzureSearchIndex")
 @Fluent
 public final class AzureSearchIndexDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSearchIndexDataset.class);
-
     /*
      * Properties specific to this dataset type.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private AzureSearchIndexDatasetTypeProperties innerTypeProperties = new AzureSearchIndexDatasetTypeProperties();
+
+    /** Creates an instance of AzureSearchIndexDataset class. */
+    public AzureSearchIndexDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
@@ -119,7 +120,7 @@ public final class AzureSearchIndexDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzureSearchIndexDataset"));
@@ -127,4 +128,6 @@ public final class AzureSearchIndexDataset extends Dataset {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSearchIndexDataset.class);
 }

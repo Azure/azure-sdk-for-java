@@ -11,19 +11,23 @@ import com.azure.core.util.Context;
 /** Resource collection API of AccountBackups. */
 public interface AccountBackups {
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Backup> list(String resourceGroupName, String accountName);
 
     /**
-     * List all Backups for a Netapp Account.
+     * List Backups for a Netapp Account
+     *
+     * <p>List all Backups for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -31,12 +35,14 @@ public interface AccountBackups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Backups.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Backup> list(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Gets the specified backup for a Netapp Account.
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -49,7 +55,9 @@ public interface AccountBackups {
     Backup get(String resourceGroupName, String accountName, String backupName);
 
     /**
-     * Gets the specified backup for a Netapp Account.
+     * Get Backup for a Netapp Account
+     *
+     * <p>Gets the specified backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -58,12 +66,14 @@ public interface AccountBackups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified backup for a Netapp Account.
+     * @return the specified backup for a Netapp Account along with {@link Response}.
      */
     Response<Backup> getWithResponse(String resourceGroupName, String accountName, String backupName, Context context);
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -75,7 +85,9 @@ public interface AccountBackups {
     void delete(String resourceGroupName, String accountName, String backupName);
 
     /**
-     * Delete the specified Backup for a Netapp Account.
+     * Delete Backup for a Netapp Account
+     *
+     * <p>Delete the specified Backup for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.

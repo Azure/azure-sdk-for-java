@@ -14,7 +14,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
-private case class ChangeFeedOffset
+private[cosmos] case class ChangeFeedOffset
 (
   changeFeedState: String,
   inputPartitions: Option[Array[CosmosInputPartition]]
@@ -34,11 +34,12 @@ private case class ChangeFeedOffset
   override def json(): String = jsonPersisted
 }
 
-private[spark] object ChangeFeedOffset {
+private[cosmos] object ChangeFeedOffset {
   private val IdPropertyName: String = "id"
   private val StatePropertyName: String = "state"
   private val InputPartitionsPropertyName: String = "partitions"
   val V1Identifier: String = "spark.cosmos.changeFeed.offset.v1"
+  val V1AlternateIdentifier: String = "azure_cosmos_spark.com.azure.cosmos.spark.changeFeed.offset.v1"
   private val objectMapper = new ObjectMapper()
 
   def fromJson(json: String): ChangeFeedOffset = {
@@ -71,7 +72,8 @@ private[spark] object ChangeFeedOffset {
     parsedNode != null &&
       parsedNode.isObject &&
       parsedNode.get(IdPropertyName) != null &&
-      parsedNode.get(IdPropertyName).asText("") == V1Identifier &&
+      (parsedNode.get(IdPropertyName).asText("") == V1Identifier ||
+        parsedNode.get(IdPropertyName).asText("") == V1AlternateIdentifier) &&
       parsedNode.get(StatePropertyName) != null &&
       parsedNode.get(StatePropertyName).isTextual &&
       parsedNode.get(StatePropertyName).asText("") != ""

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a data disk. */
 @Fluent
 public final class RestorePointSourceVMDataDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointSourceVMDataDisk.class);
-
     /*
      * Gets the logical unit number.
      */
@@ -33,8 +29,7 @@ public final class RestorePointSourceVMDataDisk {
     private CachingTypes caching;
 
     /*
-     * Gets the initial disk size in GB for blank data disks, and the new
-     * desired size for existing OS and Data disks.
+     * Gets the initial disk size in GB for blank data disks, and the new desired size for existing OS and Data disks.
      */
     @JsonProperty(value = "diskSizeGB")
     private Integer diskSizeGB;

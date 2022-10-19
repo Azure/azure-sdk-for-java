@@ -11,6 +11,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -55,7 +56,7 @@ import java.util.Objects;
  */
 @ServiceClient(builder = BlobClientBuilder.class)
 public class BlobClient extends BlobClientBase {
-    private final ClientLogger logger = new ClientLogger(BlobClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobClient.class);
 
     /**
      * The block size to use if none is specified in parallel operations.
@@ -183,12 +184,43 @@ public class BlobClient extends BlobClientBase {
      * the data is not markable, consider opening a {@link com.azure.storage.blob.specialized.BlobOutputStream} and
      * writing to the returned stream. Alternatively, consider wrapping your data source in a
      * {@link java.io.BufferedInputStream} to add mark support.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upload(InputStream data) {
+        uploadWithResponse(new BlobParallelUploadOptions(data), null, null);
+    }
+
+    /**
+     * Creates a new blob. By default this method will not overwrite an existing blob.
+     *
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider opening a {@link com.azure.storage.blob.specialized.BlobOutputStream} and
+     * writing to the returned stream. Alternatively, consider wrapping your data source in a
+     * {@link java.io.BufferedInputStream} to add mark support.
      * @param length The exact length of the data. It is important that this value match precisely the length of the
      * data provided in the {@link InputStream}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void upload(InputStream data, long length) {
         upload(data, length, false);
+    }
+
+    /**
+     * Creates a new blob, or updates the content of an existing blob.
+     *
+     * @param data The data to write to the blob. The data must be markable. This is in order to support retries. If
+     * the data is not markable, consider opening a {@link com.azure.storage.blob.specialized.BlobOutputStream} and
+     * writing to the returned stream. Alternatively, consider wrapping your data source in a
+     * {@link java.io.BufferedInputStream} to add mark support.
+     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void upload(InputStream data, boolean overwrite) {
+        BlobRequestConditions blobRequestConditions = new BlobRequestConditions();
+        if (!overwrite) {
+            blobRequestConditions.setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
+        }
+        uploadWithResponse(new BlobParallelUploadOptions(data).setRequestConditions(blobRequestConditions), null, Context.NONE);
     }
 
     /**
@@ -299,12 +331,12 @@ public class BlobClient extends BlobClientBase {
         Context context) {
         Objects.requireNonNull(options);
         Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options)
-            .subscriberContext(FluxUtil.toReactorContext(context));
+            .contextWrite(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 
@@ -359,9 +391,11 @@ public class BlobClient extends BlobClientBase {
 
         if (!overwrite) {
             // Note we only want to make the exists call if we will be uploading in stages. Otherwise it is superfluous.
-            if (UploadUtils.shouldUploadInChunks(filePath,
-                BlockBlobClient.MAX_UPLOAD_BLOB_BYTES_LONG, logger) && exists()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+            //
+            // Default behavior is to use uploading in chunks when the file size is greater than 256 MB.
+            if (UploadUtils.shouldUploadInChunks(filePath, ModelHelper.BLOB_DEFAULT_MAX_SINGLE_UPLOAD_SIZE, LOGGER)
+                && exists()) {
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
@@ -416,7 +450,7 @@ public class BlobClient extends BlobClientBase {
         Duration timeout) {
         this.uploadFromFileWithResponse(new BlobUploadFromFileOptions(filePath)
             .setParallelTransferOptions(parallelTransferOptions).setHeaders(headers).setMetadata(metadata)
-            .setTier(tier).setRequestConditions(requestConditions), null, null);
+            .setTier(tier).setRequestConditions(requestConditions), timeout, null);
     }
 
     /**
@@ -464,12 +498,12 @@ public class BlobClient extends BlobClientBase {
         Context context) {
         Mono<Response<BlockBlobItem>> upload =
             this.client.uploadFromFileWithResponse(options)
-                .subscriberContext(FluxUtil.toReactorContext(context));
+                .contextWrite(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
     }
 }

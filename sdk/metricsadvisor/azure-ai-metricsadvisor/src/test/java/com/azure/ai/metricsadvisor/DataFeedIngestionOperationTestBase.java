@@ -13,11 +13,11 @@ import org.junit.jupiter.api.Assertions;
 import java.time.OffsetDateTime;
 
 import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_END_TIME;
+import static com.azure.ai.metricsadvisor.MetricsSeriesTestBase.TIME_SERIES_START_TIME;
 
 public abstract class DataFeedIngestionOperationTestBase extends MetricsAdvisorAdministrationClientTestBase {
     public abstract void listIngestionStatus(HttpClient httpClient, MetricsAdvisorServiceVersion serviceVersion);
-    static final String DATA_FEED_ID = "151e5444-449f-441e-8b64-988f21c5d054";
-    static final OffsetDateTime TIME_SERIES_START_TIME = OffsetDateTime.parse("2021-09-09T00:00:00Z");
+    static final String DATA_FEED_ID = "6e48e476-33e6-4113-a299-a5740bc0db47";
 
     // Pre-configured test resource.
     protected static class ListIngestionStatusInput {
@@ -54,7 +54,7 @@ public abstract class DataFeedIngestionOperationTestBase extends MetricsAdvisorA
     protected static class RefreshIngestionInput {
         static final RefreshIngestionInput INSTANCE = new RefreshIngestionInput();
         final String dataFeedId = DATA_FEED_ID;
-        final OffsetDateTime startTime = TIME_SERIES_START_TIME;
+        final OffsetDateTime startTime = OffsetDateTime.parse("2022-03-01T00:00:00Z");
         final OffsetDateTime endTime = TIME_SERIES_END_TIME;
     }
 

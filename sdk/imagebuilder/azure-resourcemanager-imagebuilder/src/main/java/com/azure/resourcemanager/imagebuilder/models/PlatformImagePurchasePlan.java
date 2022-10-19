@@ -6,14 +6,11 @@ package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Purchase plan configuration for platform image. */
 @Fluent
 public final class PlatformImagePurchasePlan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PlatformImagePurchasePlan.class);
-
     /*
      * Name of the purchase plan.
      */
@@ -99,22 +96,24 @@ public final class PlatformImagePurchasePlan {
      */
     public void validate() {
         if (planName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property planName in model PlatformImagePurchasePlan"));
         }
         if (planProduct() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property planProduct in model PlatformImagePurchasePlan"));
         }
         if (planPublisher() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property planPublisher in model PlatformImagePurchasePlan"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PlatformImagePurchasePlan.class);
 }

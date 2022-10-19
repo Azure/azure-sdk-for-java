@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ThreatIntelligenceSortingCriteriaEnum. */
+/** Sorting order (ascending/descending/unsorted). */
 public final class ThreatIntelligenceSortingCriteriaEnum
     extends ExpandableStringEnum<ThreatIntelligenceSortingCriteriaEnum> {
     /** Static value unsorted for ThreatIntelligenceSortingCriteriaEnum. */
@@ -31,7 +31,11 @@ public final class ThreatIntelligenceSortingCriteriaEnum
         return fromString(name, ThreatIntelligenceSortingCriteriaEnum.class);
     }
 
-    /** @return known ThreatIntelligenceSortingCriteriaEnum values. */
+    /**
+     * Gets known ThreatIntelligenceSortingCriteriaEnum values.
+     *
+     * @return known ThreatIntelligenceSortingCriteriaEnum values.
+     */
     public static Collection<ThreatIntelligenceSortingCriteriaEnum> values() {
         return values(ThreatIntelligenceSortingCriteriaEnum.class);
     }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class LinuxConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinuxConfiguration.class);
-
     /*
      * Specifies whether password authentication should be disabled.
      */
@@ -31,21 +27,24 @@ public final class LinuxConfiguration {
     private SshConfiguration ssh;
 
     /*
-     * Indicates whether virtual machine agent should be provisioned on the
-     * virtual machine. <br><br> When this property is not specified in the
-     * request body, default behavior is to set it to true.  This will ensure
-     * that VM Agent is installed on the VM so that extensions can be added to
-     * the VM later.
+     * Indicates whether virtual machine agent should be provisioned on the virtual machine. <br><br> When this
+     * property is not specified in the request body, default behavior is to set it to true.  This will ensure that VM
+     * Agent is installed on the VM so that extensions can be added to the VM later.
      */
     @JsonProperty(value = "provisionVMAgent")
     private Boolean provisionVMAgent;
 
     /*
-     * [Preview Feature] Specifies settings related to VM Guest Patching on
-     * Linux.
+     * [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
      */
     @JsonProperty(value = "patchSettings")
     private LinuxPatchSettings patchSettings;
+
+    /*
+     * Indicates whether VMAgent Platform Updates is enabled for the Linux virtual machine. Default value is false.
+     */
+    @JsonProperty(value = "enableVMAgentPlatformUpdates")
+    private Boolean enableVMAgentPlatformUpdates;
 
     /**
      * Get the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
@@ -130,6 +129,28 @@ public final class LinuxConfiguration {
      */
     public LinuxConfiguration withPatchSettings(LinuxPatchSettings patchSettings) {
         this.patchSettings = patchSettings;
+        return this;
+    }
+
+    /**
+     * Get the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
+     * Linux virtual machine. Default value is false.
+     *
+     * @return the enableVMAgentPlatformUpdates value.
+     */
+    public Boolean enableVMAgentPlatformUpdates() {
+        return this.enableVMAgentPlatformUpdates;
+    }
+
+    /**
+     * Set the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
+     * Linux virtual machine. Default value is false.
+     *
+     * @param enableVMAgentPlatformUpdates the enableVMAgentPlatformUpdates value to set.
+     * @return the LinuxConfiguration object itself.
+     */
+    public LinuxConfiguration withEnableVMAgentPlatformUpdates(Boolean enableVMAgentPlatformUpdates) {
+        this.enableVMAgentPlatformUpdates = enableVMAgentPlatformUpdates;
         return this;
     }
 

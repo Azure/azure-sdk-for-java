@@ -56,7 +56,7 @@ public final class ScanResultsImpl {
      */
     @Host("{Endpoint}")
     @ServiceInterface(name = "PurviewScanningClien")
-    private interface ScanResultsService {
+    public interface ScanResultsService {
         @Put("/datasources/{dataSourceName}/scans/{scanName}/runs/{runId}")
         @ExpectedResponses({202})
         Mono<Response<BinaryData>> runScan(

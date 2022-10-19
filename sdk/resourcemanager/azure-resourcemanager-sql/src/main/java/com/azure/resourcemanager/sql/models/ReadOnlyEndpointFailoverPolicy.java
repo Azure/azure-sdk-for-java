@@ -27,7 +27,11 @@ public final class ReadOnlyEndpointFailoverPolicy extends ExpandableStringEnum<R
         return fromString(name, ReadOnlyEndpointFailoverPolicy.class);
     }
 
-    /** @return known ReadOnlyEndpointFailoverPolicy values. */
+    /**
+     * Gets known ReadOnlyEndpointFailoverPolicy values.
+     *
+     * @return known ReadOnlyEndpointFailoverPolicy values.
+     */
     public static Collection<ReadOnlyEndpointFailoverPolicy> values() {
         return values(ReadOnlyEndpointFailoverPolicy.class);
     }

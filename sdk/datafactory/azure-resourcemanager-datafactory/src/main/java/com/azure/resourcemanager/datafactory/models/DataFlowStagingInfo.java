@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Staging info for execute data flow activity. */
 @Fluent
 public final class DataFlowStagingInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowStagingInfo.class);
-
     /*
      * Staging linked service reference.
      */
@@ -21,11 +17,14 @@ public final class DataFlowStagingInfo {
     private LinkedServiceReference linkedService;
 
     /*
-     * Folder path for staging blob. Type: string (or Expression with
-     * resultType string)
+     * Folder path for staging blob. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "folderPath")
     private Object folderPath;
+
+    /** Creates an instance of DataFlowStagingInfo class. */
+    public DataFlowStagingInfo() {
+    }
 
     /**
      * Get the linkedService property: Staging linked service reference.

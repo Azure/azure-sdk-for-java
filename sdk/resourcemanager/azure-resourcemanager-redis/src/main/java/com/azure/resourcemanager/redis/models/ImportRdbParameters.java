@@ -6,15 +6,12 @@ package com.azure.resourcemanager.redis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters for Redis import operation. */
 @Fluent
 public final class ImportRdbParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImportRdbParameters.class);
-
     /*
      * File format.
      */
@@ -74,9 +71,11 @@ public final class ImportRdbParameters {
      */
     public void validate() {
         if (files() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property files in model ImportRdbParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImportRdbParameters.class);
 }

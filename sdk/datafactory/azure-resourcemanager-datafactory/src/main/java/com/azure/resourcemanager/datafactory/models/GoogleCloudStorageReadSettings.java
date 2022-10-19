@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,40 +14,34 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("GoogleCloudStorageReadSettings")
 @Fluent
 public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GoogleCloudStorageReadSettings.class);
-
     /*
-     * If true, files under the folder path will be read recursively. Default
-     * is true. Type: boolean (or Expression with resultType boolean).
+     * If true, files under the folder path will be read recursively. Default is true. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;
 
     /*
-     * Google Cloud Storage wildcardFolderPath. Type: string (or Expression
-     * with resultType string).
+     * Google Cloud Storage wildcardFolderPath. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "wildcardFolderPath")
     private Object wildcardFolderPath;
 
     /*
-     * Google Cloud Storage wildcardFileName. Type: string (or Expression with
-     * resultType string).
+     * Google Cloud Storage wildcardFileName. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "wildcardFileName")
     private Object wildcardFileName;
 
     /*
-     * The prefix filter for the Google Cloud Storage object name. Type: string
-     * (or Expression with resultType string).
+     * The prefix filter for the Google Cloud Storage object name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "prefix")
     private Object prefix;
 
     /*
-     * Point to a text file that lists each file (relative path to the path
-     * configured in the dataset) that you want to copy. Type: string (or
-     * Expression with resultType string).
+     * Point to a text file that lists each file (relative path to the path configured in the dataset) that you want to
+     * copy. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileListPath")
     private Object fileListPath;
@@ -61,33 +53,34 @@ public final class GoogleCloudStorageReadSettings extends StoreReadSettings {
     private Boolean enablePartitionDiscovery;
 
     /*
-     * Specify the root path where partition discovery starts from. Type:
-     * string (or Expression with resultType string).
+     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
 
     /*
-     * Indicates whether the source files need to be deleted after copy
-     * completion. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * Indicates whether the source files need to be deleted after copy completion. Default is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     @JsonProperty(value = "deleteFilesAfterCompletion")
     private Object deleteFilesAfterCompletion;
 
     /*
-     * The start of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The start of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of file's modified datetime. Type: string (or Expression with
-     * resultType string).
+     * The end of file's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
+
+    /** Creates an instance of GoogleCloudStorageReadSettings class. */
+    public GoogleCloudStorageReadSettings() {
+    }
 
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:

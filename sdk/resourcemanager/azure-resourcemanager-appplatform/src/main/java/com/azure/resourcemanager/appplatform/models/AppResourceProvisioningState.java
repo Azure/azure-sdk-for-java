@@ -22,6 +22,9 @@ public final class AppResourceProvisioningState extends ExpandableStringEnum<App
     /** Static value Updating for AppResourceProvisioningState. */
     public static final AppResourceProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Deleting for AppResourceProvisioningState. */
+    public static final AppResourceProvisioningState DELETING = fromString("Deleting");
+
     /**
      * Creates or finds a AppResourceProvisioningState from its string representation.
      *
@@ -33,7 +36,11 @@ public final class AppResourceProvisioningState extends ExpandableStringEnum<App
         return fromString(name, AppResourceProvisioningState.class);
     }
 
-    /** @return known AppResourceProvisioningState values. */
+    /**
+     * Gets known AppResourceProvisioningState values.
+     *
+     * @return known AppResourceProvisioningState values.
+     */
     public static Collection<AppResourceProvisioningState> values() {
         return values(AppResourceProvisioningState.class);
     }

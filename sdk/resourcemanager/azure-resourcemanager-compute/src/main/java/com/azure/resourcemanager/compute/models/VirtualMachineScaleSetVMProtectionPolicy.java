@@ -5,26 +5,21 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The protection policy of a virtual machine scale set VM. */
 @Fluent
 public final class VirtualMachineScaleSetVMProtectionPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMProtectionPolicy.class);
-
     /*
-     * Indicates that the virtual machine scale set VM shouldn't be considered
-     * for deletion during a scale-in operation.
+     * Indicates that the virtual machine scale set VM shouldn't be considered for deletion during a scale-in
+     * operation.
      */
     @JsonProperty(value = "protectFromScaleIn")
     private Boolean protectFromScaleIn;
 
     /*
-     * Indicates that model updates or actions (including scale-in) initiated
-     * on the virtual machine scale set should not be applied to the virtual
-     * machine scale set VM.
+     * Indicates that model updates or actions (including scale-in) initiated on the virtual machine scale set should
+     * not be applied to the virtual machine scale set VM.
      */
     @JsonProperty(value = "protectFromScaleSetActions")
     private Boolean protectFromScaleSetActions;

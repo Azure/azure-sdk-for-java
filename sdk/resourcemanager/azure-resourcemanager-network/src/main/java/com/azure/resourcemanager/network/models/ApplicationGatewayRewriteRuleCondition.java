@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Set of conditions in the Rewrite Rule in Application Gateway. */
 @Fluent
 public final class ApplicationGatewayRewriteRuleCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRuleCondition.class);
-
     /*
      * The condition parameter of the RewriteRuleCondition.
      */
@@ -21,25 +17,26 @@ public final class ApplicationGatewayRewriteRuleCondition {
     private String variable;
 
     /*
-     * The pattern, either fixed string or regular expression, that evaluates
-     * the truthfulness of the condition.
+     * The pattern, either fixed string or regular expression, that evaluates the truthfulness of the condition.
      */
     @JsonProperty(value = "pattern")
     private String pattern;
 
     /*
-     * Setting this parameter to truth value with force the pattern to do a
-     * case in-sensitive comparison.
+     * Setting this parameter to truth value with force the pattern to do a case in-sensitive comparison.
      */
     @JsonProperty(value = "ignoreCase")
     private Boolean ignoreCase;
 
     /*
-     * Setting this value as truth will force to check the negation of the
-     * condition given by the user.
+     * Setting this value as truth will force to check the negation of the condition given by the user.
      */
     @JsonProperty(value = "negate")
     private Boolean negate;
+
+    /** Creates an instance of ApplicationGatewayRewriteRuleCondition class. */
+    public ApplicationGatewayRewriteRuleCondition() {
+    }
 
     /**
      * Get the variable property: The condition parameter of the RewriteRuleCondition.

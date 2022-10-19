@@ -6,7 +6,6 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** The properties of the volume. */
 @Fluent
 public final class Volume {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Volume.class);
-
     /*
      * The name of the volume.
      */
@@ -154,7 +151,7 @@ public final class Volume {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Volume"));
         }
         if (azureFile() != null) {
@@ -164,4 +161,6 @@ public final class Volume {
             gitRepo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Volume.class);
 }

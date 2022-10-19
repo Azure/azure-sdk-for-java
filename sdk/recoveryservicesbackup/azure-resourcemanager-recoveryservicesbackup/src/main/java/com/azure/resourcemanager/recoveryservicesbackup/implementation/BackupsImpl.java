@@ -10,10 +10,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupRequestResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.Backups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupsImpl implements Backups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupsImpl.class);
 
     private final BackupsClient innerClient;
 

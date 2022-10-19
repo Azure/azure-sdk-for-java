@@ -6,21 +6,16 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayConnectionDraining;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCookieBasedAffinity;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of Backend address pool settings of an application gateway. */
 @Fluent
 public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendHttpSettingsPropertiesFormat.class);
-
     /*
      * The destination port on the backend.
      */
@@ -40,9 +35,8 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     private ApplicationGatewayCookieBasedAffinity cookieBasedAffinity;
 
     /*
-     * Request timeout in seconds. Application Gateway will fail the request if
-     * response is not received within RequestTimeout. Acceptable values are
-     * from 1 second to 86400 seconds.
+     * Request timeout in seconds. Application Gateway will fail the request if response is not received within
+     * RequestTimeout. Acceptable values are from 1 second to 86400 seconds.
      */
     @JsonProperty(value = "requestTimeout")
     private Integer requestTimeout;
@@ -78,8 +72,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     private String hostname;
 
     /*
-     * Whether to pick host header should be picked from the host name of the
-     * backend server. Default value is false.
+     * Whether to pick host header should be picked from the host name of the backend server. Default value is false.
      */
     @JsonProperty(value = "pickHostNameFromBackendAddress")
     private Boolean pickHostnameFromBackendAddress;
@@ -97,8 +90,8 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     private Boolean probeEnabled;
 
     /*
-     * Path which should be used as a prefix for all HTTP requests. Null means
-     * no path will be prefixed. Default value is null.
+     * Path which should be used as a prefix for all HTTP requests. Null means no path will be prefixed. Default value
+     * is null.
      */
     @JsonProperty(value = "path")
     private String path;
@@ -108,6 +101,10 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ApplicationGatewayBackendHttpSettingsPropertiesFormat class. */
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat() {
+    }
 
     /**
      * Get the port property: The destination port on the backend.

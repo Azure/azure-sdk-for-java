@@ -2,7 +2,10 @@
 // Licensed under the MIT License.
 
 package com.azure.core.util.polling;
+
 import java.time.Duration;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
  * A type that offers API that simplifies the task of executing long-running operations against
@@ -90,5 +93,38 @@ public interface SyncPoller<T, U> {
         // This method is made default to prevent breaking change to the interface.
         // no-op
         return this;
+    }
+
+    /**
+     * Creates default SyncPoller.
+     *
+     * @param pollInterval the polling interval.
+     * @param syncActivationOperation the operation to synchronously activate (start) the long running operation,
+     *     this operation will be called with a new {@link PollingContext}.
+     * @param pollOperation the operation to poll the current state of long running operation, this parameter
+     *     is required and the operation will be called with current {@link PollingContext}.
+     * @param cancelOperation a {@link Function} that represents the operation to cancel the long running operation
+     *     if service supports cancellation, this parameter is required and if service does not support cancellation
+     *     then the implementer should return Mono.error with an error message indicating absence of cancellation
+     *     support, the operation will be called with current {@link PollingContext}.
+     * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of
+     *     the long running operation if service support it, this parameter is required and operation will be called
+     *     current {@link PollingContext}, if service does not have an api to fetch final result and if final result
+     *     is same as final poll response value then implementer can choose to simply return value from provided
+     *     final poll response.
+     *
+     * @param <T> The type of poll response value.
+     * @param <U> The type of the final result of long-running operation.
+     *
+     * @return new {@link SyncPoller} instance.
+     */
+    @SuppressWarnings("unchecked")
+    static <T, U> SyncPoller<T, U> createPoller(Duration pollInterval,
+        Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
+        Function<PollingContext<T>, PollResponse<T>> pollOperation,
+        BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
+        Function<PollingContext<T>, U> fetchResultOperation) {
+        return new SimpleSyncPoller<>(pollInterval, syncActivationOperation, pollOperation, cancelOperation,
+            fetchResultOperation);
     }
 }

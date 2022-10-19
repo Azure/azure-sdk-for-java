@@ -7,15 +7,12 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceMetrics;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of all the threat intelligence metric fields (type/threat type/source). */
 @Fluent
 public final class ThreatIntelligenceMetricsListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThreatIntelligenceMetricsListInner.class);
-
     /*
      * Array of threat intelligence metric fields (type/threat type/source).
      */
@@ -49,7 +46,7 @@ public final class ThreatIntelligenceMetricsListInner {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model ThreatIntelligenceMetricsListInner"));
@@ -57,4 +54,6 @@ public final class ThreatIntelligenceMetricsListInner {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ThreatIntelligenceMetricsListInner.class);
 }

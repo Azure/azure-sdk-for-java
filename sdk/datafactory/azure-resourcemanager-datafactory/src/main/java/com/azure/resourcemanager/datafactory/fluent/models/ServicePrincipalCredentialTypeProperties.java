@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Service Principal credential type properties. */
 @Fluent
 public final class ServicePrincipalCredentialTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServicePrincipalCredentialTypeProperties.class);
-
     /*
      * The app ID of the service principal used to authenticate
      */
@@ -32,6 +28,10 @@ public final class ServicePrincipalCredentialTypeProperties {
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
+
+    /** Creates an instance of ServicePrincipalCredentialTypeProperties class. */
+    public ServicePrincipalCredentialTypeProperties() {
+    }
 
     /**
      * Get the servicePrincipalId property: The app ID of the service principal used to authenticate.

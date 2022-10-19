@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SKU of an Azure Firewall. */
 @Fluent
 public final class AzureFirewallSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallSku.class);
-
     /*
      * Name of an Azure Firewall SKU.
      */
@@ -25,6 +21,10 @@ public final class AzureFirewallSku {
      */
     @JsonProperty(value = "tier")
     private AzureFirewallSkuTier tier;
+
+    /** Creates an instance of AzureFirewallSku class. */
+    public AzureFirewallSku() {
+    }
 
     /**
      * Get the name property: Name of an Azure Firewall SKU.

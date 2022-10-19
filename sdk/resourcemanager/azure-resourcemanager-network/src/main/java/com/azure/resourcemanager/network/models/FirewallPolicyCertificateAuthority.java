@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Trusted Root certificates properties for tls. */
 @Fluent
 public final class FirewallPolicyCertificateAuthority {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyCertificateAuthority.class);
-
     /*
-     * Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
-     * object stored in KeyVault.
+     * Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
      */
     @JsonProperty(value = "keyVaultSecretId")
     private String keyVaultSecretId;
@@ -26,6 +21,10 @@ public final class FirewallPolicyCertificateAuthority {
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of FirewallPolicyCertificateAuthority class. */
+    public FirewallPolicyCertificateAuthority() {
+    }
 
     /**
      * Get the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'

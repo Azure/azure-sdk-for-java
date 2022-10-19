@@ -4,16 +4,18 @@
 package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.implementation.ConnectionPolicy;
-import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.ThrottlingRetryOptions;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
+import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseForTest;
 import com.azure.cosmos.implementation.DocumentCollection;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
+import com.azure.cosmos.models.FeedResponse;
+import com.azure.cosmos.models.SqlQuerySpec;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -26,11 +28,14 @@ public class Utils {
         options.setMaxRetryAttemptsOnThrottledRequests(100);
         options.setMaxRetryWaitTime(Duration.ofSeconds(60));
         connectionPolicy.setThrottlingRetryOptions(options);
-        return new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                                                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                                                .withConnectionPolicy(connectionPolicy)
-                                                .withContentResponseOnWriteEnabled(true)
-                                                .build();
+        return new AsyncDocumentClient.Builder()
+                        .withServiceEndpoint(TestConfigurations.HOST)
+                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                        .withConnectionPolicy(connectionPolicy)
+                        .withContentResponseOnWriteEnabled(true)
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig().sendClientTelemetryToService(false))
+                        .build();
     }
 
     public static String getCollectionLink(Database db, DocumentCollection collection) {

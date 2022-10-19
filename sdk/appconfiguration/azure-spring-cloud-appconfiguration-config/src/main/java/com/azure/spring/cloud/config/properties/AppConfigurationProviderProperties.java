@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.config.properties;
 
-import java.util.Date;
+import java.time.Instant;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -26,19 +26,31 @@ public class AppConfigurationProviderProperties {
      * Prefix for the libraries internal configurations.
      */
     public static final String CONFIG_PREFIX = "spring.cloud.appconfiguration";
-    private static final Date startDate = new Date();
+    private static final Instant startDate = Instant.now();
+
     @NotEmpty
     @Value("${version:1.0}")
     private String version;
+
     @NotNull
     @Value("${maxRetries:2}")
     private int maxRetries;
+
     @NotNull
     @Value("${maxRetryTime:60}")
     private int maxRetryTime;
+
     @NotNull
     @Value("${prekillTime:5}")
     private int prekillTime;
+
+    @NotNull
+    @Value("${defaultMinBackoff:30}")
+    private Long defaultMinBackoff;
+
+    @NotNull
+    @Value("${defaultMaxBackoff:600}")
+    private Long defaultMaxBackoff;
 
     /**
      * @return the apiVersion
@@ -99,8 +111,36 @@ public class AppConfigurationProviderProperties {
     /**
      * @return the startDate
      */
-    public Date getStartDate() {
-        return new Date(startDate.getTime());
+    public Instant getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * @return the defaultMinBackoff
+     */
+    public Long getDefaultMinBackoff() {
+        return defaultMinBackoff;
+    }
+
+    /**
+     * @param defaultMinBackoff the defaultMinBackoff to set
+     */
+    public void setDefaultMinBackoff(Long defaultMinBackoff) {
+        this.defaultMinBackoff = defaultMinBackoff;
+    }
+
+    /**
+     * @return the defaultMaxBackoff
+     */
+    public Long getDefaultMaxBackoff() {
+        return defaultMaxBackoff;
+    }
+
+    /**
+     * @param defaultMaxBackoff the defaultMaxBackoff to set
+     */
+    public void setDefaultMaxBackoff(Long defaultMaxBackoff) {
+        this.defaultMaxBackoff = defaultMaxBackoff;
     }
 
 }

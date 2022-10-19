@@ -11,10 +11,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.StartMenuItemsClie
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.StartMenuItemInner;
 import com.azure.resourcemanager.desktopvirtualization.models.StartMenuItem;
 import com.azure.resourcemanager.desktopvirtualization.models.StartMenuItems;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StartMenuItemsImpl implements StartMenuItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StartMenuItemsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StartMenuItemsImpl.class);
 
     private final StartMenuItemsClient innerClient;
 

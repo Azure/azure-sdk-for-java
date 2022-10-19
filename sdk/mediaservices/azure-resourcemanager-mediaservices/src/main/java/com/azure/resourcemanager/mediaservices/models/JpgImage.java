@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,13 +12,10 @@ import java.time.Duration;
 import java.util.List;
 
 /** Describes the properties for producing a series of JPEG images from the input video. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.JpgImage")
-@JsonFlatten
 @Fluent
-public class JpgImage extends Image {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JpgImage.class);
-
+public final class JpgImage extends Image {
     /*
      * A collection of output JPEG image layers to be produced by the encoder.
      */
@@ -29,12 +23,10 @@ public class JpgImage extends Image {
     private List<JpgLayer> layers;
 
     /*
-     * Sets the number of columns used in thumbnail sprite image.  The number
-     * of rows are automatically calculated and a VTT file is generated with
-     * the coordinate mappings for each thumbnail in the sprite. Note: this
-     * value should be a positive integer and a proper value is recommended so
-     * that the output image resolution will not go beyond JPEG maximum pixel
-     * resolution limit 65535x65535.
+     * Sets the number of columns used in thumbnail sprite image.  The number of rows are automatically calculated and
+     * a VTT file is generated with the coordinate mappings for each thumbnail in the sprite. Note: this value should
+     * be a positive integer and a proper value is recommended so that the output image resolution will not go beyond
+     * JPEG maximum pixel resolution limit 65535x65535.
      */
     @JsonProperty(value = "spriteColumn")
     private Integer spriteColumn;

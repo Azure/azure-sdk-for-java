@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.MongoDbCollectionDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("MongoDbCollection")
 @Fluent
 public final class MongoDbCollectionDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbCollectionDataset.class);
-
     /*
      * MongoDB database dataset properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private MongoDbCollectionDatasetTypeProperties innerTypeProperties = new MongoDbCollectionDatasetTypeProperties();
+
+    /** Creates an instance of MongoDbCollectionDataset class. */
+    public MongoDbCollectionDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: MongoDB database dataset properties.
@@ -119,7 +120,7 @@ public final class MongoDbCollectionDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model MongoDbCollectionDataset"));
@@ -127,4 +128,6 @@ public final class MongoDbCollectionDataset extends Dataset {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MongoDbCollectionDataset.class);
 }

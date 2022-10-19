@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testoctkey78326e1/create?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net/keys/testoctkey754238b/create?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -15,12 +15,12 @@
       "retry-after" : "0",
       "cache-control" : "no-cache",
       "StatusCode" : "400",
-      "x-ms-request-id" : "22ad805a-25b5-11ec-8c5b-000d3aa45960",
-      "Body" : "{\"error\":{\"code\":\"BadParameter\",\"message\":\"Invalid key size: '64' (Activity ID: 22ad805a-25b5-11ec-8c5b-000d3aa45960)\"}}",
-      "x-ms-server-latency" : "17",
+      "x-ms-request-id" : "fc2af8c8-af0b-11ec-9ea6-0022487870d4",
+      "Body" : "{\"error\":{\"code\":\"BadParameter\",\"message\":\"Invalid key size: '64' (Activity ID: fc2af8c8-af0b-11ec-9ea6-0022487870d4)\"}}",
+      "x-ms-server-latency" : "14",
       "strict-transport-security" : "max-age=31536000; includeSubDomains"
     },
     "Exception" : null
   } ],
-  "variables" : [ "testoctkey78326e1" ]
+  "variables" : [ "testoctkey754238b" ]
 }

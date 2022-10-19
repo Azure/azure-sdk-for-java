@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Persistence-related configuration for the RedisEnterprise database. */
+/** Persistence settings Persistence-related configuration for the RedisEnterprise database. */
 @Fluent
 public final class Persistence {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Persistence.class);
-
     /*
      * Sets whether AOF is enabled.
      */

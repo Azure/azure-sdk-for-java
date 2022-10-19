@@ -7,15 +7,12 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.RecommendationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of recommendations. */
 @Fluent
 public final class RecommendationCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecommendationCollection.class);
-
     /*
      * Collection of resources.
      */
@@ -64,11 +61,13 @@ public final class RecommendationCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model RecommendationCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RecommendationCollection.class);
 }

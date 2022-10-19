@@ -14,10 +14,9 @@ import com.azure.resourcemanager.apimanagement.fluent.models.SubscriptionContrac
 import com.azure.resourcemanager.apimanagement.models.SubscriptionContract;
 import com.azure.resourcemanager.apimanagement.models.UserSubscriptions;
 import com.azure.resourcemanager.apimanagement.models.UserSubscriptionsGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class UserSubscriptionsImpl implements UserSubscriptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserSubscriptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(UserSubscriptionsImpl.class);
 
     private final UserSubscriptionsClient innerClient;
 

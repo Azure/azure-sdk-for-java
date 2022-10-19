@@ -22,8 +22,9 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicBoolean;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -79,13 +80,13 @@ class ActiveClientTokenManagerTest {
         // Arrange
         final Mono<ClaimsBasedSecurityNode> cbsNodeMono = Mono.fromCallable(() -> cbsNode);
         final IllegalArgumentException error = new IllegalArgumentException("Some error");
+        final AtomicBoolean returnError = new AtomicBoolean(false);
 
-        final AtomicInteger invocations = new AtomicInteger();
         when(cbsNode.authorize(any(), any())).thenAnswer(invocationOnMock -> {
-            if (invocations.incrementAndGet() < 3) {
-                return Mono.just(OffsetDateTime.now(ZoneOffset.UTC).plus(DEFAULT_DURATION));
-            } else {
+            if (returnError.get()) {
                 return Mono.error(error);
+            } else {
+                return Mono.just(OffsetDateTime.now(ZoneOffset.UTC).plus(DEFAULT_DURATION));
             }
         });
 
@@ -93,11 +94,12 @@ class ActiveClientTokenManagerTest {
         final ActiveClientTokenManager tokenManager = new ActiveClientTokenManager(cbsNodeMono, AUDIENCE, SCOPES);
         StepVerifier.create(tokenManager.authorize().thenMany(tokenManager.getAuthorizationResults()))
             .expectNext(AmqpResponseCode.ACCEPTED)
-            .thenAwait(DEFAULT_DURATION)
-            .expectNext(AmqpResponseCode.ACCEPTED)
-            .thenAwait(DEFAULT_DURATION)
+            .assertNext(code -> {
+                assertEquals(AmqpResponseCode.ACCEPTED, code);
+                returnError.set(true);
+            })
             .expectError(IllegalArgumentException.class)
-            .verifyThenAssertThat(VERIFY_TIMEOUT.multipliedBy(2));
+            .verify();
     }
 
     /**

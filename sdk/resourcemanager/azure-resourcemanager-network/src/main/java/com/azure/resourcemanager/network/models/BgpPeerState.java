@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BgpPeerState. */
+/** The BGP peer state. */
 public final class BgpPeerState extends ExpandableStringEnum<BgpPeerState> {
     /** Static value Unknown for BgpPeerState. */
     public static final BgpPeerState UNKNOWN = fromString("Unknown");
@@ -36,7 +36,11 @@ public final class BgpPeerState extends ExpandableStringEnum<BgpPeerState> {
         return fromString(name, BgpPeerState.class);
     }
 
-    /** @return known BgpPeerState values. */
+    /**
+     * Gets known BgpPeerState values.
+     *
+     * @return known BgpPeerState values.
+     */
     public static Collection<BgpPeerState> values() {
         return values(BgpPeerState.class);
     }

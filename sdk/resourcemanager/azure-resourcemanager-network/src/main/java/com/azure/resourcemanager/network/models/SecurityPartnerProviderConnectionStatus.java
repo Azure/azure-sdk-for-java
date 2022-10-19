@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecurityPartnerProviderConnectionStatus. */
+/** The current state of the connection with Security Partner Provider. */
 public final class SecurityPartnerProviderConnectionStatus
     extends ExpandableStringEnum<SecurityPartnerProviderConnectionStatus> {
     /** Static value Unknown for SecurityPartnerProviderConnectionStatus. */
@@ -34,7 +34,11 @@ public final class SecurityPartnerProviderConnectionStatus
         return fromString(name, SecurityPartnerProviderConnectionStatus.class);
     }
 
-    /** @return known SecurityPartnerProviderConnectionStatus values. */
+    /**
+     * Gets known SecurityPartnerProviderConnectionStatus values.
+     *
+     * @return known SecurityPartnerProviderConnectionStatus values.
+     */
     public static Collection<SecurityPartnerProviderConnectionStatus> values() {
         return values(SecurityPartnerProviderConnectionStatus.class);
     }

@@ -6,17 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayPrivateLinkIpConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The application gateway private link ip configuration. */
 @Fluent
 public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayPrivateLinkIpConfiguration.class);
-
     /*
      * Properties of an application gateway private link ip configuration.
      */
@@ -40,6 +35,10 @@ public final class ApplicationGatewayPrivateLinkIpConfiguration extends SubResou
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ApplicationGatewayPrivateLinkIpConfiguration class. */
+    public ApplicationGatewayPrivateLinkIpConfiguration() {
+    }
 
     /**
      * Get the innerProperties property: Properties of an application gateway private link ip configuration.

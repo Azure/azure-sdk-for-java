@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.models.SkuAvailability;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Check SKU availability result list. */
 @Fluent
 public final class SkuAvailabilityListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuAvailabilityListResultInner.class);
-
     /*
      * Check SKU availability result list.
      */

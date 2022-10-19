@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StatusCodeCount model. */
+/** The status code and count of the cloud service instance view statuses. */
 @Immutable
 public final class StatusCodeCount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StatusCodeCount.class);
-
     /*
      * The instance view status code
      */

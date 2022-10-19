@@ -6,14 +6,11 @@ package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters supplied to the regenerate authorization rule operation, specifies which key neeeds to be reset. */
 @Fluent
 public final class RegenerateAccessKeyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegenerateAccessKeyParameters.class);
-
     /*
      * The access key to regenerate.
      */
@@ -76,10 +73,12 @@ public final class RegenerateAccessKeyParameters {
      */
     public void validate() {
         if (keyType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property keyType in model RegenerateAccessKeyParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegenerateAccessKeyParameters.class);
 }

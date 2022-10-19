@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Client or app secret used in IdentityProviders, Aad, OpenID or OAuth. */
 @Fluent
 public final class PortalSettingValidationKeyContractInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalSettingValidationKeyContractInner.class);
-
     /*
      * This is secret value of the validation key in portal settings.
      */

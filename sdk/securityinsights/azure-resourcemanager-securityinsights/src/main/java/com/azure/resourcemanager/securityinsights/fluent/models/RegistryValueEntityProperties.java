@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.RegistryValueKind;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** RegistryValue entity property bag. */
 @Immutable
 public final class RegistryValueEntityProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryValueEntityProperties.class);
-
     /*
      * The registry key entity id.
      */
@@ -35,8 +31,8 @@ public final class RegistryValueEntityProperties extends EntityCommonProperties 
     private String valueName;
 
     /*
-     * Specifies the data types to use when storing values in the registry, or
-     * identifies the data type of a value in the registry.
+     * Specifies the data types to use when storing values in the registry, or identifies the data type of a value in
+     * the registry.
      */
     @JsonProperty(value = "valueType", access = JsonProperty.Access.WRITE_ONLY)
     private RegistryValueKind valueType;

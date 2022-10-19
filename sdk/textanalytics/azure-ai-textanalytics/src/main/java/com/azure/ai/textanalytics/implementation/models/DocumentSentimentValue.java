@@ -36,6 +36,9 @@ public enum DocumentSentimentValue {
      */
     @JsonCreator
     public static DocumentSentimentValue fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         DocumentSentimentValue[] items = DocumentSentimentValue.values();
         for (DocumentSentimentValue item : items) {
             if (item.toString().equalsIgnoreCase(value)) {

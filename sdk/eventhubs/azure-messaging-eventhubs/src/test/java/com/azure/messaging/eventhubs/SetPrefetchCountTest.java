@@ -70,11 +70,6 @@ class SetPrefetchCountTest extends IntegrationTestBase {
         }
     }
 
-    @Override
-    protected void afterTest() {
-        dispose(consumer);
-    }
-
     /**
      * Test that we can use a very large prefetch number.
      */

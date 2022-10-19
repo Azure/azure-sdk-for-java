@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CapacityReservationInstanceView;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,18 +14,23 @@ import java.util.List;
 /** Properties of the Capacity reservation. */
 @Immutable
 public final class CapacityReservationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationProperties.class);
-
     /*
-     * A unique id generated and assigned to the capacity reservation by the
-     * platform which does not change throughout the lifetime of the resource.
+     * A unique id generated and assigned to the capacity reservation by the platform which does not change throughout
+     * the lifetime of the resource.
      */
     @JsonProperty(value = "reservationId", access = JsonProperty.Access.WRITE_ONLY)
     private String reservationId;
 
     /*
-     * A list of all virtual machine resource ids that are associated with the
-     * capacity reservation.
+     * Specifies the value of fault domain count that Capacity Reservation supports for requested VM size.<br>NOTE: The
+     * fault domain count specified for a resource (like virtual machines scale set) must be less than or equal to this
+     * value if it deploys using capacity reservation.<br><br>Minimum api-version: 2022-08-01.
+     */
+    @JsonProperty(value = "platformFaultDomainCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer platformFaultDomainCount;
+
+    /*
+     * A list of all virtual machine resource ids that are associated with the capacity reservation.
      */
     @JsonProperty(value = "virtualMachinesAssociated", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResourceReadOnly> virtualMachinesAssociated;
@@ -51,8 +54,8 @@ public final class CapacityReservationProperties {
     private CapacityReservationInstanceView instanceView;
 
     /*
-     * Specifies the time at which the Capacity Reservation resource was
-     * created.<br><br>Minimum api-version: 2021-11-01.
+     * Specifies the time at which the Capacity Reservation resource was created.<br><br>Minimum api-version:
+     * 2021-11-01.
      */
     @JsonProperty(value = "timeCreated", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime timeCreated;
@@ -65,6 +68,18 @@ public final class CapacityReservationProperties {
      */
     public String reservationId() {
         return this.reservationId;
+    }
+
+    /**
+     * Get the platformFaultDomainCount property: Specifies the value of fault domain count that Capacity Reservation
+     * supports for requested VM size.&lt;br&gt;NOTE: The fault domain count specified for a resource (like virtual
+     * machines scale set) must be less than or equal to this value if it deploys using capacity
+     * reservation.&lt;br&gt;&lt;br&gt;Minimum api-version: 2022-08-01.
+     *
+     * @return the platformFaultDomainCount value.
+     */
+    public Integer platformFaultDomainCount() {
+        return this.platformFaultDomainCount;
     }
 
     /**

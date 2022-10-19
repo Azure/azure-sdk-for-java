@@ -48,7 +48,7 @@ public final class DocumentSentiment {
      * Warnings encountered while processing document.
      */
     @JsonProperty(value = "warnings", required = true)
-    private List<TextAnalyticsWarning> warnings;
+    private List<DocumentWarning> warnings;
 
     /**
      * Get the id property: Unique, non-empty document identifier.
@@ -159,7 +159,7 @@ public final class DocumentSentiment {
      *
      * @return the warnings value.
      */
-    public List<TextAnalyticsWarning> getWarnings() {
+    public List<DocumentWarning> getWarnings() {
         return this.warnings;
     }
 
@@ -169,7 +169,7 @@ public final class DocumentSentiment {
      * @param warnings the warnings value to set.
      * @return the DocumentSentiment object itself.
      */
-    public DocumentSentiment setWarnings(List<TextAnalyticsWarning> warnings) {
+    public DocumentSentiment setWarnings(List<DocumentWarning> warnings) {
         this.warnings = warnings;
         return this;
     }

@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeInternalChannelEncryptionMode. */
+/**
+ * It is used to set the encryption mode for node-node communication channel (when more than 2 self-hosted integration
+ * runtime nodes exist).
+ */
 public final class IntegrationRuntimeInternalChannelEncryptionMode
     extends ExpandableStringEnum<IntegrationRuntimeInternalChannelEncryptionMode> {
     /** Static value NotSet for IntegrationRuntimeInternalChannelEncryptionMode. */
@@ -31,7 +34,11 @@ public final class IntegrationRuntimeInternalChannelEncryptionMode
         return fromString(name, IntegrationRuntimeInternalChannelEncryptionMode.class);
     }
 
-    /** @return known IntegrationRuntimeInternalChannelEncryptionMode values. */
+    /**
+     * Gets known IntegrationRuntimeInternalChannelEncryptionMode values.
+     *
+     * @return known IntegrationRuntimeInternalChannelEncryptionMode values.
+     */
     public static Collection<IntegrationRuntimeInternalChannelEncryptionMode> values() {
         return values(IntegrationRuntimeInternalChannelEncryptionMode.class);
     }

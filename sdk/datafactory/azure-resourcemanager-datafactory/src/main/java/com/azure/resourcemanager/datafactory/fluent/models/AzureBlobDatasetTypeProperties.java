@@ -5,48 +5,39 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Blob dataset properties. */
 @Fluent
 public final class AzureBlobDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobDatasetTypeProperties.class);
-
     /*
-     * The path of the Azure Blob storage. Type: string (or Expression with
-     * resultType string).
+     * The path of the Azure Blob storage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
-     * The root of blob path. Type: string (or Expression with resultType
-     * string).
+     * The root of blob path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableRootLocation")
     private Object tableRootLocation;
 
     /*
-     * The name of the Azure Blob. Type: string (or Expression with resultType
-     * string).
+     * The name of the Azure Blob. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileName")
     private Object fileName;
 
     /*
-     * The start of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The start of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeStart")
     private Object modifiedDatetimeStart;
 
     /*
-     * The end of Azure Blob's modified datetime. Type: string (or Expression
-     * with resultType string).
+     * The end of Azure Blob's modified datetime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "modifiedDatetimeEnd")
     private Object modifiedDatetimeEnd;
@@ -62,6 +53,10 @@ public final class AzureBlobDatasetTypeProperties {
      */
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
+
+    /** Creates an instance of AzureBlobDatasetTypeProperties class. */
+    public AzureBlobDatasetTypeProperties() {
+    }
 
     /**
      * Get the folderPath property: The path of the Azure Blob storage. Type: string (or Expression with resultType

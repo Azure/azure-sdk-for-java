@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.netapp.models.Snapshot;
+import com.azure.resourcemanager.netapp.models.SnapshotRestoreFiles;
 import java.time.OffsetDateTime;
 
 public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
@@ -132,6 +133,18 @@ public final class SnapshotImpl implements Snapshot, Snapshot.Definition {
                 .getWithResponse(resourceGroupName, accountName, poolName, volumeName, snapshotName, context)
                 .getValue();
         return this;
+    }
+
+    public void restoreFiles(SnapshotRestoreFiles body) {
+        serviceManager
+            .snapshots()
+            .restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body);
+    }
+
+    public void restoreFiles(SnapshotRestoreFiles body, Context context) {
+        serviceManager
+            .snapshots()
+            .restoreFiles(resourceGroupName, accountName, poolName, volumeName, snapshotName, body, context);
     }
 
     public SnapshotImpl withRegion(Region location) {

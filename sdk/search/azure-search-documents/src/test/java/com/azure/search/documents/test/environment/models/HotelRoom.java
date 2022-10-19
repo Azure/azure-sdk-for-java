@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.search.documents.test.environment.models;
 
+import com.azure.core.util.CoreUtils;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -97,11 +98,11 @@ public class HotelRoom {
     }
 
     public String[] tags() {
-        return this.tags;
+        return CoreUtils.clone(this.tags);
     }
 
     public HotelRoom tags(String[] tags) {
-        this.tags = tags;
+        this.tags = CoreUtils.clone(tags);
         return this;
     }
 }

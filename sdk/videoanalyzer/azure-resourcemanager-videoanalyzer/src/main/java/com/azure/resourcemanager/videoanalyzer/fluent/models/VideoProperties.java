@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.videoanalyzer.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.models.VideoArchival;
 import com.azure.resourcemanager.videoanalyzer.models.VideoContentUrls;
 import com.azure.resourcemanager.videoanalyzer.models.VideoFlags;
 import com.azure.resourcemanager.videoanalyzer.models.VideoMediaInfo;
 import com.azure.resourcemanager.videoanalyzer.models.VideoType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Application level properties for the video resource. */
 @Fluent
 public final class VideoProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoProperties.class);
-
     /*
      * Optional video title provided by the user. Value can be up to 256
      * characters long.

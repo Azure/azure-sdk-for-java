@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,20 +12,16 @@ import java.util.Map;
 /** Entity common property bag. */
 @Immutable
 public class EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityCommonProperties.class);
-
     /*
-     * A bag of custom fields that should be part of the entity and will be
-     * presented to the user.
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
      */
     @JsonProperty(value = "additionalData", access = JsonProperty.Access.WRITE_ONLY)
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalData;
 
     /*
-     * The graph item display name which is a short humanly readable
-     * description of the graph item instance. This property is optional and
-     * might be system generated.
+     * The graph item display name which is a short humanly readable description of the graph item instance. This
+     * property is optional and might be system generated.
      */
     @JsonProperty(value = "friendlyName", access = JsonProperty.Access.WRITE_ONLY)
     private String friendlyName;

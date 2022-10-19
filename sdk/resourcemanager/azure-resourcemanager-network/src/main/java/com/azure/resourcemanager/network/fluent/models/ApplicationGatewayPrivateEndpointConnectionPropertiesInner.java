@@ -5,19 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of Private Link Resource of an application gateway. */
 @Fluent
 public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(ApplicationGatewayPrivateEndpointConnectionPropertiesInner.class);
-
     /*
      * The resource of private end point.
      */
@@ -25,15 +19,13 @@ public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner {
     private PrivateEndpointInner privateEndpoint;
 
     /*
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
+     * A collection of information about the state of the connection between service consumer and provider.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
 
     /*
-     * The provisioning state of the application gateway private endpoint
-     * connection resource.
+     * The provisioning state of the application gateway private endpoint connection resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -43,6 +35,10 @@ public final class ApplicationGatewayPrivateEndpointConnectionPropertiesInner {
      */
     @JsonProperty(value = "linkIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String linkIdentifier;
+
+    /** Creates an instance of ApplicationGatewayPrivateEndpointConnectionPropertiesInner class. */
+    public ApplicationGatewayPrivateEndpointConnectionPropertiesInner() {
+    }
 
     /**
      * Get the privateEndpoint property: The resource of private end point.

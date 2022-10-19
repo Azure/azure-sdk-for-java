@@ -6,18 +6,14 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The routing intent child resource of a Virtual hub. */
 @Fluent
 public final class RoutingIntentInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoutingIntentInner.class);
-
     /*
      * Properties of the RoutingIntent resource.
      */
@@ -25,8 +21,7 @@ public final class RoutingIntentInner extends SubResource {
     private RoutingIntentProperties innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -42,6 +37,10 @@ public final class RoutingIntentInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of RoutingIntentInner class. */
+    public RoutingIntentInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the RoutingIntent resource.

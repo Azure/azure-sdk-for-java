@@ -6,16 +6,12 @@ package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.models.ReplicationRole;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response to put/get linked server (with properties) for Redis cache. */
 @Fluent
 public final class RedisLinkedServerWithPropertiesInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisLinkedServerWithPropertiesInner.class);
-
     /*
      * Properties of the linked server.
      */

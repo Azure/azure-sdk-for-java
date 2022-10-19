@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The session state detail for a target. */
 @Immutable
 public final class BastionSessionStateInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionSessionStateInner.class);
-
     /*
      * A unique id for the session.
      */
@@ -31,6 +27,10 @@ public final class BastionSessionStateInner {
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private String state;
+
+    /** Creates an instance of BastionSessionStateInner class. */
+    public BastionSessionStateInner() {
+    }
 
     /**
      * Get the sessionId property: A unique id for the session.

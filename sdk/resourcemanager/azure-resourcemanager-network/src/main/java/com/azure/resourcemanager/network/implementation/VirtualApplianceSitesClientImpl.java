@@ -29,7 +29,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.VirtualApplianceSitesClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in VirtualApplianceSitesClient. */
 public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSitesClient {
-    private final ClientLogger logger = new ClientLogger(VirtualApplianceSitesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final VirtualApplianceSitesService service;
 
@@ -152,7 +149,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -182,7 +179,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -210,7 +207,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -240,7 +237,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -264,7 +261,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -287,7 +284,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -309,7 +306,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -327,7 +324,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -344,7 +341,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String networkVirtualApplianceName, String siteName) {
@@ -363,7 +360,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -413,7 +410,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Appliance Site.
+     * @return the specified Virtual Appliance Site along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<VirtualApplianceSiteInner>> getWithResponseAsync(
@@ -443,7 +441,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -471,7 +469,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Appliance Site.
+     * @return the specified Virtual Appliance Site along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VirtualApplianceSiteInner>> getWithResponseAsync(
@@ -501,7 +500,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -525,20 +524,31 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Appliance Site.
+     * @return the specified Virtual Appliance Site on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualApplianceSiteInner> getAsync(
         String resourceGroupName, String networkVirtualApplianceName, String siteName) {
         return getWithResponseAsync(resourceGroupName, networkVirtualApplianceName, siteName)
-            .flatMap(
-                (Response<VirtualApplianceSiteInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets the specified Virtual Appliance Site.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
+     * @param siteName The name of the site.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Virtual Appliance Site along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<VirtualApplianceSiteInner> getWithResponse(
+        String resourceGroupName, String networkVirtualApplianceName, String siteName, Context context) {
+        return getWithResponseAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).block();
     }
 
     /**
@@ -555,25 +565,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VirtualApplianceSiteInner get(
         String resourceGroupName, String networkVirtualApplianceName, String siteName) {
-        return getAsync(resourceGroupName, networkVirtualApplianceName, siteName).block();
-    }
-
-    /**
-     * Gets the specified Virtual Appliance Site.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkVirtualApplianceName The name of the Network Virtual Appliance.
-     * @param siteName The name of the site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Virtual Appliance Site.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VirtualApplianceSiteInner> getWithResponse(
-        String resourceGroupName, String networkVirtualApplianceName, String siteName, Context context) {
-        return getWithResponseAsync(resourceGroupName, networkVirtualApplianceName, siteName, context).block();
+        return getWithResponse(resourceGroupName, networkVirtualApplianceName, siteName, Context.NONE).getValue();
     }
 
     /**
@@ -586,7 +578,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -624,7 +616,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -654,7 +646,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -693,7 +685,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -719,7 +711,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return the {@link PollerFlux} for polling of virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdateAsync(
@@ -750,7 +742,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return the {@link PollerFlux} for polling of virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdateAsync(
@@ -783,7 +775,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return the {@link SyncPoller} for polling of virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdate(
@@ -806,7 +798,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return the {@link SyncPoller} for polling of virtual Appliance Site resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualApplianceSiteInner>, VirtualApplianceSiteInner> beginCreateOrUpdate(
@@ -829,7 +821,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<VirtualApplianceSiteInner> createOrUpdateAsync(
@@ -853,7 +845,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Appliance Site resource.
+     * @return virtual Appliance Site resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VirtualApplianceSiteInner> createOrUpdateAsync(
@@ -920,7 +912,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkVirtualApplianceSites API service call.
+     * @return response for ListNetworkVirtualApplianceSites API service call along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualApplianceSiteInner>> listSinglePageAsync(
@@ -947,7 +940,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -982,7 +975,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkVirtualApplianceSites API service call.
+     * @return response for ListNetworkVirtualApplianceSites API service call along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualApplianceSiteInner>> listSinglePageAsync(
@@ -1009,7 +1003,7 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-05-01";
+        final String apiVersion = "2022-05-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1040,7 +1034,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkVirtualApplianceSites API service call.
+     * @return response for ListNetworkVirtualApplianceSites API service call as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<VirtualApplianceSiteInner> listAsync(
@@ -1059,7 +1054,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkVirtualApplianceSites API service call.
+     * @return response for ListNetworkVirtualApplianceSites API service call as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<VirtualApplianceSiteInner> listAsync(
@@ -1077,7 +1073,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkVirtualApplianceSites API service call.
+     * @return response for ListNetworkVirtualApplianceSites API service call as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualApplianceSiteInner> list(String resourceGroupName, String networkVirtualApplianceName) {
@@ -1093,7 +1090,8 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkVirtualApplianceSites API service call.
+     * @return response for ListNetworkVirtualApplianceSites API service call as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<VirtualApplianceSiteInner> list(
@@ -1104,11 +1102,13 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkVirtualApplianceSites API service call.
+     * @return response for ListNetworkVirtualApplianceSites API service call along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualApplianceSiteInner>> listNextSinglePageAsync(String nextLink) {
@@ -1139,12 +1139,14 @@ public final class VirtualApplianceSitesClientImpl implements VirtualApplianceSi
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListNetworkVirtualApplianceSites API service call.
+     * @return response for ListNetworkVirtualApplianceSites API service call along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<VirtualApplianceSiteInner>> listNextSinglePageAsync(String nextLink, Context context) {

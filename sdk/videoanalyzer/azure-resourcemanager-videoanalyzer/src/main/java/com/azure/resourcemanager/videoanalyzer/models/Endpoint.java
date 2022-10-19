@@ -6,14 +6,11 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The endpoint details. */
 @Fluent
 public final class Endpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Endpoint.class);
-
     /*
      * The URL of the endpoint.
      */
@@ -73,8 +70,10 @@ public final class Endpoint {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property type in model Endpoint"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Endpoint.class);
 }

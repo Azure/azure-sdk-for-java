@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AvroSink")
 @Fluent
 public final class AvroSink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvroSink.class);
-
     /*
      * Avro store settings.
      */
@@ -29,6 +25,10 @@ public final class AvroSink extends CopySink {
      */
     @JsonProperty(value = "formatSettings")
     private AvroWriteSettings formatSettings;
+
+    /** Creates an instance of AvroSink class. */
+    public AvroSink() {
+    }
 
     /**
      * Get the storeSettings property: Avro store settings.

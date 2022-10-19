@@ -10,14 +10,17 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.fluent.StreamingEndpointsClient;
+import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointSkuInfoListResultInner;
+import com.azure.resourcemanager.mediaservices.models.AsyncOperationResult;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpoint;
+import com.azure.resourcemanager.mediaservices.models.StreamingEndpointSkuInfoListResult;
 import com.azure.resourcemanager.mediaservices.models.StreamingEndpoints;
 import com.azure.resourcemanager.mediaservices.models.StreamingEntityScaleUnit;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StreamingEndpointsImpl implements StreamingEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingEndpointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StreamingEndpointsImpl.class);
 
     private final StreamingEndpointsClient innerClient;
 
@@ -73,6 +76,32 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
         this.serviceClient().delete(resourceGroupName, accountName, streamingEndpointName, context);
     }
 
+    public StreamingEndpointSkuInfoListResult skus(
+        String resourceGroupName, String accountName, String streamingEndpointName) {
+        StreamingEndpointSkuInfoListResultInner inner =
+            this.serviceClient().skus(resourceGroupName, accountName, streamingEndpointName);
+        if (inner != null) {
+            return new StreamingEndpointSkuInfoListResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<StreamingEndpointSkuInfoListResult> skusWithResponse(
+        String resourceGroupName, String accountName, String streamingEndpointName, Context context) {
+        Response<StreamingEndpointSkuInfoListResultInner> inner =
+            this.serviceClient().skusWithResponse(resourceGroupName, accountName, streamingEndpointName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new StreamingEndpointSkuInfoListResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public void start(String resourceGroupName, String accountName, String streamingEndpointName) {
         this.serviceClient().start(resourceGroupName, accountName, streamingEndpointName);
     }
@@ -106,10 +135,68 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
         this.serviceClient().scale(resourceGroupName, accountName, streamingEndpointName, parameters, context);
     }
 
+    public AsyncOperationResult asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        AsyncOperationResultInner inner =
+            this.serviceClient().asyncOperation(resourceGroupName, accountName, operationId);
+        if (inner != null) {
+            return new AsyncOperationResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<AsyncOperationResult> asyncOperationWithResponse(
+        String resourceGroupName, String accountName, String operationId, Context context) {
+        Response<AsyncOperationResultInner> inner =
+            this.serviceClient().asyncOperationWithResponse(resourceGroupName, accountName, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new AsyncOperationResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public StreamingEndpoint operationLocation(
+        String resourceGroupName, String accountName, String streamingEndpointName, String operationId) {
+        StreamingEndpointInner inner =
+            this.serviceClient().operationLocation(resourceGroupName, accountName, streamingEndpointName, operationId);
+        if (inner != null) {
+            return new StreamingEndpointImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<StreamingEndpoint> operationLocationWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String streamingEndpointName,
+        String operationId,
+        Context context) {
+        Response<StreamingEndpointInner> inner =
+            this
+                .serviceClient()
+                .operationLocationWithResponse(
+                    resourceGroupName, accountName, streamingEndpointName, operationId, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new StreamingEndpointImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public StreamingEndpoint getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,14 +204,14 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String streamingEndpointName = Utils.getValueFromIdByName(id, "streamingEndpoints");
         if (streamingEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -137,7 +224,7 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
     public Response<StreamingEndpoint> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -145,14 +232,14 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String streamingEndpointName = Utils.getValueFromIdByName(id, "streamingEndpoints");
         if (streamingEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -165,7 +252,7 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -173,14 +260,14 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String streamingEndpointName = Utils.getValueFromIdByName(id, "streamingEndpoints");
         if (streamingEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -193,7 +280,7 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -201,14 +288,14 @@ public final class StreamingEndpointsImpl implements StreamingEndpoints {
         }
         String accountName = Utils.getValueFromIdByName(id, "mediaservices");
         if (accountName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'mediaservices'.", id)));
         }
         String streamingEndpointName = Utils.getValueFromIdByName(id, "streamingEndpoints");
         if (streamingEndpointName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

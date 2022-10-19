@@ -13,7 +13,8 @@ import java.util.Objects;
  */
 @Immutable
 public final class GeoBoundingBox {
-    private final ClientLogger logger = new ClientLogger(GeoBoundingBox.class);
+    // GeoBoundingBox is a commonly used model, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(GeoBoundingBox.class);
 
     private final double west;
     private final double south;
@@ -165,7 +166,7 @@ public final class GeoBoundingBox {
                 case 5:
                     return maxAltitude;
                 default:
-                    throw logger.logExceptionAsWarning(new IndexOutOfBoundsException("Index out of range: " + i));
+                    throw LOGGER.logExceptionAsWarning(new IndexOutOfBoundsException("Index out of range: " + i));
             }
         } else {
             switch (i) {
@@ -178,7 +179,7 @@ public final class GeoBoundingBox {
                 case 3:
                     return north;
                 default:
-                    throw logger.logExceptionAsWarning(new IndexOutOfBoundsException("Index out of range: " + i));
+                    throw LOGGER.logExceptionAsWarning(new IndexOutOfBoundsException("Index out of range: " + i));
             }
         }
     }

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlanPatchProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Scaling plan properties that can be patched. */
 @Fluent
 public final class ScalingPlanPatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScalingPlanPatch.class);
-
     /*
      * tags to be updated
      */

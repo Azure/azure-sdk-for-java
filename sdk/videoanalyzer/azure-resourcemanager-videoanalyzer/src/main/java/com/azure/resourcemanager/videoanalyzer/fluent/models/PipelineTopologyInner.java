@@ -14,7 +14,6 @@ import com.azure.resourcemanager.videoanalyzer.models.ProcessorNodeBase;
 import com.azure.resourcemanager.videoanalyzer.models.SinkNodeBase;
 import com.azure.resourcemanager.videoanalyzer.models.Sku;
 import com.azure.resourcemanager.videoanalyzer.models.SourceNodeBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -34,8 +33,6 @@ import java.util.List;
  */
 @Fluent
 public final class PipelineTopologyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineTopologyInner.class);
-
     /*
      * The resource properties.
      */
@@ -254,16 +251,18 @@ public final class PipelineTopologyInner extends ProxyResource {
             innerProperties().validate();
         }
         if (kind() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property kind in model PipelineTopologyInner"));
         }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model PipelineTopologyInner"));
         } else {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PipelineTopologyInner.class);
 }

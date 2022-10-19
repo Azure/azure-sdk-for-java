@@ -30,7 +30,11 @@ public final class RouteType extends ExpandableStringEnum<RouteType> {
         return fromString(name, RouteType.class);
     }
 
-    /** @return known RouteType values. */
+    /**
+     * Gets known RouteType values.
+     *
+     * @return known RouteType values.
+     */
     public static Collection<RouteType> values() {
         return values(RouteType.class);
     }

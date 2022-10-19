@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data proxy properties for a managed dedicated integration runtime. */
 @Fluent
 public final class IntegrationRuntimeDataProxyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeDataProxyProperties.class);
-
     /*
      * The self-hosted integration runtime reference.
      */

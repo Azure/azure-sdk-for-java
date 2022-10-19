@@ -11,10 +11,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupWorkloadIte
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.WorkloadItemResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupWorkloadItems;
 import com.azure.resourcemanager.recoveryservicesbackup.models.WorkloadItemResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupWorkloadItemsImpl implements BackupWorkloadItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupWorkloadItemsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupWorkloadItemsImpl.class);
 
     private final BackupWorkloadItemsClient innerClient;
 

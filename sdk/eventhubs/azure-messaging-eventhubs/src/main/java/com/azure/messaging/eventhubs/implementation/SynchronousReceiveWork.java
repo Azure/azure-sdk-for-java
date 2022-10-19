@@ -11,13 +11,15 @@ import reactor.core.publisher.FluxSink;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.WORK_ID_KEY;
+
 /**
  * Represents a synchronous receive request.
  *
  * @see SynchronousEventSubscriber
  */
 public class SynchronousReceiveWork {
-    private final ClientLogger logger = new ClientLogger(SynchronousReceiveWork.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SynchronousReceiveWork.class);
     private final long id;
     private final AtomicInteger remaining;
     private final int numberToReceive;
@@ -89,7 +91,7 @@ public class SynchronousReceiveWork {
             emitter.next(event);
             remaining.decrementAndGet();
         } catch (Exception e) {
-            logger.warning(Messages.EXCEPTION_OCCURRED_WHILE_EMITTING, e);
+            LOGGER.warning(Messages.EXCEPTION_OCCURRED_WHILE_EMITTING, e);
             isTerminal = true;
             emitter.error(e);
         }
@@ -100,7 +102,9 @@ public class SynchronousReceiveWork {
      */
     public synchronized void complete() {
         if (!isTerminal || emitter.isCancelled()) {
-            logger.info("Id: {}. Completing task.", id);
+            LOGGER.atInfo()
+                .addKeyValue(WORK_ID_KEY, id)
+                .log("Completing task.");
             isTerminal = true;
             emitter.complete();
         }

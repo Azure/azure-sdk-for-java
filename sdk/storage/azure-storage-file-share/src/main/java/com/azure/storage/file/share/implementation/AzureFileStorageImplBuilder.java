@@ -4,23 +4,31 @@
 
 package com.azure.storage.file.share.implementation;
 
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import java.util.ArrayList;
@@ -31,22 +39,112 @@ import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the AzureFileStorage type. */
 @ServiceClientBuilder(serviceClients = {AzureFileStorageImpl.class})
-public final class AzureFileStorageImplBuilder {
-    private static final String SDK_NAME = "name";
+public final class AzureFileStorageImplBuilder
+        implements HttpTrait<AzureFileStorageImplBuilder>, ConfigurationTrait<AzureFileStorageImplBuilder> {
+    @Generated private static final String SDK_NAME = "name";
 
-    private static final String SDK_VERSION = "version";
+    @Generated private static final String SDK_VERSION = "version";
 
-    private final Map<String, String> properties = new HashMap<>();
+    @Generated private final Map<String, String> properties = new HashMap<>();
+
+    @Generated private final List<HttpPipelinePolicy> pipelinePolicies;
 
     /** Create an instance of the AzureFileStorageImplBuilder. */
+    @Generated
     public AzureFileStorageImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 
     /*
+     * The HTTP pipeline to send requests through.
+     */
+    @Generated private HttpPipeline pipeline;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AzureFileStorageImplBuilder pipeline(HttpPipeline pipeline) {
+        this.pipeline = pipeline;
+        return this;
+    }
+
+    /*
+     * The HTTP client used to send the request.
+     */
+    @Generated private HttpClient httpClient;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AzureFileStorageImplBuilder httpClient(HttpClient httpClient) {
+        this.httpClient = httpClient;
+        return this;
+    }
+
+    /*
+     * The logging configuration for HTTP requests and responses.
+     */
+    @Generated private HttpLogOptions httpLogOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AzureFileStorageImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+        this.httpLogOptions = httpLogOptions;
+        return this;
+    }
+
+    /*
+     * The client options such as application ID and custom headers to set on a request.
+     */
+    @Generated private ClientOptions clientOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AzureFileStorageImplBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+        return this;
+    }
+
+    /*
+     * The retry options to configure retry policy for failed requests.
+     */
+    @Generated private RetryOptions retryOptions;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AzureFileStorageImplBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AzureFileStorageImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+        pipelinePolicies.add(customPolicy);
+        return this;
+    }
+
+    /*
+     * The configuration store that is used during construction of the service client.
+     */
+    @Generated private Configuration configuration;
+
+    /** {@inheritDoc}. */
+    @Generated
+    @Override
+    public AzureFileStorageImplBuilder configuration(Configuration configuration) {
+        this.configuration = configuration;
+        return this;
+    }
+
+    /*
      * Specifies the version of the operation to use for this request.
      */
-    private String version;
+    @Generated private String version;
 
     /**
      * Sets Specifies the version of the operation to use for this request.
@@ -54,16 +152,16 @@ public final class AzureFileStorageImplBuilder {
      * @param version the version value.
      * @return the AzureFileStorageImplBuilder.
      */
+    @Generated
     public AzureFileStorageImplBuilder version(String version) {
         this.version = version;
         return this;
     }
 
     /*
-     * The URL of the service account, share, directory or file that is the
-     * target of the desired operation.
+     * The URL of the service account, share, directory or file that is the target of the desired operation.
      */
-    private String url;
+    @Generated private String url;
 
     /**
      * Sets The URL of the service account, share, directory or file that is the target of the desired operation.
@@ -71,31 +169,16 @@ public final class AzureFileStorageImplBuilder {
      * @param url the url value.
      * @return the AzureFileStorageImplBuilder.
      */
+    @Generated
     public AzureFileStorageImplBuilder url(String url) {
         this.url = url;
         return this;
     }
 
     /*
-     * The HTTP pipeline to send requests through
-     */
-    private HttpPipeline pipeline;
-
-    /**
-     * Sets The HTTP pipeline to send requests through.
-     *
-     * @param pipeline the pipeline value.
-     * @return the AzureFileStorageImplBuilder.
-     */
-    public AzureFileStorageImplBuilder pipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
      * The serializer to serialize an object into a string
      */
-    private SerializerAdapter serializerAdapter;
+    @Generated private SerializerAdapter serializerAdapter;
 
     /**
      * Sets The serializer to serialize an object into a string.
@@ -103,65 +186,16 @@ public final class AzureFileStorageImplBuilder {
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureFileStorageImplBuilder.
      */
+    @Generated
     public AzureFileStorageImplBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /*
-     * The HTTP client used to send the request.
+     * The retry policy that will attempt to retry failed requests, if applicable.
      */
-    private HttpClient httpClient;
-
-    /**
-     * Sets The HTTP client used to send the request.
-     *
-     * @param httpClient the httpClient value.
-     * @return the AzureFileStorageImplBuilder.
-     */
-    public AzureFileStorageImplBuilder httpClient(HttpClient httpClient) {
-        this.httpClient = httpClient;
-        return this;
-    }
-
-    /*
-     * The configuration store that is used during construction of the service
-     * client.
-     */
-    private Configuration configuration;
-
-    /**
-     * Sets The configuration store that is used during construction of the service client.
-     *
-     * @param configuration the configuration value.
-     * @return the AzureFileStorageImplBuilder.
-     */
-    public AzureFileStorageImplBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
-        return this;
-    }
-
-    /*
-     * The logging configuration for HTTP requests and responses.
-     */
-    private HttpLogOptions httpLogOptions;
-
-    /**
-     * Sets The logging configuration for HTTP requests and responses.
-     *
-     * @param httpLogOptions the httpLogOptions value.
-     * @return the AzureFileStorageImplBuilder.
-     */
-    public AzureFileStorageImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
-        this.httpLogOptions = httpLogOptions;
-        return this;
-    }
-
-    /*
-     * The retry policy that will attempt to retry failed requests, if
-     * applicable.
-     */
-    private RetryPolicy retryPolicy;
+    @Generated private RetryPolicy retryPolicy;
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
@@ -169,41 +203,9 @@ public final class AzureFileStorageImplBuilder {
      * @param retryPolicy the retryPolicy value.
      * @return the AzureFileStorageImplBuilder.
      */
+    @Generated
     public AzureFileStorageImplBuilder retryPolicy(RetryPolicy retryPolicy) {
         this.retryPolicy = retryPolicy;
-        return this;
-    }
-
-    /*
-     * The list of Http pipeline policies to add.
-     */
-    private final List<HttpPipelinePolicy> pipelinePolicies;
-
-    /*
-     * The client options such as application ID and custom headers to set on a
-     * request.
-     */
-    private ClientOptions clientOptions;
-
-    /**
-     * Sets The client options such as application ID and custom headers to set on a request.
-     *
-     * @param clientOptions the clientOptions value.
-     * @return the AzureFileStorageImplBuilder.
-     */
-    public AzureFileStorageImplBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
-        return this;
-    }
-
-    /**
-     * Adds a custom Http pipeline policy.
-     *
-     * @param customPolicy The custom Http pipeline policy to add.
-     * @return the AzureFileStorageImplBuilder.
-     */
-    public AzureFileStorageImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
-        pipelinePolicies.add(customPolicy);
         return this;
     }
 
@@ -212,20 +214,18 @@ public final class AzureFileStorageImplBuilder {
      *
      * @return an instance of AzureFileStorageImpl.
      */
+    @Generated
     public AzureFileStorageImpl buildClient() {
-        if (version == null) {
-            this.version = "2019-07-07";
-        }
-        if (pipeline == null) {
-            this.pipeline = createHttpPipeline();
-        }
-        if (serializerAdapter == null) {
-            this.serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
-        }
-        AzureFileStorageImpl client = new AzureFileStorageImpl(pipeline, serializerAdapter, version, url);
+        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        String localVersion = (version != null) ? version : "2019-07-07";
+        SerializerAdapter localSerializerAdapter =
+                (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
+        AzureFileStorageImpl client =
+                new AzureFileStorageImpl(localPipeline, localSerializerAdapter, localVersion, url);
         return client;
     }
 
+    @Generated
     private HttpPipeline createHttpPipeline() {
         Configuration buildConfiguration =
                 (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -240,6 +240,8 @@ public final class AzureFileStorageImplBuilder {
         String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
         policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new RequestIdPolicy());
+        policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
         clientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
@@ -250,7 +252,8 @@ public final class AzureFileStorageImplBuilder {
                         .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                         .collect(Collectors.toList()));
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(retryPolicy == null ? new RetryPolicy() : retryPolicy);
+        policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
+        policies.add(new AddDatePolicy());
         policies.add(new CookiePolicy());
         policies.addAll(
                 this.pipelinePolicies.stream()

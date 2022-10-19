@@ -5,20 +5,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Application gateway client authentication configuration. */
 @Fluent
 public final class ApplicationGatewayClientAuthConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayClientAuthConfiguration.class);
-
     /*
      * Verify client certificate issuer name on the application gateway.
      */
     @JsonProperty(value = "verifyClientCertIssuerDN")
     private Boolean verifyClientCertIssuerDN;
+
+    /*
+     * Verify client certificate revocation status.
+     */
+    @JsonProperty(value = "verifyClientRevocation")
+    private ApplicationGatewayClientRevocationOptions verifyClientRevocation;
+
+    /** Creates an instance of ApplicationGatewayClientAuthConfiguration class. */
+    public ApplicationGatewayClientAuthConfiguration() {
+    }
 
     /**
      * Get the verifyClientCertIssuerDN property: Verify client certificate issuer name on the application gateway.
@@ -37,6 +43,27 @@ public final class ApplicationGatewayClientAuthConfiguration {
      */
     public ApplicationGatewayClientAuthConfiguration withVerifyClientCertIssuerDN(Boolean verifyClientCertIssuerDN) {
         this.verifyClientCertIssuerDN = verifyClientCertIssuerDN;
+        return this;
+    }
+
+    /**
+     * Get the verifyClientRevocation property: Verify client certificate revocation status.
+     *
+     * @return the verifyClientRevocation value.
+     */
+    public ApplicationGatewayClientRevocationOptions verifyClientRevocation() {
+        return this.verifyClientRevocation;
+    }
+
+    /**
+     * Set the verifyClientRevocation property: Verify client certificate revocation status.
+     *
+     * @param verifyClientRevocation the verifyClientRevocation value to set.
+     * @return the ApplicationGatewayClientAuthConfiguration object itself.
+     */
+    public ApplicationGatewayClientAuthConfiguration withVerifyClientRevocation(
+        ApplicationGatewayClientRevocationOptions verifyClientRevocation) {
+        this.verifyClientRevocation = verifyClientRevocation;
         return this;
     }
 

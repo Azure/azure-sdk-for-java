@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of express route cross connection peering. */
 @Fluent
 public final class ExpressRouteCrossConnectionPeeringProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionPeeringProperties.class);
-
     /*
      * The peering type.
      */
@@ -87,8 +82,7 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
     private ExpressRouteCircuitPeeringConfig microsoftPeeringConfig;
 
     /*
-     * The provisioning state of the express route cross connection peering
-     * resource.
+     * The provisioning state of the express route cross connection peering resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
@@ -110,6 +104,10 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
      */
     @JsonProperty(value = "ipv6PeeringConfig")
     private Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig;
+
+    /** Creates an instance of ExpressRouteCrossConnectionPeeringProperties class. */
+    public ExpressRouteCrossConnectionPeeringProperties() {
+    }
 
     /**
      * Get the peeringType property: The peering type.

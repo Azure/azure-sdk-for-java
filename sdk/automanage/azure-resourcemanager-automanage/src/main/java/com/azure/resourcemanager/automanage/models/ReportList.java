@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.automanage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automanage.fluent.models.ReportInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of the list report operation. */
 @Fluent
 public final class ReportList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportList.class);
-
     /*
      * Result of the list report operation.
      */

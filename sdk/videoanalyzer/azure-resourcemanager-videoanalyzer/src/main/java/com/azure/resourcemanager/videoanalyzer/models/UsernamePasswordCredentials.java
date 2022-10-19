@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.UsernamePasswordCredentials")
 @Fluent
 public final class UsernamePasswordCredentials extends CredentialsBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsernamePasswordCredentials.class);
-
     /*
      * Username to be presented as part of the credentials.
      */
@@ -85,16 +82,18 @@ public final class UsernamePasswordCredentials extends CredentialsBase {
     public void validate() {
         super.validate();
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property username in model UsernamePasswordCredentials"));
         }
         if (password() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property password in model UsernamePasswordCredentials"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UsernamePasswordCredentials.class);
 }

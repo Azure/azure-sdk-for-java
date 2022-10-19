@@ -59,8 +59,12 @@ private object CosmosPredicates {
     candidate
   }
 
+  private[spark] def isOnSparkDriver(): Boolean = {
+    SparkEnv.get.executorId == DRIVER_IDENTIFIER
+  }
+
   private[spark] def assertOnSparkDriver(): Unit = {
     // assert that we're only accessing it on the driver.
-    assert(SparkEnv.get.executorId == DRIVER_IDENTIFIER, "This code should only be executed on the Spark driver.")
+    assert(isOnSparkDriver(), "This code should only be executed on the Spark driver.")
   }
 }

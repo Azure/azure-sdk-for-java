@@ -23,7 +23,7 @@ public interface DefaultSecurityRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all default security rules in a network security group.
+     * @return all default security rules in a network security group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<SecurityRuleInner> listAsync(String resourceGroupName, String networkSecurityGroupName);
@@ -36,7 +36,7 @@ public interface DefaultSecurityRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all default security rules in a network security group.
+     * @return all default security rules in a network security group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityRuleInner> list(String resourceGroupName, String networkSecurityGroupName);
@@ -50,7 +50,7 @@ public interface DefaultSecurityRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all default security rules in a network security group.
+     * @return all default security rules in a network security group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityRuleInner> list(String resourceGroupName, String networkSecurityGroupName, Context context);
@@ -64,7 +64,8 @@ public interface DefaultSecurityRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified default network security rule.
+     * @return the specified default network security rule along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<SecurityRuleInner>> getWithResponseAsync(
@@ -79,11 +80,27 @@ public interface DefaultSecurityRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified default network security rule.
+     * @return the specified default network security rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<SecurityRuleInner> getAsync(
         String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName);
+
+    /**
+     * Get the specified default network security rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param defaultSecurityRuleName The name of the default security rule.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified default network security rule along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<SecurityRuleInner> getWithResponse(
+        String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName, Context context);
 
     /**
      * Get the specified default network security rule.
@@ -98,20 +115,4 @@ public interface DefaultSecurityRulesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SecurityRuleInner get(String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName);
-
-    /**
-     * Get the specified default network security rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param defaultSecurityRuleName The name of the default security rule.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified default network security rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityRuleInner> getWithResponse(
-        String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName, Context context);
 }

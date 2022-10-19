@@ -65,7 +65,6 @@ public final class BlobBatch {
     private static final String BATCH_REQUEST_URL_PATH = "Batch-Request-Url-Path";
     private static final String BATCH_OPERATION_RESPONSE = "Batch-Operation-Response";
     private static final String BATCH_OPERATION_INFO = "Batch-Operation-Info";
-    private static final String PATH_TEMPLATE = "%s/%s";
 
     /*
      * Track the status codes expected for the batching operations here as the batch body does not get parsed in
@@ -74,7 +73,7 @@ public final class BlobBatch {
     private static final int[] EXPECTED_DELETE_STATUS_CODES = {202};
     private static final int[] EXPECTED_SET_TIER_STATUS_CODES = {200, 202};
 
-    private final ClientLogger logger = new ClientLogger(BlobBatch.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobBatch.class);
 
     private final BlobAsyncClient blobAsyncClient;
 
@@ -132,8 +131,7 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> deleteBlob(String containerName, String blobName) {
-        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName,
-            Utility.urlEncode(Utility.urlDecode(blobName))), null, null);
+        return deleteBlobHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), null, null);
     }
 
     /**
@@ -160,8 +158,8 @@ public final class BlobBatch {
      */
     public Response<Void> deleteBlob(String containerName, String blobName,
         DeleteSnapshotsOptionType deleteOptions, BlobRequestConditions blobRequestConditions) {
-        return deleteBlobHelper(String.format(PATH_TEMPLATE, containerName,
-            Utility.urlEncode(Utility.urlDecode(blobName))), deleteOptions, blobRequestConditions);
+        return deleteBlobHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), deleteOptions,
+            blobRequestConditions);
     }
 
     /**
@@ -236,8 +234,8 @@ public final class BlobBatch {
      * @throws UnsupportedOperationException If this batch has already added an operation of another type.
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier) {
-        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName,
-            Utility.urlEncode(Utility.urlDecode(blobName))), accessTier, null, null, null);
+        return setBlobAccessTierHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), accessTier,
+            null, null, null);
     }
 
     /**
@@ -262,8 +260,8 @@ public final class BlobBatch {
      */
     public Response<Void> setBlobAccessTier(String containerName, String blobName, AccessTier accessTier,
         String leaseId) {
-        return setBlobAccessTierHelper(String.format(PATH_TEMPLATE, containerName,
-            Utility.urlEncode(Utility.urlDecode(blobName))), accessTier, null, leaseId, null);
+        return setBlobAccessTierHelper(containerName + "/" + Utility.urlEncode(Utility.urlDecode(blobName)), accessTier,
+            null, leaseId, null);
     }
 
     /**
@@ -359,14 +357,14 @@ public final class BlobBatch {
         if (this.batchType == null) {
             this.batchType = batchType;
         } else if (this.batchType != batchType) {
-            throw logger.logExceptionAsError(new UnsupportedOperationException(String.format(Locale.ROOT,
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(Locale.ROOT,
                 "'BlobBatch' only supports homogeneous operations and is a %s batch.", this.batchType)));
         }
     }
 
     Mono<BlobBatchOperationInfo> prepareBlobBatchSubmission() {
         if (batchOperationQueue.isEmpty()) {
-            return monoError(logger, new UnsupportedOperationException("Empty batch requests aren't allowed."));
+            return monoError(LOGGER, new UnsupportedOperationException("Empty batch requests aren't allowed."));
         }
 
         BlobBatchOperationInfo operationInfo = new BlobBatchOperationInfo();
@@ -380,7 +378,7 @@ public final class BlobBatch {
             BlobBatchOperation<?> batchOperation = operations.pop();
 
             batchOperationResponses.add(batchOperation.getResponse()
-                .subscriberContext(Context.of(BATCH_REQUEST_URL_PATH, batchOperation.getRequestUrlPath(),
+                .contextWrite(Context.of(BATCH_REQUEST_URL_PATH, batchOperation.getRequestUrlPath(),
                     BATCH_OPERATION_RESPONSE, batchOperation.getBatchOperationResponse(),
                     BATCH_OPERATION_INFO, operationInfo)));
         }
@@ -428,7 +426,7 @@ public final class BlobBatch {
             requestUrl.setPath(context.getData(BATCH_REQUEST_URL_PATH).get().toString());
             context.getHttpRequest().setUrl(requestUrl.toUrl());
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsError(Exceptions.propagate(new IllegalStateException(ex)));
+            throw LOGGER.logExceptionAsError(Exceptions.propagate(new IllegalStateException(ex)));
         }
 
         return next.process();

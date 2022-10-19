@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the Azure Active directory provider. */
 @Fluent
 public final class AzureActiveDirectory {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureActiveDirectory.class);
-
     /*
      * <code>false</code> if the Azure Active Directory provider should not be
      * enabled despite the set registration; otherwise, <code>true</code>.

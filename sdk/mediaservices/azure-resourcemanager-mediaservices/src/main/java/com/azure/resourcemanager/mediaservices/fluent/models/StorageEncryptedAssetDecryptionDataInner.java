@@ -6,17 +6,13 @@ package com.azure.resourcemanager.mediaservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.models.AssetFileEncryptionMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Data needed to decrypt asset files encrypted with legacy storage encryption. */
 @Fluent
 public final class StorageEncryptedAssetDecryptionDataInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageEncryptedAssetDecryptionDataInner.class);
-
     /*
      * The Asset File storage encryption key.
      */

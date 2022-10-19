@@ -23,7 +23,7 @@ public interface WebCategoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Web Category.
+     * @return the specified Azure Web Category along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<AzureWebCategoryInner>> getWithResponseAsync(String name, String expand);
@@ -32,26 +32,27 @@ public interface WebCategoriesClient {
      * Gets the specified Azure Web Category.
      *
      * @param name The name of the azureWebCategory.
-     * @param expand Expands resourceIds back referenced by the azureWebCategory resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Web Category.
+     * @return the specified Azure Web Category on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AzureWebCategoryInner> getAsync(String name, String expand);
+    Mono<AzureWebCategoryInner> getAsync(String name);
 
     /**
      * Gets the specified Azure Web Category.
      *
      * @param name The name of the azureWebCategory.
+     * @param expand Expands resourceIds back referenced by the azureWebCategory resource.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Web Category.
+     * @return the specified Azure Web Category along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AzureWebCategoryInner> getAsync(String name);
+    Response<AzureWebCategoryInner> getWithResponse(String name, String expand, Context context);
 
     /**
      * Gets the specified Azure Web Category.
@@ -66,25 +67,11 @@ public interface WebCategoriesClient {
     AzureWebCategoryInner get(String name);
 
     /**
-     * Gets the specified Azure Web Category.
-     *
-     * @param name The name of the azureWebCategory.
-     * @param expand Expands resourceIds back referenced by the azureWebCategory resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure Web Category.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureWebCategoryInner> getWithResponse(String name, String expand, Context context);
-
-    /**
      * Gets all the Azure Web Categories in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Web Categories in a subscription.
+     * @return all the Azure Web Categories in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<AzureWebCategoryInner> listAsync();
@@ -94,7 +81,7 @@ public interface WebCategoriesClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Web Categories in a subscription.
+     * @return all the Azure Web Categories in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureWebCategoryInner> list();
@@ -106,7 +93,7 @@ public interface WebCategoriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the Azure Web Categories in a subscription.
+     * @return all the Azure Web Categories in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<AzureWebCategoryInner> list(Context context);

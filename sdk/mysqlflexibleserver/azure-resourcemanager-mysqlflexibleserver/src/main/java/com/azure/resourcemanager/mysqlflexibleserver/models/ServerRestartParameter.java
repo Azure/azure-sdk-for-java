@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Server restart parameters. */
 @Fluent
 public final class ServerRestartParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerRestartParameter.class);
-
     /*
      * Whether or not failover to standby server when restarting a server with
      * high availability enabled.

@@ -7,16 +7,12 @@ package com.azure.resourcemanager.deviceprovisioningservices.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The X509 Certificate. */
 @Fluent
 public final class CertificateResponseInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateResponseInner.class);
-
     /*
      * properties of a certificate
      */

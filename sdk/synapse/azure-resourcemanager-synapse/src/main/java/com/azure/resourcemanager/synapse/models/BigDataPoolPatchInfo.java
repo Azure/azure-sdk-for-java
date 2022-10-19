@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Patch for a Big Data pool Properties patch for a Big Data pool. */
 @Fluent
 public final class BigDataPoolPatchInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BigDataPoolPatchInfo.class);
-
     /*
      * Updated tags for the Big Data pool
      */

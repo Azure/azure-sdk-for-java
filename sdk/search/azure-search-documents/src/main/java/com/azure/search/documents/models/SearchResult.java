@@ -24,7 +24,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  */
 @Fluent
 public final class SearchResult {
-    private final ClientLogger logger = new ClientLogger(SearchResult.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SearchResult.class);
 
     /*
      * The relevance score of the document compared to other documents returned
@@ -162,7 +162,7 @@ public final class SearchResult {
             try {
                 return Utility.convertValue(additionalProperties, modelClass);
             } catch (IOException ex) {
-                throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize search result.", ex));
+                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize search result.", ex));
             }
         }
 

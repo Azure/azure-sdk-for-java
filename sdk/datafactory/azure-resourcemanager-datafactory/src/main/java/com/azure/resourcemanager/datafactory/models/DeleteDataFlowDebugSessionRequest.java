@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request body structure for deleting data flow debug session. */
 @Fluent
 public final class DeleteDataFlowDebugSessionRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeleteDataFlowDebugSessionRequest.class);
-
     /*
      * The ID of data flow debug session.
      */
     @JsonProperty(value = "sessionId")
     private String sessionId;
+
+    /** Creates an instance of DeleteDataFlowDebugSessionRequest class. */
+    public DeleteDataFlowDebugSessionRequest() {
+    }
 
     /**
      * Get the sessionId property: The ID of data flow debug session.

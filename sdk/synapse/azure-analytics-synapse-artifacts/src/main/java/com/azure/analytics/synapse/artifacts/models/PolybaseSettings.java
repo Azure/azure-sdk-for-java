@@ -22,25 +22,22 @@ public final class PolybaseSettings {
     private PolybaseSettingsRejectType rejectType;
 
     /*
-     * Specifies the value or the percentage of rows that can be rejected
-     * before the query fails. Type: number (or Expression with resultType
-     * number), minimum: 0.
+     * Specifies the value or the percentage of rows that can be rejected before the query fails. Type: number (or
+     * Expression with resultType number), minimum: 0.
      */
     @JsonProperty(value = "rejectValue")
     private Object rejectValue;
 
     /*
-     * Determines the number of rows to attempt to retrieve before the PolyBase
-     * recalculates the percentage of rejected rows. Type: integer (or
-     * Expression with resultType integer), minimum: 0.
+     * Determines the number of rows to attempt to retrieve before the PolyBase recalculates the percentage of rejected
+     * rows. Type: integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "rejectSampleValue")
     private Object rejectSampleValue;
 
     /*
-     * Specifies how to handle missing values in delimited text files when
-     * PolyBase retrieves data from the text file. Type: boolean (or Expression
-     * with resultType boolean).
+     * Specifies how to handle missing values in delimited text files when PolyBase retrieves data from the text file.
+     * Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useTypeDefault")
     private Object useTypeDefault;

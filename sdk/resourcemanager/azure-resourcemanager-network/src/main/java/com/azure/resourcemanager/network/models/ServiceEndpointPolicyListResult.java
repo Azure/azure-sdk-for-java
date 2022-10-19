@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ServiceEndpointPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListServiceEndpointPolicies API service call. */
 @Fluent
 public final class ServiceEndpointPolicyListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyListResult.class);
-
     /*
      * A list of ServiceEndpointPolicy resources.
      */
@@ -27,6 +23,10 @@ public final class ServiceEndpointPolicyListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ServiceEndpointPolicyListResult class. */
+    public ServiceEndpointPolicyListResult() {
+    }
 
     /**
      * Get the value property: A list of ServiceEndpointPolicy resources.

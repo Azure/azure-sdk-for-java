@@ -9,10 +9,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.IntegrationRuntimeCredentialsClient;
 import com.azure.resourcemanager.synapse.models.IntegrationRuntimeCredentials;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeCredentialsImpl implements IntegrationRuntimeCredentials {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeCredentialsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeCredentialsImpl.class);
 
     private final IntegrationRuntimeCredentialsClient innerClient;
 

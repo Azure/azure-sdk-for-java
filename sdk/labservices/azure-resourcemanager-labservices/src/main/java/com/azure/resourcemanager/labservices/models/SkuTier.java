@@ -7,7 +7,10 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for SkuTier. */
+/**
+ * This field is required to be implemented by the Resource Provider if the service has more than one tier, but is not
+ * required on a PUT.
+ */
 public enum SkuTier {
     /** Enum value Free. */
     FREE("Free"),
@@ -36,6 +39,9 @@ public enum SkuTier {
      */
     @JsonCreator
     public static SkuTier fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         SkuTier[] items = SkuTier.values();
         for (SkuTier item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +51,7 @@ public enum SkuTier {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

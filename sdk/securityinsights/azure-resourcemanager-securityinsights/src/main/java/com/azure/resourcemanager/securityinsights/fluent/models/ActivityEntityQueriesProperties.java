@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ActivityEntityQueriesPropertiesQueryDefinitions;
 import com.azure.resourcemanager.securityinsights.models.EntityType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** Describes activity entity query properties. */
 @Fluent
 public final class ActivityEntityQueriesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityEntityQueriesProperties.class);
-
     /*
      * The entity query title
      */
@@ -51,8 +47,7 @@ public final class ActivityEntityQueriesProperties {
     private EntityType inputEntityType;
 
     /*
-     * List of the fields of the source entity that are required to run the
-     * query
+     * List of the fields of the source entity that are required to run the query
      */
     @JsonProperty(value = "requiredInputFieldsSets")
     private List<List<String>> requiredInputFieldsSets;

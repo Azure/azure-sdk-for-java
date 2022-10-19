@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Apps ListTemplates. */
 public final class AppsListTemplatesSamples {
     /*
-     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_Templates.json
+     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_Templates.json
      */
     /**
      * Sample code: Apps_ListTemplates.

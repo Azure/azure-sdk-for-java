@@ -30,7 +30,11 @@ public final class PreferredAppGroupType extends ExpandableStringEnum<PreferredA
         return fromString(name, PreferredAppGroupType.class);
     }
 
-    /** @return known PreferredAppGroupType values. */
+    /**
+     * Gets known PreferredAppGroupType values.
+     *
+     * @return known PreferredAppGroupType values.
+     */
     public static Collection<PreferredAppGroupType> values() {
         return values(PreferredAppGroupType.class);
     }

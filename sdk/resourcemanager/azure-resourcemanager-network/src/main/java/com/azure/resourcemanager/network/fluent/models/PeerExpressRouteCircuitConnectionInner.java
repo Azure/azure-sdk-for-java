@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Peer Express Route Circuit Connection in an ExpressRouteCircuitPeering resource. */
 @Fluent
 public final class PeerExpressRouteCircuitConnectionInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeerExpressRouteCircuitConnectionInner.class);
-
     /*
      * Properties of the peer express route circuit connection.
      */
@@ -24,8 +20,7 @@ public final class PeerExpressRouteCircuitConnectionInner extends SubResource {
     private PeerExpressRouteCircuitConnectionPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -41,6 +36,10 @@ public final class PeerExpressRouteCircuitConnectionInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of PeerExpressRouteCircuitConnectionInner class. */
+    public PeerExpressRouteCircuitConnectionInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the peer express route circuit connection.

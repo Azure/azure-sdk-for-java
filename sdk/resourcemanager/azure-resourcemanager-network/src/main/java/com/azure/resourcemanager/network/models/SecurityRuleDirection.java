@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecurityRuleDirection. */
+/** The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic. */
 public final class SecurityRuleDirection extends ExpandableStringEnum<SecurityRuleDirection> {
     /** Static value Inbound for SecurityRuleDirection. */
     public static final SecurityRuleDirection INBOUND = fromString("Inbound");
@@ -27,7 +27,11 @@ public final class SecurityRuleDirection extends ExpandableStringEnum<SecurityRu
         return fromString(name, SecurityRuleDirection.class);
     }
 
-    /** @return known SecurityRuleDirection values. */
+    /**
+     * Gets known SecurityRuleDirection values.
+     *
+     * @return known SecurityRuleDirection values.
+     */
     public static Collection<SecurityRuleDirection> values() {
         return values(SecurityRuleDirection.class);
     }

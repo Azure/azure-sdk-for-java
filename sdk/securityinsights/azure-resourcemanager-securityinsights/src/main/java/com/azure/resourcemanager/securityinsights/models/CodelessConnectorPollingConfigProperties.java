@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Config to describe the polling config for API poller connector. */
 @Fluent
 public final class CodelessConnectorPollingConfigProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CodelessConnectorPollingConfigProperties.class);
-
     /*
      * The poller active status
      */
@@ -151,7 +148,7 @@ public final class CodelessConnectorPollingConfigProperties {
      */
     public void validate() {
         if (auth() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property auth in model CodelessConnectorPollingConfigProperties"));
@@ -159,7 +156,7 @@ public final class CodelessConnectorPollingConfigProperties {
             auth().validate();
         }
         if (request() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property request in model CodelessConnectorPollingConfigProperties"));
@@ -173,4 +170,6 @@ public final class CodelessConnectorPollingConfigProperties {
             response().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CodelessConnectorPollingConfigProperties.class);
 }

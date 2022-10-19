@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of P2S Vpn connection health request. */
 @Fluent
 public final class P2SVpnConnectionHealthRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnConnectionHealthRequest.class);
-
     /*
-     * The list of p2s vpn user names whose p2s vpn connection detailed health
-     * to retrieve for.
+     * The list of p2s vpn user names whose p2s vpn connection detailed health to retrieve for.
      */
     @JsonProperty(value = "vpnUserNamesFilter")
     private List<String> vpnUserNamesFilter;
@@ -27,6 +22,10 @@ public final class P2SVpnConnectionHealthRequest {
      */
     @JsonProperty(value = "outputBlobSasUrl")
     private String outputBlobSasUrl;
+
+    /** Creates an instance of P2SVpnConnectionHealthRequest class. */
+    public P2SVpnConnectionHealthRequest() {
+    }
 
     /**
      * Get the vpnUserNamesFilter property: The list of p2s vpn user names whose p2s vpn connection detailed health to

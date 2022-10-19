@@ -6,35 +6,29 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The consistency policy for the Cosmos DB database account. */
 @Fluent
 public final class ConsistencyPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConsistencyPolicy.class);
-
     /*
-     * The default consistency level and configuration settings of the Cosmos
-     * DB account.
+     * The default consistency level and configuration settings of the Cosmos DB account.
      */
     @JsonProperty(value = "defaultConsistencyLevel", required = true)
     private DefaultConsistencyLevel defaultConsistencyLevel;
 
     /*
-     * When used with the Bounded Staleness consistency level, this value
-     * represents the number of stale requests tolerated. Accepted range for
-     * this value is 1 – 2,147,483,647. Required when defaultConsistencyPolicy
-     * is set to 'BoundedStaleness'.
+     * When used with the Bounded Staleness consistency level, this value represents the number of stale requests
+     * tolerated. Accepted range for this value is 1 – 2,147,483,647. Required when defaultConsistencyPolicy is set to
+     * 'BoundedStaleness'.
      */
     @JsonProperty(value = "maxStalenessPrefix")
     private Long maxStalenessPrefix;
 
     /*
-     * When used with the Bounded Staleness consistency level, this value
-     * represents the time amount of staleness (in seconds) tolerated. Accepted
-     * range for this value is 5 - 86400. Required when
-     * defaultConsistencyPolicy is set to 'BoundedStaleness'.
+     * When used with the Bounded Staleness consistency level, this value represents the time amount of staleness (in
+     * seconds) tolerated. Accepted range for this value is 5 - 86400. Required when defaultConsistencyPolicy is set to
+     * 'BoundedStaleness'.
      */
     @JsonProperty(value = "maxIntervalInSeconds")
     private Integer maxIntervalInSeconds;
@@ -116,10 +110,12 @@ public final class ConsistencyPolicy {
      */
     public void validate() {
         if (defaultConsistencyLevel() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property defaultConsistencyLevel in model ConsistencyPolicy"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConsistencyPolicy.class);
 }

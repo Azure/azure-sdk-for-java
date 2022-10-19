@@ -25,16 +25,13 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbResourcesClient;
-import com.azure.resourcemanager.cosmos.fluent.models.DatabaseRestoreResourceInner;
+import com.azure.resourcemanager.cosmos.fluent.models.RestorableMongodbResourcesGetResultInner;
 import com.azure.resourcemanager.cosmos.models.RestorableMongodbResourcesListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RestorableMongodbResourcesClient. */
 public final class RestorableMongodbResourcesClientImpl implements RestorableMongodbResourcesClient {
-    private final ClientLogger logger = new ClientLogger(RestorableMongodbResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RestorableMongodbResourcesService service;
 
@@ -91,10 +88,11 @@ public final class RestorableMongodbResourcesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable MongoDB resources.
+     * @return the List operation response, that contains the restorable MongoDB resources along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseRestoreResourceInner>> listSinglePageAsync(
+    private Mono<PagedResponse<RestorableMongodbResourcesGetResultInner>> listSinglePageAsync(
         String location, String instanceId, String restoreLocation, String restoreTimestampInUtc) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -129,7 +127,7 @@ public final class RestorableMongodbResourcesClientImpl implements RestorableMon
                             restoreTimestampInUtc,
                             accept,
                             context))
-            .<PagedResponse<DatabaseRestoreResourceInner>>map(
+            .<PagedResponse<RestorableMongodbResourcesGetResultInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
@@ -149,10 +147,11 @@ public final class RestorableMongodbResourcesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable MongoDB resources.
+     * @return the List operation response, that contains the restorable MongoDB resources along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseRestoreResourceInner>> listSinglePageAsync(
+    private Mono<PagedResponse<RestorableMongodbResourcesGetResultInner>> listSinglePageAsync(
         String location, String instanceId, String restoreLocation, String restoreTimestampInUtc, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -203,10 +202,11 @@ public final class RestorableMongodbResourcesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable MongoDB resources.
+     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatabaseRestoreResourceInner> listAsync(
+    public PagedFlux<RestorableMongodbResourcesGetResultInner> listAsync(
         String location, String instanceId, String restoreLocation, String restoreTimestampInUtc) {
         return new PagedFlux<>(() -> listSinglePageAsync(location, instanceId, restoreLocation, restoreTimestampInUtc));
     }
@@ -221,10 +221,11 @@ public final class RestorableMongodbResourcesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable MongoDB resources.
+     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DatabaseRestoreResourceInner> listAsync(String location, String instanceId) {
+    public PagedFlux<RestorableMongodbResourcesGetResultInner> listAsync(String location, String instanceId) {
         final String restoreLocation = null;
         final String restoreTimestampInUtc = null;
         return new PagedFlux<>(() -> listSinglePageAsync(location, instanceId, restoreLocation, restoreTimestampInUtc));
@@ -243,10 +244,11 @@ public final class RestorableMongodbResourcesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable MongoDB resources.
+     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseRestoreResourceInner> listAsync(
+    private PagedFlux<RestorableMongodbResourcesGetResultInner> listAsync(
         String location, String instanceId, String restoreLocation, String restoreTimestampInUtc, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(location, instanceId, restoreLocation, restoreTimestampInUtc, context));
@@ -262,10 +264,11 @@ public final class RestorableMongodbResourcesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable MongoDB resources.
+     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseRestoreResourceInner> list(String location, String instanceId) {
+    public PagedIterable<RestorableMongodbResourcesGetResultInner> list(String location, String instanceId) {
         final String restoreLocation = null;
         final String restoreTimestampInUtc = null;
         return new PagedIterable<>(listAsync(location, instanceId, restoreLocation, restoreTimestampInUtc));
@@ -284,10 +287,11 @@ public final class RestorableMongodbResourcesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the restorable MongoDB resources.
+     * @return the List operation response, that contains the restorable MongoDB resources as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DatabaseRestoreResourceInner> list(
+    public PagedIterable<RestorableMongodbResourcesGetResultInner> list(
         String location, String instanceId, String restoreLocation, String restoreTimestampInUtc, Context context) {
         return new PagedIterable<>(listAsync(location, instanceId, restoreLocation, restoreTimestampInUtc, context));
     }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.TagCount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Tag details. */
 @Fluent
 public final class TagDetailsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagDetailsInner.class);
-
     /*
      * The tag name ID.
      */

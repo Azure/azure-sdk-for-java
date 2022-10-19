@@ -7,15 +7,12 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.FunctionEnvelopeInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of Kudu function information elements. */
 @Fluent
 public final class FunctionEnvelopeCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionEnvelopeCollection.class);
-
     /*
      * Collection of resources.
      */
@@ -64,7 +61,7 @@ public final class FunctionEnvelopeCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model FunctionEnvelopeCollection"));
@@ -72,4 +69,6 @@ public final class FunctionEnvelopeCollection {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FunctionEnvelopeCollection.class);
 }

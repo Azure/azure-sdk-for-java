@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automanage.fluent.ConfigurationProfileAssignmentsClient;
 import com.azure.resourcemanager.automanage.fluent.models.ConfigurationProfileAssignmentInner;
 import com.azure.resourcemanager.automanage.models.ConfigurationProfileAssignmentList;
@@ -36,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ConfigurationProfileAssignmentsClient. */
 public final class ConfigurationProfileAssignmentsClientImpl implements ConfigurationProfileAssignmentsClient {
-    private final ClientLogger logger = new ClientLogger(ConfigurationProfileAssignmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ConfigurationProfileAssignmentsService service;
 
@@ -120,6 +117,21 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
 
         @Headers({"Content-Type: application/json"})
         @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute"
+                + "/virtualMachines/{vmName}/providers/Microsoft.Automanage/configurationProfileAssignments")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConfigurationProfileAssignmentList>> listByVirtualMachines(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("vmName") String vmName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automanage"
                 + "/configurationProfileAssignments")
         @ExpectedResponses({200})
@@ -142,6 +154,36 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
             @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept,
             Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridCompute"
+                + "/machines/{machineName}/providers/Microsoft.Automanage/configurationProfileAssignments")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConfigurationProfileAssignmentList>> listByMachineName(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("machineName") String machineName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.AzureStackHci"
+                + "/clusters/{clusterName}/providers/Microsoft.Automanage/configurationProfileAssignments")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ConfigurationProfileAssignmentList>> listByClusterName(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -155,7 +197,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration profile assignment is an association between a VM and automanage profile configuration.
+     * @return configuration profile assignment is an association between a VM and automanage profile configuration
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigurationProfileAssignmentInner>> createOrUpdateWithResponseAsync(
@@ -223,7 +266,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration profile assignment is an association between a VM and automanage profile configuration.
+     * @return configuration profile assignment is an association between a VM and automanage profile configuration
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigurationProfileAssignmentInner>> createOrUpdateWithResponseAsync(
@@ -288,7 +332,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration profile assignment is an association between a VM and automanage profile configuration.
+     * @return configuration profile assignment is an association between a VM and automanage profile configuration on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfigurationProfileAssignmentInner> createOrUpdateAsync(
@@ -298,14 +343,7 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
         ConfigurationProfileAssignmentInner parameters) {
         return createOrUpdateWithResponseAsync(
                 configurationProfileAssignmentName, resourceGroupName, vmName, parameters)
-            .flatMap(
-                (Response<ConfigurationProfileAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -342,7 +380,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configuration profile assignment is an association between a VM and automanage profile configuration.
+     * @return configuration profile assignment is an association between a VM and automanage profile configuration
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationProfileAssignmentInner> createOrUpdateWithResponse(
@@ -365,7 +404,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile assignment.
+     * @return information about a configuration profile assignment along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigurationProfileAssignmentInner>> getWithResponseAsync(
@@ -422,7 +462,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile assignment.
+     * @return information about a configuration profile assignment along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConfigurationProfileAssignmentInner>> getWithResponseAsync(
@@ -475,20 +516,13 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile assignment.
+     * @return information about a configuration profile assignment on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConfigurationProfileAssignmentInner> getAsync(
         String resourceGroupName, String configurationProfileAssignmentName, String vmName) {
         return getWithResponseAsync(resourceGroupName, configurationProfileAssignmentName, vmName)
-            .flatMap(
-                (Response<ConfigurationProfileAssignmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -518,7 +552,7 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about a configuration profile assignment.
+     * @return information about a configuration profile assignment along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConfigurationProfileAssignmentInner> getWithResponse(
@@ -535,7 +569,7 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -592,7 +626,7 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -645,12 +679,12 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String configurationProfileAssignmentName, String vmName) {
         return deleteWithResponseAsync(resourceGroupName, configurationProfileAssignmentName, vmName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -678,7 +712,7 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -690,10 +724,181 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * Get list of configuration profile assignments.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments.
+     * @return list of configuration profile assignments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConfigurationProfileAssignmentInner>> listByVirtualMachinesSinglePageAsync(
+        String resourceGroupName, String vmName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByVirtualMachines(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            vmName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<ConfigurationProfileAssignmentInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConfigurationProfileAssignmentInner>> listByVirtualMachinesSinglePageAsync(
+        String resourceGroupName, String vmName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (vmName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter vmName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByVirtualMachines(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                vmName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ConfigurationProfileAssignmentInner> listByVirtualMachinesAsync(
+        String resourceGroupName, String vmName) {
+        return new PagedFlux<>(() -> listByVirtualMachinesSinglePageAsync(resourceGroupName, vmName));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ConfigurationProfileAssignmentInner> listByVirtualMachinesAsync(
+        String resourceGroupName, String vmName, Context context) {
+        return new PagedFlux<>(() -> listByVirtualMachinesSinglePageAsync(resourceGroupName, vmName, context));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConfigurationProfileAssignmentInner> listByVirtualMachines(
+        String resourceGroupName, String vmName) {
+        return new PagedIterable<>(listByVirtualMachinesAsync(resourceGroupName, vmName));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param vmName The name of the virtual machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConfigurationProfileAssignmentInner> listByVirtualMachines(
+        String resourceGroupName, String vmName, Context context) {
+        return new PagedIterable<>(listByVirtualMachinesAsync(resourceGroupName, vmName, context));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationProfileAssignmentInner>> listByResourceGroupSinglePageAsync(
@@ -741,7 +946,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments.
+     * @return list of configuration profile assignments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationProfileAssignmentInner>> listByResourceGroupSinglePageAsync(
@@ -785,7 +991,7 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments.
+     * @return list of configuration profile assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationProfileAssignmentInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -800,7 +1006,7 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments.
+     * @return list of configuration profile assignments as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationProfileAssignmentInner> listByResourceGroupAsync(
@@ -815,7 +1021,7 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileAssignmentInner> listByResourceGroup(String resourceGroupName) {
@@ -830,7 +1036,7 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileAssignmentInner> listByResourceGroup(
@@ -843,7 +1049,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments under a given subscription.
+     * @return list of configuration profile assignments under a given subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationProfileAssignmentInner>> listSinglePageAsync() {
@@ -884,7 +1091,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments under a given subscription.
+     * @return list of configuration profile assignments under a given subscription along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ConfigurationProfileAssignmentInner>> listSinglePageAsync(Context context) {
@@ -920,7 +1128,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments under a given subscription.
+     * @return list of configuration profile assignments under a given subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationProfileAssignmentInner> listAsync() {
@@ -934,7 +1143,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments under a given subscription.
+     * @return list of configuration profile assignments under a given subscription as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ConfigurationProfileAssignmentInner> listAsync(Context context) {
@@ -946,7 +1156,8 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments under a given subscription.
+     * @return list of configuration profile assignments under a given subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileAssignmentInner> list() {
@@ -960,10 +1171,351 @@ public final class ConfigurationProfileAssignmentsClientImpl implements Configur
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of configuration profile assignments under a given subscription.
+     * @return list of configuration profile assignments under a given subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationProfileAssignmentInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the Arc machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConfigurationProfileAssignmentInner>> listByMachineNameSinglePageAsync(
+        String resourceGroupName, String machineName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (machineName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByMachineName(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            machineName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<ConfigurationProfileAssignmentInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the Arc machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConfigurationProfileAssignmentInner>> listByMachineNameSinglePageAsync(
+        String resourceGroupName, String machineName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (machineName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter machineName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByMachineName(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                machineName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the Arc machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ConfigurationProfileAssignmentInner> listByMachineNameAsync(
+        String resourceGroupName, String machineName) {
+        return new PagedFlux<>(() -> listByMachineNameSinglePageAsync(resourceGroupName, machineName));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the Arc machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ConfigurationProfileAssignmentInner> listByMachineNameAsync(
+        String resourceGroupName, String machineName, Context context) {
+        return new PagedFlux<>(() -> listByMachineNameSinglePageAsync(resourceGroupName, machineName, context));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the Arc machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConfigurationProfileAssignmentInner> listByMachineName(
+        String resourceGroupName, String machineName) {
+        return new PagedIterable<>(listByMachineNameAsync(resourceGroupName, machineName));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param machineName The name of the Arc machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConfigurationProfileAssignmentInner> listByMachineName(
+        String resourceGroupName, String machineName, Context context) {
+        return new PagedIterable<>(listByMachineNameAsync(resourceGroupName, machineName, context));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Arc machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConfigurationProfileAssignmentInner>> listByClusterNameSinglePageAsync(
+        String resourceGroupName, String clusterName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByClusterName(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            clusterName,
+                            this.client.getApiVersion(),
+                            accept,
+                            context))
+            .<PagedResponse<ConfigurationProfileAssignmentInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Arc machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ConfigurationProfileAssignmentInner>> listByClusterNameSinglePageAsync(
+        String resourceGroupName, String clusterName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByClusterName(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                clusterName,
+                this.client.getApiVersion(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Arc machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ConfigurationProfileAssignmentInner> listByClusterNameAsync(
+        String resourceGroupName, String clusterName) {
+        return new PagedFlux<>(() -> listByClusterNameSinglePageAsync(resourceGroupName, clusterName));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Arc machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ConfigurationProfileAssignmentInner> listByClusterNameAsync(
+        String resourceGroupName, String clusterName, Context context) {
+        return new PagedFlux<>(() -> listByClusterNameSinglePageAsync(resourceGroupName, clusterName, context));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Arc machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConfigurationProfileAssignmentInner> listByClusterName(
+        String resourceGroupName, String clusterName) {
+        return new PagedIterable<>(listByClusterNameAsync(resourceGroupName, clusterName));
+    }
+
+    /**
+     * Get list of configuration profile assignments.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Arc machine.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of configuration profile assignments as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConfigurationProfileAssignmentInner> listByClusterName(
+        String resourceGroupName, String clusterName, Context context) {
+        return new PagedIterable<>(listByClusterNameAsync(resourceGroupName, clusterName, context));
     }
 }

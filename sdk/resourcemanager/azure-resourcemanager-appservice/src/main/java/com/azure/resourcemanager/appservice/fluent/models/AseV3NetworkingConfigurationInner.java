@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Full view of networking configuration for an ASE. */
 @Fluent
 public final class AseV3NetworkingConfigurationInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AseV3NetworkingConfigurationInner.class);
-
     /*
      * AseV3NetworkingConfiguration resource specific properties
      */
@@ -97,6 +93,77 @@ public final class AseV3NetworkingConfigurationInner extends ProxyOnlyResource {
             this.innerProperties = new AseV3NetworkingConfigurationProperties();
         }
         this.innerProperties().withAllowNewPrivateEndpointConnections(allowNewPrivateEndpointConnections);
+        return this;
+    }
+
+    /**
+     * Get the ftpEnabled property: Property to enable and disable FTP on ASEV3.
+     *
+     * @return the ftpEnabled value.
+     */
+    public Boolean ftpEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().ftpEnabled();
+    }
+
+    /**
+     * Set the ftpEnabled property: Property to enable and disable FTP on ASEV3.
+     *
+     * @param ftpEnabled the ftpEnabled value to set.
+     * @return the AseV3NetworkingConfigurationInner object itself.
+     */
+    public AseV3NetworkingConfigurationInner withFtpEnabled(Boolean ftpEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AseV3NetworkingConfigurationProperties();
+        }
+        this.innerProperties().withFtpEnabled(ftpEnabled);
+        return this;
+    }
+
+    /**
+     * Get the remoteDebugEnabled property: Property to enable and disable Remote Debug on ASEV3.
+     *
+     * @return the remoteDebugEnabled value.
+     */
+    public Boolean remoteDebugEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().remoteDebugEnabled();
+    }
+
+    /**
+     * Set the remoteDebugEnabled property: Property to enable and disable Remote Debug on ASEV3.
+     *
+     * @param remoteDebugEnabled the remoteDebugEnabled value to set.
+     * @return the AseV3NetworkingConfigurationInner object itself.
+     */
+    public AseV3NetworkingConfigurationInner withRemoteDebugEnabled(Boolean remoteDebugEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AseV3NetworkingConfigurationProperties();
+        }
+        this.innerProperties().withRemoteDebugEnabled(remoteDebugEnabled);
+        return this;
+    }
+
+    /**
+     * Get the inboundIpAddressOverride property: Customer provided Inbound IP Address. Only able to be set on Ase
+     * create.
+     *
+     * @return the inboundIpAddressOverride value.
+     */
+    public String inboundIpAddressOverride() {
+        return this.innerProperties() == null ? null : this.innerProperties().inboundIpAddressOverride();
+    }
+
+    /**
+     * Set the inboundIpAddressOverride property: Customer provided Inbound IP Address. Only able to be set on Ase
+     * create.
+     *
+     * @param inboundIpAddressOverride the inboundIpAddressOverride value to set.
+     * @return the AseV3NetworkingConfigurationInner object itself.
+     */
+    public AseV3NetworkingConfigurationInner withInboundIpAddressOverride(String inboundIpAddressOverride) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AseV3NetworkingConfigurationProperties();
+        }
+        this.innerProperties().withInboundIpAddressOverride(inboundIpAddressOverride);
         return this;
     }
 

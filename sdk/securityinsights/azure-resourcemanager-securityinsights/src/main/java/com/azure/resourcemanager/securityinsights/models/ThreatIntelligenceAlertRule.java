@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.AlertRuleInner;
 import com.azure.resourcemanager.securityinsights.fluent.models.ThreatIntelligenceAlertRuleProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,8 +18,6 @@ import java.util.List;
 @JsonTypeName("ThreatIntelligence")
 @Fluent
 public final class ThreatIntelligenceAlertRule extends AlertRuleInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThreatIntelligenceAlertRule.class);
-
     /*
      * Threat Intelligence alert rule properties
      */
@@ -133,6 +129,15 @@ public final class ThreatIntelligenceAlertRule extends AlertRuleInner {
      */
     public List<AttackTactic> tactics() {
         return this.innerProperties() == null ? null : this.innerProperties().tactics();
+    }
+
+    /**
+     * Get the techniques property: The techniques of the alert rule.
+     *
+     * @return the techniques value.
+     */
+    public List<String> techniques() {
+        return this.innerProperties() == null ? null : this.innerProperties().techniques();
     }
 
     /**

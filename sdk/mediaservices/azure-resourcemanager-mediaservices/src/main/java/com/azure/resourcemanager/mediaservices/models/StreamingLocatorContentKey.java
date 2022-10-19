@@ -6,7 +6,6 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.UUID;
@@ -14,8 +13,6 @@ import java.util.UUID;
 /** Class for content key in Streaming Locator. */
 @Fluent
 public final class StreamingLocatorContentKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingLocatorContentKey.class);
-
     /*
      * ID of Content Key
      */
@@ -146,7 +143,7 @@ public final class StreamingLocatorContentKey {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model StreamingLocatorContentKey"));
         }
@@ -154,4 +151,6 @@ public final class StreamingLocatorContentKey {
             tracks().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StreamingLocatorContentKey.class);
 }

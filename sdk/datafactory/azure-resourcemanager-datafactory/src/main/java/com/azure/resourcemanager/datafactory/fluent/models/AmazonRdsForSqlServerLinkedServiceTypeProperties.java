@@ -8,25 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SqlAlwaysEncryptedProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Amazon Rds for SQL Server linked service properties. */
 @Fluent
 public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AmazonRdsForSqlServerLinkedServiceTypeProperties.class);
-
     /*
-     * The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The on-premises Windows authentication user name. Type: string (or
-     * Expression with resultType string).
+     * The on-premises Windows authentication user name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -38,9 +32,8 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
@@ -50,6 +43,10 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
      */
     @JsonProperty(value = "alwaysEncryptedSettings")
     private SqlAlwaysEncryptedProperties alwaysEncryptedSettings;
+
+    /** Creates an instance of AmazonRdsForSqlServerLinkedServiceTypeProperties class. */
+    public AmazonRdsForSqlServerLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
@@ -165,7 +162,7 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model"
@@ -178,4 +175,6 @@ public final class AmazonRdsForSqlServerLinkedServiceTypeProperties {
             alwaysEncryptedSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AmazonRdsForSqlServerLinkedServiceTypeProperties.class);
 }

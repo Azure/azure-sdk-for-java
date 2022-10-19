@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A static site zip deployment. */
 @Fluent
 public final class StaticSiteZipDeployment {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteZipDeployment.class);
-
     /*
      * URL for the zipped app content
      */

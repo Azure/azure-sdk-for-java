@@ -7,14 +7,19 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpResponse
 import com.azure.core.http.RequestConditions
+import com.azure.core.http.policy.ExponentialBackoffOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.util.BinaryData
 import com.azure.core.util.CoreUtils
+import com.azure.core.util.HttpClientOptions
+import com.azure.core.util.ProgressListener
 import com.azure.core.util.polling.LongRunningOperationStatus
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.models.AccessTier
 import com.azure.storage.blob.models.ArchiveStatus
 import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions
+import com.azure.storage.blob.models.BlobCopySourceTagsMode
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobHttpHeaders
 import com.azure.storage.blob.models.BlobRange
@@ -47,6 +52,7 @@ import com.azure.storage.blob.specialized.BlobClientBase
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder
 import com.azure.storage.common.Utility
 import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
@@ -56,9 +62,10 @@ import reactor.core.Exceptions
 import reactor.core.publisher.Hooks
 import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.IgnoreIf
-import spock.lang.Unroll
 import spock.lang.Ignore
+import spock.lang.IgnoreIf
+import spock.lang.Retry
+import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -70,6 +77,7 @@ import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 
 class BlobAPITest extends APISpec {
     BlobClient bc
@@ -218,6 +226,29 @@ class BlobAPITest extends APISpec {
             .getValue().getETag() != null
     }
 
+    def "Upload InputStream min"() {
+        when:
+        bc.upload(data.defaultInputStream)
+
+        then:
+        notThrown(Exception)
+        bc.downloadContent().toBytes() == data.defaultBytes
+    }
+
+    def "Upload input stream no length overwrite"() {
+        setup:
+        def randomData = getRandomByteArray(Constants.KB)
+        def input = new ByteArrayInputStream(randomData)
+
+        when:
+        bc.upload(input, true)
+
+        then:
+        def stream = new ByteArrayOutputStream()
+        bc.downloadWithResponse(stream, null, null, null, false, null, null)
+        stream.toByteArray() == randomData
+    }
+
     def "Upload InputStream no length"() {
         when:
         bc.uploadWithResponse(new BlobParallelUploadOptions(data.defaultInputStream), null, null)
@@ -270,6 +301,40 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(IllegalStateException)
+    }
+
+    @Retry(count = 5, delay = 1000)
+    def "Upload fail with small timeouts for service client"() {
+        setup:
+        // setting very small timeout values for the service client
+        def clientOptions = new HttpClientOptions()
+            .setApplicationId("client-options-id")
+            .setResponseTimeout(Duration.ofNanos(1))
+            .setReadTimeout(Duration.ofNanos(1))
+            .setWriteTimeout(Duration.ofNanos(1))
+            .setConnectTimeout(Duration.ofNanos(1))
+
+        def clientBuilder = new BlobServiceClientBuilder()
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
+            .clientOptions(clientOptions)
+
+        def serviceClient = clientBuilder.buildClient()
+
+        when:
+        def size = 1024
+        def randomData = getRandomByteArray(size)
+        def input = new ByteArrayInputStream(randomData)
+
+        def blobContainer = serviceClient.createBlobContainer(generateContainerName())
+        def blobClient = blobContainer.getBlobClient(generateBlobName())
+        blobClient.uploadWithResponse(input, size, null, null, null, null, null, Duration.ofSeconds(10), null)
+
+        then:
+        // test whether failure occurs due to small timeout intervals set on the service client
+        thrown(RuntimeException)
+
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
@@ -1238,7 +1303,7 @@ class BlobAPITest extends APISpec {
         def mockReceiver = Mock(ProgressReceiver)
 
         def numBlocks = fileSize / (4 * 1024 * 1024)
-        def prevCount = 0
+        def prevCount = new AtomicLong()
 
         when:
         bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
@@ -1250,26 +1315,82 @@ class BlobAPITest extends APISpec {
          * Should receive at least one notification indicating completed progress, multiple notifications may be
          * received if there are empty buffers in the stream.
          */
-        (1.._) * mockReceiver.reportProgress(fileSize)
+        (1.._) * mockReceiver.handleProgress(fileSize)
 
         // There should be NO notification with a larger than expected size.
-        0 * mockReceiver.reportProgress({ it > fileSize })
+        0 * mockReceiver.handleProgress({ it > fileSize })
 
         /*
         We should receive at least one notification reporting an intermediary value per block, but possibly more
         notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
-        (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
-            if (!(bytesTransferred >= prevCount)) {
+        (numBlocks - 1.._) * mockReceiver.handleProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred >= prevCount.get())) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
-                prevCount = bytesTransferred
+                prevCount.set(bytesTransferred)
             }
         }
 
         // We should receive no notifications that report more progress than the size of the file.
-        0 * mockReceiver.reportProgress({ it > fileSize })
+        0 * mockReceiver.handleProgress({ it > fileSize })
+
+        cleanup:
+        file.delete()
+        outFile.delete()
+
+        where:
+        fileSize             | _
+        100                  | _
+        8 * 1026 * 1024 + 10 | _
+    }
+
+    @LiveOnly
+    @Unroll
+    def "Download file progress listener"() {
+        def file = getRandomFile(fileSize)
+        bc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(namer.getResourcePrefix())
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        def mockListener = Mock(ProgressListener)
+
+        def numBlocks = fileSize / (4 * 1024 * 1024)
+        def prevCount = new AtomicLong()
+
+        when:
+        bc.downloadToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setProgressListener(mockListener),
+            new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null)
+
+        then:
+        /*
+         * Should receive at least one notification indicating completed progress, multiple notifications may be
+         * received if there are empty buffers in the stream.
+         */
+        (1.._) * mockListener.handleProgress(fileSize)
+
+        // There should be NO notification with a larger than expected size.
+        0 * mockListener.handleProgress({ it > fileSize })
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockListener.handleProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred >= prevCount.get())) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            } else {
+                prevCount.set(bytesTransferred)
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockListener.handleProgress({ it > fileSize })
 
         cleanup:
         file.delete()
@@ -2666,6 +2787,42 @@ class BlobAPITest extends APISpec {
         null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_06_08")
+    @Unroll
+    def "Sync copy source tags"() {
+        setup:
+        cc.setAccessPolicy(PublicAccessType.CONTAINER, null)
+        def sourceTags = ["foo": "bar"]
+        def destTags = ["fizz": "buzz"]
+        bc.setTags(sourceTags)
+
+        def sas = bc.generateSas(new BlobServiceSasSignatureValues(OffsetDateTime.now().plusDays(1),
+            new BlobSasPermission().setTagsPermission(true).setReadPermission(true)))
+
+        def bc2 = cc.getBlobClient(generateBlobName())
+
+        def options = new BlobCopyFromUrlOptions(bc.getBlobUrl() + "?" + sas).setCopySourceTagsMode(mode)
+        if (BlobCopySourceTagsMode.REPLACE == mode) {
+            options.setTags(destTags)
+        }
+
+        when:
+        bc2.copyFromUrlWithResponse(options, null, null)
+        def receivedTags = bc2.getTags()
+
+        then:
+        if (BlobCopySourceTagsMode.REPLACE == mode) {
+            assert receivedTags == destTags
+        } else {
+            assert receivedTags == sourceTags
+        }
+
+        where:
+        mode                           | _
+        BlobCopySourceTagsMode.COPY    | _
+        BlobCopySourceTagsMode.REPLACE | _
+    }
+
     def "Sync copy error"() {
         setup:
         def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
@@ -2783,6 +2940,134 @@ class BlobAPITest extends APISpec {
 
         then:
         thrown(BlobStorageException)
+    }
+
+    def "Delete if exists container"() {
+        expect:
+        bc.deleteIfExists()
+    }
+
+    def "Delete if exists"() {
+        when:
+        def response = bc.deleteIfExistsWithResponse(null, null, null, null)
+        def headers = response.getHeaders()
+
+        then:
+        response.getValue()
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+    }
+
+    def "Delete if exists min"() {
+        expect:
+        bc.deleteIfExistsWithResponse(null, null, null, null).getStatusCode() == 202
+    }
+
+    def "Delete if exists blob that does not exist"() {
+        setup:
+        bc = cc.getBlobClient(generateBlobName())
+
+        when:
+        def response = bc.deleteIfExistsWithResponse(null, null, null, null)
+
+        then:
+        !response.getValue()
+        response.getStatusCode() == 404
+    }
+
+    def "Delete if exists container that was already deleted"() {
+        when:
+        def initialResponse = bc.deleteIfExistsWithResponse(null, null, null, null)
+        def secondResponse = bc.deleteIfExistsWithResponse(null, null, null, null)
+
+        then:
+        initialResponse.getValue()
+        initialResponse.getStatusCode() == 202
+        !secondResponse.getValue()
+        secondResponse.getStatusCode() == 404
+
+    }
+
+    @Unroll
+    def "Delete if exists options"() {
+        setup:
+        bc.createSnapshot()
+        // Create an extra blob so the list isn't empty (null) when we delete base blob, too
+        def bu2 = cc.getBlobClient(generateBlobName()).getBlockBlobClient()
+        bu2.upload(data.defaultInputStream, data.defaultDataSize)
+
+        when:
+        bc.deleteIfExistsWithResponse(option, null, null, null)
+
+        then:
+        cc.listBlobs().stream().count() == blobsRemaining
+
+        where:
+        option                            | blobsRemaining
+        DeleteSnapshotsOptionType.INCLUDE | 1
+        DeleteSnapshotsOptionType.ONLY    | 2
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
+    @Unroll
+    def "Delete if exists AC"() {
+        setup:
+        def t = new HashMap<String, String>()
+        t.put("foo", "bar")
+        bc.setTags(t)
+        match = setupBlobMatchCondition(bc, match)
+        leaseID = setupBlobLeaseCondition(bc, leaseID)
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
+
+        expect:
+        bc.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null).getStatusCode() == 202
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID         | tags
+        null     | null       | null         | null        | null            | null
+        oldDate  | null       | null         | null        | null            | null
+        null     | newDate    | null         | null        | null            | null
+        null     | null       | receivedEtag | null        | null            | null
+        null     | null       | null         | garbageEtag | null            | null
+        null     | null       | null         | null        | receivedLeaseID | null
+        null     | null       | null         | null        | null            | "\"foo\" = 'bar'"
+    }
+
+    @Unroll
+    def "Delete if exists AC fail"() {
+        setup:
+        noneMatch = setupBlobMatchCondition(bc, noneMatch)
+        setupBlobLeaseCondition(bc, leaseID)
+        def bac = new BlobRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+            .setTagsConditions(tags)
+
+        when:
+        bc.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, bac, null, null)
+
+        then:
+        thrown(BlobStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID        | tags
+        newDate  | null       | null        | null         | null           | null
+        null     | oldDate    | null        | null         | null           | null
+        null     | null       | garbageEtag | null         | null           | null
+        null     | null       | null        | receivedEtag | null           | null
+        null     | null       | null        | null         | garbageLeaseID | null
+        null     | null       | null        | null         | null           | "\"notfoo\" = 'notbar'"
     }
 
     @Unroll

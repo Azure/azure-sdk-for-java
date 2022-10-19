@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkPolicy. */
+/** Network policy used for building the Kubernetes network. */
 public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
     /** Static value calico for NetworkPolicy. */
     public static final NetworkPolicy CALICO = fromString("calico");
@@ -27,7 +27,11 @@ public final class NetworkPolicy extends ExpandableStringEnum<NetworkPolicy> {
         return fromString(name, NetworkPolicy.class);
     }
 
-    /** @return known NetworkPolicy values. */
+    /**
+     * Gets known NetworkPolicy values.
+     *
+     * @return known NetworkPolicy values.
+     */
     public static Collection<NetworkPolicy> values() {
         return values(NetworkPolicy.class);
     }

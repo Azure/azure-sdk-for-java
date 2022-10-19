@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the connection monitor endpoint scope item. */
 @Fluent
 public final class ConnectionMonitorEndpointScopeItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorEndpointScopeItem.class);
-
     /*
-     * The address of the endpoint item. Supported types are IPv4/IPv6 subnet
-     * mask or IPv4/IPv6 IP address.
+     * The address of the endpoint item. Supported types are IPv4/IPv6 subnet mask or IPv4/IPv6 IP address.
      */
     @JsonProperty(value = "address")
     private String address;
+
+    /** Creates an instance of ConnectionMonitorEndpointScopeItem class. */
+    public ConnectionMonitorEndpointScopeItem() {
+    }
 
     /**
      * Get the address property: The address of the endpoint item. Supported types are IPv4/IPv6 subnet mask or

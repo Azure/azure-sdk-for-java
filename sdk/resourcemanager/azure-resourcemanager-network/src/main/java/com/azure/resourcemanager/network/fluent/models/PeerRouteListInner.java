@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PeerRoute;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of virtual router peer routes. */
 @Fluent
 public final class PeerRouteListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PeerRouteListInner.class);
-
     /*
      * List of peer routes.
      */
     @JsonProperty(value = "value")
     private List<PeerRoute> value;
+
+    /** Creates an instance of PeerRouteListInner class. */
+    public PeerRouteListInner() {
+    }
 
     /**
      * Get the value property: List of peer routes.

@@ -13,13 +13,10 @@ import com.azure.resourcemanager.kubernetesconfiguration.fluent.ExtensionsClient
 import com.azure.resourcemanager.kubernetesconfiguration.fluent.models.ExtensionInner;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Extension;
 import com.azure.resourcemanager.kubernetesconfiguration.models.Extensions;
-import com.azure.resourcemanager.kubernetesconfiguration.models.ExtensionsClusterResourceName;
-import com.azure.resourcemanager.kubernetesconfiguration.models.ExtensionsClusterRp;
 import com.azure.resourcemanager.kubernetesconfiguration.models.PatchExtension;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExtensionsImpl implements Extensions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtensionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExtensionsImpl.class);
 
     private final ExtensionsClient innerClient;
 
@@ -34,8 +31,8 @@ public final class ExtensionsImpl implements Extensions {
 
     public Extension create(
         String resourceGroupName,
-        ExtensionsClusterRp clusterRp,
-        ExtensionsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String extensionName,
         ExtensionInner extension) {
@@ -52,8 +49,8 @@ public final class ExtensionsImpl implements Extensions {
 
     public Extension create(
         String resourceGroupName,
-        ExtensionsClusterRp clusterRp,
-        ExtensionsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String extensionName,
         ExtensionInner extension,
@@ -72,8 +69,8 @@ public final class ExtensionsImpl implements Extensions {
 
     public Extension get(
         String resourceGroupName,
-        ExtensionsClusterRp clusterRp,
-        ExtensionsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String extensionName) {
         ExtensionInner inner =
@@ -87,8 +84,8 @@ public final class ExtensionsImpl implements Extensions {
 
     public Response<Extension> getWithResponse(
         String resourceGroupName,
-        ExtensionsClusterRp clusterRp,
-        ExtensionsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String extensionName,
         Context context) {
@@ -110,8 +107,8 @@ public final class ExtensionsImpl implements Extensions {
 
     public void delete(
         String resourceGroupName,
-        ExtensionsClusterRp clusterRp,
-        ExtensionsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String extensionName,
         Boolean forceDelete) {
@@ -122,8 +119,8 @@ public final class ExtensionsImpl implements Extensions {
 
     public void delete(
         String resourceGroupName,
-        ExtensionsClusterRp clusterRp,
-        ExtensionsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String extensionName) {
         this.serviceClient().delete(resourceGroupName, clusterRp, clusterResourceName, clusterName, extensionName);
@@ -131,8 +128,8 @@ public final class ExtensionsImpl implements Extensions {
 
     public void delete(
         String resourceGroupName,
-        ExtensionsClusterRp clusterRp,
-        ExtensionsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String extensionName,
         Boolean forceDelete,
@@ -145,8 +142,8 @@ public final class ExtensionsImpl implements Extensions {
 
     public Extension update(
         String resourceGroupName,
-        ExtensionsClusterRp clusterRp,
-        ExtensionsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String extensionName,
         PatchExtension patchExtension) {
@@ -163,8 +160,8 @@ public final class ExtensionsImpl implements Extensions {
 
     public Extension update(
         String resourceGroupName,
-        ExtensionsClusterRp clusterRp,
-        ExtensionsClusterResourceName clusterResourceName,
+        String clusterRp,
+        String clusterResourceName,
         String clusterName,
         String extensionName,
         PatchExtension patchExtension,
@@ -188,21 +185,14 @@ public final class ExtensionsImpl implements Extensions {
     }
 
     public PagedIterable<Extension> list(
-        String resourceGroupName,
-        ExtensionsClusterRp clusterRp,
-        ExtensionsClusterResourceName clusterResourceName,
-        String clusterName) {
+        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName) {
         PagedIterable<ExtensionInner> inner =
             this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName);
         return Utils.mapPage(inner, inner1 -> new ExtensionImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Extension> list(
-        String resourceGroupName,
-        ExtensionsClusterRp clusterRp,
-        ExtensionsClusterResourceName clusterResourceName,
-        String clusterName,
-        Context context) {
+        String resourceGroupName, String clusterRp, String clusterResourceName, String clusterName, Context context) {
         PagedIterable<ExtensionInner> inner =
             this.serviceClient().list(resourceGroupName, clusterRp, clusterResourceName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new ExtensionImpl(inner1, this.manager()));

@@ -12,4 +12,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ParquetFormat")
 @Fluent
-public final class ParquetFormat extends DatasetStorageFormat {}
+public final class ParquetFormat extends DatasetStorageFormat {
+    /** {@inheritDoc} */
+    @Override
+    public ParquetFormat setSerializer(Object serializer) {
+        super.setSerializer(serializer);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ParquetFormat setDeserializer(Object deserializer) {
+        super.setDeserializer(deserializer);
+        return this;
+    }
+}

@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VirtualHub route table. */
 @Fluent
 public final class VirtualHubRouteTable {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubRouteTable.class);
-
     /*
      * List of all routes.
      */
     @JsonProperty(value = "routes")
     private List<VirtualHubRoute> routes;
+
+    /** Creates an instance of VirtualHubRouteTable class. */
+    public VirtualHubRouteTable() {
+    }
 
     /**
      * Get the routes property: List of all routes.

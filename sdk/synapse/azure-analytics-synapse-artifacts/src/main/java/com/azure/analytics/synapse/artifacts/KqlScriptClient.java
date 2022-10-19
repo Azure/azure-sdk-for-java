@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.artifacts.implementation.KqlScriptsOperations
 import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.analytics.synapse.artifacts.models.KqlScriptResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import com.azure.core.util.Context;
 /** Initializes a new instance of the synchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class)
 public final class KqlScriptClient {
-    private final KqlScriptsOperationsImpl serviceClient;
+    @Generated private final KqlScriptsOperationsImpl serviceClient;
 
     /**
-     * Initializes an instance of KqlScriptsOperations client.
+     * Initializes an instance of KqlScriptClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     KqlScriptClient(KqlScriptsOperationsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -38,6 +40,7 @@ public final class KqlScriptClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KqlScriptResource createOrUpdate(String kqlScriptName, KqlScriptResource kqlScript) {
         return this.serviceClient.createOrUpdate(kqlScriptName, kqlScript);
@@ -52,8 +55,9 @@ public final class KqlScriptClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KqlScriptResource> createOrUpdateWithResponse(
             String kqlScriptName, KqlScriptResource kqlScript, Context context) {
@@ -69,6 +73,7 @@ public final class KqlScriptClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return kQL script by name.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KqlScriptResource getByName(String kqlScriptName) {
         return this.serviceClient.getByName(kqlScriptName);
@@ -82,8 +87,9 @@ public final class KqlScriptClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kQL script by name.
+     * @return kQL script by name along with {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KqlScriptResource> getByNameWithResponse(String kqlScriptName, Context context) {
         return this.serviceClient.getByNameWithResponse(kqlScriptName, context);
@@ -97,6 +103,7 @@ public final class KqlScriptClient {
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteByName(String kqlScriptName) {
         this.serviceClient.deleteByName(kqlScriptName);
@@ -110,8 +117,9 @@ public final class KqlScriptClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteByNameWithResponse(String kqlScriptName, Context context) {
         return this.serviceClient.deleteByNameWithResponse(kqlScriptName, context);
@@ -126,6 +134,7 @@ public final class KqlScriptClient {
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void rename(String kqlScriptName, ArtifactRenameRequest renameRequest) {
         this.serviceClient.rename(kqlScriptName, renameRequest);
@@ -140,8 +149,9 @@ public final class KqlScriptClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameWithResponse(
             String kqlScriptName, ArtifactRenameRequest renameRequest, Context context) {

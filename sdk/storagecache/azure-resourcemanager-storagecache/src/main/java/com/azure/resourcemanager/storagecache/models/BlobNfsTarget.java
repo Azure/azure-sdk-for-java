@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties pertaining to the BlobNfsTarget. */
 @Fluent
 public final class BlobNfsTarget {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobNfsTarget.class);
-
     /*
      * Resource ID of the storage container.
      */

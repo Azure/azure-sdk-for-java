@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Gateway routing details. */
 @Immutable
 public final class GatewayRoute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayRoute.class);
-
     /*
      * The gateway's local address.
      */
@@ -55,6 +51,10 @@ public final class GatewayRoute {
      */
     @JsonProperty(value = "weight", access = JsonProperty.Access.WRITE_ONLY)
     private Integer weight;
+
+    /** Creates an instance of GatewayRoute class. */
+    public GatewayRoute() {
+    }
 
     /**
      * Get the localAddress property: The gateway's local address.

@@ -33,6 +33,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: costmanagement
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-costmanagement
         groupId: com.azure.resourcemanager

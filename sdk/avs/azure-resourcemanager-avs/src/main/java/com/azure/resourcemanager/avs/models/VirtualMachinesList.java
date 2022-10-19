@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.VirtualMachineInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of Virtual Machines. */
 @Immutable
 public final class VirtualMachinesList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinesList.class);
-
     /*
      * The items to be displayed on the page
      */
@@ -27,6 +23,10 @@ public final class VirtualMachinesList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of VirtualMachinesList class. */
+    public VirtualMachinesList() {
+    }
 
     /**
      * Get the value property: The items to be displayed on the page.

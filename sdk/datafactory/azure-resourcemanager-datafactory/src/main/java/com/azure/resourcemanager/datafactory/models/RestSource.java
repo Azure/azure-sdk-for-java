@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,40 +14,36 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("RestSource")
 @Fluent
 public final class RestSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestSource.class);
-
     /*
-     * The HTTP method used to call the RESTful API. The default is GET. Type:
-     * string (or Expression with resultType string).
+     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
-     * The HTTP request body to the RESTful API if requestMethod is POST. Type:
-     * string (or Expression with resultType string).
+     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type:
-     * string (or Expression with resultType string).
+     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
-     * The pagination rules to compose next page requests. Type: string (or
-     * Expression with resultType string).
+     * The pagination rules to compose next page requests. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "paginationRules")
     private Object paginationRules;
 
     /*
-     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get
-     * a response, not the timeout to read response data. Default value:
-     * 00:01:40. Type: string (or Expression with resultType string), pattern:
+     * The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a response, not the timeout to read
+     * response data. Default value: 00:01:40. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
@@ -62,12 +56,15 @@ public final class RestSource extends CopySource {
     private Object requestInterval;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
+
+    /** Creates an instance of RestSource class. */
+    public RestSource() {
+    }
 
     /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string

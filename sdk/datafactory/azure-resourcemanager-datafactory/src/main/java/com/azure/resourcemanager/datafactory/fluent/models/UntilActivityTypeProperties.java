@@ -8,29 +8,23 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.Expression;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Until activity properties. */
 @Fluent
 public final class UntilActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UntilActivityTypeProperties.class);
-
     /*
-     * An expression that would evaluate to Boolean. The loop will continue
-     * until this expression evaluates to true
+     * An expression that would evaluate to Boolean. The loop will continue until this expression evaluates to true
      */
     @JsonProperty(value = "expression", required = true)
     private Expression expression;
 
     /*
-     * Specifies the timeout for the activity to run. If there is no value
-     * specified, it takes the value of TimeSpan.FromDays(7) which is 1 week as
-     * default. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or
-     * Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the timeout for the activity to run. If there is no value specified, it takes the value of
+     * TimeSpan.FromDays(7) which is 1 week as default. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])). Type: string (or Expression with resultType string),
+     * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "timeout")
     private Object timeout;
@@ -40,6 +34,10 @@ public final class UntilActivityTypeProperties {
      */
     @JsonProperty(value = "activities", required = true)
     private List<Activity> activities;
+
+    /** Creates an instance of UntilActivityTypeProperties class. */
+    public UntilActivityTypeProperties() {
+    }
 
     /**
      * Get the expression property: An expression that would evaluate to Boolean. The loop will continue until this
@@ -116,7 +114,7 @@ public final class UntilActivityTypeProperties {
      */
     public void validate() {
         if (expression() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property expression in model UntilActivityTypeProperties"));
@@ -124,7 +122,7 @@ public final class UntilActivityTypeProperties {
             expression().validate();
         }
         if (activities() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property activities in model UntilActivityTypeProperties"));
@@ -132,4 +130,6 @@ public final class UntilActivityTypeProperties {
             activities().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UntilActivityTypeProperties.class);
 }

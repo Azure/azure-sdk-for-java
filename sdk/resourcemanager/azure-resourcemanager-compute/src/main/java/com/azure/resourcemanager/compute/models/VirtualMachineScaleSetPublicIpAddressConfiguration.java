@@ -8,16 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetPublicIpAddressConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration. */
 @Fluent
 public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetPublicIpAddressConfiguration.class);
-
     /*
      * The publicIP address configuration name.
      */
@@ -25,15 +21,13 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     private String name;
 
     /*
-     * Describes a virtual machines scale set IP Configuration's
-     * PublicIPAddress configuration
+     * Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration
      */
     @JsonProperty(value = "properties")
     private VirtualMachineScaleSetPublicIpAddressConfigurationProperties innerProperties;
 
     /*
-     * Describes the public IP Sku. It can only be set with OrchestrationMode
-     * as Flexible.
+     * Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
      */
     @JsonProperty(value = "sku")
     private PublicIpAddressSku sku;
@@ -237,7 +231,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model VirtualMachineScaleSetPublicIpAddressConfiguration"));
@@ -249,4 +243,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(VirtualMachineScaleSetPublicIpAddressConfiguration.class);
 }

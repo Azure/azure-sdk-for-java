@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoadDistribution. */
+/** The load distribution policy for this rule. */
 public final class LoadDistribution extends ExpandableStringEnum<LoadDistribution> {
     /** Static value Default for LoadDistribution. */
     public static final LoadDistribution DEFAULT = fromString("Default");
@@ -30,7 +30,11 @@ public final class LoadDistribution extends ExpandableStringEnum<LoadDistributio
         return fromString(name, LoadDistribution.class);
     }
 
-    /** @return known LoadDistribution values. */
+    /**
+     * Gets known LoadDistribution values.
+     *
+     * @return known LoadDistribution values.
+     */
     public static Collection<LoadDistribution> values() {
         return values(LoadDistribution.class);
     }

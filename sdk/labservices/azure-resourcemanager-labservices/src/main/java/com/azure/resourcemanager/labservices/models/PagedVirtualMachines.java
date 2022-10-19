@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.models.VirtualMachineInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Paged list of lab services virtual machines. */
 @Immutable
 public final class PagedVirtualMachines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PagedVirtualMachines.class);
-
     /*
      * The array page of virtual machine results.
      */

@@ -28,7 +28,11 @@ public final class ResourceSkuRestrictionsReasonCode extends ExpandableStringEnu
         return fromString(name, ResourceSkuRestrictionsReasonCode.class);
     }
 
-    /** @return known ResourceSkuRestrictionsReasonCode values. */
+    /**
+     * Gets known ResourceSkuRestrictionsReasonCode values.
+     *
+     * @return known ResourceSkuRestrictionsReasonCode values.
+     */
     public static Collection<ResourceSkuRestrictionsReasonCode> values() {
         return values(ResourceSkuRestrictionsReasonCode.class);
     }

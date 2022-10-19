@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.IngestionSettingsClient;
 import com.azure.resourcemanager.security.fluent.models.ConnectionStringsInner;
 import com.azure.resourcemanager.security.fluent.models.IngestionSettingInner;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IngestionSettingsClient. */
 public final class IngestionSettingsClientImpl implements IngestionSettingsClient {
-    private final ClientLogger logger = new ClientLogger(IngestionSettingsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IngestionSettingsService service;
 
@@ -157,7 +154,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ingestion settings.
+     * @return list of ingestion settings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IngestionSettingInner>> listSinglePageAsync() {
@@ -199,7 +196,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ingestion settings.
+     * @return list of ingestion settings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IngestionSettingInner>> listSinglePageAsync(Context context) {
@@ -236,7 +233,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ingestion settings.
+     * @return list of ingestion settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IngestionSettingInner> listAsync() {
@@ -250,7 +247,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ingestion settings.
+     * @return list of ingestion settings as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IngestionSettingInner> listAsync(Context context) {
@@ -263,7 +260,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ingestion settings.
+     * @return list of ingestion settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IngestionSettingInner> list() {
@@ -277,7 +274,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ingestion settings.
+     * @return list of ingestion settings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IngestionSettingInner> list(Context context) {
@@ -291,7 +288,8 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IngestionSettingInner>> getWithResponseAsync(String ingestionSettingName) {
@@ -335,7 +333,8 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IngestionSettingInner>> getWithResponseAsync(String ingestionSettingName, Context context) {
@@ -375,19 +374,12 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IngestionSettingInner> getAsync(String ingestionSettingName) {
-        return getWithResponseAsync(ingestionSettingName)
-            .flatMap(
-                (Response<IngestionSettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(ingestionSettingName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -412,7 +404,8 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IngestionSettingInner> getWithResponse(String ingestionSettingName, Context context) {
@@ -427,7 +420,8 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IngestionSettingInner>> createWithResponseAsync(
@@ -480,7 +474,8 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IngestionSettingInner>> createWithResponseAsync(
@@ -529,20 +524,14 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IngestionSettingInner> createAsync(
         String ingestionSettingName, IngestionSettingInner ingestionSetting) {
         return createWithResponseAsync(ingestionSettingName, ingestionSetting)
-            .flatMap(
-                (Response<IngestionSettingInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -569,7 +558,8 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IngestionSettingInner> createWithResponse(
@@ -584,7 +574,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String ingestionSettingName) {
@@ -628,7 +618,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String ingestionSettingName, Context context) {
@@ -668,11 +658,11 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String ingestionSettingName) {
-        return deleteWithResponseAsync(ingestionSettingName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(ingestionSettingName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -696,7 +686,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String ingestionSettingName, Context context) {
@@ -710,7 +700,8 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IngestionSettingTokenInner>> listTokensWithResponseAsync(String ingestionSettingName) {
@@ -754,7 +745,8 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<IngestionSettingTokenInner>> listTokensWithResponseAsync(
@@ -795,19 +787,12 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IngestionSettingTokenInner> listTokensAsync(String ingestionSettingName) {
-        return listTokensWithResponseAsync(ingestionSettingName)
-            .flatMap(
-                (Response<IngestionSettingTokenInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listTokensWithResponseAsync(ingestionSettingName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -832,7 +817,8 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return configures how to correlate scan data and logs with resources associated with the subscription.
+     * @return configures how to correlate scan data and logs with resources associated with the subscription along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IngestionSettingTokenInner> listTokensWithResponse(String ingestionSettingName, Context context) {
@@ -846,7 +832,8 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection string for ingesting security data and logs.
+     * @return connection string for ingesting security data and logs along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionStringsInner>> listConnectionStringsWithResponseAsync(String ingestionSettingName) {
@@ -890,7 +877,8 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection string for ingesting security data and logs.
+     * @return connection string for ingesting security data and logs along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ConnectionStringsInner>> listConnectionStringsWithResponseAsync(
@@ -931,19 +919,12 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection string for ingesting security data and logs.
+     * @return connection string for ingesting security data and logs on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ConnectionStringsInner> listConnectionStringsAsync(String ingestionSettingName) {
         return listConnectionStringsWithResponseAsync(ingestionSettingName)
-            .flatMap(
-                (Response<ConnectionStringsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -968,7 +949,7 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return connection string for ingesting security data and logs.
+     * @return connection string for ingesting security data and logs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ConnectionStringsInner> listConnectionStringsWithResponse(
@@ -979,11 +960,12 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ingestion settings.
+     * @return list of ingestion settings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IngestionSettingInner>> listNextSinglePageAsync(String nextLink) {
@@ -1014,12 +996,13 @@ public final class IngestionSettingsClientImpl implements IngestionSettingsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ingestion settings.
+     * @return list of ingestion settings along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<IngestionSettingInner>> listNextSinglePageAsync(String nextLink, Context context) {

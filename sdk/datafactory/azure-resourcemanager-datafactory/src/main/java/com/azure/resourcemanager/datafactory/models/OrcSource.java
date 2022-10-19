@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("OrcSource")
 @Fluent
 public final class OrcSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrcSource.class);
-
     /*
      * ORC store settings.
      */
@@ -25,12 +21,15 @@ public final class OrcSource extends CopySource {
     private StoreReadSettings storeSettings;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
+
+    /** Creates an instance of OrcSource class. */
+    public OrcSource() {
+    }
 
     /**
      * Get the storeSettings property: ORC store settings.

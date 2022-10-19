@@ -55,7 +55,7 @@ public final class MetastoresImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientMetas")
-    private interface MetastoresService {
+    public interface MetastoresService {
         @Put("/metastore/create-database-operations/{id}")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
@@ -108,7 +108,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetastoreRegistrationResponse>> registerWithResponseAsync(
@@ -129,7 +129,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetastoreRegistrationResponse>> registerWithResponseAsync(
@@ -148,19 +148,11 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreRegistrationResponse> registerAsync(String id, MetastoreRegisterObject registerBody) {
-        return registerWithResponseAsync(id, registerBody)
-                .flatMap(
-                        (Response<MetastoreRegistrationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return registerWithResponseAsync(id, registerBody).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -173,20 +165,12 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreRegistrationResponse> registerAsync(
             String id, MetastoreRegisterObject registerBody, Context context) {
-        return registerWithResponseAsync(id, registerBody, context)
-                .flatMap(
-                        (Response<MetastoreRegistrationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return registerWithResponseAsync(id, registerBody, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -215,7 +199,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetastoreRegistrationResponse> registerWithResponse(
@@ -230,7 +214,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the database.
+     * @return status of the database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetastoreRequestSuccessResponse>> getDatabaseOperationsWithResponseAsync(String id) {
@@ -248,7 +232,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the database.
+     * @return status of the database along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetastoreRequestSuccessResponse>> getDatabaseOperationsWithResponseAsync(
@@ -265,19 +249,11 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the database.
+     * @return status of the database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreRequestSuccessResponse> getDatabaseOperationsAsync(String id) {
-        return getDatabaseOperationsWithResponseAsync(id)
-                .flatMap(
-                        (Response<MetastoreRequestSuccessResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getDatabaseOperationsWithResponseAsync(id).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -288,19 +264,11 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the database.
+     * @return status of the database on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreRequestSuccessResponse> getDatabaseOperationsAsync(String id, Context context) {
-        return getDatabaseOperationsWithResponseAsync(id, context)
-                .flatMap(
-                        (Response<MetastoreRequestSuccessResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getDatabaseOperationsWithResponseAsync(id, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -325,7 +293,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return status of the database.
+     * @return status of the database along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetastoreRequestSuccessResponse> getDatabaseOperationsWithResponse(String id, Context context) {
@@ -340,7 +308,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetastoreUpdationResponse>> updateWithResponseAsync(
@@ -360,7 +328,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MetastoreUpdationResponse>> updateWithResponseAsync(
@@ -378,19 +346,11 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreUpdationResponse> updateAsync(String id, MetastoreUpdateObject updateBody) {
-        return updateWithResponseAsync(id, updateBody)
-                .flatMap(
-                        (Response<MetastoreUpdationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return updateWithResponseAsync(id, updateBody).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -402,19 +362,11 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<MetastoreUpdationResponse> updateAsync(String id, MetastoreUpdateObject updateBody, Context context) {
-        return updateWithResponseAsync(id, updateBody, context)
-                .flatMap(
-                        (Response<MetastoreUpdationResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return updateWithResponseAsync(id, updateBody, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -441,7 +393,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<MetastoreUpdationResponse> updateWithResponse(
@@ -456,7 +408,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id) {
@@ -474,7 +426,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id, Context context) {
@@ -490,11 +442,11 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String id) {
-        return deleteWithResponseAsync(id).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(id).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -505,11 +457,11 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String id, Context context) {
-        return deleteWithResponseAsync(id, context).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(id, context).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -533,7 +485,7 @@ public final class MetastoresImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String id, Context context) {

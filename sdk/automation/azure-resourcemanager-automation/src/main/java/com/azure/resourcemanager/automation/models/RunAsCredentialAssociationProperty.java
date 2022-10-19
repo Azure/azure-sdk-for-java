@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of RunAs credential to use for hybrid worker. */
 @Fluent
 public final class RunAsCredentialAssociationProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunAsCredentialAssociationProperty.class);
-
     /*
      * Gets or sets the name of the credential.
      */

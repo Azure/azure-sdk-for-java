@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SsisAccessCredential;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SSIS package execution log location properties. */
 @Fluent
 public final class SsisLogLocationTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisLogLocationTypeProperties.class);
-
     /*
      * The package execution log access credential.
      */
@@ -22,12 +18,15 @@ public final class SsisLogLocationTypeProperties {
     private SsisAccessCredential accessCredential;
 
     /*
-     * Specifies the interval to refresh log. The default interval is 5
-     * minutes. Type: string (or Expression with resultType string), pattern:
-     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Specifies the interval to refresh log. The default interval is 5 minutes. Type: string (or Expression with
+     * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "logRefreshInterval")
     private Object logRefreshInterval;
+
+    /** Creates an instance of SsisLogLocationTypeProperties class. */
+    public SsisLogLocationTypeProperties() {
+    }
 
     /**
      * Get the accessCredential property: The package execution log access credential.

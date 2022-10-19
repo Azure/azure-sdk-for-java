@@ -18,7 +18,7 @@ public interface PrivateEndpointConnectionsPrivateLinkHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnections in the PrivateLinkHub.
+     * @return all PrivateEndpointConnections in the PrivateLinkHub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnectionForPrivateLinkHub> list(String resourceGroupName, String privateLinkHubName);
 
@@ -31,7 +31,7 @@ public interface PrivateEndpointConnectionsPrivateLinkHubs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all PrivateEndpointConnections in the PrivateLinkHub.
+     * @return all PrivateEndpointConnections in the PrivateLinkHub as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PrivateEndpointConnectionForPrivateLinkHub> list(
         String resourceGroupName, String privateLinkHubName, Context context);

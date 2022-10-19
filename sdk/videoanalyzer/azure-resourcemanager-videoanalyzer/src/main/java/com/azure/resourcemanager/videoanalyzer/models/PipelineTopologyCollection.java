@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.PipelineTopologyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A collection of PipelineTopology items. */
 @Fluent
 public final class PipelineTopologyCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineTopologyCollection.class);
-
     /*
      * A collection of PipelineTopology items.
      */

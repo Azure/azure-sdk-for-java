@@ -5,10 +5,10 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,8 +16,6 @@ import java.util.Map;
 /** workbookTableColumn. */
 @Fluent
 public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookTableColumn.class);
-
     /*
      * Returns the index number of the column within the columns collection of
      * the table. Zero-indexed. Read-only.
@@ -35,6 +33,7 @@ public final class MicrosoftGraphWorkbookTableColumn extends MicrosoftGraphEntit
      * Json
      */
     @JsonProperty(value = "values")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> values;
 
     /*

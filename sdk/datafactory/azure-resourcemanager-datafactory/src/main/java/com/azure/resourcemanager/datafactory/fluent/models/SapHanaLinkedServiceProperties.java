@@ -5,27 +5,21 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SapHanaAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to this linked service type. */
 @Fluent
 public final class SapHanaLinkedServiceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SapHanaLinkedServiceProperties.class);
-
     /*
-     * SAP HANA ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * SAP HANA ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString")
     private Object connectionString;
 
     /*
-     * Host name of the SAP HANA server. Type: string (or Expression with
-     * resultType string).
+     * Host name of the SAP HANA server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "server")
     private Object server;
@@ -37,8 +31,7 @@ public final class SapHanaLinkedServiceProperties {
     private SapHanaAuthenticationType authenticationType;
 
     /*
-     * Username to access the SAP HANA server. Type: string (or Expression with
-     * resultType string).
+     * Username to access the SAP HANA server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -50,12 +43,15 @@ public final class SapHanaLinkedServiceProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of SapHanaLinkedServiceProperties class. */
+    public SapHanaLinkedServiceProperties() {
+    }
 
     /**
      * Get the connectionString property: SAP HANA ODBC connection string. Type: string, SecureString or

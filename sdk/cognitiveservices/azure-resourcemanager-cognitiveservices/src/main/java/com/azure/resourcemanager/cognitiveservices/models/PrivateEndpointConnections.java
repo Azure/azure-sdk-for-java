@@ -30,7 +30,8 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private endpoint connections associated with the Cognitive Services account.
+     * @return the private endpoint connections associated with the Cognitive Services account along with {@link
+     *     Response}.
      */
     Response<PrivateEndpointConnectionListResult> listWithResponse(
         String resourceGroupName, String accountName, Context context);
@@ -60,7 +61,8 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the Cognitive Services account.
+     * @return the specified private endpoint connection associated with the Cognitive Services account along with
+     *     {@link Response}.
      */
     Response<PrivateEndpointConnection> getWithResponse(
         String resourceGroupName, String accountName, String privateEndpointConnectionName, Context context);
@@ -99,7 +101,8 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the Cognitive Services account.
+     * @return the specified private endpoint connection associated with the Cognitive Services account along with
+     *     {@link Response}.
      */
     PrivateEndpointConnection getById(String id);
 
@@ -111,7 +114,8 @@ public interface PrivateEndpointConnections {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified private endpoint connection associated with the Cognitive Services account.
+     * @return the specified private endpoint connection associated with the Cognitive Services account along with
+     *     {@link Response}.
      */
     Response<PrivateEndpointConnection> getByIdWithResponse(String id, Context context);
 

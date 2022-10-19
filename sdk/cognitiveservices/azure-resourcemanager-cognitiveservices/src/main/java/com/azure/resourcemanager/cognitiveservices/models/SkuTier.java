@@ -36,7 +36,11 @@ public final class SkuTier extends ExpandableStringEnum<SkuTier> {
         return fromString(name, SkuTier.class);
     }
 
-    /** @return known SkuTier values. */
+    /**
+     * Gets known SkuTier values.
+     *
+     * @return known SkuTier values.
+     */
     public static Collection<SkuTier> values() {
         return values(SkuTier.class);
     }

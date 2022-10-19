@@ -83,7 +83,7 @@ class ManagementChannelTests {
     private static final String LINK_NAME = "a-link-name";
     private static final Duration TIMEOUT = Duration.ofSeconds(10);
 
-    private final ClientLogger logger = new ClientLogger(ManagementChannelTests.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ManagementChannelTests.class);
 
     // Mocked response values from the RequestResponseChannel.
     private final Message responseMessage = Proton.message();
@@ -115,14 +115,14 @@ class ManagementChannelTests {
 
     @BeforeEach
     void setup(TestInfo testInfo) {
-        logger.info("[{}] Setting up.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
 
         authorizationResponseCode = AmqpResponseCode.OK;
 
         Flux<AmqpResponseCode> results = Flux.create(sink -> sink.onRequest(requested -> {
-            logger.info("Requested {} authorization results.", requested);
+            LOGGER.info("Requested {} authorization results.", requested);
             sink.next(authorizationResponseCode);
         }));
 
@@ -141,7 +141,7 @@ class ManagementChannelTests {
 
     @AfterEach
     void teardown(TestInfo testInfo) {
-        logger.info("[{}] Tearing down.", testInfo.getDisplayName());
+        LOGGER.info("[{}] Tearing down.", testInfo.getDisplayName());
         Mockito.framework().clearInlineMock(this);
     }
 

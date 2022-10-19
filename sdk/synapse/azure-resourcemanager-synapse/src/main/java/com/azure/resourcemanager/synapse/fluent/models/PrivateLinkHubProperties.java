@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.PrivateEndpointConnectionForPrivateLinkHubBasic;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** PrivateLinkHub properties. */
 @Fluent
 public final class PrivateLinkHubProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkHubProperties.class);
-
     /*
      * PrivateLinkHub provisioning state
      */

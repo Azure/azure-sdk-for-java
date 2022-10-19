@@ -30,7 +30,11 @@ public final class EncryptionAtRestType extends ExpandableStringEnum<EncryptionA
         return fromString(name, EncryptionAtRestType.class);
     }
 
-    /** @return known EncryptionAtRestType values. */
+    /**
+     * Gets known EncryptionAtRestType values.
+     *
+     * @return known EncryptionAtRestType values.
+     */
     public static Collection<EncryptionAtRestType> values() {
         return values(EncryptionAtRestType.class);
     }

@@ -27,7 +27,11 @@ public final class DeliveryAttributeMappingType extends ExpandableStringEnum<Del
         return fromString(name, DeliveryAttributeMappingType.class);
     }
 
-    /** @return known DeliveryAttributeMappingType values. */
+    /**
+     * Gets known DeliveryAttributeMappingType values.
+     *
+     * @return known DeliveryAttributeMappingType values.
+     */
     public static Collection<DeliveryAttributeMappingType> values() {
         return values(DeliveryAttributeMappingType.class);
     }

@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP configuration of an application gateway. Currently 1 public and 1 private IP configuration is allowed. */
 @Fluent
 public final class ApplicationGatewayIpConfigurationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayIpConfigurationInner.class);
-
     /*
      * Properties of the application gateway IP configuration.
      */
@@ -23,8 +19,7 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
     private ApplicationGatewayIpConfigurationPropertiesFormat innerProperties;
 
     /*
-     * Name of the IP configuration that is unique within an Application
-     * Gateway.
+     * Name of the IP configuration that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -40,6 +35,10 @@ public final class ApplicationGatewayIpConfigurationInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ApplicationGatewayIpConfigurationInner class. */
+    public ApplicationGatewayIpConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the application gateway IP configuration.

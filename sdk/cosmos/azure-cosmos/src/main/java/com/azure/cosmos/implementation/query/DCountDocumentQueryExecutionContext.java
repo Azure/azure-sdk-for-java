@@ -8,7 +8,6 @@ import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.QueryMetrics;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -25,17 +24,17 @@ import java.util.function.BiFunction;
 
 /**
  * Execution component that is able to aggregate COUNT(DISTINCT) from multiple continuations and partitions.
- *
- * @param <T> Resource generic type
  */
-public class DCountDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
-    private final IDocumentQueryExecutionComponent<T> component;
+public class DCountDocumentQueryExecutionContext
+    implements IDocumentQueryExecutionComponent<Document> {
+
+    private final IDocumentQueryExecutionComponent<Document> component;
     private final QueryInfo info;
     private long count;
-    private ConcurrentMap<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
+    private final ConcurrentMap<String, QueryMetrics> queryMetricsMap = new ConcurrentHashMap<>();
 
     private DCountDocumentQueryExecutionContext(
-        IDocumentQueryExecutionComponent<T> component,
+        IDocumentQueryExecutionComponent<Document> component,
         QueryInfo info,
         long count) {
 
@@ -48,24 +47,20 @@ public class DCountDocumentQueryExecutionContext<T extends Resource> implements 
         this.info = info;
     }
 
-    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+    public static Flux<IDocumentQueryExecutionComponent<Document>> createAsync(
+        BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createSourceComponentFunction,
         QueryInfo info,
         String continuationToken,
-        PipelinedDocumentQueryParams<T> documentQueryParams) {
+        PipelinedDocumentQueryParams<Document> documentQueryParams) {
 
         return createSourceComponentFunction
                    .apply(continuationToken, documentQueryParams)
-                   .map(component -> new DCountDocumentQueryExecutionContext<T>(component, info, 0 /*default count*/));
-    }
-
-    IDocumentQueryExecutionComponent<T> getComponent() {
-        return this.component;
+                   .map(component -> new DCountDocumentQueryExecutionContext(component, info, 0 /*default count*/));
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public Flux<FeedResponse<T>> drainAsync(int maxPageSize) {
+    public Flux<FeedResponse<Document>> drainAsync(int maxPageSize) {
         return this.component.drainAsync(maxPageSize)
                    .collectList()
                    .map(superList -> {
@@ -73,7 +68,7 @@ public class DCountDocumentQueryExecutionContext<T extends Resource> implements 
                        Map<String, String> headers = new HashMap<>();
                        List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
 
-                       for (FeedResponse<T> page : superList) {
+                       for (FeedResponse<Document> page : superList) {
                            diagnosticsList.addAll(BridgeInternal
                                                       .getClientSideRequestStatisticsList(page
                                                                                               .getCosmosDiagnostics()));
@@ -101,7 +96,7 @@ public class DCountDocumentQueryExecutionContext<T extends Resource> implements 
                                                                              false, null);
 
                        BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
-                       return (FeedResponse<T>) BridgeInternal
+                       return BridgeInternal
                                         .createFeedResponseWithQueryMetrics(Collections
                                                                                 .singletonList(result),
                                                                             headers,

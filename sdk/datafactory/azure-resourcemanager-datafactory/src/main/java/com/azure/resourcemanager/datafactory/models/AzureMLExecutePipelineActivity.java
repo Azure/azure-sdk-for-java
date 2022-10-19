@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureMLExecutePipelineActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,14 +17,16 @@ import java.util.List;
 @JsonTypeName("AzureMLExecutePipeline")
 @Fluent
 public final class AzureMLExecutePipelineActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMLExecutePipelineActivity.class);
-
     /*
      * Azure ML Execute Pipeline activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private AzureMLExecutePipelineActivityTypeProperties innerTypeProperties =
         new AzureMLExecutePipelineActivityTypeProperties();
+
+    /** Creates an instance of AzureMLExecutePipelineActivity class. */
+    public AzureMLExecutePipelineActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: Azure ML Execute Pipeline activity properties.
@@ -299,7 +300,7 @@ public final class AzureMLExecutePipelineActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzureMLExecutePipelineActivity"));
@@ -307,4 +308,6 @@ public final class AzureMLExecutePipelineActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureMLExecutePipelineActivity.class);
 }

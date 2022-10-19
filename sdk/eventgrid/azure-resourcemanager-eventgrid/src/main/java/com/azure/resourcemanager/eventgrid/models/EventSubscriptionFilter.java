@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Filter for the Event Subscription. */
 @Fluent
 public final class EventSubscriptionFilter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventSubscriptionFilter.class);
-
     /*
      * An optional string to filter events for an event subscription based on a
      * resource path prefix.

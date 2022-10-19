@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.SecurityPINsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.TokenInformationInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.SecurityPinBase;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SecurityPINsClient. */
 public final class SecurityPINsClientImpl implements SecurityPINsClient {
-    private final ClientLogger logger = new ClientLogger(SecurityPINsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SecurityPINsService service;
 
@@ -82,7 +79,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN.
+     * @return the security PIN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TokenInformationInner>> getWithResponseAsync(
@@ -136,7 +133,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN.
+     * @return the security PIN along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TokenInformationInner>> getWithResponseAsync(
@@ -186,20 +183,13 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN.
+     * @return the security PIN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TokenInformationInner> getAsync(
         String vaultName, String resourceGroupName, SecurityPinBase parameters) {
         return getWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<TokenInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -210,20 +200,13 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN.
+     * @return the security PIN on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TokenInformationInner> getAsync(String vaultName, String resourceGroupName) {
         final SecurityPinBase parameters = null;
         return getWithResponseAsync(vaultName, resourceGroupName, parameters)
-            .flatMap(
-                (Response<TokenInformationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -252,7 +235,7 @@ public final class SecurityPINsClientImpl implements SecurityPINsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the security PIN.
+     * @return the security PIN along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TokenInformationInner> getWithResponse(

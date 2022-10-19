@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GatewayCertificateAuthoritiesGetEntityTagHeaders model. */
 @Fluent
 public final class GatewayCertificateAuthoritiesGetEntityTagHeaders {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(GatewayCertificateAuthoritiesGetEntityTagHeaders.class);
-
     /*
      * The Etag property.
      */

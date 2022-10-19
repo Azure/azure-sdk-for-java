@@ -6,16 +6,12 @@ package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a Sql pool transparent data encryption configuration. */
 @Fluent
 public final class TransparentDataEncryptionInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TransparentDataEncryptionInner.class);
-
     /*
      * Resource location.
      */

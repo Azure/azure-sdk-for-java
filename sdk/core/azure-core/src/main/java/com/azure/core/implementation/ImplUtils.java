@@ -4,13 +4,26 @@
 package com.azure.core.implementation;
 
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.UrlBuilder;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URL;
+import java.nio.ByteBuffer;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.AbstractMap;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -18,9 +31,12 @@ import java.util.function.Supplier;
  * Utility class containing implementation specific methods.
  */
 public final class ImplUtils {
-    private static final String RETRY_AFTER_HEADER = "Retry-After";
+    private static final String RETRY_AFTER_HEADER = "retry-after";
     private static final String RETRY_AFTER_MS_HEADER = "retry-after-ms";
     private static final String X_MS_RETRY_AFTER_MS_HEADER = "x-ms-retry-after-ms";
+
+    // future improvement - make this configurable
+    public static final int MAX_CACHE_SIZE = 10000;
 
     /**
      * Attempts to extract a retry after duration from a given set of {@link HttpHeaders}.
@@ -61,9 +77,9 @@ public final class ImplUtils {
         return null;
     }
 
-    private static Duration tryGetRetryDelay(HttpHeaders headers, String headerName,
+    private static Duration tryGetRetryDelay(HttpHeaders headers, String headerNameLowerCase,
         Function<String, Duration> delayParser) {
-        String headerValue = headers.getValue(headerName);
+        String headerValue = HttpHeadersHelper.getValueNoKeyFormatting(headers, headerNameLowerCase);
 
         return CoreUtils.isNullOrEmpty(headerValue) ? null : delayParser.apply(headerValue);
     }
@@ -91,6 +107,148 @@ public final class ImplUtils {
             return Long.parseLong(value);
         } catch (NumberFormatException ex) {
             return -1;
+        }
+    }
+
+    /**
+     * Writes a {@link ByteBuffer} into an {@link OutputStream}.
+     * <p>
+     * This method provides writing optimization based on the type of {@link ByteBuffer} and {@link OutputStream}
+     * passed. For example, if the {@link ByteBuffer} has a backing {@code byte[]} this method will access that directly
+     * to write to the {@code stream} instead of buffering the contents of the {@link ByteBuffer} into a temporary
+     * buffer.
+     *
+     * @param buffer The {@link ByteBuffer} to write into the {@code stream}.
+     * @param stream The {@link OutputStream} where the {@code buffer} will be written.
+     * @throws IOException If an I/O occurs while writing the {@code buffer} into the {@code stream}.
+     */
+    public static void writeByteBufferToStream(ByteBuffer buffer, OutputStream stream) throws IOException {
+        // First check if the buffer has a backing byte[]. The backing byte[] can be accessed directly and written
+        // without an additional buffering byte[].
+        if (buffer.hasArray()) {
+            // Write the byte[] from the current view position to the length remaining in the view.
+            stream.write(buffer.array(), buffer.position(), buffer.remaining());
+
+            // Update the position of the ByteBuffer to treat this the same as getting from the buffer.
+            buffer.position(buffer.position() + buffer.remaining());
+            return;
+        }
+
+        // Next begin checking for specific instances of OutputStream that may provide better writing options for
+        // direct ByteBuffers.
+        if (stream instanceof FileOutputStream) {
+            FileOutputStream fileOutputStream = (FileOutputStream) stream;
+
+            // Writing to the FileChannel directly may provide native optimizations for moving the OS managed memory
+            // into the file.
+            // Write will move both the OutputStream's and ByteBuffer's position so there is no need to perform
+            // additional updates that are required when using the backing array.
+            fileOutputStream.getChannel().write(buffer);
+            return;
+        }
+
+        // All optimizations have been exhausted, fallback to buffering write.
+        stream.write(FluxUtil.byteBufferToArray(buffer));
+    }
+
+    /**
+     * Utility method for parsing a {@link URL} into a {@link UrlBuilder}.
+     *
+     * @param url The URL being parsed.
+     * @param includeQuery Whether the query string should be excluded.
+     * @return The UrlBuilder that represents the parsed URL.
+     */
+    public static UrlBuilder parseUrl(URL url, boolean includeQuery) {
+        final UrlBuilder result = new UrlBuilder();
+
+        if (url != null) {
+            final String protocol = url.getProtocol();
+            if (protocol != null && !protocol.isEmpty()) {
+                result.setScheme(protocol);
+            }
+
+            final String host = url.getHost();
+            if (host != null && !host.isEmpty()) {
+                result.setHost(host);
+            }
+
+            final int port = url.getPort();
+            if (port != -1) {
+                result.setPort(port);
+            }
+
+            final String path = url.getPath();
+            if (path != null && !path.isEmpty()) {
+                result.setPath(path);
+            }
+
+            final String query = url.getQuery();
+            if (query != null && !query.isEmpty() && includeQuery) {
+                result.setQuery(query);
+            }
+        }
+
+        return result;
+    }
+
+    public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
+        return (CoreUtils.isNullOrEmpty(queryParameters))
+            ? Collections.emptyIterator()
+            : new QueryParameterIterator(queryParameters);
+    }
+
+    private static final class QueryParameterIterator implements Iterator<Map.Entry<String, String>> {
+        private final String queryParameters;
+
+        private boolean done = false;
+        private int position;
+
+        QueryParameterIterator(String queryParameters) {
+            this.queryParameters = queryParameters;
+
+            // If the URL query begins with '?' the first possible start of a query parameter key is the
+            // second character in the query.
+            position = (queryParameters.startsWith("?")) ? 1 : 0;
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !done;
+        }
+
+        @Override
+        public Map.Entry<String, String> next() {
+            if (done) {
+                throw new NoSuchElementException();
+            }
+
+            int nextPosition = queryParameters.indexOf('=', position);
+
+            if (nextPosition == -1) {
+                // Query parameters completed with a key only 'https://example.com?param'
+                done = true;
+                return new AbstractMap.SimpleImmutableEntry<>(queryParameters.substring(position), "");
+            }
+
+            String key = queryParameters.substring(position, nextPosition);
+
+            // Position is set to nextPosition + 1 to skip over the '='
+            position = nextPosition + 1;
+
+            nextPosition = queryParameters.indexOf('&', position);
+
+            String value = null;
+            if (nextPosition == -1) {
+                // This was the last key-value pair in the query parameters 'https://example.com?param=done'
+                done = true;
+                value = queryParameters.substring(position);
+            } else {
+                value = queryParameters.substring(position, nextPosition);
+                // Position is set to nextPosition + 1 to skip over the '&'
+                position = nextPosition + 1;
+            }
+
+            return new AbstractMap.SimpleImmutableEntry<>(key, value);
         }
     }
 

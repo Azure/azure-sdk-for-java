@@ -7,53 +7,49 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SharePoint Online List linked service properties. */
 @Fluent
 public final class SharePointOnlineListLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SharePointOnlineListLinkedServiceTypeProperties.class);
-
     /*
-     * The URL of the SharePoint Online site. For example,
-     * https://contoso.sharepoint.com/sites/siteName. Type: string (or
-     * Expression with resultType string).
+     * The URL of the SharePoint Online site. For example, https://contoso.sharepoint.com/sites/siteName. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "siteUrl", required = true)
     private Object siteUrl;
 
     /*
-     * The tenant ID under which your application resides. You can find it from
-     * Azure portal Active Directory overview page. Type: string (or Expression
-     * with resultType string).
+     * The tenant ID under which your application resides. You can find it from Azure portal Active Directory overview
+     * page. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tenantId", required = true)
     private Object tenantId;
 
     /*
-     * The application (client) ID of your application registered in Azure
-     * Active Directory. Make sure to grant SharePoint site permission to this
-     * application. Type: string (or Expression with resultType string).
+     * The application (client) ID of your application registered in Azure Active Directory. Make sure to grant
+     * SharePoint site permission to this application. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId", required = true)
     private Object servicePrincipalId;
 
     /*
-     * The client secret of your application registered in Azure Active
-     * Directory. Type: string (or Expression with resultType string).
+     * The client secret of your application registered in Azure Active Directory. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "servicePrincipalKey", required = true)
     private SecretBase servicePrincipalKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of SharePointOnlineListLinkedServiceTypeProperties class. */
+    public SharePointOnlineListLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the siteUrl property: The URL of the SharePoint Online site. For example,
@@ -174,26 +170,26 @@ public final class SharePointOnlineListLinkedServiceTypeProperties {
      */
     public void validate() {
         if (siteUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property siteUrl in model SharePointOnlineListLinkedServiceTypeProperties"));
         }
         if (tenantId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property tenantId in model SharePointOnlineListLinkedServiceTypeProperties"));
         }
         if (servicePrincipalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalId in model"
                             + " SharePointOnlineListLinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalKey in model"
@@ -202,4 +198,6 @@ public final class SharePointOnlineListLinkedServiceTypeProperties {
             servicePrincipalKey().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SharePointOnlineListLinkedServiceTypeProperties.class);
 }

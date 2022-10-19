@@ -11,9 +11,11 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationFindTargetResourceGroupResultInner;
 import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationInner;
 import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationOperationInner;
 import com.azure.resourcemanager.extendedlocation.fluent.models.EnabledResourceTypeInner;
+import com.azure.resourcemanager.extendedlocation.models.CustomLocationFindTargetResourceGroupProperties;
 import com.azure.resourcemanager.extendedlocation.models.PatchableCustomLocations;
 
 /** An instance of this class provides access to all the operations defined in CustomLocationsClient. */
@@ -23,7 +25,7 @@ public interface CustomLocationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lists of Custom Locations operations.
+     * @return lists of Custom Locations operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomLocationOperationInner> listOperations();
@@ -35,7 +37,7 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return lists of Custom Locations operations.
+     * @return lists of Custom Locations operations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomLocationOperationInner> listOperations(Context context);
@@ -46,7 +48,8 @@ public interface CustomLocationsClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Custom Locations in the specified subscription.
+     * @return a list of Custom Locations in the specified subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomLocationInner> list();
@@ -59,7 +62,8 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Custom Locations in the specified subscription.
+     * @return a list of Custom Locations in the specified subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomLocationInner> list(Context context);
@@ -72,7 +76,8 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Custom Locations in the specified subscription and resource group.
+     * @return a list of Custom Locations in the specified subscription and resource group as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomLocationInner> listByResourceGroup(String resourceGroupName);
@@ -86,7 +91,8 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Custom Locations in the specified subscription and resource group.
+     * @return a list of Custom Locations in the specified subscription and resource group as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CustomLocationInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -113,7 +119,7 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the customLocation with a specified resource group and name.
+     * @return the details of the customLocation with a specified resource group and name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CustomLocationInner> getByResourceGroupWithResponse(
@@ -128,9 +134,9 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom Locations definition.
+     * @return the {@link SyncPoller} for polling of custom Locations definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CustomLocationInner>, CustomLocationInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, CustomLocationInner parameters);
 
@@ -144,9 +150,9 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom Locations definition.
+     * @return the {@link SyncPoller} for polling of custom Locations definition.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CustomLocationInner>, CustomLocationInner> beginCreateOrUpdate(
         String resourceGroupName, String resourceName, CustomLocationInner parameters, Context context);
 
@@ -188,9 +194,9 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName);
 
     /**
@@ -202,9 +208,9 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context);
 
     /**
@@ -256,7 +262,7 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom Locations definition.
+     * @return custom Locations definition along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<CustomLocationInner> updateWithResponse(
@@ -270,7 +276,7 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the Enabled Resource Types.
+     * @return the list of the Enabled Resource Types as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EnabledResourceTypeInner> listEnabledResourceTypes(String resourceGroupName, String resourceName);
@@ -284,9 +290,45 @@ public interface CustomLocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the Enabled Resource Types.
+     * @return the list of the Enabled Resource Types as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<EnabledResourceTypeInner> listEnabledResourceTypes(
         String resourceGroupName, String resourceName, Context context);
+
+    /**
+     * Returns the target resource group associated with the resource sync rules of the Custom Location that match the
+     * rules passed in with the Find Target Resource Group Request.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Custom Locations name.
+     * @param parameters Parameters of the find target resource group request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Find Target Resource Group operation response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CustomLocationFindTargetResourceGroupResultInner findTargetResourceGroup(
+        String resourceGroupName, String resourceName, CustomLocationFindTargetResourceGroupProperties parameters);
+
+    /**
+     * Returns the target resource group associated with the resource sync rules of the Custom Location that match the
+     * rules passed in with the Find Target Resource Group Request.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param resourceName Custom Locations name.
+     * @param parameters Parameters of the find target resource group request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Find Target Resource Group operation response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CustomLocationFindTargetResourceGroupResultInner> findTargetResourceGroupWithResponse(
+        String resourceGroupName,
+        String resourceName,
+        CustomLocationFindTargetResourceGroupProperties parameters,
+        Context context);
 }

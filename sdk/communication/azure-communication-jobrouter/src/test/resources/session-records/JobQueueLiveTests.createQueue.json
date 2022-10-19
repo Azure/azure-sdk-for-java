@@ -1,0 +1,88 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TESTS-CreateQueue-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "0353276b-c080-474e-9212-649227893c85",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-azure-ref" : "20220809T220846Z-gu5mc89ux17apbrm5n76u6e4ng00000000kg00000001bv9k",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2, 2022-07-18-preview",
+      "Connection" : "keep-alive",
+      "Last-Modified" : "Tue, 09 Aug 2022 22:08:46 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 09 Aug 2022 22:08:47 GMT",
+      "ETag" : "\"2d01529e-0000-0700-0000-62f2daee0000\"",
+      "trace-id" : "cbf9afd329a87d95b5232ff6479150a5",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-CreateQueue-DistributionPolicy\",\"name\":\"JAVA_LIVE_TESTS-CreateQueue-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"longest-idle\",\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/queues/JAVA_LIVE_TESTS-CreateQueue-Queue?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "c5abf322-be85-4b5e-bbae-99b2a36ab396",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-azure-ref" : "20220809T220847Z-gu5mc89ux17apbrm5n76u6e4ng00000000kg00000001bvn3",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2, 2022-07-18-preview",
+      "Connection" : "keep-alive",
+      "Last-Modified" : "Tue, 09 Aug 2022 22:08:48 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 09 Aug 2022 22:08:48 GMT",
+      "ETag" : "\"1500b6f5-0000-0700-0000-62f2daf00000\"",
+      "trace-id" : "4d09072fdbd33f1e82ea288d2e2d14c6",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-CreateQueue-Queue\",\"name\":\"JAVA_LIVE_TESTS-CreateQueue-Queue-Name\",\"distributionPolicyId\":\"JAVA_LIVE_TESTS-CreateQueue-DistributionPolicy\",\"labels\":{\"Label_1\":\"Value_1\",\"Id\":\"JAVA_LIVE_TESTS-CreateQueue-Queue\"}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/queues/JAVA_LIVE_TESTS-CreateQueue-Queue?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "37653b84-719a-415c-8f09-7485e371adeb"
+    },
+    "Response" : {
+      "x-azure-ref" : "20220809T220848Z-gu5mc89ux17apbrm5n76u6e4ng00000000kg00000001bvxx",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "trace-id" : "a6caa6035b3fb240b2351f55280a23f5",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2, 2022-07-18-preview",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Tue, 09 Aug 2022 22:08:49 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TESTS-CreateQueue-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "91815b01-9072-483f-b27d-b6ff0ccb05f8"
+    },
+    "Response" : {
+      "x-azure-ref" : "20220809T220849Z-gu5mc89ux17apbrm5n76u6e4ng00000000kg00000001bw8r",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "trace-id" : "24f5eb60882a82355ef8831e9710e5cb",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2, 2022-07-18-preview",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Tue, 09 Aug 2022 22:08:50 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

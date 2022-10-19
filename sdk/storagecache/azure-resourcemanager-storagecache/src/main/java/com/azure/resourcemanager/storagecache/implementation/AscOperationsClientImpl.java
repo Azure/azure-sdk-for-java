@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.fluent.AscOperationsClient;
 import com.azure.resourcemanager.storagecache.fluent.models.AscOperationInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AscOperationsClient. */
 public final class AscOperationsClientImpl implements AscOperationsClient {
-    private final ClientLogger logger = new ClientLogger(AscOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AscOperationsService service;
 
@@ -78,7 +75,8 @@ public final class AscOperationsClientImpl implements AscOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an asynchronous operation for the Azure HPC Cache.
+     * @return the status of an asynchronous operation for the Azure HPC Cache along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AscOperationInner>> getWithResponseAsync(String location, String operationId) {
@@ -125,7 +123,8 @@ public final class AscOperationsClientImpl implements AscOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an asynchronous operation for the Azure HPC Cache.
+     * @return the status of an asynchronous operation for the Azure HPC Cache along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AscOperationInner>> getWithResponseAsync(
@@ -169,19 +168,11 @@ public final class AscOperationsClientImpl implements AscOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an asynchronous operation for the Azure HPC Cache.
+     * @return the status of an asynchronous operation for the Azure HPC Cache on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AscOperationInner> getAsync(String location, String operationId) {
-        return getWithResponseAsync(location, operationId)
-            .flatMap(
-                (Response<AscOperationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(location, operationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -208,7 +199,7 @@ public final class AscOperationsClientImpl implements AscOperationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of an asynchronous operation for the Azure HPC Cache.
+     * @return the status of an asynchronous operation for the Azure HPC Cache along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AscOperationInner> getWithResponse(String location, String operationId, Context context) {

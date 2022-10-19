@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Incident Configuration property bag. */
 @Fluent
 public final class IncidentConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentConfiguration.class);
-
     /*
      * Create incidents from alerts triggered by this analytics rule
      */
@@ -21,8 +17,7 @@ public final class IncidentConfiguration {
     private boolean createIncident;
 
     /*
-     * Set how the alerts that are triggered by this analytics rule, are
-     * grouped into incidents
+     * Set how the alerts that are triggered by this analytics rule, are grouped into incidents
      */
     @JsonProperty(value = "groupingConfiguration")
     private GroupingConfiguration groupingConfiguration;

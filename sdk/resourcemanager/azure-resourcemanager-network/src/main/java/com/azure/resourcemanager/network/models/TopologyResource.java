@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The network resource topology information for the given resource group. */
 @Fluent
 public final class TopologyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyResource.class);
-
     /*
      * Name of the resource.
      */
@@ -34,11 +30,14 @@ public final class TopologyResource {
     private String location;
 
     /*
-     * Holds the associations the resource has with other resources in the
-     * resource group.
+     * Holds the associations the resource has with other resources in the resource group.
      */
     @JsonProperty(value = "associations")
     private List<TopologyAssociation> associations;
+
+    /** Creates an instance of TopologyResource class. */
+    public TopologyResource() {
+    }
 
     /**
      * Get the name property: Name of the resource.

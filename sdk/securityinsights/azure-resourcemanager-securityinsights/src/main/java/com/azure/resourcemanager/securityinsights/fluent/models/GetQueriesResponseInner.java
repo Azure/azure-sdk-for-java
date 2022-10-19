@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityQueryItem;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Retrieve queries for entity result operation response. */
 @Fluent
 public final class GetQueriesResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetQueriesResponseInner.class);
-
     /*
      * The query result values.
      */

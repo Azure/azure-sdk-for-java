@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for RegistrationState. */
+/** The user lab registration state. */
 public enum RegistrationState {
     /** Enum value Registered. */
     REGISTERED("Registered"),
@@ -30,6 +30,9 @@ public enum RegistrationState {
      */
     @JsonCreator
     public static RegistrationState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         RegistrationState[] items = RegistrationState.values();
         for (RegistrationState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum RegistrationState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

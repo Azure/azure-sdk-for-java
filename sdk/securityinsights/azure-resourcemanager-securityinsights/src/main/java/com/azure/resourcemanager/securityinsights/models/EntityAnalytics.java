@@ -5,21 +5,18 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityAnalyticsProperties;
 import com.azure.resourcemanager.securityinsights.fluent.models.SettingsInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /** Settings with single toggle. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("EntityAnalytics")
 @Fluent
 public final class EntityAnalytics extends SettingsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityAnalytics.class);
-
     /*
      * EntityAnalytics properties
      */
@@ -43,12 +40,26 @@ public final class EntityAnalytics extends SettingsInner {
     }
 
     /**
-     * Get the isEnabled property: Determines whether the setting is enable or disabled.
+     * Get the entityProviders property: The relevant entity providers that are synced.
      *
-     * @return the isEnabled value.
+     * @return the entityProviders value.
      */
-    public Boolean isEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().isEnabled();
+    public List<EntityProviders> entityProviders() {
+        return this.innerProperties() == null ? null : this.innerProperties().entityProviders();
+    }
+
+    /**
+     * Set the entityProviders property: The relevant entity providers that are synced.
+     *
+     * @param entityProviders the entityProviders value to set.
+     * @return the EntityAnalytics object itself.
+     */
+    public EntityAnalytics withEntityProviders(List<EntityProviders> entityProviders) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EntityAnalyticsProperties();
+        }
+        this.innerProperties().withEntityProviders(entityProviders);
+        return this;
     }
 
     /**

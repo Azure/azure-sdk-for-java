@@ -6,7 +6,6 @@ package com.azure.cosmos.implementation.query;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -18,20 +17,19 @@ import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class TopDocumentQueryExecutionContext<T extends Resource> implements IDocumentQueryExecutionComponent<T> {
+public class TopDocumentQueryExecutionContext<T>
+    implements IDocumentQueryExecutionComponent<T> {
 
     private final IDocumentQueryExecutionComponent<T> component;
     private final int top;
     // limit from rewritten query
-    private final int limit;
 
-    public TopDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int top, int limit) {
+    public TopDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int top) {
         this.component = component;
         this.top = top;
-        this.limit = limit;
     }
 
-    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
+    public static <T> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
             BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
             int topCount,
             int limit,
@@ -42,7 +40,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
         if (topContinuationToken == null) {
             takeContinuationToken = new TakeContinuationToken(topCount, null);
         } else {
-            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<TakeContinuationToken>();
+            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<>();
             if (!TakeContinuationToken.tryParse(topContinuationToken, outTakeContinuationToken)) {
                 String message = String.format("INVALID JSON in continuation token %s for Top~Context",
                         topContinuationToken);
@@ -68,15 +66,16 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
         return createSourceComponentFunction
                 .apply(takeContinuationToken.getSourceToken(), documentQueryParams)
                 .map(component -> new TopDocumentQueryExecutionContext<>(component,
-                                                                         takeContinuationToken.getTakeCount(), limit));
+                                                                         takeContinuationToken.getTakeCount()));
     }
 
+    //  A must-read article on lambdas and anonymous classes - https://www.infoq.com/articles/Java-8-Lambdas-A-Peek-Under-the-Hood/
     @Override
     public Flux<FeedResponse<T>> drainAsync(int maxPageSize) {
 
         return this.component.drainAsync(maxPageSize).takeUntil(new Predicate<FeedResponse<T>>() {
 
-            private volatile int fetchedItems = 0;
+            private int fetchedItems = 0;
 
             @Override
             public boolean test(FeedResponse<T> frp) {
@@ -88,9 +87,8 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
             }
         }).map(new Function<FeedResponse<T>, FeedResponse<T>>() {
 
-            private volatile int collectedItems = 0;
-            private volatile boolean lastPage = false;
-
+            private int collectedItems = 0;
+            private boolean lastPage = false;
             @Override
             public FeedResponse<T> apply(FeedResponse<T> t) {
 
@@ -101,9 +99,15 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                     if (top != collectedItems) {
                         // Add Take Continuation Token
                         String sourceContinuationToken = t.getContinuationToken();
-                        TakeContinuationToken takeContinuationToken = new TakeContinuationToken(top - collectedItems,
+                        if (sourceContinuationToken != null) {
+                            TakeContinuationToken takeContinuationToken = new TakeContinuationToken(top - collectedItems,
                                 sourceContinuationToken);
-                        headers.put(HttpConstants.HttpHeaders.CONTINUATION, takeContinuationToken.toJson());
+                            headers.put(HttpConstants.HttpHeaders.CONTINUATION, takeContinuationToken.toJson());
+                        } else {
+                            // Null out the continuation token. The sourceContinuationToken being null means
+                            // that this is the last page and there are no more elements left to fetch.
+                            headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
+                        }
                     } else {
                         // Null out the continuation token
                         headers.put(HttpConstants.HttpHeaders.CONTINUATION, null);
@@ -117,7 +121,7 @@ public class TopDocumentQueryExecutionContext<T extends Resource> implements IDo
                         false,
                         t.getCosmosDiagnostics());
                 } else {
-                    assert lastPage == false;
+                    assert !lastPage;
                     lastPage = true;
                     int lastPageSize = top - collectedItems;
                     collectedItems += lastPageSize;

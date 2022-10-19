@@ -6,20 +6,20 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SSIS execution parameter. */
 @Fluent
 public final class SsisExecutionParameter {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisExecutionParameter.class);
-
     /*
-     * SSIS package execution parameter value. Type: string (or Expression with
-     * resultType string).
+     * SSIS package execution parameter value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value", required = true)
     private Object value;
+
+    /** Creates an instance of SsisExecutionParameter class. */
+    public SsisExecutionParameter() {
+    }
 
     /**
      * Get the value property: SSIS package execution parameter value. Type: string (or Expression with resultType
@@ -50,9 +50,11 @@ public final class SsisExecutionParameter {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model SsisExecutionParameter"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SsisExecutionParameter.class);
 }

@@ -6,18 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of an application gateway private link IP configuration. */
 @Fluent
 public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayPrivateLinkIpConfigurationProperties.class);
-
     /*
      * The private IP address of the IP configuration.
      */
@@ -43,11 +38,14 @@ public final class ApplicationGatewayPrivateLinkIpConfigurationProperties {
     private Boolean primary;
 
     /*
-     * The provisioning state of the application gateway private link IP
-     * configuration.
+     * The provisioning state of the application gateway private link IP configuration.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ApplicationGatewayPrivateLinkIpConfigurationProperties class. */
+    public ApplicationGatewayPrivateLinkIpConfigurationProperties() {
+    }
 
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.ProviderOperationsMetadataInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Provider operations metadata list. */
 @Fluent
 public final class ProviderOperationsMetadataListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderOperationsMetadataListResult.class);
-
     /*
      * The list of providers.
      */

@@ -28,7 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.resourcemanager.applicationinsights.fluent.MyWorkbooksClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in MyWorkbooksClient. */
 public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
-    private final ClientLogger logger = new ClientLogger(MyWorkbooksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final MyWorkbooksService service;
 
@@ -335,7 +332,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified resource group and category.
+     * @return all private workbooks defined within a specified resource group and category as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listByResourceGroupAsync(
@@ -353,7 +351,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified resource group and category.
+     * @return all private workbooks defined within a specified resource group and category as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listByResourceGroupAsync(String resourceGroupName, CategoryType category) {
@@ -378,7 +377,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified resource group and category.
+     * @return all private workbooks defined within a specified resource group and category as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listByResourceGroupAsync(
@@ -403,7 +403,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified resource group and category.
+     * @return all private workbooks defined within a specified resource group and category as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MyWorkbookInner> listByResourceGroup(String resourceGroupName, CategoryType category) {
@@ -427,7 +428,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified resource group and category.
+     * @return all private workbooks defined within a specified resource group and category as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MyWorkbookInner> listByResourceGroup(
@@ -569,7 +571,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified subscription and category.
+     * @return all private workbooks defined within a specified subscription and category as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listAsync(CategoryType category, List<String> tags, Boolean canFetchContent) {
@@ -585,7 +588,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified subscription and category.
+     * @return all private workbooks defined within a specified subscription and category as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listAsync(CategoryType category) {
@@ -607,7 +611,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified subscription and category.
+     * @return all private workbooks defined within a specified subscription and category as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<MyWorkbookInner> listAsync(
@@ -624,7 +629,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified subscription and category.
+     * @return all private workbooks defined within a specified subscription and category as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MyWorkbookInner> list(CategoryType category) {
@@ -644,7 +650,8 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorDefinitionException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all private workbooks defined within a specified subscription and category.
+     * @return all private workbooks defined within a specified subscription and category as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MyWorkbookInner> list(
@@ -763,14 +770,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<MyWorkbookInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<MyWorkbookInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -912,7 +912,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, resourceName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1083,14 +1083,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
     private Mono<MyWorkbookInner> createOrUpdateAsync(
         String resourceGroupName, String resourceName, MyWorkbookInner workbookProperties, String sourceId) {
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, workbookProperties, sourceId)
-            .flatMap(
-                (Response<MyWorkbookInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1109,14 +1102,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         String resourceGroupName, String resourceName, MyWorkbookInner workbookProperties) {
         final String sourceId = null;
         return createOrUpdateWithResponseAsync(resourceGroupName, resourceName, workbookProperties, sourceId)
-            .flatMap(
-                (Response<MyWorkbookInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1299,14 +1285,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
     private Mono<MyWorkbookInner> updateAsync(
         String resourceGroupName, String resourceName, MyWorkbookInner workbookProperties, String sourceId) {
         return updateWithResponseAsync(resourceGroupName, resourceName, workbookProperties, sourceId)
-            .flatMap(
-                (Response<MyWorkbookInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1325,14 +1304,7 @@ public final class MyWorkbooksClientImpl implements MyWorkbooksClient {
         String resourceGroupName, String resourceName, MyWorkbookInner workbookProperties) {
         final String sourceId = null;
         return updateWithResponseAsync(resourceGroupName, resourceName, workbookProperties, sourceId)
-            .flatMap(
-                (Response<MyWorkbookInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

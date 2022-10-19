@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,14 +12,16 @@ import java.util.Map;
 /** Will contain the properties of the resource (the actual signature overrides). */
 @Fluent
 public final class SignaturesOverridesProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignaturesOverridesProperties.class);
-
     /*
      * Dictionary of <string>
      */
     @JsonProperty(value = "signatures")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> signatures;
+
+    /** Creates an instance of SignaturesOverridesProperties class. */
+    public SignaturesOverridesProperties() {
+    }
 
     /**
      * Get the signatures property: Dictionary of &lt;string&gt;.

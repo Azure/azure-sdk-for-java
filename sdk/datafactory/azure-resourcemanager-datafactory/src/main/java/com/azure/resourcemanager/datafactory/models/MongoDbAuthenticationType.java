@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MongoDbAuthenticationType. */
+/** The authentication type to be used to connect to the MongoDB database. */
 public final class MongoDbAuthenticationType extends ExpandableStringEnum<MongoDbAuthenticationType> {
     /** Static value Basic for MongoDbAuthenticationType. */
     public static final MongoDbAuthenticationType BASIC = fromString("Basic");
@@ -27,7 +27,11 @@ public final class MongoDbAuthenticationType extends ExpandableStringEnum<MongoD
         return fromString(name, MongoDbAuthenticationType.class);
     }
 
-    /** @return known MongoDbAuthenticationType values. */
+    /**
+     * Gets known MongoDbAuthenticationType values.
+     *
+     * @return known MongoDbAuthenticationType values.
+     */
     public static Collection<MongoDbAuthenticationType> values() {
         return values(MongoDbAuthenticationType.class);
     }

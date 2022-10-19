@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.ManagedPrivateEndpoint;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed private endpoint resource type. */
 @Fluent
 public final class ManagedPrivateEndpointResourceInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedPrivateEndpointResourceInner.class);
-
     /*
      * Managed private endpoint properties.
      */
@@ -39,6 +36,10 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of ManagedPrivateEndpointResourceInner class. */
+    public ManagedPrivateEndpointResourceInner() {
+    }
 
     /**
      * Get the properties property: Managed private endpoint properties.
@@ -101,7 +102,7 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model ManagedPrivateEndpointResourceInner"));
@@ -109,4 +110,6 @@ public final class ManagedPrivateEndpointResourceInner extends SubResource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedPrivateEndpointResourceInner.class);
 }

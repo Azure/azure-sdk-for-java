@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Details of capabilities available to a SKU in specific zones. */
 @Fluent
 public final class ResourceSkuZoneDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuZoneDetails.class);
-
     /*
      * Gets the set of zones that the SKU is available in with the
      * specified capabilities.

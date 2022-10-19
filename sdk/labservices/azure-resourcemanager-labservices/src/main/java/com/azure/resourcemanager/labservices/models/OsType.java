@@ -7,7 +7,7 @@ package com.azure.resourcemanager.labservices.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for OsType. */
+/** The operating system type. */
 public enum OsType {
     /** Enum value Windows. */
     WINDOWS("Windows"),
@@ -30,6 +30,9 @@ public enum OsType {
      */
     @JsonCreator
     public static OsType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         OsType[] items = OsType.values();
         for (OsType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum OsType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

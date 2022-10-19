@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.signalr.fluent.models.SignalRResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Object that includes an array of resources and a possible link for next set. */
 @Fluent
 public final class SignalRResourceList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRResourceList.class);
-
     /*
      * List of the resources
      */

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PrimaryAggregationType. */
+/** The primary aggregation type of the metric. */
 public final class PrimaryAggregationType extends ExpandableStringEnum<PrimaryAggregationType> {
     /** Static value None for PrimaryAggregationType. */
     public static final PrimaryAggregationType NONE = fromString("None");
@@ -39,7 +39,11 @@ public final class PrimaryAggregationType extends ExpandableStringEnum<PrimaryAg
         return fromString(name, PrimaryAggregationType.class);
     }
 
-    /** @return known PrimaryAggregationType values. */
+    /**
+     * Gets known PrimaryAggregationType values.
+     *
+     * @return known PrimaryAggregationType values.
+     */
     public static Collection<PrimaryAggregationType> values() {
         return values(PrimaryAggregationType.class);
     }

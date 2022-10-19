@@ -4,6 +4,11 @@ parameters:
   Clouds: 'Public,Int'
   TestMode: 'LIVE'
   EnvVars: {}
+  MatrixConfigs:
+    - Name: Java_live_test_base
+      Path: eng/pipelines/templates/stages/platform-matrix.json
+      Selection: sparse
+      GenerateVMJobs: true
 
 stages:
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -18,6 +23,11 @@ stages:
           SubscriptionConfigurations:
             - $(sub-config-communication-int-test-resources-common)
             - $(sub-config-communication-int-test-resources-java)
+
+          # This only affects the phone-numbers package
+          MatrixReplace: 
+            - SKIP_UPDATE_CAPABILITIES_LIVE_TESTS=false/true
+            
       Clouds: ${{ parameters.Clouds }}
       TestMode: ${{ parameters.TestMode }}
       Artifacts:
@@ -40,3 +50,6 @@ stages:
         SKIP_LIVE_TEST: TRUE
         ${{ each var in parameters.EnVars }}:
           ${{ var.key }}: ${{ var.value }}
+      MatrixConfigs: 
+        - ${{ each config in parameters.MatrixConfigs }}:
+          -  ${{ config }}

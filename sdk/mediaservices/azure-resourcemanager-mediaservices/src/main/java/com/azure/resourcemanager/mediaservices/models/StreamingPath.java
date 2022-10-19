@@ -6,15 +6,12 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class of paths for streaming. */
 @Fluent
 public final class StreamingPath {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingPath.class);
-
     /*
      * Streaming protocol
      */
@@ -100,14 +97,16 @@ public final class StreamingPath {
      */
     public void validate() {
         if (streamingProtocol() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property streamingProtocol in model StreamingPath"));
         }
         if (encryptionScheme() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property encryptionScheme in model StreamingPath"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StreamingPath.class);
 }

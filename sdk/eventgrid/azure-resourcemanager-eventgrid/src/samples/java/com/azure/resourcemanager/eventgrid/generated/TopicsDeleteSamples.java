@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Topics Delete. */
 public final class TopicsDeleteSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2021-12-01/examples/Topics_Delete.json
+     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/stable/2022-06-15/examples/Topics_Delete.json
      */
     /**
      * Sample code: Topics_Delete.

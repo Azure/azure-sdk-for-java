@@ -7,7 +7,6 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.HardwareProfile;
@@ -17,9 +16,9 @@ import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.SecurityProfile;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.StorageProfile;
+import com.azure.resourcemanager.compute.models.VirtualMachineIdentity;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMNetworkProfileConfiguration;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMProtectionPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -27,8 +26,6 @@ import java.util.Map;
 /** Describes a virtual machine scale set virtual machine. */
 @Fluent
 public final class VirtualMachineScaleSetVMInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMInner.class);
-
     /*
      * The virtual machine instance ID.
      */
@@ -48,13 +45,10 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     private VirtualMachineScaleSetVMPropertiesInner innerProperties;
 
     /*
-     * Specifies information about the marketplace image used to create the
-     * virtual machine. This element is only used for marketplace images.
-     * Before you can use a marketplace image from an API, you must enable the
-     * image for programmatic use.  In the Azure portal, find the marketplace
-     * image that you want to use and then click **Want to deploy
-     * programmatically, Get Started ->**. Enter any required information and
-     * then click **Save**.
+     * Specifies information about the marketplace image used to create the virtual machine. This element is only used
+     * for marketplace images. Before you can use a marketplace image from an API, you must enable the image for
+     * programmatic use.  In the Azure portal, find the marketplace image that you want to use and then click **Want to
+     * deploy programmatically, Get Started ->**. Enter any required information and then click **Save**.
      */
     @JsonProperty(value = "plan")
     private Plan plan;
@@ -70,6 +64,12 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     @JsonProperty(value = "zones", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> zones;
+
+    /*
+     * The identity of the virtual machine, if configured.
+     */
+    @JsonProperty(value = "identity")
+    private VirtualMachineIdentity identity;
 
     /**
      * Get the instanceId property: The virtual machine instance ID.
@@ -142,6 +142,26 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     public List<String> zones() {
         return this.zones;
+    }
+
+    /**
+     * Get the identity property: The identity of the virtual machine, if configured.
+     *
+     * @return the identity value.
+     */
+    public VirtualMachineIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the virtual machine, if configured.
+     *
+     * @param identity the identity value to set.
+     * @return the VirtualMachineScaleSetVMInner object itself.
+     */
+    public VirtualMachineScaleSetVMInner withIdentity(VirtualMachineIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /** {@inheritDoc} */
@@ -537,6 +557,9 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
         }
         if (resources() != null) {
             resources().forEach(e -> e.validate());
+        }
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }

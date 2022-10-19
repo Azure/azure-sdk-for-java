@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UserAssignedIdentitiesValue model. */
 @Immutable
 public final class UserAssignedIdentitiesValue {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentitiesValue.class);
-
     /*
      * The principal ID of the user-assigned identity.
      */

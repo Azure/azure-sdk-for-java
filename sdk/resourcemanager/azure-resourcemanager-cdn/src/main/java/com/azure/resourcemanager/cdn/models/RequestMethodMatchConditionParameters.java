@@ -6,20 +6,17 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the parameters for RequestMethod match conditions. */
 @Fluent
 public final class RequestMethodMatchConditionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestMethodMatchConditionParameters.class);
-
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleRequestMethodConditionParameters";
 
     /*
      * Describes operator to be matched
@@ -34,6 +31,12 @@ public final class RequestMethodMatchConditionParameters {
     private Boolean negateCondition;
 
     /*
+     * List of transforms
+     */
+    @JsonProperty(value = "transforms")
+    private List<Transform> transforms;
+
+    /*
      * The match value for the condition of the delivery rule
      */
     @JsonProperty(value = "matchValues")
@@ -41,26 +44,26 @@ public final class RequestMethodMatchConditionParameters {
 
     /** Creates an instance of RequestMethodMatchConditionParameters class. */
     public RequestMethodMatchConditionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestMethodConditionParameters";
+        typeName = "DeliveryRuleRequestMethodConditionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the RequestMethodMatchConditionParameters object itself.
      */
-    public RequestMethodMatchConditionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public RequestMethodMatchConditionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
@@ -105,6 +108,26 @@ public final class RequestMethodMatchConditionParameters {
     }
 
     /**
+     * Get the transforms property: List of transforms.
+     *
+     * @return the transforms value.
+     */
+    public List<Transform> transforms() {
+        return this.transforms;
+    }
+
+    /**
+     * Set the transforms property: List of transforms.
+     *
+     * @param transforms the transforms value to set.
+     * @return the RequestMethodMatchConditionParameters object itself.
+     */
+    public RequestMethodMatchConditionParameters withTransforms(List<Transform> transforms) {
+        this.transforms = transforms;
+        return this;
+    }
+
+    /**
      * Get the matchValues property: The match value for the condition of the delivery rule.
      *
      * @return the matchValues value.
@@ -132,10 +155,12 @@ public final class RequestMethodMatchConditionParameters {
      */
     public void validate() {
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operator in model RequestMethodMatchConditionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RequestMethodMatchConditionParameters.class);
 }

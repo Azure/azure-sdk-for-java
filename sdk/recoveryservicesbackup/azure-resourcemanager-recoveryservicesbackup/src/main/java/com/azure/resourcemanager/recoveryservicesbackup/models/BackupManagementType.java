@@ -48,7 +48,11 @@ public final class BackupManagementType extends ExpandableStringEnum<BackupManag
         return fromString(name, BackupManagementType.class);
     }
 
-    /** @return known BackupManagementType values. */
+    /**
+     * Gets known BackupManagementType values.
+     *
+     * @return known BackupManagementType values.
+     */
     public static Collection<BackupManagementType> values() {
         return values(BackupManagementType.class);
     }

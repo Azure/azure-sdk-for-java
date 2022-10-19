@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ImageTemplateIdentityUserAssignedIdentities model. */
 @Immutable
 public final class ImageTemplateIdentityUserAssignedIdentities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateIdentityUserAssignedIdentities.class);
-
     /*
      * The principal id of user assigned identity.
      */

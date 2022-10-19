@@ -5,8 +5,10 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CosmosSchedulers;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import reactor.core.publisher.Mono;
 
@@ -40,6 +42,17 @@ public abstract class TransportClient implements AutoCloseable {
     protected abstract Mono<StoreResponse> invokeStoreAsync(
         Uri physicalAddress,
         RxDocumentServiceRequest request);
+
+    /***
+     * Only open new connection if there is no existed established connection.
+     *
+     * @param addressUri the replica address.
+     *
+     * @return the {@link OpenConnectionResponse}.
+     */
+    public abstract Mono<OpenConnectionResponse> openConnection(final Uri addressUri);
+
+    protected abstract GlobalEndpointManager getGlobalEndpointManager();
 
     private Mono<StoreResponse> invokeStoreWithThroughputControlAsync(Uri physicalAddress, RxDocumentServiceRequest request) {
         return this.throughputControlStore.processRequest(

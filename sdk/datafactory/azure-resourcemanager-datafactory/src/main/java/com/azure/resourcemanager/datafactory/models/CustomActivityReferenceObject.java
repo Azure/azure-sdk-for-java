@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Reference objects for custom activity. */
 @Fluent
 public final class CustomActivityReferenceObject {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomActivityReferenceObject.class);
-
     /*
      * Linked service references.
      */
@@ -26,6 +22,10 @@ public final class CustomActivityReferenceObject {
      */
     @JsonProperty(value = "datasets")
     private List<DatasetReference> datasets;
+
+    /** Creates an instance of CustomActivityReferenceObject class. */
+    public CustomActivityReferenceObject() {
+    }
 
     /**
      * Get the linkedServices property: Linked service references.

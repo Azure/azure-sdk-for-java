@@ -5,26 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the cloud service role sku. */
 @Fluent
 public final class CloudServiceRoleSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceRoleSku.class);
-
     /*
-     * The sku name. NOTE: If the new SKU is not supported on the hardware the
-     * cloud service is currently on, you need to delete and recreate the cloud
-     * service or move back to the old sku.
+     * The sku name. NOTE: If the new SKU is not supported on the hardware the cloud service is currently on, you need
+     * to delete and recreate the cloud service or move back to the old sku.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Specifies the tier of the cloud service. Possible Values are <br /><br
-     * /> **Standard** <br /><br /> **Basic**
+     * Specifies the tier of the cloud service. Possible Values are <br /><br /> **Standard** <br /><br /> **Basic**
      */
     @JsonProperty(value = "tier")
     private String tier;

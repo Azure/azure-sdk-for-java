@@ -33,7 +33,11 @@ public final class IdentityType extends ExpandableStringEnum<IdentityType> {
         return fromString(name, IdentityType.class);
     }
 
-    /** @return known IdentityType values. */
+    /**
+     * Gets known IdentityType values.
+     *
+     * @return known IdentityType values.
+     */
     public static Collection<IdentityType> values() {
         return values(IdentityType.class);
     }

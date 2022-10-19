@@ -6,6 +6,7 @@ package com.azure.messaging.eventhubs.implementation;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
+import com.azure.core.amqp.implementation.AmqpMetricsProvider;
 import com.azure.core.amqp.implementation.ConnectionOptions;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.ReactorDispatcher;
@@ -19,6 +20,7 @@ import com.azure.core.amqp.implementation.handler.SessionHandler;
 import com.azure.core.amqp.models.CbsAuthorizationType;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.Header;
 import org.apache.qpid.proton.Proton;
@@ -61,7 +63,8 @@ public class EventHubReactorConnectionTest {
     private static final String NAME_KEY = "name";
     private static final String VERSION_KEY = "version";
     private static final String CONNECTION_ID = "test-connection-id";
-    private static final String HOSTNAME = "test-event-hub.servicebus.windows.net/";
+    private static final String HOSTNAME = String.format("test-event-hub%s/",
+        Configuration.getGlobalConfiguration().get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net"));
 
     private static String product;
     private static String clientVersion;
@@ -122,7 +125,7 @@ public class EventHubReactorConnectionTest {
         final SslPeerDetails peerDetails = Proton.sslPeerDetails(HOSTNAME, ConnectionHandler.AMQPS_PORT);
 
         connectionHandler = new ConnectionHandler(CONNECTION_ID, connectionOptions,
-            peerDetails);
+            peerDetails, AmqpMetricsProvider.noop());
 
         when(reactor.selectable()).thenReturn(selectable);
         when(reactor.connectionToHost(connectionHandler.getHostname(), connectionHandler.getProtocolPort(),
@@ -138,7 +141,7 @@ public class EventHubReactorConnectionTest {
             .thenReturn(reactor);
 
         final SessionHandler sessionHandler = new SessionHandler(CONNECTION_ID, HOSTNAME, "EVENT_HUB",
-            reactorDispatcher, Duration.ofSeconds(20));
+            reactorDispatcher, Duration.ofSeconds(20), AmqpMetricsProvider.noop());
 
         when(handlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
             .thenReturn(connectionHandler);
@@ -176,10 +179,10 @@ public class EventHubReactorConnectionTest {
         when(receiver.attachments()).thenReturn(linkRecord);
 
         when(handlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
-            .thenReturn(new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, "receiver-name", "test-entity-path"));
+            .thenReturn(new ReceiveLinkHandler(CONNECTION_ID, HOSTNAME, "receiver-name", "test-entity-path", AmqpMetricsProvider.noop()));
 
         when(handlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(HOSTNAME), anyString(), anyString()))
-            .thenReturn(new SendLinkHandler(CONNECTION_ID, HOSTNAME, "sender-name", "test-entity-path"));
+            .thenReturn(new SendLinkHandler(CONNECTION_ID, HOSTNAME, "sender-name", "test-entity-path", AmqpMetricsProvider.noop()));
 
         final EventHubReactorAmqpConnection connection = new EventHubReactorAmqpConnection(CONNECTION_ID,
             connectionOptions, "event-hub-name", reactorProvider, handlerProvider, tokenManagerProvider,

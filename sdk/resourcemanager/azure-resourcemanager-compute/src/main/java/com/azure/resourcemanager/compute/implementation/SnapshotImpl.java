@@ -10,13 +10,11 @@ import com.azure.resourcemanager.compute.models.CreationData;
 import com.azure.resourcemanager.compute.models.CreationSource;
 import com.azure.resourcemanager.compute.models.Disk;
 import com.azure.resourcemanager.compute.models.DiskCreateOption;
-import com.azure.resourcemanager.compute.models.DiskSkuTypes;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.models.SnapshotSku;
 import com.azure.resourcemanager.compute.models.SnapshotSkuType;
-import com.azure.resourcemanager.compute.models.SnapshotStorageAccountTypes;
 import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
@@ -129,7 +127,6 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         if (sourceDisk.osType() != null) {
             this.withOSType(sourceDisk.osType());
         }
-        this.withSku(sourceDisk.sku());
         return this;
     }
 
@@ -191,7 +188,6 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
         if (sourceDisk.osType() != null) {
             this.withOSType(sourceDisk.osType());
         }
-        this.withSku(sourceDisk.sku());
         return this;
     }
 
@@ -263,7 +259,7 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
 
     @Override
     public SnapshotImpl withDataFromDisk(Disk managedDisk) {
-        return withDataFromDisk(managedDisk.id()).withOSType(managedDisk.osType()).withSku(managedDisk.sku());
+        return withDataFromDisk(managedDisk.id()).withOSType(managedDisk.osType());
     }
 
     @Override
@@ -281,13 +277,6 @@ class SnapshotImpl extends GroupableResourceImpl<Snapshot, SnapshotInner, Snapsh
     @Override
     public SnapshotImpl withOSType(OperatingSystemTypes osType) {
         this.innerModel().withOsType(osType);
-        return this;
-    }
-
-    private SnapshotImpl withSku(DiskSkuTypes sku) {
-        SnapshotSku snapshotSku = new SnapshotSku();
-        snapshotSku.withName(SnapshotStorageAccountTypes.fromString(sku.accountType().toString()));
-        this.innerModel().withSku(snapshotSku);
         return this;
     }
 

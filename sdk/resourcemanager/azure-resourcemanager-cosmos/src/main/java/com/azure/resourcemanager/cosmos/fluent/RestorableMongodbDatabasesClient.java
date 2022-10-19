@@ -23,7 +23,8 @@ public interface RestorableMongodbDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB database events and their properties.
+     * @return the List operation response, that contains the MongoDB database events and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RestorableMongodbDatabaseGetResultInner> listAsync(String location, String instanceId);
@@ -38,7 +39,8 @@ public interface RestorableMongodbDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB database events and their properties.
+     * @return the List operation response, that contains the MongoDB database events and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RestorableMongodbDatabaseGetResultInner> list(String location, String instanceId);
@@ -54,7 +56,8 @@ public interface RestorableMongodbDatabasesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB database events and their properties.
+     * @return the List operation response, that contains the MongoDB database events and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RestorableMongodbDatabaseGetResultInner> list(String location, String instanceId, Context context);

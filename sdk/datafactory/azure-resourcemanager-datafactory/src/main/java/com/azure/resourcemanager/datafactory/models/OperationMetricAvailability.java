@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines how often data for a metric becomes available. */
 @Fluent
 public final class OperationMetricAvailability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetricAvailability.class);
-
     /*
      * The granularity for the metric.
      */
@@ -25,6 +21,10 @@ public final class OperationMetricAvailability {
      */
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
+
+    /** Creates an instance of OperationMetricAvailability class. */
+    public OperationMetricAvailability() {
+    }
 
     /**
      * Get the timeGrain property: The granularity for the metric.

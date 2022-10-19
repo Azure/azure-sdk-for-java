@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.DdosProtectionPlanInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of DDoS protection plans. */
 @Fluent
 public final class DdosProtectionPlanListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosProtectionPlanListResult.class);
-
     /*
      * A list of DDoS protection plans.
      */
@@ -27,6 +23,10 @@ public final class DdosProtectionPlanListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of DdosProtectionPlanListResult class. */
+    public DdosProtectionPlanListResult() {
+    }
 
     /**
      * Get the value property: A list of DDoS protection plans.

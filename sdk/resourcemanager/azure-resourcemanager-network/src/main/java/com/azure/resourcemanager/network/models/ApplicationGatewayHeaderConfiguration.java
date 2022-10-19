@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Header configuration of the Actions set in Application Gateway. */
 @Fluent
 public final class ApplicationGatewayHeaderConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayHeaderConfiguration.class);
-
     /*
      * Header name of the header configuration.
      */
@@ -25,6 +21,10 @@ public final class ApplicationGatewayHeaderConfiguration {
      */
     @JsonProperty(value = "headerValue")
     private String headerValue;
+
+    /** Creates an instance of ApplicationGatewayHeaderConfiguration class. */
+    public ApplicationGatewayHeaderConfiguration() {
+    }
 
     /**
      * Get the headerName property: Header name of the header configuration.

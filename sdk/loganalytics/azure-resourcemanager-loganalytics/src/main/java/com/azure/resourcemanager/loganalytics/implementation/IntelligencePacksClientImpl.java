@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.fluent.IntelligencePacksClient;
 import com.azure.resourcemanager.loganalytics.fluent.models.IntelligencePackInner;
 import java.util.List;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in IntelligencePacksClient. */
 public final class IntelligencePacksClientImpl implements IntelligencePacksClient {
-    private final ClientLogger logger = new ClientLogger(IntelligencePacksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntelligencePacksService service;
 
@@ -111,7 +108,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableWithResponseAsync(
@@ -139,6 +136,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -148,7 +146,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                             resourceGroupName,
                             workspaceName,
                             intelligencePackName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -164,7 +162,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableWithResponseAsync(
@@ -192,6 +190,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
         return service
             .disable(
@@ -199,7 +198,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                 resourceGroupName,
                 workspaceName,
                 intelligencePackName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 context);
     }
@@ -213,12 +212,12 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> disableAsync(String resourceGroupName, String workspaceName, String intelligencePackName) {
         return disableWithResponseAsync(resourceGroupName, workspaceName, intelligencePackName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -246,7 +245,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableWithResponse(
@@ -263,7 +262,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> enableWithResponseAsync(
@@ -291,6 +290,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         return FluxUtil
             .withContext(
                 context ->
@@ -300,7 +300,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                             resourceGroupName,
                             workspaceName,
                             intelligencePackName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -316,7 +316,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> enableWithResponseAsync(
@@ -344,6 +344,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         context = this.client.mergeContext(context);
         return service
             .enable(
@@ -351,7 +352,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                 resourceGroupName,
                 workspaceName,
                 intelligencePackName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 context);
     }
@@ -365,12 +366,12 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> enableAsync(String resourceGroupName, String workspaceName, String intelligencePackName) {
         return enableWithResponseAsync(resourceGroupName, workspaceName, intelligencePackName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -398,7 +399,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> enableWithResponse(
@@ -414,7 +415,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of IntelligencePack.
+     * @return array of IntelligencePack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<IntelligencePackInner>>> listWithResponseAsync(
@@ -438,6 +439,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -447,7 +449,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                             this.client.getEndpoint(),
                             resourceGroupName,
                             workspaceName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             this.client.getSubscriptionId(),
                             accept,
                             context))
@@ -463,7 +465,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of IntelligencePack.
+     * @return array of IntelligencePack along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<IntelligencePackInner>>> listWithResponseAsync(
@@ -487,6 +489,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2020-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -494,7 +497,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
                 this.client.getEndpoint(),
                 resourceGroupName,
                 workspaceName,
-                this.client.getApiVersion(),
+                apiVersion,
                 this.client.getSubscriptionId(),
                 accept,
                 context);
@@ -508,19 +511,11 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of IntelligencePack.
+     * @return array of IntelligencePack on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<IntelligencePackInner>> listAsync(String resourceGroupName, String workspaceName) {
-        return listWithResponseAsync(resourceGroupName, workspaceName)
-            .flatMap(
-                (Response<List<IntelligencePackInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, workspaceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -547,7 +542,7 @@ public final class IntelligencePacksClientImpl implements IntelligencePacksClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of IntelligencePack.
+     * @return array of IntelligencePack along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<IntelligencePackInner>> listWithResponse(

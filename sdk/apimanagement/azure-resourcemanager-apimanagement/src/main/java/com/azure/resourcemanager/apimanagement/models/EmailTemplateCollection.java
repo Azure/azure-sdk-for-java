@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.EmailTemplateContractInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Paged email template list representation. */
 @Fluent
 public final class EmailTemplateCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EmailTemplateCollection.class);
-
     /*
      * Page values.
      */

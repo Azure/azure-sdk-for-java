@@ -5,33 +5,28 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The instance view of a virtual machine boot diagnostics. */
 @Immutable
 public final class BootDiagnosticsInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BootDiagnosticsInstanceView.class);
-
     /*
-     * The console screenshot blob URI. <br><br>NOTE: This will **not** be set
-     * if boot diagnostics is currently enabled with managed storage.
+     * The console screenshot blob URI. <br><br>NOTE: This will **not** be set if boot diagnostics is currently enabled
+     * with managed storage.
      */
     @JsonProperty(value = "consoleScreenshotBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String consoleScreenshotBlobUri;
 
     /*
-     * The serial console log blob Uri. <br><br>NOTE: This will **not** be set
-     * if boot diagnostics is currently enabled with managed storage.
+     * The serial console log blob Uri. <br><br>NOTE: This will **not** be set if boot diagnostics is currently enabled
+     * with managed storage.
      */
     @JsonProperty(value = "serialConsoleLogBlobUri", access = JsonProperty.Access.WRITE_ONLY)
     private String serialConsoleLogBlobUri;
 
     /*
-     * The boot diagnostics status information for the VM. <br><br> NOTE: It
-     * will be set only if there are errors encountered in enabling boot
-     * diagnostics.
+     * The boot diagnostics status information for the VM. <br><br> NOTE: It will be set only if there are errors
+     * encountered in enabling boot diagnostics.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private InstanceViewStatus status;

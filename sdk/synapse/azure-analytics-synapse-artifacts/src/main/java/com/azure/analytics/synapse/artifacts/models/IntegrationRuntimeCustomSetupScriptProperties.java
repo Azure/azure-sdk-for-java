@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class IntegrationRuntimeCustomSetupScriptProperties {
     /*
-     * The URI of the Azure blob container that contains the custom setup
-     * script.
+     * The URI of the Azure blob container that contains the custom setup script.
      */
     @JsonProperty(value = "blobContainerUri")
     private String blobContainerUri;

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of IPConfigurationBgpPeeringAddress. */
 @Fluent
 public final class IpConfigurationBgpPeeringAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationBgpPeeringAddress.class);
-
     /*
      * The ID of IP configuration which belongs to gateway.
      */
@@ -22,15 +18,13 @@ public final class IpConfigurationBgpPeeringAddress {
     private String ipconfigurationId;
 
     /*
-     * The list of default BGP peering addresses which belong to IP
-     * configuration.
+     * The list of default BGP peering addresses which belong to IP configuration.
      */
     @JsonProperty(value = "defaultBgpIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> defaultBgpIpAddresses;
 
     /*
-     * The list of custom BGP peering addresses which belong to IP
-     * configuration.
+     * The list of custom BGP peering addresses which belong to IP configuration.
      */
     @JsonProperty(value = "customBgpIpAddresses")
     private List<String> customBgpIpAddresses;
@@ -40,6 +34,10 @@ public final class IpConfigurationBgpPeeringAddress {
      */
     @JsonProperty(value = "tunnelIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> tunnelIpAddresses;
+
+    /** Creates an instance of IpConfigurationBgpPeeringAddress class. */
+    public IpConfigurationBgpPeeringAddress() {
+    }
 
     /**
      * Get the ipconfigurationId property: The ID of IP configuration which belongs to gateway.

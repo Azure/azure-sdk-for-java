@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureFileStorageLocation")
 @Fluent
 public final class AzureFileStorageLocation extends DatasetLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFileStorageLocation.class);
+    /** Creates an instance of AzureFileStorageLocation class. */
+    public AzureFileStorageLocation() {
+    }
 
     /** {@inheritDoc} */
     @Override

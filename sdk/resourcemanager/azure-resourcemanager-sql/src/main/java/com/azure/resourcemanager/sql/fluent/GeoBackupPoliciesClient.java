@@ -12,7 +12,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.GeoBackupPolicyInner;
 import com.azure.resourcemanager.sql.models.GeoBackupPolicyName;
-import com.azure.resourcemanager.sql.models.GeoBackupPolicyState;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GeoBackupPoliciesClient. */
@@ -25,11 +24,11 @@ public interface GeoBackupPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param geoBackupPolicyName The name of the geo backup policy.
-     * @param state The state of the geo backup policy.
+     * @param parameters The required parameters for creating or updating the geo backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database geo backup policy.
+     * @return a database geo backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<GeoBackupPolicyInner>> createOrUpdateWithResponseAsync(
@@ -37,7 +36,7 @@ public interface GeoBackupPoliciesClient {
         String serverName,
         String databaseName,
         GeoBackupPolicyName geoBackupPolicyName,
-        GeoBackupPolicyState state);
+        GeoBackupPolicyInner parameters);
 
     /**
      * Updates a database geo backup policy.
@@ -47,11 +46,11 @@ public interface GeoBackupPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param geoBackupPolicyName The name of the geo backup policy.
-     * @param state The state of the geo backup policy.
+     * @param parameters The required parameters for creating or updating the geo backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database geo backup policy.
+     * @return a database geo backup policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<GeoBackupPolicyInner> createOrUpdateAsync(
@@ -59,7 +58,7 @@ public interface GeoBackupPoliciesClient {
         String serverName,
         String databaseName,
         GeoBackupPolicyName geoBackupPolicyName,
-        GeoBackupPolicyState state);
+        GeoBackupPolicyInner parameters);
 
     /**
      * Updates a database geo backup policy.
@@ -69,7 +68,7 @@ public interface GeoBackupPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param geoBackupPolicyName The name of the geo backup policy.
-     * @param state The state of the geo backup policy.
+     * @param parameters The required parameters for creating or updating the geo backup policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -81,7 +80,7 @@ public interface GeoBackupPoliciesClient {
         String serverName,
         String databaseName,
         GeoBackupPolicyName geoBackupPolicyName,
-        GeoBackupPolicyState state);
+        GeoBackupPolicyInner parameters);
 
     /**
      * Updates a database geo backup policy.
@@ -91,12 +90,12 @@ public interface GeoBackupPoliciesClient {
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param geoBackupPolicyName The name of the geo backup policy.
-     * @param state The state of the geo backup policy.
+     * @param parameters The required parameters for creating or updating the geo backup policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database geo backup policy.
+     * @return a database geo backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GeoBackupPolicyInner> createOrUpdateWithResponse(
@@ -104,7 +103,7 @@ public interface GeoBackupPoliciesClient {
         String serverName,
         String databaseName,
         GeoBackupPolicyName geoBackupPolicyName,
-        GeoBackupPolicyState state,
+        GeoBackupPolicyInner parameters,
         Context context);
 
     /**
@@ -118,7 +117,7 @@ public interface GeoBackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a geo backup policy.
+     * @return a geo backup policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<GeoBackupPolicyInner>> getWithResponseAsync(
@@ -135,7 +134,7 @@ public interface GeoBackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a geo backup policy.
+     * @return a geo backup policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<GeoBackupPolicyInner> getAsync(
@@ -170,7 +169,7 @@ public interface GeoBackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a geo backup policy.
+     * @return a geo backup policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GeoBackupPolicyInner> getWithResponse(
@@ -190,7 +189,7 @@ public interface GeoBackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list geo backup policies request.
+     * @return the response to a list geo backup policies request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<GeoBackupPolicyInner> listByDatabaseAsync(
@@ -206,7 +205,7 @@ public interface GeoBackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list geo backup policies request.
+     * @return the response to a list geo backup policies request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GeoBackupPolicyInner> listByDatabase(
@@ -223,7 +222,7 @@ public interface GeoBackupPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list geo backup policies request.
+     * @return the response to a list geo backup policies request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GeoBackupPolicyInner> listByDatabase(

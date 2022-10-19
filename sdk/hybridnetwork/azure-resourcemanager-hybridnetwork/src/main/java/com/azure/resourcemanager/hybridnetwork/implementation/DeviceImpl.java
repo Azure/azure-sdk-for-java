@@ -6,17 +6,14 @@ package com.azure.resourcemanager.hybridnetwork.implementation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
-import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.DeviceInner;
 import com.azure.resourcemanager.hybridnetwork.models.Device;
+import com.azure.resourcemanager.hybridnetwork.models.DevicePropertiesFormat;
 import com.azure.resourcemanager.hybridnetwork.models.DeviceRegistrationKey;
-import com.azure.resourcemanager.hybridnetwork.models.ProvisioningState;
-import com.azure.resourcemanager.hybridnetwork.models.Status;
 import com.azure.resourcemanager.hybridnetwork.models.TagsObject;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class DeviceImpl implements Device, Device.Definition, Device.Update {
@@ -49,29 +46,12 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
         }
     }
 
+    public DevicePropertiesFormat properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public Status status() {
-        return this.innerModel().status();
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public SubResource azureStackEdge() {
-        return this.innerModel().azureStackEdge();
-    }
-
-    public List<SubResource> networkFunctions() {
-        List<SubResource> inner = this.innerModel().networkFunctions();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     public Region region() {
@@ -80,6 +60,10 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public DeviceInner innerModel() {
@@ -177,12 +161,12 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
         return this;
     }
 
-    public DeviceRegistrationKey listRegistrationKey() {
-        return serviceManager.devices().listRegistrationKey(resourceGroupName, deviceName);
-    }
-
     public Response<DeviceRegistrationKey> listRegistrationKeyWithResponse(Context context) {
         return serviceManager.devices().listRegistrationKeyWithResponse(resourceGroupName, deviceName, context);
+    }
+
+    public DeviceRegistrationKey listRegistrationKey() {
+        return serviceManager.devices().listRegistrationKey(resourceGroupName, deviceName);
     }
 
     public DeviceImpl withRegion(Region location) {
@@ -205,8 +189,8 @@ public final class DeviceImpl implements Device, Device.Definition, Device.Updat
         }
     }
 
-    public DeviceImpl withAzureStackEdge(SubResource azureStackEdge) {
-        this.innerModel().withAzureStackEdge(azureStackEdge);
+    public DeviceImpl withProperties(DevicePropertiesFormat properties) {
+        this.innerModel().withProperties(properties);
         return this;
     }
 

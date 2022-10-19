@@ -60,7 +60,7 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
 
         Flux<OperationResult> processingFlux = Flux
             .range(0, serialExecutorConcurrency)
-            .subscribeOn(Schedulers.elastic())
+            .subscribeOn(Schedulers.boundedElastic())
             .flatMap((i) -> {
                     executors[i] = new SerialOperationExecutor(
                         String.valueOf(i),
@@ -114,7 +114,7 @@ public class ParallelExecutionStrategy implements IExecutionStrategy {
             })
             .takeUntil((isLastIterationCompleted) -> isLastIterationCompleted);
 
-        monitoringTimer.subscribeOn(Schedulers.elastic()).subscribe();
+        monitoringTimer.subscribeOn(Schedulers.boundedElastic()).subscribe();
         processingFlux.collectList().block();
 
         Utility.traceInformation("");

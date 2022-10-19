@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Avro dataset properties. */
 @Fluent
 public final class AvroDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvroDatasetTypeProperties.class);
-
     /*
      * The location of the avro storage.
      */
@@ -22,8 +19,7 @@ public final class AvroDatasetTypeProperties {
     private DatasetLocation location;
 
     /*
-     * The data avroCompressionCodec. Type: string (or Expression with
-     * resultType string).
+     * The data avroCompressionCodec. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "avroCompressionCodec")
     private Object avroCompressionCodec;
@@ -33,6 +29,10 @@ public final class AvroDatasetTypeProperties {
      */
     @JsonProperty(value = "avroCompressionLevel")
     private Integer avroCompressionLevel;
+
+    /** Creates an instance of AvroDatasetTypeProperties class. */
+    public AvroDatasetTypeProperties() {
+    }
 
     /**
      * Get the location property: The location of the avro storage.
@@ -103,7 +103,7 @@ public final class AvroDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model AvroDatasetTypeProperties"));
@@ -111,4 +111,6 @@ public final class AvroDatasetTypeProperties {
             location().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AvroDatasetTypeProperties.class);
 }

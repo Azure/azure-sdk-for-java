@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,8 +32,6 @@ import java.util.Map;
 })
 @Fluent
 public class Credential {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Credential.class);
-
     /*
      * Credential description.
      */
@@ -48,11 +45,14 @@ public class Credential {
     private List<Object> annotations;
 
     /*
-     * The Azure Data Factory nested object which contains the information and
-     * credential which can be used to connect with related store or compute
-     * resource.
+     * The Azure Data Factory nested object which contains the information and credential which can be used to connect
+     * with related store or compute resource.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of Credential class. */
+    public Credential() {
+    }
 
     /**
      * Get the description property: Credential description.

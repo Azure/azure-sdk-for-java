@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** StaticSiteResetPropertiesARMResource resource specific properties. */
 @Fluent
 public final class StaticSiteResetPropertiesArmResourceProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(StaticSiteResetPropertiesArmResourceProperties.class);
-
     /*
      * The token which proves admin privileges to the repository.
      */

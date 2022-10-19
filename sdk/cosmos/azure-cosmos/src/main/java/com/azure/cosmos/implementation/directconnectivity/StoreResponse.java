@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -12,8 +11,9 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointSta
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Map;
 
 /**
  * Used internally to represents a response from the store.
@@ -25,28 +25,28 @@ public class StoreResponse {
     final private String[] responseHeaderValues;
     final private byte[] content;
 
-    private CosmosDiagnostics cosmosDiagnostics;
     private int pendingRequestQueueSize;
     private int requestPayloadLength;
+    private int responsePayloadLength;
     private RequestTimeline requestTimeline;
     private RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
     private int rntbdChannelTaskQueueSize;
     private RntbdEndpointStatistics rntbdEndpointStatistics;
     private int rntbdRequestLength;
     private int rntbdResponseLength;
+    private final List<String> replicaStatusList;
 
     public StoreResponse(
             int status,
-            List<Entry<String, String>> headerEntries,
+            Map<String, String> headerMap,
             byte[] content) {
 
         requestTimeline = RequestTimeline.empty();
-        responseHeaderNames = new String[headerEntries.size()];
-        responseHeaderValues = new String[headerEntries.size()];
+        responseHeaderNames = new String[headerMap.size()];
+        responseHeaderValues = new String[headerMap.size()];
 
         int i = 0;
-
-        for(Entry<String, String> headerEntry: headerEntries) {
+        for (Map.Entry<String, String> headerEntry : headerMap.entrySet()) {
             responseHeaderNames[i] = headerEntry.getKey();
             responseHeaderValues[i] = headerEntry.getValue();
             i++;
@@ -54,6 +54,11 @@ public class StoreResponse {
 
         this.status = status;
         this.content = content;
+        if (this.content != null) {
+            this.responsePayloadLength = this.content.length;
+        }
+
+        replicaStatusList = new ArrayList<>();
     }
 
     public int getStatus() {
@@ -113,7 +118,7 @@ public class StoreResponse {
     }
 
     public int getResponseBodyLength() {
-        return (this.content != null) ? this.content.length : 0;
+        return this.responsePayloadLength;
     }
 
     public long getLSN() {
@@ -129,8 +134,12 @@ public class StoreResponse {
         return this.getHeaderValue(WFConstants.BackendHeaders.PARTITION_KEY_RANGE_ID);
     }
 
-    public String getContinuation() {
-        return this.getHeaderValue(HttpConstants.HttpHeaders.CONTINUATION);
+    public String getActivityId() {
+        return this.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID);
+    }
+
+    public String getCorrelatedActivityId() {
+        return this.getHeaderValue(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID);
     }
 
     public String getHeaderValue(String attribute) {
@@ -147,10 +156,6 @@ public class StoreResponse {
         return null;
     }
 
-    public CosmosDiagnostics getCosmosDiagnostics() {
-        return cosmosDiagnostics;
-    }
-
     public double getRequestCharge() {
         String value = this.getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
         if (StringUtils.isEmpty(value)) {
@@ -159,12 +164,11 @@ public class StoreResponse {
         return Double.parseDouble(value);
     }
 
-    StoreResponse setCosmosDiagnostics(CosmosDiagnostics cosmosDiagnostics) {
-        this.cosmosDiagnostics = cosmosDiagnostics;
-        return this;
+    public String getSessionTokenString() {
+        return this.getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
     }
 
-    void setRequestTimeline(RequestTimeline requestTimeline) {
+    public void setRequestTimeline(RequestTimeline requestTimeline) {
         this.requestTimeline = requestTimeline;
     }
 
@@ -172,7 +176,7 @@ public class StoreResponse {
         return this.requestTimeline;
     }
 
-    void setChannelAcquisitionTimeline(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
+    public void setChannelAcquisitionTimeline(RntbdChannelAcquisitionTimeline channelAcquisitionTimeline) {
         this.channelAcquisitionTimeline = channelAcquisitionTimeline;
     }
 
@@ -180,11 +184,11 @@ public class StoreResponse {
         return this.channelAcquisitionTimeline;
     }
 
-    void setEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {
+    public void setEndpointStatistics(RntbdEndpointStatistics rntbdEndpointStatistics) {
         this.rntbdEndpointStatistics = rntbdEndpointStatistics;
     }
 
-    RntbdEndpointStatistics getEndpointStsts() {
+    RntbdEndpointStatistics getEndpointStatistics() {
         return this.rntbdEndpointStatistics;
     }
 
@@ -199,5 +203,9 @@ public class StoreResponse {
             }
         }
         return subStatusCode;
+    }
+
+    public List<String> getReplicaStatusList() {
+        return this.replicaStatusList;
     }
 }

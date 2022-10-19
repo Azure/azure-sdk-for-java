@@ -6,14 +6,11 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains the information necessary to perform a resource move (rename). */
 @Fluent
 public final class ResourceMoveDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceMoveDefinition.class);
-
     /*
      * The target ID for the resource
      */
@@ -47,9 +44,11 @@ public final class ResourceMoveDefinition {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model ResourceMoveDefinition"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceMoveDefinition.class);
 }

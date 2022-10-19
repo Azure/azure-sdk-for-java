@@ -46,6 +46,13 @@ public interface LinkedStorageAccountsResource {
     List<String> storageAccountIds();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.loganalytics.fluent.models.LinkedStorageAccountsResourceInner object.
      *
      * @return the inner object.

@@ -63,6 +63,7 @@ public class EventProcessorClientErrorHandlingTest {
         when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1", "2", "3"));
         when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
         when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
     }
 
     @ParameterizedTest(name = "{displayName} with [{arguments}]")

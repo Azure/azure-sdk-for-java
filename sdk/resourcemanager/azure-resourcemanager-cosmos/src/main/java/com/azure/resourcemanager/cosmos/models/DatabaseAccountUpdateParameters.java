@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.DatabaseAccountUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,17 +14,12 @@ import java.util.Map;
 /** Parameters for patching Azure Cosmos DB database account properties. */
 @Fluent
 public final class DatabaseAccountUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseAccountUpdateParameters.class);
-
     /*
-     * Tags are a list of key-value pairs that describe the resource. These
-     * tags can be used in viewing and grouping this resource (across resource
-     * groups). A maximum of 15 tags can be provided for a resource. Each tag
-     * must have a key no greater than 128 characters and value no greater than
-     * 256 characters. For example, the default experience for a template type
-     * is set with "defaultExperience": "Cassandra". Current
-     * "defaultExperience" values also include "Table", "Graph", "DocumentDB",
-     * and "MongoDB".
+     * Tags are a list of key-value pairs that describe the resource. These tags can be used in viewing and grouping
+     * this resource (across resource groups). A maximum of 15 tags can be provided for a resource. Each tag must have
+     * a key no greater than 128 characters and value no greater than 256 characters. For example, the default
+     * experience for a template type is set with "defaultExperience": "Cassandra". Current "defaultExperience" values
+     * also include "Table", "Graph", "DocumentDB", and "MongoDB".
      */
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -698,6 +691,41 @@ public final class DatabaseAccountUpdateParameters {
             this.innerProperties = new DatabaseAccountUpdateProperties();
         }
         this.innerProperties().withCapacity(capacity);
+        return this;
+    }
+
+    /**
+     * Get the keysMetadata property: This property is ignored during the update operation, as the metadata is
+     * read-only. The object represents the metadata for the Account Keys of the Cosmos DB account.
+     *
+     * @return the keysMetadata value.
+     */
+    public DatabaseAccountKeysMetadata keysMetadata() {
+        return this.innerProperties() == null ? null : this.innerProperties().keysMetadata();
+    }
+
+    /**
+     * Get the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
+     * account.
+     *
+     * @return the enablePartitionMerge value.
+     */
+    public Boolean enablePartitionMerge() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePartitionMerge();
+    }
+
+    /**
+     * Set the enablePartitionMerge property: Flag to indicate enabling/disabling of Partition Merge feature on the
+     * account.
+     *
+     * @param enablePartitionMerge the enablePartitionMerge value to set.
+     * @return the DatabaseAccountUpdateParameters object itself.
+     */
+    public DatabaseAccountUpdateParameters withEnablePartitionMerge(Boolean enablePartitionMerge) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DatabaseAccountUpdateProperties();
+        }
+        this.innerProperties().withEnablePartitionMerge(enablePartitionMerge);
         return this;
     }
 

@@ -7,7 +7,7 @@ package com.azure.resourcemanager.securityinsights.implementation;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.securityinsights.fluent.models.WatchlistInner;
-import com.azure.resourcemanager.securityinsights.models.Source;
+import com.azure.resourcemanager.securityinsights.models.SourceType;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
 import com.azure.resourcemanager.securityinsights.models.Watchlist;
 import java.time.Duration;
@@ -52,8 +52,12 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
         return this.innerModel().provider();
     }
 
-    public Source source() {
+    public String source() {
         return this.innerModel().source();
+    }
+
+    public SourceType sourceType() {
+        return this.innerModel().sourceType();
     }
 
     public OffsetDateTime created() {
@@ -125,8 +129,8 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
         return this.innerModel().uploadStatus();
     }
 
-    public Integer watchlistItemsCount() {
-        return this.innerModel().watchlistItemsCount();
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public WatchlistInner innerModel() {
@@ -252,8 +256,13 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
         return this;
     }
 
-    public WatchlistImpl withSource(Source source) {
+    public WatchlistImpl withSource(String source) {
         this.innerModel().withSource(source);
+        return this;
+    }
+
+    public WatchlistImpl withSourceType(SourceType sourceType) {
+        this.innerModel().withSourceType(sourceType);
         return this;
     }
 
@@ -334,11 +343,6 @@ public final class WatchlistImpl implements Watchlist, Watchlist.Definition, Wat
 
     public WatchlistImpl withUploadStatus(String uploadStatus) {
         this.innerModel().withUploadStatus(uploadStatus);
-        return this;
-    }
-
-    public WatchlistImpl withWatchlistItemsCount(Integer watchlistItemsCount) {
-        this.innerModel().withWatchlistItemsCount(watchlistItemsCount);
         return this;
     }
 }

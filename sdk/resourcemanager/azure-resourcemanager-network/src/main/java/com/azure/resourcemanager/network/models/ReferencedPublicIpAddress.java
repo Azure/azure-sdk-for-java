@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Reference to a public IP address. */
 @Fluent
 public final class ReferencedPublicIpAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReferencedPublicIpAddress.class);
-
     /*
      * The PublicIPAddress Reference.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of ReferencedPublicIpAddress class. */
+    public ReferencedPublicIpAddress() {
+    }
 
     /**
      * Get the id property: The PublicIPAddress Reference.

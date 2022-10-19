@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.GoogleAdWordsLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("GoogleAdWords")
 @Fluent
 public final class GoogleAdWordsLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GoogleAdWordsLinkedService.class);
-
     /*
      * Google AdWords service linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private GoogleAdWordsLinkedServiceTypeProperties innerTypeProperties =
         new GoogleAdWordsLinkedServiceTypeProperties();
+
+    /** Creates an instance of GoogleAdWordsLinkedService class. */
+    public GoogleAdWordsLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Google AdWords service linked service properties.
@@ -374,7 +375,7 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model GoogleAdWordsLinkedService"));
@@ -382,4 +383,6 @@ public final class GoogleAdWordsLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GoogleAdWordsLinkedService.class);
 }

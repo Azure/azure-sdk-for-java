@@ -30,7 +30,11 @@ public final class ShareAccessTier extends ExpandableStringEnum<ShareAccessTier>
         return fromString(name, ShareAccessTier.class);
     }
 
-    /** @return known ShareAccessTier values. */
+    /**
+     * Gets known ShareAccessTier values.
+     *
+     * @return known ShareAccessTier values.
+     */
     public static Collection<ShareAccessTier> values() {
         return values(ShareAccessTier.class);
     }

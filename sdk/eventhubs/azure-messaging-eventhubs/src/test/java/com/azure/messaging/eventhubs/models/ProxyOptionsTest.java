@@ -6,14 +6,11 @@ package com.azure.messaging.eventhubs.models;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-
-import static com.azure.core.amqp.ProxyOptions.SYSTEM_DEFAULTS;
 
 public class ProxyOptionsTest {
 
@@ -24,13 +21,6 @@ public class ProxyOptionsTest {
     private static final String PROXY_PASSWORD = "dummyPassword";
 
     private static Proxy proxyAddress = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(PROXY_HOST, Integer.parseInt(PROXY_PORT)));
-
-    @Test
-    public void nullProxyConfiguration() {
-        Assertions.assertNull(SYSTEM_DEFAULTS.getAuthentication());
-        Assertions.assertNull(SYSTEM_DEFAULTS.getCredential());
-        Assertions.assertNull(SYSTEM_DEFAULTS.getProxyAddress());
-    }
 
     @ParameterizedTest
     @EnumSource(ProxyAuthenticationType.class)

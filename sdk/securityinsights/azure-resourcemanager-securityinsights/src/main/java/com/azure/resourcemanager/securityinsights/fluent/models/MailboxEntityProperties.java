@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Mailbox entity property bag. */
 @Immutable
 public final class MailboxEntityProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MailboxEntityProperties.class);
-
     /*
      * The mailbox's primary address
      */
@@ -35,8 +31,8 @@ public final class MailboxEntityProperties extends EntityCommonProperties {
     private String upn;
 
     /*
-     * The AzureAD identifier of mailbox. Similar to AadUserId in account
-     * entity but this property is specific to mailbox object on office side
+     * The AzureAD identifier of mailbox. Similar to AadUserId in account entity but this property is specific to
+     * mailbox object on office side
      */
     @JsonProperty(value = "externalDirectoryObjectId", access = JsonProperty.Access.WRITE_ONLY)
     private UUID externalDirectoryObjectId;

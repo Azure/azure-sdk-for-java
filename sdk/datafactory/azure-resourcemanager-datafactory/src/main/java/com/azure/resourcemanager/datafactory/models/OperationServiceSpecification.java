@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Details about a service operation. */
 @Fluent
 public final class OperationServiceSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationServiceSpecification.class);
-
     /*
      * Details about operations related to logs.
      */
@@ -26,6 +22,10 @@ public final class OperationServiceSpecification {
      */
     @JsonProperty(value = "metricSpecifications")
     private List<OperationMetricSpecification> metricSpecifications;
+
+    /** Creates an instance of OperationServiceSpecification class. */
+    public OperationServiceSpecification() {
+    }
 
     /**
      * Get the logSpecifications property: Details about operations related to logs.

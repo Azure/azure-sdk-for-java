@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Apps GetByResourceGroup. */
 public final class AppsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/stable/2021-06-01/examples/Apps_Get.json
+     * x-ms-original-file: specification/iotcentral/resource-manager/Microsoft.IoTCentral/preview/2021-11-01-preview/examples/Apps_Get.json
      */
     /**
      * Sample code: Apps_Get.

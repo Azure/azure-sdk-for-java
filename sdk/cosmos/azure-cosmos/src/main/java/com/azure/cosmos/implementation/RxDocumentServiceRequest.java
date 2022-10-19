@@ -40,7 +40,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     private boolean isMedia = false;
     private final boolean isNameBased;
     private final OperationType operationType;
-    private final String resourceAddress;
+    private String resourceAddress;
     public volatile boolean forceNameCacheRefresh;
     private volatile URI endpointOverride = null;
     private final UUID activityId;
@@ -67,7 +67,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     // some of these fields are missing from the main java sdk service request
     // so it means most likely the corresponding features are also missing from the main sdk
     // we need to wire this up.
-    public boolean UseGatewayMode;
+    public boolean useGatewayMode;
 
     private volatile boolean isDisposed = false;
     public volatile String entityId;
@@ -85,6 +85,10 @@ public class RxDocumentServiceRequest implements Cloneable {
                 || this.operationType == OperationType.Query
                 || this.operationType == OperationType.SqlQuery
                 || this.operationType == OperationType.QueryPlan;
+    }
+
+    public void setResourceAddress(String newAddress) {
+        this.resourceAddress = newAddress;
     }
 
     public boolean isReadOnlyScript() {
@@ -1023,7 +1027,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.setPartitionKeyRangeIdentity(this.getPartitionKeyRangeIdentity());
         rxDocumentServiceRequest.forceCollectionRoutingMapRefresh = this.forceCollectionRoutingMapRefresh;
         rxDocumentServiceRequest.forcePartitionKeyRangeRefresh = this.forcePartitionKeyRangeRefresh;
-        rxDocumentServiceRequest.UseGatewayMode = this.UseGatewayMode;
+        rxDocumentServiceRequest.useGatewayMode = this.useGatewayMode;
         rxDocumentServiceRequest.requestContext = this.requestContext;
         return rxDocumentServiceRequest;
     }

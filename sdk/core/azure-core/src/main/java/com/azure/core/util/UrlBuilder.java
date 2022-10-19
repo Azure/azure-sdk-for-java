@@ -3,13 +3,17 @@
 
 package com.azure.core.util;
 
+import com.azure.core.implementation.ImplUtils;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-import java.util.concurrent.ConcurrentHashMap;
+import static com.azure.core.implementation.ImplUtils.MAX_CACHE_SIZE;
 
 /**
  * A builder class that is used to create URLs.
@@ -17,16 +21,24 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class UrlBuilder {
     private static final Map<String, UrlBuilder> PARSED_URLS = new ConcurrentHashMap<>();
 
-    // future improvement - make this configurable
-    private static final int MAX_CACHE_SIZE = 10000;
-
     private String scheme;
     private String host;
-    private String port;
+    private Integer port;
     private String path;
 
-    // LinkedHashMap preserves insertion order
-    private final Map<String, QueryParameter> query = new LinkedHashMap<>();
+    private Map<String, QueryParameter> queryToCopy;
+    private Map<String, QueryParameter> query;
+
+    /**
+     * Creates a new instance of {@link UrlBuilder}.
+     */
+    public UrlBuilder() {
+        this(null);
+    }
+
+    private UrlBuilder(Map<String, QueryParameter> queryToCopy) {
+        this.queryToCopy = queryToCopy;
+    }
 
     /**
      * Set the scheme/protocol that will be used to build the final URL.
@@ -83,12 +95,12 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder setPort(String port) {
-        if (port == null || port.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(port)) {
             this.port = null;
-        } else {
-            with(port, UrlTokenizerState.PORT);
+            return this;
         }
-        return this;
+
+        return with(port, UrlTokenizerState.PORT);
     }
 
     /**
@@ -98,7 +110,8 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder setPort(int port) {
-        return setPort(Integer.toString(port));
+        this.port = port;
+        return this;
     }
 
     /**
@@ -107,7 +120,7 @@ public final class UrlBuilder {
      * @return the port that has been assigned to this UrlBuilder.
      */
     public Integer getPort() {
-        return port == null ? null : Integer.valueOf(port);
+        return port;
     }
 
     /**
@@ -143,6 +156,8 @@ public final class UrlBuilder {
      * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValue} are null.
      */
     public UrlBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+        initializeQuery();
+
         query.put(queryParameterName, new QueryParameter(queryParameterName, queryParameterEncodedValue));
         return this;
     }
@@ -156,6 +171,8 @@ public final class UrlBuilder {
      * @throws NullPointerException if {@code queryParameterName} or {@code queryParameterEncodedValue} are null.
      */
     public UrlBuilder addQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+        initializeQuery();
+
         query.compute(queryParameterName, (key, value) -> {
             if (value == null) {
                 return new QueryParameter(queryParameterName, queryParameterEncodedValue);
@@ -173,12 +190,7 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder setQuery(String query) {
-        if (query == null || query.isEmpty()) {
-            this.query.clear();
-        } else {
-            with(query, UrlTokenizerState.QUERY);
-        }
-        return this;
+        return (query == null || query.isEmpty()) ? clearQuery() : with(query, UrlTokenizerState.QUERY);
     }
 
     /**
@@ -187,7 +199,7 @@ public final class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder clearQuery() {
-        if (query.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(query)) {
             return this;
         }
 
@@ -201,53 +213,71 @@ public final class UrlBuilder {
      * @return the query that has been assigned to this UrlBuilder.
      */
     public Map<String, String> getQuery() {
+        initializeQuery();
+
         // This contains a map of key=value query parameters, replacing
         // multiple values for a single key with a list of values under the same name,
         // joined together with a comma. As discussed in https://github.com/Azure/azure-sdk-for-java/pull/21203.
-        final Map<String, String> singleKeyValueQuery =
-            this.query.entrySet()
-                      .stream()
-                      .collect(Collectors.toMap(
-                            e -> e.getKey(),
-                            e -> {
-                                QueryParameter parameter = e.getValue();
-                                String value = null;
-
-                                if (parameter != null) {
-                                    // get all parameters joined by a comma.
-                                    // name=a&name=b&name=c becomes name=a,b,c
-                                    value = parameter.getValue();
-                                }
-
-                                return value;
-                            }
-                        ));
-
-        return singleKeyValueQuery;
+        return query.entrySet().stream()
+            // get all parameters joined by a comma.
+            // name=a&name=b&name=c becomes name=a,b,c
+            .collect(Collectors.toMap(Map.Entry::getKey, entry -> entry.getValue().getValue()));
     }
 
     /**
      * Returns the query string currently configured in this UrlBuilder instance.
+     *
      * @return A String containing the currently configured query string.
      */
     public String getQueryString() {
-        if (query.isEmpty()) {
+        if (CoreUtils.isNullOrEmpty(queryToCopy) && CoreUtils.isNullOrEmpty(query)) {
             return "";
         }
 
-        StringBuilder queryBuilder = new StringBuilder("?");
-        for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
-            for (String queryValue : entry.getValue().getValuesList()) {
-                if (queryBuilder.length() > 1) {
-                    queryBuilder.append("&");
-                }
-                queryBuilder.append(entry.getKey());
-                queryBuilder.append("=");
-                queryBuilder.append(queryValue);
-            }
-        }
+        StringBuilder queryBuilder = new StringBuilder();
+        appendQueryString(queryBuilder);
 
         return queryBuilder.toString();
+    }
+
+    private void appendQueryString(StringBuilder stringBuilder) {
+        if (CoreUtils.isNullOrEmpty(queryToCopy) && CoreUtils.isNullOrEmpty(query)) {
+            return;
+        }
+
+        stringBuilder.append("?");
+
+        boolean first = true;
+
+        // queryToCopy hasn't been copied yet as no operations on query parameters have been applied since creating
+        // this UrlBuilder. Use queryToCopy to create the query string and while doing so copy it into query.
+        if (query == null) {
+            query = new LinkedHashMap<>(queryToCopy.size());
+
+            for (Map.Entry<String, QueryParameter> entry : queryToCopy.entrySet()) {
+                first = writeQueryValues(stringBuilder, entry.getKey(), entry.getValue().getValuesList(), first);
+
+                query.put(entry.getKey(), entry.getValue());
+            }
+        } else {
+            // queryToCopy has been copied, use query to build the query string.
+            for (Map.Entry<String, QueryParameter> entry : query.entrySet()) {
+                first = writeQueryValues(stringBuilder, entry.getKey(), entry.getValue().getValuesList(), first);
+            }
+        }
+    }
+
+    private static boolean writeQueryValues(StringBuilder builder, String key, List<String> values, boolean first) {
+        for (String value : values) {
+            if (!first) {
+                builder.append("&");
+            }
+
+            builder.append(key).append("=").append(value);
+            first = false;
+        }
+
+        return first;
     }
 
     private UrlBuilder with(String text, UrlTokenizerState startState) {
@@ -255,45 +285,30 @@ public final class UrlBuilder {
 
         while (tokenizer.next()) {
             final UrlToken token = tokenizer.current();
-            final String tokenText = token.text();
+            final String tokenText = emptyToNull(token.text());
             final UrlTokenType tokenType = token.type();
             switch (tokenType) {
                 case SCHEME:
-                    scheme = emptyToNull(tokenText);
+                    scheme = tokenText;
                     break;
 
                 case HOST:
-                    host = emptyToNull(tokenText);
+                    host = tokenText;
                     break;
 
                 case PORT:
-                    port = emptyToNull(tokenText);
+                    port = tokenText == null ? null : Integer.parseInt(tokenText);
                     break;
 
                 case PATH:
-                    final String tokenPath = emptyToNull(tokenText);
-                    if (path == null || "/".equals(path) || !"/".equals(tokenPath)) {
-                        path = tokenPath;
+                    if (path == null || "/".equals(path) || !"/".equals(tokenText)) {
+                        path = tokenText;
                     }
                     break;
 
                 case QUERY:
-                    String queryString = emptyToNull(tokenText);
-                    if (queryString != null) {
-                        if (queryString.startsWith("?")) {
-                            queryString = queryString.substring(1);
-                        }
-
-                        for (String entry : queryString.split("&")) {
-                            String[] nameValue = entry.split("=");
-                            if (nameValue.length == 2) {
-                                addQueryParameter(nameValue[0], nameValue[1]);
-                            } else {
-                                addQueryParameter(nameValue[0], "");
-                            }
-                        }
-                    }
-
+                    ImplUtils.parseQueryParameters(tokenText).forEachRemaining(queryParam ->
+                        addQueryParameter(queryParam.getKey(), queryParam.getValue()));
                     break;
 
                 default:
@@ -349,13 +364,14 @@ public final class UrlBuilder {
             result.append(path);
         }
 
-        result.append(getQueryString());
+        appendQueryString(result);
 
         return result.toString();
     }
 
     /**
      * Returns the map of parsed URLs and their {@link UrlBuilder UrlBuilders}
+     *
      * @return the map of parsed URLs and their {@link UrlBuilder UrlBuilders}
      */
     static Map<String, UrlBuilder> getParsedUrls() {
@@ -394,36 +410,7 @@ public final class UrlBuilder {
      * @return The UrlBuilder that was parsed from the URL object.
      */
     public static UrlBuilder parse(URL url) {
-        final UrlBuilder result = new UrlBuilder();
-
-        if (url != null) {
-            final String protocol = url.getProtocol();
-            if (protocol != null && !protocol.isEmpty()) {
-                result.setScheme(protocol);
-            }
-
-            final String host = url.getHost();
-            if (host != null && !host.isEmpty()) {
-                result.setHost(host);
-            }
-
-            final int port = url.getPort();
-            if (port != -1) {
-                result.setPort(port);
-            }
-
-            final String path = url.getPath();
-            if (path != null && !path.isEmpty()) {
-                result.setPath(path);
-            }
-
-            final String query = url.getQuery();
-            if (query != null && !query.isEmpty()) {
-                result.setQuery(query);
-            }
-        }
-
-        return result;
+        return ImplUtils.parseUrl(url, true);
     }
 
     private static String emptyToNull(String value) {
@@ -431,14 +418,24 @@ public final class UrlBuilder {
     }
 
     private UrlBuilder copy() {
-        UrlBuilder copy = new UrlBuilder();
+        UrlBuilder copy = new UrlBuilder(query);
 
         copy.scheme = this.scheme;
         copy.host = this.host;
         copy.path = this.path;
         copy.port = this.port;
-        copy.query.putAll(this.query);
 
         return copy;
+    }
+
+    private void initializeQuery() {
+        if (query == null) {
+            query = new LinkedHashMap<>();
+        }
+
+        if (queryToCopy != null) {
+            query.putAll(queryToCopy);
+            queryToCopy = null;
+        }
     }
 }

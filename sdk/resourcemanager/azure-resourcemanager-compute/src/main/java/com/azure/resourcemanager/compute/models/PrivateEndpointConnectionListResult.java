@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.PrivateEndpointConnectionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of private link resources. */
 @Fluent
 public final class PrivateEndpointConnectionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResult.class);
-
     /*
      * Array of private endpoint connections
      */
@@ -23,8 +19,7 @@ public final class PrivateEndpointConnectionListResult {
     private List<PrivateEndpointConnectionInner> value;
 
     /*
-     * The uri to fetch the next page of snapshots. Call ListNext() with this
-     * to fetch the next page of snapshots.
+     * The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.models.DataWarehouseUserActiviti
 import com.azure.resourcemanager.synapse.models.DataWarehouseUserActivities;
 import com.azure.resourcemanager.synapse.models.DataWarehouseUserActivityName;
 import com.azure.resourcemanager.synapse.models.SqlPoolDataWarehouseUserActivities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolDataWarehouseUserActivitiesImpl implements SqlPoolDataWarehouseUserActivities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolDataWarehouseUserActivitiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolDataWarehouseUserActivitiesImpl.class);
 
     private final SqlPoolDataWarehouseUserActivitiesClient innerClient;
 

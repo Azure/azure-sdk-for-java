@@ -13,20 +13,24 @@ import com.azure.resourcemanager.netapp.fluent.models.VaultInner;
 /** An instance of this class provides access to all the operations defined in VaultsClient. */
 public interface VaultsClient {
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Vaults.
+     * @return list of Vaults as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VaultInner> list(String resourceGroupName, String accountName);
 
     /**
-     * List vaults for a Netapp Account.
+     * List vaults
+     *
+     * <p>List vaults for a Netapp Account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -34,7 +38,7 @@ public interface VaultsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of Vaults.
+     * @return list of Vaults as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VaultInner> list(String resourceGroupName, String accountName, Context context);

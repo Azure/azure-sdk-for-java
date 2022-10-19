@@ -7,24 +7,19 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** File system linked service properties. */
 @Fluent
 public final class FileServerLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServerLinkedServiceTypeProperties.class);
-
     /*
-     * Host name of the server. Type: string (or Expression with resultType
-     * string).
+     * Host name of the server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
-     * User ID to logon the server. Type: string (or Expression with resultType
-     * string).
+     * User ID to logon the server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userId")
     private Object userId;
@@ -36,12 +31,15 @@ public final class FileServerLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of FileServerLinkedServiceTypeProperties class. */
+    public FileServerLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
@@ -132,7 +130,7 @@ public final class FileServerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model FileServerLinkedServiceTypeProperties"));
@@ -141,4 +139,6 @@ public final class FileServerLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FileServerLinkedServiceTypeProperties.class);
 }

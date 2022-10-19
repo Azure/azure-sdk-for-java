@@ -6,9 +6,7 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayFirewallRuleSetPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** A web application firewall rule set. */
 @Fluent
 public final class ApplicationGatewayFirewallRuleSet extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayFirewallRuleSet.class);
-
     /*
      * Properties of the application gateway firewall rule set.
      */
@@ -29,6 +25,10 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of ApplicationGatewayFirewallRuleSet class. */
+    public ApplicationGatewayFirewallRuleSet() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the application gateway firewall rule set.
@@ -148,6 +148,29 @@ public final class ApplicationGatewayFirewallRuleSet extends Resource {
             this.innerProperties = new ApplicationGatewayFirewallRuleSetPropertiesFormat();
         }
         this.innerProperties().withRuleGroups(ruleGroups);
+        return this;
+    }
+
+    /**
+     * Get the tiers property: Tier of an application gateway that support the rule set.
+     *
+     * @return the tiers value.
+     */
+    public List<ApplicationGatewayTierTypes> tiers() {
+        return this.innerProperties() == null ? null : this.innerProperties().tiers();
+    }
+
+    /**
+     * Set the tiers property: Tier of an application gateway that support the rule set.
+     *
+     * @param tiers the tiers value to set.
+     * @return the ApplicationGatewayFirewallRuleSet object itself.
+     */
+    public ApplicationGatewayFirewallRuleSet withTiers(List<ApplicationGatewayTierTypes> tiers) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayFirewallRuleSetPropertiesFormat();
+        }
+        this.innerProperties().withTiers(tiers);
         return this;
     }
 

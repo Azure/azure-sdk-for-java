@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resourcehealth.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Status of the service impacting event. */
 @Fluent
 public final class ServiceImpactingEventStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceImpactingEventStatus.class);
-
     /*
      * Current status of the event
      */

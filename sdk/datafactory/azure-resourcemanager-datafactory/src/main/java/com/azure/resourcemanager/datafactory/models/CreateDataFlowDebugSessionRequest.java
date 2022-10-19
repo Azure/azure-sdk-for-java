@@ -5,25 +5,20 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request body structure for creating data flow debug session. */
 @Fluent
 public final class CreateDataFlowDebugSessionRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreateDataFlowDebugSessionRequest.class);
-
     /*
-     * Compute type of the cluster. The value will be overwritten by the same
-     * setting in integration runtime if provided.
+     * Compute type of the cluster. The value will be overwritten by the same setting in integration runtime if
+     * provided.
      */
     @JsonProperty(value = "computeType")
     private String computeType;
 
     /*
-     * Core count of the cluster. The value will be overwritten by the same
-     * setting in integration runtime if provided.
+     * Core count of the cluster. The value will be overwritten by the same setting in integration runtime if provided.
      */
     @JsonProperty(value = "coreCount")
     private Integer coreCount;
@@ -39,6 +34,10 @@ public final class CreateDataFlowDebugSessionRequest {
      */
     @JsonProperty(value = "integrationRuntime")
     private IntegrationRuntimeDebugResource integrationRuntime;
+
+    /** Creates an instance of CreateDataFlowDebugSessionRequest class. */
+    public CreateDataFlowDebugSessionRequest() {
+    }
 
     /**
      * Get the computeType property: Compute type of the cluster. The value will be overwritten by the same setting in

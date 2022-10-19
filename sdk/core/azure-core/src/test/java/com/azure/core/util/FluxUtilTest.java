@@ -20,7 +20,9 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -29,9 +31,11 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.Channels;
 import java.nio.channels.CompletionHandler;
 import java.nio.channels.FileLockInterruptionException;
 import java.nio.channels.NonWritableChannelException;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -56,6 +60,9 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class FluxUtilTest {
@@ -175,7 +182,8 @@ public class FluxUtilTest {
         String original = "hello there";
         String target = "testo there";
 
-        Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(toReplace.getBytes(StandardCharsets.UTF_8)));
+        byte[] bytes = toReplace.getBytes(StandardCharsets.UTF_8);
+        Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(bytes, 0, 2), ByteBuffer.wrap(bytes, 2, 2));
         File file = createFileIfNotExist();
 
         try (FileOutputStream stream = new FileOutputStream(file)) {
@@ -187,6 +195,41 @@ public class FluxUtilTest {
             byte[] outputStream = Files.readAllBytes(file.toPath());
             assertArrayEquals(outputStream, target.getBytes(StandardCharsets.UTF_8));
         }
+    }
+
+    @Test
+    public void testWriteFileWithPosition() throws Exception {
+        String toReplace = "test";
+        String original = "hello there";
+        String target = "hello teste";
+
+        byte[] bytes = toReplace.getBytes(StandardCharsets.UTF_8);
+        Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(bytes, 0, 2), ByteBuffer.wrap(bytes, 2, 2));
+        File file = createFileIfNotExist();
+
+        try (FileOutputStream stream = new FileOutputStream(file)) {
+            stream.write(original.getBytes(StandardCharsets.UTF_8));
+        }
+
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.WRITE)) {
+            FluxUtil.writeFile(body, channel, 6).block();
+            byte[] outputStream = Files.readAllBytes(file.toPath());
+            assertArrayEquals(outputStream, target.getBytes(StandardCharsets.UTF_8));
+        }
+    }
+
+    @Test
+    public void testWriteWritableChannel() throws Exception {
+        String content = "test";
+
+        byte[] bytes = content.getBytes(StandardCharsets.UTF_8);
+        Flux<ByteBuffer> body = Flux.just(ByteBuffer.wrap(bytes, 0, 2), ByteBuffer.wrap(bytes, 2, 2));
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        WritableByteChannel channel = Channels.newChannel(byteArrayOutputStream);
+
+        FluxUtil.writeToWritableByteChannel(body, channel).block();
+        assertArrayEquals(byteArrayOutputStream.toByteArray(), bytes);
     }
 
     @ParameterizedTest
@@ -449,6 +492,24 @@ public class FluxUtilTest {
 
         StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream))
             .verifyError(IOException.class);
+    }
+
+    @Test
+    public void toFluxByteBufferFileInputStreamChannelCloses() throws IOException {
+        MyFileChannel channel = spy(MyFileChannel.class);
+        when(channel.position()).thenReturn(0L);
+        when(channel.size()).thenReturn(0L);
+
+        FileInputStream inputStream = mock(FileInputStream.class);
+        when(inputStream.getChannel()).thenReturn(channel);
+
+        StepVerifier.create(FluxUtil.toFluxByteBuffer(inputStream))
+            .verifyComplete();
+
+        verify(inputStream, times(1)).getChannel();
+        verify(channel, times(1)).position();
+        verify(channel, times(1)).size();
+        verify(channel, times(1)).implCloseChannel();
     }
 
     public Flux<ByteBuffer> mockReturnType() {

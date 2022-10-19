@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/alert/anomaly/configurations/1c1575d8-b09e-40c3-a3c0-d459c64d8382/alerts/17bbd8dec00/incidents?$maxpagesize=10",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/alert/anomaly/configurations/126d1470-b500-4ef0-b5c0-47f9ca914a75/alerts/17f9f794800/incidents?$maxpagesize=10",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "3974bbcb-e848-491e-9df5-7e9440b2e575"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "79f958a0-45f1-451c-9562-4489f31f3737"
     },
     "Response" : {
-      "x-request-id" : "dff36024-ed6c-44e3-a247-25f241856800",
-      "content-length" : "1541",
-      "x-envoy-upstream-service-time" : "272",
+      "x-request-id" : "37dd6c9c-bd2d-447f-a05d-48a266f252e6",
+      "content-length" : "498",
+      "x-envoy-upstream-service-time" : "420",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "dff36024-ed6c-44e3-a247-25f241856800",
+      "apim-request-id" : "37dd6c9c-bd2d-447f-a05d-48a266f252e6",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"dataFeedId\":\"151e5444-449f-441e-8b64-988f21c5d054\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"anomalyDetectionConfigurationId\":\"efaee305-f049-43ec-9f9b-76026d55c14a\",\"incidentId\":\"30612c95b4c216ef418956c5c6162691-17bbd8dec00\",\"startTime\":\"2021-09-07T00:00:00Z\",\"lastTime\":\"2021-09-07T00:00:00Z\",\"rootNode\":{\"dimension\":{\"region\":\"Tianjin\",\"category\":\"Home & Garden\"}},\"property\":{\"maxSeverity\":\"Low\",\"incidentStatus\":\"Active\",\"valueOfRootNode\":18544.0,\"expectedValueOfRootNode\":18573.49119556344}},{\"dataFeedId\":\"151e5444-449f-441e-8b64-988f21c5d054\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"anomalyDetectionConfigurationId\":\"efaee305-f049-43ec-9f9b-76026d55c14a\",\"incidentId\":\"4ec127166abf8387b2874bae49734ab1-17bbd8dec00\",\"startTime\":\"2021-09-06T00:00:00Z\",\"lastTime\":\"2021-09-07T00:00:00Z\",\"rootNode\":{\"dimension\":{\"region\":\"__SUM__\",\"category\":\"__SUM__\"}},\"property\":{\"maxSeverity\":\"High\",\"incidentStatus\":\"Active\",\"valueOfRootNode\":65120708.60000002,\"expectedValueOfRootNode\":60928226.58873364}},{\"dataFeedId\":\"151e5444-449f-441e-8b64-988f21c5d054\",\"metricId\":\"390d1139-98fb-45af-b831-8d5ad61b150a\",\"anomalyDetectionConfigurationId\":\"efaee305-f049-43ec-9f9b-76026d55c14a\",\"incidentId\":\"efe6bdf61f01a37d8ddbb133afde0756-17bbd8dec00\",\"startTime\":\"2021-09-07T00:00:00Z\",\"lastTime\":\"2021-09-07T00:00:00Z\",\"rootNode\":{\"dimension\":{\"region\":\"Istanbul\",\"category\":\"Home & Garden\"}},\"property\":{\"maxSeverity\":\"Low\",\"incidentStatus\":\"Active\",\"valueOfRootNode\":10715.2,\"expectedValueOfRootNode\":9806.569582296583}}]}",
-      "Date" : "Thu, 28 Oct 2021 22:36:38 GMT",
+      "Body" : "{\"value\":[{\"dataFeedId\":\"6e48e476-33e6-4113-a299-a5740bc0db47\",\"metricId\":\"b6c0649c-0c51-4aa6-82b6-3c3b0aa55066\",\"anomalyDetectionConfigurationId\":\"78f3a4e7-fe53-4a05-9f4d-d724ab6c23a7\",\"incidentId\":\"88ecf25a0e6bd330ef9e7b49b7c5b92b-17f9f794800\",\"startTime\":\"2022-03-19T00:00:00Z\",\"lastTime\":\"2022-03-19T00:00:00Z\",\"rootNode\":{\"dimension\":{\"Dim1\":\"__SUM__\",\"Dim2\":\"__SUM__\"}},\"property\":{\"maxSeverity\":\"High\",\"incidentStatus\":\"Active\",\"valueOfRootNode\":97249.0,\"expectedValueOfRootNode\":80000.0}}]}",
+      "Date" : "Fri, 08 Apr 2022 23:50:12 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

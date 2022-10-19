@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Properties describing the software upgrade state of the Cache. */
 @Immutable
 public final class CacheUpgradeStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheUpgradeStatus.class);
-
     /*
      * Version string of the firmware currently installed on this Cache.
      */

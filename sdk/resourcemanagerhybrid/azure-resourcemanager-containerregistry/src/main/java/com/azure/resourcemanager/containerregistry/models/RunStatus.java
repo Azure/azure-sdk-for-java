@@ -45,7 +45,11 @@ public final class RunStatus extends ExpandableStringEnum<RunStatus> {
         return fromString(name, RunStatus.class);
     }
 
-    /** @return known RunStatus values. */
+    /**
+     * Gets known RunStatus values.
+     *
+     * @return known RunStatus values.
+     */
     public static Collection<RunStatus> values() {
         return values(RunStatus.class);
     }

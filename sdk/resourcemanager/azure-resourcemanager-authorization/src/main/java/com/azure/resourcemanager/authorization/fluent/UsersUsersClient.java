@@ -37,7 +37,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from users.
+     * @return entities from users as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphUserInner> listUserAsync(
@@ -57,7 +57,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from users.
+     * @return entities from users as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphUserInner> listUserAsync();
@@ -68,7 +68,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from users.
+     * @return entities from users as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphUserInner> listUser();
@@ -90,7 +90,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from users.
+     * @return entities from users as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphUserInner> listUser(
@@ -113,7 +113,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory user object.
+     * @return user along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphUserInner>> createUserWithResponseAsync(MicrosoftGraphUserInner body);
@@ -126,7 +126,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory user object.
+     * @return user on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphUserInner> createUserAsync(MicrosoftGraphUserInner body);
@@ -139,7 +139,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory user object.
+     * @return user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MicrosoftGraphUserInner createUser(MicrosoftGraphUserInner body);
@@ -153,7 +153,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory user object.
+     * @return user along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphUserInner> createUserWithResponse(MicrosoftGraphUserInner body, Context context);
@@ -169,7 +169,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key.
+     * @return entity from users by key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphUserInner>> getUserWithResponseAsync(
@@ -186,7 +186,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key.
+     * @return entity from users by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphUserInner> getUserAsync(
@@ -200,7 +200,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key.
+     * @return entity from users by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphUserInner> getUserAsync(String userId);
@@ -230,7 +230,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from users by key.
+     * @return entity from users by key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphUserInner> getUserWithResponse(
@@ -249,7 +249,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> updateUserWithResponseAsync(String userId, MicrosoftGraphUserInner body);
@@ -263,7 +263,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> updateUserAsync(String userId, MicrosoftGraphUserInner body);
@@ -291,7 +291,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> updateUserWithResponse(String userId, MicrosoftGraphUserInner body, Context context);
@@ -305,7 +305,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteUserWithResponseAsync(String userId, String ifMatch);
@@ -319,7 +319,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteUserAsync(String userId, String ifMatch);
@@ -332,7 +332,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteUserAsync(String userId);
@@ -359,7 +359,7 @@ public interface UsersUsersClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteUserWithResponse(String userId, String ifMatch, Context context);

@@ -6,32 +6,26 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sql always encrypted properties. */
 @Fluent
 public final class SqlAlwaysEncryptedProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlAlwaysEncryptedProperties.class);
-
     /*
-     * Sql always encrypted AKV authentication type. Type: string (or
-     * Expression with resultType string).
+     * Sql always encrypted AKV authentication type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "alwaysEncryptedAkvAuthType", required = true)
     private SqlAlwaysEncryptedAkvAuthType alwaysEncryptedAkvAuthType;
 
     /*
-     * The client ID of the application in Azure Active Directory used for
-     * Azure Key Vault authentication. Type: string (or Expression with
-     * resultType string).
+     * The client ID of the application in Azure Active Directory used for Azure Key Vault authentication. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against Azure Key
-     * Vault.
+     * The key of the service principal used to authenticate against Azure Key Vault.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
@@ -41,6 +35,10 @@ public final class SqlAlwaysEncryptedProperties {
      */
     @JsonProperty(value = "credential")
     private CredentialReference credential;
+
+    /** Creates an instance of SqlAlwaysEncryptedProperties class. */
+    public SqlAlwaysEncryptedProperties() {
+    }
 
     /**
      * Get the alwaysEncryptedAkvAuthType property: Sql always encrypted AKV authentication type. Type: string (or
@@ -136,7 +134,7 @@ public final class SqlAlwaysEncryptedProperties {
      */
     public void validate() {
         if (alwaysEncryptedAkvAuthType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property alwaysEncryptedAkvAuthType in model SqlAlwaysEncryptedProperties"));
@@ -148,4 +146,6 @@ public final class SqlAlwaysEncryptedProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlAlwaysEncryptedProperties.class);
 }

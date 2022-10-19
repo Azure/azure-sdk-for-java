@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "https://REDACTED.file.core.windows.net/fa166d0dfa166d0dda12922832a6610b38ca456ea9?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "6978b37a-7eb9-432e-9c52-f016cdee1a50"
+    },
+    "Response" : {
+      "content-length" : "326",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "InvalidHeaderValue",
+      "retry-after" : "0",
+      "StatusCode" : "400",
+      "x-ms-request-id" : "2009c63b-a01a-000f-7a43-493bcc000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>InvalidHeaderValue</Code><Message>The value for one of the HTTP headers is not in the correct format.\nRequestId:2009c63b-a01a-000f-7a43-493bcc000000\nTime:2022-04-05T23:16:38.5856432Z</Message><HeaderName>x-ms-share-quota</HeaderName><HeaderValue>6000</HeaderValue></Error>",
+      "x-ms-client-request-id" : "6978b37a-7eb9-432e-9c52-f016cdee1a50",
+      "Date" : "Tue, 05 Apr 2022 23:16:37 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "fa166d0dfa166d0dda12922832a6610b38ca456ea9" ]
+}

@@ -6,19 +6,16 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the parameters for the url redirect action. */
 @Fluent
 public final class UrlRedirectActionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UrlRedirectActionParameters.class);
-
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleUrlRedirectActionParameters";
 
     /*
      * The redirect type the rule will use when redirecting traffic.
@@ -33,57 +30,54 @@ public final class UrlRedirectActionParameters {
     private DestinationProtocol destinationProtocol;
 
     /*
-     * The full path to redirect. Path cannot be empty and must start with /.
-     * Leave empty to use the incoming path as destination path.
+     * The full path to redirect. Path cannot be empty and must start with /. Leave empty to use the incoming path as
+     * destination path.
      */
     @JsonProperty(value = "customPath")
     private String customPath;
 
     /*
-     * Host to redirect. Leave empty to use the incoming host as the
-     * destination host.
+     * Host to redirect. Leave empty to use the incoming host as the destination host.
      */
     @JsonProperty(value = "customHostname")
     private String customHostname;
 
     /*
-     * The set of query strings to be placed in the redirect URL. Setting this
-     * value would replace any existing query string; leave empty to preserve
-     * the incoming query string. Query string must be in <key>=<value> format.
-     * ? and & will be added automatically so do not include them.
+     * The set of query strings to be placed in the redirect URL. Setting this value would replace any existing query
+     * string; leave empty to preserve the incoming query string. Query string must be in <key>=<value> format. ? and &
+     * will be added automatically so do not include them.
      */
     @JsonProperty(value = "customQueryString")
     private String customQueryString;
 
     /*
-     * Fragment to add to the redirect URL. Fragment is the part of the URL
-     * that comes after #. Do not include the #.
+     * Fragment to add to the redirect URL. Fragment is the part of the URL that comes after #. Do not include the #.
      */
     @JsonProperty(value = "customFragment")
     private String customFragment;
 
     /** Creates an instance of UrlRedirectActionParameters class. */
     public UrlRedirectActionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRedirectActionParameters";
+        typeName = "DeliveryRuleUrlRedirectActionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the UrlRedirectActionParameters object itself.
      */
-    public UrlRedirectActionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public UrlRedirectActionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
@@ -222,10 +216,12 @@ public final class UrlRedirectActionParameters {
      */
     public void validate() {
         if (redirectType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property redirectType in model UrlRedirectActionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UrlRedirectActionParameters.class);
 }

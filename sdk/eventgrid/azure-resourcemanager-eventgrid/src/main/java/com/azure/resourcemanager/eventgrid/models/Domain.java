@@ -50,7 +50,7 @@ public interface Domain {
     Map<String, String> tags();
 
     /**
-     * Gets the systemData property: The system metadata relating to Domain resource.
+     * Gets the systemData property: The system metadata relating to the Event Grid Domain resource.
      *
      * @return the systemData value.
      */
@@ -78,7 +78,7 @@ public interface Domain {
     DomainProvisioningState provisioningState();
 
     /**
-     * Gets the endpoint property: Endpoint for the domain.
+     * Gets the endpoint property: Endpoint for the Event Grid Domain Resource which is used for publishing the events.
      *
      * @return the endpoint value.
      */
@@ -86,7 +86,7 @@ public interface Domain {
 
     /**
      * Gets the inputSchema property: This determines the format that Event Grid should expect for incoming events
-     * published to the domain.
+     * published to the Event Grid Domain Resource.
      *
      * @return the inputSchema value.
      */
@@ -101,7 +101,7 @@ public interface Domain {
     InputSchemaMapping inputSchemaMapping();
 
     /**
-     * Gets the metricResourceId property: Metric resource id for the domain.
+     * Gets the metricResourceId property: Metric resource id for the Event Grid Domain Resource.
      *
      * @return the metricResourceId value.
      */
@@ -164,6 +164,13 @@ public interface Domain {
     Boolean autoDeleteTopicWithLastSubscription();
 
     /**
+     * Gets the dataResidencyBoundary property: Data Residency Boundary of the resource.
+     *
+     * @return the dataResidencyBoundary value.
+     */
+    DataResidencyBoundary dataResidencyBoundary();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -176,6 +183,13 @@ public interface Domain {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.DomainInner object.
@@ -237,7 +251,8 @@ public interface Domain {
                 DefinitionStages.WithInboundIpRules,
                 DefinitionStages.WithDisableLocalAuth,
                 DefinitionStages.WithAutoCreateTopicWithFirstSubscription,
-                DefinitionStages.WithAutoDeleteTopicWithLastSubscription {
+                DefinitionStages.WithAutoDeleteTopicWithLastSubscription,
+                DefinitionStages.WithDataResidencyBoundary {
             /**
              * Executes the create request.
              *
@@ -277,10 +292,10 @@ public interface Domain {
         interface WithInputSchema {
             /**
              * Specifies the inputSchema property: This determines the format that Event Grid should expect for incoming
-             * events published to the domain..
+             * events published to the Event Grid Domain Resource..
              *
              * @param inputSchema This determines the format that Event Grid should expect for incoming events published
-             *     to the domain.
+             *     to the Event Grid Domain Resource.
              * @return the next definition stage.
              */
             WithCreate withInputSchema(InputSchema inputSchema);
@@ -394,6 +409,16 @@ public interface Domain {
              */
             WithCreate withAutoDeleteTopicWithLastSubscription(Boolean autoDeleteTopicWithLastSubscription);
         }
+        /** The stage of the Domain definition allowing to specify dataResidencyBoundary. */
+        interface WithDataResidencyBoundary {
+            /**
+             * Specifies the dataResidencyBoundary property: Data Residency Boundary of the resource..
+             *
+             * @param dataResidencyBoundary Data Residency Boundary of the resource.
+             * @return the next definition stage.
+             */
+            WithCreate withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary);
+        }
     }
     /**
      * Begins update for the Domain resource.
@@ -410,7 +435,8 @@ public interface Domain {
             UpdateStages.WithInboundIpRules,
             UpdateStages.WithDisableLocalAuth,
             UpdateStages.WithAutoCreateTopicWithFirstSubscription,
-            UpdateStages.WithAutoDeleteTopicWithLastSubscription {
+            UpdateStages.WithAutoDeleteTopicWithLastSubscription,
+            UpdateStages.WithDataResidencyBoundary {
         /**
          * Executes the update request.
          *
@@ -547,6 +573,16 @@ public interface Domain {
              * @return the next definition stage.
              */
             Update withAutoDeleteTopicWithLastSubscription(Boolean autoDeleteTopicWithLastSubscription);
+        }
+        /** The stage of the Domain update allowing to specify dataResidencyBoundary. */
+        interface WithDataResidencyBoundary {
+            /**
+             * Specifies the dataResidencyBoundary property: The data residency boundary for the domain..
+             *
+             * @param dataResidencyBoundary The data residency boundary for the domain.
+             * @return the next definition stage.
+             */
+            Update withDataResidencyBoundary(DataResidencyBoundary dataResidencyBoundary);
         }
     }
     /**

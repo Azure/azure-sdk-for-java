@@ -9,10 +9,9 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolOperationResultsClient;
 import com.azure.resourcemanager.synapse.models.SqlPoolOperationResults;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolOperationResultsImpl implements SqlPoolOperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolOperationResultsImpl.class);
 
     private final SqlPoolOperationResultsClient innerClient;
 

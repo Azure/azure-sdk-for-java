@@ -11,10 +11,9 @@ import com.azure.resourcemanager.automation.fluent.FieldsClient;
 import com.azure.resourcemanager.automation.fluent.models.TypeFieldInner;
 import com.azure.resourcemanager.automation.models.Fields;
 import com.azure.resourcemanager.automation.models.TypeField;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class FieldsImpl implements Fields {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FieldsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(FieldsImpl.class);
 
     private final FieldsClient innerClient;
 

@@ -2,12 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.communication.common;
 
+import com.azure.communication.common.implementation.TokenParser;
+import com.azure.core.credential.AccessToken;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-
 import reactor.core.publisher.Mono;
-
-import com.azure.core.credential.AccessToken;
 
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -15,15 +14,15 @@ import java.util.Date;
 import java.util.Objects;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
-
-import com.azure.communication.common.implementation.TokenParser;
 
 /**
  * Provide user credential for Communication service user
  */
 public final class CommunicationTokenCredential implements AutoCloseable {
     private static final int DEFAULT_EXPIRING_OFFSET_MINUTES = 10;
+    private static final int DEFAULT_REFRESH_AFTER_TTL_DIVIDER = 2;
 
     private final ClientLogger logger = new ClientLogger(CommunicationTokenCredential.class);
 
@@ -47,22 +46,45 @@ public final class CommunicationTokenCredential implements AutoCloseable {
      * Create with tokenRefreshOptions, which includes a token supplier and optional serialized JWT token.
      * If refresh proactively is true, callback function tokenRefresher will be called
      * ahead of the token expiry by the number of minutes specified by
-     * CallbackOffsetMinutes defaulted to ten minutes. To modify this default, call
-     * setCallbackOffsetMinutes after construction
+     * CallbackOffsetMinutes defaulted to ten minutes.
      *
      * @param tokenRefreshOptions implementation to supply fresh token when reqested
      */
     public CommunicationTokenCredential(CommunicationTokenRefreshOptions tokenRefreshOptions) {
-        Supplier<Mono<String>> tokenRefresher = tokenRefreshOptions.getTokenRefresher();
-        Objects.requireNonNull(tokenRefresher, "'tokenRefresher' cannot be null.");
-        refresher = tokenRefresher;
+        Supplier<String> tokenRefresher = tokenRefreshOptions.getTokenRefresherSync();
+        refresher = tokenRefresher != null
+                ? () -> Mono.fromSupplier(tokenRefresher)
+                : tokenRefreshOptions.getTokenRefresher();
+        Objects.requireNonNull(refresher, "'tokenRefresher' cannot be null.");
         if (tokenRefreshOptions.getInitialToken() != null) {
             setToken(tokenRefreshOptions.getInitialToken());
-            if (tokenRefreshOptions.isRefreshProactively()) {
-                OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
-                fetchingTask = new FetchingTask(this, nextFetchTime);
-            }
         }
+        if (tokenRefreshOptions.isRefreshProactively()) {
+            scheduleRefresher();
+        }
+    }
+
+    private void scheduleRefresher() {
+        OffsetDateTime nextFetchTime;
+        if (isTokenExpired(accessToken)) {
+            nextFetchTime = OffsetDateTime.now();
+        } else {
+            OffsetDateTime now = OffsetDateTime.now();
+            long tokenTtlMs = accessToken.getExpiresAt().toInstant().toEpochMilli() - now.toInstant().toEpochMilli();
+            long nextFetchTimeMs = isTokenExpiringSoon()
+                    ? tokenTtlMs / DEFAULT_REFRESH_AFTER_TTL_DIVIDER
+                    : tokenTtlMs - TimeUnit.MILLISECONDS.convert(DEFAULT_EXPIRING_OFFSET_MINUTES, TimeUnit.MINUTES);
+            nextFetchTime = now.plusNanos(TimeUnit.NANOSECONDS.convert(nextFetchTimeMs, TimeUnit.MILLISECONDS));
+        }
+        fetchingTask = new FetchingTask(this, nextFetchTime);
+    }
+
+    private boolean isTokenExpired(AccessToken accessToken) {
+        return accessToken == null || accessToken.isExpired();
+    }
+
+    private boolean isTokenExpiringSoon() {
+        return accessToken == null || OffsetDateTime.now().compareTo(accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES)) > 0;
     }
 
     /**
@@ -73,17 +95,21 @@ public final class CommunicationTokenCredential implements AutoCloseable {
     public Mono<AccessToken> getToken() {
         if (isClosed) {
             return FluxUtil.monoError(logger,
-                new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
+                    new RuntimeException("getToken called on closed CommunicationTokenCredential object"));
         }
-        if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
+        if (isTokenExpired(accessToken) && refresher != null) {
             synchronized (this) {
                 // no valid token to return and can refresh
-                if ((accessToken == null || accessToken.isExpired()) && refresher != null) {
+                if (isTokenExpired(accessToken) && refresher != null) {
                     return fetchFreshToken()
-                        .map(token -> {
-                            accessToken = tokenParser.parseJWTToken(token);
-                            return accessToken;
-                        });
+                            .flatMap(token -> {
+                                accessToken = tokenParser.parseJWTToken(token);
+                                if (isTokenExpired(accessToken)) {
+                                    return FluxUtil.monoError(logger,
+                                            new IllegalArgumentException("The token returned from the tokenRefresher is expired."));
+                                }
+                                return Mono.just(accessToken);
+                            });
                 }
             }
         }
@@ -107,10 +133,8 @@ public final class CommunicationTokenCredential implements AutoCloseable {
 
     private void setToken(String freshToken) {
         accessToken = tokenParser.parseJWTToken(freshToken);
-
-        if (fetchingTask != null) {
-            OffsetDateTime nextFetchTime = accessToken.getExpiresAt().minusMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
-            fetchingTask.setNextFetchTime(nextFetchTime);
+        if (hasProactiveFetcher()) {
+            scheduleRefresher();
         }
     }
 
@@ -118,7 +142,7 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         Mono<String> tokenAsync = refresher.get();
         if (tokenAsync == null) {
             return FluxUtil.monoError(logger,
-                new RuntimeException("get() function of the token refresher should not return null."));
+                    new RuntimeException("get() function of the token refresher should not return null."));
         }
         return tokenAsync;
     }
@@ -129,14 +153,9 @@ public final class CommunicationTokenCredential implements AutoCloseable {
         private OffsetDateTime nextFetchTime;
 
         FetchingTask(CommunicationTokenCredential tokenHost,
-            OffsetDateTime nextFetchAt) {
+                     OffsetDateTime nextFetchAt) {
             host = tokenHost;
             nextFetchTime = nextFetchAt;
-            startTimer();
-        }
-
-        private synchronized void setNextFetchTime(OffsetDateTime newFetchTime) {
-            nextFetchTime = newFetchTime;
             stopTimer();
             startTimer();
         }
@@ -165,6 +184,10 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             host.setToken(freshTokenString);
         }
 
+        private boolean isTokenExpired(String freshTokenString) {
+            return host.tokenParser.parseJWTToken(freshTokenString).isExpired();
+        }
+
         private class TokenExpiringTask extends TimerTask {
             private final ClientLogger logger = new ClientLogger(TokenExpiringTask.class);
             private final FetchingTask tokenCache;
@@ -177,7 +200,13 @@ public final class CommunicationTokenCredential implements AutoCloseable {
             public void run() {
                 try {
                     Mono<String> tokenAsync = tokenCache.fetchFreshToken();
-                    tokenCache.setToken(tokenAsync.block());
+                    tokenAsync.subscribe(token -> {
+                        if (!tokenCache.isTokenExpired(token)) {
+                            tokenCache.setToken(token);
+                        } else {
+                            logger.logExceptionAsError(new IllegalArgumentException("The token returned from the tokenRefresher is expired."));
+                        }
+                    });
                 } catch (Exception exception) {
                     logger.logExceptionAsError(new RuntimeException(exception));
                 }

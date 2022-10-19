@@ -6,20 +6,15 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of Frontend IP Configuration of the load balancer. */
 @Fluent
 public final class FrontendIpConfigurationPropertiesFormatInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(FrontendIpConfigurationPropertiesFormatInner.class);
-
     /*
      * An array of references to inbound rules that use this frontend IP.
      */
@@ -39,8 +34,7 @@ public final class FrontendIpConfigurationPropertiesFormatInner {
     private List<SubResource> outboundRules;
 
     /*
-     * An array of references to load balancing rules that use this frontend
-     * IP.
+     * An array of references to load balancing rules that use this frontend IP.
      */
     @JsonProperty(value = "loadBalancingRules", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> loadBalancingRules;
@@ -58,8 +52,7 @@ public final class FrontendIpConfigurationPropertiesFormatInner {
     private IpAllocationMethod privateIpAllocationMethod;
 
     /*
-     * Whether the specific ipconfiguration is IPv4 or IPv6. Default is taken
-     * as IPv4.
+     * Whether the specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
      */
     @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;
@@ -93,6 +86,10 @@ public final class FrontendIpConfigurationPropertiesFormatInner {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of FrontendIpConfigurationPropertiesFormatInner class. */
+    public FrontendIpConfigurationPropertiesFormatInner() {
+    }
 
     /**
      * Get the inboundNatRules property: An array of references to inbound rules that use this frontend IP.

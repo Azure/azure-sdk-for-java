@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Backend address of an application gateway. */
 @Fluent
 public final class ApplicationGatewayBackendAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendAddress.class);
-
     /*
      * Fully qualified domain name (FQDN).
      */
@@ -25,6 +21,10 @@ public final class ApplicationGatewayBackendAddress {
      */
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
+
+    /** Creates an instance of ApplicationGatewayBackendAddress class. */
+    public ApplicationGatewayBackendAddress() {
+    }
 
     /**
      * Get the fqdn property: Fully qualified domain name (FQDN).

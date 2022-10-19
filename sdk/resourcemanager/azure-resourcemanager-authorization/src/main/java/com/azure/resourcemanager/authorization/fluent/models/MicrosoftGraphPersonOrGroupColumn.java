@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** personOrGroupColumn. */
 @Fluent
 public final class MicrosoftGraphPersonOrGroupColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphPersonOrGroupColumn.class);
-
     /*
      * Indicates whether multiple values can be selected from the source.
      */

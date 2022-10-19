@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureSqlDWTableDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("AzureSqlDWTable")
 @Fluent
 public final class AzureSqlDWTableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlDWTableDataset.class);
-
     /*
      * Azure SQL Data Warehouse dataset properties.
      */
     @JsonProperty(value = "typeProperties")
     private AzureSqlDWTableDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of AzureSqlDWTableDataset class. */
+    public AzureSqlDWTableDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Azure SQL Data Warehouse dataset properties.

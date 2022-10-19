@@ -146,6 +146,10 @@ public final class IncidentImpl implements Incident, Incident.Definition, Incide
         return this.innerModel().title();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public IncidentInner innerModel() {
         return this.innerObject;
     }

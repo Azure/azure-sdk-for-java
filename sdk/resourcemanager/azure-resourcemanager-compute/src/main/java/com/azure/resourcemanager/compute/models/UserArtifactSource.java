@@ -6,24 +6,19 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The source image from which the Image Version is going to be created. */
 @Fluent
 public final class UserArtifactSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserArtifactSource.class);
-
     /*
-     * Required. The mediaLink of the artifact, must be a readable storage page
-     * blob.
+     * Required. The mediaLink of the artifact, must be a readable storage page blob.
      */
     @JsonProperty(value = "mediaLink", required = true)
     private String mediaLink;
 
     /*
-     * Optional. The defaultConfigurationLink of the artifact, must be a
-     * readable storage page blob.
+     * Optional. The defaultConfigurationLink of the artifact, must be a readable storage page blob.
      */
     @JsonProperty(value = "defaultConfigurationLink")
     private String defaultConfigurationLink;
@@ -77,9 +72,11 @@ public final class UserArtifactSource {
      */
     public void validate() {
         if (mediaLink() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property mediaLink in model UserArtifactSource"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserArtifactSource.class);
 }

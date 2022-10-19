@@ -27,7 +27,7 @@ import java.util.Map;
 /** Samples for DatabaseAccounts Update. */
 public final class DatabaseAccountsUpdateSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2021-10-15/examples/CosmosDBDatabaseAccountPatch.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2022-08-15/examples/CosmosDBDatabaseAccountPatch.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountPatch.
@@ -88,7 +88,8 @@ public final class DatabaseAccountsUpdateSamples {
                         Arrays
                             .asList(
                                 "/subscriptions/subId/resourcegroups/rgName/providers/Microsoft.Synapse/workspaces/workspaceName"))
-                    .withCapacity(new Capacity().withTotalThroughputLimit(2000)),
+                    .withCapacity(new Capacity().withTotalThroughputLimit(2000))
+                    .withEnablePartitionMerge(true),
                 Context.NONE);
     }
 

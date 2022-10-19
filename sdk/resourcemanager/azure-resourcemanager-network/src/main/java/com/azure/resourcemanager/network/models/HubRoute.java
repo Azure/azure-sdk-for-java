@@ -6,18 +6,14 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** RouteTable route. */
 @Fluent
 public final class HubRoute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubRoute.class);
-
     /*
-     * The name of the Route that is unique within a RouteTable. This name can
-     * be used to access this route.
+     * The name of the Route that is unique within a RouteTable. This name can be used to access this route.
      */
     @JsonProperty(value = "name", required = true)
     private String name;
@@ -45,6 +41,10 @@ public final class HubRoute {
      */
     @JsonProperty(value = "nextHop", required = true)
     private String nextHop;
+
+    /** Creates an instance of HubRoute class. */
+    public HubRoute() {
+    }
 
     /**
      * Get the name property: The name of the Route that is unique within a RouteTable. This name can be used to access
@@ -155,28 +155,30 @@ public final class HubRoute {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model HubRoute"));
         }
         if (destinationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property destinationType in model HubRoute"));
         }
         if (destinations() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property destinations in model HubRoute"));
         }
         if (nextHopType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property nextHopType in model HubRoute"));
         }
         if (nextHop() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property nextHop in model HubRoute"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HubRoute.class);
 }

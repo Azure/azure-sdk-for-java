@@ -5,26 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the parameters of a ScaleSet managed disk. */
 @Fluent
 public final class VirtualMachineScaleSetManagedDiskParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetManagedDiskParameters.class);
-
     /*
-     * Specifies the storage account type for the managed disk. NOTE:
-     * UltraSSD_LRS can only be used with data disks, it cannot be used with OS
-     * Disk.
+     * Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it
+     * cannot be used with OS Disk.
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountTypes storageAccountType;
 
     /*
-     * Specifies the customer managed disk encryption set resource id for the
-     * managed disk.
+     * Specifies the customer managed disk encryption set resource id for the managed disk.
      */
     @JsonProperty(value = "diskEncryptionSet")
     private DiskEncryptionSetParameters diskEncryptionSet;

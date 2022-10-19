@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FirewallPolicyFilterRuleCollectionActionType. */
+/** The action type of a rule. */
 public final class FirewallPolicyFilterRuleCollectionActionType
     extends ExpandableStringEnum<FirewallPolicyFilterRuleCollectionActionType> {
     /** Static value Allow for FirewallPolicyFilterRuleCollectionActionType. */
@@ -28,7 +28,11 @@ public final class FirewallPolicyFilterRuleCollectionActionType
         return fromString(name, FirewallPolicyFilterRuleCollectionActionType.class);
     }
 
-    /** @return known FirewallPolicyFilterRuleCollectionActionType values. */
+    /**
+     * Gets known FirewallPolicyFilterRuleCollectionActionType values.
+     *
+     * @return known FirewallPolicyFilterRuleCollectionActionType values.
+     */
     public static Collection<FirewallPolicyFilterRuleCollectionActionType> values() {
         return values(FirewallPolicyFilterRuleCollectionActionType.class);
     }

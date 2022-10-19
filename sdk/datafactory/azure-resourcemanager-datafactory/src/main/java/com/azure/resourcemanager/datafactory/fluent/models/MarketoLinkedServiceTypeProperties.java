@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Marketo server linked service properties. */
 @Fluent
 public final class MarketoLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MarketoLinkedServiceTypeProperties.class);
-
     /*
      * The endpoint of the Marketo server. (i.e. 123-ABC-321.mktorest.com)
      */
@@ -34,34 +31,34 @@ public final class MarketoLinkedServiceTypeProperties {
     private SecretBase clientSecret;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
     @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of MarketoLinkedServiceTypeProperties class. */
+    public MarketoLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the endpoint property: The endpoint of the Marketo server. (i.e. 123-ABC-321.mktorest.com).
@@ -218,13 +215,13 @@ public final class MarketoLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endpoint in model MarketoLinkedServiceTypeProperties"));
         }
         if (clientId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clientId in model MarketoLinkedServiceTypeProperties"));
@@ -233,4 +230,6 @@ public final class MarketoLinkedServiceTypeProperties {
             clientSecret().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MarketoLinkedServiceTypeProperties.class);
 }

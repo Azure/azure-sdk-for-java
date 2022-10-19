@@ -5,35 +5,34 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Url configuration of the Actions set in Application Gateway. */
 @Fluent
 public final class ApplicationGatewayUrlConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayUrlConfiguration.class);
-
     /*
-     * Url path which user has provided for url rewrite. Null means no path
-     * will be updated. Default value is null.
+     * Url path which user has provided for url rewrite. Null means no path will be updated. Default value is null.
      */
     @JsonProperty(value = "modifiedPath")
     private String modifiedPath;
 
     /*
-     * Query string which user has provided for url rewrite. Null means no
-     * query string will be updated. Default value is null.
+     * Query string which user has provided for url rewrite. Null means no query string will be updated. Default value
+     * is null.
      */
     @JsonProperty(value = "modifiedQueryString")
     private String modifiedQueryString;
 
     /*
-     * If set as true, it will re-evaluate the url path map provided in path
-     * based request routing rules using modified path. Default value is false.
+     * If set as true, it will re-evaluate the url path map provided in path based request routing rules using modified
+     * path. Default value is false.
      */
     @JsonProperty(value = "reroute")
     private Boolean reroute;
+
+    /** Creates an instance of ApplicationGatewayUrlConfiguration class. */
+    public ApplicationGatewayUrlConfiguration() {
+    }
 
     /**
      * Get the modifiedPath property: Url path which user has provided for url rewrite. Null means no path will be

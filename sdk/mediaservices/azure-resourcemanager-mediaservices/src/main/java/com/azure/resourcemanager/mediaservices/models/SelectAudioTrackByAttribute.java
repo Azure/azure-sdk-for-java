@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Select audio tracks from the input by specifying an attribute and an attribute filter. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.SelectAudioTrackByAttribute")
-@JsonFlatten
 @Fluent
-public class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SelectAudioTrackByAttribute.class);
-
+public final class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
     /*
      * The TrackAttribute to filter the tracks by.
      */
@@ -27,15 +22,14 @@ public class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
     private TrackAttribute attribute;
 
     /*
-     * The type of AttributeFilter to apply to the TrackAttribute in order to
-     * select the tracks.
+     * The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks.
      */
     @JsonProperty(value = "filter", required = true)
     private AttributeFilter filter;
 
     /*
-     * The value to filter the tracks by.  Only used when
-     * AttributeFilter.ValueEquals is specified for the Filter property.
+     * The value to filter the tracks by.  Only used when AttributeFilter.ValueEquals is specified for the Filter
+     * property.
      */
     @JsonProperty(value = "filterValue")
     private String filterValue;
@@ -120,16 +114,18 @@ public class SelectAudioTrackByAttribute extends AudioTrackDescriptor {
     public void validate() {
         super.validate();
         if (attribute() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property attribute in model SelectAudioTrackByAttribute"));
         }
         if (filter() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property filter in model SelectAudioTrackByAttribute"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SelectAudioTrackByAttribute.class);
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterRuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for the ListRouteFilterRules API service call. */
 @Fluent
 public final class RouteFilterRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterRuleListResult.class);
-
     /*
      * A list of RouteFilterRules in a resource group.
      */
@@ -27,6 +23,10 @@ public final class RouteFilterRuleListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of RouteFilterRuleListResult class. */
+    public RouteFilterRuleListResult() {
+    }
 
     /**
      * Get the value property: A list of RouteFilterRules in a resource group.

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,106 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.0 (2022-10-11)
+
+### Features Added
+
+- Added `getVersion` to `SchemaProperties`.
+- Added the following methods in `SchemaRegistryAsyncClient`:
+  - `Mono<SchemaRegistrySchema> getSchema(String groupName, String schemaName, int schemaVersion)`
+  - `Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion)`
+- Added the following methods in `SchemaRegistryClient`:
+    - `SchemaRegistrySchema getSchema(String groupName, String schemaName, int schemaVersion)`
+    - `Response<SchemaRegistrySchema> getSchemaWithResponse(String groupName, String schemaName, int schemaVersion, Context context)`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.33.0`.
+- Update `azure-core-http-netty` dependency to `1.12.6`.
+
+## 1.2.4 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.32.0`.
+- Update `azure-core-http-netty` dependency to `1.12.5`.
+
+## 1.2.3 (2022-08-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.31.0`.
+- Update `azure-core-http-netty` dependency to `1.12.4`.
+
+## 1.2.2 (2022-07-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.30.0`.
+- Update `azure-core-http-netty` dependency to `1.12.3`.
+
+## 1.2.1 (2022-06-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.29.1`.
+- Update `azure-core-http-netty` dependency to `1.12.2`.
+
+## 1.2.0 (2022-05-13)
+
+### Features Added
+
+- Added `SchemaProperties.getGroupName()`.
+- Added `SchemaProperties.getName()`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.28.0`.
+- Update `azure-core-http-netty` dependency to `1.12.0`.
+
+## 1.1.1 (2022-04-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.27.0`.
+- Update `azure-core-http-netty` dependency to `1.11.9`.
+
+## 1.1.0 (2022-03-15)
+
+### Features Added
+
+- Added interfaces from `com.azure.core.client.traits` to `SchemaRegistryClientBuilder`.
+- Added `retryOptions` to `SchemaRegistryClientBuilder`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.26.0`.
+- Update `azure-core-http-netty` dependency to `1.11.8`.
+
+## 1.0.2 (2022-02-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-core` dependency to `1.25.0`.
 
 ## 1.0.1 (2022-01-18)
 

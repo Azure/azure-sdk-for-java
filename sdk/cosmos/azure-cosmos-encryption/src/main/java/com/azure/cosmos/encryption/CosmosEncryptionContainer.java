@@ -6,7 +6,6 @@ package com.azure.cosmos.encryption;
 import com.azure.cosmos.CosmosContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.encryption.models.SqlQuerySpecWithEncryption;
-import com.azure.cosmos.encryption.util.Beta;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -18,17 +17,25 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
+import com.azure.cosmos.models.CosmosItemOperation;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import reactor.core.Exceptions;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.List;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
  * CosmosContainer with encryption capabilities.
  */
-public class CosmosEncryptionContainer {
+public final class CosmosEncryptionContainer {
     private final CosmosContainer cosmosContainer;
     private final CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
 
@@ -60,7 +67,6 @@ public class CosmosEncryptionContainer {
      * @param options the options.
      * @return the cosmos item response.
      */
-
     public <T> CosmosItemResponse<T> createItem(T item, CosmosItemRequestOptions options) {
         return this.blockItemResponse(this.cosmosEncryptionAsyncContainer.createItem(item, options));
     }
@@ -75,7 +81,6 @@ public class CosmosEncryptionContainer {
      * @param requestOptions the options.
      * @return the Cosmos item response.
      */
-    @SuppressWarnings("unchecked")
     public <T> CosmosItemResponse<T> createItem(T item,
                                                 PartitionKey partitionKey,
                                                 CosmosItemRequestOptions requestOptions) {
@@ -118,8 +123,8 @@ public class CosmosEncryptionContainer {
      * @param options the options.
      * @return the Cosmos item response
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
+    // TODO Make this api public once it is GA in cosmos core library
+    CosmosItemResponse<Object> deleteAllItemsByPartitionKey(PartitionKey partitionKey, CosmosItemRequestOptions options) {
         return this.blockDeleteItemResponse(this.cosmosEncryptionAsyncContainer.deleteAllItemsByPartitionKey(partitionKey, options));
     }
 
@@ -272,9 +277,8 @@ public class CosmosEncryptionContainer {
      * @param classType the class type.
      * @return a {@link CosmosPagedFlux} containing one feed response page
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public <T> CosmosPagedIterable<T> queryChangeFeed(
+    // TODO Make this api public once it is GA in cosmos core library
+    <T> CosmosPagedIterable<T> queryChangeFeed(
         CosmosChangeFeedRequestOptions options,
         Class<T> classType) {
         checkNotNull(options, "Argument 'options' must not be null.");
@@ -316,8 +320,6 @@ public class CosmosEncryptionContainer {
      * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText =
-        Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBatchResponse executeCosmosBatch(CosmosBatch cosmosBatch) {
         return this.blockBatchResponse(this.cosmosEncryptionAsyncContainer.executeCosmosBatch(cosmosBatch));
     }
@@ -352,11 +354,86 @@ public class CosmosEncryptionContainer {
      * Use {@link CosmosBatchResponse#isSuccessStatusCode} on the response returned to ensure that the
      * transactional batch succeeded.
      */
-    @Beta(value = Beta.SinceVersion.V1, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosBatchResponse executeCosmosBatch(
         CosmosBatch cosmosBatch,
         CosmosBatchRequestOptions requestOptions) {
         return this.blockBatchResponse(this.cosmosEncryptionAsyncContainer.executeCosmosBatch(cosmosBatch, requestOptions));
+    }
+
+    /**
+     * Run patch operations on an Item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param options the request options.
+     * @param itemType the item type.
+     *
+     * @return the Cosmos item resource response with the patched item or an exception.
+     */
+    public <T> CosmosItemResponse<T> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations,
+        CosmosPatchItemRequestOptions options,
+        Class<T> itemType) {
+
+        return this.blockItemResponse(this.cosmosEncryptionAsyncContainer.patchItem(itemId, partitionKey, cosmosPatchOperations, options, itemType));
+    }
+
+    /**
+     * Executes list of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     * @param operations list of operation which will be executed by this container.
+     *
+     * @return An Iterable of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
+     *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link com.azure.cosmos.models.CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link com.azure.cosmos.models.CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    public <TContext> Iterable<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
+        Iterable<CosmosItemOperation> operations) {
+        return this.blockBulkResponse(this.cosmosEncryptionAsyncContainer.executeBulkOperations(Flux.fromIterable(operations)));
+    }
+
+    /**
+     * Executes list of operations in Bulk.
+     *
+     * @param <TContext> The context for the bulk processing.
+     *
+     * @param operations list of operation which will be executed by this container.
+     * @param bulkOptions Options that apply for this Bulk request which specifies options regarding execution like
+     *                    concurrency, batching size, interval and context.
+     *
+     * @return An Iterable of {@link CosmosBulkOperationResponse} which contains operation and it's response or exception.
+     * <p>
+     *     To create a operation which can be executed here, use {@link com.azure.cosmos.models.CosmosBulkOperations}. For eg.
+     *     for a upsert operation use {@link com.azure.cosmos.models.CosmosBulkOperations#getUpsertItemOperation(Object, PartitionKey)}
+     * </p>
+     * <p>
+     *     We can get the corresponding operation using {@link CosmosBulkOperationResponse#getOperation()} and
+     *     it's response using {@link CosmosBulkOperationResponse#getResponse()}. If the operation was executed
+     *     successfully, the value returned by {@link com.azure.cosmos.models.CosmosBulkItemResponse#isSuccessStatusCode()} will be true. To get
+     *     actual status use {@link com.azure.cosmos.models.CosmosBulkItemResponse#getStatusCode()}.
+     * </p>
+     * To check if the operation had any exception, use {@link CosmosBulkOperationResponse#getException()} to
+     * get the exception.
+     */
+    public <TContext> Iterable<CosmosBulkOperationResponse<TContext>> executeBulkOperations(
+        Iterable<CosmosItemOperation> operations,
+        CosmosBulkExecutionOptions bulkOptions) {
+        return this.blockBulkResponse(this.cosmosEncryptionAsyncContainer.executeBulkOperations(Flux.fromIterable(operations), bulkOptions));
     }
 
     /**
@@ -399,6 +476,21 @@ public class CosmosEncryptionContainer {
     private CosmosBatchResponse blockBatchResponse(Mono<CosmosBatchResponse> batchResponseMono) {
         try {
             return batchResponseMono.block();
+        } catch (Exception ex) {
+            final Throwable throwable = Exceptions.unwrap(ex);
+            if (throwable instanceof CosmosException) {
+                throw (CosmosException) throwable;
+            } else {
+                throw ex;
+            }
+        }
+    }
+
+    private <TContext> List<CosmosBulkOperationResponse<TContext>> blockBulkResponse(
+        Flux<CosmosBulkOperationResponse<TContext>> bulkResponse) {
+
+        try {
+            return bulkResponse.collectList().block();
         } catch (Exception ex) {
             final Throwable throwable = Exceptions.unwrap(ex);
             if (throwable instanceof CosmosException) {

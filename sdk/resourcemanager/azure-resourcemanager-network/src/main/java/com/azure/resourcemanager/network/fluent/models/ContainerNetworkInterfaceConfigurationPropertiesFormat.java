@@ -6,38 +6,34 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Container network interface configuration properties. */
 @Fluent
 public final class ContainerNetworkInterfaceConfigurationPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfaceConfigurationPropertiesFormat.class);
-
     /*
-     * A list of ip configurations of the container network interface
-     * configuration.
+     * A list of ip configurations of the container network interface configuration.
      */
     @JsonProperty(value = "ipConfigurations")
     private List<IpConfigurationProfileInner> ipConfigurations;
 
     /*
-     * A list of container network interfaces created from this container
-     * network interface configuration.
+     * A list of container network interfaces created from this container network interface configuration.
      */
     @JsonProperty(value = "containerNetworkInterfaces")
     private List<SubResource> containerNetworkInterfaces;
 
     /*
-     * The provisioning state of the container network interface configuration
-     * resource.
+     * The provisioning state of the container network interface configuration resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ContainerNetworkInterfaceConfigurationPropertiesFormat class. */
+    public ContainerNetworkInterfaceConfigurationPropertiesFormat() {
+    }
 
     /**
      * Get the ipConfigurations property: A list of ip configurations of the container network interface configuration.

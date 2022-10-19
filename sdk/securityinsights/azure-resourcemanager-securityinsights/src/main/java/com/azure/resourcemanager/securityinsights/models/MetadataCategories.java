@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ies for the solution content item. */
 @Fluent
 public final class MetadataCategories {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataCategories.class);
-
     /*
      * domain for the solution content item
      */

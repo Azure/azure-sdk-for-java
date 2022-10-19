@@ -8,25 +8,20 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SftpAuthenticationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to this linked service type. */
 @Fluent
 public final class SftpServerLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SftpServerLinkedServiceTypeProperties.class);
-
     /*
-     * The SFTP server host name. Type: string (or Expression with resultType
-     * string).
+     * The SFTP server host name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
-     * The TCP port number that the SFTP server uses to listen for client
-     * connections. Default value is 22. Type: integer (or Expression with
-     * resultType integer), minimum: 0.
+     * The TCP port number that the SFTP server uses to listen for client connections. Default value is 22. Type:
+     * integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "port")
     private Object port;
@@ -38,8 +33,7 @@ public final class SftpServerLinkedServiceTypeProperties {
     private SftpAuthenticationType authenticationType;
 
     /*
-     * The username used to log on to the SFTP server. Type: string (or
-     * Expression with resultType string).
+     * The username used to log on to the SFTP server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -51,53 +45,51 @@ public final class SftpServerLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * The SSH private key file path for SshPublicKey authentication. Only
-     * valid for on-premises copy. For on-premises copy with SshPublicKey
-     * authentication, either PrivateKeyPath or PrivateKeyContent should be
-     * specified. SSH private key should be OpenSSH format. Type: string (or
-     * Expression with resultType string).
+     * The SSH private key file path for SshPublicKey authentication. Only valid for on-premises copy. For on-premises
+     * copy with SshPublicKey authentication, either PrivateKeyPath or PrivateKeyContent should be specified. SSH
+     * private key should be OpenSSH format. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "privateKeyPath")
     private Object privateKeyPath;
 
     /*
-     * Base64 encoded SSH private key content for SshPublicKey authentication.
-     * For on-premises copy with SshPublicKey authentication, either
-     * PrivateKeyPath or PrivateKeyContent should be specified. SSH private key
-     * should be OpenSSH format.
+     * Base64 encoded SSH private key content for SshPublicKey authentication. For on-premises copy with SshPublicKey
+     * authentication, either PrivateKeyPath or PrivateKeyContent should be specified. SSH private key should be
+     * OpenSSH format.
      */
     @JsonProperty(value = "privateKeyContent")
     private SecretBase privateKeyContent;
 
     /*
-     * The password to decrypt the SSH private key if the SSH private key is
-     * encrypted.
+     * The password to decrypt the SSH private key if the SSH private key is encrypted.
      */
     @JsonProperty(value = "passPhrase")
     private SecretBase passPhrase;
 
     /*
-     * If true, skip the SSH host key validation. Default value is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * If true, skip the SSH host key validation. Default value is false. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "skipHostKeyValidation")
     private Object skipHostKeyValidation;
 
     /*
-     * The host key finger-print of the SFTP server. When SkipHostKeyValidation
-     * is false, HostKeyFingerprint should be specified. Type: string (or
-     * Expression with resultType string).
+     * The host key finger-print of the SFTP server. When SkipHostKeyValidation is false, HostKeyFingerprint should be
+     * specified. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "hostKeyFingerprint")
     private Object hostKeyFingerprint;
+
+    /** Creates an instance of SftpServerLinkedServiceTypeProperties class. */
+    public SftpServerLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the host property: The SFTP server host name. Type: string (or Expression with resultType string).
@@ -346,7 +338,7 @@ public final class SftpServerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model SftpServerLinkedServiceTypeProperties"));
@@ -361,4 +353,6 @@ public final class SftpServerLinkedServiceTypeProperties {
             passPhrase().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SftpServerLinkedServiceTypeProperties.class);
 }

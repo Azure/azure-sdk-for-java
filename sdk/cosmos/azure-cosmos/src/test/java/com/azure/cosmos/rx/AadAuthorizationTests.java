@@ -17,6 +17,7 @@ import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -53,7 +54,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
     // Cosmos public emulator only test; this test will fail if run against Azure Cosmos endpoint at this time.
     //   We customize the Aad token to be specifically constructed for the Cosmos public emulator only; for Azure Cosmos
     //   the token will be requested and generated from an Azure Identity service.
-    //@Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
+    @Test(groups = { "emulator" }, timeOut = 10 * TIMEOUT)
     public void createAadTokenCredential() throws InterruptedException {
         CosmosAsyncDatabase db = null;
 
@@ -134,6 +135,24 @@ public class AadAuthorizationTests extends TestSuiteBase {
                 .collectList()
                 .block();
 
+            // PATCH document
+            CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+            cosmosPatchOperations.set("/testField", "testField2");
+            container.patchItem(itemSample.id, new PartitionKey(itemSample.mypk), cosmosPatchOperations, JsonNode.class).block();
+
+            // READ document to verify patch operation
+            item = container
+                .readItem(itemName, new PartitionKey(partitionKeyValue), options, InternalObjectNode.class)
+                .map(CosmosItemResponse::getItem)
+                .map(jsonNode -> {
+                    log.info("Found item with content: " + jsonNode.toString());
+                    return jsonNode;
+                }).block();
+
+            assert item != null;
+            String testField = item.get("testField").toString();
+            assert testField.equals("testField2");
+
             // DELETE document
             container.deleteItem(item.getId(), new PartitionKey(partitionKeyValue));
 
@@ -155,6 +174,7 @@ public class AadAuthorizationTests extends TestSuiteBase {
         itemSample.id = itemId;
         itemSample.mypk = partitionKeyValue;
         itemSample.sgmts = "[[6519456, 1471916863], [2498434, 1455671440]]";
+        itemSample.testField = "testField1";
 
         return itemSample;
     }
@@ -206,10 +226,11 @@ public class AadAuthorizationTests extends TestSuiteBase {
         }
     }
 
-    class ItemSample {
+    static class ItemSample {
         public String id;
         public String mypk;
         public String sgmts;
+        public String testField;
 
         public String toString() {
             try {

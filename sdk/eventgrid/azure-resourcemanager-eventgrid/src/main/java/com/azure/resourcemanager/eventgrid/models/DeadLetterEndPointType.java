@@ -24,7 +24,11 @@ public final class DeadLetterEndPointType extends ExpandableStringEnum<DeadLette
         return fromString(name, DeadLetterEndPointType.class);
     }
 
-    /** @return known DeadLetterEndPointType values. */
+    /**
+     * Gets known DeadLetterEndPointType values.
+     *
+     * @return known DeadLetterEndPointType values.
+     */
     public static Collection<DeadLetterEndPointType> values() {
         return values(DeadLetterEndPointType.class);
     }

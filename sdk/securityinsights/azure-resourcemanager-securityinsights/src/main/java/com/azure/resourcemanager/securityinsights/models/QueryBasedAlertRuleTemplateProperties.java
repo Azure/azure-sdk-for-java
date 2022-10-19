@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Query based alert rule template base property bag. */
 @Fluent
 public class QueryBasedAlertRuleTemplateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryBasedAlertRuleTemplateProperties.class);
-
     /*
      * The query that creates alerts for this rule.
      */
@@ -30,21 +26,13 @@ public class QueryBasedAlertRuleTemplateProperties {
     private AlertSeverity severity;
 
     /*
-     * The tactics of the alert rule
-     */
-    @JsonProperty(value = "tactics")
-    private List<AttackTactic> tactics;
-
-    /*
-     * The version of this template - in format <a.b.c>, where all are numbers.
-     * For example <1.0.2>.
+     * The version of this template - in format <a.b.c>, where all are numbers. For example <1.0.2>.
      */
     @JsonProperty(value = "version")
     private String version;
 
     /*
-     * Dictionary of string key-value pairs of columns to be attached to the
-     * alert
+     * Dictionary of string key-value pairs of columns to be attached to the alert
      */
     @JsonProperty(value = "customDetails")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -61,6 +49,12 @@ public class QueryBasedAlertRuleTemplateProperties {
      */
     @JsonProperty(value = "alertDetailsOverride")
     private AlertDetailsOverride alertDetailsOverride;
+
+    /*
+     * The event grouping settings.
+     */
+    @JsonProperty(value = "eventGroupingSettings")
+    private EventGroupingSettings eventGroupingSettings;
 
     /**
      * Get the query property: The query that creates alerts for this rule.
@@ -99,26 +93,6 @@ public class QueryBasedAlertRuleTemplateProperties {
      */
     public QueryBasedAlertRuleTemplateProperties withSeverity(AlertSeverity severity) {
         this.severity = severity;
-        return this;
-    }
-
-    /**
-     * Get the tactics property: The tactics of the alert rule.
-     *
-     * @return the tactics value.
-     */
-    public List<AttackTactic> tactics() {
-        return this.tactics;
-    }
-
-    /**
-     * Set the tactics property: The tactics of the alert rule.
-     *
-     * @param tactics the tactics value to set.
-     * @return the QueryBasedAlertRuleTemplateProperties object itself.
-     */
-    public QueryBasedAlertRuleTemplateProperties withTactics(List<AttackTactic> tactics) {
-        this.tactics = tactics;
         return this;
     }
 
@@ -205,6 +179,27 @@ public class QueryBasedAlertRuleTemplateProperties {
     }
 
     /**
+     * Get the eventGroupingSettings property: The event grouping settings.
+     *
+     * @return the eventGroupingSettings value.
+     */
+    public EventGroupingSettings eventGroupingSettings() {
+        return this.eventGroupingSettings;
+    }
+
+    /**
+     * Set the eventGroupingSettings property: The event grouping settings.
+     *
+     * @param eventGroupingSettings the eventGroupingSettings value to set.
+     * @return the QueryBasedAlertRuleTemplateProperties object itself.
+     */
+    public QueryBasedAlertRuleTemplateProperties withEventGroupingSettings(
+        EventGroupingSettings eventGroupingSettings) {
+        this.eventGroupingSettings = eventGroupingSettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -215,6 +210,9 @@ public class QueryBasedAlertRuleTemplateProperties {
         }
         if (alertDetailsOverride() != null) {
             alertDetailsOverride().validate();
+        }
+        if (eventGroupingSettings() != null) {
+            eventGroupingSettings().validate();
         }
     }
 }

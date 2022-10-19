@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the TCP configuration. */
 @Fluent
 public final class ConnectionMonitorTcpConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorTcpConfiguration.class);
-
     /*
      * The port to connect to.
      */
@@ -21,8 +17,7 @@ public final class ConnectionMonitorTcpConfiguration {
     private Integer port;
 
     /*
-     * Value indicating whether path evaluation with trace route should be
-     * disabled.
+     * Value indicating whether path evaluation with trace route should be disabled.
      */
     @JsonProperty(value = "disableTraceRoute")
     private Boolean disableTraceRoute;
@@ -32,6 +27,10 @@ public final class ConnectionMonitorTcpConfiguration {
      */
     @JsonProperty(value = "destinationPortBehavior")
     private DestinationPortBehavior destinationPortBehavior;
+
+    /** Creates an instance of ConnectionMonitorTcpConfiguration class. */
+    public ConnectionMonitorTcpConfiguration() {
+    }
 
     /**
      * Get the port property: The port to connect to.

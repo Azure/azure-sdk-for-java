@@ -17,21 +17,26 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
-import com.azure.core.util.serializer.CollectionFormat;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.storage.queue.implementation.models.ServicesGetPropertiesResponse;
-import com.azure.storage.queue.implementation.models.ServicesGetStatisticsResponse;
-import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentNextResponse;
-import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentResponse;
-import com.azure.storage.queue.implementation.models.ServicesSetPropertiesResponse;
+import com.azure.core.util.FluxUtil;
+import com.azure.storage.queue.implementation.models.ListQueuesSegmentResponse;
+import com.azure.storage.queue.implementation.models.ServicesGetPropertiesHeaders;
+import com.azure.storage.queue.implementation.models.ServicesGetStatisticsHeaders;
+import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentHeaders;
+import com.azure.storage.queue.implementation.models.ServicesListQueuesSegmentNextHeaders;
+import com.azure.storage.queue.implementation.models.ServicesSetPropertiesHeaders;
 import com.azure.storage.queue.models.QueueItem;
 import com.azure.storage.queue.models.QueueServiceProperties;
+import com.azure.storage.queue.models.QueueServiceStatistics;
 import com.azure.storage.queue.models.QueueStorageException;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Services. */
@@ -62,7 +67,7 @@ public final class ServicesImpl {
         @Put("/")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ServicesSetPropertiesResponse> setProperties(
+        Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -76,7 +81,7 @@ public final class ServicesImpl {
         @Get("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ServicesGetPropertiesResponse> getProperties(
+        Mono<ResponseBase<ServicesGetPropertiesHeaders, QueueServiceProperties>> getProperties(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -89,7 +94,7 @@ public final class ServicesImpl {
         @Get("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ServicesGetStatisticsResponse> getStatistics(
+        Mono<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>> getStatistics(
                 @HostParam("url") String url,
                 @QueryParam("restype") String restype,
                 @QueryParam("comp") String comp,
@@ -102,7 +107,7 @@ public final class ServicesImpl {
         @Get("/")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ServicesListQueuesSegmentResponse> listQueuesSegment(
+        Mono<ResponseBase<ServicesListQueuesSegmentHeaders, ListQueuesSegmentResponse>> listQueuesSegment(
                 @HostParam("url") String url,
                 @QueryParam("comp") String comp,
                 @QueryParam("prefix") String prefix,
@@ -118,7 +123,7 @@ public final class ServicesImpl {
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(QueueStorageException.class)
-        Mono<ServicesListQueuesSegmentNextResponse> listQueuesSegmentNext(
+        Mono<ResponseBase<ServicesListQueuesSegmentNextHeaders, ListQueuesSegmentResponse>> listQueuesSegmentNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("url") String url,
                 @HeaderParam("x-ms-version") String version,
@@ -137,14 +142,49 @@ public final class ServicesImpl {
      *     Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
+            QueueServiceProperties queueServiceProperties, Integer timeout, String requestId) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.setProperties(
+                                this.client.getUrl(),
+                                restype,
+                                comp,
+                                timeout,
+                                this.client.getVersion(),
+                                requestId,
+                                queueServiceProperties,
+                                accept,
+                                context));
+    }
+
+    /**
+     * Sets properties for a storage account's Queue service endpoint, including properties for Storage Analytics and
+     * CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param queueServiceProperties The StorageService properties.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesSetPropertiesResponse> setPropertiesWithResponseAsync(
+    public Mono<ResponseBase<ServicesSetPropertiesHeaders, Void>> setPropertiesWithResponseAsync(
             QueueServiceProperties queueServiceProperties, Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
@@ -162,6 +202,86 @@ public final class ServicesImpl {
     }
 
     /**
+     * Sets properties for a storage account's Queue service endpoint, including properties for Storage Analytics and
+     * CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param queueServiceProperties The StorageService properties.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setPropertiesAsync(
+            QueueServiceProperties queueServiceProperties, Integer timeout, String requestId) {
+        return setPropertiesWithResponseAsync(queueServiceProperties, timeout, requestId)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Sets properties for a storage account's Queue service endpoint, including properties for Storage Analytics and
+     * CORS (Cross-Origin Resource Sharing) rules.
+     *
+     * @param queueServiceProperties The StorageService properties.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> setPropertiesAsync(
+            QueueServiceProperties queueServiceProperties, Integer timeout, String requestId, Context context) {
+        return setPropertiesWithResponseAsync(queueServiceProperties, timeout, requestId, context)
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * gets the properties of a storage account's Queue service, including properties for Storage Analytics and CORS
+     * (Cross-Origin Resource Sharing) rules.
+     *
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a storage account's Queue service, including properties for Storage Analytics and CORS
+     *     (Cross-Origin Resource Sharing) rules along with {@link ResponseBase} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ServicesGetPropertiesHeaders, QueueServiceProperties>> getPropertiesWithResponseAsync(
+            Integer timeout, String requestId) {
+        final String restype = "service";
+        final String comp = "properties";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.getProperties(
+                                this.client.getUrl(),
+                                restype,
+                                comp,
+                                timeout,
+                                this.client.getVersion(),
+                                requestId,
+                                accept,
+                                context));
+    }
+
+    /**
      * gets the properties of a storage account's Queue service, including properties for Storage Analytics and CORS
      * (Cross-Origin Resource Sharing) rules.
      *
@@ -175,16 +295,92 @@ public final class ServicesImpl {
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of a storage account's Queue service, including properties for Storage Analytics and CORS
-     *     (Cross-Origin Resource Sharing) rules.
+     *     (Cross-Origin Resource Sharing) rules along with {@link ResponseBase} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesGetPropertiesResponse> getPropertiesWithResponseAsync(
+    public Mono<ResponseBase<ServicesGetPropertiesHeaders, QueueServiceProperties>> getPropertiesWithResponseAsync(
             Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "properties";
         final String accept = "application/xml";
         return service.getProperties(
                 this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * gets the properties of a storage account's Queue service, including properties for Storage Analytics and CORS
+     * (Cross-Origin Resource Sharing) rules.
+     *
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a storage account's Queue service, including properties for Storage Analytics and CORS
+     *     (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueueServiceProperties> getPropertiesAsync(Integer timeout, String requestId) {
+        return getPropertiesWithResponseAsync(timeout, requestId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * gets the properties of a storage account's Queue service, including properties for Storage Analytics and CORS
+     * (Cross-Origin Resource Sharing) rules.
+     *
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of a storage account's Queue service, including properties for Storage Analytics and CORS
+     *     (Cross-Origin Resource Sharing) rules on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueueServiceProperties> getPropertiesAsync(Integer timeout, String requestId, Context context) {
+        return getPropertiesWithResponseAsync(timeout, requestId, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Queue service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the storage account.
+     *
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stats for the storage service along with {@link ResponseBase} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>> getStatisticsWithResponseAsync(
+            Integer timeout, String requestId) {
+        final String restype = "service";
+        final String comp = "stats";
+        final String accept = "application/xml";
+        return FluxUtil.withContext(
+                context ->
+                        service.getStatistics(
+                                this.client.getUrl(),
+                                restype,
+                                comp,
+                                timeout,
+                                this.client.getVersion(),
+                                requestId,
+                                accept,
+                                context));
     }
 
     /**
@@ -200,16 +396,56 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return stats for the storage service.
+     * @return stats for the storage service along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicesGetStatisticsResponse> getStatisticsWithResponseAsync(
+    public Mono<ResponseBase<ServicesGetStatisticsHeaders, QueueServiceStatistics>> getStatisticsWithResponseAsync(
             Integer timeout, String requestId, Context context) {
         final String restype = "service";
         final String comp = "stats";
         final String accept = "application/xml";
         return service.getStatistics(
                 this.client.getUrl(), restype, comp, timeout, this.client.getVersion(), requestId, accept, context);
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Queue service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the storage account.
+     *
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stats for the storage service on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueueServiceStatistics> getStatisticsAsync(Integer timeout, String requestId) {
+        return getStatisticsWithResponseAsync(timeout, requestId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Retrieves statistics related to replication for the Queue service. It is only available on the secondary location
+     * endpoint when read-access geo-redundant replication is enabled for the storage account.
+     *
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return stats for the storage service on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<QueueServiceStatistics> getStatisticsAsync(Integer timeout, String requestId, Context context) {
+        return getStatisticsWithResponseAsync(timeout, requestId, context)
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -237,7 +473,8 @@ public final class ServicesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object returned when calling List Queues on a Queue Service.
+     * @return the object returned when calling List Queues on a Queue Service along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<QueueItem>> listQueuesSegmentSinglePageAsync(
@@ -251,7 +488,9 @@ public final class ServicesImpl {
         final String comp = "list";
         final String accept = "application/xml";
         String includeConverted =
-                JacksonAdapter.createDefaultSerializerAdapter().serializeList(include, CollectionFormat.CSV);
+                (include == null)
+                        ? null
+                        : include.stream().map(value -> Objects.toString(value, "")).collect(Collectors.joining(","));
         return service.listQueuesSegment(
                         this.client.getUrl(),
                         comp,
@@ -276,16 +515,101 @@ public final class ServicesImpl {
     }
 
     /**
-     * Get the next page of items.
+     * The List Queues Segment operation returns a list of the queues under the specified account.
      *
-     * @param nextLink The nextLink parameter.
+     * @param prefix Filters the results to return only queues whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of queues to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all queues remaining to be listed with the current page. The NextMarker value can be
+     *     used as the value for the marker parameter in a subsequent call to request the next page of list items. The
+     *     marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of queues to return. If the request does not specify maxresults,
+     *     or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the listing
+     *     operation crosses a partition boundary, then the service will return a continuation token for retrieving the
+     *     remainder of the results. For this reason, it is possible that the service will return fewer results than
+     *     specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
+     *     body.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object returned when calling List Queues on a Queue Service as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<QueueItem> listQueuesSegmentAsync(
+            String prefix, String marker, Integer maxresults, List<String> include, Integer timeout, String requestId) {
+        // TODO (alzimmer): This wasn't passing context as there is no Context to pass.
+        //  There will be a fix for this in a future Autorest release but for now this was done manually.
+        // Adding this comment to make this obvious on diff.
+        return new PagedFlux<>(() -> FluxUtil.withContext(context ->
+            listQueuesSegmentSinglePageAsync(prefix, marker, maxresults, include, timeout, requestId, context)),
+            nextLink -> FluxUtil.withContext(context ->
+                listQueuesSegmentNextSinglePageAsync(nextLink, requestId, context)));
+    }
+
+    /**
+     * The List Queues Segment operation returns a list of the queues under the specified account.
+     *
+     * @param prefix Filters the results to return only queues whose name begins with the specified prefix.
+     * @param marker A string value that identifies the portion of the list of queues to be returned with the next
+     *     listing operation. The operation returns the NextMarker value within the response body if the listing
+     *     operation did not return all queues remaining to be listed with the current page. The NextMarker value can be
+     *     used as the value for the marker parameter in a subsequent call to request the next page of list items. The
+     *     marker value is opaque to the client.
+     * @param maxresults Specifies the maximum number of queues to return. If the request does not specify maxresults,
+     *     or specifies a value greater than 5000, the server will return up to 5000 items. Note that if the listing
+     *     operation crosses a partition boundary, then the service will return a continuation token for retrieving the
+     *     remainder of the results. For this reason, it is possible that the service will return fewer results than
+     *     specified by maxresults, or than the default of 5000.
+     * @param include Include this parameter to specify that the queues' metadata be returned as part of the response
+     *     body.
+     * @param timeout The The timeout parameter is expressed in seconds. For more information, see &lt;a
+     *     href="https://docs.microsoft.com/en-us/rest/api/storageservices/setting-timeouts-for-queue-service-operations&gt;Setting
+     *     Timeouts for Queue Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      *     analytics logs when storage analytics logging is enabled.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws QueueStorageException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object returned when calling List Queues on a Queue Service.
+     * @return the object returned when calling List Queues on a Queue Service as paginated response with {@link
+     *     PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<QueueItem> listQueuesSegmentAsync(
+            String prefix,
+            String marker,
+            Integer maxresults,
+            List<String> include,
+            Integer timeout,
+            String requestId,
+            Context context) {
+        return new PagedFlux<>(
+                () ->
+                        listQueuesSegmentSinglePageAsync(
+                                prefix, marker, maxresults, include, timeout, requestId, context),
+                nextLink -> listQueuesSegmentNextSinglePageAsync(nextLink, requestId, context));
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
+     *     analytics logs when storage analytics logging is enabled.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws QueueStorageException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the object returned when calling List Queues on a Queue Service along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<QueueItem>> listQueuesSegmentNextSinglePageAsync(

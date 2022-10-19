@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.azure.resourcemanager.securityinsights.models.Source;
+import com.azure.resourcemanager.securityinsights.models.SourceType;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -18,8 +16,6 @@ import java.util.List;
 /** Represents a Watchlist in Azure Security Insights. */
 @Fluent
 public final class WatchlistInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WatchlistInner.class);
-
     /*
      * Watchlist properties
      */
@@ -112,25 +108,48 @@ public final class WatchlistInner extends ResourceWithEtag {
     }
 
     /**
-     * Get the source property: The source of the watchlist.
+     * Get the source property: The filename of the watchlist, called 'source'.
      *
      * @return the source value.
      */
-    public Source source() {
+    public String source() {
         return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
-     * Set the source property: The source of the watchlist.
+     * Set the source property: The filename of the watchlist, called 'source'.
      *
      * @param source the source value to set.
      * @return the WatchlistInner object itself.
      */
-    public WatchlistInner withSource(Source source) {
+    public WatchlistInner withSource(String source) {
         if (this.innerProperties() == null) {
             this.innerProperties = new WatchlistProperties();
         }
         this.innerProperties().withSource(source);
+        return this;
+    }
+
+    /**
+     * Get the sourceType property: The sourceType of the watchlist.
+     *
+     * @return the sourceType value.
+     */
+    public SourceType sourceType() {
+        return this.innerProperties() == null ? null : this.innerProperties().sourceType();
+    }
+
+    /**
+     * Set the sourceType property: The sourceType of the watchlist.
+     *
+     * @param sourceType the sourceType value to set.
+     * @return the WatchlistInner object itself.
+     */
+    public WatchlistInner withSourceType(SourceType sourceType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WatchlistProperties();
+        }
+        this.innerProperties().withSourceType(sourceType);
         return this;
     }
 
@@ -507,29 +526,6 @@ public final class WatchlistInner extends ResourceWithEtag {
             this.innerProperties = new WatchlistProperties();
         }
         this.innerProperties().withUploadStatus(uploadStatus);
-        return this;
-    }
-
-    /**
-     * Get the watchlistItemsCount property: The number of Watchlist Items in the Watchlist.
-     *
-     * @return the watchlistItemsCount value.
-     */
-    public Integer watchlistItemsCount() {
-        return this.innerProperties() == null ? null : this.innerProperties().watchlistItemsCount();
-    }
-
-    /**
-     * Set the watchlistItemsCount property: The number of Watchlist Items in the Watchlist.
-     *
-     * @param watchlistItemsCount the watchlistItemsCount value to set.
-     * @return the WatchlistInner object itself.
-     */
-    public WatchlistInner withWatchlistItemsCount(Integer watchlistItemsCount) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new WatchlistProperties();
-        }
-        this.innerProperties().withWatchlistItemsCount(watchlistItemsCount);
         return this;
     }
 

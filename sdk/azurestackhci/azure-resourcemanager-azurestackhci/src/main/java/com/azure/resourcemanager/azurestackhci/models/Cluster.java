@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.azurestackhci.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner;
 import java.time.OffsetDateTime;
@@ -48,6 +49,13 @@ public interface Cluster {
     Map<String, String> tags();
 
     /**
+     * Gets the systemData property: System data of Cluster resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the provisioningState property: Provisioning state.
      *
      * @return the provisioningState value.
@@ -69,6 +77,13 @@ public interface Cluster {
     String cloudId();
 
     /**
+     * Gets the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
+     *
+     * @return the cloudManagementEndpoint value.
+     */
+    String cloudManagementEndpoint();
+
+    /**
      * Gets the aadClientId property: App id of cluster AAD identity.
      *
      * @return the aadClientId value.
@@ -81,6 +96,27 @@ public interface Cluster {
      * @return the aadTenantId value.
      */
     String aadTenantId();
+
+    /**
+     * Gets the aadApplicationObjectId property: Object id of cluster AAD identity.
+     *
+     * @return the aadApplicationObjectId value.
+     */
+    String aadApplicationObjectId();
+
+    /**
+     * Gets the aadServicePrincipalObjectId property: Id of cluster identity service principal.
+     *
+     * @return the aadServicePrincipalObjectId value.
+     */
+    String aadServicePrincipalObjectId();
+
+    /**
+     * Gets the desiredProperties property: Desired properties of the cluster.
+     *
+     * @return the desiredProperties value.
+     */
+    ClusterDesiredProperties desiredProperties();
 
     /**
      * Gets the reportedProperties property: Properties reported by cluster agent.
@@ -125,46 +161,11 @@ public interface Cluster {
     OffsetDateTime lastBillingTimestamp();
 
     /**
-     * Gets the createdBy property: The identity that created the resource.
+     * Gets the serviceEndpoint property: Region specific DataPath Endpoint of the cluster.
      *
-     * @return the createdBy value.
+     * @return the serviceEndpoint value.
      */
-    String createdBy();
-
-    /**
-     * Gets the createdByType property: The type of identity that created the resource.
-     *
-     * @return the createdByType value.
-     */
-    CreatedByType createdByType();
-
-    /**
-     * Gets the createdAt property: The timestamp of resource creation (UTC).
-     *
-     * @return the createdAt value.
-     */
-    OffsetDateTime createdAt();
-
-    /**
-     * Gets the lastModifiedBy property: The identity that last modified the resource.
-     *
-     * @return the lastModifiedBy value.
-     */
-    String lastModifiedBy();
-
-    /**
-     * Gets the lastModifiedByType property: The type of identity that last modified the resource.
-     *
-     * @return the lastModifiedByType value.
-     */
-    CreatedByType lastModifiedByType();
-
-    /**
-     * Gets the lastModifiedAt property: The timestamp of resource last modification (UTC).
-     *
-     * @return the lastModifiedAt value.
-     */
-    OffsetDateTime lastModifiedAt();
+    String serviceEndpoint();
 
     /**
      * Gets the region of the resource.
@@ -179,6 +180,13 @@ public interface Cluster {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.azurestackhci.fluent.models.ClusterInner object.
@@ -233,15 +241,12 @@ public interface Cluster {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithCloudManagementEndpoint,
                 DefinitionStages.WithAadClientId,
                 DefinitionStages.WithAadTenantId,
-                DefinitionStages.WithReportedProperties,
-                DefinitionStages.WithCreatedBy,
-                DefinitionStages.WithCreatedByType,
-                DefinitionStages.WithCreatedAt,
-                DefinitionStages.WithLastModifiedBy,
-                DefinitionStages.WithLastModifiedByType,
-                DefinitionStages.WithLastModifiedAt {
+                DefinitionStages.WithAadApplicationObjectId,
+                DefinitionStages.WithAadServicePrincipalObjectId,
+                DefinitionStages.WithDesiredProperties {
             /**
              * Executes the create request.
              *
@@ -267,6 +272,17 @@ public interface Cluster {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+        /** The stage of the Cluster definition allowing to specify cloudManagementEndpoint. */
+        interface WithCloudManagementEndpoint {
+            /**
+             * Specifies the cloudManagementEndpoint property: Endpoint configured for management from the Azure
+             * portal..
+             *
+             * @param cloudManagementEndpoint Endpoint configured for management from the Azure portal.
+             * @return the next definition stage.
+             */
+            WithCreate withCloudManagementEndpoint(String cloudManagementEndpoint);
+        }
         /** The stage of the Cluster definition allowing to specify aadClientId. */
         interface WithAadClientId {
             /**
@@ -287,75 +303,35 @@ public interface Cluster {
              */
             WithCreate withAadTenantId(String aadTenantId);
         }
-        /** The stage of the Cluster definition allowing to specify reportedProperties. */
-        interface WithReportedProperties {
+        /** The stage of the Cluster definition allowing to specify aadApplicationObjectId. */
+        interface WithAadApplicationObjectId {
             /**
-             * Specifies the reportedProperties property: Properties reported by cluster agent..
+             * Specifies the aadApplicationObjectId property: Object id of cluster AAD identity..
              *
-             * @param reportedProperties Properties reported by cluster agent.
+             * @param aadApplicationObjectId Object id of cluster AAD identity.
              * @return the next definition stage.
              */
-            WithCreate withReportedProperties(ClusterReportedProperties reportedProperties);
+            WithCreate withAadApplicationObjectId(String aadApplicationObjectId);
         }
-        /** The stage of the Cluster definition allowing to specify createdBy. */
-        interface WithCreatedBy {
+        /** The stage of the Cluster definition allowing to specify aadServicePrincipalObjectId. */
+        interface WithAadServicePrincipalObjectId {
             /**
-             * Specifies the createdBy property: The identity that created the resource..
+             * Specifies the aadServicePrincipalObjectId property: Id of cluster identity service principal..
              *
-             * @param createdBy The identity that created the resource.
+             * @param aadServicePrincipalObjectId Id of cluster identity service principal.
              * @return the next definition stage.
              */
-            WithCreate withCreatedBy(String createdBy);
+            WithCreate withAadServicePrincipalObjectId(String aadServicePrincipalObjectId);
         }
-        /** The stage of the Cluster definition allowing to specify createdByType. */
-        interface WithCreatedByType {
+        /** The stage of the Cluster definition allowing to specify desiredProperties. */
+        interface WithDesiredProperties {
             /**
-             * Specifies the createdByType property: The type of identity that created the resource..
+             * Specifies the desiredProperties property: Desired properties of the cluster..
              *
-             * @param createdByType The type of identity that created the resource.
+             * @param desiredProperties Desired properties of the cluster.
              * @return the next definition stage.
              */
-            WithCreate withCreatedByType(CreatedByType createdByType);
-        }
-        /** The stage of the Cluster definition allowing to specify createdAt. */
-        interface WithCreatedAt {
-            /**
-             * Specifies the createdAt property: The timestamp of resource creation (UTC)..
-             *
-             * @param createdAt The timestamp of resource creation (UTC).
-             * @return the next definition stage.
-             */
-            WithCreate withCreatedAt(OffsetDateTime createdAt);
-        }
-        /** The stage of the Cluster definition allowing to specify lastModifiedBy. */
-        interface WithLastModifiedBy {
-            /**
-             * Specifies the lastModifiedBy property: The identity that last modified the resource..
-             *
-             * @param lastModifiedBy The identity that last modified the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withLastModifiedBy(String lastModifiedBy);
-        }
-        /** The stage of the Cluster definition allowing to specify lastModifiedByType. */
-        interface WithLastModifiedByType {
-            /**
-             * Specifies the lastModifiedByType property: The type of identity that last modified the resource..
-             *
-             * @param lastModifiedByType The type of identity that last modified the resource.
-             * @return the next definition stage.
-             */
-            WithCreate withLastModifiedByType(CreatedByType lastModifiedByType);
-        }
-        /** The stage of the Cluster definition allowing to specify lastModifiedAt. */
-        interface WithLastModifiedAt {
-            /**
-             * Specifies the lastModifiedAt property: The timestamp of resource last modification (UTC).
-             *
-             * @param lastModifiedAt The timestamp of resource last modification (UTC).
-             * @return the next definition stage.
-             */
-            WithCreate withLastModifiedAt(OffsetDateTime lastModifiedAt);
+            WithCreate withDesiredProperties(ClusterDesiredProperties desiredProperties);
         }
     }
     /**
@@ -366,7 +342,12 @@ public interface Cluster {
     Cluster.Update update();
 
     /** The template for Cluster update. */
-    interface Update extends UpdateStages.WithTags {
+    interface Update
+        extends UpdateStages.WithTags,
+            UpdateStages.WithCloudManagementEndpoint,
+            UpdateStages.WithAadClientId,
+            UpdateStages.WithAadTenantId,
+            UpdateStages.WithDesiredProperties {
         /**
          * Executes the update request.
          *
@@ -394,6 +375,46 @@ public interface Cluster {
              */
             Update withTags(Map<String, String> tags);
         }
+        /** The stage of the Cluster update allowing to specify cloudManagementEndpoint. */
+        interface WithCloudManagementEndpoint {
+            /**
+             * Specifies the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
+             *
+             * @param cloudManagementEndpoint Endpoint configured for management from the Azure portal.
+             * @return the next definition stage.
+             */
+            Update withCloudManagementEndpoint(String cloudManagementEndpoint);
+        }
+        /** The stage of the Cluster update allowing to specify aadClientId. */
+        interface WithAadClientId {
+            /**
+             * Specifies the aadClientId property: App id of cluster AAD identity..
+             *
+             * @param aadClientId App id of cluster AAD identity.
+             * @return the next definition stage.
+             */
+            Update withAadClientId(String aadClientId);
+        }
+        /** The stage of the Cluster update allowing to specify aadTenantId. */
+        interface WithAadTenantId {
+            /**
+             * Specifies the aadTenantId property: Tenant id of cluster AAD identity..
+             *
+             * @param aadTenantId Tenant id of cluster AAD identity.
+             * @return the next definition stage.
+             */
+            Update withAadTenantId(String aadTenantId);
+        }
+        /** The stage of the Cluster update allowing to specify desiredProperties. */
+        interface WithDesiredProperties {
+            /**
+             * Specifies the desiredProperties property: Desired properties of the cluster..
+             *
+             * @param desiredProperties Desired properties of the cluster.
+             * @return the next definition stage.
+             */
+            Update withDesiredProperties(ClusterDesiredProperties desiredProperties);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -409,4 +430,45 @@ public interface Cluster {
      * @return the refreshed resource.
      */
     Cluster refresh(Context context);
+
+    /**
+     * Upload certificate.
+     *
+     * @param uploadCertificateRequest Upload certificate request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void uploadCertificate(UploadCertificateRequest uploadCertificateRequest);
+
+    /**
+     * Upload certificate.
+     *
+     * @param uploadCertificateRequest Upload certificate request.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void uploadCertificate(UploadCertificateRequest uploadCertificateRequest, Context context);
+
+    /**
+     * Create cluster identity.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster Identity details.
+     */
+    ClusterIdentityResponse createIdentity();
+
+    /**
+     * Create cluster identity.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return cluster Identity details.
+     */
+    ClusterIdentityResponse createIdentity(Context context);
 }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information about a hop between the source and the destination. */
 @Immutable
 public final class ConnectivityHop {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityHop.class);
-
     /*
      * The type of the hop.
      */
@@ -68,6 +64,10 @@ public final class ConnectivityHop {
      */
     @JsonProperty(value = "issues", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectivityIssue> issues;
+
+    /** Creates an instance of ConnectivityHop class. */
+    public ConnectivityHop() {
+    }
 
     /**
      * Get the type property: The type of the hop.

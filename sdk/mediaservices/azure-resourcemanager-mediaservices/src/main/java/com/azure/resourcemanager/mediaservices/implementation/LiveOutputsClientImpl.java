@@ -29,10 +29,10 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.mediaservices.fluent.LiveOutputsClient;
+import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.LiveOutputInner;
 import com.azure.resourcemanager.mediaservices.models.LiveOutputListResult;
 import java.nio.ByteBuffer;
@@ -41,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LiveOutputsClient. */
 public final class LiveOutputsClientImpl implements LiveOutputsClient {
-    private final ClientLogger logger = new ClientLogger(LiveOutputsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LiveOutputsService service;
 
@@ -136,6 +134,41 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+                + "/{accountName}/liveOutputOperations/{operationId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<AsyncOperationResultInner>> asyncOperation(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Media/mediaservices"
+                + "/{accountName}/liveEvents/{liveEventName}/liveOutputs/{liveOutputName}/operationLocations"
+                + "/{operationId}")
+        @ExpectedResponses({200, 202})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<LiveOutputInner>> operationLocation(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("accountName") String accountName,
+            @PathParam("liveEventName") String liveEventName,
+            @PathParam("liveOutputName") String liveOutputName,
+            @PathParam("operationId") String operationId,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -147,7 +180,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Lists the live outputs of a live event.
+     * List Live Outputs
+     *
+     * <p>Lists the live outputs of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -155,7 +190,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LiveOutput list result.
+     * @return liveOutputListResult along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LiveOutputInner>> listSinglePageAsync(
@@ -182,6 +217,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -193,7 +229,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
                             resourceGroupName,
                             accountName,
                             liveEventName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .<PagedResponse<LiveOutputInner>>map(
@@ -209,7 +245,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Lists the live outputs of a live event.
+     * List Live Outputs
+     *
+     * <p>Lists the live outputs of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -218,7 +256,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LiveOutput list result.
+     * @return liveOutputListResult along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LiveOutputInner>> listSinglePageAsync(
@@ -245,6 +283,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveEventName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -254,7 +293,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
                 resourceGroupName,
                 accountName,
                 liveEventName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context)
             .map(
@@ -269,7 +308,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Lists the live outputs of a live event.
+     * List Live Outputs
+     *
+     * <p>Lists the live outputs of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -277,7 +318,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LiveOutput list result.
+     * @return liveOutputListResult as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LiveOutputInner> listAsync(String resourceGroupName, String accountName, String liveEventName) {
@@ -287,7 +328,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Lists the live outputs of a live event.
+     * List Live Outputs
+     *
+     * <p>Lists the live outputs of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -296,7 +339,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LiveOutput list result.
+     * @return liveOutputListResult as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LiveOutputInner> listAsync(
@@ -307,7 +350,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Lists the live outputs of a live event.
+     * List Live Outputs
+     *
+     * <p>Lists the live outputs of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -315,7 +360,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LiveOutput list result.
+     * @return liveOutputListResult as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LiveOutputInner> list(String resourceGroupName, String accountName, String liveEventName) {
@@ -323,7 +368,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Lists the live outputs of a live event.
+     * List Live Outputs
+     *
+     * <p>Lists the live outputs of a live event.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -332,7 +379,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LiveOutput list result.
+     * @return liveOutputListResult as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LiveOutputInner> list(
@@ -341,7 +388,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Gets a live output.
+     * Get Live Output
+     *
+     * <p>Gets a live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -350,7 +399,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a live output.
+     * @return a live output along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LiveOutputInner>> getWithResponseAsync(
@@ -380,6 +429,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveOutputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveOutputName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -392,14 +442,16 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
                             accountName,
                             liveEventName,
                             liveOutputName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a live output.
+     * Get Live Output
+     *
+     * <p>Gets a live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -409,7 +461,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a live output.
+     * @return a live output along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<LiveOutputInner>> getWithResponseAsync(
@@ -439,6 +491,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveOutputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveOutputName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -449,13 +502,15 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
                 accountName,
                 liveEventName,
                 liveOutputName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Gets a live output.
+     * Get Live Output
+     *
+     * <p>Gets a live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -464,24 +519,19 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a live output.
+     * @return a live output on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LiveOutputInner> getAsync(
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
         return getWithResponseAsync(resourceGroupName, accountName, liveEventName, liveOutputName)
-            .flatMap(
-                (Response<LiveOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Gets a live output.
+     * Get Live Output
+     *
+     * <p>Gets a live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -499,7 +549,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Gets a live output.
+     * Get Live Output
+     *
+     * <p>Gets a live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -509,7 +561,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a live output.
+     * @return a live output along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<LiveOutputInner> getWithResponse(
@@ -518,7 +570,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Creates a new live output.
+     * Create Live Output
+     *
+     * <p>Creates a new live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -528,7 +582,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Live Output.
+     * @return the Live Output along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -567,6 +621,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -579,7 +634,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
                             accountName,
                             liveEventName,
                             liveOutputName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             parameters,
                             accept,
                             context))
@@ -587,7 +642,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Creates a new live output.
+     * Create Live Output
+     *
+     * <p>Creates a new live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -598,7 +655,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Live Output.
+     * @return the Live Output along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
@@ -638,6 +695,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -648,14 +706,16 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
                 accountName,
                 liveEventName,
                 liveOutputName,
-                this.client.getApiVersion(),
+                apiVersion,
                 parameters,
                 accept,
                 context);
     }
 
     /**
-     * Creates a new live output.
+     * Create Live Output
+     *
+     * <p>Creates a new live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -665,9 +725,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Live Output.
+     * @return the {@link PollerFlux} for polling of the Live Output.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LiveOutputInner>, LiveOutputInner> beginCreateAsync(
         String resourceGroupName,
         String accountName,
@@ -679,11 +739,17 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         return this
             .client
             .<LiveOutputInner, LiveOutputInner>getLroResult(
-                mono, this.client.getHttpPipeline(), LiveOutputInner.class, LiveOutputInner.class, Context.NONE);
+                mono,
+                this.client.getHttpPipeline(),
+                LiveOutputInner.class,
+                LiveOutputInner.class,
+                this.client.getContext());
     }
 
     /**
-     * Creates a new live output.
+     * Create Live Output
+     *
+     * <p>Creates a new live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -694,9 +760,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Live Output.
+     * @return the {@link PollerFlux} for polling of the Live Output.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<LiveOutputInner>, LiveOutputInner> beginCreateAsync(
         String resourceGroupName,
         String accountName,
@@ -714,7 +780,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Creates a new live output.
+     * Create Live Output
+     *
+     * <p>Creates a new live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -724,9 +792,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Live Output.
+     * @return the {@link SyncPoller} for polling of the Live Output.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LiveOutputInner>, LiveOutputInner> beginCreate(
         String resourceGroupName,
         String accountName,
@@ -738,7 +806,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Creates a new live output.
+     * Create Live Output
+     *
+     * <p>Creates a new live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -749,9 +819,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Live Output.
+     * @return the {@link SyncPoller} for polling of the Live Output.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<LiveOutputInner>, LiveOutputInner> beginCreate(
         String resourceGroupName,
         String accountName,
@@ -764,7 +834,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Creates a new live output.
+     * Create Live Output
+     *
+     * <p>Creates a new live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -774,7 +846,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Live Output.
+     * @return the Live Output on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LiveOutputInner> createAsync(
@@ -789,7 +861,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Creates a new live output.
+     * Create Live Output
+     *
+     * <p>Creates a new live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -800,7 +874,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Live Output.
+     * @return the Live Output on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LiveOutputInner> createAsync(
@@ -816,7 +890,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Creates a new live output.
+     * Create Live Output
+     *
+     * <p>Creates a new live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -839,7 +915,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Creates a new live output.
+     * Create Live Output
+     *
+     * <p>Creates a new live output.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -864,7 +942,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -873,7 +953,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -903,6 +983,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveOutputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveOutputName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -915,14 +996,16 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
                             accountName,
                             liveEventName,
                             liveOutputName,
-                            this.client.getApiVersion(),
+                            apiVersion,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -932,7 +1015,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -962,6 +1045,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
         if (liveOutputName == null) {
             return Mono.error(new IllegalArgumentException("Parameter liveOutputName is required and cannot be null."));
         }
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -972,13 +1056,15 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
                 accountName,
                 liveEventName,
                 liveOutputName,
-                this.client.getApiVersion(),
+                apiVersion,
                 accept,
                 context);
     }
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -987,20 +1073,23 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
             deleteWithResponseAsync(resourceGroupName, accountName, liveEventName, liveOutputName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1010,9 +1099,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context) {
         context = this.client.mergeContext(context);
@@ -1024,7 +1113,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1033,16 +1124,18 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName) {
         return beginDeleteAsync(resourceGroupName, accountName, liveEventName, liveOutputName).getSyncPoller();
     }
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1052,16 +1145,18 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String liveEventName, String liveOutputName, Context context) {
         return beginDeleteAsync(resourceGroupName, accountName, liveEventName, liveOutputName, context).getSyncPoller();
     }
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1070,7 +1165,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1081,7 +1176,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1091,7 +1188,7 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1102,7 +1199,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1118,7 +1217,9 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
+     * Delete Live Output
+     *
+     * <p>Deletes a live output. Deleting a live output does not delete the asset the live output is writing to.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -1136,13 +1237,391 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     }
 
     /**
-     * Get the next page of items.
+     * Get operation status.
      *
-     * @param nextLink The nextLink parameter.
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LiveOutput list result.
+     * @return a Live Output operation status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AsyncOperationResultInner>> asyncOperationWithResponseAsync(
+        String resourceGroupName, String accountName, String operationId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .asyncOperation(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            operationId,
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<AsyncOperationResultInner>> asyncOperationWithResponseAsync(
+        String resourceGroupName, String accountName, String operationId, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .asyncOperation(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                operationId,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<AsyncOperationResultInner> asyncOperationAsync(
+        String resourceGroupName, String accountName, String operationId) {
+        return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AsyncOperationResultInner asyncOperation(String resourceGroupName, String accountName, String operationId) {
+        return asyncOperationAsync(resourceGroupName, accountName, operationId).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AsyncOperationResultInner> asyncOperationWithResponse(
+        String resourceGroupName, String accountName, String operationId, Context context) {
+        return asyncOperationWithResponseAsync(resourceGroupName, accountName, operationId, context).block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param liveOutputName The name of the live output.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<LiveOutputInner>> operationLocationWithResponseAsync(
+        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (liveEventName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
+        }
+        if (liveOutputName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveOutputName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .operationLocation(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accountName,
+                            liveEventName,
+                            liveOutputName,
+                            operationId,
+                            apiVersion,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param liveOutputName The name of the live output.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<LiveOutputInner>> operationLocationWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String liveEventName,
+        String liveOutputName,
+        String operationId,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (liveEventName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveEventName is required and cannot be null."));
+        }
+        if (liveOutputName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter liveOutputName is required and cannot be null."));
+        }
+        if (operationId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
+        }
+        final String apiVersion = "2022-08-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .operationLocation(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accountName,
+                liveEventName,
+                liveOutputName,
+                operationId,
+                apiVersion,
+                accept,
+                context);
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param liveOutputName The name of the live output.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<LiveOutputInner> operationLocationAsync(
+        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId) {
+        return operationLocationWithResponseAsync(
+                resourceGroupName, accountName, liveEventName, liveOutputName, operationId)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param liveOutputName The name of the live output.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public LiveOutputInner operationLocation(
+        String resourceGroupName, String accountName, String liveEventName, String liveOutputName, String operationId) {
+        return operationLocationAsync(resourceGroupName, accountName, liveEventName, liveOutputName, operationId)
+            .block();
+    }
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a Live Output operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param liveEventName The name of the live event, maximum length is 32.
+     * @param liveOutputName The name of the live output.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Live Output operation status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<LiveOutputInner> operationLocationWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String liveEventName,
+        String liveOutputName,
+        String operationId,
+        Context context) {
+        return operationLocationWithResponseAsync(
+                resourceGroupName, accountName, liveEventName, liveOutputName, operationId, context)
+            .block();
+    }
+
+    /**
+     * Get the next page of items.
+     *
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return liveOutputListResult along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LiveOutputInner>> listNextSinglePageAsync(String nextLink) {
@@ -1173,12 +1652,13 @@ public final class LiveOutputsClientImpl implements LiveOutputsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the LiveOutput list result.
+     * @return liveOutputListResult along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LiveOutputInner>> listNextSinglePageAsync(String nextLink, Context context) {

@@ -11,6 +11,8 @@ import com.azure.storage.blob.models.BlobSignedIdentifier;
 import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobContainerCreateOptions;
+import com.azure.storage.blob.options.FindBlobsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 
@@ -69,16 +71,6 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.existsWithResponse
         client.existsWithResponse().subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
         // END: com.azure.storage.blob.BlobContainerAsyncClient.existsWithResponse
-    }
-
-    /**
-     * Code snippet for {@link BlobContainerAsyncClient#existsWithResponse(Context)}
-     */
-    public void existsWithResponse2() {
-        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.existsWithResponse-Context
-        Context context = new Context("key", "value");
-        client.existsWithResponse(context).subscribe(response -> System.out.printf("Exists? %b%n", response.getValue()));
-        // END: com.azure.storage.blob.BlobContainerAsyncClient.existsWithResponse-Context
     }
 
     /**
@@ -338,6 +330,21 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippets for {@link BlobContainerAsyncClient#findBlobsByTags(String)} and
+     * {@link BlobContainerAsyncClient#findBlobsByTags(FindBlobsOptions)}
+     */
+    public void findBlobsByTag() {
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#String
+        client.findBlobsByTags("where=tag=value").subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#String
+
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#FindBlobsOptions
+        client.findBlobsByTags(new FindBlobsOptions("where=tag=value").setMaxResultsPerPage(10))
+            .subscribe(blob -> System.out.printf("Name: %s%n", blob.getName()));
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.findBlobsByTag#FindBlobsOptions
+    }
+
+    /**
      * Code snippet for {@link BlobContainerAsyncClient#getAccountInfo()}
      */
     public void getAccountInfo() {
@@ -424,6 +431,66 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
         // END: com.azure.storage.blob.BlobContainerAsyncClient.generateUserDelegationSas#BlobServiceSasSignatureValues-UserDelegationKey-String-Context
     }
 
+    /**
+     * Code snippet for {@link BlobContainerAsyncClient#createIfNotExists()} and
+     * {@link BlobContainerAsyncClient#createIfNotExistsWithResponse(BlobContainerCreateOptions)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists
+        client.createIfNotExists().subscribe(created -> {
+            if (created) {
+                System.out.println("successfully created.");
+            } else {
+                System.out.println("Already exists.");
+            }
+        });
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        BlobContainerCreateOptions options = new BlobContainerCreateOptions().setMetadata(metadata)
+            .setPublicAccessType(PublicAccessType.CONTAINER);
+
+        client.createIfNotExistsWithResponse(options).subscribe(response -> {
+            if (response.getStatusCode() == 409) {
+                System.out.println("Already exists.");
+            } else {
+                System.out.println("successfully created.");
+            }
+        });
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.createIfNotExistsWithResponse#Map-PublicAccessType
+    }
+
+    /**
+     * Code snippet for {@link BlobContainerAsyncClient#deleteIfExists()} and
+     * {@link BlobContainerAsyncClient#deleteIfExistsWithResponse(BlobRequestConditions)}
+     */
+    public void deleteIfExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists
+        client.deleteIfExists().subscribe(deleted -> {
+            if (deleted) {
+                System.out.println("Successfully deleted.");
+            } else {
+                System.out.println("Does not exist.");
+            }
+        });
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExists
+
+        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions
+        BlobRequestConditions requestConditions = new BlobRequestConditions()
+            .setLeaseId(leaseId)
+            .setIfUnmodifiedSince(OffsetDateTime.now().minusDays(3));
+
+        client.deleteIfExistsWithResponse(requestConditions).subscribe(response -> {
+            if (response.getStatusCode() == 404) {
+                System.out.println("Does not exist.");
+            } else {
+                System.out.println("successfully deleted.");
+            }
+        });
+        // END: com.azure.storage.blob.BlobContainerAsyncClient.deleteIfExistsWithResponse#BlobRequestConditions
+    }
+
 //    /**
 //     * Code snippet for {@link BlobContainerAsyncClient#rename(String)}
 //     */
@@ -441,9 +508,9 @@ public class BlobContainerAsyncClientJavaDocCodeSnippets {
 //    public void renameContainerWithResponse() {
 //        // BEGIN: com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions
 //        BlobRequestConditions requestConditions = new BlobRequestConditions().setLeaseId("lease-id");
-//        BlobContainerAsyncClient containerClient = client
-//            .renameWithResponse(new BlobContainerRenameOptions( "newContainerName")
-//                    .setRequestConditions(requestConditions)).block().getValue();
+//        BlobContainerAsyncClient containerClient =
+//            client.renameWithResponse(new BlobContainerRenameOptions("newContainerName")
+//                .setRequestConditions(requestConditions)).block().getValue();
 //        // END: com.azure.storage.blob.BlobContainerAsyncClient.renameWithResponse#BlobContainerRenameOptions
 //    }
 }

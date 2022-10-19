@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupStorageRedundancy. */
+/** Enum to indicate type of backup storage redundancy. */
 public final class BackupStorageRedundancy extends ExpandableStringEnum<BackupStorageRedundancy> {
     /** Static value Geo for BackupStorageRedundancy. */
     public static final BackupStorageRedundancy GEO = fromString("Geo");
@@ -30,7 +30,11 @@ public final class BackupStorageRedundancy extends ExpandableStringEnum<BackupSt
         return fromString(name, BackupStorageRedundancy.class);
     }
 
-    /** @return known BackupStorageRedundancy values. */
+    /**
+     * Gets known BackupStorageRedundancy values.
+     *
+     * @return known BackupStorageRedundancy values.
+     */
     public static Collection<BackupStorageRedundancy> values() {
         return values(BackupStorageRedundancy.class);
     }

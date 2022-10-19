@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input of CheckNameAvailability API. */
 @Fluent
 public final class CheckNameAvailabilityInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailabilityInput.class);
-
     /*
      * The resource name to validate.
      */
@@ -24,12 +21,7 @@ public final class CheckNameAvailabilityInput {
      * The type of the resource whose name is to be validated.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
-
-    /** Creates an instance of CheckNameAvailabilityInput class. */
-    public CheckNameAvailabilityInput() {
-        type = "Microsoft.Cdn/Profiles/Endpoints";
-    }
+    private ResourceType type;
 
     /**
      * Get the name property: The resource name to validate.
@@ -56,7 +48,7 @@ public final class CheckNameAvailabilityInput {
      *
      * @return the type value.
      */
-    public String type() {
+    public ResourceType type() {
         return this.type;
     }
 
@@ -66,7 +58,7 @@ public final class CheckNameAvailabilityInput {
      * @param type the type value to set.
      * @return the CheckNameAvailabilityInput object itself.
      */
-    public CheckNameAvailabilityInput withType(String type) {
+    public CheckNameAvailabilityInput withType(ResourceType type) {
         this.type = type;
         return this;
     }
@@ -78,9 +70,16 @@ public final class CheckNameAvailabilityInput {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model CheckNameAvailabilityInput"));
         }
+        if (type() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model CheckNameAvailabilityInput"));
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailabilityInput.class);
 }

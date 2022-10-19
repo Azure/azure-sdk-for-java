@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** HubVirtualNetworkConnection Resource. */
 @Fluent
 public final class HubVirtualNetworkConnectionInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubVirtualNetworkConnectionInner.class);
-
     /*
      * Properties of the hub virtual network connection.
      */
@@ -24,8 +20,7 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
     private HubVirtualNetworkConnectionProperties innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -35,6 +30,10 @@ public final class HubVirtualNetworkConnectionInner extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of HubVirtualNetworkConnectionInner class. */
+    public HubVirtualNetworkConnectionInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the hub virtual network connection.

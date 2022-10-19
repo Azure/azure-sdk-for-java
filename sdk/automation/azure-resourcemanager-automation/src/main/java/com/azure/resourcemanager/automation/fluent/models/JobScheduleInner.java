@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.automation.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.models.RunbookAssociationProperty;
 import com.azure.resourcemanager.automation.models.ScheduleAssociationProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Definition of the job schedule. */
-@JsonFlatten
 @Fluent
-public class JobScheduleInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobScheduleInner.class);
-
+public final class JobScheduleInner {
     /*
      * Gets the id of the resource.
      */
@@ -38,35 +32,10 @@ public class JobScheduleInner {
     private String type;
 
     /*
-     * Gets or sets the id of job schedule.
+     * Gets or sets the properties of the job schedule.
      */
-    @JsonProperty(value = "properties.jobScheduleId")
-    private String jobScheduleId;
-
-    /*
-     * Gets or sets the schedule.
-     */
-    @JsonProperty(value = "properties.schedule")
-    private ScheduleAssociationProperty schedule;
-
-    /*
-     * Gets or sets the runbook.
-     */
-    @JsonProperty(value = "properties.runbook")
-    private RunbookAssociationProperty runbook;
-
-    /*
-     * Gets or sets the hybrid worker group that the scheduled job should run
-     * on.
-     */
-    @JsonProperty(value = "properties.runOn")
-    private String runOn;
-
-    /*
-     * Gets or sets the parameters of the job schedule.
-     */
-    @JsonProperty(value = "properties.parameters")
-    private Map<String, String> parameters;
+    @JsonProperty(value = "properties")
+    private JobScheduleProperties innerProperties;
 
     /**
      * Get the id property: Gets the id of the resource.
@@ -96,12 +65,21 @@ public class JobScheduleInner {
     }
 
     /**
+     * Get the innerProperties property: Gets or sets the properties of the job schedule.
+     *
+     * @return the innerProperties value.
+     */
+    private JobScheduleProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the jobScheduleId property: Gets or sets the id of job schedule.
      *
      * @return the jobScheduleId value.
      */
     public String jobScheduleId() {
-        return this.jobScheduleId;
+        return this.innerProperties() == null ? null : this.innerProperties().jobScheduleId();
     }
 
     /**
@@ -111,7 +89,10 @@ public class JobScheduleInner {
      * @return the JobScheduleInner object itself.
      */
     public JobScheduleInner withJobScheduleId(String jobScheduleId) {
-        this.jobScheduleId = jobScheduleId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobScheduleProperties();
+        }
+        this.innerProperties().withJobScheduleId(jobScheduleId);
         return this;
     }
 
@@ -121,7 +102,7 @@ public class JobScheduleInner {
      * @return the schedule value.
      */
     public ScheduleAssociationProperty schedule() {
-        return this.schedule;
+        return this.innerProperties() == null ? null : this.innerProperties().schedule();
     }
 
     /**
@@ -131,7 +112,10 @@ public class JobScheduleInner {
      * @return the JobScheduleInner object itself.
      */
     public JobScheduleInner withSchedule(ScheduleAssociationProperty schedule) {
-        this.schedule = schedule;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobScheduleProperties();
+        }
+        this.innerProperties().withSchedule(schedule);
         return this;
     }
 
@@ -141,7 +125,7 @@ public class JobScheduleInner {
      * @return the runbook value.
      */
     public RunbookAssociationProperty runbook() {
-        return this.runbook;
+        return this.innerProperties() == null ? null : this.innerProperties().runbook();
     }
 
     /**
@@ -151,7 +135,10 @@ public class JobScheduleInner {
      * @return the JobScheduleInner object itself.
      */
     public JobScheduleInner withRunbook(RunbookAssociationProperty runbook) {
-        this.runbook = runbook;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobScheduleProperties();
+        }
+        this.innerProperties().withRunbook(runbook);
         return this;
     }
 
@@ -161,7 +148,7 @@ public class JobScheduleInner {
      * @return the runOn value.
      */
     public String runOn() {
-        return this.runOn;
+        return this.innerProperties() == null ? null : this.innerProperties().runOn();
     }
 
     /**
@@ -171,7 +158,10 @@ public class JobScheduleInner {
      * @return the JobScheduleInner object itself.
      */
     public JobScheduleInner withRunOn(String runOn) {
-        this.runOn = runOn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobScheduleProperties();
+        }
+        this.innerProperties().withRunOn(runOn);
         return this;
     }
 
@@ -181,7 +171,7 @@ public class JobScheduleInner {
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
-        return this.parameters;
+        return this.innerProperties() == null ? null : this.innerProperties().parameters();
     }
 
     /**
@@ -191,7 +181,10 @@ public class JobScheduleInner {
      * @return the JobScheduleInner object itself.
      */
     public JobScheduleInner withParameters(Map<String, String> parameters) {
-        this.parameters = parameters;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobScheduleProperties();
+        }
+        this.innerProperties().withParameters(parameters);
         return this;
     }
 
@@ -201,11 +194,8 @@ public class JobScheduleInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (schedule() != null) {
-            schedule().validate();
-        }
-        if (runbook() != null) {
-            runbook().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

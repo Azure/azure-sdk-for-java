@@ -32,7 +32,8 @@ public interface ExpressRouteCrossConnectionsClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteCrossConnection API service call.
+     * @return response for ListExpressRouteCrossConnection API service call as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ExpressRouteCrossConnectionInner> listAsync();
@@ -42,7 +43,8 @@ public interface ExpressRouteCrossConnectionsClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteCrossConnection API service call.
+     * @return response for ListExpressRouteCrossConnection API service call as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteCrossConnectionInner> list();
@@ -54,7 +56,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteCrossConnection API service call.
+     * @return response for ListExpressRouteCrossConnection API service call as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteCrossConnectionInner> list(Context context);
@@ -66,7 +69,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteCrossConnection API service call.
+     * @return response for ListExpressRouteCrossConnection API service call as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ExpressRouteCrossConnectionInner> listByResourceGroupAsync(String resourceGroupName);
@@ -78,7 +82,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteCrossConnection API service call.
+     * @return response for ListExpressRouteCrossConnection API service call as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteCrossConnectionInner> listByResourceGroup(String resourceGroupName);
@@ -91,7 +96,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListExpressRouteCrossConnection API service call.
+     * @return response for ListExpressRouteCrossConnection API service call as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ExpressRouteCrossConnectionInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -104,7 +110,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified ExpressRouteCrossConnection.
+     * @return details about the specified ExpressRouteCrossConnection along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ExpressRouteCrossConnectionInner>> getByResourceGroupWithResponseAsync(
@@ -118,11 +125,26 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified ExpressRouteCrossConnection.
+     * @return details about the specified ExpressRouteCrossConnection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteCrossConnectionInner> getByResourceGroupAsync(
         String resourceGroupName, String crossConnectionName);
+
+    /**
+     * Gets details about the specified ExpressRouteCrossConnection.
+     *
+     * @param resourceGroupName The name of the resource group (peering location of the circuit).
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return details about the specified ExpressRouteCrossConnection along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ExpressRouteCrossConnectionInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String crossConnectionName, Context context);
 
     /**
      * Gets details about the specified ExpressRouteCrossConnection.
@@ -138,21 +160,6 @@ public interface ExpressRouteCrossConnectionsClient
     ExpressRouteCrossConnectionInner getByResourceGroup(String resourceGroupName, String crossConnectionName);
 
     /**
-     * Gets details about the specified ExpressRouteCrossConnection.
-     *
-     * @param resourceGroupName The name of the resource group (peering location of the circuit).
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection (service key of the circuit).
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about the specified ExpressRouteCrossConnection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCrossConnectionInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String crossConnectionName, Context context);
-
-    /**
      * Update the specified ExpressRouteCrossConnection.
      *
      * @param resourceGroupName The name of the resource group.
@@ -161,7 +168,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
+     * @return expressRouteCrossConnection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -176,7 +184,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
+     * @return the {@link PollerFlux} for polling of expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdateAsync(
@@ -191,7 +199,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
+     * @return the {@link SyncPoller} for polling of expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdate(
@@ -207,7 +215,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
+     * @return the {@link SyncPoller} for polling of expressRouteCrossConnection resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCrossConnectionInner>, ExpressRouteCrossConnectionInner> beginCreateOrUpdate(
@@ -225,7 +233,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
+     * @return expressRouteCrossConnection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteCrossConnectionInner> createOrUpdateAsync(
@@ -274,7 +282,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
+     * @return expressRouteCrossConnection resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ExpressRouteCrossConnectionInner>> updateTagsWithResponseAsync(
@@ -289,11 +298,27 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
+     * @return expressRouteCrossConnection resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteCrossConnectionInner> updateTagsAsync(
         String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
+
+    /**
+     * Updates an express route cross connection tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the cross connection.
+     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return expressRouteCrossConnection resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<ExpressRouteCrossConnectionInner> updateTagsWithResponse(
+        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters, Context context);
 
     /**
      * Updates an express route cross connection tags.
@@ -311,22 +336,6 @@ public interface ExpressRouteCrossConnectionsClient
         String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters);
 
     /**
-     * Updates an express route cross connection tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param crossConnectionName The name of the cross connection.
-     * @param crossConnectionParameters Parameters supplied to update express route cross connection tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return expressRouteCrossConnection resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteCrossConnectionInner> updateTagsWithResponse(
-        String resourceGroupName, String crossConnectionName, TagsObject crossConnectionParameters, Context context);
-
-    /**
      * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
      *
      * @param resourceGroupName The name of the resource group.
@@ -336,8 +345,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised ARP table associated with the express route cross connection in a resource group
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> listArpTableWithResponseAsync(
@@ -353,8 +362,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the {@link PollerFlux} for polling of the currently advertised ARP table associated with the express
+     *     route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
@@ -371,8 +380,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the {@link SyncPoller} for polling of the currently advertised ARP table associated with the express
+     *     route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
@@ -389,8 +398,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the {@link SyncPoller} for polling of the currently advertised ARP table associated with the express
+     *     route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ExpressRouteCircuitsArpTableListResultInner>, ExpressRouteCircuitsArpTableListResultInner>
@@ -411,8 +420,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised ARP table associated with the express route cross connection in a resource
-     *     group.
+     * @return the currently advertised ARP table associated with the express route cross connection in a resource group
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteCircuitsArpTableListResultInner> listArpTableAsync(
@@ -463,7 +472,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group.
+     * @return the route table summary associated with the express route cross connection in a resource group along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> listRoutesTableSummaryWithResponseAsync(
@@ -479,7 +489,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group.
+     * @return the {@link PollerFlux} for polling of the route table summary associated with the express route cross
+     *     connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
@@ -498,7 +509,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group.
+     * @return the {@link SyncPoller} for polling of the route table summary associated with the express route cross
+     *     connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
@@ -518,7 +530,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group.
+     * @return the {@link SyncPoller} for polling of the route table summary associated with the express route cross
+     *     connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
@@ -541,7 +554,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the route table summary associated with the express route cross connection in a resource group.
+     * @return the route table summary associated with the express route cross connection in a resource group on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner> listRoutesTableSummaryAsync(
@@ -592,7 +606,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
+     *     group along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> listRoutesTableWithResponseAsync(
@@ -609,8 +623,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
+     * @return the {@link PollerFlux} for polling of the currently advertised routes table associated with the express
+     *     route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
@@ -629,8 +643,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
+     * @return the {@link SyncPoller} for polling of the currently advertised routes table associated with the express
+     *     route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
@@ -650,8 +664,8 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
+     * @return the {@link SyncPoller} for polling of the currently advertised routes table associated with the express
+     *     route cross connection in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
@@ -675,7 +689,7 @@ public interface ExpressRouteCrossConnectionsClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the currently advertised routes table associated with the express route cross connection in a resource
-     *     group.
+     *     group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ExpressRouteCircuitsRoutesTableListResultInner> listRoutesTableAsync(

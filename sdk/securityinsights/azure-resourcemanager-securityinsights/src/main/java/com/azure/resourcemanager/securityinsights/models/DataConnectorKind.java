@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DataConnectorKind. */
+/** The kind of the data connector. */
 public final class DataConnectorKind extends ExpandableStringEnum<DataConnectorKind> {
     /** Static value AzureActiveDirectory for DataConnectorKind. */
     public static final DataConnectorKind AZURE_ACTIVE_DIRECTORY = fromString("AzureActiveDirectory");
@@ -33,6 +33,12 @@ public final class DataConnectorKind extends ExpandableStringEnum<DataConnectorK
 
     /** Static value OfficeIRM for DataConnectorKind. */
     public static final DataConnectorKind OFFICE_IRM = fromString("OfficeIRM");
+
+    /** Static value Office365Project for DataConnectorKind. */
+    public static final DataConnectorKind OFFICE365PROJECT = fromString("Office365Project");
+
+    /** Static value OfficePowerBI for DataConnectorKind. */
+    public static final DataConnectorKind OFFICE_POWER_BI = fromString("OfficePowerBI");
 
     /** Static value AmazonWebServicesCloudTrail for DataConnectorKind. */
     public static final DataConnectorKind AMAZON_WEB_SERVICES_CLOUD_TRAIL = fromString("AmazonWebServicesCloudTrail");
@@ -63,6 +69,9 @@ public final class DataConnectorKind extends ExpandableStringEnum<DataConnectorK
     /** Static value APIPolling for DataConnectorKind. */
     public static final DataConnectorKind APIPOLLING = fromString("APIPolling");
 
+    /** Static value IOT for DataConnectorKind. */
+    public static final DataConnectorKind IOT = fromString("IOT");
+
     /**
      * Creates or finds a DataConnectorKind from its string representation.
      *
@@ -74,7 +83,11 @@ public final class DataConnectorKind extends ExpandableStringEnum<DataConnectorK
         return fromString(name, DataConnectorKind.class);
     }
 
-    /** @return known DataConnectorKind values. */
+    /**
+     * Gets known DataConnectorKind values.
+     *
+     * @return known DataConnectorKind values.
+     */
     public static Collection<DataConnectorKind> values() {
         return values(DataConnectorKind.class);
     }

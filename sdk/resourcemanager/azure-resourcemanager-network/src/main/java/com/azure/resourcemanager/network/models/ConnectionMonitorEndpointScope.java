@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the connection monitor endpoint scope. */
 @Fluent
 public final class ConnectionMonitorEndpointScope {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorEndpointScope.class);
-
     /*
      * List of items which needs to be included to the endpoint scope.
      */
@@ -26,6 +22,10 @@ public final class ConnectionMonitorEndpointScope {
      */
     @JsonProperty(value = "exclude")
     private List<ConnectionMonitorEndpointScopeItem> exclude;
+
+    /** Creates an instance of ConnectionMonitorEndpointScope class. */
+    public ConnectionMonitorEndpointScope() {
+    }
 
     /**
      * Get the include property: List of items which needs to be included to the endpoint scope.

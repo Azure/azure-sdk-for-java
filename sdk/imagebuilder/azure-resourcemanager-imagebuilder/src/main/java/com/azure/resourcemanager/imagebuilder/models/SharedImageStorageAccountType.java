@@ -27,7 +27,11 @@ public final class SharedImageStorageAccountType extends ExpandableStringEnum<Sh
         return fromString(name, SharedImageStorageAccountType.class);
     }
 
-    /** @return known SharedImageStorageAccountType values. */
+    /**
+     * Gets known SharedImageStorageAccountType values.
+     *
+     * @return known SharedImageStorageAccountType values.
+     */
     public static Collection<SharedImageStorageAccountType> values() {
         return values(SharedImageStorageAccountType.class);
     }

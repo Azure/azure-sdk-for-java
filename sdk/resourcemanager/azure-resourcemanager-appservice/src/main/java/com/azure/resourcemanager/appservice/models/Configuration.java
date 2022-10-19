@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Non versioned Container App configuration properties that define the mutable settings of a Container app. */
 @Fluent
 public final class Configuration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Configuration.class);
-
     /*
      * Collection of secrets used by a Container app
      */

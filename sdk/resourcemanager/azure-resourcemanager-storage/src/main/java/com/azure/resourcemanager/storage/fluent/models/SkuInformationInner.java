@@ -11,18 +11,15 @@ import com.azure.resourcemanager.storage.models.Restriction;
 import com.azure.resourcemanager.storage.models.SkuCapability;
 import com.azure.resourcemanager.storage.models.SkuName;
 import com.azure.resourcemanager.storage.models.SkuTier;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Storage SKU and its properties. */
 @Fluent
 public final class SkuInformationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SkuInformationInner.class);
-
     /*
-     * The SKU name. Required for account creation; optional for update. Note
-     * that in older versions, SKU name was called accountType.
+     * The SKU name. Required for account creation; optional for update. Note that in older versions, SKU name was
+     * called accountType.
      */
     @JsonProperty(value = "name", required = true)
     private SkuName name;
@@ -46,23 +43,21 @@ public final class SkuInformationInner {
     private Kind kind;
 
     /*
-     * The set of locations that the SKU is available. This will be supported
-     * and registered Azure Geo Regions (e.g. West US, East US, Southeast Asia,
-     * etc.).
+     * The set of locations that the SKU is available. This will be supported and registered Azure Geo Regions (e.g.
+     * West US, East US, Southeast Asia, etc.).
      */
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> locations;
 
     /*
-     * The capability information in the specified SKU, including file
-     * encryption, network ACLs, change notification, etc.
+     * The capability information in the specified SKU, including file encryption, network ACLs, change notification,
+     * etc.
      */
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<SkuCapability> capabilities;
 
     /*
-     * The restrictions because of which SKU cannot be used. This is empty if
-     * there are no restrictions.
+     * The restrictions because of which SKU cannot be used. This is empty if there are no restrictions.
      */
     @JsonProperty(value = "restrictions")
     private List<Restriction> restrictions;
@@ -165,7 +160,7 @@ public final class SkuInformationInner {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model SkuInformationInner"));
         }
@@ -176,4 +171,6 @@ public final class SkuInformationInner {
             restrictions().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SkuInformationInner.class);
 }

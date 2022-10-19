@@ -6,14 +6,11 @@ package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Active Directory settings used to join a cache to a domain. */
 @Fluent
 public final class CacheActiveDirectorySettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheActiveDirectorySettings.class);
-
     /*
      * Primary DNS IP address used to resolve the Active Directory domain
      * controller's fully qualified domain name.
@@ -204,25 +201,25 @@ public final class CacheActiveDirectorySettings {
      */
     public void validate() {
         if (primaryDnsIpAddress() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property primaryDnsIpAddress in model CacheActiveDirectorySettings"));
         }
         if (domainName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property domainName in model CacheActiveDirectorySettings"));
         }
         if (domainNetBiosName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property domainNetBiosName in model CacheActiveDirectorySettings"));
         }
         if (cacheNetBiosName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property cacheNetBiosName in model CacheActiveDirectorySettings"));
@@ -231,4 +228,6 @@ public final class CacheActiveDirectorySettings {
             credentials().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CacheActiveDirectorySettings.class);
 }

@@ -5,12 +5,10 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AntispamMailDirection;
 import com.azure.resourcemanager.securityinsights.models.DeliveryAction;
 import com.azure.resourcemanager.securityinsights.models.DeliveryLocation;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,8 +17,6 @@ import java.util.UUID;
 /** Mail message entity property bag. */
 @Fluent
 public final class MailMessageEntityProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MailMessageEntityProperties.class);
-
     /*
      * The File entity ids of this mail message's attachments
      */
@@ -28,8 +24,8 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
     private List<String> fileEntityIds;
 
     /*
-     * The recipient of this mail message. Note that in case of multiple
-     * recipients the mail message is forked and each copy has one recipient
+     * The recipient of this mail message. Note that in case of multiple recipients the mail message is forked and each
+     * copy has one recipient
      */
     @JsonProperty(value = "recipient", access = JsonProperty.Access.WRITE_ONLY)
     private String recipient;
@@ -161,8 +157,7 @@ public final class MailMessageEntityProperties extends EntityCommonProperties {
     private AntispamMailDirection antispamDirection;
 
     /*
-     * The delivery action of this mail message like Delivered, Blocked,
-     * Replaced etc
+     * The delivery action of this mail message like Delivered, Blocked, Replaced etc
      */
     @JsonProperty(value = "deliveryAction")
     private DeliveryAction deliveryAction;

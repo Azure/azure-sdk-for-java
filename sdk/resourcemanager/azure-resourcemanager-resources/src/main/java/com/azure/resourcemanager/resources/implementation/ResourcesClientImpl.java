@@ -47,8 +47,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourcesClient. */
 public final class ResourcesClientImpl implements InnerSupportsListing<GenericResourceExpandedInner>, ResourcesClient {
-    private final ClientLogger logger = new ClientLogger(ResourcesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourcesService service;
 
@@ -321,7 +319,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources for a resource group.
+     * @return all the resources for a resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupSinglePageAsync(
@@ -393,7 +392,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources for a resource group.
+     * @return all the resources for a resource group along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupSinglePageAsync(
@@ -461,7 +461,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources for a resource group.
+     * @return all the resources for a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(
@@ -478,7 +478,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources for a resource group.
+     * @return all the resources for a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -514,7 +514,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources for a resource group.
+     * @return all the resources for a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GenericResourceExpandedInner> listByResourceGroupAsync(
@@ -531,7 +531,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources for a resource group.
+     * @return all the resources for a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GenericResourceExpandedInner> listByResourceGroup(String resourceGroupName) {
@@ -565,7 +565,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources for a resource group.
+     * @return all the resources for a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GenericResourceExpandedInner> listByResourceGroup(
@@ -583,7 +583,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> moveResourcesWithResponseAsync(
@@ -637,7 +637,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> moveResourcesWithResponseAsync(
@@ -687,7 +687,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginMoveResourcesAsync(
@@ -710,7 +710,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginMoveResourcesAsync(
@@ -733,7 +733,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMoveResources(
@@ -752,7 +752,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginMoveResources(
@@ -770,7 +770,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> moveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
@@ -790,7 +790,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> moveResourcesAsync(
@@ -845,7 +845,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> validateMoveResourcesWithResponseAsync(
@@ -901,7 +901,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateMoveResourcesWithResponseAsync(
@@ -953,7 +953,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginValidateMoveResourcesAsync(
@@ -979,7 +979,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginValidateMoveResourcesAsync(
@@ -1004,7 +1004,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateMoveResources(
@@ -1025,7 +1025,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateMoveResources(
@@ -1045,7 +1045,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> validateMoveResourcesAsync(String sourceResourceGroupName, ResourcesMoveInfo parameters) {
@@ -1067,7 +1067,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> validateMoveResourcesAsync(
@@ -1136,7 +1136,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources in a subscription.
+     * @return all the resources in a subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listSinglePageAsync(
@@ -1202,7 +1203,8 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources in a subscription.
+     * @return all the resources in a subscription along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listSinglePageAsync(
@@ -1264,7 +1266,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources in a subscription.
+     * @return all the resources in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GenericResourceExpandedInner> listAsync(String filter, String expand, Integer top) {
@@ -1277,7 +1279,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources in a subscription.
+     * @return all the resources in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<GenericResourceExpandedInner> listAsync() {
@@ -1311,7 +1313,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources in a subscription.
+     * @return all the resources in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GenericResourceExpandedInner> listAsync(
@@ -1326,7 +1328,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources in a subscription.
+     * @return all the resources in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GenericResourceExpandedInner> list() {
@@ -1359,7 +1361,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the resources in a subscription.
+     * @return all the resources in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GenericResourceExpandedInner> list(
@@ -1380,7 +1382,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> checkExistenceWithResponseAsync(
@@ -1458,7 +1460,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Boolean>> checkExistenceWithResponseAsync(
@@ -1533,7 +1535,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> checkExistenceAsync(
@@ -1550,14 +1552,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 resourceType,
                 resourceName,
                 apiVersion)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1595,7 +1590,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (value != null) {
             return value;
         } else {
-            throw logger.logExceptionAsError(new NullPointerException());
+            throw LOGGER.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -1613,7 +1608,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkExistenceWithResponse(
@@ -1648,7 +1643,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1726,7 +1721,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1801,7 +1796,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1839,7 +1834,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1878,7 +1873,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1912,7 +1907,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1947,7 +1942,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
@@ -1982,7 +1977,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -2085,7 +2080,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -2170,7 +2165,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -2252,7 +2247,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link PollerFlux} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateAsync(
@@ -2296,7 +2291,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link PollerFlux} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateAsync(
@@ -2338,7 +2333,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link SyncPoller} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdate(
@@ -2374,7 +2369,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link SyncPoller} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdate(
@@ -2411,7 +2406,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenericResourceInner> createOrUpdateAsync(
@@ -2448,7 +2443,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GenericResourceInner> createOrUpdateAsync(
@@ -2559,7 +2554,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -2644,7 +2639,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -2726,7 +2721,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link PollerFlux} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateAsync(
@@ -2770,7 +2765,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link PollerFlux} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateAsync(
@@ -2812,7 +2807,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link SyncPoller} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdate(
@@ -2848,7 +2843,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link SyncPoller} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdate(
@@ -2885,7 +2880,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenericResourceInner> updateAsync(
@@ -2922,7 +2917,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GenericResourceInner> updateAsync(
@@ -3033,7 +3028,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource.
+     * @return a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GenericResourceInner>> getWithResponseAsync(
@@ -3111,7 +3106,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource.
+     * @return a resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GenericResourceInner>> getWithResponseAsync(
@@ -3186,7 +3181,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource.
+     * @return a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenericResourceInner> getAsync(
@@ -3203,14 +3198,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                 resourceType,
                 resourceName,
                 apiVersion)
-            .flatMap(
-                (Response<GenericResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3260,7 +3248,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource.
+     * @return a resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GenericResourceInner> getWithResponse(
@@ -3292,7 +3280,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Boolean>> checkExistenceByIdWithResponseAsync(String resourceId, String apiVersion) {
@@ -3327,7 +3315,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Boolean>> checkExistenceByIdWithResponseAsync(
@@ -3359,19 +3347,12 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return whether resource exists.
+     * @return whether resource exists on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Boolean> checkExistenceByIdAsync(String resourceId, String apiVersion) {
         return checkExistenceByIdWithResponseAsync(resourceId, apiVersion)
-            .flatMap(
-                (Response<Boolean> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -3392,7 +3373,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
         if (value != null) {
             return value;
         } else {
-            throw logger.logExceptionAsError(new NullPointerException());
+            throw LOGGER.logExceptionAsError(new NullPointerException());
         }
     }
 
@@ -3407,7 +3388,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return whether resource exists along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkExistenceByIdWithResponse(String resourceId, String apiVersion, Context context) {
@@ -3424,7 +3405,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(String resourceId, String apiVersion) {
@@ -3458,7 +3439,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteByIdWithResponseAsync(
@@ -3490,7 +3471,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(String resourceId, String apiVersion) {
@@ -3512,7 +3493,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteByIdAsync(
@@ -3534,7 +3515,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteById(String resourceId, String apiVersion) {
@@ -3552,7 +3533,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteById(String resourceId, String apiVersion, Context context) {
@@ -3569,7 +3550,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByIdAsync(String resourceId, String apiVersion) {
@@ -3587,7 +3568,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteByIdAsync(String resourceId, String apiVersion, Context context) {
@@ -3640,7 +3621,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
@@ -3684,7 +3665,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateByIdWithResponseAsync(
@@ -3723,7 +3704,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link PollerFlux} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateByIdAsync(
@@ -3751,7 +3732,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link PollerFlux} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateByIdAsync(
@@ -3776,7 +3757,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link SyncPoller} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateById(
@@ -3796,7 +3777,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link SyncPoller} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginCreateOrUpdateById(
@@ -3815,7 +3796,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenericResourceInner> createOrUpdateByIdAsync(
@@ -3837,7 +3818,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GenericResourceInner> createOrUpdateByIdAsync(
@@ -3897,7 +3878,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(
@@ -3939,7 +3920,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateByIdWithResponseAsync(
@@ -3977,7 +3958,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link PollerFlux} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateByIdAsync(
@@ -4005,7 +3986,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link PollerFlux} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateByIdAsync(
@@ -4030,7 +4011,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link SyncPoller} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateById(
@@ -4050,7 +4031,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return the {@link SyncPoller} for polling of resource information.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GenericResourceInner>, GenericResourceInner> beginUpdateById(
@@ -4069,7 +4050,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenericResourceInner> updateByIdAsync(
@@ -4091,7 +4072,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information.
+     * @return resource information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GenericResourceInner> updateByIdAsync(
@@ -4149,7 +4130,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource by ID.
+     * @return a resource by ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GenericResourceInner>> getByIdWithResponseAsync(String resourceId, String apiVersion) {
@@ -4182,7 +4163,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource by ID.
+     * @return a resource by ID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<GenericResourceInner>> getByIdWithResponseAsync(
@@ -4214,19 +4195,11 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource by ID.
+     * @return a resource by ID on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GenericResourceInner> getByIdAsync(String resourceId, String apiVersion) {
-        return getByIdWithResponseAsync(resourceId, apiVersion)
-            .flatMap(
-                (Response<GenericResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByIdWithResponseAsync(resourceId, apiVersion).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -4257,7 +4230,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a resource by ID.
+     * @return a resource by ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GenericResourceInner> getByIdWithResponse(String resourceId, String apiVersion, Context context) {
@@ -4271,7 +4244,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups.
+     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -4308,7 +4281,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups.
+     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listByResourceGroupNextSinglePageAsync(
@@ -4344,7 +4317,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups.
+     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listNextSinglePageAsync(String nextLink) {
@@ -4380,7 +4353,7 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of resource groups.
+     * @return list of resource groups along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GenericResourceExpandedInner>> listNextSinglePageAsync(
@@ -4408,4 +4381,6 @@ public final class ResourcesClientImpl implements InnerSupportsListing<GenericRe
                         res.getValue().nextLink(),
                         null));
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourcesClientImpl.class);
 }

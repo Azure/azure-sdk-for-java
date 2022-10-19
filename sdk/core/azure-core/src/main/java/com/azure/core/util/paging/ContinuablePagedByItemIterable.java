@@ -24,6 +24,9 @@ import java.util.function.Predicate;
  */
 final class ContinuablePagedByItemIterable<C, T, P extends ContinuablePage<C, T>> implements Iterable<T> {
     private final PageRetriever<C, P> pageRetriever;
+
+    private final PageRetrieverSync<C, P> pageRetrieverSync;
+
     private final C continuationToken;
     private final Predicate<C> continuationPredicate;
     private final Integer preferredPageSize;
@@ -34,23 +37,48 @@ final class ContinuablePagedByItemIterable<C, T, P extends ContinuablePage<C, T>
         this.continuationToken = continuationToken;
         this.continuationPredicate = continuationPredicate;
         this.preferredPageSize = preferredPageSize;
+        this.pageRetrieverSync = null;
+    }
+
+    ContinuablePagedByItemIterable(PageRetrieverSync<C, P> pageRetrieverSync, C continuationToken,
+                                   Predicate<C> continuationPredicate, Integer preferredPageSize) {
+        this.pageRetrieverSync = pageRetrieverSync;
+        this.continuationToken = continuationToken;
+        this.continuationPredicate = continuationPredicate;
+        this.preferredPageSize = preferredPageSize;
+        this.pageRetriever = null;
     }
 
     @Override
     public Iterator<T> iterator() {
-        return new ContinuablePagedByItemIterator<>(pageRetriever, continuationToken, continuationPredicate,
+        if (pageRetriever != null) {
+            return new ContinuablePagedByItemIterator<>(pageRetriever, continuationToken, continuationPredicate,
+                preferredPageSize);
+        }
+        return new ContinuablePagedByItemIterator<>(pageRetrieverSync, continuationToken, continuationPredicate,
             preferredPageSize);
     }
 
     private static final class ContinuablePagedByItemIterator<C, T, P extends ContinuablePage<C, T>>
         extends ContinuablePagedByIteratorBase<C, T, P, T> {
+        // ContinuablePagedByItemIterator is a commonly used class, use a static logger.
+        private static final ClientLogger LOGGER = new ClientLogger(ContinuablePagedByItemIterator.class);
+
         private volatile Queue<Iterator<T>> pages = new ConcurrentLinkedQueue<>();
         private volatile Iterator<T> currentPage;
 
         ContinuablePagedByItemIterator(PageRetriever<C, P> pageRetriever, C continuationToken,
             Predicate<C> continuationPredicate, Integer preferredPageSize) {
             super(pageRetriever, new ContinuationState<>(continuationToken, continuationPredicate), preferredPageSize,
-                new ClientLogger(ContinuablePagedByItemIterator.class));
+                LOGGER);
+
+            requestPage();
+        }
+
+        ContinuablePagedByItemIterator(PageRetrieverSync<C, P> pageRetrieverSync, C continuationToken,
+                                       Predicate<C> continuationPredicate, Integer preferredPageSize) {
+            super(pageRetrieverSync, new ContinuationState<>(continuationToken, continuationPredicate), preferredPageSize,
+                LOGGER);
 
             requestPage();
         }

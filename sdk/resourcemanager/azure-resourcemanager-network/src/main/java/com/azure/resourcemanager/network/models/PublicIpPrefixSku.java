@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SKU of a public IP prefix. */
 @Fluent
 public final class PublicIpPrefixSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpPrefixSku.class);
-
     /*
      * Name of a public IP prefix SKU.
      */
@@ -25,6 +21,10 @@ public final class PublicIpPrefixSku {
      */
     @JsonProperty(value = "tier")
     private PublicIpPrefixSkuTier tier;
+
+    /** Creates an instance of PublicIpPrefixSku class. */
+    public PublicIpPrefixSku() {
+    }
 
     /**
      * Get the name property: Name of a public IP prefix SKU.

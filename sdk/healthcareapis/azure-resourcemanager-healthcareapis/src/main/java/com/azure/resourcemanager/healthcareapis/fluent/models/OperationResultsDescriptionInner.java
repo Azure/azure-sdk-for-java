@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.healthcareapis.models.OperationResultStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties indicating the operation result of an operation on a service. */
 @Fluent
 public final class OperationResultsDescriptionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultsDescriptionInner.class);
-
     /*
      * The ID of the operation returned.
      */
@@ -38,6 +34,12 @@ public final class OperationResultsDescriptionInner {
      */
     @JsonProperty(value = "startTime", access = JsonProperty.Access.WRITE_ONLY)
     private String startTime;
+
+    /*
+     * The time that the operation finished.
+     */
+    @JsonProperty(value = "endTime", access = JsonProperty.Access.WRITE_ONLY)
+    private String endTime;
 
     /*
      * Additional properties of the operation result.
@@ -79,6 +81,15 @@ public final class OperationResultsDescriptionInner {
      */
     public String startTime() {
         return this.startTime;
+    }
+
+    /**
+     * Get the endTime property: The time that the operation finished.
+     *
+     * @return the endTime value.
+     */
+    public String endTime() {
+        return this.endTime;
     }
 
     /**

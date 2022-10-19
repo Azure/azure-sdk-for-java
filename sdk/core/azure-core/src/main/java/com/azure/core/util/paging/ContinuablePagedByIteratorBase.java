@@ -23,6 +23,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C, T>, E> implements Iterator<E> {
     private final PageRetriever<C, P> pageRetriever;
+    private final PageRetrieverSync<C, P> pageRetrieverSync;
+
     private final ContinuationState<C> continuationState;
     private final Integer defaultPageSize;
     private final ClientLogger logger;
@@ -35,6 +37,16 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
         this.pageRetriever = pageRetriever;
         this.defaultPageSize = defaultPageSize;
         this.logger = logger;
+        this.pageRetrieverSync = null;
+    }
+
+    ContinuablePagedByIteratorBase(PageRetrieverSync<C, P> pageRetrieverSync, ContinuationState<C> continuationState,
+                                   Integer defaultPageSize, ClientLogger logger) {
+        this.continuationState = continuationState;
+        this.pageRetrieverSync = pageRetrieverSync;
+        this.defaultPageSize = defaultPageSize;
+        this.logger = logger;
+        this.pageRetriever = null;
     }
 
     @Override
@@ -72,26 +84,28 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
     abstract E getNext();
 
     synchronized void requestPage() {
-        /*
-         * In the scenario where multiple threads were waiting on synchronization, check that no earlier thread made a
-         * request that would satisfy the current element request. Additionally, check to make sure that any earlier
-         * requests didn't consume the paged responses to completion.
-         */
-        if (isNextAvailable() || done) {
-            return;
-        }
-
         AtomicBoolean receivedPages = new AtomicBoolean(false);
-        pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize)
-            .map(page -> {
-                receivedPages.set(true);
-                addPage(page);
+        if (pageRetriever != null) {
+            /*
+             * In the scenario where multiple threads were waiting on synchronization, check that no earlier thread made a
+             * request that would satisfy the current element request. Additionally, check to make sure that any earlier
+             * requests didn't consume the paged responses to completion.
+             */
+            if (isNextAvailable() || done) {
+                return;
+            }
 
-                continuationState.setLastContinuationToken(page.getContinuationToken());
-                this.done = continuationState.isDone();
-
-                return page;
-            }).blockLast();
+            pageRetriever.get(continuationState.getLastContinuationToken(), defaultPageSize)
+                .map(page -> {
+                    receivePage(receivedPages, page);
+                    return page;
+                }).blockLast();
+        } else if (pageRetrieverSync != null) {
+            P page = pageRetrieverSync.getPage(continuationState.getLastContinuationToken(), defaultPageSize);
+            if (page != null) {
+                receivePage(receivedPages, page);
+            }
+        }
 
         /*
          * In the scenario when the subscription completes without emitting an element indicate we are done by checking
@@ -104,4 +118,12 @@ abstract class ContinuablePagedByIteratorBase<C, T, P extends ContinuablePage<C,
      * Add a page returned by the service and update the continuation state.
      */
     abstract void addPage(P page);
+
+    private void receivePage(AtomicBoolean receivedPages, P page) {
+        receivedPages.set(true);
+        addPage(page);
+
+        continuationState.setLastContinuationToken(page.getContinuationToken());
+        this.done = continuationState.isDone();
+    }
 }

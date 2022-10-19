@@ -7,15 +7,12 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.PrivateEndpointConnectionResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of linked service resources. */
 @Fluent
 public final class PrivateEndpointConnectionListResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResponse.class);
-
     /*
      * List of Private Endpoint Connections.
      */
@@ -27,6 +24,10 @@ public final class PrivateEndpointConnectionListResponse {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of PrivateEndpointConnectionListResponse class. */
+    public PrivateEndpointConnectionListResponse() {
+    }
 
     /**
      * Get the value property: List of Private Endpoint Connections.
@@ -75,7 +76,7 @@ public final class PrivateEndpointConnectionListResponse {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model PrivateEndpointConnectionListResponse"));
@@ -83,4 +84,6 @@ public final class PrivateEndpointConnectionListResponse {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointConnectionListResponse.class);
 }

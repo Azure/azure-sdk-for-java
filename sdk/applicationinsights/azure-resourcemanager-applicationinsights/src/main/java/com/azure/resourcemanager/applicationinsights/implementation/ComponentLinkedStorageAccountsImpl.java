@@ -34,6 +34,10 @@ public final class ComponentLinkedStorageAccountsImpl
         return this.innerModel().linkedStorageAccount();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ComponentLinkedStorageAccountsInner innerModel() {
         return this.innerObject;
     }

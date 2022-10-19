@@ -1,6 +1,6 @@
 # Release History
 
-## 2.12.0-beta.1 (Unreleased)
+## 2.20.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,74 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.19.0 (2022-09-23)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.18.0 (2022-08-26)
+
+### Breaking Changes
+
+- Fixed incorrect class names of `MetricsResponseSeriesItemData`, `WafMetricsResponseSeriesItemData`, `WafRankingsResponseDataItemMetric`.
+- Removed classes not supported in backend `ManagedServiceIdentity`, `UserAssignedIdentity`, `ManagedServiceIdentityType`.
+
+## 2.17.0 (2022-07-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.16.0 (2022-06-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.15.0 (2022-05-25)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.14.0 (2022-04-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.13.0 (2022-03-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.12.0 (2022-02-14)
+
+### Breaking Changes
+
+- Azure Front Door.
+- Changed in class `CheckNameAvailabilityInput` that `type` no longer have a default value and hence required to be specified.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-06-01`.
 
 ## 2.11.0 (2022-01-17)
 

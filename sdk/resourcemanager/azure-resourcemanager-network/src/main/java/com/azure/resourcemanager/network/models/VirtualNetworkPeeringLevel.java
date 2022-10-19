@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualNetworkPeeringLevel. */
+/** The peering sync status of the virtual network peering. */
 public final class VirtualNetworkPeeringLevel extends ExpandableStringEnum<VirtualNetworkPeeringLevel> {
     /** Static value FullyInSync for VirtualNetworkPeeringLevel. */
     public static final VirtualNetworkPeeringLevel FULLY_IN_SYNC = fromString("FullyInSync");
@@ -33,7 +33,11 @@ public final class VirtualNetworkPeeringLevel extends ExpandableStringEnum<Virtu
         return fromString(name, VirtualNetworkPeeringLevel.class);
     }
 
-    /** @return known VirtualNetworkPeeringLevel values. */
+    /**
+     * Gets known VirtualNetworkPeeringLevel values.
+     *
+     * @return known VirtualNetworkPeeringLevel values.
+     */
     public static Collection<VirtualNetworkPeeringLevel> values() {
         return values(VirtualNetworkPeeringLevel.class);
     }

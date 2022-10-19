@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.ManagementLocksClient;
 import com.azure.resourcemanager.resources.fluent.models.ManagementLockObjectInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -43,8 +42,6 @@ public final class ManagementLocksClientImpl
         InnerSupportsListing<ManagementLockObjectInner>,
         InnerSupportsDelete<Void>,
         ManagementLocksClient {
-    private final ClientLogger logger = new ClientLogger(ManagementLocksClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ManagementLocksService service;
 
@@ -85,7 +82,7 @@ public final class ManagementLocksClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks"
                 + "/{lockName}")
@@ -97,6 +94,7 @@ public final class ManagementLocksClientImpl
             @PathParam("lockName") String lockName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -127,7 +125,7 @@ public final class ManagementLocksClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/{scope}/providers/Microsoft.Authorization/locks/{lockName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -136,6 +134,7 @@ public final class ManagementLocksClientImpl
             @PathParam("scope") String scope,
             @PathParam("lockName") String lockName,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -171,7 +170,7 @@ public final class ManagementLocksClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}"
                 + "/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks"
@@ -188,6 +187,7 @@ public final class ManagementLocksClientImpl
             @PathParam("lockName") String lockName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -223,7 +223,7 @@ public final class ManagementLocksClientImpl
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}")
         @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -232,6 +232,7 @@ public final class ManagementLocksClientImpl
             @PathParam("lockName") String lockName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Content-Type: application/json"})
@@ -357,7 +358,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementLockObjectInner>> createOrUpdateAtResourceGroupLevelWithResponseAsync(
@@ -416,7 +417,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementLockObjectInner>> createOrUpdateAtResourceGroupLevelWithResponseAsync(
@@ -471,20 +472,13 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelAsync(
         String resourceGroupName, String lockName, ManagementLockObjectInner parameters) {
         return createOrUpdateAtResourceGroupLevelWithResponseAsync(resourceGroupName, lockName, parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -520,7 +514,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelWithResponse(
@@ -538,7 +532,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String lockName) {
@@ -561,6 +555,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -571,6 +566,7 @@ public final class ManagementLocksClientImpl
                             lockName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -585,7 +581,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String lockName, Context context) {
@@ -608,6 +604,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -616,6 +613,7 @@ public final class ManagementLocksClientImpl
                 lockName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -628,11 +626,11 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String lockName) {
-        return deleteWithResponseAsync(resourceGroupName, lockName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, lockName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -660,7 +658,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String lockName, Context context) {
@@ -675,7 +673,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock at the resource group level.
+     * @return a management lock at the resource group level along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementLockObjectInner>> getByResourceGroupWithResponseAsync(
@@ -724,7 +723,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock at the resource group level.
+     * @return a management lock at the resource group level along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementLockObjectInner>> getByResourceGroupWithResponseAsync(
@@ -769,19 +769,12 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock at the resource group level.
+     * @return a management lock at the resource group level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> getByResourceGroupAsync(String resourceGroupName, String lockName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -808,7 +801,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock at the resource group level.
+     * @return a management lock at the resource group level along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementLockObjectInner> getByResourceGroupWithResponse(
@@ -829,7 +822,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementLockObjectInner>> createOrUpdateByScopeWithResponseAsync(
@@ -881,7 +874,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementLockObjectInner>> createOrUpdateByScopeWithResponseAsync(
@@ -923,20 +916,13 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> createOrUpdateByScopeAsync(
         String scope, String lockName, ManagementLockObjectInner parameters) {
         return createOrUpdateByScopeWithResponseAsync(scope, lockName, parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -974,7 +960,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementLockObjectInner> createOrUpdateByScopeWithResponse(
@@ -990,7 +976,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteByScopeWithResponseAsync(String scope, String lockName) {
@@ -1006,12 +992,13 @@ public final class ManagementLocksClientImpl
         if (lockName == null) {
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
                     service
                         .deleteByScope(
-                            this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), context))
+                            this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1024,7 +1011,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteByScopeWithResponseAsync(String scope, String lockName, Context context) {
@@ -1040,8 +1027,10 @@ public final class ManagementLocksClientImpl
         if (lockName == null) {
             return Mono.error(new IllegalArgumentException("Parameter lockName is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.deleteByScope(this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), context);
+        return service
+            .deleteByScope(this.client.getEndpoint(), scope, lockName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1052,11 +1041,11 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByScopeAsync(String scope, String lockName) {
-        return deleteByScopeWithResponseAsync(scope, lockName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteByScopeWithResponseAsync(scope, lockName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1082,7 +1071,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteByScopeWithResponse(String scope, String lockName, Context context) {
@@ -1097,7 +1086,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock by scope.
+     * @return a management lock by scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementLockObjectInner>> getByScopeWithResponseAsync(String scope, String lockName) {
@@ -1132,7 +1121,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock by scope.
+     * @return a management lock by scope along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementLockObjectInner>> getByScopeWithResponseAsync(
@@ -1163,19 +1152,11 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock by scope.
+     * @return a management lock by scope on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> getByScopeAsync(String scope, String lockName) {
-        return getByScopeWithResponseAsync(scope, lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getByScopeWithResponseAsync(scope, lockName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1202,7 +1183,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock by scope.
+     * @return a management lock by scope along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementLockObjectInner> getByScopeWithResponse(String scope, String lockName, Context context) {
@@ -1225,7 +1206,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementLockObjectInner>> createOrUpdateAtResourceLevelWithResponseAsync(
@@ -1314,7 +1295,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementLockObjectInner>> createOrUpdateAtResourceLevelWithResponseAsync(
@@ -1400,7 +1381,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> createOrUpdateAtResourceLevelAsync(
@@ -1419,14 +1400,7 @@ public final class ManagementLocksClientImpl
                 resourceName,
                 lockName,
                 parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1484,7 +1458,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementLockObjectInner> createOrUpdateAtResourceLevelWithResponse(
@@ -1521,7 +1495,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAtResourceLevelWithResponseAsync(
@@ -1566,6 +1540,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1580,6 +1555,7 @@ public final class ManagementLocksClientImpl
                             lockName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -1598,7 +1574,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteAtResourceLevelWithResponseAsync(
@@ -1644,6 +1620,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteAtResourceLevel(
@@ -1656,6 +1633,7 @@ public final class ManagementLocksClientImpl
                 lockName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -1672,7 +1650,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtResourceLevelAsync(
@@ -1684,7 +1662,7 @@ public final class ManagementLocksClientImpl
         String lockName) {
         return deleteAtResourceLevelWithResponseAsync(
                 resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1728,7 +1706,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAtResourceLevelWithResponse(
@@ -1762,7 +1740,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the management lock of a resource or any level below resource.
+     * @return the management lock of a resource or any level below resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementLockObjectInner>> getAtResourceLevelWithResponseAsync(
@@ -1840,7 +1819,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the management lock of a resource or any level below resource.
+     * @return the management lock of a resource or any level below resource along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementLockObjectInner>> getAtResourceLevelWithResponseAsync(
@@ -1915,7 +1895,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the management lock of a resource or any level below resource.
+     * @return the management lock of a resource or any level below resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> getAtResourceLevelAsync(
@@ -1927,14 +1907,7 @@ public final class ManagementLocksClientImpl
         String lockName) {
         return getAtResourceLevelWithResponseAsync(
                 resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1977,7 +1950,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the management lock of a resource or any level below resource.
+     * @return the management lock of a resource or any level below resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementLockObjectInner> getAtResourceLevelWithResponse(
@@ -2010,7 +1983,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementLockObjectInner>> createOrUpdateAtSubscriptionLevelWithResponseAsync(
@@ -2063,7 +2036,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementLockObjectInner>> createOrUpdateAtSubscriptionLevelWithResponseAsync(
@@ -2112,20 +2085,13 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelAsync(
         String lockName, ManagementLockObjectInner parameters) {
         return createOrUpdateAtSubscriptionLevelWithResponseAsync(lockName, parameters)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2159,7 +2125,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the lock information.
+     * @return the lock information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelWithResponse(
@@ -2175,7 +2141,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteAtSubscriptionLevelWithResponseAsync(String lockName) {
@@ -2194,6 +2160,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -2203,6 +2170,7 @@ public final class ManagementLocksClientImpl
                             lockName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -2216,7 +2184,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteAtSubscriptionLevelWithResponseAsync(String lockName, Context context) {
@@ -2235,6 +2203,7 @@ public final class ManagementLocksClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .deleteAtSubscriptionLevel(
@@ -2242,6 +2211,7 @@ public final class ManagementLocksClientImpl
                 lockName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -2253,11 +2223,11 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAtSubscriptionLevelAsync(String lockName) {
-        return deleteAtSubscriptionLevelWithResponseAsync(lockName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteAtSubscriptionLevelWithResponseAsync(lockName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -2283,7 +2253,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteAtSubscriptionLevelWithResponse(String lockName, Context context) {
@@ -2297,7 +2267,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock at the subscription level.
+     * @return a management lock at the subscription level along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ManagementLockObjectInner>> getAtSubscriptionLevelWithResponseAsync(String lockName) {
@@ -2339,7 +2310,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock at the subscription level.
+     * @return a management lock at the subscription level along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ManagementLockObjectInner>> getAtSubscriptionLevelWithResponseAsync(
@@ -2378,19 +2350,11 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock at the subscription level.
+     * @return a management lock at the subscription level on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagementLockObjectInner> getAtSubscriptionLevelAsync(String lockName) {
-        return getAtSubscriptionLevelWithResponseAsync(lockName)
-            .flatMap(
-                (Response<ManagementLockObjectInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getAtSubscriptionLevelWithResponseAsync(lockName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -2415,7 +2379,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a management lock at the subscription level.
+     * @return a management lock at the subscription level along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ManagementLockObjectInner> getAtSubscriptionLevelWithResponse(String lockName, Context context) {
@@ -2430,7 +2394,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource group.
+     * @return all the management locks for a resource group along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listByResourceGroupSinglePageAsync(
@@ -2485,7 +2450,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource group.
+     * @return all the management locks for a resource group along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listByResourceGroupSinglePageAsync(
@@ -2536,7 +2502,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource group.
+     * @return all the management locks for a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listByResourceGroupAsync(String resourceGroupName, String filter) {
@@ -2552,7 +2518,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource group.
+     * @return all the management locks for a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -2571,7 +2537,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource group.
+     * @return all the management locks for a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagementLockObjectInner> listByResourceGroupAsync(
@@ -2588,7 +2554,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource group.
+     * @return all the management locks for a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagementLockObjectInner> listByResourceGroup(String resourceGroupName) {
@@ -2605,7 +2571,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource group.
+     * @return all the management locks for a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagementLockObjectInner> listByResourceGroup(
@@ -2626,7 +2592,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource.
+     * @return all the management locks for a resource or any level below resource along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelSinglePageAsync(
@@ -2711,7 +2678,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource.
+     * @return all the management locks for a resource or any level below resource along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelSinglePageAsync(
@@ -2793,7 +2761,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource.
+     * @return all the management locks for a resource or any level below resource as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listAtResourceLevelAsync(
@@ -2827,7 +2796,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource.
+     * @return all the management locks for a resource or any level below resource as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listAtResourceLevelAsync(
@@ -2863,7 +2833,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource.
+     * @return all the management locks for a resource or any level below resource as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagementLockObjectInner> listAtResourceLevelAsync(
@@ -2899,7 +2870,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource.
+     * @return all the management locks for a resource or any level below resource as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagementLockObjectInner> listAtResourceLevel(
@@ -2928,7 +2900,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a resource or any level below resource.
+     * @return all the management locks for a resource or any level below resource as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagementLockObjectInner> listAtResourceLevel(
@@ -2957,7 +2930,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a subscription.
+     * @return all the management locks for a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listSinglePageAsync(String filter) {
@@ -3005,7 +2979,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a subscription.
+     * @return all the management locks for a subscription along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listSinglePageAsync(String filter, Context context) {
@@ -3049,7 +3024,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a subscription.
+     * @return all the management locks for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listAsync(String filter) {
@@ -3062,7 +3037,7 @@ public final class ManagementLocksClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a subscription.
+     * @return all the management locks for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listAsync() {
@@ -3079,7 +3054,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a subscription.
+     * @return all the management locks for a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagementLockObjectInner> listAsync(String filter, Context context) {
@@ -3093,7 +3068,7 @@ public final class ManagementLocksClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a subscription.
+     * @return all the management locks for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagementLockObjectInner> list() {
@@ -3109,7 +3084,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a subscription.
+     * @return all the management locks for a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagementLockObjectInner> list(String filter, Context context) {
@@ -3128,7 +3103,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a scope.
+     * @return all the management locks for a scope along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listByScopeSinglePageAsync(String scope, String filter) {
@@ -3173,7 +3149,8 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a scope.
+     * @return all the management locks for a scope along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listByScopeSinglePageAsync(
@@ -3214,7 +3191,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a scope.
+     * @return all the management locks for a scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listByScopeAsync(String scope, String filter) {
@@ -3233,7 +3210,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a scope.
+     * @return all the management locks for a scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagementLockObjectInner> listByScopeAsync(String scope) {
@@ -3255,7 +3232,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a scope.
+     * @return all the management locks for a scope as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagementLockObjectInner> listByScopeAsync(String scope, String filter, Context context) {
@@ -3275,7 +3252,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a scope.
+     * @return all the management locks for a scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagementLockObjectInner> listByScope(String scope) {
@@ -3296,7 +3273,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the management locks for a scope.
+     * @return all the management locks for a scope as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ManagementLockObjectInner> listByScope(String scope, String filter, Context context) {
@@ -3310,7 +3287,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks.
+     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceGroupLevelNextSinglePageAsync(
@@ -3348,7 +3325,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks.
+     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceGroupLevelNextSinglePageAsync(
@@ -3384,7 +3361,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks.
+     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelNextSinglePageAsync(String nextLink) {
@@ -3421,7 +3398,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks.
+     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtResourceLevelNextSinglePageAsync(
@@ -3457,7 +3434,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks.
+     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtSubscriptionLevelNextSinglePageAsync(String nextLink) {
@@ -3494,7 +3471,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks.
+     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listAtSubscriptionLevelNextSinglePageAsync(
@@ -3530,7 +3507,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks.
+     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listByScopeNextSinglePageAsync(String nextLink) {
@@ -3566,7 +3543,7 @@ public final class ManagementLocksClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of locks.
+     * @return the list of locks along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagementLockObjectInner>> listByScopeNextSinglePageAsync(

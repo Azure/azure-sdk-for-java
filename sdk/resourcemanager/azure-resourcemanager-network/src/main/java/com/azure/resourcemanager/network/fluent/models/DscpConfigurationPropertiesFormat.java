@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProtocolType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.QosDefinition;
 import com.azure.resourcemanager.network.models.QosIpRange;
 import com.azure.resourcemanager.network.models.QosPortRange;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Differentiated Services Code Point configuration properties. */
 @Fluent
 public final class DscpConfigurationPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DscpConfigurationPropertiesFormat.class);
-
     /*
      * List of markings to be used in the configuration.
      */
@@ -85,6 +81,10 @@ public final class DscpConfigurationPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of DscpConfigurationPropertiesFormat class. */
+    public DscpConfigurationPropertiesFormat() {
+    }
 
     /**
      * Get the markings property: List of markings to be used in the configuration.

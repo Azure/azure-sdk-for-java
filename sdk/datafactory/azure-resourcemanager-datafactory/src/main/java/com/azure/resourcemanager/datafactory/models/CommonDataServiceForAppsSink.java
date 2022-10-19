@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("CommonDataServiceForAppsSink")
 @Fluent
 public final class CommonDataServiceForAppsSink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommonDataServiceForAppsSink.class);
-
     /*
      * The write behavior for the operation.
      */
@@ -25,19 +22,22 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     private DynamicsSinkWriteBehavior writeBehavior;
 
     /*
-     * The flag indicating whether to ignore null values from input dataset
-     * (except key fields) during write operation. Default is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * The flag indicating whether to ignore null values from input dataset (except key fields) during write operation.
+     * Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
     /*
-     * The logical name of the alternate key which will be used when upserting
-     * records. Type: string (or Expression with resultType string).
+     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
+
+    /** Creates an instance of CommonDataServiceForAppsSink class. */
+    public CommonDataServiceForAppsSink() {
+    }
 
     /**
      * Get the writeBehavior property: The write behavior for the operation.
@@ -154,10 +154,12 @@ public final class CommonDataServiceForAppsSink extends CopySink {
     public void validate() {
         super.validate();
         if (writeBehavior() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property writeBehavior in model CommonDataServiceForAppsSink"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CommonDataServiceForAppsSink.class);
 }

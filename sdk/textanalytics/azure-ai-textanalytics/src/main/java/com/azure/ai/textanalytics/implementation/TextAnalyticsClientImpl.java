@@ -5,13 +5,13 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.implementation.models.AnalyzeBatchInput;
+import com.azure.ai.textanalytics.implementation.models.AnalyzeHeaders;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeJobState;
-import com.azure.ai.textanalytics.implementation.models.AnalyzeResponse;
-import com.azure.ai.textanalytics.implementation.models.CancelHealthJobResponse;
+import com.azure.ai.textanalytics.implementation.models.CancelHealthJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntityLinkingResult;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
-import com.azure.ai.textanalytics.implementation.models.HealthResponse;
+import com.azure.ai.textanalytics.implementation.models.HealthHeaders;
 import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.KeyPhraseResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageBatchInput;
@@ -41,14 +41,16 @@ import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.CollectionFormat;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import reactor.core.publisher.Mono;
+
 import java.util.List;
 import java.util.UUID;
-import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the TextAnalyticsClient type. */
 public final class TextAnalyticsClientImpl {
@@ -165,7 +167,7 @@ public final class TextAnalyticsClientImpl {
         @Post("/analyze")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<AnalyzeResponse> analyze(
+        Mono<ResponseBase<AnalyzeHeaders, Void>> analyze(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") AnalyzeBatchInput body,
@@ -201,7 +203,7 @@ public final class TextAnalyticsClientImpl {
         @Delete("/entities/health/jobs/{jobId}")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<CancelHealthJobResponse> cancelHealthJob(
+        Mono<ResponseBase<CancelHealthJobHeaders, Void>> cancelHealthJob(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("jobId") UUID jobId,
@@ -211,7 +213,7 @@ public final class TextAnalyticsClientImpl {
         @Post("/entities/health/jobs")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
-        Mono<HealthResponse> health(
+        Mono<ResponseBase<HealthHeaders, Void>> health(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @QueryParam("model-version") String modelVersion,
@@ -318,7 +320,7 @@ public final class TextAnalyticsClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AnalyzeResponse> analyzeWithResponseAsync(AnalyzeBatchInput body, Context context) {
+    public Mono<ResponseBase<AnalyzeHeaders, Void>> analyzeWithResponseAsync(AnalyzeBatchInput body, Context context) {
         final String accept = "application/json, text/json";
         return service.analyze(this.getEndpoint(), this.getApiVersion(), body, accept, context);
     }
@@ -381,7 +383,9 @@ public final class TextAnalyticsClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CancelHealthJobResponse> cancelHealthJobWithResponseAsync(UUID jobId, Context context) {
+    public Mono<ResponseBase<CancelHealthJobHeaders, Void>> cancelHealthJobWithResponseAsync(
+            UUID jobId,
+            Context context) {
         final String accept = "application/json, text/json";
         return service.cancelHealthJob(this.getEndpoint(), this.getApiVersion(), jobId, accept, context);
     }
@@ -409,7 +413,7 @@ public final class TextAnalyticsClientImpl {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<HealthResponse> healthWithResponseAsync(
+    public Mono<ResponseBase<HealthHeaders, Void>> healthWithResponseAsync(
             MultiLanguageBatchInput input,
             String modelVersion,
             StringIndexType stringIndexType,

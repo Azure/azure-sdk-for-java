@@ -15,10 +15,9 @@ import com.azure.resourcemanager.datafactory.models.PipelineRun;
 import com.azure.resourcemanager.datafactory.models.PipelineRuns;
 import com.azure.resourcemanager.datafactory.models.PipelineRunsQueryResponse;
 import com.azure.resourcemanager.datafactory.models.RunFilterParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PipelineRunsImpl implements PipelineRuns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineRunsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PipelineRunsImpl.class);
 
     private final PipelineRunsClient innerClient;
 
@@ -28,17 +27,6 @@ public final class PipelineRunsImpl implements PipelineRuns {
         PipelineRunsClient innerClient, com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
-    }
-
-    public PipelineRunsQueryResponse queryByFactory(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
-        PipelineRunsQueryResponseInner inner =
-            this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
-        if (inner != null) {
-            return new PipelineRunsQueryResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
     }
 
     public Response<PipelineRunsQueryResponse> queryByFactoryWithResponse(
@@ -56,10 +44,12 @@ public final class PipelineRunsImpl implements PipelineRuns {
         }
     }
 
-    public PipelineRun get(String resourceGroupName, String factoryName, String runId) {
-        PipelineRunInner inner = this.serviceClient().get(resourceGroupName, factoryName, runId);
+    public PipelineRunsQueryResponse queryByFactory(
+        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
+        PipelineRunsQueryResponseInner inner =
+            this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
         if (inner != null) {
-            return new PipelineRunImpl(inner, this.manager());
+            return new PipelineRunsQueryResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -80,13 +70,22 @@ public final class PipelineRunsImpl implements PipelineRuns {
         }
     }
 
-    public void cancel(String resourceGroupName, String factoryName, String runId) {
-        this.serviceClient().cancel(resourceGroupName, factoryName, runId);
+    public PipelineRun get(String resourceGroupName, String factoryName, String runId) {
+        PipelineRunInner inner = this.serviceClient().get(resourceGroupName, factoryName, runId);
+        if (inner != null) {
+            return new PipelineRunImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> cancelWithResponse(
         String resourceGroupName, String factoryName, String runId, Boolean isRecursive, Context context) {
         return this.serviceClient().cancelWithResponse(resourceGroupName, factoryName, runId, isRecursive, context);
+    }
+
+    public void cancel(String resourceGroupName, String factoryName, String runId) {
+        this.serviceClient().cancel(resourceGroupName, factoryName, runId);
     }
 
     private PipelineRunsClient serviceClient() {

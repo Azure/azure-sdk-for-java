@@ -23,7 +23,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.datafactory.fluent.IntegrationRuntimeObjectMetadatasClient;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in IntegrationRuntimeObjectMetadatasClient.
  */
 public final class IntegrationRuntimeObjectMetadatasClientImpl implements IntegrationRuntimeObjectMetadatasClient {
-    private final ClientLogger logger = new ClientLogger(IntegrationRuntimeObjectMetadatasClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final IntegrationRuntimeObjectMetadatasService service;
 
@@ -219,7 +216,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
@@ -246,7 +243,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
@@ -274,7 +271,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
@@ -292,7 +289,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of the status of the operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
@@ -507,35 +504,6 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @param getMetadataRequest The parameters for getting a SSIS object metadata.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SsisObjectMetadataListResponseInner> getAsync(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        GetSsisObjectMetadataRequest getMetadataRequest) {
-        return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest)
-            .flatMap(
-                (Response<SsisObjectMetadataListResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -546,32 +514,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
         final GetSsisObjectMetadataRequest getMetadataRequest = null;
         return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest)
-            .flatMap(
-                (Response<SsisObjectMetadataListResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SsisObjectMetadataListResponseInner get(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        final GetSsisObjectMetadataRequest getMetadataRequest = null;
-        return getAsync(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest).block();
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -596,5 +539,24 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
         Context context) {
         return getWithResponseAsync(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest, context)
             .block();
+    }
+
+    /**
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SSIS integration runtime object metadata by specified path.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SsisObjectMetadataListResponseInner get(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        final GetSsisObjectMetadataRequest getMetadataRequest = null;
+        return getWithResponse(resourceGroupName, factoryName, integrationRuntimeName, getMetadataRequest, Context.NONE)
+            .getValue();
     }
 }

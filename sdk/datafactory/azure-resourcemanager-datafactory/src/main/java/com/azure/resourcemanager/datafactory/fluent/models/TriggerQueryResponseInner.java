@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A query of triggers. */
 @Fluent
 public final class TriggerQueryResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerQueryResponseInner.class);
-
     /*
      * List of triggers.
      */
@@ -22,11 +19,14 @@ public final class TriggerQueryResponseInner {
     private List<TriggerResourceInner> value;
 
     /*
-     * The continuation token for getting the next page of results, if any
-     * remaining results exist, null otherwise.
+     * The continuation token for getting the next page of results, if any remaining results exist, null otherwise.
      */
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
+
+    /** Creates an instance of TriggerQueryResponseInner class. */
+    public TriggerQueryResponseInner() {
+    }
 
     /**
      * Get the value property: List of triggers.
@@ -77,11 +77,13 @@ public final class TriggerQueryResponseInner {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model TriggerQueryResponseInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TriggerQueryResponseInner.class);
 }

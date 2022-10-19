@@ -125,7 +125,7 @@ public final class KeyVaultBackupClientImpl {
      */
     @Host("{vaultBaseUrl}")
     @ServiceInterface(name = "KeyVaultBackupClient")
-    private interface KeyVaultBackupClientService {
+    public interface KeyVaultBackupClientService {
         @Post("/backup")
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
@@ -179,7 +179,8 @@ public final class KeyVaultBackupClientImpl {
     }
 
     /**
-     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
+     * Creates a full backup using a user-provided SAS token to an Azure blob storage container. This operation is
+     * supported only by the Managed HSM service.
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
@@ -189,7 +190,7 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full backup operation.
+     * @return full backup operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FullBackupResponse> fullBackupWithResponseAsync(
@@ -207,7 +208,7 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full backup operation.
+     * @return full backup operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FullBackupOperation>> fullBackupStatusWithResponseAsync(
@@ -226,7 +227,7 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore operation.
+     * @return restore operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FullRestoreOperationResponse> fullRestoreOperationWithResponseAsync(
@@ -244,7 +245,7 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore operation.
+     * @return restore operation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RestoreOperation>> restoreStatusWithResponseAsync(
@@ -265,7 +266,7 @@ public final class KeyVaultBackupClientImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws KeyVaultErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return selective Key Restore operation.
+     * @return selective Key Restore operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SelectiveKeyRestoreOperationResponse> selectiveKeyRestoreOperationWithResponseAsync(

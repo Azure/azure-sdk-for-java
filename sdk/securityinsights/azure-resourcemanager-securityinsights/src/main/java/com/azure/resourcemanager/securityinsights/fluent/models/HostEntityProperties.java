@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.OSFamily;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Host entity property bag. */
 @Fluent
 public final class HostEntityProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostEntityProperties.class);
-
     /*
      * The azure resource id of the VM.
      */
@@ -23,8 +19,7 @@ public final class HostEntityProperties extends EntityCommonProperties {
     private String azureId;
 
     /*
-     * The DNS domain that this host belongs to. Should contain the compete DNS
-     * suffix for the domain
+     * The DNS domain that this host belongs to. Should contain the compete DNS suffix for the domain
      */
     @JsonProperty(value = "dnsDomain", access = JsonProperty.Access.WRITE_ONLY)
     private String dnsDomain;
@@ -66,9 +61,8 @@ public final class HostEntityProperties extends EntityCommonProperties {
     private OSFamily osFamily;
 
     /*
-     * A free text representation of the operating system. This field is meant
-     * to hold specific versions the are more fine grained than OSFamily or
-     * future values not supported by OSFamily enumeration
+     * A free text representation of the operating system. This field is meant to hold specific versions the are more
+     * fine grained than OSFamily or future values not supported by OSFamily enumeration
      */
     @JsonProperty(value = "osVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String osVersion;

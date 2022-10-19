@@ -6,21 +6,17 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.NetworkInterfaceIpConfigurationPrivateLinkConnectionProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** IPConfiguration in a network interface. */
 @Fluent
 public final class NetworkInterfaceIpConfigurationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceIpConfigurationInner.class);
-
     /*
      * Network interface IP configuration properties.
      */
@@ -28,8 +24,7 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResource {
     private NetworkInterfaceIpConfigurationPropertiesFormatInner innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -45,6 +40,10 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResource {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of NetworkInterfaceIpConfigurationInner class. */
+    public NetworkInterfaceIpConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: Network interface IP configuration properties.

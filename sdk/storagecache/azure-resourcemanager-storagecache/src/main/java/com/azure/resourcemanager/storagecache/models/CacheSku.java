@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SKU for the Cache. */
 @Fluent
 public final class CacheSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheSku.class);
-
     /*
      * SKU name for this Cache.
      */

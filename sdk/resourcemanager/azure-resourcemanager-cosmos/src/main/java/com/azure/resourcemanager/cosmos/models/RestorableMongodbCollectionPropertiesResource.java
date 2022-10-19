@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The resource of an Azure Cosmos DB MongoDB collection event. */
 @Immutable
 public final class RestorableMongodbCollectionPropertiesResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RestorableMongodbCollectionPropertiesResource.class);
-
     /*
      * A system generated property. A unique identifier.
      */

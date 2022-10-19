@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for PrivateZones Update. */
 public final class PrivateZonesUpdateSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/PrivateZonePatch.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/PrivateZonePatch.json
      */
     /**
      * Sample code: PATCH Private DNS Zone.

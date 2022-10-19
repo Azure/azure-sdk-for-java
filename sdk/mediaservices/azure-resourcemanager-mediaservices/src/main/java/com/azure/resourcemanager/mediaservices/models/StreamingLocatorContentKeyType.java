@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StreamingLocatorContentKeyType. */
+/** Encryption type of Content Key. */
 public final class StreamingLocatorContentKeyType extends ExpandableStringEnum<StreamingLocatorContentKeyType> {
     /** Static value CommonEncryptionCenc for StreamingLocatorContentKeyType. */
     public static final StreamingLocatorContentKeyType COMMON_ENCRYPTION_CENC = fromString("CommonEncryptionCenc");
@@ -30,7 +30,11 @@ public final class StreamingLocatorContentKeyType extends ExpandableStringEnum<S
         return fromString(name, StreamingLocatorContentKeyType.class);
     }
 
-    /** @return known StreamingLocatorContentKeyType values. */
+    /**
+     * Gets known StreamingLocatorContentKeyType values.
+     *
+     * @return known StreamingLocatorContentKeyType values.
+     */
     public static Collection<StreamingLocatorContentKeyType> values() {
         return values(StreamingLocatorContentKeyType.class);
     }

@@ -32,6 +32,17 @@ public interface HttpClient {
     }
 
     /**
+     * Sends the provided request synchronously with contextual information.
+     *
+     * @param request The HTTP request to send.
+     * @param context Contextual information about the request.
+     * @return The response.
+     */
+    default HttpResponse sendSync(HttpRequest request, Context context) {
+        return send(request, context).block();
+    }
+
+    /**
      * Creates a new {@link HttpClient} instance.
      *
      * @return A new {@link HttpClient} instance.

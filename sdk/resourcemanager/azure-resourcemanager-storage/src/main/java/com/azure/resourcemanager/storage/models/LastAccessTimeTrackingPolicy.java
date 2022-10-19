@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The blob service properties for Last access time based tracking policy. */
 @Fluent
 public final class LastAccessTimeTrackingPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LastAccessTimeTrackingPolicy.class);
-
     /*
      * When set to true last access time based tracking is enabled.
      */
@@ -22,23 +18,21 @@ public final class LastAccessTimeTrackingPolicy {
     private boolean enable;
 
     /*
-     * Name of the policy. The valid value is AccessTimeTracking. This field is
-     * currently read only
+     * Name of the policy. The valid value is AccessTimeTracking. This field is currently read only
      */
     @JsonProperty(value = "name")
     private Name name;
 
     /*
-     * The field specifies blob object tracking granularity in days, typically
-     * how often the blob object should be tracked.This field is currently read
-     * only with value as 1
+     * The field specifies blob object tracking granularity in days, typically how often the blob object should be
+     * tracked.This field is currently read only with value as 1
      */
     @JsonProperty(value = "trackingGranularityInDays")
     private Integer trackingGranularityInDays;
 
     /*
-     * An array of predefined supported blob types. Only blockBlob is the
-     * supported value. This field is currently read only
+     * An array of predefined supported blob types. Only blockBlob is the supported value. This field is currently read
+     * only
      */
     @JsonProperty(value = "blobType")
     private List<String> blobType;

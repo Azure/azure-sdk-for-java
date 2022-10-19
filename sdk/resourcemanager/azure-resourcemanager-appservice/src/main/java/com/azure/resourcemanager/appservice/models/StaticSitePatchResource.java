@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSite;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ARM resource for a static site when patching. */
 @Fluent
 public final class StaticSitePatchResource extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSitePatchResource.class);
-
     /*
      * Core resource properties
      */
@@ -260,6 +256,15 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
     }
 
     /**
+     * Get the linkedBackends property: Backends linked to the static side.
+     *
+     * @return the linkedBackends value.
+     */
+    public List<StaticSiteLinkedBackend> linkedBackends() {
+        return this.innerProperties() == null ? null : this.innerProperties().linkedBackends();
+    }
+
+    /**
      * Get the provider property: The provider that submitted the last deployment to the primary environment of the
      * static site.
      *
@@ -306,6 +311,31 @@ public final class StaticSitePatchResource extends ProxyOnlyResource {
             this.innerProperties = new StaticSite();
         }
         this.innerProperties().withEnterpriseGradeCdnStatus(enterpriseGradeCdnStatus);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static web
+     * app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: State indicating whether public traffic are allowed or not for a static web
+     * app. Allowed Values: 'Enabled', 'Disabled' or an empty string.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the StaticSitePatchResource object itself.
+     */
+    public StaticSitePatchResource withPublicNetworkAccess(String publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSite();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 

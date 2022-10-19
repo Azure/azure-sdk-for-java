@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for InventoryRuleType. */
+/** The valid value is Inventory. */
 public final class InventoryRuleType extends ExpandableStringEnum<InventoryRuleType> {
     /** Static value Inventory for InventoryRuleType. */
     public static final InventoryRuleType INVENTORY = fromString("Inventory");
@@ -24,7 +24,11 @@ public final class InventoryRuleType extends ExpandableStringEnum<InventoryRuleT
         return fromString(name, InventoryRuleType.class);
     }
 
-    /** @return known InventoryRuleType values. */
+    /**
+     * Gets known InventoryRuleType values.
+     *
+     * @return known InventoryRuleType values.
+     */
     public static Collection<InventoryRuleType> values() {
         return values(InventoryRuleType.class);
     }

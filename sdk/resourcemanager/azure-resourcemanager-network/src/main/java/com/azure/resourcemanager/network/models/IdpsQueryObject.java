@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Will describe the query to run against the IDPS signatures DB. */
 @Fluent
 public final class IdpsQueryObject {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdpsQueryObject.class);
-
     /*
      * Contain all filters names and values
      */
@@ -44,6 +40,10 @@ public final class IdpsQueryObject {
      */
     @JsonProperty(value = "skip")
     private Integer skip;
+
+    /** Creates an instance of IdpsQueryObject class. */
+    public IdpsQueryObject() {
+    }
 
     /**
      * Get the filters property: Contain all filters names and values.

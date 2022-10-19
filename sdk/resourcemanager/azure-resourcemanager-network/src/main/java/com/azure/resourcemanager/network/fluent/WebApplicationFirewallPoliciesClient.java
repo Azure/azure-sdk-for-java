@@ -33,7 +33,8 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list WebApplicationFirewallPolicies.
+     * @return result of the request to list WebApplicationFirewallPolicies as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<WebApplicationFirewallPolicyInner> listByResourceGroupAsync(String resourceGroupName);
@@ -45,7 +46,8 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list WebApplicationFirewallPolicies.
+     * @return result of the request to list WebApplicationFirewallPolicies as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WebApplicationFirewallPolicyInner> listByResourceGroup(String resourceGroupName);
@@ -58,7 +60,8 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list WebApplicationFirewallPolicies.
+     * @return result of the request to list WebApplicationFirewallPolicies as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WebApplicationFirewallPolicyInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -68,7 +71,7 @@ public interface WebApplicationFirewallPoliciesClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the WAF policies in a subscription.
+     * @return all the WAF policies in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<WebApplicationFirewallPolicyInner> listAsync();
@@ -78,7 +81,7 @@ public interface WebApplicationFirewallPoliciesClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the WAF policies in a subscription.
+     * @return all the WAF policies in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WebApplicationFirewallPolicyInner> list();
@@ -90,7 +93,7 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the WAF policies in a subscription.
+     * @return all the WAF policies in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<WebApplicationFirewallPolicyInner> list(Context context);
@@ -103,7 +106,8 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
+     * @return defines web application firewall policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<WebApplicationFirewallPolicyInner>> getByResourceGroupWithResponseAsync(
@@ -117,10 +121,25 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
+     * @return defines web application firewall policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WebApplicationFirewallPolicyInner> getByResourceGroupAsync(String resourceGroupName, String policyName);
+
+    /**
+     * Retrieve protection policy with specified name within a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param policyName The name of the policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines web application firewall policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WebApplicationFirewallPolicyInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String policyName, Context context);
 
     /**
      * Retrieve protection policy with specified name within a resource group.
@@ -136,21 +155,6 @@ public interface WebApplicationFirewallPoliciesClient
     WebApplicationFirewallPolicyInner getByResourceGroup(String resourceGroupName, String policyName);
 
     /**
-     * Retrieve protection policy with specified name within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param policyName The name of the policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebApplicationFirewallPolicyInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String policyName, Context context);
-
-    /**
      * Creates or update policy with specified rule set name within a resource group.
      *
      * @param resourceGroupName The name of the resource group.
@@ -159,7 +163,8 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
+     * @return defines web application firewall policy along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<WebApplicationFirewallPolicyInner>> createOrUpdateWithResponseAsync(
@@ -174,11 +179,27 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
+     * @return defines web application firewall policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<WebApplicationFirewallPolicyInner> createOrUpdateAsync(
         String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters);
+
+    /**
+     * Creates or update policy with specified rule set name within a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param policyName The name of the policy.
+     * @param parameters Policy to be created.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return defines web application firewall policy along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<WebApplicationFirewallPolicyInner> createOrUpdateWithResponse(
+        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters, Context context);
 
     /**
      * Creates or update policy with specified rule set name within a resource group.
@@ -196,22 +217,6 @@ public interface WebApplicationFirewallPoliciesClient
         String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters);
 
     /**
-     * Creates or update policy with specified rule set name within a resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param policyName The name of the policy.
-     * @param parameters Policy to be created.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return defines web application firewall policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<WebApplicationFirewallPolicyInner> createOrUpdateWithResponse(
-        String resourceGroupName, String policyName, WebApplicationFirewallPolicyInner parameters, Context context);
-
-    /**
      * Deletes Policy.
      *
      * @param resourceGroupName The name of the resource group.
@@ -219,7 +224,7 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String policyName);
@@ -232,7 +237,7 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String policyName);
@@ -245,7 +250,7 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String policyName);
@@ -259,7 +264,7 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String policyName, Context context);
@@ -272,7 +277,7 @@ public interface WebApplicationFirewallPoliciesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String policyName);

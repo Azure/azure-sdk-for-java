@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Vertica linked service properties. */
 @Fluent
 public final class VerticaLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VerticaLinkedServiceTypeProperties.class);
-
     /*
-     * An ODBC connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * An ODBC connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString")
     private Object connectionString;
@@ -29,12 +24,15 @@ public final class VerticaLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference pwd;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of VerticaLinkedServiceTypeProperties class. */
+    public VerticaLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The available data types for MCAS (Microsoft Cloud App Security) data connector. */
 @Fluent
 public final class McasDataConnectorDataTypes extends AlertsDataTypeOfDataConnector {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(McasDataConnectorDataTypes.class);
-
     /*
      * Discovery log data type connection.
      */

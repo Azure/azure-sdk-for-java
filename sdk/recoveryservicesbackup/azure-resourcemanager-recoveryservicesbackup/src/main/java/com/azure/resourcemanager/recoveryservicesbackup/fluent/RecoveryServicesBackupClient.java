@@ -241,6 +241,27 @@ public interface RecoveryServicesBackupClient {
     OperationOperationsClient getOperationOperations();
 
     /**
+     * Gets the ValidateOperationsClient object to access its operations.
+     *
+     * @return the ValidateOperationsClient object.
+     */
+    ValidateOperationsClient getValidateOperations();
+
+    /**
+     * Gets the ValidateOperationResultsClient object to access its operations.
+     *
+     * @return the ValidateOperationResultsClient object.
+     */
+    ValidateOperationResultsClient getValidateOperationResults();
+
+    /**
+     * Gets the ValidateOperationStatusesClient object to access its operations.
+     *
+     * @return the ValidateOperationStatusesClient object.
+     */
+    ValidateOperationStatusesClient getValidateOperationStatuses();
+
+    /**
      * Gets the BackupEnginesClient object to access its operations.
      *
      * @return the BackupEnginesClient object.

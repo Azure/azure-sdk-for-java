@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.servicebus.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.servicebus.fluent.models.SBNamespaceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response of the List Namespace operation. */
 @Fluent
 public final class SBNamespaceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SBNamespaceListResult.class);
-
     /*
      * Result of the List Namespace operation.
      */
@@ -23,8 +19,7 @@ public final class SBNamespaceListResult {
     private List<SBNamespaceInner> value;
 
     /*
-     * Link to the next set of results. Not empty if Value contains incomplete
-     * list of Namespaces.
+     * Link to the next set of results. Not empty if Value contains incomplete list of Namespaces.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;

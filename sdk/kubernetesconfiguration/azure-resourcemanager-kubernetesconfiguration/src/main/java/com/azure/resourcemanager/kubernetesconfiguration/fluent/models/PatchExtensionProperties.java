@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.kubernetesconfiguration.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** Updatable properties of an Extension Patch Request. */
 @Fluent
 public final class PatchExtensionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PatchExtensionProperties.class);
-
     /*
      * Flag to note if this extension participates in auto upgrade of minor
      * version, or not.

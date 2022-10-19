@@ -47,7 +47,6 @@ import com.azure.resourcemanager.network.models.SecurityGroupView;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.network.models.Topology;
 import com.azure.resourcemanager.network.models.VerificationIPFlow;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
 import com.azure.resourcemanager.resources.models.LockLevel;
 import com.azure.resourcemanager.resources.models.ManagementLock;
@@ -118,9 +117,7 @@ public class AzureResourceManagerTests extends ResourceManagerTestBase {
         ResourceManagerUtils.InternalRuntimeContext.setDelayProvider(new TestDelayProvider(!isPlaybackMode()));
         ResourceManagerUtils.InternalRuntimeContext internalContext = new ResourceManagerUtils.InternalRuntimeContext();
         internalContext.setIdentifierFunction(name -> new TestIdentifierProvider(testResourceNamer));
-        AzureResourceManager.Configurable configurable = AzureResourceManager.configure();
-        ((AzureConfigurableImpl) configurable).withHttpPipeline(httpPipeline);
-        azureResourceManager = configurable.authenticate(null, profile).withDefaultSubscription();
+        azureResourceManager = AzureResourceManager.authenticate(httpPipeline, profile).withDefaultSubscription();
         setInternalContext(internalContext, azureResourceManager);
     }
 

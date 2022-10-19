@@ -36,7 +36,11 @@ public final class ItemTypeParameter extends ExpandableStringEnum<ItemTypeParame
         return fromString(name, ItemTypeParameter.class);
     }
 
-    /** @return known ItemTypeParameter values. */
+    /**
+     * Gets known ItemTypeParameter values.
+     *
+     * @return known ItemTypeParameter values.
+     */
     public static Collection<ItemTypeParameter> values() {
         return values(ItemTypeParameter.class);
     }

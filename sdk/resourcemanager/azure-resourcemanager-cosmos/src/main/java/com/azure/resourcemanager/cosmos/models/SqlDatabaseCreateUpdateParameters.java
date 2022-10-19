@@ -7,15 +7,12 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlDatabaseCreateUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Parameters to create and update Cosmos DB SQL database. */
 @Fluent
 public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlDatabaseCreateUpdateParameters.class);
-
     /*
      * Properties to create and update Azure Cosmos DB SQL database.
      */
@@ -102,7 +99,7 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model SqlDatabaseCreateUpdateParameters"));
@@ -110,4 +107,6 @@ public final class SqlDatabaseCreateUpdateParameters extends ArmResourceProperti
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlDatabaseCreateUpdateParameters.class);
 }

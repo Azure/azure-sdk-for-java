@@ -5,25 +5,15 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
 /**
  * Describes the settings to be used when encoding the input video into a desired output bitrate layer with the H.265
  * video codec.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
-@JsonTypeName("#Microsoft.Media.H265Layer")
-@JsonFlatten
 @Fluent
-public class H265Layer extends H265VideoLayer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(H265Layer.class);
-
+public final class H265Layer extends H265VideoLayer {
     /*
      * We currently support Main. Default is Auto.
      */
@@ -31,26 +21,31 @@ public class H265Layer extends H265VideoLayer {
     private H265VideoProfile profile;
 
     /*
-     * We currently support Level up to 6.2. The value can be Auto, or a number
-     * that matches the H.265 profile. If not specified, the default is Auto,
-     * which lets the encoder choose the Level that is appropriate for this
-     * layer.
+     * We currently support Level up to 6.2. The value can be Auto, or a number that matches the H.265 profile. If not
+     * specified, the default is Auto, which lets the encoder choose the Level that is appropriate for this layer.
      */
     @JsonProperty(value = "level")
     private String level;
 
     /*
-     * The VBV buffer window length. The value should be in ISO 8601 format.
-     * The value should be in the range [0.1-100] seconds. The default is 5
-     * seconds (for example, PT5S).
+     * The VBV buffer window length. The value should be in ISO 8601 format. The value should be in the range [0.1-100]
+     * seconds. The default is 5 seconds (for example, PT5S).
      */
     @JsonProperty(value = "bufferWindow")
     private Duration bufferWindow;
 
     /*
-     * The number of reference frames to be used when encoding this layer. If
-     * not specified, the encoder determines an appropriate number based on the
-     * encoder complexity setting.
+     * The value of CRF to be used when encoding this layer. This setting takes effect when RateControlMode of video
+     * codec is set at CRF mode. The range of CRF value is between 0 and 51, where lower values would result in better
+     * quality, at the expense of higher file sizes. Higher values mean more compression, but at some point quality
+     * degradation will be noticed. Default value is 28.
+     */
+    @JsonProperty(value = "crf")
+    private Float crf;
+
+    /*
+     * The number of reference frames to be used when encoding this layer. If not specified, the encoder determines an
+     * appropriate number based on the encoder complexity setting.
      */
     @JsonProperty(value = "referenceFrames")
     private Integer referenceFrames;
@@ -118,6 +113,32 @@ public class H265Layer extends H265VideoLayer {
      */
     public H265Layer withBufferWindow(Duration bufferWindow) {
         this.bufferWindow = bufferWindow;
+        return this;
+    }
+
+    /**
+     * Get the crf property: The value of CRF to be used when encoding this layer. This setting takes effect when
+     * RateControlMode of video codec is set at CRF mode. The range of CRF value is between 0 and 51, where lower values
+     * would result in better quality, at the expense of higher file sizes. Higher values mean more compression, but at
+     * some point quality degradation will be noticed. Default value is 28.
+     *
+     * @return the crf value.
+     */
+    public Float crf() {
+        return this.crf;
+    }
+
+    /**
+     * Set the crf property: The value of CRF to be used when encoding this layer. This setting takes effect when
+     * RateControlMode of video codec is set at CRF mode. The range of CRF value is between 0 and 51, where lower values
+     * would result in better quality, at the expense of higher file sizes. Higher values mean more compression, but at
+     * some point quality degradation will be noticed. Default value is 28.
+     *
+     * @param crf the crf value to set.
+     * @return the H265Layer object itself.
+     */
+    public H265Layer withCrf(Float crf) {
+        this.crf = crf;
         return this;
     }
 

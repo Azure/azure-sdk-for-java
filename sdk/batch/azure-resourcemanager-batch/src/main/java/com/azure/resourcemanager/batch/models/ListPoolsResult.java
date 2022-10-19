@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.fluent.models.PoolInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Values returned by the List operation. */
 @Fluent
 public final class ListPoolsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListPoolsResult.class);
-
     /*
      * The collection of returned pools.
      */

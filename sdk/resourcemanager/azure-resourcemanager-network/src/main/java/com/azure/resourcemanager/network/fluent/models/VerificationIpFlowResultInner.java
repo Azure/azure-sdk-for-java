@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Access;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Results of IP flow verification on the target resource. */
 @Fluent
 public final class VerificationIpFlowResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VerificationIpFlowResultInner.class);
-
     /*
      * Indicates whether the traffic is allowed or denied.
      */
@@ -22,11 +18,14 @@ public final class VerificationIpFlowResultInner {
     private Access access;
 
     /*
-     * Name of the rule. If input is not matched against any security rule, it
-     * is not displayed.
+     * Name of the rule. If input is not matched against any security rule, it is not displayed.
      */
     @JsonProperty(value = "ruleName")
     private String ruleName;
+
+    /** Creates an instance of VerificationIpFlowResultInner class. */
+    public VerificationIpFlowResultInner() {
+    }
 
     /**
      * Get the access property: Indicates whether the traffic is allowed or denied.

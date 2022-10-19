@@ -30,12 +30,10 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appplatform.fluent.CustomDomainsClient;
 import com.azure.resourcemanager.appplatform.fluent.models.CustomDomainResourceInner;
-import com.azure.resourcemanager.appplatform.models.CustomDomainProperties;
 import com.azure.resourcemanager.appplatform.models.CustomDomainResourceCollection;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -43,8 +41,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CustomDomainsClient. */
 public final class CustomDomainsClientImpl implements CustomDomainsClient {
-    private final ClientLogger logger = new ClientLogger(CustomDomainsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CustomDomainsService service;
 
@@ -177,7 +173,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain of one lifecycle application.
+     * @return the custom domain of one lifecycle application along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CustomDomainResourceInner>> getWithResponseAsync(
@@ -222,7 +219,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             domainName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -237,7 +234,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain of one lifecycle application.
+     * @return the custom domain of one lifecycle application along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<CustomDomainResourceInner>> getWithResponseAsync(
@@ -293,20 +291,13 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain of one lifecycle application.
+     * @return the custom domain of one lifecycle application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainResourceInner> getAsync(
         String resourceGroupName, String serviceName, String appName, String domainName) {
         return getWithResponseAsync(resourceGroupName, serviceName, appName, domainName)
-            .flatMap(
-                (Response<CustomDomainResourceInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -340,7 +331,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the custom domain of one lifecycle application.
+     * @return the custom domain of one lifecycle application along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CustomDomainResourceInner> getWithResponse(
@@ -356,11 +347,11 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return custom domain resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -368,7 +359,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
+        CustomDomainResourceInner domainResource) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -394,12 +385,12 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         if (domainName == null) {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (domainResource == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainResource is required and cannot be null."));
+        } else {
+            domainResource.validate();
         }
         final String accept = "application/json";
-        CustomDomainResourceInner domainResource = new CustomDomainResourceInner();
-        domainResource.withProperties(properties);
         return FluxUtil
             .withContext(
                 context ->
@@ -415,7 +406,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             domainResource,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -426,12 +417,12 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return custom domain resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -439,7 +430,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties,
+        CustomDomainResourceInner domainResource,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -466,12 +457,12 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         if (domainName == null) {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (domainResource == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainResource is required and cannot be null."));
+        } else {
+            domainResource.validate();
         }
         final String accept = "application/json";
-        CustomDomainResourceInner domainResource = new CustomDomainResourceInner();
-        domainResource.withProperties(properties);
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -495,21 +486,21 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return the {@link PollerFlux} for polling of custom domain resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
+        CustomDomainResourceInner domainResource) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, domainName, properties);
+            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, domainName, domainResource);
         return this
             .client
             .<CustomDomainResourceInner, CustomDomainResourceInner>getLroResult(
@@ -528,24 +519,25 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return the {@link PollerFlux} for polling of custom domain resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties,
+        CustomDomainResourceInner domainResource,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, serviceName, appName, domainName, properties, context);
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, serviceName, appName, domainName, domainResource, context);
         return this
             .client
             .<CustomDomainResourceInner, CustomDomainResourceInner>getLroResult(
@@ -564,20 +556,20 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return the {@link SyncPoller} for polling of custom domain resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties)
+        CustomDomainResourceInner domainResource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource)
             .getSyncPoller();
     }
 
@@ -589,22 +581,22 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return the {@link SyncPoller} for polling of custom domain resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties,
+        CustomDomainResourceInner domainResource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties, context)
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource, context)
             .getSyncPoller();
     }
 
@@ -616,11 +608,11 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return custom domain resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainResourceInner> createOrUpdateAsync(
@@ -628,8 +620,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties)
+        CustomDomainResourceInner domainResource) {
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -642,34 +634,12 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainResourceInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName) {
-        final CustomDomainProperties properties = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return custom domain resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomDomainResourceInner> createOrUpdateAsync(
@@ -677,9 +647,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties,
+        CustomDomainResourceInner domainResource,
         Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties, context)
+        return beginCreateOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -692,7 +662,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -704,8 +674,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties).block();
+        CustomDomainResourceInner domainResource) {
+        return createOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource).block();
     }
 
     /**
@@ -716,27 +686,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainResourceInner createOrUpdate(
-        String resourceGroupName, String serviceName, String appName, String domainName) {
-        final CustomDomainProperties properties = null;
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties).block();
-    }
-
-    /**
-     * Create or update custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -749,9 +699,10 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties,
+        CustomDomainResourceInner domainResource,
         Context context) {
-        return createOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties, context).block();
+        return createOrUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource, context)
+            .block();
     }
 
     /**
@@ -765,7 +716,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -810,7 +761,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             domainName,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -825,7 +776,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -881,9 +832,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, String appName, String domainName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -906,9 +857,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String serviceName, String appName, String domainName, Context context) {
         context = this.client.mergeContext(context);
@@ -930,9 +881,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String domainName) {
         return beginDeleteAsync(resourceGroupName, serviceName, appName, domainName).getSyncPoller();
@@ -950,9 +901,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String serviceName, String appName, String domainName, Context context) {
         return beginDeleteAsync(resourceGroupName, serviceName, appName, domainName, context).getSyncPoller();
@@ -969,7 +920,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String appName, String domainName) {
@@ -990,7 +941,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1044,11 +995,11 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return custom domain resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1056,7 +1007,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
+        CustomDomainResourceInner domainResource) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1082,12 +1033,12 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         if (domainName == null) {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (domainResource == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainResource is required and cannot be null."));
+        } else {
+            domainResource.validate();
         }
         final String accept = "application/json";
-        CustomDomainResourceInner domainResource = new CustomDomainResourceInner();
-        domainResource.withProperties(properties);
         return FluxUtil
             .withContext(
                 context ->
@@ -1103,7 +1054,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                             domainResource,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1114,12 +1065,12 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return custom domain resource payload along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1127,7 +1078,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties,
+        CustomDomainResourceInner domainResource,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1154,12 +1105,12 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         if (domainName == null) {
             return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
-        if (properties != null) {
-            properties.validate();
+        if (domainResource == null) {
+            return Mono.error(new IllegalArgumentException("Parameter domainResource is required and cannot be null."));
+        } else {
+            domainResource.validate();
         }
         final String accept = "application/json";
-        CustomDomainResourceInner domainResource = new CustomDomainResourceInner();
-        domainResource.withProperties(properties);
         context = this.client.mergeContext(context);
         return service
             .update(
@@ -1183,21 +1134,21 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return the {@link PollerFlux} for polling of custom domain resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdateAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
+        CustomDomainResourceInner domainResource) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, appName, domainName, properties);
+            updateWithResponseAsync(resourceGroupName, serviceName, appName, domainName, domainResource);
         return this
             .client
             .<CustomDomainResourceInner, CustomDomainResourceInner>getLroResult(
@@ -1216,24 +1167,24 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return the {@link PollerFlux} for polling of custom domain resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdateAsync(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties,
+        CustomDomainResourceInner domainResource,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, serviceName, appName, domainName, properties, context);
+            updateWithResponseAsync(resourceGroupName, serviceName, appName, domainName, domainResource, context);
         return this
             .client
             .<CustomDomainResourceInner, CustomDomainResourceInner>getLroResult(
@@ -1252,20 +1203,20 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return the {@link SyncPoller} for polling of custom domain resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties).getSyncPoller();
+        CustomDomainResourceInner domainResource) {
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource).getSyncPoller();
     }
 
     /**
@@ -1276,22 +1227,22 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return the {@link SyncPoller} for polling of custom domain resource payload.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CustomDomainResourceInner>, CustomDomainResourceInner> beginUpdate(
         String resourceGroupName,
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties,
+        CustomDomainResourceInner domainResource,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties, context)
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource, context)
             .getSyncPoller();
     }
 
@@ -1303,11 +1254,11 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return custom domain resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CustomDomainResourceInner> updateAsync(
@@ -1315,8 +1266,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties)
+        CustomDomainResourceInner domainResource) {
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1329,34 +1280,12 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CustomDomainResourceInner> updateAsync(
-        String resourceGroupName, String serviceName, String appName, String domainName) {
-        final CustomDomainProperties properties = null;
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Update custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
+     * @return custom domain resource payload on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<CustomDomainResourceInner> updateAsync(
@@ -1364,9 +1293,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties,
+        CustomDomainResourceInner domainResource,
         Context context) {
-        return beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, properties, context)
+        return beginUpdateAsync(resourceGroupName, serviceName, appName, domainName, domainResource, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1379,7 +1308,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1391,8 +1320,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties) {
-        return updateAsync(resourceGroupName, serviceName, appName, domainName, properties).block();
+        CustomDomainResourceInner domainResource) {
+        return updateAsync(resourceGroupName, serviceName, appName, domainName, domainResource).block();
     }
 
     /**
@@ -1403,27 +1332,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @param serviceName The name of the Service resource.
      * @param appName The name of the App resource.
      * @param domainName The name of the custom domain resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return custom domain resource payload.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CustomDomainResourceInner update(
-        String resourceGroupName, String serviceName, String appName, String domainName) {
-        final CustomDomainProperties properties = null;
-        return updateAsync(resourceGroupName, serviceName, appName, domainName, properties).block();
-    }
-
-    /**
-     * Update custom domain of one lifecycle application.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value
-     *     from the Azure Resource Manager API or the portal.
-     * @param serviceName The name of the Service resource.
-     * @param appName The name of the App resource.
-     * @param domainName The name of the custom domain resource.
-     * @param properties Properties of the custom domain resource.
+     * @param domainResource Parameters for the create or update operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1436,9 +1345,9 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
         String serviceName,
         String appName,
         String domainName,
-        CustomDomainProperties properties,
+        CustomDomainResourceInner domainResource,
         Context context) {
-        return updateAsync(resourceGroupName, serviceName, appName, domainName, properties, context).block();
+        return updateAsync(resourceGroupName, serviceName, appName, domainName, domainResource, context).block();
     }
 
     /**
@@ -1451,7 +1360,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
+     * @return collection compose of a custom domain resources list and a possible link for next page along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomDomainResourceInner>> listSinglePageAsync(
@@ -1501,7 +1411,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1515,7 +1425,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
+     * @return collection compose of a custom domain resources list and a possible link for next page along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomDomainResourceInner>> listSinglePageAsync(
@@ -1575,7 +1486,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
+     * @return collection compose of a custom domain resources list and a possible link for next page as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CustomDomainResourceInner> listAsync(
@@ -1596,7 +1508,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
+     * @return collection compose of a custom domain resources list and a possible link for next page as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CustomDomainResourceInner> listAsync(
@@ -1616,7 +1529,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
+     * @return collection compose of a custom domain resources list and a possible link for next page as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomDomainResourceInner> list(String resourceGroupName, String serviceName, String appName) {
@@ -1634,7 +1548,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
+     * @return collection compose of a custom domain resources list and a possible link for next page as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CustomDomainResourceInner> list(
@@ -1649,7 +1564,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
+     * @return collection compose of a custom domain resources list and a possible link for next page along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomDomainResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -1674,7 +1590,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1685,7 +1601,8 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection compose of a custom domain resources list and a possible link for next page.
+     * @return collection compose of a custom domain resources list and a possible link for next page along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CustomDomainResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {

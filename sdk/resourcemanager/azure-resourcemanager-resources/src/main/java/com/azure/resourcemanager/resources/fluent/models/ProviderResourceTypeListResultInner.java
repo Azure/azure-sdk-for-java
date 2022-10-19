@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.ProviderResourceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of resource types of a resource provider. */
 @Fluent
 public final class ProviderResourceTypeListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderResourceTypeListResultInner.class);
-
     /*
      * An array of resource types.
      */

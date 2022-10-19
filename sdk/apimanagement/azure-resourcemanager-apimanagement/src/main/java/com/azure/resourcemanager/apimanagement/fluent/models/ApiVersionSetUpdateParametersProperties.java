@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.ApiVersionSetEntityBase;
 import com.azure.resourcemanager.apimanagement.models.VersioningScheme;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties used to create or update an API Version Set. */
 @Fluent
 public final class ApiVersionSetUpdateParametersProperties extends ApiVersionSetEntityBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiVersionSetUpdateParametersProperties.class);
-
     /*
      * Name of API Version Set
      */

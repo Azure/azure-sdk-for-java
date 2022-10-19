@@ -52,16 +52,14 @@ public class ReadManySplitTest {
                 new CosmosQueryRequestOptions(),
                 null,
                 "Select * from C",
-                true,
-                true,
                 UUID.randomUUID()
             );
         PartitionKeyRange partitionKey = new PartitionKeyRange("0", "00", "FF");
         Map<PartitionKeyRange, SqlQuerySpec> rangeQueryMap = new HashMap<>();
         rangeQueryMap.put(partitionKey, querySpec);
-        parallelDocumentQueryExecutionContextBase.initializeReadMany(client, "testCollectionRid", querySpec,
+        parallelDocumentQueryExecutionContextBase.initializeReadMany(
             rangeQueryMap,
-            new CosmosQueryRequestOptions(), UUID.randomUUID(), "testCollectionRid");
+            new CosmosQueryRequestOptions(), "testCollectionRid");
         //Parent document producer created
         DocumentProducer<Document> documentProducer = parallelDocumentQueryExecutionContextBase.documentProducers.get(0);
 
@@ -100,11 +98,9 @@ public class ReadManySplitTest {
                                                             SqlQuerySpec query,
                                                             CosmosQueryRequestOptions cosmosQueryRequestOptions,
                                                             String resourceLink, String rewrittenQuery,
-                                                            boolean isContinuationExpected,
-                                                            boolean getLazyFeedResponse,
                                                             UUID correlatedActivityId) {
             super(diagnosticsClientContext, client, resourceTypeEnum, resourceType, query, cosmosQueryRequestOptions,
-                resourceLink, rewrittenQuery, isContinuationExpected, getLazyFeedResponse, correlatedActivityId);
+                resourceLink, rewrittenQuery, correlatedActivityId, false);
         }
 
         @Override
@@ -120,7 +116,7 @@ public class ReadManySplitTest {
                                                              Callable<DocumentClientRetryPolicy> createRetryPolicyFunc, FeedRangeEpkImpl feedRange) {
             return new DocumentProducer<T>(client, collectionRid, cosmosQueryRequestOptions, createRequestFunc,
                 executeFunc, targetRange, "testCollectionLink", createRetryPolicyFunc, resourceType,
-                correlatedActivityId, -1, initialContinuationToken, -1, feedRange);
+                correlatedActivityId, -1, initialContinuationToken, -1, feedRange, () -> "n/a");
         }
 
         @Override

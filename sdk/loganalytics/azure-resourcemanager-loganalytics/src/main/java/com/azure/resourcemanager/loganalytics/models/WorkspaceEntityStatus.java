@@ -42,7 +42,11 @@ public final class WorkspaceEntityStatus extends ExpandableStringEnum<WorkspaceE
         return fromString(name, WorkspaceEntityStatus.class);
     }
 
-    /** @return known WorkspaceEntityStatus values. */
+    /**
+     * Gets known WorkspaceEntityStatus values.
+     *
+     * @return known WorkspaceEntityStatus values.
+     */
     public static Collection<WorkspaceEntityStatus> values() {
         return values(WorkspaceEntityStatus.class);
     }

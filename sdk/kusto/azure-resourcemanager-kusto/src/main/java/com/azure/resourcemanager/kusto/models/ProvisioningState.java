@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProvisioningState. */
+/** The provisioned state of the resource. */
 public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /** Static value Running for ProvisioningState. */
     public static final ProvisioningState RUNNING = fromString("Running");
@@ -39,7 +39,11 @@ public final class ProvisioningState extends ExpandableStringEnum<ProvisioningSt
         return fromString(name, ProvisioningState.class);
     }
 
-    /** @return known ProvisioningState values. */
+    /**
+     * Gets known ProvisioningState values.
+     *
+     * @return known ProvisioningState values.
+     */
     public static Collection<ProvisioningState> values() {
         return values(ProvisioningState.class);
     }

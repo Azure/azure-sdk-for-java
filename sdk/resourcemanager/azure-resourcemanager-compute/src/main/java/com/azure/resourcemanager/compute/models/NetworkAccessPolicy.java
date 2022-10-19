@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkAccessPolicy. */
+/** Policy for accessing the disk via network. */
 public final class NetworkAccessPolicy extends ExpandableStringEnum<NetworkAccessPolicy> {
     /** Static value AllowAll for NetworkAccessPolicy. */
     public static final NetworkAccessPolicy ALLOW_ALL = fromString("AllowAll");
@@ -30,7 +30,11 @@ public final class NetworkAccessPolicy extends ExpandableStringEnum<NetworkAcces
         return fromString(name, NetworkAccessPolicy.class);
     }
 
-    /** @return known NetworkAccessPolicy values. */
+    /**
+     * Gets known NetworkAccessPolicy values.
+     *
+     * @return known NetworkAccessPolicy values.
+     */
     public static Collection<NetworkAccessPolicy> values() {
         return values(NetworkAccessPolicy.class);
     }

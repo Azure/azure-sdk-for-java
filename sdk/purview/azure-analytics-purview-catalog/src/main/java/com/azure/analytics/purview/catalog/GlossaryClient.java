@@ -4,33 +4,34 @@
 
 package com.azure.analytics.purview.catalog;
 
-import com.azure.analytics.purview.catalog.implementation.GlossariesImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
-@ServiceClient(builder = PurviewCatalogClientBuilder.class)
+@ServiceClient(builder = GlossaryClientBuilder.class)
 public final class GlossaryClient {
-    @Generated private final GlossariesImpl serviceClient;
+    @Generated private final GlossaryAsyncClient client;
 
     /**
-     * Initializes an instance of Glossaries client.
+     * Initializes an instance of GlossaryClient class.
      *
-     * @param serviceClient the service client implementation.
+     * @param client the async client.
      */
     @Generated
-    GlossaryClient(GlossariesImpl serviceClient) {
-        this.serviceClient = serviceClient;
+    GlossaryClient(GlossaryAsyncClient client) {
+        this.client = client;
     }
 
     /**
@@ -41,10 +42,10 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
-     *     <tr><td>ignoreTermsAndCategories</td><td>String</td><td>No</td><td>Whether ignore terms and categories</td></tr>
+     *     <tr><td>ignoreTermsAndCategories</td><td>Boolean</td><td>No</td><td>Whether ignore terms and categories</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -110,12 +111,15 @@ public final class GlossaryClient {
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all glossaries registered with Atlas along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossariesWithResponse(RequestOptions requestOptions) {
-        return this.serviceClient.listGlossariesWithResponse(requestOptions);
+        return this.client.listGlossariesWithResponse(requestOptions).block();
     }
 
     /**
@@ -243,12 +247,15 @@ public final class GlossaryClient {
      *     anchor attribute when creating the Term/Category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasGlossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryWithResponse(BinaryData atlasGlossary, RequestOptions requestOptions) {
-        return this.serviceClient.createGlossaryWithResponse(atlasGlossary, requestOptions);
+        return this.client.createGlossaryWithResponse(atlasGlossary, requestOptions).block();
     }
 
     /**
@@ -387,13 +394,16 @@ public final class GlossaryClient {
      * @param glossaryCategory An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return an array of glossary category created successfully in bulk along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoriesWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return this.serviceClient.createGlossaryCategoriesWithResponse(glossaryCategory, requestOptions);
+        return this.client.createGlossaryCategoriesWithResponse(glossaryCategory, requestOptions).block();
     }
 
     /**
@@ -529,13 +539,16 @@ public final class GlossaryClient {
      *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasGlossaryCategory along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoryWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return this.serviceClient.createGlossaryCategoryWithResponse(glossaryCategory, requestOptions);
+        return this.client.createGlossaryCategoryWithResponse(glossaryCategory, requestOptions).block();
     }
 
     /**
@@ -607,12 +620,15 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return specific glossary category by its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.getGlossaryCategoryWithResponse(categoryGuid, requestOptions);
+        return this.client.getGlossaryCategoryWithResponse(categoryGuid, requestOptions).block();
     }
 
     /**
@@ -748,13 +764,16 @@ public final class GlossaryClient {
      * @param glossaryCategory The glossary category to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasGlossaryCategory along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryCategoryWithResponse(
             String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions) {
-        return this.serviceClient.updateGlossaryCategoryWithResponse(categoryGuid, glossaryCategory, requestOptions);
+        return this.client.updateGlossaryCategoryWithResponse(categoryGuid, glossaryCategory, requestOptions).block();
     }
 
     /**
@@ -763,12 +782,15 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.deleteGlossaryCategoryWithResponse(categoryGuid, requestOptions);
+        return this.client.deleteGlossaryCategoryWithResponse(categoryGuid, requestOptions).block();
     }
 
     /**
@@ -850,14 +872,18 @@ public final class GlossaryClient {
      *     partial update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasGlossaryCategory along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryCategoryWithResponse(
             String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateGlossaryCategoryWithResponse(
-                categoryGuid, partialUpdates, requestOptions);
+        return this.client
+                .partialUpdateGlossaryCategoryWithResponse(categoryGuid, partialUpdates, requestOptions)
+                .block();
     }
 
     /**
@@ -869,8 +895,8 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -893,12 +919,15 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all related categories (parent and children) along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRelatedCategoriesWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listRelatedCategoriesWithResponse(categoryGuid, requestOptions);
+        return this.client.listRelatedCategoriesWithResponse(categoryGuid, requestOptions).block();
     }
 
     /**
@@ -909,8 +938,8 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -934,12 +963,15 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all terms associated with the specific category along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listCategoryTermsWithResponse(String categoryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listCategoryTermsWithResponse(categoryGuid, requestOptions);
+        return this.client.listCategoryTermsWithResponse(categoryGuid, requestOptions).block();
     }
 
     /**
@@ -950,7 +982,7 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -1259,12 +1291,15 @@ public final class GlossaryClient {
      *     Optionally it can be categorized as well.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasGlossaryTerm along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryTermWithResponse(BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return this.serviceClient.createGlossaryTermWithResponse(glossaryTerm, requestOptions);
+        return this.client.createGlossaryTermWithResponse(glossaryTerm, requestOptions).block();
     }
 
     /**
@@ -1275,7 +1310,8 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of relationship types which need to be excluded. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1432,16 +1468,27 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a specific glossary term by its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
-        return this.serviceClient.getGlossaryTermWithResponse(termGuid, requestOptions);
+        return this.client.getGlossaryTermWithResponse(termGuid, requestOptions).block();
     }
 
     /**
      * Update the given glossary term by its GUID.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -1749,13 +1796,16 @@ public final class GlossaryClient {
      * @param glossaryTerm The glossary term to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasGlossaryTerm along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryTermWithResponse(
             String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return this.serviceClient.updateGlossaryTermWithResponse(termGuid, glossaryTerm, requestOptions);
+        return this.client.updateGlossaryTermWithResponse(termGuid, glossaryTerm, requestOptions).block();
     }
 
     /**
@@ -1764,12 +1814,15 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
-        return this.serviceClient.deleteGlossaryTermWithResponse(termGuid, requestOptions);
+        return this.client.deleteGlossaryTermWithResponse(termGuid, requestOptions).block();
     }
 
     /**
@@ -1780,7 +1833,7 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -1947,13 +2000,16 @@ public final class GlossaryClient {
      *     updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasGlossaryTerm along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryTermWithResponse(
             String termGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateGlossaryTermWithResponse(termGuid, partialUpdates, requestOptions);
+        return this.client.partialUpdateGlossaryTermWithResponse(termGuid, partialUpdates, requestOptions).block();
     }
 
     /**
@@ -1964,7 +2020,7 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -2276,13 +2332,16 @@ public final class GlossaryClient {
      * @param glossaryTerm An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return if bulk glossary terms creation was successful along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryTermsWithResponse(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
-        return this.serviceClient.createGlossaryTermsWithResponse(glossaryTerm, requestOptions);
+        return this.client.createGlossaryTermsWithResponse(glossaryTerm, requestOptions).block();
     }
 
     /**
@@ -2293,8 +2352,8 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -2327,13 +2386,16 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all related objects assigned with the specified term along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntitiesAssignedWithTermWithResponse(
             String termGuid, RequestOptions requestOptions) {
-        return this.serviceClient.getEntitiesAssignedWithTermWithResponse(termGuid, requestOptions);
+        return this.client.getEntitiesAssignedWithTermWithResponse(termGuid, requestOptions).block();
     }
 
     /**
@@ -2369,13 +2431,16 @@ public final class GlossaryClient {
      * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> assignTermToEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return this.serviceClient.assignTermToEntitiesWithResponse(termGuid, relatedObjectIds, requestOptions);
+        return this.client.assignTermToEntitiesWithResponse(termGuid, relatedObjectIds, requestOptions).block();
     }
 
     /**
@@ -2411,14 +2476,18 @@ public final class GlossaryClient {
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeTermAssignmentFromEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return this.serviceClient.removeTermAssignmentFromEntitiesWithResponse(
-                termGuid, relatedObjectIds, requestOptions);
+        return this.client
+                .removeTermAssignmentFromEntitiesWithResponse(termGuid, relatedObjectIds, requestOptions)
+                .block();
     }
 
     /**
@@ -2454,14 +2523,18 @@ public final class GlossaryClient {
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
-        return this.serviceClient.deleteTermAssignmentFromEntitiesWithResponse(
-                termGuid, relatedObjectIds, requestOptions);
+        return this.client
+                .deleteTermAssignmentFromEntitiesWithResponse(termGuid, relatedObjectIds, requestOptions)
+                .block();
     }
 
     /**
@@ -2473,8 +2546,8 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -2500,12 +2573,15 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return all related terms for a specific term by its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listRelatedTermsWithResponse(String termGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listRelatedTermsWithResponse(termGuid, requestOptions);
+        return this.client.listRelatedTermsWithResponse(termGuid, requestOptions).block();
     }
 
     /**
@@ -2573,12 +2649,15 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a specific Glossary by its GUID along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.getGlossaryWithResponse(glossaryGuid, requestOptions);
+        return this.client.getGlossaryWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -2706,13 +2785,16 @@ public final class GlossaryClient {
      * @param updatedGlossary The glossary definition to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasGlossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryWithResponse(
             String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
-        return this.serviceClient.updateGlossaryWithResponse(glossaryGuid, updatedGlossary, requestOptions);
+        return this.client.updateGlossaryWithResponse(glossaryGuid, updatedGlossary, requestOptions).block();
     }
 
     /**
@@ -2721,12 +2803,15 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.deleteGlossaryWithResponse(glossaryGuid, requestOptions);
+        return this.client.deleteGlossaryWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -2737,8 +2822,8 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -2810,12 +2895,15 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the categories belonging to a specific glossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryCategoriesWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listGlossaryCategoriesWithResponse(glossaryGuid, requestOptions);
+        return this.client.listGlossaryCategoriesWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -2826,8 +2914,8 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -2848,13 +2936,16 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the category headers belonging to a specific glossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryCategoriesHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listGlossaryCategoriesHeadersWithResponse(glossaryGuid, requestOptions);
+        return this.client.listGlossaryCategoriesHeadersWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -2865,7 +2956,7 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3070,12 +3161,15 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return a specific glossary with detailed information along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getDetailedGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.getDetailedGlossaryWithResponse(glossaryGuid, requestOptions);
+        return this.client.getDetailedGlossaryWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -3086,7 +3180,7 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3160,13 +3254,16 @@ public final class GlossaryClient {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasGlossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryWithResponse(
             String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
-        return this.serviceClient.partialUpdateGlossaryWithResponse(glossaryGuid, partialUpdates, requestOptions);
+        return this.client.partialUpdateGlossaryWithResponse(glossaryGuid, partialUpdates, requestOptions).block();
     }
 
     /**
@@ -3177,9 +3274,9 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -3339,12 +3436,15 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return terms belonging to a specific glossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryTermsWithResponse(String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listGlossaryTermsWithResponse(glossaryGuid, requestOptions);
+        return this.client.listGlossaryTermsWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -3355,8 +3455,8 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
      *     <tr><td>sort</td><td>String</td><td>No</td><td>The sort order, ASC (default) or DESC.</td></tr>
      * </table>
      *
@@ -3380,13 +3480,16 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return term headers belonging to a specific glossary along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryTermHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
-        return this.serviceClient.listGlossaryTermHeadersWithResponse(glossaryGuid, requestOptions);
+        return this.client.listGlossaryTermHeadersWithResponse(glossaryGuid, requestOptions).block();
     }
 
     /**
@@ -3397,16 +3500,7 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3438,13 +3532,16 @@ public final class GlossaryClient {
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of status of import csv operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportGlossaryTermsViaCsv(glossaryGuid, file, requestOptions);
+        return this.client.beginImportGlossaryTermsViaCsv(glossaryGuid, file, requestOptions).getSyncPoller();
     }
 
     /**
@@ -3455,16 +3552,7 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
-     *
-     * <p><strong>Header Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Header Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>contentLength</td><td>long</td><td>Yes</td><td>The contentLength parameter</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3496,25 +3584,22 @@ public final class GlossaryClient {
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
-     * @return status of import csv operation along with {@link Response} on successful completion of {@link Mono}.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link SyncPoller} for polling of status of import csv operation.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
             String glossaryName, BinaryData file, RequestOptions requestOptions) {
-        return this.serviceClient.beginImportGlossaryTermsViaCsvByGlossaryName(glossaryName, file, requestOptions);
+        return this.client
+                .beginImportGlossaryTermsViaCsvByGlossaryName(glossaryName, file, requestOptions)
+                .getSyncPoller();
     }
 
     /**
      * Get the status of import csv operation.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -3538,13 +3623,16 @@ public final class GlossaryClient {
      * @param operationGuid The globally unique identifier for async operation/job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the status of import csv operation along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getImportCsvOperationStatusWithResponse(
             String operationGuid, RequestOptions requestOptions) {
-        return this.serviceClient.getImportCsvOperationStatusWithResponse(operationGuid, requestOptions);
+        return this.client.getImportCsvOperationStatusWithResponse(operationGuid, requestOptions).block();
     }
 
     /**
@@ -3555,8 +3643,7 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3577,13 +3664,16 @@ public final class GlossaryClient {
      * @param termGuids An array of term guids.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Flux<ByteBuffer>> exportGlossaryTermsAsCsvWithResponse(
             String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
-        return this.serviceClient.exportGlossaryTermsAsCsvWithResponse(glossaryGuid, termGuids, requestOptions);
+        return this.client.exportGlossaryTermsAsCsvWithResponse(glossaryGuid, termGuids, requestOptions).block();
     }
 
     /**
@@ -3594,10 +3684,9 @@ public final class GlossaryClient {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>limit</td><td>String</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
-     *     <tr><td>offset</td><td>String</td><td>No</td><td>The offset for pagination purpose.</td></tr>
-     *     <tr><td>includeTermHierarchy</td><td>String</td><td>No</td><td>Whether include term hierarchy</td></tr>
-     *     <tr><td>apiVersion</td><td>String</td><td>Yes</td><td>Api Version</td></tr>
+     *     <tr><td>limit</td><td>Integer</td><td>No</td><td>The page size - by default there is no paging.</td></tr>
+     *     <tr><td>offset</td><td>Integer</td><td>No</td><td>The offset for pagination purpose.</td></tr>
+     *     <tr><td>includeTermHierarchy</td><td>Boolean</td><td>No</td><td>Whether include term hierarchy</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3756,12 +3845,15 @@ public final class GlossaryClient {
      * @param glossaryName The name of the glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return terms by glossary name along with {@link Response}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listTermsByGlossaryNameWithResponse(
             String glossaryName, RequestOptions requestOptions) {
-        return this.serviceClient.listTermsByGlossaryNameWithResponse(glossaryName, requestOptions);
+        return this.client.listTermsByGlossaryNameWithResponse(glossaryName, requestOptions).block();
     }
 }

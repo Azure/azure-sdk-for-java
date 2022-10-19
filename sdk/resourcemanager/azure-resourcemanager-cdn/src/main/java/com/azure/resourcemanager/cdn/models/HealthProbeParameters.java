@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The JSON object that contains the properties to send health probes to origin. */
 @Fluent
 public final class HealthProbeParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HealthProbeParameters.class);
-
     /*
-     * The path relative to the origin that is used to determine the health of
-     * the origin.
+     * The path relative to the origin that is used to determine the health of the origin.
      */
     @JsonProperty(value = "probePath")
     private String probePath;

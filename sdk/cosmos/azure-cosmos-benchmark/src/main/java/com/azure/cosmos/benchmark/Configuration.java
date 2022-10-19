@@ -15,6 +15,7 @@ import io.micrometer.azuremonitor.AzureMonitorConfig;
 import io.micrometer.azuremonitor.AzureMonitorMeterRegistry;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.config.NamingConvention;
 import io.micrometer.core.lang.Nullable;
 import io.micrometer.graphite.GraphiteConfig;
@@ -186,6 +187,15 @@ public class Configuration {
     @Parameter(names = "-accountNameInGraphiteReporter", description = "if set, account name with be appended in graphite reporter")
     private boolean accountNameInGraphiteReporter = false;
 
+    @Parameter(names = "-clientTelemetryEnabled", description = "Switch to enable client telemetry")
+    private String clientTelemetryEnabled = String.valueOf(false);
+
+    @Parameter(names = "-clientTelemetrySchedulingInSeconds", description = "Client telemetry scheduling intervals in seconds")
+    private int clientTelemetrySchedulingInSeconds = 10 * 60;
+
+    @Parameter(names = "-clientTelemetryEndpoint", description = "Client Telemetry Juno endpoint")
+    private String clientTelemetryEndpoint;
+
     public enum Environment {
         Daily,   // This is the CTL environment where we run the workload for a fixed number of hours
         Staging; // This is the CTL environment where the worload runs as a long running job
@@ -355,8 +365,8 @@ public class Configuration {
         return consistencyLevel;
     }
 
-    public String isContentResponseOnWriteEnabled() {
-        return contentResponseOnWriteEnabled;
+    public boolean isContentResponseOnWriteEnabled() {
+        return Boolean.parseBoolean(contentResponseOnWriteEnabled);
     }
 
     public String getDatabaseId() {
@@ -489,6 +499,18 @@ public class Configuration {
         return encryptionEnabled;
     }
 
+    public boolean isClientTelemetryEnabled() {
+        return Boolean.parseBoolean(clientTelemetryEnabled);
+    }
+
+    public String getClientTelemetryEndpoint() {
+        return clientTelemetryEndpoint;
+    }
+
+    public int getClientTelemetrySchedulingInSeconds() {
+        return clientTelemetrySchedulingInSeconds;
+    }
+
     public void tryGetValuesFromSystem() {
         serviceEndpoint = StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("SERVICE_END_POINT")),
                                                     serviceEndpoint);
@@ -553,6 +575,7 @@ public class Configuration {
         if (this.azureMonitorMeterRegistry == null) {
 
             Duration step = Duration.ofSeconds(Integer.getInteger("azure.cosmos.monitoring.azureMonitor.step", this.printingInterval));
+            String testCategoryTag = System.getProperty("azure.cosmos.monitoring.azureMonitor.testCategory");
             boolean enabled = !Boolean.getBoolean("azure.cosmos.monitoring.azureMonitor.disabled");
 
             final AzureMonitorConfig config = new AzureMonitorConfig() {
@@ -581,6 +604,11 @@ public class Configuration {
             };
 
             this.azureMonitorMeterRegistry = new AzureMonitorMeterRegistry(config, Clock.SYSTEM);
+            if (!Strings.isNullOrEmpty(testCategoryTag)) {
+                List<Tag> globalTags = new ArrayList<>();
+                globalTags.add(Tag.of("TestCategory", testCategoryTag));
+                this.azureMonitorMeterRegistry.config().commonTags(globalTags);
+            }
         }
 
         return this.azureMonitorMeterRegistry;

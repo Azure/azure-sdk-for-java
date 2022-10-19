@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SalesforceObjectDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("SalesforceObject")
 @Fluent
 public final class SalesforceObjectDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SalesforceObjectDataset.class);
-
     /*
      * Salesforce object dataset properties.
      */
     @JsonProperty(value = "typeProperties")
     private SalesforceObjectDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of SalesforceObjectDataset class. */
+    public SalesforceObjectDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Salesforce object dataset properties.

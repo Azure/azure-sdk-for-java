@@ -6,14 +6,11 @@ package com.azure.resourcemanager.iothub.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP Rule to be applied as part of Network Rule Set. */
 @Fluent
 public final class NetworkRuleSetIpRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSetIpRule.class);
-
     /*
      * Name of the IP filter rule.
      */
@@ -27,8 +24,7 @@ public final class NetworkRuleSetIpRule {
     private NetworkRuleIpAction action;
 
     /*
-     * A string that contains the IP address range in CIDR notation for the
-     * rule.
+     * A string that contains the IP address range in CIDR notation for the rule.
      */
     @JsonProperty(value = "ipMask", required = true)
     private String ipMask;
@@ -100,14 +96,16 @@ public final class NetworkRuleSetIpRule {
      */
     public void validate() {
         if (filterName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property filterName in model NetworkRuleSetIpRule"));
         }
         if (ipMask() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property ipMask in model NetworkRuleSetIpRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkRuleSetIpRule.class);
 }

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Public IP Address associated with azure firewall. */
 @Fluent
 public final class AzureFirewallPublicIpAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallPublicIpAddress.class);
-
     /*
      * Public IP Address value.
      */
     @JsonProperty(value = "address")
     private String address;
+
+    /** Creates an instance of AzureFirewallPublicIpAddress class. */
+    public AzureFirewallPublicIpAddress() {
+    }
 
     /**
      * Get the address property: Public IP Address value.

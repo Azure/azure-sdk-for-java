@@ -195,6 +195,10 @@ public final class Region {
      */
     public static final Region UAE_CENTRAL = new Region("uaecentral", "UAE Central");
     /**
+     * Qatar Central (Middle East) (recommended)
+     */
+    public static final Region QATAR_CENTRAL = new Region("qatarcentral", "Qatar Central");
+    /**
      * South Africa North (Africa) (recommended)
      */
     public static final Region SOUTHAFRICA_NORTH = new Region("southafricanorth", "South Africa North");
@@ -221,6 +225,14 @@ public final class Region {
      * China East 2
      */
     public static final Region CHINA_EAST2 = new Region("chinaeast2", "China East 2");
+    /**
+     * China North 3
+     */
+    public static final Region CHINA_NORTH3 = new Region("chinanorth3", "China North 3");
+    /**
+     * China East 3
+     */
+    public static final Region CHINA_EAST3 = new Region("chinaeast3", "China East 3");
     /*
      * Azure German Cloud
      */

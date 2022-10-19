@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -28,13 +26,15 @@ import java.util.List;
 })
 @Fluent
 public class MultiplePipelineTrigger extends Trigger {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MultiplePipelineTrigger.class);
-
     /*
      * Pipelines that need to be started.
      */
     @JsonProperty(value = "pipelines")
     private List<TriggerPipelineReference> pipelines;
+
+    /** Creates an instance of MultiplePipelineTrigger class. */
+    public MultiplePipelineTrigger() {
+    }
 
     /**
      * Get the pipelines property: Pipelines that need to be started.

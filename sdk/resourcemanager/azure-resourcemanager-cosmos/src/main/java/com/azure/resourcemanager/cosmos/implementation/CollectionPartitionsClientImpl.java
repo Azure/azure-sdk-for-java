@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.CollectionPartitionsClient;
 import com.azure.resourcemanager.cosmos.fluent.models.PartitionMetricInner;
 import com.azure.resourcemanager.cosmos.fluent.models.PartitionUsageInner;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in CollectionPartitionsClient. */
 public final class CollectionPartitionsClientImpl implements CollectionPartitionsClient {
-    private final ClientLogger logger = new ClientLogger(CollectionPartitionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CollectionPartitionsService service;
 
@@ -114,7 +111,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartitionMetricInner>> listMetricsSinglePageAsync(
@@ -184,7 +182,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartitionMetricInner>> listMetricsSinglePageAsync(
@@ -255,7 +254,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PartitionMetricInner> listMetricsAsync(
@@ -278,7 +277,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartitionMetricInner> listMetricsAsync(
@@ -307,7 +306,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionMetricInner> listMetrics(
@@ -330,7 +329,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition metrics request.
+     * @return the response to a list partition metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionMetricInner> listMetrics(
@@ -356,7 +355,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request.
+     * @return the response to a list partition level usage request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartitionUsageInner>> listUsagesSinglePageAsync(
@@ -422,7 +422,8 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request.
+     * @return the response to a list partition level usage request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PartitionUsageInner>> listUsagesSinglePageAsync(
@@ -489,7 +490,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request.
+     * @return the response to a list partition level usage request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PartitionUsageInner> listUsagesAsync(
@@ -508,7 +509,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request.
+     * @return the response to a list partition level usage request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PartitionUsageInner> listUsagesAsync(
@@ -531,7 +532,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request.
+     * @return the response to a list partition level usage request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PartitionUsageInner> listUsagesAsync(
@@ -556,7 +557,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request.
+     * @return the response to a list partition level usage request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionUsageInner> listUsages(
@@ -578,7 +579,7 @@ public final class CollectionPartitionsClientImpl implements CollectionPartition
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list partition level usage request.
+     * @return the response to a list partition level usage request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PartitionUsageInner> listUsages(

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Application logs to file system configuration. */
 @Fluent
 public final class FileSystemApplicationLogsConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileSystemApplicationLogsConfig.class);
-
     /*
      * Log level.
      */

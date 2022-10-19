@@ -123,8 +123,6 @@ public final class GatewayConnectionConfig {
     /**
      * Sets the proxy options.
      *
-     * Currently only support Http proxy type with just the routing address. Username and password will be ignored.
-     *
      * @param proxy The proxy options.
      * @return the {@link GatewayConnectionConfig}.
      */

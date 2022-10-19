@@ -6,18 +6,14 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslCipherSuite;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An Ssl predefined policy. */
 @Fluent
 public final class ApplicationGatewaySslPredefinedPolicyInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslPredefinedPolicyInner.class);
-
     /*
      * Name of the Ssl predefined policy.
      */
@@ -29,6 +25,10 @@ public final class ApplicationGatewaySslPredefinedPolicyInner extends SubResourc
      */
     @JsonProperty(value = "properties")
     private ApplicationGatewaySslPredefinedPolicyPropertiesFormat innerProperties;
+
+    /** Creates an instance of ApplicationGatewaySslPredefinedPolicyInner class. */
+    public ApplicationGatewaySslPredefinedPolicyInner() {
+    }
 
     /**
      * Get the name property: Name of the Ssl predefined policy.

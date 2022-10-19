@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameter supplied to the Apply Network configuration operation. */
 @Fluent
 public final class ApiManagementServiceApplyNetworkConfigurationParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApiManagementServiceApplyNetworkConfigurationParameters.class);
-
     /*
      * Location of the Api Management service to update for a multi-region
      * service. For a service deployed in a single region, this parameter is

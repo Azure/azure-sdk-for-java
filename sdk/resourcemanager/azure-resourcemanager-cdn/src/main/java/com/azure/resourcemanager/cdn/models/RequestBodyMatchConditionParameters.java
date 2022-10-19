@@ -6,20 +6,17 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the parameters for RequestBody match conditions. */
 @Fluent
 public final class RequestBodyMatchConditionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequestBodyMatchConditionParameters.class);
-
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleRequestBodyConditionParameters";
 
     /*
      * Describes operator to be matched
@@ -47,26 +44,26 @@ public final class RequestBodyMatchConditionParameters {
 
     /** Creates an instance of RequestBodyMatchConditionParameters class. */
     public RequestBodyMatchConditionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleRequestBodyConditionParameters";
+        typeName = "DeliveryRuleRequestBodyConditionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the RequestBodyMatchConditionParameters object itself.
      */
-    public RequestBodyMatchConditionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public RequestBodyMatchConditionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
@@ -157,10 +154,12 @@ public final class RequestBodyMatchConditionParameters {
      */
     public void validate() {
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operator in model RequestBodyMatchConditionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RequestBodyMatchConditionParameters.class);
 }

@@ -22,10 +22,9 @@ import com.azure.resourcemanager.securityinsights.models.EntityGetInsightsParame
 import com.azure.resourcemanager.securityinsights.models.EntityGetInsightsResponse;
 import com.azure.resourcemanager.securityinsights.models.EntityItemQueryKind;
 import com.azure.resourcemanager.securityinsights.models.GetQueriesResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class EntitiesImpl implements Entities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntitiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EntitiesImpl.class);
 
     private final EntitiesClient innerClient;
 

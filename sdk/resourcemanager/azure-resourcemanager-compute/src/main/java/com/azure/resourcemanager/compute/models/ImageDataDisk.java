@@ -6,19 +6,14 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a data disk. */
 @Fluent
 public final class ImageDataDisk extends ImageDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageDataDisk.class);
-
     /*
-     * Specifies the logical unit number of the data disk. This value is used
-     * to identify data disks within the VM and therefore must be unique for
-     * each data disk attached to a VM.
+     * Specifies the logical unit number of the data disk. This value is used to identify data disks within the VM and
+     * therefore must be unique for each data disk attached to a VM.
      */
     @JsonProperty(value = "lun", required = true)
     private int lun;

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.SelfHostedIntegrationRuntimeTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SelfHosted")
 @Fluent
 public final class SelfHostedIntegrationRuntime extends IntegrationRuntime {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SelfHostedIntegrationRuntime.class);
-
     /*
      * When this property is not null, means this is a linked integration
      * runtime. The property is used to access original integration runtime.

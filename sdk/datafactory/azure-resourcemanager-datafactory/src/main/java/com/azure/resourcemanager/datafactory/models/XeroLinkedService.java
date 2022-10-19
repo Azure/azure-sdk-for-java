@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.XeroLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("Xero")
 @Fluent
 public final class XeroLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(XeroLinkedService.class);
-
     /*
      * Xero Service linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private XeroLinkedServiceTypeProperties innerTypeProperties = new XeroLinkedServiceTypeProperties();
+
+    /** Creates an instance of XeroLinkedService class. */
+    public XeroLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Xero Service linked service properties.
@@ -269,7 +270,7 @@ public final class XeroLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model XeroLinkedService"));
@@ -277,4 +278,6 @@ public final class XeroLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(XeroLinkedService.class);
 }

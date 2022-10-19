@@ -5,44 +5,36 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to this dataset type. */
 @Fluent
 public final class HttpDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpDatasetTypeProperties.class);
-
     /*
-     * The relative URL based on the URL in the HttpLinkedService refers to an
-     * HTTP file Type: string (or Expression with resultType string).
+     * The relative URL based on the URL in the HttpLinkedService refers to an HTTP file Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;
 
     /*
-     * The HTTP method for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * The HTTP method for the HTTP request. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
-     * The body for the HTTP request. Type: string (or Expression with
-     * resultType string).
+     * The body for the HTTP request. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
-     * The headers for the HTTP Request. e.g.
-     * request-header-name-1:request-header-value-1
+     * The headers for the HTTP Request. e.g. request-header-name-1:request-header-value-1
      * ...
-     * request-header-name-n:request-header-value-n Type: string (or Expression
-     * with resultType string).
+     * request-header-name-n:request-header-value-n Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
@@ -58,6 +50,10 @@ public final class HttpDatasetTypeProperties {
      */
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
+
+    /** Creates an instance of HttpDatasetTypeProperties class. */
+    public HttpDatasetTypeProperties() {
+    }
 
     /**
      * Get the relativeUrl property: The relative URL based on the URL in the HttpLinkedService refers to an HTTP file

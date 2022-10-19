@@ -48,6 +48,9 @@ import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedE
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImagePushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerServiceNewKubernetesVersionAvailableEventData;
 import com.azure.messaging.eventgrid.systemevents.EventHubCaptureFileCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.HealthcareFhirResourceUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceConnectedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.IotHubDeviceDeletedEventData;
@@ -249,6 +252,16 @@ public final class SystemEventNames {
      */
     public static final String CONTAINER_REGISTRY_CHART_PUSHED = "Microsoft.ContainerRegistry.ChartPushed";
 
+    // Healthcare Events
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceCreated event. */
+    public static final String HEALTHCARE_FHIR_RESOURCE_CREATED = "Microsoft.HealthcareApis.FhirResourceCreated";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceDeleted event. */
+    public static final String HEALTHCARE_FHIR_RESOURCE_DELETED = "Microsoft.HealthcareApis.FhirResourceDeleted";
+
+    /** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.FhirResourceUpdated event. */
+    public static final String HEALTHCARE_FHIR_RESOURCE_UPDATED = "Microsoft.HealthcareApis.FhirResourceUpdated";
+
     // Device events.
     /**
      * indicate an event of creating an IoT hub device.
@@ -429,7 +442,6 @@ public final class SystemEventNames {
      * Media Services Live Event Track Discontinuity Detected event.
      */
     public static final String MEDIA_LIVE_EVENT_TRACK_DISCONTINUITY_DETECTED = "Microsoft.Media.LiveEventTrackDiscontinuityDetected";
-
 
     // Resource Manager (Azure Subscription/Resource Group) events
     /**
@@ -786,6 +798,12 @@ public final class SystemEventNames {
 
             // Event Hub Events.
             put(EVENT_HUB_CAPTURE_FILE_CREATED, EventHubCaptureFileCreatedEventData.class);
+
+            // Healthcare events
+            put(HEALTHCARE_FHIR_RESOURCE_CREATED, HealthcareFhirResourceCreatedEventData.class);
+            put(HEALTHCARE_FHIR_RESOURCE_DELETED, HealthcareFhirResourceDeletedEventData.class);
+            put(HEALTHCARE_FHIR_RESOURCE_UPDATED, HealthcareFhirResourceUpdatedEventData.class);
+
             // Maps events
             put(MAPS_GEOFENCE_ENTERED, MapsGeofenceEnteredEventData.class);
             put(MAPS_GEOFENCE_EXITED, MapsGeofenceExitedEventData.class);

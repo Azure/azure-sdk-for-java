@@ -41,7 +41,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from applications.
+     * @return entities from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphApplicationInner> listApplicationAsync(
@@ -61,7 +61,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from applications.
+     * @return entities from applications as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<MicrosoftGraphApplicationInner> listApplicationAsync();
@@ -72,7 +72,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from applications.
+     * @return entities from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphApplicationInner> listApplication();
@@ -94,7 +94,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entities from applications.
+     * @return entities from applications as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<MicrosoftGraphApplicationInner> listApplication(
@@ -117,7 +117,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return application along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphApplicationInner>> createApplicationWithResponseAsync(
@@ -131,7 +131,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return application on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphApplicationInner> createApplicationAsync(MicrosoftGraphApplicationInner body);
@@ -144,7 +144,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     MicrosoftGraphApplicationInner createApplication(MicrosoftGraphApplicationInner body);
@@ -158,7 +158,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an Azure Active Directory object.
+     * @return application along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphApplicationInner> createApplicationWithResponse(
@@ -175,7 +175,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from applications by key.
+     * @return entity from applications by key along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<MicrosoftGraphApplicationInner>> getApplicationWithResponseAsync(
@@ -192,7 +192,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from applications by key.
+     * @return entity from applications by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphApplicationInner> getApplicationAsync(
@@ -206,7 +206,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from applications by key.
+     * @return entity from applications by key on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<MicrosoftGraphApplicationInner> getApplicationAsync(String applicationId);
@@ -236,7 +236,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return entity from applications by key.
+     * @return entity from applications by key along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<MicrosoftGraphApplicationInner> getApplicationWithResponse(
@@ -255,7 +255,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> updateApplicationWithResponseAsync(String applicationId, MicrosoftGraphApplicationInner body);
@@ -269,7 +269,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> updateApplicationAsync(String applicationId, MicrosoftGraphApplicationInner body);
@@ -297,7 +297,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> updateApplicationWithResponse(
@@ -312,7 +312,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> deleteApplicationWithResponseAsync(String applicationId, String ifMatch);
@@ -326,7 +326,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteApplicationAsync(String applicationId, String ifMatch);
@@ -339,7 +339,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteApplicationAsync(String applicationId);
@@ -366,7 +366,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteApplicationWithResponse(String applicationId, String ifMatch, Context context);
@@ -379,7 +379,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return media content for application from applications.
+     * @return media content for application from applications on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<StreamResponse> getLogoWithResponseAsync(String applicationId);
@@ -434,7 +434,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Void>> setLogoWithResponseAsync(String applicationId, Flux<ByteBuffer> data, long contentLength);
@@ -449,7 +449,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> setLogoAsync(String applicationId, Flux<ByteBuffer> data, long contentLength);
@@ -479,7 +479,7 @@ public interface ApplicationsApplicationsClient {
      * @throws com.azure.resourcemanager.authorization.fluent.models.OdataErrorMainException thrown if the request is
      *     rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> setLogoWithResponse(

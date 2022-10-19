@@ -8,6 +8,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
+import com.azure.core.util.ProgressListener
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
@@ -28,12 +29,13 @@ import com.azure.storage.file.datalake.models.FileQueryArrowField
 import com.azure.storage.file.datalake.models.FileQueryArrowFieldType
 import com.azure.storage.file.datalake.models.FileQueryArrowSerialization
 import com.azure.storage.file.datalake.models.FileQueryDelimitedSerialization
-import com.azure.storage.file.datalake.models.FileQueryParquetSerialization
 import com.azure.storage.file.datalake.models.FileQueryError
 import com.azure.storage.file.datalake.models.FileQueryJsonSerialization
+import com.azure.storage.file.datalake.models.FileQueryParquetSerialization
 import com.azure.storage.file.datalake.models.FileQueryProgress
 import com.azure.storage.file.datalake.models.FileQuerySerialization
 import com.azure.storage.file.datalake.models.FileRange
+import com.azure.storage.file.datalake.models.LeaseDurationType
 import com.azure.storage.file.datalake.models.LeaseStateType
 import com.azure.storage.file.datalake.models.LeaseStatusType
 import com.azure.storage.file.datalake.models.PathAccessControl
@@ -42,9 +44,15 @@ import com.azure.storage.file.datalake.models.PathHttpHeaders
 import com.azure.storage.file.datalake.models.PathPermissions
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry
 import com.azure.storage.file.datalake.models.RolePermissions
+import com.azure.storage.file.datalake.options.DataLakeFileAppendOptions
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
+import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
 import com.azure.storage.file.datalake.options.FileParallelUploadOptions
 import com.azure.storage.file.datalake.options.FileQueryOptions
 import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
+import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
+import com.azure.storage.file.datalake.sas.FileSystemSasPermission
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
@@ -53,6 +61,7 @@ import reactor.test.StepVerifier
 import spock.lang.IgnoreIf
 import spock.lang.Retry
 import spock.lang.Unroll
+import spock.util.environment.Jvm
 
 import java.nio.ByteBuffer
 import java.nio.charset.StandardCharsets
@@ -65,6 +74,7 @@ import java.time.Duration
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.atomic.AtomicInteger
+import java.util.concurrent.atomic.AtomicLong
 import java.util.function.Consumer
 
 class FileAPITest extends APISpec {
@@ -260,6 +270,485 @@ class FileAPITest extends APISpec {
         fc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create options with ACL"() {
+        when:
+        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
+        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
+        def client = fc.createWithResponse(options, null, null).getValue()
+        client.getProperties().toString()
+
+        then:
+        notThrown(DataLakeStorageException)
+        def acl = fc.getAccessControl().getAccessControlList()
+        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
+        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create options with owner and group"() {
+        when:
+        def ownerName = namer.getRandomUuid()
+        def groupName = namer.getRandomUuid()
+        def options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)
+        fc.createWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        fc.getAccessControl().getOwner() == ownerName // testing if owner is set the same
+        fc.getAccessControl().getGroup() == groupName // testing if group is set the same
+    }
+
+    def "Create options with null owner and group"() {
+        when:
+        def options = new DataLakePathCreateOptions().setOwner(null).setGroup(null)
+        fc.createWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        fc.getAccessControl().getOwner() == "\$superuser"
+        fc.getAccessControl().getGroup() == "\$superuser"
+    }
+
+    def "Create options with path http headers"() {
+        setup:
+        def putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+
+        when:
+        def response = fc.createWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | "application/octet-stream"
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
+
+    }
+
+    def "Create options with metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+        def result = fc.createWithResponse(options, null, null)
+
+        expect:
+        result.getStatusCode() == 201
+        def properties = fsc.getProperties()
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    def "Create options with permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        fc.createWithResponse(options, null, null)
+
+        when:
+        def acl = fc.getAccessControlWithResponse(true, null, null, null).getValue()
+
+        then:
+        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create options with lease id"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
+        def response = fc.createWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
+    def "Create options with lease id error"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId)
+        fc.createWithResponse(options, null, null)
+
+        then:
+        // lease duration must also be set, or else exception is thrown
+        thrown(DataLakeStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create options with lease duration"() {
+        when:
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
+        def response = fc.createWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        def fileProps = fc.getProperties()
+        // assert whether lease has been acquired
+        fileProps.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProps.getLeaseState() == LeaseStateType.LEASED
+        fileProps.getLeaseDuration() == LeaseDurationType.FIXED
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create options with time expires on"() {
+        when:
+        def options = new DataLakePathCreateOptions().setScheduleDeletionOptions(deletionOptions)
+        def response = fc.createWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+
+        where:
+        deletionOptions                                                             || _
+        new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))   || _
+        null                                                                        || _
+
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create options with time to expire relative to now"() {
+        when:
+        def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
+        def options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(deletionOptions)
+
+        def response = fc.createWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        def fileProps = fc.getProperties()
+        def expireTime = fileProps.getExpiresOn()
+        def expectedExpire = fileProps.getCreationTime().plusDays(6)
+        compareDatesWithPrecision(expireTime, expectedExpire)
+    }
+
+    def "Create if not exists min"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+
+        then:
+        notThrown(DataLakeStorageException)
+        fc.exists()
+    }
+
+    def "Create if not exists defaults"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+
+        when:
+        def createResponse = fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    def "Create if not exists overwrite"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        def initialResponse = fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
+
+        // Try to create the resource again
+        def secondResponse = fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        fc.exists()
+        secondResponse.getStatusCode() == 409
+    }
+
+    def "Create if not exists Exists"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        fc.createIfNotExists()
+
+        then:
+        fc.exists()
+    }
+
+    @Unroll
+    def "Create if not exists headers"() {
+        // Create does not set md5
+        setup:
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+        fc = fsc.getFileClient(generatePathName())
+
+        when:
+        fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(headers), null, null)
+        def response = fc.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
+        null         | null               | null            | null            | null
+        "control"    | "disposition"      | "encoding"      | "language"      | "type"
+    }
+
+    @Unroll
+    def "Create if not exists metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        when:
+        def client = fsc.getFileClient(generatePathName())
+        client.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setMetadata(metadata), null, Context.NONE)
+        def response = client.getProperties()
+
+        then:
+        response.getMetadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    def "Create if not exists permissions and umask"() {
+        setup:
+        def permissions = "0777"
+        def umask = "0057"
+
+        expect:
+        def client = fsc.getFileClient(generatePathName())
+        client.createIfNotExistsWithResponse(
+            new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask),
+            null,
+            Context.NONE).getStatusCode() == 201
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create if not exists options with ACL"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
+        def options = new DataLakePathCreateOptions().setAccessControlList(pathAccessControlEntries)
+        def client = fc.createIfNotExistsWithResponse(options, null, null).getValue()
+        client.getProperties().toString()
+
+        then:
+        notThrown(DataLakeStorageException)
+        def acl = fc.getAccessControl().getAccessControlList()
+        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
+        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create if not exists options with owner and group"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        def ownerName = namer.getRandomUuid()
+        def groupName = namer.getRandomUuid()
+        def options = new DataLakePathCreateOptions().setOwner(ownerName).setGroup(groupName)
+        fc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        fc.getAccessControl().getOwner() == ownerName // testing if owner is set the same
+        fc.getAccessControl().getGroup() == groupName // testing if group is set the same
+    }
+
+    def "Create if not exists options with null owner and group"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setOwner(null).setGroup(null)
+        fc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        fc.getAccessControl().getOwner() == "\$superuser"
+        fc.getAccessControl().getGroup() == "\$superuser"
+    }
+
+    def "Create if not exists options with path http headers"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        def putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+
+        when:
+        def response = fc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | "application/octet-stream"
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
+
+    }
+
+    def "Create if not exists options with metadata"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+        def result = fc.createIfNotExistsWithResponse(options, null, null)
+
+        expect:
+        result.getStatusCode() == 201
+        def properties = fsc.getProperties()
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    def "Create if not exists options with permissions and umask"() {
+        setup:
+        fc = fsc.getFileClient(generatePathName())
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions().setPermissions(permissions).setUmask(umask)
+        fc.createIfNotExistsWithResponse(options, null, null)
+
+        when:
+        def acl = fc.getAccessControlWithResponse(true, null, null, null).getValue()
+
+        then:
+        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create if not exists options with lease id"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId).setLeaseDuration(15)
+        def response = fc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+    }
+
+    def "Create if not exists options with lease id error"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setProposedLeaseId(leaseId)
+        fc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        // lease duration must also be set, or else exception is thrown
+        thrown(DataLakeStorageException)
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create if not exists options with lease duration"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        def leaseId = UUID.randomUUID().toString()
+        def options = new DataLakePathCreateOptions().setLeaseDuration(15).setProposedLeaseId(leaseId)
+        def response = fc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        def fileProps = fc.getProperties()
+        // assert whether lease has been acquired
+        fileProps.getLeaseStatus() == LeaseStatusType.LOCKED
+        fileProps.getLeaseState() == LeaseStateType.LEASED
+        fileProps.getLeaseDuration() == LeaseDurationType.FIXED
+
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create if not exists options with time expires on"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        def options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(deletionOptions)
+        def response = fc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+
+        where:
+        deletionOptions                                                             || _
+        new DataLakePathScheduleDeletionOptions(OffsetDateTime.now().plusDays(1))   || _
+        null                                                                        || _
+
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "Create if not exists options with time to expire relative to now"() {
+        when:
+        fc = fsc.getFileClient(generatePathName())
+        def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
+        def options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(deletionOptions)
+
+        def response = fc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        response.getStatusCode() == 201
+        def fileProps = fc.getProperties()
+        def expireTime = fileProps.getExpiresOn()
+        def expectedExpire = fileProps.getCreationTime().plusDays(6)
+        compareDatesWithPrecision(expireTime, expectedExpire)
+    }
+
     def "Delete min"() {
         expect:
         fc.deleteWithResponse(null, null, null).getStatusCode() == 200
@@ -315,6 +804,91 @@ class FileAPITest extends APISpec {
 
         when:
         fc.deleteWithResponse(drc, null, null).getStatusCode()
+
+        then:
+        thrown(DataLakeStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Delete if exists"() {
+        expect:
+        fc.deleteIfExists()
+    }
+
+    def "Delete if exists min"() {
+        expect:
+        fc.deleteIfExistsWithResponse(null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete if exists file does not exist anymore"() {
+        when:
+        def response = fc.deleteIfExistsWithResponse(null, null, null)
+        fc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        thrown(DataLakeStorageException)
+        response.getStatusCode() == 200
+    }
+
+    def "Delete if exists file that does not exist"() {
+        when:
+        def initialResponse = fc.deleteIfExistsWithResponse(null, null, null)
+        def secondResponse = fc.deleteIfExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 200
+        secondResponse.getStatusCode() == 404
+    }
+
+    @Unroll
+    def "Delete if exists AC"() {
+        setup:
+        match = setupPathMatchCondition(fc, match)
+        leaseID = setupPathLeaseCondition(fc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+
+        def options = new DataLakePathDeleteOptions().setIsRecursive(false).setRequestConditions(drc)
+
+        expect:
+        fc.deleteIfExistsWithResponse(options, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(fc, noneMatch)
+        setupPathLeaseCondition(fc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+
+        when:
+        fc.deleteIfExistsWithResponse(options, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)
@@ -1600,7 +2174,7 @@ class FileAPITest extends APISpec {
         def mockReceiver = Mock(ProgressReceiver)
 
         def numBlocks = fileSize / (4 * 1024 * 1024)
-        def prevCount = 0
+        def prevCount = new AtomicLong()
 
         when:
         fc.readToFileWithResponse(outFile.toPath().toString(), null,
@@ -1612,26 +2186,82 @@ class FileAPITest extends APISpec {
          * Should receive at least one notification indicating completed progress, multiple notifications may be
          * received if there are empty buffers in the stream.
          */
-        (1.._) * mockReceiver.reportProgress(fileSize)
+        (1.._) * mockReceiver.handleProgress(fileSize)
 
         // There should be NO notification with a larger than expected size.
-        0 * mockReceiver.reportProgress({ it > fileSize })
+        0 * mockReceiver.handleProgress({ it > fileSize })
 
         /*
         We should receive at least one notification reporting an intermediary value per block, but possibly more
         notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
         will be the total size as above. Finally, we assert that the number reported monotonically increases.
          */
-        (numBlocks - 1.._) * mockReceiver.reportProgress(!file.size()) >> { long bytesTransferred ->
-            if (!(bytesTransferred >= prevCount)) {
+        (numBlocks - 1.._) * mockReceiver.handleProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred >= prevCount.get())) {
                 throw new IllegalArgumentException("Reported progress should monotonically increase")
             } else {
-                prevCount = bytesTransferred
+                prevCount.set(bytesTransferred)
             }
         }
 
         // We should receive no notifications that report more progress than the size of the file.
-        0 * mockReceiver.reportProgress({ it > fileSize })
+        0 * mockReceiver.handleProgress({ it > fileSize })
+
+        cleanup:
+        file.delete()
+        outFile.delete()
+
+        where:
+        fileSize             | _
+        100                  | _
+        8 * 1026 * 1024 + 10 | _
+    }
+
+    @LiveOnly
+    @Unroll
+    def "Download file progress listener"() {
+        def file = getRandomFile(fileSize)
+        fc.uploadFromFile(file.toPath().toString(), true)
+        def outFile = new File(namer.getResourcePrefix())
+        if (outFile.exists()) {
+            assert outFile.delete()
+        }
+
+        def mockListener = Mock(ProgressListener)
+
+        def numBlocks = fileSize / (4 * 1024 * 1024)
+        def prevCount = new AtomicLong()
+
+        when:
+        fc.readToFileWithResponse(outFile.toPath().toString(), null,
+            new ParallelTransferOptions().setProgressListener(mockListener),
+            new DownloadRetryOptions().setMaxRetryRequests(3), null, false, null, null, null)
+
+        then:
+        /*
+         * Should receive at least one notification indicating completed progress, multiple notifications may be
+         * received if there are empty buffers in the stream.
+         */
+        (1.._) * mockListener.handleProgress(fileSize)
+
+        // There should be NO notification with a larger than expected size.
+        0 * mockListener.handleProgress({ it > fileSize })
+
+        /*
+        We should receive at least one notification reporting an intermediary value per block, but possibly more
+        notifications will be received depending on the implementation. We specify numBlocks - 1 because the last block
+        will be the total size as above. Finally, we assert that the number reported monotonically increases.
+         */
+        (numBlocks - 1.._) * mockListener.handleProgress(!file.size()) >> { long bytesTransferred ->
+            if (!(bytesTransferred >= prevCount.get())) {
+                throw new IllegalArgumentException("Reported progress should monotonically increase")
+            } else {
+                prevCount.set(bytesTransferred)
+            }
+        }
+
+        // We should receive no notifications that report more progress than the size of the file.
+        0 * mockListener.handleProgress({ it > fileSize })
 
         cleanup:
         file.delete()
@@ -1833,6 +2463,29 @@ class FileAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    def "Rename sas token"() {
+        setup:
+        def permissions = new FileSystemSasPermission()
+            .setReadPermission(true)
+            .setMovePermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setDeletePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+        def sas = fsc.generateSas(sasValues)
+        def client = getFileClient(sas, fsc.getFileSystemUrl(), fc.getFilePath())
+
+        when:
+        def destClient = client.rename(fsc.getFileSystemName(), generatePathName())
+
+        then:
+        notThrown(DataLakeStorageException)
+        destClient.getProperties()
+    }
+
     def "Append data min"() {
         when:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
@@ -1953,6 +2606,59 @@ class FileAPITest extends APISpec {
         def os = new ByteArrayOutputStream()
         fc.read(os)
         os.toByteArray() == data.defaultBytes
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
+    def "Append data flush"() {
+        setup:
+        def appendOptions = new DataLakeFileAppendOptions().setFlush(true)
+        def response = fc.appendWithResponse(data.defaultInputStream, 0, data.defaultDataSize, appendOptions, null, null)
+        def headers = response.getHeaders()
+
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+        def os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Append binary data min"() {
+        when:
+        fc.append(data.defaultBinaryData, 0)
+
+        then:
+        notThrown(DataLakeStorageException)
+    }
+
+    def "Append binary data"() {
+        setup:
+        def response = fc.appendWithResponse(data.defaultBinaryData, 0, null, null, null, null)
+        def headers = response.getHeaders()
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
+    def "Append binary data flush"() {
+        setup:
+        def appendOptions = new DataLakeFileAppendOptions().setFlush(true)
+        def response = fc.appendWithResponse(data.defaultBinaryData, 0, appendOptions, null, null)
+        def headers = response.getHeaders()
+
+        expect:
+        response.getStatusCode() == 202
+        headers.getValue("x-ms-request-id") != null
+        headers.getValue("x-ms-version") != null
+        headers.getValue("Date") != null
+        Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
     }
 
     def "Flush data min"() {
@@ -2261,6 +2967,19 @@ class FileAPITest extends APISpec {
         }
     }
 
+    class FileUploadListener implements ProgressListener {
+        private long reportedByteCount
+
+        @Override
+        void handleProgress(long bytesTransferred) {
+            this.reportedByteCount = bytesTransferred
+        }
+
+        long getReportedByteCount() {
+            return this.reportedByteCount
+        }
+    }
+
     @Unroll
     @LiveOnly
     def "Upload from file reporter"() {
@@ -2293,6 +3012,37 @@ class FileAPITest extends APISpec {
     }
 
     @Unroll
+    @LiveOnly
+    def "Upload from file listener"() {
+        setup:
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+
+        when:
+        def uploadListener = new FileUploadListener()
+        def file = getRandomFile(size)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
+            .setProgressListener(uploadListener).setMaxSingleUploadSizeLong(blockSize - 1)
+
+        then:
+        StepVerifier.create(fac.uploadFromFile(file.toPath().toString(), parallelTransferOptions,
+            null, null, null))
+            .verifyComplete()
+
+        uploadListener.getReportedByteCount() == size
+
+        cleanup:
+        file.delete()
+
+        where:
+        size              | blockSize         | bufferCount
+        10 * Constants.MB | 10 * Constants.MB | 8
+        20 * Constants.MB | 1 * Constants.MB  | 5
+        10 * Constants.MB | 5 * Constants.MB  | 2
+        10 * Constants.MB | 10 * Constants.KB | 100
+    }
+
+    @Unroll
     def "Upload from file options"() {
         setup:
         def file = getRandomFile((int) dataSize)
@@ -2303,6 +3053,31 @@ class FileAPITest extends APISpec {
 
         then:
         fc.getProperties().getFileSize() == dataSize
+
+
+        cleanup:
+        file.delete()
+
+        where:
+        dataSize | singleUploadSize | blockSize || expectedBlockCount
+        100      | 50               | null      || 1 // Test that singleUploadSize is respected
+        100      | 50               | 20        || 5 // Test that blockSize is respected
+    }
+
+    @Unroll
+    def "Upload from file with response"() {
+        setup:
+        def file = getRandomFile((int) dataSize)
+
+        when:
+        def response = fc.uploadFromFileWithResponse(file.toPath().toString(),
+            new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxSingleUploadSizeLong(singleUploadSize), null, null, null, null, null)
+
+        then:
+        fc.getProperties().getFileSize() == dataSize
+        response.getStatusCode() == 200
+        response.getValue().getETag() != null
+        response.getValue().getLastModified() != null
 
 
         cleanup:
@@ -2418,6 +3193,25 @@ class FileAPITest extends APISpec {
         }
     }
 
+    class Listener implements ProgressListener {
+        private final long blockSize
+        private long reportingCount
+
+        Listener(long blockSize) {
+            this.blockSize = blockSize
+        }
+
+        @Override
+        void handleProgress(long bytesTransferred) {
+            assert bytesTransferred % blockSize == 0
+            this.reportingCount += 1
+        }
+
+        long getReportingCount() {
+            return this.reportingCount
+        }
+    }
+
     @Unroll
     @LiveOnly
     def "Buffered upload with reporter"() {
@@ -2441,6 +3235,39 @@ class FileAPITest extends APISpec {
                  * that operations need to be retried. Retry attempts will increment the reporting count.
                  */
                 assert uploadReporter.getReportingCount() >= (long) (size / blockSize)
+            }).verifyComplete()
+
+        where:
+        size              | blockSize          | bufferCount
+        10 * Constants.MB | 10 * Constants.MB  | 8
+        20 * Constants.MB | 1 * Constants.MB   | 5
+        10 * Constants.MB | 5 * Constants.MB   | 2
+        10 * Constants.MB | 512 * Constants.KB | 20
+    }
+
+    @Unroll
+    @LiveOnly
+    def "Buffered upload with listener"() {
+        setup:
+        DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
+
+        when:
+        def uploadListener = new Listener(blockSize)
+
+        ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions().setBlockSizeLong(blockSize).setMaxConcurrency(bufferCount)
+            .setProgressListener(uploadListener).setMaxSingleUploadSizeLong(4 * Constants.MB)
+
+        then:
+        StepVerifier.create(fac.uploadWithResponse(Flux.just(getRandomData(size)),
+            parallelTransferOptions, null, null, null))
+            .assertNext({
+                assert it.getStatusCode() == 200
+
+                /*
+                 * Verify that the reporting count is equal or greater than the size divided by block size in the case
+                 * that operations need to be retried. Retry attempts will increment the reporting count.
+                 */
+                assert uploadListener.getReportingCount() >= (long) (size / blockSize)
             }).verifyComplete()
 
         where:
@@ -2602,7 +3429,7 @@ class FileAPITest extends APISpec {
         DataLakeFileAsyncClient fac = fscAsync.getFileAsyncClient(generatePathName())
         fac.create().block()
         expect:
-        StepVerifier.create(fac.upload(null, new ParallelTransferOptions().setBlockSizeLong(4).setMaxConcurrency(4), true))
+        StepVerifier.create(fac.upload((Flux<ByteBuffer>)null, new ParallelTransferOptions().setBlockSizeLong(4).setMaxConcurrency(4), true))
             .verifyErrorSatisfies({ assert it instanceof NullPointerException })
     }
 
@@ -2673,7 +3500,7 @@ class FileAPITest extends APISpec {
     }
 
     // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
-    @IgnoreIf( { Runtime.version().feature() > 11 } )
+    @IgnoreIf( { Jvm.current.isJava12Compatible() } )
     @Unroll
     @LiveOnly
     def "Buffered upload options"() {
@@ -2688,7 +3515,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, (DataLakeFileAppendOptions)_, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends
@@ -2971,6 +3798,38 @@ class FileAPITest extends APISpec {
 
         when:
         clientWithFailure.uploadWithResponse(new FileParallelUploadOptions(data.defaultInputStream), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload binary data"() {
+        setup:
+        def client = getFileClient(
+            environment.dataLakeAccount.credential,
+            fc.getFileUrl())
+
+        when:
+        client.uploadWithResponse(new FileParallelUploadOptions(data.defaultBinaryData), null, null)
+
+        then:
+        notThrown(Exception)
+        ByteArrayOutputStream os = new ByteArrayOutputStream()
+        fc.read(os)
+        os.toByteArray() == data.defaultBytes
+    }
+
+    def "Upload binary data overwrite"() {
+        setup:
+        def client = getFileClient(
+            environment.dataLakeAccount.credential,
+            fc.getFileUrl())
+
+        when:
+        client.upload(data.defaultBinaryData, true)
 
         then:
         notThrown(Exception)
@@ -3398,27 +4257,22 @@ class FileAPITest extends APISpec {
         schema.add(new FileQueryArrowField(FileQueryArrowFieldType.DECIMAL).setName("Name").setPrecision(4).setScale(2))
         FileQueryArrowSerialization outSer = new FileQueryArrowSerialization().setSchema(schema)
         def expression = "SELECT _2 from BlobStorage WHERE _1 > 250;"
-        String expectedData = "/////4AAAAAQAAAAAAAKAAwABgAFAAgACgAAAAABAwAMAAAACAAIAAAABAAIAAAABAAAAAEAAAAUAAAAEAAUAAgABgAHAAwAAAAQABAAAAAAAAEHJAAAABQAAAAEAAAAAAAAAAgADAAEAAgACAAAAAQAAAACAAAABAAAAE5hbWUAAAAAAAAAAP////9wAAAAEAAAAAAACgAOAAYABQAIAAoAAAAAAwMAEAAAAAAACgAMAAAABAAIAAoAAAAwAAAABAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAP////+IAAAAFAAAAAAAAAAMABYABgAFAAgADAAMAAAAAAMDABgAAAAAAgAAAAAAAAAACgAYAAwABAAIAAoAAAA8AAAAEAAAACAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAABAAAAIAAAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAAkAEAAAAAAAAAAAAAAAAAAJABAAAAAAAAAAAAAAAAAACQAQAAAAAAAAAAAAAAAAAA"
         OutputStream os = new ByteArrayOutputStream()
-        FileQueryOptions options = new FileQueryOptions(expression, os).setInputSerialization(inSer).setOutputSerialization(outSer)
+        FileQueryOptions options = new FileQueryOptions(expression, os).setOutputSerialization(outSer)
 
         /* Input Stream. */
         when:
-        InputStream qqStream = fc.openQueryInputStreamWithResponse(options).getValue()
-        byte[] queryData = readFromInputStream(qqStream, 912)
+        fc.openQueryInputStreamWithResponse(options).getValue()
 
         then:
         notThrown(IOException)
-        Base64.getEncoder().encodeToString(queryData) == expectedData
 
         /* Output Stream. */
         when:
         fc.queryWithResponse(options, null, null)
-        byte[] osData = os.toByteArray()
 
         then:
         notThrown(BlobStorageException)
-        Base64.getEncoder().encodeToString(osData) == expectedData
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
@@ -3938,7 +4792,7 @@ class FileAPITest extends APISpec {
 
     /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
     // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
-    @IgnoreIf( { Runtime.version().feature() > 11 } )
+    @IgnoreIf( { Jvm.current.isJava12Compatible() } )
     @Unroll
     @LiveOnly /* Flaky in playback. */
     def "Upload numAppends"() {
@@ -3955,7 +4809,7 @@ class FileAPITest extends APISpec {
 
         then:
         fac.getProperties().block().getFileSize() == dataSize
-        numAppends * spyClient.appendWithResponse(_, _, _, _, _)
+        numAppends * spyClient.appendWithResponse(_, _, _, (DataLakeFileAppendOptions)_, _)
 
         where:
         dataSize                 | singleUploadSize | blockSize || numAppends
@@ -4006,4 +4860,5 @@ class FileAPITest extends APISpec {
         notThrown(DataLakeStorageException)
         response.getHeaders().getValue("x-ms-version") == "2019-02-02"
     }
+
 }

@@ -15,10 +15,9 @@ import com.azure.resourcemanager.datafactory.models.GetSsisObjectMetadataRequest
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeObjectMetadatas;
 import com.azure.resourcemanager.datafactory.models.SsisObjectMetadataListResponse;
 import com.azure.resourcemanager.datafactory.models.SsisObjectMetadataStatusResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IntegrationRuntimeObjectMetadatasImpl implements IntegrationRuntimeObjectMetadatas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeObjectMetadatasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeObjectMetadatasImpl.class);
 
     private final IntegrationRuntimeObjectMetadatasClient innerClient;
 
@@ -53,17 +52,6 @@ public final class IntegrationRuntimeObjectMetadatasImpl implements IntegrationR
         }
     }
 
-    public SsisObjectMetadataListResponse get(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        SsisObjectMetadataListResponseInner inner =
-            this.serviceClient().get(resourceGroupName, factoryName, integrationRuntimeName);
-        if (inner != null) {
-            return new SsisObjectMetadataListResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<SsisObjectMetadataListResponse> getWithResponse(
         String resourceGroupName,
         String factoryName,
@@ -80,6 +68,17 @@ public final class IntegrationRuntimeObjectMetadatasImpl implements IntegrationR
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new SsisObjectMetadataListResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public SsisObjectMetadataListResponse get(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        SsisObjectMetadataListResponseInner inner =
+            this.serviceClient().get(resourceGroupName, factoryName, integrationRuntimeName);
+        if (inner != null) {
+            return new SsisObjectMetadataListResponseImpl(inner, this.manager());
         } else {
             return null;
         }

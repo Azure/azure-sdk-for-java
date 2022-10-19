@@ -7,19 +7,15 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ConfigurationSource;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsConfigPendingRestart;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsDynamicConfig;
 import com.azure.resourcemanager.mysqlflexibleserver.models.IsReadOnly;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a Configuration. */
 @Fluent
 public final class ConfigurationInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationInner.class);
-
     /*
      * The properties of a configuration.
      */

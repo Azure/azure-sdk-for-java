@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response for the CheckDnsNameAvailability API service call. */
 @Fluent
 public final class DnsNameAvailabilityResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsNameAvailabilityResultInner.class);
-
     /*
      * Domain availability (True/False).
      */
     @JsonProperty(value = "available")
     private Boolean available;
+
+    /** Creates an instance of DnsNameAvailabilityResultInner class. */
+    public DnsNameAvailabilityResultInner() {
+    }
 
     /**
      * Get the available property: Domain availability (True/False).

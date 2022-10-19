@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.models.AccountEncryption;
 import com.azure.resourcemanager.videoanalyzer.models.Endpoint;
 import com.azure.resourcemanager.videoanalyzer.models.IotHub;
@@ -15,7 +14,6 @@ import com.azure.resourcemanager.videoanalyzer.models.ProvisioningState;
 import com.azure.resourcemanager.videoanalyzer.models.PublicNetworkAccess;
 import com.azure.resourcemanager.videoanalyzer.models.StorageAccount;
 import com.azure.resourcemanager.videoanalyzer.models.VideoAnalyzerIdentity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -23,8 +21,6 @@ import java.util.Map;
 /** The Video Analyzer account. */
 @Fluent
 public final class VideoAnalyzerInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoAnalyzerInner.class);
-
     /*
      * The resource properties.
      */

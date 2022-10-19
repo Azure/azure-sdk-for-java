@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Microsoft Access table dataset properties. */
 @Fluent
 public final class MicrosoftAccessTableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftAccessTableDatasetTypeProperties.class);
-
     /*
-     * The Microsoft Access table name. Type: string (or Expression with
-     * resultType string).
+     * The Microsoft Access table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
+
+    /** Creates an instance of MicrosoftAccessTableDatasetTypeProperties class. */
+    public MicrosoftAccessTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: The Microsoft Access table name. Type: string (or Expression with resultType string).

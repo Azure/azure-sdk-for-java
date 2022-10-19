@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.AlertsSuppressionRulesClient;
 import com.azure.resourcemanager.security.fluent.models.AlertsSuppressionRuleInner;
 import com.azure.resourcemanager.security.models.AlertsSuppressionRule;
 import com.azure.resourcemanager.security.models.AlertsSuppressionRules;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AlertsSuppressionRulesImpl implements AlertsSuppressionRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertsSuppressionRulesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AlertsSuppressionRulesImpl.class);
 
     private final AlertsSuppressionRulesClient innerClient;
 

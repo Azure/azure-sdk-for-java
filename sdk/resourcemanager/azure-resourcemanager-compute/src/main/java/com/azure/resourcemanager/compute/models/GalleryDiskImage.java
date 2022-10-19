@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This is the disk image base class. */
 @Fluent
 public class GalleryDiskImage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryDiskImage.class);
-
     /*
      * This property indicates the size of the VHD to be created.
      */
@@ -21,8 +17,7 @@ public class GalleryDiskImage {
     private Integer sizeInGB;
 
     /*
-     * The host caching of the disk. Valid values are 'None', 'ReadOnly', and
-     * 'ReadWrite'
+     * The host caching of the disk. Valid values are 'None', 'ReadOnly', and 'ReadWrite'
      */
     @JsonProperty(value = "hostCaching")
     private HostCaching hostCaching;

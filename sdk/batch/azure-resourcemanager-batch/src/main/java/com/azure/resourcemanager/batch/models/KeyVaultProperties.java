@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** KeyVault configuration when using an encryption KeySource of Microsoft.KeyVault. */
 @Fluent
 public final class KeyVaultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultProperties.class);
-
     /*
      * Full path to the versioned secret. Example
      * https://mykeyvault.vault.azure.net/keys/testkey/6e34a81fef704045975661e297a4c053.

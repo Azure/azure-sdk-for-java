@@ -5,25 +5,28 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.JobTarget;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A group of job targets. */
-@JsonFlatten
 @Fluent
-public class JobTargetGroupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobTargetGroupInner.class);
-
+public final class JobTargetGroupInner extends ProxyResource {
     /*
-     * Members of the target group.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.members")
-    private List<JobTarget> members;
+    @JsonProperty(value = "properties")
+    private JobTargetGroupProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private JobTargetGroupProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the members property: Members of the target group.
@@ -31,7 +34,7 @@ public class JobTargetGroupInner extends ProxyResource {
      * @return the members value.
      */
     public List<JobTarget> members() {
-        return this.members;
+        return this.innerProperties() == null ? null : this.innerProperties().members();
     }
 
     /**
@@ -41,7 +44,10 @@ public class JobTargetGroupInner extends ProxyResource {
      * @return the JobTargetGroupInner object itself.
      */
     public JobTargetGroupInner withMembers(List<JobTarget> members) {
-        this.members = members;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobTargetGroupProperties();
+        }
+        this.innerProperties().withMembers(members);
         return this;
     }
 
@@ -51,8 +57,8 @@ public class JobTargetGroupInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (members() != null) {
-            members().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -6,17 +6,13 @@ package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.models.PackageState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An application package which represents a particular version of an application. */
 @Fluent
 public final class ApplicationPackageInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationPackageInner.class);
-
     /*
      * The properties associated with the Application Package.
      */

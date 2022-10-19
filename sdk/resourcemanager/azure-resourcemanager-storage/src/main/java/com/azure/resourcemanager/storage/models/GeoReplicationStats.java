@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -16,32 +14,25 @@ import java.time.OffsetDateTime;
  */
 @Immutable
 public final class GeoReplicationStats {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GeoReplicationStats.class);
-
     /*
-     * The status of the secondary location. Possible values are: - Live:
-     * Indicates that the secondary location is active and operational. -
-     * Bootstrap: Indicates initial synchronization from the primary location
-     * to the secondary location is in progress.This typically occurs when
-     * replication is first enabled. - Unavailable: Indicates that the
-     * secondary location is temporarily unavailable.
+     * The status of the secondary location. Possible values are: - Live: Indicates that the secondary location is
+     * active and operational. - Bootstrap: Indicates initial synchronization from the primary location to the
+     * secondary location is in progress.This typically occurs when replication is first enabled. - Unavailable:
+     * Indicates that the secondary location is temporarily unavailable.
      */
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private GeoReplicationStatus status;
 
     /*
-     * All primary writes preceding this UTC date/time value are guaranteed to
-     * be available for read operations. Primary writes following this point in
-     * time may or may not be available for reads. Element may be default value
-     * if value of LastSyncTime is not available, this can happen if secondary
-     * is offline or we are in bootstrap.
+     * All primary writes preceding this UTC date/time value are guaranteed to be available for read operations.
+     * Primary writes following this point in time may or may not be available for reads. Element may be default value
+     * if value of LastSyncTime is not available, this can happen if secondary is offline or we are in bootstrap.
      */
     @JsonProperty(value = "lastSyncTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastSyncTime;
 
     /*
-     * A boolean flag which indicates whether or not account failover is
-     * supported for the account.
+     * A boolean flag which indicates whether or not account failover is supported for the account.
      */
     @JsonProperty(value = "canFailover", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean canFailover;

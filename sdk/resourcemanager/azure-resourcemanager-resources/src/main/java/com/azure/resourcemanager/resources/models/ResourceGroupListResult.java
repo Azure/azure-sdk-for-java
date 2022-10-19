@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.ResourceGroupInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of resource groups. */
 @Fluent
 public final class ResourceGroupListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGroupListResult.class);
-
     /*
      * An array of resource groups.
      */

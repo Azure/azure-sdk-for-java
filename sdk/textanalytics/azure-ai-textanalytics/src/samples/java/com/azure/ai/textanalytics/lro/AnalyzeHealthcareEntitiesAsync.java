@@ -33,11 +33,10 @@ public class AnalyzeHealthcareEntitiesAsync {
      * @param args Unused arguments to the program.
      */
     public static void main(String[] args) {
-        TextAnalyticsAsyncClient client =
-            new TextAnalyticsClientBuilder()
-                .credential(new AzureKeyCredential("{key}"))
-                .endpoint("{endpoint}")
-                .buildAsyncClient();
+        TextAnalyticsAsyncClient client = new TextAnalyticsClientBuilder()
+                                              .credential(new AzureKeyCredential("{key}"))
+                                              .endpoint("{endpoint}")
+                                              .buildAsyncClient();
 
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0",
@@ -49,7 +48,8 @@ public class AnalyzeHealthcareEntitiesAsync {
                     + " but remains unsure if she wants to start adjuvant hormonal therapy. Please hold lactulose "
                     + "if diarrhea worsen."));
 
-        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions().setIncludeStatistics(true);
+        AnalyzeHealthcareEntitiesOptions options = new AnalyzeHealthcareEntitiesOptions()
+                                                       .setIncludeStatistics(true);
 
         client.beginAnalyzeHealthcareEntities(documents, options)
             .flatMap(pollResult -> {
@@ -80,7 +80,7 @@ public class AnalyzeHealthcareEntitiesAsync {
             perPage.getStatusCode(), perPage.getContinuationToken());
         for (AnalyzeHealthcareEntitiesResultCollection resultCollection : perPage.getElements()) {
             // Model version
-            System.out.printf("Results of Azure Text Analytics \"Analyze Healthcare\" Model, version: %s%n",
+            System.out.printf("Results of \"Analyze Healthcare\" Model, version: %s%n",
                 resultCollection.getModelVersion());
             // Batch statistics
             TextDocumentBatchStatistics batchStatistics = resultCollection.getStatistics();

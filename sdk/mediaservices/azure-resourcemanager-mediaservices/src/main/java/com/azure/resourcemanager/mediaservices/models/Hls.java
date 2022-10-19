@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** HTTP Live Streaming (HLS) packing setting for the live output. */
 @Fluent
 public final class Hls {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Hls.class);
-
     /*
-     * The number of fragments in an HTTP Live Streaming (HLS) TS segment in
-     * the output of the live event. This value does not affect the packing
-     * ratio for HLS CMAF output.
+     * The number of fragments in an HTTP Live Streaming (HLS) TS segment in the output of the live event. This value
+     * does not affect the packing ratio for HLS CMAF output.
      */
     @JsonProperty(value = "fragmentsPerTsSegment")
     private Integer fragmentsPerTsSegment;

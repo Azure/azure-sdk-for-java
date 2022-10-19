@@ -6,14 +6,11 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Link to an application package inside the batch account. */
 @Fluent
 public final class ApplicationPackageReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationPackageReference.class);
-
     /*
      * The ID of the application package to install. This must be inside the
      * same batch account as the pool. This can either be a reference to a
@@ -85,9 +82,11 @@ public final class ApplicationPackageReference {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model ApplicationPackageReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationPackageReference.class);
 }

@@ -6,17 +6,13 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Settings properties for Active Directory (AD). */
 @Fluent
 public final class ActiveDirectoryProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActiveDirectoryProperties.class);
-
     /*
-     * Specifies the primary domain that the AD DNS server is authoritative
-     * for.
+     * Specifies the primary domain that the AD DNS server is authoritative for.
      */
     @JsonProperty(value = "domainName", required = true)
     private String domainName;
@@ -24,13 +20,13 @@ public final class ActiveDirectoryProperties {
     /*
      * Specifies the NetBIOS domain name.
      */
-    @JsonProperty(value = "netBiosDomainName", required = true)
+    @JsonProperty(value = "netBiosDomainName")
     private String netBiosDomainName;
 
     /*
      * Specifies the Active Directory forest to get.
      */
-    @JsonProperty(value = "forestName", required = true)
+    @JsonProperty(value = "forestName")
     private String forestName;
 
     /*
@@ -42,14 +38,26 @@ public final class ActiveDirectoryProperties {
     /*
      * Specifies the security identifier (SID).
      */
-    @JsonProperty(value = "domainSid", required = true)
+    @JsonProperty(value = "domainSid")
     private String domainSid;
 
     /*
      * Specifies the security identifier (SID) for Azure Storage.
      */
-    @JsonProperty(value = "azureStorageSid", required = true)
+    @JsonProperty(value = "azureStorageSid")
     private String azureStorageSid;
+
+    /*
+     * Specifies the Active Directory SAMAccountName for Azure Storage.
+     */
+    @JsonProperty(value = "samAccountName")
+    private String samAccountName;
+
+    /*
+     * Specifies the Active Directory account type for Azure Storage.
+     */
+    @JsonProperty(value = "accountType")
+    private ActiveDirectoryPropertiesAccountType accountType;
 
     /**
      * Get the domainName property: Specifies the primary domain that the AD DNS server is authoritative for.
@@ -172,46 +180,64 @@ public final class ActiveDirectoryProperties {
     }
 
     /**
+     * Get the samAccountName property: Specifies the Active Directory SAMAccountName for Azure Storage.
+     *
+     * @return the samAccountName value.
+     */
+    public String samAccountName() {
+        return this.samAccountName;
+    }
+
+    /**
+     * Set the samAccountName property: Specifies the Active Directory SAMAccountName for Azure Storage.
+     *
+     * @param samAccountName the samAccountName value to set.
+     * @return the ActiveDirectoryProperties object itself.
+     */
+    public ActiveDirectoryProperties withSamAccountName(String samAccountName) {
+        this.samAccountName = samAccountName;
+        return this;
+    }
+
+    /**
+     * Get the accountType property: Specifies the Active Directory account type for Azure Storage.
+     *
+     * @return the accountType value.
+     */
+    public ActiveDirectoryPropertiesAccountType accountType() {
+        return this.accountType;
+    }
+
+    /**
+     * Set the accountType property: Specifies the Active Directory account type for Azure Storage.
+     *
+     * @param accountType the accountType value to set.
+     * @return the ActiveDirectoryProperties object itself.
+     */
+    public ActiveDirectoryProperties withAccountType(ActiveDirectoryPropertiesAccountType accountType) {
+        this.accountType = accountType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (domainName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property domainName in model ActiveDirectoryProperties"));
         }
-        if (netBiosDomainName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property netBiosDomainName in model ActiveDirectoryProperties"));
-        }
-        if (forestName() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property forestName in model ActiveDirectoryProperties"));
-        }
         if (domainGuid() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property domainGuid in model ActiveDirectoryProperties"));
         }
-        if (domainSid() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property domainSid in model ActiveDirectoryProperties"));
-        }
-        if (azureStorageSid() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property azureStorageSid in model ActiveDirectoryProperties"));
-        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ActiveDirectoryProperties.class);
 }

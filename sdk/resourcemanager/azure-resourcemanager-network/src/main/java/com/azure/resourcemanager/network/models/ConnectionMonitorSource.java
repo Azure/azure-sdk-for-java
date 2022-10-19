@@ -6,14 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the source of connection monitor. */
 @Fluent
 public final class ConnectionMonitorSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorSource.class);
-
     /*
      * The ID of the resource used as the source by connection monitor.
      */
@@ -25,6 +22,10 @@ public final class ConnectionMonitorSource {
      */
     @JsonProperty(value = "port")
     private Integer port;
+
+    /** Creates an instance of ConnectionMonitorSource class. */
+    public ConnectionMonitorSource() {
+    }
 
     /**
      * Get the resourceId property: The ID of the resource used as the source by connection monitor.
@@ -73,10 +74,12 @@ public final class ConnectionMonitorSource {
      */
     public void validate() {
         if (resourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceId in model ConnectionMonitorSource"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectionMonitorSource.class);
 }

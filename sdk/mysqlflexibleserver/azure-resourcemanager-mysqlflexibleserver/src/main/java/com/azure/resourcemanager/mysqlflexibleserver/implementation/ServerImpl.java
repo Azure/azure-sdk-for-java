@@ -10,7 +10,9 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Backup;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CreateMode;
+import com.azure.resourcemanager.mysqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.mysqlflexibleserver.models.HighAvailability;
+import com.azure.resourcemanager.mysqlflexibleserver.models.Identity;
 import com.azure.resourcemanager.mysqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Network;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ReplicationRole;
@@ -55,6 +57,10 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
+    public Identity identity() {
+        return this.innerModel().identity();
+    }
+
     public Sku sku() {
         return this.innerModel().sku();
     }
@@ -97,6 +103,10 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
 
     public Integer replicaCapacity() {
         return this.innerModel().replicaCapacity();
+    }
+
+    public DataEncryption dataEncryption() {
+        return this.innerModel().dataEncryption();
     }
 
     public ServerState state() {
@@ -280,6 +290,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         }
     }
 
+    public ServerImpl withIdentity(Identity identity) {
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateParameters.withIdentity(identity);
+            return this;
+        }
+    }
+
     public ServerImpl withSku(Sku sku) {
         if (isInCreateMode()) {
             this.innerModel().withSku(sku);
@@ -336,6 +356,16 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
             return this;
         } else {
             this.updateParameters.withReplicationRole(replicationRole);
+            return this;
+        }
+    }
+
+    public ServerImpl withDataEncryption(DataEncryption dataEncryption) {
+        if (isInCreateMode()) {
+            this.innerModel().withDataEncryption(dataEncryption);
+            return this;
+        } else {
+            this.updateParameters.withDataEncryption(dataEncryption);
             return this;
         }
     }

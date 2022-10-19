@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.models.JobAgentState;
 import com.azure.resourcemanager.sql.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /** An Azure SQL job agent. */
-@JsonFlatten
 @Fluent
-public class JobAgentInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobAgentInner.class);
-
+public final class JobAgentInner extends Resource {
     /*
      * The name and tier of the SKU.
      */
@@ -26,16 +21,10 @@ public class JobAgentInner extends Resource {
     private Sku sku;
 
     /*
-     * Resource ID of the database to store job metadata in.
+     * Resource properties.
      */
-    @JsonProperty(value = "properties.databaseId")
-    private String databaseId;
-
-    /*
-     * The state of the job agent.
-     */
-    @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
-    private JobAgentState state;
+    @JsonProperty(value = "properties")
+    private JobAgentProperties innerProperties;
 
     /**
      * Get the sku property: The name and tier of the SKU.
@@ -58,12 +47,35 @@ public class JobAgentInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: Resource properties.
+     *
+     * @return the innerProperties value.
+     */
+    private JobAgentProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public JobAgentInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public JobAgentInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the databaseId property: Resource ID of the database to store job metadata in.
      *
      * @return the databaseId value.
      */
     public String databaseId() {
-        return this.databaseId;
+        return this.innerProperties() == null ? null : this.innerProperties().databaseId();
     }
 
     /**
@@ -73,7 +85,10 @@ public class JobAgentInner extends Resource {
      * @return the JobAgentInner object itself.
      */
     public JobAgentInner withDatabaseId(String databaseId) {
-        this.databaseId = databaseId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new JobAgentProperties();
+        }
+        this.innerProperties().withDatabaseId(databaseId);
         return this;
     }
 
@@ -83,7 +98,7 @@ public class JobAgentInner extends Resource {
      * @return the state value.
      */
     public JobAgentState state() {
-        return this.state;
+        return this.innerProperties() == null ? null : this.innerProperties().state();
     }
 
     /**
@@ -94,6 +109,9 @@ public class JobAgentInner extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

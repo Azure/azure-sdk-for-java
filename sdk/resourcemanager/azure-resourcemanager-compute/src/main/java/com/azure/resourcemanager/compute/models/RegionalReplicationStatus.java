@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This is the regional replication status. */
 @Immutable
 public final class RegionalReplicationStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionalReplicationStatus.class);
-
     /*
      * The region to which the gallery image version is being replicated to.
      */

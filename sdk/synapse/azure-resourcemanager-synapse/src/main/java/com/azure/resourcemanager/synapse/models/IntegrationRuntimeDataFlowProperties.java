@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Data flow properties for managed integration runtime. */
 @Fluent
 public final class IntegrationRuntimeDataFlowProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeDataFlowProperties.class);
-
     /*
      * Compute type of the cluster which will execute data flow job.
      */

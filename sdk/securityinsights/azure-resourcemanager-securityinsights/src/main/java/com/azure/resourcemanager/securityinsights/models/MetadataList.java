@@ -7,15 +7,12 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.MetadataModelInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of all the metadata. */
 @Fluent
 public final class MetadataList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataList.class);
-
     /*
      * Array of metadata.
      */
@@ -64,11 +61,13 @@ public final class MetadataList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model MetadataList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MetadataList.class);
 }

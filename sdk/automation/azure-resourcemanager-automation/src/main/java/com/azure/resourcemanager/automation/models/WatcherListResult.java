@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.automation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.models.WatcherInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response model for the list watcher operation. */
 @Fluent
 public final class WatcherListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WatcherListResult.class);
-
     /*
      * Gets or sets a list of watchers.
      */

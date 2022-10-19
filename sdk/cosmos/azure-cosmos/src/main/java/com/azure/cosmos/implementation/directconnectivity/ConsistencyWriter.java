@@ -34,6 +34,7 @@ import reactor.core.scheduler.Schedulers;
 import java.net.URI;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -120,6 +121,9 @@ public class ConsistencyWriter {
                     SessionTokenHelper.setOriginalSessionToken(entity, sessionToken);
                 } catch (Throwable throwable) {
                     logger.error("Unexpected failure in handling orig [{}]: new [{}]", arg, throwable.getMessage(), throwable);
+                    if (throwable instanceof Error) {
+                        throw (Error) throwable;
+                    }
                 }
             }
         );
@@ -155,6 +159,7 @@ public class ConsistencyWriter {
 
             Mono<List<AddressInformation>> replicaAddressesObs = this.addressSelector.resolveAddressesAsync(request, forceRefresh);
             AtomicReference<Uri> primaryURI = new AtomicReference<>();
+            AtomicReference<List<String>> replicaStatusList = new AtomicReference<>();
 
             return replicaAddressesObs.flatMap(replicaAddresses -> {
                 try {
@@ -185,14 +190,37 @@ public class ConsistencyWriter {
                     return Mono.error(e);
                 }
 
+                replicaStatusList.set(Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
+
                 return this.transportClient.invokeResourceOperationAsync(primaryUri, request)
                                            .doOnError(
                                                t -> {
                                                    try {
                                                        Throwable unwrappedException = Exceptions.unwrap(t);
                                                        CosmosException ex = Utils.as(unwrappedException, CosmosException.class);
-                                                       storeReader.createAndRecordStoreResult(request, null, ex, false, false, primaryUri);
-                                                       String value = ex.getResponseHeaders().get(HttpConstants.HttpHeaders.WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH);
+                                                       Exception rawException = null;
+                                                       if (ex == null) {
+                                                           rawException = Utils.as(unwrappedException, Exception.class);
+
+                                                           if (rawException == null) {
+                                                               throw unwrappedException;
+                                                           }
+                                                       }
+
+                                                       storeReader.createAndRecordStoreResult(
+                                                           request,
+                                                           null, ex != null ? ex: rawException,
+                                                           false,
+                                                           false,
+                                                           primaryUri,
+                                                           replicaStatusList.get());
+                                                       String value = ex != null ?
+                                                           ex
+                                                               .getResponseHeaders()
+                                                               .get(HttpConstants
+                                                                   .HttpHeaders
+                                                                   .WRITE_REQUEST_TRIGGER_ADDRESS_REFRESH) :
+                                                           null;
                                                        if (!Strings.isNullOrWhiteSpace(value)) {
                                                            Integer result = Integers.tryParse(value);
                                                            if (result != null && result == 1) {
@@ -202,12 +230,22 @@ public class ConsistencyWriter {
                                                    } catch (Throwable throwable) {
                                                        logger.error("Unexpected failure in handling orig [{}]", t.getMessage(), t);
                                                        logger.error("Unexpected failure in handling orig [{}] : new [{}]", t.getMessage(), throwable.getMessage(), throwable);
+                                                       if (throwable instanceof Error) {
+                                                           throw (Error) throwable;
+                                                       }
                                                    }
                                                }
                                            );
 
             }).flatMap(response -> {
-                storeReader.createAndRecordStoreResult(request, response, null, false, false, primaryURI.get());
+                storeReader.createAndRecordStoreResult(
+                        request,
+                        response,
+                        null,
+                        false,
+                        false,
+                        primaryURI.get(),
+                        replicaStatusList.get());
                 return barrierForGlobalStrong(request, response);
             });
         } else {

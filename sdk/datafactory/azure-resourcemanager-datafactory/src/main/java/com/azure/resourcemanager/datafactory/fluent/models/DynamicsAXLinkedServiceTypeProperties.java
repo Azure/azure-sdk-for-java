@@ -7,59 +7,54 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Dynamics AX linked service properties. */
 @Fluent
 public final class DynamicsAXLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicsAXLinkedServiceTypeProperties.class);
-
     /*
-     * The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData
-     * endpoint.
+     * The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
-     * Specify the application's client ID. Type: string (or Expression with
-     * resultType string).
+     * Specify the application's client ID. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId", required = true)
     private Object servicePrincipalId;
 
     /*
-     * Specify the application's key. Mark this field as a SecureString to
-     * store it securely in Data Factory, or reference a secret stored in Azure
-     * Key Vault. Type: string (or Expression with resultType string).
+     * Specify the application's key. Mark this field as a SecureString to store it securely in Data Factory, or
+     * reference a secret stored in Azure Key Vault. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalKey", required = true)
     private SecretBase servicePrincipalKey;
 
     /*
-     * Specify the tenant information (domain name or tenant ID) under which
-     * your application resides. Retrieve it by hovering the mouse in the
-     * top-right corner of the Azure portal. Type: string (or Expression with
-     * resultType string).
+     * Specify the tenant information (domain name or tenant ID) under which your application resides. Retrieve it by
+     * hovering the mouse in the top-right corner of the Azure portal. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant", required = true)
     private Object tenant;
 
     /*
-     * Specify the resource you are requesting authorization. Type: string (or
-     * Expression with resultType string).
+     * Specify the resource you are requesting authorization. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "aadResourceId", required = true)
     private Object aadResourceId;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of DynamicsAXLinkedServiceTypeProperties class. */
+    public DynamicsAXLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the url property: The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
@@ -202,19 +197,19 @@ public final class DynamicsAXLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model DynamicsAXLinkedServiceTypeProperties"));
         }
         if (servicePrincipalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalId in model DynamicsAXLinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalKey in model"
@@ -223,16 +218,18 @@ public final class DynamicsAXLinkedServiceTypeProperties {
             servicePrincipalKey().validate();
         }
         if (tenant() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property tenant in model DynamicsAXLinkedServiceTypeProperties"));
         }
         if (aadResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property aadResourceId in model DynamicsAXLinkedServiceTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DynamicsAXLinkedServiceTypeProperties.class);
 }

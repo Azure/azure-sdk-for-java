@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineNetworkInterfaceConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machine network interface configurations. */
 @Fluent
 public final class VirtualMachineNetworkInterfaceConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineNetworkInterfaceConfiguration.class);
-
     /*
      * The network interface configuration name.
      */
@@ -129,6 +126,31 @@ public final class VirtualMachineNetworkInterfaceConfiguration {
             this.innerProperties = new VirtualMachineNetworkInterfaceConfigurationProperties();
         }
         this.innerProperties().withEnableAcceleratedNetworking(enableAcceleratedNetworking);
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableTcpStateTracking();
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Specifies whether the network interface is disabled for tcp state
+     * tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the VirtualMachineNetworkInterfaceConfiguration object itself.
+     */
+    public VirtualMachineNetworkInterfaceConfiguration withDisableTcpStateTracking(Boolean disableTcpStateTracking) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineNetworkInterfaceConfigurationProperties();
+        }
+        this.innerProperties().withDisableTcpStateTracking(disableTcpStateTracking);
         return this;
     }
 
@@ -279,7 +301,7 @@ public final class VirtualMachineNetworkInterfaceConfiguration {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model VirtualMachineNetworkInterfaceConfiguration"));
@@ -288,4 +310,6 @@ public final class VirtualMachineNetworkInterfaceConfiguration {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VirtualMachineNetworkInterfaceConfiguration.class);
 }

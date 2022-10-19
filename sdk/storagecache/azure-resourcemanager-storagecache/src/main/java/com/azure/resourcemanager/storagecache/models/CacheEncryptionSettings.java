@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cache encryption settings. */
 @Fluent
 public final class CacheEncryptionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheEncryptionSettings.class);
-
     /*
      * Specifies the location of the key encryption key in Key Vault.
      */

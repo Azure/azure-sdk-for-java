@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.MySqlLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("MySql")
 @Fluent
 public final class MySqlLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MySqlLinkedService.class);
-
     /*
      * MySQL linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private MySqlLinkedServiceTypeProperties innerTypeProperties = new MySqlLinkedServiceTypeProperties();
+
+    /** Creates an instance of MySqlLinkedService class. */
+    public MySqlLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: MySQL linked service properties.
@@ -144,7 +145,7 @@ public final class MySqlLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model MySqlLinkedService"));
@@ -152,4 +153,6 @@ public final class MySqlLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MySqlLinkedService.class);
 }

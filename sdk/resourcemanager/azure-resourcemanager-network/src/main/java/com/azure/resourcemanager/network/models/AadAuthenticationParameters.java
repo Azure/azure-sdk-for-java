@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** AAD Vpn authentication type related parameters. */
 @Fluent
 public final class AadAuthenticationParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AadAuthenticationParameters.class);
-
     /*
      * AAD Vpn authentication parameter AAD tenant.
      */
@@ -31,6 +27,10 @@ public final class AadAuthenticationParameters {
      */
     @JsonProperty(value = "aadIssuer")
     private String aadIssuer;
+
+    /** Creates an instance of AadAuthenticationParameters class. */
+    public AadAuthenticationParameters() {
+    }
 
     /**
      * Get the aadTenant property: AAD Vpn authentication parameter AAD tenant.

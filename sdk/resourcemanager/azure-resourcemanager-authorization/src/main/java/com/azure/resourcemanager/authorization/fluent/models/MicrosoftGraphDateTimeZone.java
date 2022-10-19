@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** dateTimeTimeZone. */
 @Fluent
 public final class MicrosoftGraphDateTimeZone {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDateTimeZone.class);
-
     /*
      * A single point of time in a combined date and time representation
      * ({date}T{time}; for example, 2017-08-29T04:00:00.0000000).

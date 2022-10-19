@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the connection monitor endpoint filter item. */
 @Fluent
 public final class ConnectionMonitorEndpointFilterItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorEndpointFilterItem.class);
-
     /*
-     * The type of item included in the filter. Currently only 'AgentAddress'
-     * is supported.
+     * The type of item included in the filter. Currently only 'AgentAddress' is supported.
      */
     @JsonProperty(value = "type")
     private ConnectionMonitorEndpointFilterItemType type;
@@ -26,6 +21,10 @@ public final class ConnectionMonitorEndpointFilterItem {
      */
     @JsonProperty(value = "address")
     private String address;
+
+    /** Creates an instance of ConnectionMonitorEndpointFilterItem class. */
+    public ConnectionMonitorEndpointFilterItem() {
+    }
 
     /**
      * Get the type property: The type of item included in the filter. Currently only 'AgentAddress' is supported.

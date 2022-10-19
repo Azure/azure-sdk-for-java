@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The GitHub action code configuration. */
 @Fluent
 public final class GitHubActionCodeConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GitHubActionCodeConfiguration.class);
-
     /*
      * Runtime stack is used to determine the workflow file content for code
      * base apps.

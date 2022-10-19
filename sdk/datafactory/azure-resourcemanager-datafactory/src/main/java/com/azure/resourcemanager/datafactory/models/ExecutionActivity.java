@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -43,12 +41,13 @@ import java.util.List;
     @JsonSubTypes.Type(name = "DatabricksSparkJar", value = DatabricksSparkJarActivity.class),
     @JsonSubTypes.Type(name = "DatabricksSparkPython", value = DatabricksSparkPythonActivity.class),
     @JsonSubTypes.Type(name = "AzureFunctionActivity", value = AzureFunctionActivity.class),
-    @JsonSubTypes.Type(name = "ExecuteDataFlow", value = ExecuteDataFlowActivity.class)
+    @JsonSubTypes.Type(name = "ExecuteDataFlow", value = ExecuteDataFlowActivity.class),
+    @JsonSubTypes.Type(name = "Script", value = ScriptActivity.class),
+    @JsonSubTypes.Type(name = "SynapseNotebook", value = SynapseNotebookActivity.class),
+    @JsonSubTypes.Type(name = "SparkJob", value = SynapseSparkJobDefinitionActivity.class)
 })
 @Fluent
 public class ExecutionActivity extends Activity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecutionActivity.class);
-
     /*
      * Linked service reference.
      */
@@ -60,6 +59,10 @@ public class ExecutionActivity extends Activity {
      */
     @JsonProperty(value = "policy")
     private ActivityPolicy policy;
+
+    /** Creates an instance of ExecutionActivity class. */
+    public ExecutionActivity() {
+    }
 
     /**
      * Get the linkedServiceName property: Linked service reference.

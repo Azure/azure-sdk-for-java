@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MatchingMethod. */
+/**
+ * Grouping matching method. When method is Selected at least one of groupByEntities, groupByAlertDetails,
+ * groupByCustomDetails must be provided and not empty.
+ */
 public final class MatchingMethod extends ExpandableStringEnum<MatchingMethod> {
     /** Static value AllEntities for MatchingMethod. */
     public static final MatchingMethod ALL_ENTITIES = fromString("AllEntities");
@@ -30,7 +33,11 @@ public final class MatchingMethod extends ExpandableStringEnum<MatchingMethod> {
         return fromString(name, MatchingMethod.class);
     }
 
-    /** @return known MatchingMethod values. */
+    /**
+     * Gets known MatchingMethod values.
+     *
+     * @return known MatchingMethod values.
+     */
     public static Collection<MatchingMethod> values() {
         return values(MatchingMethod.class);
     }

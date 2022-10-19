@@ -107,6 +107,10 @@ public final class WebTestImpl implements WebTest, WebTest.Definition, WebTest.U
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public WebTestInner innerModel() {
         return this.innerObject;
     }

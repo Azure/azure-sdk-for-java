@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.AvailabilityGroupListenerInner;
 import java.util.List;
@@ -32,6 +33,13 @@ public interface AvailabilityGroupListener {
     String type();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the provisioningState property: Provisioning state to track the async operation status.
      *
      * @return the provisioningState value.
@@ -54,6 +62,13 @@ public interface AvailabilityGroupListener {
     List<LoadBalancerConfiguration> loadBalancerConfigurations();
 
     /**
+     * Gets the multiSubnetIpConfigurations property: List of multi subnet IP configurations for an AG listener.
+     *
+     * @return the multiSubnetIpConfigurations value.
+     */
+    List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations();
+
+    /**
      * Gets the createDefaultAvailabilityGroupIfNotExist property: Create a default availability group if it does not
      * exist.
      *
@@ -67,6 +82,20 @@ public interface AvailabilityGroupListener {
      * @return the port value.
      */
     Integer port();
+
+    /**
+     * Gets the availabilityGroupConfiguration property: Availability Group configuration.
+     *
+     * @return the availabilityGroupConfiguration value.
+     */
+    AgConfiguration availabilityGroupConfiguration();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.sqlvirtualmachine.fluent.models.AvailabilityGroupListenerInner object.
@@ -103,8 +132,10 @@ public interface AvailabilityGroupListener {
         interface WithCreate
             extends DefinitionStages.WithAvailabilityGroupName,
                 DefinitionStages.WithLoadBalancerConfigurations,
+                DefinitionStages.WithMultiSubnetIpConfigurations,
                 DefinitionStages.WithCreateDefaultAvailabilityGroupIfNotExist,
-                DefinitionStages.WithPort {
+                DefinitionStages.WithPort,
+                DefinitionStages.WithAvailabilityGroupConfiguration {
             /**
              * Executes the create request.
              *
@@ -142,6 +173,17 @@ public interface AvailabilityGroupListener {
              */
             WithCreate withLoadBalancerConfigurations(List<LoadBalancerConfiguration> loadBalancerConfigurations);
         }
+        /** The stage of the AvailabilityGroupListener definition allowing to specify multiSubnetIpConfigurations. */
+        interface WithMultiSubnetIpConfigurations {
+            /**
+             * Specifies the multiSubnetIpConfigurations property: List of multi subnet IP configurations for an AG
+             * listener..
+             *
+             * @param multiSubnetIpConfigurations List of multi subnet IP configurations for an AG listener.
+             * @return the next definition stage.
+             */
+            WithCreate withMultiSubnetIpConfigurations(List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations);
+        }
         /**
          * The stage of the AvailabilityGroupListener definition allowing to specify
          * createDefaultAvailabilityGroupIfNotExist.
@@ -166,6 +208,16 @@ public interface AvailabilityGroupListener {
              */
             WithCreate withPort(Integer port);
         }
+        /** The stage of the AvailabilityGroupListener definition allowing to specify availabilityGroupConfiguration. */
+        interface WithAvailabilityGroupConfiguration {
+            /**
+             * Specifies the availabilityGroupConfiguration property: Availability Group configuration..
+             *
+             * @param availabilityGroupConfiguration Availability Group configuration.
+             * @return the next definition stage.
+             */
+            WithCreate withAvailabilityGroupConfiguration(AgConfiguration availabilityGroupConfiguration);
+        }
     }
     /**
      * Begins update for the AvailabilityGroupListener resource.
@@ -178,8 +230,10 @@ public interface AvailabilityGroupListener {
     interface Update
         extends UpdateStages.WithAvailabilityGroupName,
             UpdateStages.WithLoadBalancerConfigurations,
+            UpdateStages.WithMultiSubnetIpConfigurations,
             UpdateStages.WithCreateDefaultAvailabilityGroupIfNotExist,
-            UpdateStages.WithPort {
+            UpdateStages.WithPort,
+            UpdateStages.WithAvailabilityGroupConfiguration {
         /**
          * Executes the update request.
          *
@@ -219,6 +273,17 @@ public interface AvailabilityGroupListener {
              */
             Update withLoadBalancerConfigurations(List<LoadBalancerConfiguration> loadBalancerConfigurations);
         }
+        /** The stage of the AvailabilityGroupListener update allowing to specify multiSubnetIpConfigurations. */
+        interface WithMultiSubnetIpConfigurations {
+            /**
+             * Specifies the multiSubnetIpConfigurations property: List of multi subnet IP configurations for an AG
+             * listener..
+             *
+             * @param multiSubnetIpConfigurations List of multi subnet IP configurations for an AG listener.
+             * @return the next definition stage.
+             */
+            Update withMultiSubnetIpConfigurations(List<MultiSubnetIpConfiguration> multiSubnetIpConfigurations);
+        }
         /**
          * The stage of the AvailabilityGroupListener update allowing to specify
          * createDefaultAvailabilityGroupIfNotExist.
@@ -242,6 +307,16 @@ public interface AvailabilityGroupListener {
              * @return the next definition stage.
              */
             Update withPort(Integer port);
+        }
+        /** The stage of the AvailabilityGroupListener update allowing to specify availabilityGroupConfiguration. */
+        interface WithAvailabilityGroupConfiguration {
+            /**
+             * Specifies the availabilityGroupConfiguration property: Availability Group configuration..
+             *
+             * @param availabilityGroupConfiguration Availability Group configuration.
+             * @return the next definition stage.
+             */
+            Update withAvailabilityGroupConfiguration(AgConfiguration availabilityGroupConfiguration);
         }
     }
     /**

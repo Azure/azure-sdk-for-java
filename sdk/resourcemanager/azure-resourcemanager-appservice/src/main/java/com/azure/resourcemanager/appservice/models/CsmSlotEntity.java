@@ -6,14 +6,11 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Deployment slot parameters. */
 @Fluent
 public final class CsmSlotEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmSlotEntity.class);
-
     /*
      * Destination deployment slot during swap operation.
      */
@@ -76,9 +73,11 @@ public final class CsmSlotEntity {
      */
     public void validate() {
         if (targetSlot() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property targetSlot in model CsmSlotEntity"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CsmSlotEntity.class);
 }

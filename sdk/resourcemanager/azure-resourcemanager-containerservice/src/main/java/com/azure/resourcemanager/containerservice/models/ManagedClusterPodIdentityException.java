@@ -6,21 +6,19 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /**
  * A pod identity exception, which allows pods with certain labels to access the Azure Instance Metadata Service (IMDS)
- * endpoint without being intercepted by the node-managed identity (NMI) server. See [disable AAD Pod Identity for a
- * specific Pod/Application](https://azure.github.io/aad-pod-identity/docs/configure/application_exception/) for more
- * details.
+ * endpoint without being intercepted by the node-managed identity (NMI) server.
+ *
+ * <p>See [disable AAD Pod Identity for a specific
+ * Pod/Application](https://azure.github.io/aad-pod-identity/docs/configure/application_exception/) for more details.
  */
 @Fluent
 public final class ManagedClusterPodIdentityException {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentityException.class);
-
     /*
      * The name of the pod identity exception.
      */
@@ -107,22 +105,24 @@ public final class ManagedClusterPodIdentityException {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property name in model ManagedClusterPodIdentityException"));
         }
         if (namespace() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property namespace in model ManagedClusterPodIdentityException"));
         }
         if (podLabels() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property podLabels in model ManagedClusterPodIdentityException"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedClusterPodIdentityException.class);
 }

@@ -109,6 +109,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: cognitiveservices
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-cognitiveservices
         groupId: com.azure.resourcemanager

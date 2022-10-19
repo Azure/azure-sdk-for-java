@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.imagebuilder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a run output. */
 @Fluent
 public final class RunOutputProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunOutputProperties.class);
-
     /*
      * The resource id of the artifact.
      */

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BlobErrorCode. */
+/** Error codes returned by the service. */
 public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     /** Static value AccountAlreadyExists for BlobErrorCode. */
     public static final BlobErrorCode ACCOUNT_ALREADY_EXISTS = fromString("AccountAlreadyExists");
@@ -369,8 +369,13 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
     public static final BlobErrorCode AUTHORIZATION_RESOURCE_TYPE_MISMATCH =
             fromString("AuthorizationResourceTypeMismatch");
 
-    /** Static value SnaphotOperationRateExceeded for BlobErrorCode. */
-    public static final BlobErrorCode SNAPHOT_OPERATION_RATE_EXCEEDED = fromString("SnaphotOperationRateExceeded");
+    /**
+     * Static value SnapshotOperationRateExceeded for BlobErrorCode.
+     *
+     * @deprecated Please use {@link BlobErrorCode#SNAPSHOT_OPERATION_RATE_EXCEEDED}
+     */
+    @Deprecated
+    public static final BlobErrorCode SNAPHOT_OPERATION_RATE_EXCEEDED = fromString("SnapshotOperationRateExceeded");
 
     /**
      * Creates or finds a BlobErrorCode from its string representation.
@@ -383,7 +388,11 @@ public final class BlobErrorCode extends ExpandableStringEnum<BlobErrorCode> {
         return fromString(name, BlobErrorCode.class);
     }
 
-    /** @return known BlobErrorCode values. */
+    /**
+     * Gets known BlobErrorCode values.
+     *
+     * @return known BlobErrorCode values.
+     */
     public static Collection<BlobErrorCode> values() {
         return values(BlobErrorCode.class);
     }

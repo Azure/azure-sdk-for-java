@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Deployment configuration properties. */
 @Fluent
 public final class DeploymentConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentConfiguration.class);
-
     /*
      * The configuration for nodes in a pool based on the Azure Cloud Services
      * platform. This property and virtualMachineConfiguration are mutually

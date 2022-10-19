@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentQuotaStatusClient;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentQuotaStatusInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ComponentQuotaStatusClient. */
 public final class ComponentQuotaStatusClientImpl implements ComponentQuotaStatusClient {
-    private final ClientLogger logger = new ClientLogger(ComponentQuotaStatusClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ComponentQuotaStatusService service;
 
@@ -181,15 +178,7 @@ public final class ComponentQuotaStatusClientImpl implements ComponentQuotaStatu
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ApplicationInsightsComponentQuotaStatusInner> getAsync(String resourceGroupName, String resourceName) {
-        return getWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<ApplicationInsightsComponentQuotaStatusInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

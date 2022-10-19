@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +15,6 @@ import java.util.List;
 @JsonTypeName("NatRule")
 @Fluent
 public final class NatRule extends FirewallPolicyRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NatRule.class);
-
     /*
      * Array of FirewallPolicyRuleNetworkProtocols.
      */
@@ -66,6 +62,10 @@ public final class NatRule extends FirewallPolicyRule {
      */
     @JsonProperty(value = "translatedFqdn")
     private String translatedFqdn;
+
+    /** Creates an instance of NatRule class. */
+    public NatRule() {
+    }
 
     /**
      * Get the ipProtocols property: Array of FirewallPolicyRuleNetworkProtocols.

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.applicationinsights.fluent.ComponentFeatureCapa
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentFeatureCapabilitiesInner;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentFeatureCapabilities;
 import com.azure.resourcemanager.applicationinsights.models.ComponentFeatureCapabilities;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ComponentFeatureCapabilitiesImpl implements ComponentFeatureCapabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComponentFeatureCapabilitiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ComponentFeatureCapabilitiesImpl.class);
 
     private final ComponentFeatureCapabilitiesClient innerClient;
 

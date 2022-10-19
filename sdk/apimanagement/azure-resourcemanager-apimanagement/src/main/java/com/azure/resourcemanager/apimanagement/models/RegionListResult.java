@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.RegionContractInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Lists Regions operation response details. */
 @Fluent
 public final class RegionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionListResult.class);
-
     /*
      * Lists of Regions.
      */

@@ -190,6 +190,13 @@ public interface Incident {
     String title();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.securityinsights.fluent.models.IncidentInner object.
      *
      * @return the inner object.

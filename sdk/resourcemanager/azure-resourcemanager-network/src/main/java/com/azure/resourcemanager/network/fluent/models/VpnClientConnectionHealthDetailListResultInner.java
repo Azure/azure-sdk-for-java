@@ -5,23 +5,22 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.VpnClientConnectionHealthDetail;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of virtual network gateway vpn client connection health. */
 @Fluent
 public final class VpnClientConnectionHealthDetailListResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VpnClientConnectionHealthDetailListResultInner.class);
-
     /*
      * List of vpn client connection health.
      */
     @JsonProperty(value = "value")
     private List<VpnClientConnectionHealthDetail> value;
+
+    /** Creates an instance of VpnClientConnectionHealthDetailListResultInner class. */
+    public VpnClientConnectionHealthDetailListResultInner() {
+    }
 
     /**
      * Get the value property: List of vpn client connection health.

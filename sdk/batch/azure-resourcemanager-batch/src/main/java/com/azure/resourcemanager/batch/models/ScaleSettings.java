@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Defines the desired size of the pool. This can either be 'fixedScale' where the requested targetDedicatedNodes is
- * specified, or 'autoScale' which defines a formula which is periodically reevaluated. If this property is not
- * specified, the pool will have a fixed scale with 0 targetDedicatedNodes.
+ * Scale settings for the pool Defines the desired size of the pool. This can either be 'fixedScale' where the requested
+ * targetDedicatedNodes is specified, or 'autoScale' which defines a formula which is periodically reevaluated. If this
+ * property is not specified, the pool will have a fixed scale with 0 targetDedicatedNodes.
  */
 @Fluent
 public final class ScaleSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleSettings.class);
-
     /*
      * Fixed scale settings for the pool. This property and autoScale are
      * mutually exclusive and one of the properties must be specified.

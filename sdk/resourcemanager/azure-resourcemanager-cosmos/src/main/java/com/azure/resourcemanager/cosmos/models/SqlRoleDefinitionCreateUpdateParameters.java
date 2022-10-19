@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleDefinitionResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters to create and update an Azure Cosmos DB SQL Role Definition. */
 @Fluent
 public final class SqlRoleDefinitionCreateUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRoleDefinitionCreateUpdateParameters.class);
-
     /*
      * Properties to create and update an Azure Cosmos DB SQL Role Definition.
      */

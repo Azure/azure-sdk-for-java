@@ -5,64 +5,60 @@
 package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Service network profile payload. */
 @Fluent
 public final class NetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfile.class);
-
     /*
-     * Fully qualified resource Id of the subnet to host Azure Spring Cloud
+     * Fully qualified resource Id of the subnet to host Azure Spring Apps
      * Service Runtime
      */
     @JsonProperty(value = "serviceRuntimeSubnetId")
     private String serviceRuntimeSubnetId;
 
     /*
-     * Fully qualified resource Id of the subnet to host Azure Spring Cloud
-     * Apps
+     * Fully qualified resource Id of the subnet to host customer apps in Azure
+     * Spring Apps
      */
     @JsonProperty(value = "appSubnetId")
     private String appSubnetId;
 
     /*
-     * Azure Spring Cloud service reserved CIDR
+     * Azure Spring Apps service reserved CIDR
      */
     @JsonProperty(value = "serviceCidr")
     private String serviceCidr;
 
     /*
      * Name of the resource group containing network resources of Azure Spring
-     * Cloud Service Runtime
+     * Apps Service Runtime
      */
     @JsonProperty(value = "serviceRuntimeNetworkResourceGroup")
     private String serviceRuntimeNetworkResourceGroup;
 
     /*
-     * Name of the resource group containing network resources of Azure Spring
-     * Cloud Apps
+     * Name of the resource group containing network resources for customer
+     * apps in Azure Spring Apps
      */
     @JsonProperty(value = "appNetworkResourceGroup")
     private String appNetworkResourceGroup;
 
     /*
-     * Desired outbound IP resources for Azure Spring Cloud instance.
+     * Desired outbound IP resources for Azure Spring Apps resource.
      */
     @JsonProperty(value = "outboundIPs", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkProfileOutboundIPs outboundIPs;
 
     /*
-     * Required inbound or outbound traffics for Azure Spring Cloud instance.
+     * Required inbound or outbound traffics for Azure Spring Apps resource.
      */
     @JsonProperty(value = "requiredTraffics", access = JsonProperty.Access.WRITE_ONLY)
     private List<RequiredTraffic> requiredTraffics;
 
     /**
-     * Get the serviceRuntimeSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Cloud
+     * Get the serviceRuntimeSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Apps
      * Service Runtime.
      *
      * @return the serviceRuntimeSubnetId value.
@@ -72,7 +68,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the serviceRuntimeSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Cloud
+     * Set the serviceRuntimeSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Apps
      * Service Runtime.
      *
      * @param serviceRuntimeSubnetId the serviceRuntimeSubnetId value to set.
@@ -84,7 +80,8 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the appSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Cloud Apps.
+     * Get the appSubnetId property: Fully qualified resource Id of the subnet to host customer apps in Azure Spring
+     * Apps.
      *
      * @return the appSubnetId value.
      */
@@ -93,7 +90,8 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the appSubnetId property: Fully qualified resource Id of the subnet to host Azure Spring Cloud Apps.
+     * Set the appSubnetId property: Fully qualified resource Id of the subnet to host customer apps in Azure Spring
+     * Apps.
      *
      * @param appSubnetId the appSubnetId value to set.
      * @return the NetworkProfile object itself.
@@ -104,7 +102,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the serviceCidr property: Azure Spring Cloud service reserved CIDR.
+     * Get the serviceCidr property: Azure Spring Apps service reserved CIDR.
      *
      * @return the serviceCidr value.
      */
@@ -113,7 +111,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the serviceCidr property: Azure Spring Cloud service reserved CIDR.
+     * Set the serviceCidr property: Azure Spring Apps service reserved CIDR.
      *
      * @param serviceCidr the serviceCidr value to set.
      * @return the NetworkProfile object itself.
@@ -125,7 +123,7 @@ public final class NetworkProfile {
 
     /**
      * Get the serviceRuntimeNetworkResourceGroup property: Name of the resource group containing network resources of
-     * Azure Spring Cloud Service Runtime.
+     * Azure Spring Apps Service Runtime.
      *
      * @return the serviceRuntimeNetworkResourceGroup value.
      */
@@ -135,7 +133,7 @@ public final class NetworkProfile {
 
     /**
      * Set the serviceRuntimeNetworkResourceGroup property: Name of the resource group containing network resources of
-     * Azure Spring Cloud Service Runtime.
+     * Azure Spring Apps Service Runtime.
      *
      * @param serviceRuntimeNetworkResourceGroup the serviceRuntimeNetworkResourceGroup value to set.
      * @return the NetworkProfile object itself.
@@ -146,8 +144,8 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the appNetworkResourceGroup property: Name of the resource group containing network resources of Azure Spring
-     * Cloud Apps.
+     * Get the appNetworkResourceGroup property: Name of the resource group containing network resources for customer
+     * apps in Azure Spring Apps.
      *
      * @return the appNetworkResourceGroup value.
      */
@@ -156,8 +154,8 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the appNetworkResourceGroup property: Name of the resource group containing network resources of Azure Spring
-     * Cloud Apps.
+     * Set the appNetworkResourceGroup property: Name of the resource group containing network resources for customer
+     * apps in Azure Spring Apps.
      *
      * @param appNetworkResourceGroup the appNetworkResourceGroup value to set.
      * @return the NetworkProfile object itself.
@@ -168,7 +166,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the outboundIPs property: Desired outbound IP resources for Azure Spring Cloud instance.
+     * Get the outboundIPs property: Desired outbound IP resources for Azure Spring Apps resource.
      *
      * @return the outboundIPs value.
      */
@@ -177,7 +175,7 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the requiredTraffics property: Required inbound or outbound traffics for Azure Spring Cloud instance.
+     * Get the requiredTraffics property: Required inbound or outbound traffics for Azure Spring Apps resource.
      *
      * @return the requiredTraffics value.
      */

@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.compute.models.ArchitectureTypes;
 import com.azure.resourcemanager.compute.models.AutomaticOSUpgradeProperties;
 import com.azure.resourcemanager.compute.models.DataDiskImage;
 import com.azure.resourcemanager.compute.models.DisallowedConfiguration;
@@ -13,18 +13,14 @@ import com.azure.resourcemanager.compute.models.HyperVGenerationTypes;
 import com.azure.resourcemanager.compute.models.OSDiskImage;
 import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.VirtualMachineImageFeature;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the properties of a Virtual Machine Image. */
 @Fluent
 public final class VirtualMachineImageProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineImageProperties.class);
-
     /*
-     * Used for establishing the purchase context of any 3rd Party artifact
-     * through MarketPlace.
+     * Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
      */
     @JsonProperty(value = "plan")
     private PurchasePlan plan;
@@ -54,8 +50,7 @@ public final class VirtualMachineImageProperties {
     private HyperVGenerationTypes hyperVGeneration;
 
     /*
-     * Specifies disallowed configuration for the VirtualMachine created from
-     * the image
+     * Specifies disallowed configuration for the VirtualMachine created from the image
      */
     @JsonProperty(value = "disallowed")
     private DisallowedConfiguration disallowed;
@@ -65,6 +60,12 @@ public final class VirtualMachineImageProperties {
      */
     @JsonProperty(value = "features")
     private List<VirtualMachineImageFeature> features;
+
+    /*
+     * Specifies the Architecture Type
+     */
+    @JsonProperty(value = "architecture")
+    private ArchitectureTypes architecture;
 
     /**
      * Get the plan property: Used for establishing the purchase context of any 3rd Party artifact through MarketPlace.
@@ -204,6 +205,26 @@ public final class VirtualMachineImageProperties {
      */
     public VirtualMachineImageProperties withFeatures(List<VirtualMachineImageFeature> features) {
         this.features = features;
+        return this;
+    }
+
+    /**
+     * Get the architecture property: Specifies the Architecture Type.
+     *
+     * @return the architecture value.
+     */
+    public ArchitectureTypes architecture() {
+        return this.architecture;
+    }
+
+    /**
+     * Set the architecture property: Specifies the Architecture Type.
+     *
+     * @param architecture the architecture value to set.
+     * @return the VirtualMachineImageProperties object itself.
+     */
+    public VirtualMachineImageProperties withArchitecture(ArchitectureTypes architecture) {
+        this.architecture = architecture;
         return this;
     }
 

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SecurityStyle. */
+/** The security style of volume, default unix, defaults to ntfs for dual protocol or CIFS protocol. */
 public final class SecurityStyle extends ExpandableStringEnum<SecurityStyle> {
     /** Static value ntfs for SecurityStyle. */
     public static final SecurityStyle NTFS = fromString("ntfs");
@@ -27,7 +27,11 @@ public final class SecurityStyle extends ExpandableStringEnum<SecurityStyle> {
         return fromString(name, SecurityStyle.class);
     }
 
-    /** @return known SecurityStyle values. */
+    /**
+     * Gets known SecurityStyle values.
+     *
+     * @return known SecurityStyle values.
+     */
     public static Collection<SecurityStyle> values() {
         return values(SecurityStyle.class);
     }

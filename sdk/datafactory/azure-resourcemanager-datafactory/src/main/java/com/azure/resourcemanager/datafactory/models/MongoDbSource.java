@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,22 +14,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("MongoDbSource")
 @Fluent
 public final class MongoDbSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbSource.class);
-
     /*
-     * Database query. Should be a SQL-92 query expression. Type: string (or
-     * Expression with resultType string).
+     * Database query. Should be a SQL-92 query expression. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
+
+    /** Creates an instance of MongoDbSource class. */
+    public MongoDbSource() {
+    }
 
     /**
      * Get the query property: Database query. Should be a SQL-92 query expression. Type: string (or Expression with

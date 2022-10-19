@@ -16,8 +16,6 @@ import java.util.Map;
 /** Staging settings. */
 @Fluent
 public final class StagingSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StagingSettings.class);
-
     /*
      * Staging linked service reference.
      */
@@ -25,16 +23,14 @@ public final class StagingSettings {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The path to storage for storing the interim data. Type: string (or
-     * Expression with resultType string).
+     * The path to storage for storing the interim data. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "path")
     private Object path;
 
     /*
-     * Specifies whether to use compression when copying data via an interim
-     * staging. Default value is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * Specifies whether to use compression when copying data via an interim staging. Default value is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableCompression")
     private Object enableCompression;
@@ -43,6 +39,10 @@ public final class StagingSettings {
      * Staging settings.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of StagingSettings class. */
+    public StagingSettings() {
+    }
 
     /**
      * Get the linkedServiceName property: Staging linked service reference.
@@ -144,7 +144,7 @@ public final class StagingSettings {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property linkedServiceName in model StagingSettings"));
@@ -152,4 +152,6 @@ public final class StagingSettings {
             linkedServiceName().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StagingSettings.class);
 }

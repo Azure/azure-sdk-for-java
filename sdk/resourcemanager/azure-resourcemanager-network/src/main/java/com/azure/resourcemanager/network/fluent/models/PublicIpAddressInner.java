@@ -7,7 +7,6 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.DdosSettings;
 import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
@@ -18,7 +17,6 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.PublicIpAddressDnsSettings;
 import com.azure.resourcemanager.network.models.PublicIpAddressMigrationPhase;
 import com.azure.resourcemanager.network.models.PublicIpAddressSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -26,8 +24,6 @@ import java.util.Map;
 /** Public IP address resource. */
 @Fluent
 public final class PublicIpAddressInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpAddressInner.class);
-
     /*
      * The extended location of the public ip address.
      */
@@ -53,8 +49,7 @@ public final class PublicIpAddressInner extends Resource {
     private String etag;
 
     /*
-     * A list of availability zones denoting the IP allocated for the resource
-     * needs to come from.
+     * A list of availability zones denoting the IP allocated for the resource needs to come from.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -64,6 +59,10 @@ public final class PublicIpAddressInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of PublicIpAddressInner class. */
+    public PublicIpAddressInner() {
+    }
 
     /**
      * Get the extendedLocation property: The extended location of the public ip address.

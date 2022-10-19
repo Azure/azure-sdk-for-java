@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ManagedIntegrationRuntimeTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,11 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Managed")
 @Fluent
 public final class ManagedIntegrationRuntime extends IntegrationRuntime {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntime.class);
-
     /*
-     * Integration runtime state, only valid for managed dedicated integration
-     * runtime.
+     * Integration runtime state, only valid for managed dedicated integration runtime.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeState state;
@@ -37,6 +33,10 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
      */
     @JsonProperty(value = "managedVirtualNetwork")
     private ManagedVirtualNetworkReference managedVirtualNetwork;
+
+    /** Creates an instance of ManagedIntegrationRuntime class. */
+    public ManagedIntegrationRuntime() {
+    }
 
     /**
      * Get the state property: Integration runtime state, only valid for managed dedicated integration runtime.
@@ -164,7 +164,7 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ManagedIntegrationRuntime"));
@@ -175,4 +175,6 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
             managedVirtualNetwork().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedIntegrationRuntime.class);
 }

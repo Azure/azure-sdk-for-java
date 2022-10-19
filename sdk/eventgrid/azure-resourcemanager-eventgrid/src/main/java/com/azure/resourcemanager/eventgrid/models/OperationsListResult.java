@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.models.OperationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Result of the List Operations operation. */
 @Fluent
 public final class OperationsListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsListResult.class);
-
     /*
      * A collection of operations
      */

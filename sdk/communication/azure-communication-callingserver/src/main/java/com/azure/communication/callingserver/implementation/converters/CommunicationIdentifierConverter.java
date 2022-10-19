@@ -17,7 +17,6 @@ import com.azure.communication.common.UnknownIdentifier;
 
 import java.util.ArrayList;
 import java.util.Objects;
-
 /**
  * A converter between {@link CommunicationIdentifierModel} and {@link CommunicationIdentifier}.
  */
@@ -74,6 +73,7 @@ public class CommunicationIdentifierConverter {
         if (identifier instanceof CommunicationUserIdentifier) {
             CommunicationUserIdentifier communicationUserIdentifier = (CommunicationUserIdentifier) identifier;
             return new CommunicationIdentifierModel()
+                .setRawId(communicationUserIdentifier.getRawId())
                 .setCommunicationUser(
                     new CommunicationUserIdentifierModel().setId(communicationUserIdentifier.getId()));
         }
@@ -128,3 +128,4 @@ public class CommunicationIdentifierConverter {
         }
     }
 }
+

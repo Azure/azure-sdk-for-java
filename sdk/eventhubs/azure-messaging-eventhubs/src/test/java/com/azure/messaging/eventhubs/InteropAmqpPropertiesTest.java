@@ -24,14 +24,16 @@ import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
-import reactor.test.StepVerifier;
 
 import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -84,7 +86,7 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
      * Test for interoperable with Direct Proton AMQP messaging
      */
     @Test
-    public void interoperableWithDirectProtonAmqpMessage() {
+    public void interoperableWithDirectProtonAmqpMessage() throws InterruptedException {
         // Arrange
         final String messageTrackingValue = UUID.randomUUID().toString();
 
@@ -123,21 +125,28 @@ public class InteropAmqpPropertiesTest extends IntegrationTestBase {
         final EventData msgEvent = serializer.deserialize(message, EventData.class);
 
         final EventPosition enqueuedTime = EventPosition.fromEnqueuedTime(Instant.now());
-        producer.send(msgEvent, sendOptions).block(TIMEOUT);
+        producer.send(msgEvent, sendOptions).block();
 
         // Act & Assert
         // We're setting a tracking identifier because we don't want to receive some random operations. We want to
         // receive the event we sent.
-        StepVerifier.create(consumer.receiveFromPartition(PARTITION_ID, enqueuedTime)
-            .filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(PartitionEvent::getData))
-            .assertNext(event -> {
-                validateAmqpProperties(message, expectedAnnotations, applicationProperties, event);
-                validateRawAmqpMessageProperties(message, expectedAnnotations, applicationProperties,
-                    event.getRawAmqpMessage());
+        final List<EventData> partitionEventList = Collections.synchronizedList(new ArrayList<EventData>());
+        Thread thread = new Thread(() -> {
+            partitionEventList.addAll(consumer.receiveFromPartition(PARTITION_ID, enqueuedTime)
+                .filter(event -> isMatchingEvent(event, messageTrackingValue)).take(1).map(PartitionEvent::getData)
+                .collectList()
+                .block());
+        });
 
-            })
-            .expectComplete()
-            .verify(TIMEOUT);
+        thread.start();
+        thread.join(TIMEOUT.toMillis());
+
+        assertEquals(1, partitionEventList.size());
+        partitionEventList.stream().forEach(event -> {
+            validateAmqpProperties(message, expectedAnnotations, applicationProperties, event);
+            validateRawAmqpMessageProperties(message, expectedAnnotations, applicationProperties,
+                event.getRawAmqpMessage());
+        });
     }
 
     private void validateAmqpProperties(Message message, Map<Symbol, Object> messageAnnotations,

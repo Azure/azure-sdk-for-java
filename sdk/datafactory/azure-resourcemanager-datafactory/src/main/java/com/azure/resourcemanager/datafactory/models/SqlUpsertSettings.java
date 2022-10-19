@@ -5,35 +5,34 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sql upsert option settings. */
 @Fluent
 public final class SqlUpsertSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlUpsertSettings.class);
-
     /*
-     * Specifies whether to use temp db for upsert interim table. Type: boolean
-     * (or Expression with resultType boolean).
+     * Specifies whether to use temp db for upsert interim table. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "useTempDB")
     private Object useTempDB;
 
     /*
-     * Schema name for interim table. Type: string (or Expression with
-     * resultType string).
+     * Schema name for interim table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "interimSchemaName")
     private Object interimSchemaName;
 
     /*
-     * Key column names for unique row identification. Type: array of strings
-     * (or Expression with resultType array of strings).
+     * Key column names for unique row identification. Type: array of strings (or Expression with resultType array of
+     * strings).
      */
     @JsonProperty(value = "keys")
     private Object keys;
+
+    /** Creates an instance of SqlUpsertSettings class. */
+    public SqlUpsertSettings() {
+    }
 
     /**
      * Get the useTempDB property: Specifies whether to use temp db for upsert interim table. Type: boolean (or

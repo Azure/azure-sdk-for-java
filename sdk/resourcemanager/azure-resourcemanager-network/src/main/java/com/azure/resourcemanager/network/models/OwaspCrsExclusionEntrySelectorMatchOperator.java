@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OwaspCrsExclusionEntrySelectorMatchOperator. */
+/**
+ * When matchVariable is a collection, operate on the selector to specify which elements in the collection this
+ * exclusion applies to.
+ */
 public final class OwaspCrsExclusionEntrySelectorMatchOperator
     extends ExpandableStringEnum<OwaspCrsExclusionEntrySelectorMatchOperator> {
     /** Static value Equals for OwaspCrsExclusionEntrySelectorMatchOperator. */
@@ -37,7 +40,11 @@ public final class OwaspCrsExclusionEntrySelectorMatchOperator
         return fromString(name, OwaspCrsExclusionEntrySelectorMatchOperator.class);
     }
 
-    /** @return known OwaspCrsExclusionEntrySelectorMatchOperator values. */
+    /**
+     * Gets known OwaspCrsExclusionEntrySelectorMatchOperator values.
+     *
+     * @return known OwaspCrsExclusionEntrySelectorMatchOperator values.
+     */
     public static Collection<OwaspCrsExclusionEntrySelectorMatchOperator> values() {
         return values(OwaspCrsExclusionEntrySelectorMatchOperator.class);
     }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** User resource specific properties. */
 @Fluent
 public final class UserProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserProperties.class);
-
     /*
      * Username used for publishing.
      */
@@ -151,10 +148,12 @@ public final class UserProperties {
      */
     public void validate() {
         if (publishingUsername() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property publishingUsername in model UserProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserProperties.class);
 }

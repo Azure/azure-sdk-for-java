@@ -11,10 +11,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupPoliciesCli
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionPolicyResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupPolicies;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionPolicyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupPoliciesImpl implements BackupPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupPoliciesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupPoliciesImpl.class);
 
     private final BackupPoliciesClient innerClient;
 

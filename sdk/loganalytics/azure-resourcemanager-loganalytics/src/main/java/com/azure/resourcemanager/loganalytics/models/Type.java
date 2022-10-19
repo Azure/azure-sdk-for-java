@@ -27,7 +27,11 @@ public final class Type extends ExpandableStringEnum<Type> {
         return fromString(name, Type.class);
     }
 
-    /** @return known Type values. */
+    /**
+     * Gets known Type values.
+     *
+     * @return known Type values.
+     */
     public static Collection<Type> values() {
         return values(Type.class);
     }

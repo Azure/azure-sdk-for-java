@@ -7,10 +7,8 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NatGatewaySku;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** Nat Gateway resource. */
 @Fluent
 public final class NatGatewayInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NatGatewayInner.class);
-
     /*
      * The nat gateway SKU.
      */
@@ -33,8 +29,7 @@ public final class NatGatewayInner extends Resource {
     private NatGatewayPropertiesFormat innerProperties;
 
     /*
-     * A list of availability zones denoting the zone in which Nat Gateway
-     * should be deployed.
+     * A list of availability zones denoting the zone in which Nat Gateway should be deployed.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -50,6 +45,10 @@ public final class NatGatewayInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of NatGatewayInner class. */
+    public NatGatewayInner() {
+    }
 
     /**
      * Get the sku property: The nat gateway SKU.

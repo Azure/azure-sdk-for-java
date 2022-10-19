@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceTapConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for list tap configurations API service call. */
 @Fluent
 public final class NetworkInterfaceTapConfigurationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceTapConfigurationListResult.class);
-
     /*
      * A list of tap configurations.
      */
@@ -27,6 +23,10 @@ public final class NetworkInterfaceTapConfigurationListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of NetworkInterfaceTapConfigurationListResult class. */
+    public NetworkInterfaceTapConfigurationListResult() {
+    }
 
     /**
      * Get the value property: A list of tap configurations.

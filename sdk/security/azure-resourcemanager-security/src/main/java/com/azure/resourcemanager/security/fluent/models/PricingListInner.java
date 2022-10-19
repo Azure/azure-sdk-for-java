@@ -6,15 +6,12 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of pricing configurations response. */
 @Fluent
 public final class PricingListInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PricingListInner.class);
-
     /*
      * List of pricing configurations
      */
@@ -48,11 +45,13 @@ public final class PricingListInner {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model PricingListInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PricingListInner.class);
 }

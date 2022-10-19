@@ -20,7 +20,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.GlobalsClient;
 import com.azure.resourcemanager.appservice.fluent.models.DeletedSiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.SnapshotInner;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GlobalsClient. */
 public final class GlobalsClientImpl implements GlobalsClient {
-    private final ClientLogger logger = new ClientLogger(GlobalsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final GlobalsService service;
 
@@ -100,7 +97,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeletedSiteInner>> getDeletedWebAppWithResponseAsync(String deletedSiteId) {
@@ -142,7 +139,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeletedSiteInner>> getDeletedWebAppWithResponseAsync(String deletedSiteId, Context context) {
@@ -180,7 +177,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeletedSiteInner> getDeletedWebAppAsync(String deletedSiteId) {
@@ -217,7 +214,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a deleted app.
+     * @return a deleted app along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedSiteInner> getDeletedWebAppWithResponse(String deletedSiteId, Context context) {
@@ -231,7 +228,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Snapshot.
+     * @return array of Snapshot along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<List<SnapshotInner>>> getDeletedWebAppSnapshotsWithResponseAsync(String deletedSiteId) {
@@ -273,7 +270,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Snapshot.
+     * @return array of Snapshot along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<List<SnapshotInner>>> getDeletedWebAppSnapshotsWithResponseAsync(
@@ -312,7 +309,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Snapshot.
+     * @return array of Snapshot on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<SnapshotInner>> getDeletedWebAppSnapshotsAsync(String deletedSiteId) {
@@ -349,7 +346,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return array of Snapshot.
+     * @return array of Snapshot along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<List<SnapshotInner>> getDeletedWebAppSnapshotsWithResponse(String deletedSiteId, Context context) {
@@ -364,7 +361,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> getSubscriptionOperationWithAsyncResponseWithResponseAsync(
@@ -412,7 +409,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> getSubscriptionOperationWithAsyncResponseWithResponseAsync(
@@ -456,7 +453,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> getSubscriptionOperationWithAsyncResponseAsync(String location, String operationId) {
@@ -487,7 +484,7 @@ public final class GlobalsClientImpl implements GlobalsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> getSubscriptionOperationWithAsyncResponseWithResponse(

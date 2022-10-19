@@ -3,12 +3,15 @@
 
 package com.azure.core.http.okhttp;
 
+import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.RestProxyTestsWireMockServer;
 import com.azure.core.test.implementation.RestProxyTests;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+
+import static com.azure.core.http.okhttp.TestUtils.createQuietDispatcher;
 
 public class OkHttpAsyncHttpClientRestProxyTests extends RestProxyTests {
     private static WireMockServer server;
@@ -33,6 +36,8 @@ public class OkHttpAsyncHttpClientRestProxyTests extends RestProxyTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        return new OkHttpAsyncHttpClientBuilder().build();
+        return new OkHttpAsyncHttpClientBuilder()
+            .dispatcher(createQuietDispatcher(UnexpectedLengthException.class, "request body emitted"))
+            .build();
     }
 }

@@ -17,7 +17,7 @@ import java.util.function.Consumer;
  */
 public class AvroBooleanSchema extends AvroSimpleSchema {
 
-    private final ClientLogger logger = new ClientLogger(AvroBooleanSchema.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvroBooleanSchema.class);
 
     /**
      * Constructs a new AvroBooleanSchema.
@@ -43,7 +43,7 @@ public class AvroBooleanSchema extends AvroSimpleSchema {
         } else if (b == (byte) 1) {
             this.result = true;
         } else {
-            throw logger.logExceptionAsError(new IllegalStateException(String.format(
+            throw LOGGER.logExceptionAsError(new IllegalStateException(String.format(
                 "Expected byte %b to be a boolean value.", b)));
         }
         this.done = true;

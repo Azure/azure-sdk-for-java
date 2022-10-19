@@ -6,37 +6,35 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** CosmosDB (MongoDB API) linked service properties. */
 @Fluent
 public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CosmosDbMongoDbApiLinkedServiceTypeProperties.class);
-
     /*
-     * Whether the CosmosDB (MongoDB API) server version is higher than 3.2.
-     * The default value is false. Type: boolean (or Expression with resultType
-     * boolean).
+     * Whether the CosmosDB (MongoDB API) server version is higher than 3.2. The default value is false. Type: boolean
+     * (or Expression with resultType boolean).
      */
     @JsonProperty(value = "isServerVersionAbove32")
     private Object isServerVersionAbove32;
 
     /*
-     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString
-     * or AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The CosmosDB (MongoDB API) connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the CosmosDB (MongoDB API) database that you want to access.
-     * Type: string (or Expression with resultType string).
+     * The name of the CosmosDB (MongoDB API) database that you want to access. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "database", required = true)
     private Object database;
+
+    /** Creates an instance of CosmosDbMongoDbApiLinkedServiceTypeProperties class. */
+    public CosmosDbMongoDbApiLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the isServerVersionAbove32 property: Whether the CosmosDB (MongoDB API) server version is higher than 3.2.
@@ -111,17 +109,19 @@ public final class CosmosDbMongoDbApiLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model"
                             + " CosmosDbMongoDbApiLinkedServiceTypeProperties"));
         }
         if (database() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property database in model CosmosDbMongoDbApiLinkedServiceTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CosmosDbMongoDbApiLinkedServiceTypeProperties.class);
 }

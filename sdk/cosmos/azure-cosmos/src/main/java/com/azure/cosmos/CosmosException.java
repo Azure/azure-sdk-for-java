@@ -7,9 +7,11 @@ import com.azure.core.exception.AzureException;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.CosmosError;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RequestTimeline;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.batch.BatchExecUtils;
 import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
@@ -19,7 +21,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,6 +46,7 @@ import static com.azure.cosmos.CosmosDiagnostics.USER_AGENT_KEY;
  * service, an IllegalStateException is thrown instead of CosmosException.
  */
 public class CosmosException extends AzureException {
+    private static final long MAX_RETRY_AFTER_IN_MS = BatchExecUtils.MAX_RETRY_AFTER_IN_MS;
     private static final long serialVersionUID = 1L;
 
     private static final ObjectMapper mapper = new ObjectMapper();
@@ -139,6 +142,11 @@ public class CosmosException extends AzureException {
      */
     private boolean sendingRequestHasStarted;
 
+    /***
+     * All selectable replica status.
+     */
+    private final List<String> replicaStatusList = new ArrayList<>();
+
     /**
      * Creates a new instance of the CosmosException class.
      *
@@ -152,6 +160,7 @@ public class CosmosException extends AzureException {
         this.statusCode = statusCode;
         this.responseHeaders = new ConcurrentHashMap<>();
 
+        //  Since ConcurrentHashMap only takes non-null entries, so filtering them before putting them in.
         if (responseHeaders != null) {
             for (Map.Entry<String, String> entry: responseHeaders.entrySet()) {
                 if (entry.getKey() != null && entry.getValue() != null) {
@@ -337,7 +346,7 @@ public class CosmosException extends AzureException {
 
             if (StringUtils.isNotEmpty(header)) {
                 try {
-                    retryIntervalInMilliseconds = Long.parseLong(header);
+                    retryIntervalInMilliseconds = Math.min(Long.parseLong(header), MAX_RETRY_AFTER_IN_MS);
                 } catch (NumberFormatException e) {
                     // If the value cannot be parsed as long, return 0.
                 }
@@ -538,4 +547,29 @@ public class CosmosException extends AzureException {
     void setRntbdPendingRequestQueueSize(int rntbdPendingRequestQueueSize) {
         this.rntbdPendingRequestQueueSize = rntbdPendingRequestQueueSize;
     }
+
+    List<String> getReplicaStatusList() {
+        return this.replicaStatusList;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    // the following helper/accessor only helps to access this class outside of this package.//
+    ///////////////////////////////////////////////////////////////////////////////////////////
+    static void initialize() {
+        ImplementationBridgeHelpers.CosmosExceptionHelper.setCosmosExceptionAccessor(
+                new ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor() {
+                    @Override
+                    public CosmosException createCosmosException(int statusCode, Exception innerException) {
+                        return new CosmosException(statusCode, innerException);
+                    }
+
+                    @Override
+                    public List<String> getReplicaStatusList(CosmosException cosmosException) {
+                        return cosmosException.getReplicaStatusList();
+                    }
+
+                });
+    }
+
+    static { initialize(); }
 }

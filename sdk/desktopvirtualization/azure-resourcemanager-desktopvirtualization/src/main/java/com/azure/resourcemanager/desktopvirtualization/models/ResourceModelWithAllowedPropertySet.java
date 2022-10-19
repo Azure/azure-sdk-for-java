@@ -6,8 +6,6 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -17,8 +15,6 @@ import java.util.Map;
  */
 @Fluent
 public class ResourceModelWithAllowedPropertySet extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceModelWithAllowedPropertySet.class);
-
     /*
      * The fully qualified resource ID of the resource that manages this
      * resource. Indicates if this resource is managed by another Azure

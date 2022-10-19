@@ -8,12 +8,16 @@ import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.Certif
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.CertificateResponseInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.ProvisioningServiceDescriptionInner;
 import com.azure.resourcemanager.deviceprovisioningservices.fluent.models.VerificationCodeResponseInner;
-import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateBodyDescription;
+import com.azure.resourcemanager.deviceprovisioningservices.models.CertificateProperties;
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.nio.charset.StandardCharsets;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class CertificatesTests extends DeviceProvisioningTestBase {
     @Test
@@ -27,8 +31,9 @@ public class CertificatesTests extends DeviceProvisioningTestBase {
             ProvisioningServiceDescriptionInner provisioningServiceDescription =
                 createProvisioningService(iotDpsManager, resourceGroup);
 
-            CertificateBodyDescription certificateBodyDescription =
-                new CertificateBodyDescription().withCertificate(Constants.Certificate.CONTENT);
+            CertificateResponseInner certificateInner = new CertificateResponseInner()
+                .withProperties(new CertificateProperties()
+                    .withCertificate(Constants.Certificate.CONTENT.getBytes(StandardCharsets.UTF_8)));
 
             // create a new certificate
             iotDpsManager
@@ -38,7 +43,7 @@ public class CertificatesTests extends DeviceProvisioningTestBase {
                     resourceGroup.name(),
                     provisioningServiceDescription.name(),
                     Constants.Certificate.NAME,
-                    certificateBodyDescription);
+                    certificateInner);
 
             CertificateListDescriptionInner certificateListDescription =
                 iotDpsManager

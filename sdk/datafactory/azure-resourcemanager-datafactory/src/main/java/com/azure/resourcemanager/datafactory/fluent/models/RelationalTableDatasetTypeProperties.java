@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Relational table dataset properties. */
 @Fluent
 public final class RelationalTableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationalTableDatasetTypeProperties.class);
-
     /*
-     * The relational table name. Type: string (or Expression with resultType
-     * string).
+     * The relational table name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
+
+    /** Creates an instance of RelationalTableDatasetTypeProperties class. */
+    public RelationalTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: The relational table name. Type: string (or Expression with resultType string).

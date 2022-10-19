@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorAuthorizationState;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorLicenseState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data connector requirements status. */
 @Fluent
 public final class DataConnectorRequirementsStateInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataConnectorRequirementsStateInner.class);
-
     /*
      * Authorization state for this connector
      */

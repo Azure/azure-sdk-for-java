@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Encryption settings for one disk volume. */
 @Fluent
 public final class EncryptionSettingsElement {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSettingsElement.class);
-
     /*
      * Key Vault Secret Url and vault id of the disk encryption key
      */
@@ -21,9 +17,8 @@ public final class EncryptionSettingsElement {
     private KeyVaultAndSecretReference diskEncryptionKey;
 
     /*
-     * Key Vault Key Url and vault id of the key encryption key.
-     * KeyEncryptionKey is optional and when provided is used to unwrap the
-     * disk encryption key.
+     * Key Vault Key Url and vault id of the key encryption key. KeyEncryptionKey is optional and when provided is used
+     * to unwrap the disk encryption key.
      */
     @JsonProperty(value = "keyEncryptionKey")
     private KeyVaultAndKeyReference keyEncryptionKey;

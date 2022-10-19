@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.HDInsightHiveActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("HDInsightHive")
 @Fluent
 public final class HDInsightHiveActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightHiveActivity.class);
-
     /*
      * HDInsight Hive activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightHiveActivityTypeProperties innerTypeProperties = new HDInsightHiveActivityTypeProperties();
+
+    /** Creates an instance of HDInsightHiveActivity class. */
+    public HDInsightHiveActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: HDInsight Hive activity properties.
@@ -273,7 +274,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model HDInsightHiveActivity"));
@@ -281,4 +282,6 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HDInsightHiveActivity.class);
 }

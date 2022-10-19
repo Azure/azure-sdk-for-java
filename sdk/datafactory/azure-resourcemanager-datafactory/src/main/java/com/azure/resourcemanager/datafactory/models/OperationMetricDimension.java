@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the metric dimension. */
 @Fluent
 public final class OperationMetricDimension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetricDimension.class);
-
     /*
      * The name of the dimension for the metric.
      */
@@ -31,6 +27,10 @@ public final class OperationMetricDimension {
      */
     @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;
+
+    /** Creates an instance of OperationMetricDimension class. */
+    public OperationMetricDimension() {
+    }
 
     /**
      * Get the name property: The name of the dimension for the metric.

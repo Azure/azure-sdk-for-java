@@ -25,9 +25,9 @@ public class PurviewAccountClientTestBase extends TestBase {
         return endpoint;
     }
 
-    PurviewAccountClientBuilder purviewAccountClientBuilderSetUp() {
-        PurviewAccountClientBuilder builder =
-            new PurviewAccountClientBuilder()
+    AccountsClientBuilder purviewAccountClientBuilderSetUp() {
+        AccountsClientBuilder builder =
+            new AccountsClientBuilder()
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -42,10 +42,26 @@ public class PurviewAccountClientTestBase extends TestBase {
         return Objects.requireNonNull(builder);
     }
 
+    CollectionsClientBuilder purviewCollectionClientBuilderSetUp() {
+        CollectionsClientBuilder builder =
+            new CollectionsClientBuilder()
+                .httpClient(HttpClient.createDefault())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            builder.httpClient(interceptorManager.getPlaybackClient())
+                .credential(request -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)));
+        } else if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            builder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        return Objects.requireNonNull(builder);
+    }
 
-    PurviewMetadataClientBuilder purviewMetadataClientBuilderSetUp() {
-        PurviewMetadataClientBuilder builder =
-            new PurviewMetadataClientBuilder()
+    MetadataPolicyClientBuilder purviewMetadataClientBuilderSetUp() {
+        MetadataPolicyClientBuilder builder =
+            new MetadataPolicyClientBuilder()
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
         if (getTestMode() == TestMode.PLAYBACK) {

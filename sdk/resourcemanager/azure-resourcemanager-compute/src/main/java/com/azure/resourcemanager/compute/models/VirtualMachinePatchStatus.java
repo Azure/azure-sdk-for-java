@@ -5,26 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The status of virtual machine patch operations. */
 @Fluent
 public final class VirtualMachinePatchStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinePatchStatus.class);
-
     /*
-     * The available patch summary of the latest assessment operation for the
-     * virtual machine.
+     * The available patch summary of the latest assessment operation for the virtual machine.
      */
     @JsonProperty(value = "availablePatchSummary")
     private AvailablePatchSummary availablePatchSummary;
 
     /*
-     * The installation summary of the latest installation operation for the
-     * virtual machine.
+     * The installation summary of the latest installation operation for the virtual machine.
      */
     @JsonProperty(value = "lastPatchInstallationSummary")
     private LastPatchInstallationSummary lastPatchInstallationSummary;

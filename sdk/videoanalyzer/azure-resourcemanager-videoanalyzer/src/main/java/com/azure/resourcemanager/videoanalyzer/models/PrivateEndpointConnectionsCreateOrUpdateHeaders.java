@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The PrivateEndpointConnectionsCreateOrUpdateHeaders model. */
 @Fluent
 public final class PrivateEndpointConnectionsCreateOrUpdateHeaders {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionsCreateOrUpdateHeaders.class);
-
     /*
      * The Retry-After property.
      */

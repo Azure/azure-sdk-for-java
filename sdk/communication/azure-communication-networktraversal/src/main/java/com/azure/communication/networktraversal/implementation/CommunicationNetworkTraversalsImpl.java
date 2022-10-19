@@ -4,9 +4,9 @@
 
 package com.azure.communication.networktraversal.implementation;
 
-import com.azure.communication.networktraversal.models.CommunicationErrorResponseException;
+import com.azure.communication.networktraversal.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.networktraversal.implementation.models.CommunicationRelayConfigurationRequest;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
-import com.azure.communication.networktraversal.models.CommunicationRelayConfigurationRequest;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -30,14 +30,14 @@ public final class CommunicationNetworkTraversalsImpl {
     private final CommunicationNetworkTraversalsService service;
 
     /** The service client containing this operation class. */
-    private final CommunicationNetworkingClientImpl client;
+    private final CommunicationNetworkTraversalClientImpl client;
 
     /**
      * Initializes an instance of CommunicationNetworkTraversalsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    CommunicationNetworkTraversalsImpl(CommunicationNetworkingClientImpl client) {
+    CommunicationNetworkTraversalsImpl(CommunicationNetworkTraversalClientImpl client) {
         this.service =
                 RestProxy.create(
                         CommunicationNetworkTraversalsService.class,
@@ -47,13 +47,13 @@ public final class CommunicationNetworkTraversalsImpl {
     }
 
     /**
-     * The interface defining all the services for CommunicationNetworkingClientCommunicationNetworkTraversals to be
-     * used by the proxy service to perform REST calls.
+     * The interface defining all the services for CommunicationNetworkTraversalClientCommunicationNetworkTraversals to
+     * be used by the proxy service to perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "CommunicationNetwork")
-    private interface CommunicationNetworkTraversalsService {
-        @Post("/networktraversal/:issueRelayConfiguration")
+    public interface CommunicationNetworkTraversalsService {
+        @Post("/networkTraversal/:issueRelayConfiguration")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CommunicationRelayConfiguration>> issueRelayConfiguration(
@@ -65,9 +65,9 @@ public final class CommunicationNetworkTraversalsImpl {
     }
 
     /**
-     * Issue a configuration for an STUN/TURN server for an existing identity.
+     * Issue a configuration for an STUN/TURN server.
      *
-     * @param body Request for a CommunicationRelayConfiguration.
+     * @param body Optional request for providing the id and/or route type for the returned relay configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -84,9 +84,9 @@ public final class CommunicationNetworkTraversalsImpl {
     }
 
     /**
-     * Issue a configuration for an STUN/TURN server for an existing identity.
+     * Issue a configuration for an STUN/TURN server.
      *
-     * @param body Request for a CommunicationRelayConfiguration.
+     * @param body Optional request for providing the id and/or route type for the returned relay configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -102,9 +102,9 @@ public final class CommunicationNetworkTraversalsImpl {
     }
 
     /**
-     * Issue a configuration for an STUN/TURN server for an existing identity.
+     * Issue a configuration for an STUN/TURN server.
      *
-     * @param body Request for a CommunicationRelayConfiguration.
+     * @param body Optional request for providing the id and/or route type for the returned relay configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -125,9 +125,9 @@ public final class CommunicationNetworkTraversalsImpl {
     }
 
     /**
-     * Issue a configuration for an STUN/TURN server for an existing identity.
+     * Issue a configuration for an STUN/TURN server.
      *
-     * @param body Request for a CommunicationRelayConfiguration.
+     * @param body Optional request for providing the id and/or route type for the returned relay configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -149,9 +149,9 @@ public final class CommunicationNetworkTraversalsImpl {
     }
 
     /**
-     * Issue a configuration for an STUN/TURN server for an existing identity.
+     * Issue a configuration for an STUN/TURN server.
      *
-     * @param body Request for a CommunicationRelayConfiguration.
+     * @param body Optional request for providing the id and/or route type for the returned relay configuration.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -163,9 +163,9 @@ public final class CommunicationNetworkTraversalsImpl {
     }
 
     /**
-     * Issue a configuration for an STUN/TURN server for an existing identity.
+     * Issue a configuration for an STUN/TURN server.
      *
-     * @param body Request for a CommunicationRelayConfiguration.
+     * @param body Optional request for providing the id and/or route type for the returned relay configuration.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.

@@ -3,23 +3,27 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.util.Beta;
-
 /**
  * Throughput control group configuration.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class ThroughputControlGroupConfig {
     private final String groupName;
     private final Integer targetThroughput;
     private final Double targetThroughputThreshold;
     private final boolean isDefault;
+    private final boolean continueOnInitError;
 
-    ThroughputControlGroupConfig(String groupName, Integer targetThroughput, Double targetThroughputThreshold, boolean isDefault) {
-       this.groupName= groupName;
+    ThroughputControlGroupConfig(
+            String groupName,
+            Integer targetThroughput,
+            Double targetThroughputThreshold,
+            boolean isDefault,
+            boolean continueOnInitError) {
+       this.groupName = groupName;
        this.targetThroughput = targetThroughput;
        this.targetThroughputThreshold = targetThroughputThreshold;
        this.isDefault = isDefault;
+       this.continueOnInitError = continueOnInitError;
     }
 
     /**
@@ -27,7 +31,6 @@ public final class ThroughputControlGroupConfig {
      *
      * @return the group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getGroupName() {
         return this.groupName;
     }
@@ -40,7 +43,6 @@ public final class ThroughputControlGroupConfig {
      *
      * @return the target throughput.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Integer getTargetThroughput() {
         return this.targetThroughput;
     }
@@ -51,9 +53,8 @@ public final class ThroughputControlGroupConfig {
      *
      * By default, this value is null.
      *
-     * @return the target throughput threshold.
+     * @return the target throughput threshold null or (0, 1].
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Double getTargetThroughputThreshold() {
         return this.targetThroughputThreshold;
     }
@@ -66,8 +67,19 @@ public final class ThroughputControlGroupConfig {
      *
      * @return {@code true} this throughput control group will be used by default unless being override. {@code false} otherwise.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isDefault() {
         return this.isDefault;
+    }
+
+    /**
+     * Get whether request is allowed to continue on original request flow if throughput control controller failed on initialization.
+     *
+     * By default, it is false.
+     * If it is true, requests will continue on original request flow if throughput control controller failed on initialization.
+     *
+     * @return {@code true} request will continue on original request flow if throughput control controller failed on initialization. {@code false} otherwise.
+     */
+    public boolean continueOnInitError() {
+        return continueOnInitError;
     }
 }

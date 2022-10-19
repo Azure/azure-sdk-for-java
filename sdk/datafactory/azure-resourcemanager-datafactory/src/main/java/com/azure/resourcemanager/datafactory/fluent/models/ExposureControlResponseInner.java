@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The exposure control response. */
 @Immutable
 public final class ExposureControlResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExposureControlResponseInner.class);
-
     /*
      * The feature name.
      */
@@ -25,6 +21,10 @@ public final class ExposureControlResponseInner {
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
+
+    /** Creates an instance of ExposureControlResponseInner class. */
+    public ExposureControlResponseInner() {
+    }
 
     /**
      * Get the featureName property: The feature name.

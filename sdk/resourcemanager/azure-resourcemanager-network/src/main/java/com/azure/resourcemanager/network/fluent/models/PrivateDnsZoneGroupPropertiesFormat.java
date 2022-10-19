@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PrivateDnsZoneConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the private dns zone group. */
 @Fluent
 public final class PrivateDnsZoneGroupPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateDnsZoneGroupPropertiesFormat.class);
-
     /*
      * The provisioning state of the private dns zone group resource.
      */
@@ -24,11 +20,14 @@ public final class PrivateDnsZoneGroupPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * A collection of private dns zone configurations of the private dns zone
-     * group.
+     * A collection of private dns zone configurations of the private dns zone group.
      */
     @JsonProperty(value = "privateDnsZoneConfigs")
     private List<PrivateDnsZoneConfig> privateDnsZoneConfigs;
+
+    /** Creates an instance of PrivateDnsZoneGroupPropertiesFormat class. */
+    public PrivateDnsZoneGroupPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the private dns zone group resource.

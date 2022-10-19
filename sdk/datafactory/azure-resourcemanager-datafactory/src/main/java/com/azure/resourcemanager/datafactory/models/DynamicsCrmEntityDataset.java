@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.DynamicsCrmEntityDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("DynamicsCrmEntity")
 @Fluent
 public final class DynamicsCrmEntityDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicsCrmEntityDataset.class);
-
     /*
      * Dynamics CRM entity dataset properties.
      */
     @JsonProperty(value = "typeProperties")
     private DynamicsCrmEntityDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of DynamicsCrmEntityDataset class. */
+    public DynamicsCrmEntityDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Dynamics CRM entity dataset properties.

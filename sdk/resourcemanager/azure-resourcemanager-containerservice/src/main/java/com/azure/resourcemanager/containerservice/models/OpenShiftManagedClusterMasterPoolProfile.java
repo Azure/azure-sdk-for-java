@@ -6,24 +6,19 @@ package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** OpenShiftManagedClusterMaterPoolProfile contains configuration for OpenShift master VMs. */
 @Fluent
 public final class OpenShiftManagedClusterMasterPoolProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterMasterPoolProfile.class);
-
     /*
-     * Unique name of the master pool profile in the context of the
-     * subscription and resource group.
+     * Unique name of the master pool profile in the context of the subscription and resource group.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /*
-     * Number of masters (VMs) to host docker containers. The default value is
-     * 3.
+     * Number of masters (VMs) to host docker containers. The default value is 3.
      */
     @JsonProperty(value = "count", required = true)
     private int count;
@@ -41,8 +36,7 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     private String subnetCidr;
 
     /*
-     * OsType to be used to specify os type. Choose from Linux and Windows.
-     * Default to Linux.
+     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
     @JsonProperty(value = "osType")
     private OSType osType;
@@ -156,10 +150,12 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
      */
     public void validate() {
         if (vmSize() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property vmSize in model OpenShiftManagedClusterMasterPoolProfile"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterMasterPoolProfile.class);
 }

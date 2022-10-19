@@ -6,19 +6,15 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.P2SConnectionConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters for P2SVpnGateway. */
 @Fluent
 public final class P2SVpnGatewayProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnGatewayProperties.class);
-
     /*
      * The VirtualHub to which the gateway belongs.
      */
@@ -62,11 +58,14 @@ public final class P2SVpnGatewayProperties {
     private List<String> customDnsServers;
 
     /*
-     * Enable Routing Preference property for the Public IP Interface of the
-     * P2SVpnGateway.
+     * Enable Routing Preference property for the Public IP Interface of the P2SVpnGateway.
      */
     @JsonProperty(value = "isRoutingPreferenceInternet")
     private Boolean isRoutingPreferenceInternet;
+
+    /** Creates an instance of P2SVpnGatewayProperties class. */
+    public P2SVpnGatewayProperties() {
+    }
 
     /**
      * Get the virtualHub property: The VirtualHub to which the gateway belongs.

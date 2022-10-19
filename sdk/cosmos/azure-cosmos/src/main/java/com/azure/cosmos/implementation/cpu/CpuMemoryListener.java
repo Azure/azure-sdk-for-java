@@ -8,8 +8,8 @@ package com.azure.cosmos.implementation.cpu;
  * and invoke {@link CpuMemoryMonitor#register(CpuMemoryListener)} when starting up and
  * {@link CpuMemoryMonitor#unregister(CpuMemoryListener)} } when shutting down.
  *
- * This is merely is used as a singal to {@link CpuMemoryMonitor} to control whether it should keep using
- * its internal thread or it it should shut it down in the absence of any CosmosClient.
+ * This is merely is used as a signal to {@link CpuMemoryMonitor} to control whether it should keep using
+ * its internal thread or if it should shut it down in the absence of any CosmosClient.
  */
 public interface CpuMemoryListener {
 }

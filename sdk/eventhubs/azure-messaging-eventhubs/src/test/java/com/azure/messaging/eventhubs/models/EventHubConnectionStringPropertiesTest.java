@@ -3,6 +3,7 @@
 
 package com.azure.messaging.eventhubs.models;
 
+import com.azure.core.util.Configuration;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -21,8 +22,10 @@ public class EventHubConnectionStringPropertiesTest {
     private static final String ENTITY_PATH = "entity-instance";
     private static final String SAS_KEY = "test-sas-key";
     private static final String SAS_VALUE = "some-secret-value";
+    private static final String ENDPOINT_SUFFIX = Configuration.getGlobalConfiguration()
+        .get("AZURE_EVENTHUBS_ENDPOINT_SUFFIX", ".servicebus.windows.net");
     private static final String SHARED_ACCESS_SIGNATURE = "SharedAccessSignature "
-        + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+        + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
         + "&sig=encodedsignature%3D"
         + "&se=100000"
         + "&skn=test-sas-key";
@@ -176,12 +179,12 @@ public class EventHubConnectionStringPropertiesTest {
     private static Stream<String> getSharedAccessSignature() {
         String nullSas = null;
         String sasInvalidPrefix = "AccessSignature " // invalid prefix
-            + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
             + "&sig=encodedsignature%3D"
             + "&se=100000"
             + "&skn=test-sas-key";
         String sasWithoutSpace = "SharedAccessSignature" // no space after prefix
-            + "sr=https%3A%2F%2Fentity-name.servicebus.windows.net%2F"
+            + "sr=https%3A%2F%2Fentity-name" + ENDPOINT_SUFFIX + "%2F"
             + "&sig=encodedsignature%3D"
             + "&se=100000"
             + "&skn=test-sas-key";

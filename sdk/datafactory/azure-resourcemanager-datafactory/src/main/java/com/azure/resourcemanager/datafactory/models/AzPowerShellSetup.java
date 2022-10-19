@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzPowerShellSetupTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,13 +16,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzPowerShellSetup")
 @Fluent
 public final class AzPowerShellSetup extends CustomSetupBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzPowerShellSetup.class);
-
     /*
      * Install Azure PowerShell type properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private AzPowerShellSetupTypeProperties innerTypeProperties = new AzPowerShellSetupTypeProperties();
+
+    /** Creates an instance of AzPowerShellSetup class. */
+    public AzPowerShellSetup() {
+    }
 
     /**
      * Get the innerTypeProperties property: Install Azure PowerShell type properties.
@@ -66,7 +67,7 @@ public final class AzPowerShellSetup extends CustomSetupBase {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzPowerShellSetup"));
@@ -74,4 +75,6 @@ public final class AzPowerShellSetup extends CustomSetupBase {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzPowerShellSetup.class);
 }

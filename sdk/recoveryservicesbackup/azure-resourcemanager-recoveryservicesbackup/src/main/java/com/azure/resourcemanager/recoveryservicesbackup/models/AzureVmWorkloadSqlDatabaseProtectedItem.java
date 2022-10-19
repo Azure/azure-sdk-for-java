@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -18,8 +16,6 @@ import java.util.Map;
 @JsonTypeName("AzureVmWorkloadSQLDatabase")
 @Fluent
 public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorkloadProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureVmWorkloadSqlDatabaseProtectedItem.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureVmWorkloadSqlDatabaseProtectedItem withFriendlyName(String friendlyName) {
@@ -211,6 +207,20 @@ public final class AzureVmWorkloadSqlDatabaseProtectedItem extends AzureVmWorklo
     public AzureVmWorkloadSqlDatabaseProtectedItem withResourceGuardOperationRequests(
         List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSqlDatabaseProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSqlDatabaseProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
         return this;
     }
 

@@ -15,7 +15,7 @@ public class AnalyzeJobErrorsAndStatistics {
      * The errors property.
      */
     @JsonProperty(value = "errors")
-    private List<TextAnalyticsError> errors;
+    private List<DocumentWarning> errors;
 
     /*
      * if showStats=true was specified in the request this field will contain
@@ -29,7 +29,7 @@ public class AnalyzeJobErrorsAndStatistics {
      *
      * @return the errors value.
      */
-    public List<TextAnalyticsError> getErrors() {
+    public List<DocumentWarning> getErrors() {
         return this.errors;
     }
 
@@ -39,7 +39,7 @@ public class AnalyzeJobErrorsAndStatistics {
      * @param errors the errors value to set.
      * @return the AnalyzeJobErrorsAndStatistics object itself.
      */
-    public AnalyzeJobErrorsAndStatistics setErrors(List<TextAnalyticsError> errors) {
+    public AnalyzeJobErrorsAndStatistics setErrors(List<DocumentWarning> errors) {
         this.errors = errors;
         return this;
     }

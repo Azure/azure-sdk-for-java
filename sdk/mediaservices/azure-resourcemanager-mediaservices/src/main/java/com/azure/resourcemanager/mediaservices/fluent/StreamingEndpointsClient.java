@@ -11,26 +11,32 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.resourcemanager.mediaservices.fluent.models.AsyncOperationResultInner;
 import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointSkuInfoListResultInner;
 import com.azure.resourcemanager.mediaservices.models.StreamingEntityScaleUnit;
 
 /** An instance of this class provides access to all the operations defined in StreamingEndpointsClient. */
 public interface StreamingEndpointsClient {
     /**
-     * Lists the streaming endpoints in the account.
+     * List StreamingEndpoints
+     *
+     * <p>Lists the streaming endpoints in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint list result.
+     * @return streamingEndpointListResult as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StreamingEndpointInner> list(String resourceGroupName, String accountName);
 
     /**
-     * Lists the streaming endpoints in the account.
+     * List StreamingEndpoints
+     *
+     * <p>Lists the streaming endpoints in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -38,13 +44,15 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint list result.
+     * @return streamingEndpointListResult as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<StreamingEndpointInner> list(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Gets a streaming endpoint.
+     * Get StreamingEndpoint
+     *
+     * <p>Gets a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -58,7 +66,9 @@ public interface StreamingEndpointsClient {
     StreamingEndpointInner get(String resourceGroupName, String accountName, String streamingEndpointName);
 
     /**
-     * Gets a streaming endpoint.
+     * Get StreamingEndpoint
+     *
+     * <p>Gets a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -67,14 +77,16 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a streaming endpoint.
+     * @return a streaming endpoint along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<StreamingEndpointInner> getWithResponse(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context);
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -84,9 +96,9 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(
         String resourceGroupName,
         String accountName,
@@ -95,7 +107,9 @@ public interface StreamingEndpointsClient {
         Boolean autoStart);
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -106,9 +120,9 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginCreate(
         String resourceGroupName,
         String accountName,
@@ -118,7 +132,9 @@ public interface StreamingEndpointsClient {
         Context context);
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -139,7 +155,9 @@ public interface StreamingEndpointsClient {
         Boolean autoStart);
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -155,7 +173,9 @@ public interface StreamingEndpointsClient {
         String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters);
 
     /**
-     * Creates a streaming endpoint.
+     * Create StreamingEndpoint
+     *
+     * <p>Creates a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -178,7 +198,9 @@ public interface StreamingEndpointsClient {
         Context context);
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -187,14 +209,16 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(
         String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters);
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -204,9 +228,9 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the streaming endpoint.
+     * @return the {@link SyncPoller} for polling of the streaming endpoint.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<StreamingEndpointInner>, StreamingEndpointInner> beginUpdate(
         String resourceGroupName,
         String accountName,
@@ -215,7 +239,9 @@ public interface StreamingEndpointsClient {
         Context context);
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -231,7 +257,9 @@ public interface StreamingEndpointsClient {
         String resourceGroupName, String accountName, String streamingEndpointName, StreamingEndpointInner parameters);
 
     /**
-     * Updates a existing streaming endpoint.
+     * Update StreamingEndpoint
+     *
+     * <p>Updates a existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -252,7 +280,9 @@ public interface StreamingEndpointsClient {
         Context context);
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -260,14 +290,16 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String streamingEndpointName);
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -276,14 +308,16 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context);
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -296,7 +330,9 @@ public interface StreamingEndpointsClient {
     void delete(String resourceGroupName, String accountName, String streamingEndpointName);
 
     /**
-     * Deletes a streaming endpoint.
+     * Delete StreamingEndpoint
+     *
+     * <p>Deletes a streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -310,7 +346,9 @@ public interface StreamingEndpointsClient {
     void delete(String resourceGroupName, String accountName, String streamingEndpointName, Context context);
 
     /**
-     * Starts an existing streaming endpoint.
+     * List StreamingEndpoint skus
+     *
+     * <p>List streaming endpoint supported skus.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -318,14 +356,16 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginStart(
+    StreamingEndpointSkuInfoListResultInner skus(
         String resourceGroupName, String accountName, String streamingEndpointName);
 
     /**
-     * Starts an existing streaming endpoint.
+     * List StreamingEndpoint skus
+     *
+     * <p>List streaming endpoint supported skus.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -334,14 +374,51 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<StreamingEndpointSkuInfoListResultInner> skusWithResponse(
+        String resourceGroupName, String accountName, String streamingEndpointName, Context context);
+
+    /**
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginStart(
+        String resourceGroupName, String accountName, String streamingEndpointName);
+
+    /**
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context);
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -354,7 +431,9 @@ public interface StreamingEndpointsClient {
     void start(String resourceGroupName, String accountName, String streamingEndpointName);
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -368,7 +447,9 @@ public interface StreamingEndpointsClient {
     void start(String resourceGroupName, String accountName, String streamingEndpointName, Context context);
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -376,14 +457,16 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String accountName, String streamingEndpointName);
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -392,14 +475,16 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginStop(
         String resourceGroupName, String accountName, String streamingEndpointName, Context context);
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -412,7 +497,9 @@ public interface StreamingEndpointsClient {
     void stop(String resourceGroupName, String accountName, String streamingEndpointName);
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -426,7 +513,9 @@ public interface StreamingEndpointsClient {
     void stop(String resourceGroupName, String accountName, String streamingEndpointName, Context context);
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -435,9 +524,9 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginScale(
         String resourceGroupName,
         String accountName,
@@ -445,7 +534,9 @@ public interface StreamingEndpointsClient {
         StreamingEntityScaleUnit parameters);
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -455,9 +546,9 @@ public interface StreamingEndpointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginScale(
         String resourceGroupName,
         String accountName,
@@ -466,7 +557,9 @@ public interface StreamingEndpointsClient {
         Context context);
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -484,7 +577,9 @@ public interface StreamingEndpointsClient {
         StreamingEntityScaleUnit parameters);
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -501,5 +596,80 @@ public interface StreamingEndpointsClient {
         String accountName,
         String streamingEndpointName,
         StreamingEntityScaleUnit parameters,
+        Context context);
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AsyncOperationResultInner asyncOperation(String resourceGroupName, String accountName, String operationId);
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<AsyncOperationResultInner> asyncOperationWithResponse(
+        String resourceGroupName, String accountName, String operationId, Context context);
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @param operationId The ID of an ongoing async operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StreamingEndpointInner operationLocation(
+        String resourceGroupName, String accountName, String streamingEndpointName, String operationId);
+
+    /**
+     * Get operation status.
+     *
+     * <p>Get a streaming endpoint operation status.
+     *
+     * @param resourceGroupName The name of the resource group within the Azure subscription.
+     * @param accountName The Media Services account name.
+     * @param streamingEndpointName The name of the streaming endpoint, maximum length is 24.
+     * @param operationId The ID of an ongoing async operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a streaming endpoint operation status along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<StreamingEndpointInner> operationLocationWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String streamingEndpointName,
+        String operationId,
         Context context);
 }

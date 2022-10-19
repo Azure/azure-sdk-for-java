@@ -5,176 +5,44 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.AlertEntity;
+import com.azure.resourcemanager.security.models.AlertPropertiesSupportingEvidence;
 import com.azure.resourcemanager.security.models.AlertSeverity;
 import com.azure.resourcemanager.security.models.AlertStatus;
 import com.azure.resourcemanager.security.models.Intent;
 import com.azure.resourcemanager.security.models.ResourceIdentifier;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
 /** Security alert. */
-@JsonFlatten
 @Fluent
-public class AlertInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertInner.class);
-
+public final class AlertInner extends ProxyResource {
     /*
-     * Unique identifier for the detection logic (all alert instances from the
-     * same detection logic will have the same alertType).
+     * describes security alert properties.
      */
-    @JsonProperty(value = "properties.alertType", access = JsonProperty.Access.WRITE_ONLY)
-    private String alertType;
+    @JsonProperty(value = "properties")
+    private AlertProperties innerProperties;
 
-    /*
-     * Unique identifier for the alert.
+    /**
+     * Get the innerProperties property: describes security alert properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.systemAlertId", access = JsonProperty.Access.WRITE_ONLY)
-    private String systemAlertId;
+    private AlertProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The name of Azure Security Center pricing tier which powering this
-     * alert. Learn more:
-     * https://docs.microsoft.com/en-us/azure/security-center/security-center-pricing
+    /**
+     * Get the version property: Schema version.
+     *
+     * @return the version value.
      */
-    @JsonProperty(value = "properties.productComponentName", access = JsonProperty.Access.WRITE_ONLY)
-    private String productComponentName;
-
-    /*
-     * The display name of the alert.
-     */
-    @JsonProperty(value = "properties.alertDisplayName", access = JsonProperty.Access.WRITE_ONLY)
-    private String alertDisplayName;
-
-    /*
-     * Description of the suspicious activity that was detected.
-     */
-    @JsonProperty(value = "properties.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * The risk level of the threat that was detected. Learn more:
-     * https://docs.microsoft.com/en-us/azure/security-center/security-center-alerts-overview#how-are-alerts-classified.
-     */
-    @JsonProperty(value = "properties.severity", access = JsonProperty.Access.WRITE_ONLY)
-    private AlertSeverity severity;
-
-    /*
-     * The kill chain related intent behind the alert. For list of supported
-     * values, and explanations of Azure Security Center's supported kill chain
-     * intents.
-     */
-    @JsonProperty(value = "properties.intent", access = JsonProperty.Access.WRITE_ONLY)
-    private Intent intent;
-
-    /*
-     * The UTC time of the first event or activity included in the alert in
-     * ISO8601 format.
-     */
-    @JsonProperty(value = "properties.startTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime startTimeUtc;
-
-    /*
-     * The UTC time of the last event or activity included in the alert in
-     * ISO8601 format.
-     */
-    @JsonProperty(value = "properties.endTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime endTimeUtc;
-
-    /*
-     * The resource identifiers that can be used to direct the alert to the
-     * right product exposure group (tenant, workspace, subscription etc.).
-     * There can be multiple identifiers of different type per alert.
-     */
-    @JsonProperty(value = "properties.resourceIdentifiers", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ResourceIdentifier> resourceIdentifiers;
-
-    /*
-     * Manual action items to take to remediate the alert.
-     */
-    @JsonProperty(value = "properties.remediationSteps", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> remediationSteps;
-
-    /*
-     * The name of the vendor that raises the alert.
-     */
-    @JsonProperty(value = "properties.vendorName", access = JsonProperty.Access.WRITE_ONLY)
-    private String vendorName;
-
-    /*
-     * The life cycle status of the alert.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private AlertStatus status;
-
-    /*
-     * Links related to the alert
-     */
-    @JsonProperty(value = "properties.extendedLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Map<String, String>> extendedLinks;
-
-    /*
-     * A direct link to the alert page in Azure Portal.
-     */
-    @JsonProperty(value = "properties.alertUri", access = JsonProperty.Access.WRITE_ONLY)
-    private String alertUri;
-
-    /*
-     * The UTC time the alert was generated in ISO8601 format.
-     */
-    @JsonProperty(value = "properties.timeGeneratedUtc", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime timeGeneratedUtc;
-
-    /*
-     * The name of the product which published this alert (Azure Security
-     * Center, Azure ATP, Microsoft Defender ATP, O365 ATP, MCAS, and so on).
-     */
-    @JsonProperty(value = "properties.productName", access = JsonProperty.Access.WRITE_ONLY)
-    private String productName;
-
-    /*
-     * The UTC processing end time of the alert in ISO8601 format.
-     */
-    @JsonProperty(value = "properties.processingEndTimeUtc", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime processingEndTimeUtc;
-
-    /*
-     * A list of entities related to the alert.
-     */
-    @JsonProperty(value = "properties.entities", access = JsonProperty.Access.WRITE_ONLY)
-    private List<AlertEntity> entities;
-
-    /*
-     * This field determines whether the alert is an incident (a compound
-     * grouping of several alerts) or a single alert.
-     */
-    @JsonProperty(value = "properties.isIncident", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isIncident;
-
-    /*
-     * Key for corelating related alerts. Alerts with the same correlation key
-     * considered to be related.
-     */
-    @JsonProperty(value = "properties.correlationKey", access = JsonProperty.Access.WRITE_ONLY)
-    private String correlationKey;
-
-    /*
-     * Custom properties for the alert.
-     */
-    @JsonProperty(value = "properties.extendedProperties")
-    private Map<String, String> extendedProperties;
-
-    /*
-     * The display name of the resource most related to this alert.
-     */
-    @JsonProperty(value = "properties.compromisedEntity", access = JsonProperty.Access.WRITE_ONLY)
-    private String compromisedEntity;
+    public String version() {
+        return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
 
     /**
      * Get the alertType property: Unique identifier for the detection logic (all alert instances from the same
@@ -183,7 +51,7 @@ public class AlertInner extends ProxyResource {
      * @return the alertType value.
      */
     public String alertType() {
-        return this.alertType;
+        return this.innerProperties() == null ? null : this.innerProperties().alertType();
     }
 
     /**
@@ -192,7 +60,7 @@ public class AlertInner extends ProxyResource {
      * @return the systemAlertId value.
      */
     public String systemAlertId() {
-        return this.systemAlertId;
+        return this.innerProperties() == null ? null : this.innerProperties().systemAlertId();
     }
 
     /**
@@ -202,7 +70,7 @@ public class AlertInner extends ProxyResource {
      * @return the productComponentName value.
      */
     public String productComponentName() {
-        return this.productComponentName;
+        return this.innerProperties() == null ? null : this.innerProperties().productComponentName();
     }
 
     /**
@@ -211,7 +79,7 @@ public class AlertInner extends ProxyResource {
      * @return the alertDisplayName value.
      */
     public String alertDisplayName() {
-        return this.alertDisplayName;
+        return this.innerProperties() == null ? null : this.innerProperties().alertDisplayName();
     }
 
     /**
@@ -220,7 +88,7 @@ public class AlertInner extends ProxyResource {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerProperties() == null ? null : this.innerProperties().description();
     }
 
     /**
@@ -230,7 +98,7 @@ public class AlertInner extends ProxyResource {
      * @return the severity value.
      */
     public AlertSeverity severity() {
-        return this.severity;
+        return this.innerProperties() == null ? null : this.innerProperties().severity();
     }
 
     /**
@@ -240,7 +108,7 @@ public class AlertInner extends ProxyResource {
      * @return the intent value.
      */
     public Intent intent() {
-        return this.intent;
+        return this.innerProperties() == null ? null : this.innerProperties().intent();
     }
 
     /**
@@ -250,7 +118,7 @@ public class AlertInner extends ProxyResource {
      * @return the startTimeUtc value.
      */
     public OffsetDateTime startTimeUtc() {
-        return this.startTimeUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().startTimeUtc();
     }
 
     /**
@@ -259,7 +127,7 @@ public class AlertInner extends ProxyResource {
      * @return the endTimeUtc value.
      */
     public OffsetDateTime endTimeUtc() {
-        return this.endTimeUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().endTimeUtc();
     }
 
     /**
@@ -270,7 +138,7 @@ public class AlertInner extends ProxyResource {
      * @return the resourceIdentifiers value.
      */
     public List<ResourceIdentifier> resourceIdentifiers() {
-        return this.resourceIdentifiers;
+        return this.innerProperties() == null ? null : this.innerProperties().resourceIdentifiers();
     }
 
     /**
@@ -279,7 +147,7 @@ public class AlertInner extends ProxyResource {
      * @return the remediationSteps value.
      */
     public List<String> remediationSteps() {
-        return this.remediationSteps;
+        return this.innerProperties() == null ? null : this.innerProperties().remediationSteps();
     }
 
     /**
@@ -288,7 +156,7 @@ public class AlertInner extends ProxyResource {
      * @return the vendorName value.
      */
     public String vendorName() {
-        return this.vendorName;
+        return this.innerProperties() == null ? null : this.innerProperties().vendorName();
     }
 
     /**
@@ -297,7 +165,7 @@ public class AlertInner extends ProxyResource {
      * @return the status value.
      */
     public AlertStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -306,7 +174,7 @@ public class AlertInner extends ProxyResource {
      * @return the extendedLinks value.
      */
     public List<Map<String, String>> extendedLinks() {
-        return this.extendedLinks;
+        return this.innerProperties() == null ? null : this.innerProperties().extendedLinks();
     }
 
     /**
@@ -315,7 +183,7 @@ public class AlertInner extends ProxyResource {
      * @return the alertUri value.
      */
     public String alertUri() {
-        return this.alertUri;
+        return this.innerProperties() == null ? null : this.innerProperties().alertUri();
     }
 
     /**
@@ -324,7 +192,7 @@ public class AlertInner extends ProxyResource {
      * @return the timeGeneratedUtc value.
      */
     public OffsetDateTime timeGeneratedUtc() {
-        return this.timeGeneratedUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().timeGeneratedUtc();
     }
 
     /**
@@ -334,7 +202,7 @@ public class AlertInner extends ProxyResource {
      * @return the productName value.
      */
     public String productName() {
-        return this.productName;
+        return this.innerProperties() == null ? null : this.innerProperties().productName();
     }
 
     /**
@@ -343,7 +211,7 @@ public class AlertInner extends ProxyResource {
      * @return the processingEndTimeUtc value.
      */
     public OffsetDateTime processingEndTimeUtc() {
-        return this.processingEndTimeUtc;
+        return this.innerProperties() == null ? null : this.innerProperties().processingEndTimeUtc();
     }
 
     /**
@@ -352,7 +220,7 @@ public class AlertInner extends ProxyResource {
      * @return the entities value.
      */
     public List<AlertEntity> entities() {
-        return this.entities;
+        return this.innerProperties() == null ? null : this.innerProperties().entities();
     }
 
     /**
@@ -362,7 +230,7 @@ public class AlertInner extends ProxyResource {
      * @return the isIncident value.
      */
     public Boolean isIncident() {
-        return this.isIncident;
+        return this.innerProperties() == null ? null : this.innerProperties().isIncident();
     }
 
     /**
@@ -372,7 +240,7 @@ public class AlertInner extends ProxyResource {
      * @return the correlationKey value.
      */
     public String correlationKey() {
-        return this.correlationKey;
+        return this.innerProperties() == null ? null : this.innerProperties().correlationKey();
     }
 
     /**
@@ -381,7 +249,7 @@ public class AlertInner extends ProxyResource {
      * @return the extendedProperties value.
      */
     public Map<String, String> extendedProperties() {
-        return this.extendedProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().extendedProperties();
     }
 
     /**
@@ -391,7 +259,10 @@ public class AlertInner extends ProxyResource {
      * @return the AlertInner object itself.
      */
     public AlertInner withExtendedProperties(Map<String, String> extendedProperties) {
-        this.extendedProperties = extendedProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withExtendedProperties(extendedProperties);
         return this;
     }
 
@@ -401,7 +272,48 @@ public class AlertInner extends ProxyResource {
      * @return the compromisedEntity value.
      */
     public String compromisedEntity() {
-        return this.compromisedEntity;
+        return this.innerProperties() == null ? null : this.innerProperties().compromisedEntity();
+    }
+
+    /**
+     * Get the techniques property: kill chain related techniques behind the alert.
+     *
+     * @return the techniques value.
+     */
+    public List<String> techniques() {
+        return this.innerProperties() == null ? null : this.innerProperties().techniques();
+    }
+
+    /**
+     * Get the subTechniques property: Kill chain related sub-techniques behind the alert.
+     *
+     * @return the subTechniques value.
+     */
+    public List<String> subTechniques() {
+        return this.innerProperties() == null ? null : this.innerProperties().subTechniques();
+    }
+
+    /**
+     * Get the supportingEvidence property: Changing set of properties depending on the supportingEvidence type.
+     *
+     * @return the supportingEvidence value.
+     */
+    public AlertPropertiesSupportingEvidence supportingEvidence() {
+        return this.innerProperties() == null ? null : this.innerProperties().supportingEvidence();
+    }
+
+    /**
+     * Set the supportingEvidence property: Changing set of properties depending on the supportingEvidence type.
+     *
+     * @param supportingEvidence the supportingEvidence value to set.
+     * @return the AlertInner object itself.
+     */
+    public AlertInner withSupportingEvidence(AlertPropertiesSupportingEvidence supportingEvidence) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertProperties();
+        }
+        this.innerProperties().withSupportingEvidence(supportingEvidence);
+        return this;
     }
 
     /**
@@ -410,11 +322,8 @@ public class AlertInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (resourceIdentifiers() != null) {
-            resourceIdentifiers().forEach(e -> e.validate());
-        }
-        if (entities() != null) {
-            entities().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

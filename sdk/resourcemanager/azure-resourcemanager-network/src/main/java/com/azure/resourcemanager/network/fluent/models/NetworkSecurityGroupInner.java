@@ -6,9 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** NetworkSecurityGroup resource. */
 @Fluent
 public final class NetworkSecurityGroupInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkSecurityGroupInner.class);
-
     /*
      * Properties of the network security group.
      */
@@ -35,6 +31,10 @@ public final class NetworkSecurityGroupInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of NetworkSecurityGroupInner class. */
+    public NetworkSecurityGroupInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the network security group.
@@ -85,6 +85,31 @@ public final class NetworkSecurityGroupInner extends Resource {
     @Override
     public NetworkSecurityGroupInner withTags(Map<String, String> tags) {
         super.withTags(tags);
+        return this;
+    }
+
+    /**
+     * Get the flushConnection property: When enabled, flows created from Network Security Group connections will be
+     * re-evaluated when rules are updates. Initial enablement will trigger re-evaluation.
+     *
+     * @return the flushConnection value.
+     */
+    public Boolean flushConnection() {
+        return this.innerProperties() == null ? null : this.innerProperties().flushConnection();
+    }
+
+    /**
+     * Set the flushConnection property: When enabled, flows created from Network Security Group connections will be
+     * re-evaluated when rules are updates. Initial enablement will trigger re-evaluation.
+     *
+     * @param flushConnection the flushConnection value to set.
+     * @return the NetworkSecurityGroupInner object itself.
+     */
+    public NetworkSecurityGroupInner withFlushConnection(Boolean flushConnection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkSecurityGroupPropertiesFormat();
+        }
+        this.innerProperties().withFlushConnection(flushConnection);
         return this;
     }
 

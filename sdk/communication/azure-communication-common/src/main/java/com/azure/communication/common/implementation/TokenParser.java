@@ -4,13 +4,11 @@ package com.azure.communication.common.implementation;
 
 import java.nio.charset.Charset;
 import java.time.Instant;
-import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
-import java.time.ZoneId;
 import java.util.Base64;
 import java.util.Objects;
-import java.util.regex.Pattern;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.azure.core.credential.AccessToken;
 
@@ -33,8 +31,8 @@ public class TokenParser {
         matcher.find();
         long expire = Long.parseLong(matcher.group(1));
 
-        LocalDateTime expiryLocal = LocalDateTime.ofInstant(Instant.ofEpochMilli(expire * 1000), ZoneId.of("UTC"));
-        OffsetDateTime offsetExpiry = expiryLocal.atOffset(OffsetDateTime.now().getOffset());
+        Instant expiresAt = Instant.ofEpochSecond(expire);
+        OffsetDateTime offsetExpiry = expiresAt.atOffset(OffsetDateTime.now().getOffset());
         return new AccessToken(rawToken, offsetExpiry);
     }
 }

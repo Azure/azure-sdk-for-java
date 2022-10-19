@@ -22,7 +22,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Tag list representation.
+     * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagContract> listByOperation(
         String resourceGroupName, String serviceName, String apiId, String operationId);
@@ -46,7 +46,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Tag list representation.
+     * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagContract> listByOperation(
         String resourceGroupName,
@@ -163,7 +163,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag Contract details.
+     * @return tag Contract details along with {@link Response}.
      */
     Response<TagContract> assignToOperationWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
@@ -199,7 +199,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> detachFromOperationWithResponse(
         String resourceGroupName, String serviceName, String apiId, String operationId, String tagId, Context context);
@@ -214,7 +214,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Tag list representation.
+     * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagContract> listByApi(String resourceGroupName, String serviceName, String apiId);
 
@@ -235,7 +235,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Tag list representation.
+     * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagContract> listByApi(
         String resourceGroupName,
@@ -367,7 +367,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> detachFromApiWithResponse(
         String resourceGroupName, String serviceName, String apiId, String tagId, Context context);
@@ -381,7 +381,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Tag list representation.
+     * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagContract> listByProduct(String resourceGroupName, String serviceName, String productId);
 
@@ -401,7 +401,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Tag list representation.
+     * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagContract> listByProduct(
         String resourceGroupName,
@@ -496,7 +496,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tag Contract details.
+     * @return tag Contract details along with {@link Response}.
      */
     Response<TagContract> assignToProductWithResponse(
         String resourceGroupName, String serviceName, String productId, String tagId, Context context);
@@ -525,7 +525,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> detachFromProductWithResponse(
         String resourceGroupName, String serviceName, String productId, String tagId, Context context);
@@ -538,7 +538,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Tag list representation.
+     * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagContract> listByService(String resourceGroupName, String serviceName);
 
@@ -558,7 +558,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Tag list representation.
+     * @return paged Tag list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<TagContract> listByService(
         String resourceGroupName,
@@ -649,7 +649,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String tagId, String ifMatch, Context context);
@@ -697,7 +697,7 @@ public interface Tags {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context);
 

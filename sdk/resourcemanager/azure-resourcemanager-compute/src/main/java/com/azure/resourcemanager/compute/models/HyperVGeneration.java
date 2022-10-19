@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HyperVGeneration. */
+/** The hypervisor generation of the Virtual Machine. Applicable to OS disks only. */
 public final class HyperVGeneration extends ExpandableStringEnum<HyperVGeneration> {
     /** Static value V1 for HyperVGeneration. */
     public static final HyperVGeneration V1 = fromString("V1");
@@ -27,7 +27,11 @@ public final class HyperVGeneration extends ExpandableStringEnum<HyperVGeneratio
         return fromString(name, HyperVGeneration.class);
     }
 
-    /** @return known HyperVGeneration values. */
+    /**
+     * Gets known HyperVGeneration values.
+     *
+     * @return known HyperVGeneration values.
+     */
     public static Collection<HyperVGeneration> values() {
         return values(HyperVGeneration.class);
     }

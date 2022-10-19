@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Lock owner properties. */
 @Fluent
 public final class ManagementLockOwner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementLockOwner.class);
-
     /*
      * The application ID of the lock owner.
      */

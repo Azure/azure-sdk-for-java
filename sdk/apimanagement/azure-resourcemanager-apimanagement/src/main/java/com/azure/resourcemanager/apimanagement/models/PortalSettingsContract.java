@@ -6,16 +6,12 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalSettingsContractProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Portal Settings for the Developer Portal. */
 @Fluent
 public final class PortalSettingsContract extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalSettingsContract.class);
-
     /*
      * Portal Settings contract properties.
      */

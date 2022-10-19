@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the ICMP configuration. */
 @Fluent
 public final class ConnectionMonitorIcmpConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorIcmpConfiguration.class);
-
     /*
-     * Value indicating whether path evaluation with trace route should be
-     * disabled.
+     * Value indicating whether path evaluation with trace route should be disabled.
      */
     @JsonProperty(value = "disableTraceRoute")
     private Boolean disableTraceRoute;
+
+    /** Creates an instance of ConnectionMonitorIcmpConfiguration class. */
+    public ConnectionMonitorIcmpConfiguration() {
+    }
 
     /**
      * Get the disableTraceRoute property: Value indicating whether path evaluation with trace route should be disabled.

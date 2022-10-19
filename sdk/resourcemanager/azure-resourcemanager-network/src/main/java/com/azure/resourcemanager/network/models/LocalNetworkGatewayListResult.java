@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.LocalNetworkGatewayInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListLocalNetworkGateways API service call. */
 @Fluent
 public final class LocalNetworkGatewayListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalNetworkGatewayListResult.class);
-
     /*
      * A list of local network gateways that exists in a resource group.
      */
@@ -27,6 +23,10 @@ public final class LocalNetworkGatewayListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of LocalNetworkGatewayListResult class. */
+    public LocalNetworkGatewayListResult() {
+    }
 
     /**
      * Get the value property: A list of local network gateways that exists in a resource group.

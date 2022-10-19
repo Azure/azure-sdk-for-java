@@ -5,6 +5,7 @@ package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -27,28 +28,33 @@ public final class NettyAsyncHttpBufferedResponse extends NettyAsyncHttpResponse
     }
 
     @Override
+    public BinaryData getBodyAsBinaryData() {
+        return BinaryData.fromBytes(body);
+    }
+
+    @Override
     public Flux<ByteBuffer> getBody() {
-        return Flux.defer(() -> Flux.just(ByteBuffer.wrap(body)));
+        return Mono.fromSupplier(() -> ByteBuffer.wrap(body)).flux();
     }
 
     @Override
     public Mono<byte[]> getBodyAsByteArray() {
-        return Mono.defer(() -> Mono.just(body));
+        return Mono.just(body);
     }
 
     @Override
     public Mono<String> getBodyAsString() {
-        return Mono.defer(() -> Mono.just(CoreUtils.bomAwareToString(body, getHeaderValue("Content-Type"))));
+        return Mono.fromSupplier(() -> CoreUtils.bomAwareToString(body, getHeaderValue("Content-Type")));
     }
 
     @Override
     public Mono<String> getBodyAsString(Charset charset) {
-        return Mono.defer(() -> Mono.just(new String(body, charset)));
+        return Mono.fromSupplier(() -> new String(body, charset));
     }
 
     @Override
     public Mono<InputStream> getBodyAsInputStream() {
-        return Mono.defer(() -> Mono.just(new ByteArrayInputStream(body)));
+        return Mono.fromSupplier(() -> new ByteArrayInputStream(body));
     }
 
     @Override

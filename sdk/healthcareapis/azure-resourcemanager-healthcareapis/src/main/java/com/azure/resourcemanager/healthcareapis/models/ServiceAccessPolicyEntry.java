@@ -6,14 +6,11 @@ package com.azure.resourcemanager.healthcareapis.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An access policy entry. */
 @Fluent
 public final class ServiceAccessPolicyEntry {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceAccessPolicyEntry.class);
-
     /*
      * An Azure AD object ID (User or Apps) that is allowed access to the FHIR
      * service.
@@ -48,10 +45,12 @@ public final class ServiceAccessPolicyEntry {
      */
     public void validate() {
         if (objectId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property objectId in model ServiceAccessPolicyEntry"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceAccessPolicyEntry.class);
 }

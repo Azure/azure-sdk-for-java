@@ -6,6 +6,7 @@ package com.azure.identity;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
@@ -26,7 +27,9 @@ public class VisualStudioCodeCredential implements TokenCredential {
     private final IdentityClient identityClient;
     private final AtomicReference<MsalToken> cachedToken;
     private final String cloudInstance;
-    private final ClientLogger logger = new ClientLogger(VisualStudioCodeCredential.class);
+    private static final ClientLogger LOGGER = new ClientLogger(VisualStudioCodeCredential.class);
+
+    private static final String TROUBLESHOOTING = "VisualStudioCodeCredential is affected by known issues. See https://aka.ms/azsdk/java/identity/troubleshoot#troubleshoot-visualstudiocodecredential-authentication-issues for more information.";
 
     /**
      * Creates a public class VisualStudioCodeCredential implements TokenCredential with the given tenant and
@@ -51,10 +54,8 @@ public class VisualStudioCodeCredential implements TokenCredential {
 
         if (!CoreUtils.isNullOrEmpty(tenantId)) {
             tenant = tenantId;
-        } else if (userSettings.containsKey("tenant")) {
-            tenant = userSettings.get("tenant");
         } else {
-            tenant = "common";
+            tenant = userSettings.getOrDefault("tenant", "common");
         }
 
         identityClient = new IdentityClientBuilder()
@@ -81,7 +82,19 @@ public class VisualStudioCodeCredential implements TokenCredential {
                        cachedToken.set(msalToken);
                        return (AccessToken) msalToken;
                    })
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> {
+                Throwable other = null;
+                if (error instanceof CredentialUnavailableException) {
+                    other = new CredentialUnavailableException(TROUBLESHOOTING, error);
+
+                } else if (error instanceof ClientAuthenticationException) {
+                    other = new ClientAuthenticationException(TROUBLESHOOTING, null, error);
+                } else {
+                    other = error;
+                }
+                LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                    request, other);
+            });
     }
 }

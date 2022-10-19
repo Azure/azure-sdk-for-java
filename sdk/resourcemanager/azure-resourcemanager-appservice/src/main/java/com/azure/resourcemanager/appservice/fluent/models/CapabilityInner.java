@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the capabilities/features allowed for a specific SKU. */
 @Fluent
 public final class CapabilityInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapabilityInner.class);
-
     /*
      * Name of the SKU capability.
      */

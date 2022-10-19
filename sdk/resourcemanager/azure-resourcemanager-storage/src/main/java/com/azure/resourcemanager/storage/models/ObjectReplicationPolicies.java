@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.ObjectReplicationPolicyInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List storage account object replication policies. */
 @Fluent
 public final class ObjectReplicationPolicies {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicies.class);
-
     /*
      * The replication policy between two storage accounts.
      */

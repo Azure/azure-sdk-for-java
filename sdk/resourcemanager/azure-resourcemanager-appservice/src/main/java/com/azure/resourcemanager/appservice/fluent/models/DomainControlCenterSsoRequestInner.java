@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Single sign-on request information for domain management. */
 @Immutable
 public final class DomainControlCenterSsoRequestInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainControlCenterSsoRequestInner.class);
-
     /*
      * URL where the single sign-on request is to be made.
      */

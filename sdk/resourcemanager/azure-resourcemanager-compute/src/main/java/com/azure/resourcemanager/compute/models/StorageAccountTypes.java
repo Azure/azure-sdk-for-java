@@ -8,7 +8,15 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageAccountTypes. */
+/**
+ * Specifies the storage account type for the managed disk. Managed OS disk storage account type can only be set when
+ * you create the scale set. NOTE: UltraSSD_LRS can only be used with data disks. It cannot be used with OS Disk.
+ * Standard_LRS uses Standard HDD. StandardSSD_LRS uses Standard SSD. Premium_LRS uses Premium SSD. UltraSSD_LRS uses
+ * Ultra disk. Premium_ZRS uses Premium SSD zone redundant storage. StandardSSD_ZRS uses Standard SSD zone redundant
+ * storage. For more information regarding disks supported for Windows Virtual Machines, refer to
+ * https://docs.microsoft.com/azure/virtual-machines/windows/disks-types and, for Linux Virtual Machines, refer to
+ * https://docs.microsoft.com/azure/virtual-machines/linux/disks-types.
+ */
 public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccountTypes> {
     /** Static value Standard_LRS for StorageAccountTypes. */
     public static final StorageAccountTypes STANDARD_LRS = fromString("Standard_LRS");
@@ -28,6 +36,9 @@ public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccou
     /** Static value StandardSSD_ZRS for StorageAccountTypes. */
     public static final StorageAccountTypes STANDARD_SSD_ZRS = fromString("StandardSSD_ZRS");
 
+    /** Static value PremiumV2_LRS for StorageAccountTypes. */
+    public static final StorageAccountTypes PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
+
     /**
      * Creates or finds a StorageAccountTypes from its string representation.
      *
@@ -39,7 +50,11 @@ public final class StorageAccountTypes extends ExpandableStringEnum<StorageAccou
         return fromString(name, StorageAccountTypes.class);
     }
 
-    /** @return known StorageAccountTypes values. */
+    /**
+     * Gets known StorageAccountTypes values.
+     *
+     * @return known StorageAccountTypes values.
+     */
     public static Collection<StorageAccountTypes> values() {
         return values(StorageAccountTypes.class);
     }

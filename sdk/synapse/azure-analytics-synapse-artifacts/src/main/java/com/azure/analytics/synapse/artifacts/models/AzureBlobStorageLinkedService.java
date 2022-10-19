@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** The azure blob storage linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,9 +19,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureBlobStorageLinkedService extends LinkedService {
     /*
-     * The connection string. It is mutually exclusive with sasUri,
-     * serviceEndpoint property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with sasUri, serviceEndpoint property. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString")
     private Object connectionString;
@@ -31,9 +32,8 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference accountKey;
 
     /*
-     * SAS URI of the Azure Blob Storage resource. It is mutually exclusive
-     * with connectionString, serviceEndpoint property. Type: string,
-     * SecureString or AzureKeyVaultSecretReference.
+     * SAS URI of the Azure Blob Storage resource. It is mutually exclusive with connectionString, serviceEndpoint
+     * property. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.sasUri")
     private Object sasUri;
@@ -45,54 +45,50 @@ public class AzureBlobStorageLinkedService extends LinkedService {
     private AzureKeyVaultSecretReference sasToken;
 
     /*
-     * Blob service endpoint of the Azure Blob Storage resource. It is mutually
-     * exclusive with connectionString, sasUri property.
+     * Blob service endpoint of the Azure Blob Storage resource. It is mutually exclusive with connectionString, sasUri
+     * property.
      */
     @JsonProperty(value = "typeProperties.serviceEndpoint")
     private String serviceEndpoint;
 
     /*
-     * The ID of the service principal used to authenticate against Azure SQL
-     * Data Warehouse. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against Azure SQL
-     * Data Warehouse.
+     * The key of the service principal used to authenticate against Azure SQL Data Warehouse.
      */
     @JsonProperty(value = "typeProperties.servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.tenant")
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed
-     * values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany.
-     * Default value is the data factory regions’ cloud type. Type: string (or
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.azureCloudType")
     private Object azureCloudType;
 
     /*
-     * Specify the kind of your storage account. Allowed values are: Storage
-     * (general purpose v1), StorageV2 (general purpose v2), BlobStorage, or
-     * BlockBlobStorage. Type: string (or Expression with resultType string).
+     * Specify the kind of your storage account. Allowed values are: Storage (general purpose v1), StorageV2 (general
+     * purpose v2), BlobStorage, or BlockBlobStorage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.accountKind")
     private String accountKind;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private String encryptedCredential;
@@ -336,6 +332,34 @@ public class AzureBlobStorageLinkedService extends LinkedService {
      */
     public AzureBlobStorageLinkedService setEncryptedCredential(String encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

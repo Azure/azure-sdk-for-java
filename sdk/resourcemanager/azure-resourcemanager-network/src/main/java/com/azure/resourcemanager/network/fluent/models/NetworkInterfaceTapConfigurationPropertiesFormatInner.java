@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of Virtual Network Tap configuration. */
 @Fluent
 public final class NetworkInterfaceTapConfigurationPropertiesFormatInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(NetworkInterfaceTapConfigurationPropertiesFormatInner.class);
-
     /*
      * The reference to the Virtual Network Tap resource.
      */
@@ -23,11 +18,14 @@ public final class NetworkInterfaceTapConfigurationPropertiesFormatInner {
     private VirtualNetworkTapInner virtualNetworkTap;
 
     /*
-     * The provisioning state of the network interface tap configuration
-     * resource.
+     * The provisioning state of the network interface tap configuration resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of NetworkInterfaceTapConfigurationPropertiesFormatInner class. */
+    public NetworkInterfaceTapConfigurationPropertiesFormatInner() {
+    }
 
     /**
      * Get the virtualNetworkTap property: The reference to the Virtual Network Tap resource.

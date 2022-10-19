@@ -7,15 +7,12 @@ package com.azure.resourcemanager.applicationinsights.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WebTestInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of 0 or more Application Insights web test definitions. */
 @Fluent
 public final class WebTestListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebTestListResult.class);
-
     /*
      * Set of Application Insights web test definitions.
      */
@@ -78,11 +75,13 @@ public final class WebTestListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model WebTestListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebTestListResult.class);
 }

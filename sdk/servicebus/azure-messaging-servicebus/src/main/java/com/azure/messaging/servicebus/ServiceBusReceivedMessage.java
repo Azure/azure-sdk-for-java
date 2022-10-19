@@ -12,6 +12,7 @@ import com.azure.core.amqp.models.AmqpMessageId;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.servicebus.models.ServiceBusMessageState;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 
 import java.time.Duration;
@@ -31,6 +32,7 @@ import static com.azure.core.amqp.AmqpMessageConstant.LOCKED_UNTIL_KEY_ANNOTATIO
 import static com.azure.core.amqp.AmqpMessageConstant.PARTITION_KEY_ANNOTATION_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SCHEDULED_ENQUEUE_UTC_TIME_NAME;
 import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION_NAME;
+import static com.azure.core.amqp.AmqpMessageConstant.MESSAGE_STATE_ANNOTATION_NAME;
 
 /**
  * The data structure encapsulating the message received from Service Bus. The message structure is discussed in detail
@@ -45,9 +47,9 @@ import static com.azure.core.amqp.AmqpMessageConstant.SEQUENCE_NUMBER_ANNOTATION
  *     </a>
  */
 public final class ServiceBusReceivedMessage {
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceivedMessage.class);
-
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceivedMessage.class);
     private final AmqpAnnotatedMessage amqpAnnotatedMessage;
+
     private UUID lockToken;
     private boolean isSettled = false;
     private Context context;
@@ -100,10 +102,10 @@ public final class ServiceBusReceivedMessage {
                 return BinaryData.fromBytes(payload);
             case SEQUENCE:
             case VALUE:
-                throw logger.logExceptionAsError(new UnsupportedOperationException(
+                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
                     "This body type not is supported: " + bodyType));
             default:
-                throw logger.logExceptionAsError(new IllegalStateException("Body type not valid: " + bodyType));
+                throw LOGGER.logExceptionAsError(new IllegalStateException("Body type not valid: " + bodyType));
         }
     }
 
@@ -443,6 +445,25 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
+     * Gets the state of the message.
+     *
+     * The state of the message can be Active, Deferred, or Scheduled. Deferred messages have Deferred state, scheduled
+     * messages have Scheduled state, all other messages have Active state.
+     *
+     * @return The state of the message.
+     * @throws UnsupportedOperationException if the message state is an unknown value.
+     */
+    public ServiceBusMessageState getState() {
+        final Object value = amqpAnnotatedMessage.getMessageAnnotations().get(MESSAGE_STATE_ANNOTATION_NAME.getValue());
+
+        if (value instanceof Integer) {
+            return ServiceBusMessageState.fromValue((Integer) value);
+        } else {
+            return ServiceBusMessageState.ACTIVE;
+        }
+    }
+
+    /**
      * Gets the subject for the message.
      *
      * <p>
@@ -512,6 +533,18 @@ public final class ServiceBusReceivedMessage {
         return this;
     }
 
+    /**
+     * Adds a new key value pair to the existing context on Message.
+     *
+     * @param key The key for this context object
+     * @param value The value for this context object.
+     *
+     * @return The updated {@link ServiceBusMessage}.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
+     */
+    Context getContext() {
+        return this.context;
+    }
     /**
      * Gets whether the message has been settled.
      *

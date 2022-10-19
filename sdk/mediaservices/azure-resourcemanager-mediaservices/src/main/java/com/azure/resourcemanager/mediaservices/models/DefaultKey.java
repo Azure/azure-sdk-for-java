@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class to specify properties of default content key for each encryption scheme. */
 @Fluent
 public final class DefaultKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DefaultKey.class);
-
     /*
-     * Label can be used to specify Content Key when creating a Streaming
-     * Locator
+     * Label can be used to specify Content Key when creating a Streaming Locator
      */
     @JsonProperty(value = "label")
     private String label;

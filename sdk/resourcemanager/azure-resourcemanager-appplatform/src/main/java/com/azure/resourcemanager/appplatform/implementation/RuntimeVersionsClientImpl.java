@@ -20,15 +20,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appplatform.fluent.RuntimeVersionsClient;
 import com.azure.resourcemanager.appplatform.fluent.models.AvailableRuntimeVersionsInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RuntimeVersionsClient. */
 public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
-    private final ClientLogger logger = new ClientLogger(RuntimeVersionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RuntimeVersionsService service;
 
@@ -69,7 +66,7 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AvailableRuntimeVersionsInner>> listRuntimeVersionsWithResponseAsync() {
@@ -85,7 +82,7 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
                 context ->
                     service
                         .listRuntimeVersions(this.client.getEndpoint(), this.client.getApiVersion(), accept, context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -95,7 +92,7 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AvailableRuntimeVersionsInner>> listRuntimeVersionsWithResponseAsync(Context context) {
@@ -115,19 +112,11 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AvailableRuntimeVersionsInner> listRuntimeVersionsAsync() {
-        return listRuntimeVersionsWithResponseAsync()
-            .flatMap(
-                (Response<AvailableRuntimeVersionsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listRuntimeVersionsWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -149,7 +138,7 @@ public final class RuntimeVersionsClientImpl implements RuntimeVersionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AvailableRuntimeVersionsInner> listRuntimeVersionsWithResponse(Context context) {

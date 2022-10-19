@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Container group subnet information. */
 @Fluent
 public final class ContainerGroupSubnetId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerGroupSubnetId.class);
-
     /*
      * Resource ID of virtual network and subnet.
      */
@@ -73,9 +70,11 @@ public final class ContainerGroupSubnetId {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model ContainerGroupSubnetId"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContainerGroupSubnetId.class);
 }

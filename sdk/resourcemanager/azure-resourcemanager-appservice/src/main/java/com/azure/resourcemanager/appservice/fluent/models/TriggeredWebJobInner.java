@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.TriggeredJobRun;
 import com.azure.resourcemanager.appservice.models.WebJobType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Triggered Web Job Information. */
 @Fluent
 public final class TriggeredWebJobInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredWebJobInner.class);
-
     /*
      * TriggeredWebJob resource specific properties
      */
@@ -244,6 +240,54 @@ public final class TriggeredWebJobInner extends ProxyOnlyResource {
             this.innerProperties = new TriggeredWebJobProperties();
         }
         this.innerProperties().withUsingSdk(usingSdk);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the TriggeredWebJobInner object itself.
+     */
+    public TriggeredWebJobInner withPublicNetworkAccess(String publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the storageAccountRequired property: Checks if Customer provided storage account is required.
+     *
+     * @return the storageAccountRequired value.
+     */
+    public Boolean storageAccountRequired() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountRequired();
+    }
+
+    /**
+     * Set the storageAccountRequired property: Checks if Customer provided storage account is required.
+     *
+     * @param storageAccountRequired the storageAccountRequired value to set.
+     * @return the TriggeredWebJobInner object itself.
+     */
+    public TriggeredWebJobInner withStorageAccountRequired(Boolean storageAccountRequired) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredWebJobProperties();
+        }
+        this.innerProperties().withStorageAccountRequired(storageAccountRequired);
         return this;
     }
 

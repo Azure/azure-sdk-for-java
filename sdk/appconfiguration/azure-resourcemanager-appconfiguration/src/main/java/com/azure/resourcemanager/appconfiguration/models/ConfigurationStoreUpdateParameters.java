@@ -5,17 +5,19 @@
 package com.azure.resourcemanager.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.appconfiguration.fluent.models.ConfigurationStorePropertiesUpdateParameters;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The parameters for updating a configuration store. */
-@JsonFlatten
 @Fluent
-public class ConfigurationStoreUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConfigurationStoreUpdateParameters.class);
+public final class ConfigurationStoreUpdateParameters {
+    /*
+     * The properties for updating a configuration store.
+     */
+    @JsonProperty(value = "properties")
+    private ConfigurationStorePropertiesUpdateParameters innerProperties;
 
     /*
      * The managed identity information for the configuration store.
@@ -33,26 +35,17 @@ public class ConfigurationStoreUpdateParameters {
      * The ARM resource tags.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /*
-     * The encryption settings of the configuration store.
+    /**
+     * Get the innerProperties property: The properties for updating a configuration store.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.encryption")
-    private EncryptionProperties encryption;
-
-    /*
-     * Disables all authentication methods other than AAD authentication.
-     */
-    @JsonProperty(value = "properties.disableLocalAuth")
-    private Boolean disableLocalAuth;
-
-    /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
-     */
-    @JsonProperty(value = "properties.publicNetworkAccess")
-    private PublicNetworkAccess publicNetworkAccess;
+    private ConfigurationStorePropertiesUpdateParameters innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the identity property: The managed identity information for the configuration store.
@@ -120,7 +113,7 @@ public class ConfigurationStoreUpdateParameters {
      * @return the encryption value.
      */
     public EncryptionProperties encryption() {
-        return this.encryption;
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
     }
 
     /**
@@ -130,7 +123,10 @@ public class ConfigurationStoreUpdateParameters {
      * @return the ConfigurationStoreUpdateParameters object itself.
      */
     public ConfigurationStoreUpdateParameters withEncryption(EncryptionProperties encryption) {
-        this.encryption = encryption;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStorePropertiesUpdateParameters();
+        }
+        this.innerProperties().withEncryption(encryption);
         return this;
     }
 
@@ -140,7 +136,7 @@ public class ConfigurationStoreUpdateParameters {
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
-        return this.disableLocalAuth;
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
     }
 
     /**
@@ -150,7 +146,10 @@ public class ConfigurationStoreUpdateParameters {
      * @return the ConfigurationStoreUpdateParameters object itself.
      */
     public ConfigurationStoreUpdateParameters withDisableLocalAuth(Boolean disableLocalAuth) {
-        this.disableLocalAuth = disableLocalAuth;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStorePropertiesUpdateParameters();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
         return this;
     }
 
@@ -161,7 +160,7 @@ public class ConfigurationStoreUpdateParameters {
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
-        return this.publicNetworkAccess;
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
     }
 
     /**
@@ -172,7 +171,35 @@ public class ConfigurationStoreUpdateParameters {
      * @return the ConfigurationStoreUpdateParameters object itself.
      */
     public ConfigurationStoreUpdateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
-        this.publicNetworkAccess = publicNetworkAccess;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStorePropertiesUpdateParameters();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the enablePurgeProtection property: Property specifying whether protection against purge is enabled for this
+     * configuration store.
+     *
+     * @return the enablePurgeProtection value.
+     */
+    public Boolean enablePurgeProtection() {
+        return this.innerProperties() == null ? null : this.innerProperties().enablePurgeProtection();
+    }
+
+    /**
+     * Set the enablePurgeProtection property: Property specifying whether protection against purge is enabled for this
+     * configuration store.
+     *
+     * @param enablePurgeProtection the enablePurgeProtection value to set.
+     * @return the ConfigurationStoreUpdateParameters object itself.
+     */
+    public ConfigurationStoreUpdateParameters withEnablePurgeProtection(Boolean enablePurgeProtection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ConfigurationStorePropertiesUpdateParameters();
+        }
+        this.innerProperties().withEnablePurgeProtection(enablePurgeProtection);
         return this;
     }
 
@@ -182,14 +209,14 @@ public class ConfigurationStoreUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }
         if (sku() != null) {
             sku().validate();
-        }
-        if (encryption() != null) {
-            encryption().validate();
         }
     }
 }

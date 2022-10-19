@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The SKU of a Managed Cluster. */
 @Fluent
 public final class ManagedClusterSku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterSku.class);
-
     /*
      * The name of a managed cluster SKU.
      */
@@ -21,9 +17,10 @@ public final class ManagedClusterSku {
     private ManagedClusterSkuName name;
 
     /*
-     * The tier of a managed cluster SKU. If not specified, the default is
-     * 'Free'. See [uptime
-     * SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for more details.
+     * The tier of a managed cluster SKU.
+     *
+     * If not specified, the default is 'Free'. See [uptime SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for
+     * more details.
      */
     @JsonProperty(value = "tier")
     private ManagedClusterSkuTier tier;
@@ -49,8 +46,10 @@ public final class ManagedClusterSku {
     }
 
     /**
-     * Get the tier property: The tier of a managed cluster SKU. If not specified, the default is 'Free'. See [uptime
-     * SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for more details.
+     * Get the tier property: The tier of a managed cluster SKU.
+     *
+     * <p>If not specified, the default is 'Free'. See [uptime SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for
+     * more details.
      *
      * @return the tier value.
      */
@@ -59,8 +58,10 @@ public final class ManagedClusterSku {
     }
 
     /**
-     * Set the tier property: The tier of a managed cluster SKU. If not specified, the default is 'Free'. See [uptime
-     * SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for more details.
+     * Set the tier property: The tier of a managed cluster SKU.
+     *
+     * <p>If not specified, the default is 'Free'. See [uptime SLA](https://docs.microsoft.com/azure/aks/uptime-sla) for
+     * more details.
      *
      * @param tier the tier value to set.
      * @return the ManagedClusterSku object itself.

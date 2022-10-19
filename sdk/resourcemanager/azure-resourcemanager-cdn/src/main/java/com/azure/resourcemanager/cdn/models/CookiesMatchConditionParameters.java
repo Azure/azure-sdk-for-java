@@ -6,20 +6,17 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the parameters for Cookies match conditions. */
 @Fluent
 public final class CookiesMatchConditionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CookiesMatchConditionParameters.class);
-
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleCookiesConditionParameters";
 
     /*
      * Name of Cookies to be matched
@@ -53,26 +50,26 @@ public final class CookiesMatchConditionParameters {
 
     /** Creates an instance of CookiesMatchConditionParameters class. */
     public CookiesMatchConditionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleCookiesConditionParameters";
+        typeName = "DeliveryRuleCookiesConditionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the CookiesMatchConditionParameters object itself.
      */
-    public CookiesMatchConditionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public CookiesMatchConditionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
@@ -183,10 +180,12 @@ public final class CookiesMatchConditionParameters {
      */
     public void validate() {
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operator in model CookiesMatchConditionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CookiesMatchConditionParameters.class);
 }

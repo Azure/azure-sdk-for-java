@@ -18,7 +18,7 @@ public interface BackupPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionPolicy resources.
+     * @return list of ProtectionPolicy resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProtectionPolicyResource> list(String vaultName, String resourceGroupName);
 
@@ -33,7 +33,7 @@ public interface BackupPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ProtectionPolicy resources.
+     * @return list of ProtectionPolicy resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ProtectionPolicyResource> list(
         String vaultName, String resourceGroupName, String filter, Context context);

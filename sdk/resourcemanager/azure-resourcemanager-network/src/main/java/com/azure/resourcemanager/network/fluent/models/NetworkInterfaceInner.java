@@ -7,13 +7,12 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExtendedLocation;
+import com.azure.resourcemanager.network.models.NetworkInterfaceAuxiliaryMode;
 import com.azure.resourcemanager.network.models.NetworkInterfaceDnsSettings;
 import com.azure.resourcemanager.network.models.NetworkInterfaceMigrationPhase;
 import com.azure.resourcemanager.network.models.NetworkInterfaceNicType;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +20,6 @@ import java.util.Map;
 /** A network interface in a resource group. */
 @Fluent
 public final class NetworkInterfaceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceInner.class);
-
     /*
      * The extended location of the network interface.
      */
@@ -46,6 +43,10 @@ public final class NetworkInterfaceInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of NetworkInterfaceInner class. */
+    public NetworkInterfaceInner() {
+    }
 
     /**
      * Get the extendedLocation property: The extended location of the network interface.
@@ -244,7 +245,8 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Get the enableAcceleratedNetworking property: If the network interface is accelerated networking enabled.
+     * Get the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
+     * Not applicable to VM sizes which require accelerated networking.
      *
      * @return the enableAcceleratedNetworking value.
      */
@@ -253,7 +255,8 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
-     * Set the enableAcceleratedNetworking property: If the network interface is accelerated networking enabled.
+     * Set the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
+     * Not applicable to VM sizes which require accelerated networking.
      *
      * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
      * @return the NetworkInterfaceInner object itself.
@@ -263,6 +266,29 @@ public final class NetworkInterfaceInner extends Resource {
             this.innerProperties = new NetworkInterfacePropertiesFormatInner();
         }
         this.innerProperties().withEnableAcceleratedNetworking(enableAcceleratedNetworking);
+        return this;
+    }
+
+    /**
+     * Get the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
+     *
+     * @return the disableTcpStateTracking value.
+     */
+    public Boolean disableTcpStateTracking() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableTcpStateTracking();
+    }
+
+    /**
+     * Set the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
+     *
+     * @param disableTcpStateTracking the disableTcpStateTracking value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withDisableTcpStateTracking(Boolean disableTcpStateTracking) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
+        }
+        this.innerProperties().withDisableTcpStateTracking(disableTcpStateTracking);
         return this;
     }
 
@@ -415,6 +441,29 @@ public final class NetworkInterfaceInner extends Resource {
             this.innerProperties = new NetworkInterfacePropertiesFormatInner();
         }
         this.innerProperties().withMigrationPhase(migrationPhase);
+        return this;
+    }
+
+    /**
+     * Get the auxiliaryMode property: Auxiliary mode of Network Interface resource.
+     *
+     * @return the auxiliaryMode value.
+     */
+    public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().auxiliaryMode();
+    }
+
+    /**
+     * Set the auxiliaryMode property: Auxiliary mode of Network Interface resource.
+     *
+     * @param auxiliaryMode the auxiliaryMode value to set.
+     * @return the NetworkInterfaceInner object itself.
+     */
+    public NetworkInterfaceInner withAuxiliaryMode(NetworkInterfaceAuxiliaryMode auxiliaryMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new NetworkInterfacePropertiesFormatInner();
+        }
+        this.innerProperties().withAuxiliaryMode(auxiliaryMode);
         return this;
     }
 

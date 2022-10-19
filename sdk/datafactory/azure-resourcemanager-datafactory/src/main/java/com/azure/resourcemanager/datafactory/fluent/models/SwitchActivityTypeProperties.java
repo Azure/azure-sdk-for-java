@@ -9,37 +9,36 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.Activity;
 import com.azure.resourcemanager.datafactory.models.Expression;
 import com.azure.resourcemanager.datafactory.models.SwitchCase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Switch activity properties. */
 @Fluent
 public final class SwitchActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SwitchActivityTypeProperties.class);
-
     /*
-     * An expression that would evaluate to a string or integer. This is used
-     * to determine the block of activities in cases that will be executed.
+     * An expression that would evaluate to a string or integer. This is used to determine the block of activities in
+     * cases that will be executed.
      */
     @JsonProperty(value = "on", required = true)
     private Expression on;
 
     /*
-     * List of cases that correspond to expected values of the 'on' property.
-     * This is an optional property and if not provided, the activity will
-     * execute activities provided in defaultActivities.
+     * List of cases that correspond to expected values of the 'on' property. This is an optional property and if not
+     * provided, the activity will execute activities provided in defaultActivities.
      */
     @JsonProperty(value = "cases")
     private List<SwitchCase> cases;
 
     /*
-     * List of activities to execute if no case condition is satisfied. This is
-     * an optional property and if not provided, the activity will exit without
-     * any action.
+     * List of activities to execute if no case condition is satisfied. This is an optional property and if not
+     * provided, the activity will exit without any action.
      */
     @JsonProperty(value = "defaultActivities")
     private List<Activity> defaultActivities;
+
+    /** Creates an instance of SwitchActivityTypeProperties class. */
+    public SwitchActivityTypeProperties() {
+    }
 
     /**
      * Get the on property: An expression that would evaluate to a string or integer. This is used to determine the
@@ -114,7 +113,7 @@ public final class SwitchActivityTypeProperties {
      */
     public void validate() {
         if (on() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property on in model SwitchActivityTypeProperties"));
         } else {
@@ -127,4 +126,6 @@ public final class SwitchActivityTypeProperties {
             defaultActivities().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SwitchActivityTypeProperties.class);
 }

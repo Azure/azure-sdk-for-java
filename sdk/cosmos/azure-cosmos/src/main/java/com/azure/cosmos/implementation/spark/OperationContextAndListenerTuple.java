@@ -7,7 +7,11 @@ public class OperationContextAndListenerTuple {
     private final OperationContext operationContext;
     private final OperationListener operationListener;
 
-    public OperationContextAndListenerTuple(OperationContext operationContext, OperationListener operationListener) {
+    public OperationContextAndListenerTuple(
+        OperationContext operationContext,
+        OperationListener operationListener
+    ) {
+
         this.operationContext = operationContext;
         this.operationListener = operationListener;
     }

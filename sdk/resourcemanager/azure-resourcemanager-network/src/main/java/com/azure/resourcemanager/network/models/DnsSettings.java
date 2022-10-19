@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** DNS Proxy Settings in Firewall Policy. */
 @Fluent
 public final class DnsSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DnsSettings.class);
-
     /*
      * List of Custom DNS Servers.
      */
@@ -32,6 +28,10 @@ public final class DnsSettings {
      */
     @JsonProperty(value = "requireProxyForNetworkRules")
     private Boolean requireProxyForNetworkRules;
+
+    /** Creates an instance of DnsSettings class. */
+    public DnsSettings() {
+    }
 
     /**
      * Get the servers property: List of Custom DNS Servers.

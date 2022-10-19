@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class DiffDiskSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiffDiskSettings.class);
-
     /*
      * Specifies the ephemeral disk settings for operating system disk.
      */
@@ -24,15 +20,11 @@ public final class DiffDiskSettings {
     private DiffDiskOptions option;
 
     /*
-     * Specifies the ephemeral disk placement for operating system
-     * disk.<br><br> Possible values are: <br><br> **CacheDisk** <br><br>
-     * **ResourceDisk** <br><br> Default: **CacheDisk** if one is configured
-     * for the VM size otherwise **ResourceDisk** is used.<br><br> Refer to VM
-     * size documentation for Windows VM at
-     * https://docs.microsoft.com/azure/virtual-machines/windows/sizes and
-     * Linux VM at
-     * https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check
-     * which VM sizes exposes a cache disk.
+     * Specifies the ephemeral disk placement for operating system disk.<br><br> Possible values are: <br><br>
+     * **CacheDisk** <br><br> **ResourceDisk** <br><br> Default: **CacheDisk** if one is configured for the VM size
+     * otherwise **ResourceDisk** is used.<br><br> Refer to VM size documentation for Windows VM at
+     * https://docs.microsoft.com/azure/virtual-machines/windows/sizes and Linux VM at
+     * https://docs.microsoft.com/azure/virtual-machines/linux/sizes to check which VM sizes exposes a cache disk.
      */
     @JsonProperty(value = "placement")
     private DiffDiskPlacement placement;

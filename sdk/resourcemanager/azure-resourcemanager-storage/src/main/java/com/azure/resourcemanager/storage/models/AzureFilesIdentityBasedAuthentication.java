@@ -6,35 +6,32 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Settings for Azure Files identity based authentication. */
 @Fluent
 public final class AzureFilesIdentityBasedAuthentication {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFilesIdentityBasedAuthentication.class);
-
     /*
-     * Indicates the directory service used.
+     * Indicates the directory service used. Note that this enum may be extended in the future.
      */
     @JsonProperty(value = "directoryServiceOptions", required = true)
     private DirectoryServiceOptions directoryServiceOptions;
 
     /*
-     * Required if choose AD.
+     * Required if directoryServiceOptions are AD, optional if they are AADKERB.
      */
     @JsonProperty(value = "activeDirectoryProperties")
     private ActiveDirectoryProperties activeDirectoryProperties;
 
     /*
-     * Default share permission for users using Kerberos authentication if RBAC
-     * role is not assigned.
+     * Default share permission for users using Kerberos authentication if RBAC role is not assigned.
      */
     @JsonProperty(value = "defaultSharePermission")
     private DefaultSharePermission defaultSharePermission;
 
     /**
-     * Get the directoryServiceOptions property: Indicates the directory service used.
+     * Get the directoryServiceOptions property: Indicates the directory service used. Note that this enum may be
+     * extended in the future.
      *
      * @return the directoryServiceOptions value.
      */
@@ -43,7 +40,8 @@ public final class AzureFilesIdentityBasedAuthentication {
     }
 
     /**
-     * Set the directoryServiceOptions property: Indicates the directory service used.
+     * Set the directoryServiceOptions property: Indicates the directory service used. Note that this enum may be
+     * extended in the future.
      *
      * @param directoryServiceOptions the directoryServiceOptions value to set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.
@@ -55,7 +53,8 @@ public final class AzureFilesIdentityBasedAuthentication {
     }
 
     /**
-     * Get the activeDirectoryProperties property: Required if choose AD.
+     * Get the activeDirectoryProperties property: Required if directoryServiceOptions are AD, optional if they are
+     * AADKERB.
      *
      * @return the activeDirectoryProperties value.
      */
@@ -64,7 +63,8 @@ public final class AzureFilesIdentityBasedAuthentication {
     }
 
     /**
-     * Set the activeDirectoryProperties property: Required if choose AD.
+     * Set the activeDirectoryProperties property: Required if directoryServiceOptions are AD, optional if they are
+     * AADKERB.
      *
      * @param activeDirectoryProperties the activeDirectoryProperties value to set.
      * @return the AzureFilesIdentityBasedAuthentication object itself.
@@ -105,7 +105,7 @@ public final class AzureFilesIdentityBasedAuthentication {
      */
     public void validate() {
         if (directoryServiceOptions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property directoryServiceOptions in model"
@@ -115,4 +115,6 @@ public final class AzureFilesIdentityBasedAuthentication {
             activeDirectoryProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFilesIdentityBasedAuthentication.class);
 }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Validation for inquired protectable items under a given container. */
 @Fluent
 public final class InquiryValidation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InquiryValidation.class);
-
     /*
      * Status for the Inquiry Validation.
      */

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AccountEntity;
 import com.azure.resourcemanager.securityinsights.models.AzureResourceEntity;
 import com.azure.resourcemanager.securityinsights.models.CloudApplicationEntity;
@@ -22,6 +21,7 @@ import com.azure.resourcemanager.securityinsights.models.MailClusterEntity;
 import com.azure.resourcemanager.securityinsights.models.MailMessageEntity;
 import com.azure.resourcemanager.securityinsights.models.MailboxEntity;
 import com.azure.resourcemanager.securityinsights.models.MalwareEntity;
+import com.azure.resourcemanager.securityinsights.models.NicEntity;
 import com.azure.resourcemanager.securityinsights.models.ProcessEntity;
 import com.azure.resourcemanager.securityinsights.models.RegistryKeyEntity;
 import com.azure.resourcemanager.securityinsights.models.RegistryValueEntity;
@@ -29,7 +29,6 @@ import com.azure.resourcemanager.securityinsights.models.SecurityAlert;
 import com.azure.resourcemanager.securityinsights.models.SecurityGroupEntity;
 import com.azure.resourcemanager.securityinsights.models.SubmissionMailEntity;
 import com.azure.resourcemanager.securityinsights.models.UrlEntity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -63,15 +62,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "RegistryValue", value = RegistryValueEntity.class),
     @JsonSubTypes.Type(name = "SecurityGroup", value = SecurityGroupEntity.class),
     @JsonSubTypes.Type(name = "SubmissionMail", value = SubmissionMailEntity.class),
-    @JsonSubTypes.Type(name = "Url", value = UrlEntity.class)
+    @JsonSubTypes.Type(name = "Url", value = UrlEntity.class),
+    @JsonSubTypes.Type(name = "Nic", value = NicEntity.class)
 })
 @Immutable
 public class EntityInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityInner.class);
-
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;

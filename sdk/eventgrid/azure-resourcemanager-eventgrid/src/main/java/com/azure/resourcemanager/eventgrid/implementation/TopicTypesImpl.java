@@ -15,10 +15,9 @@ import com.azure.resourcemanager.eventgrid.fluent.models.TopicTypeInfoInner;
 import com.azure.resourcemanager.eventgrid.models.EventType;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeInfo;
 import com.azure.resourcemanager.eventgrid.models.TopicTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TopicTypesImpl implements TopicTypes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicTypesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TopicTypesImpl.class);
 
     private final TopicTypesClient innerClient;
 

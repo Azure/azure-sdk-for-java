@@ -6,27 +6,20 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Operation request/response representation details. */
 @Fluent
 public final class RepresentationContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RepresentationContract.class);
-
     /*
      * Specifies a registered or custom content type for this representation,
      * e.g. application/xml.
      */
     @JsonProperty(value = "contentType", required = true)
     private String contentType;
-
-    /*
-     * An example of the representation.
-     */
-    @JsonProperty(value = "sample")
-    private String sample;
 
     /*
      * Schema identifier. Applicable only if 'contentType' value is neither
@@ -50,6 +43,13 @@ public final class RepresentationContract {
     @JsonProperty(value = "formParameters")
     private List<ParameterContract> formParameters;
 
+    /*
+     * Exampled defined for the representation.
+     */
+    @JsonProperty(value = "examples")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, ParameterExampleContract> examples;
+
     /**
      * Get the contentType property: Specifies a registered or custom content type for this representation, e.g.
      * application/xml.
@@ -69,26 +69,6 @@ public final class RepresentationContract {
      */
     public RepresentationContract withContentType(String contentType) {
         this.contentType = contentType;
-        return this;
-    }
-
-    /**
-     * Get the sample property: An example of the representation.
-     *
-     * @return the sample value.
-     */
-    public String sample() {
-        return this.sample;
-    }
-
-    /**
-     * Set the sample property: An example of the representation.
-     *
-     * @param sample the sample value to set.
-     * @return the RepresentationContract object itself.
-     */
-    public RepresentationContract withSample(String sample) {
-        this.sample = sample;
         return this;
     }
 
@@ -159,13 +139,33 @@ public final class RepresentationContract {
     }
 
     /**
+     * Get the examples property: Exampled defined for the representation.
+     *
+     * @return the examples value.
+     */
+    public Map<String, ParameterExampleContract> examples() {
+        return this.examples;
+    }
+
+    /**
+     * Set the examples property: Exampled defined for the representation.
+     *
+     * @param examples the examples value to set.
+     * @return the RepresentationContract object itself.
+     */
+    public RepresentationContract withExamples(Map<String, ParameterExampleContract> examples) {
+        this.examples = examples;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (contentType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property contentType in model RepresentationContract"));
@@ -173,5 +173,17 @@ public final class RepresentationContract {
         if (formParameters() != null) {
             formParameters().forEach(e -> e.validate());
         }
+        if (examples() != null) {
+            examples()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RepresentationContract.class);
 }

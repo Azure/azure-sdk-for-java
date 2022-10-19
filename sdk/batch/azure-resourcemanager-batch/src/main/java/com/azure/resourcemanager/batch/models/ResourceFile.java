@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A single file or multiple files to be downloaded to a compute node. */
 @Fluent
 public final class ResourceFile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceFile.class);
-
     /*
      * The storage container name in the auto storage account. The
      * autoStorageContainerName, storageContainerUrl and httpUrl properties are

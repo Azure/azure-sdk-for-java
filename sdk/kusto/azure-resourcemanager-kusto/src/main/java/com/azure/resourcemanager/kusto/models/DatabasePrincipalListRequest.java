@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.kusto.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.models.DatabasePrincipalInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list Kusto database principals operation request. */
 @Fluent
 public final class DatabasePrincipalListRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasePrincipalListRequest.class);
-
     /*
      * The list of Kusto database principals.
      */

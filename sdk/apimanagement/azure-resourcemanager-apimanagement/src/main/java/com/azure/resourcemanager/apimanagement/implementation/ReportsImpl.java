@@ -13,11 +13,10 @@ import com.azure.resourcemanager.apimanagement.fluent.models.RequestReportRecord
 import com.azure.resourcemanager.apimanagement.models.ReportRecordContract;
 import com.azure.resourcemanager.apimanagement.models.Reports;
 import com.azure.resourcemanager.apimanagement.models.RequestReportRecordContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.Duration;
 
 public final class ReportsImpl implements Reports {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReportsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReportsImpl.class);
 
     private final ReportsClient innerClient;
 

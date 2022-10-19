@@ -5,22 +5,16 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Encryption settings for disk or snapshot. */
 @Fluent
 public final class EncryptionSettingsCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSettingsCollection.class);
-
     /*
-     * Set this flag to true and provide DiskEncryptionKey and optional
-     * KeyEncryptionKey to enable encryption. Set this flag to false and remove
-     * DiskEncryptionKey and KeyEncryptionKey to disable encryption. If
-     * EncryptionSettings is null in the request object, the existing settings
-     * remain unchanged.
+     * Set this flag to true and provide DiskEncryptionKey and optional KeyEncryptionKey to enable encryption. Set this
+     * flag to false and remove DiskEncryptionKey and KeyEncryptionKey to disable encryption. If EncryptionSettings is
+     * null in the request object, the existing settings remain unchanged.
      */
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
@@ -32,9 +26,8 @@ public final class EncryptionSettingsCollection {
     private List<EncryptionSettingsElement> encryptionSettings;
 
     /*
-     * Describes what type of encryption is used for the disks. Once this field
-     * is set, it cannot be overwritten. '1.0' corresponds to Azure Disk
-     * Encryption with AAD app.'1.1' corresponds to Azure Disk Encryption.
+     * Describes what type of encryption is used for the disks. Once this field is set, it cannot be overwritten. '1.0'
+     * corresponds to Azure Disk Encryption with AAD app.'1.1' corresponds to Azure Disk Encryption.
      */
     @JsonProperty(value = "encryptionSettingsVersion")
     private String encryptionSettingsVersion;

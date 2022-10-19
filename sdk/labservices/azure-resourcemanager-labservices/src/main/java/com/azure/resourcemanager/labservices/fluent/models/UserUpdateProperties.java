@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.labservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
 /** User resource properties used for updates. */
 @Fluent
 public class UserUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserUpdateProperties.class);
-
     /*
-     * The amount of usage quota time the user gets in addition to the lab
-     * usage quota.
+     * The amount of usage quota time the user gets in addition to the lab usage quota.
      */
     @JsonProperty(value = "additionalUsageQuota")
     private Duration additionalUsageQuota;

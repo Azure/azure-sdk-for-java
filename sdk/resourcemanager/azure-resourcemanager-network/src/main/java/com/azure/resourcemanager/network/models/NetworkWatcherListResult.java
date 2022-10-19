@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.NetworkWatcherInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListNetworkWatchers API service call. */
 @Fluent
 public final class NetworkWatcherListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkWatcherListResult.class);
-
     /*
      * List of network watcher resources.
      */
     @JsonProperty(value = "value")
     private List<NetworkWatcherInner> value;
+
+    /** Creates an instance of NetworkWatcherListResult class. */
+    public NetworkWatcherListResult() {
+    }
 
     /**
      * Get the value property: List of network watcher resources.

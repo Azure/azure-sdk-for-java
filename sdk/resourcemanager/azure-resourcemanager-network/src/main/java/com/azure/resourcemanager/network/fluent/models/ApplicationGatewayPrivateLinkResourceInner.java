@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** PrivateLink Resource of an application gateway. */
 @Fluent
 public final class ApplicationGatewayPrivateLinkResourceInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayPrivateLinkResourceInner.class);
-
     /*
      * Properties of the application gateway private link resource.
      */
@@ -23,8 +19,7 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
     private ApplicationGatewayPrivateLinkResourceProperties innerProperties;
 
     /*
-     * Name of the private link resource that is unique within an Application
-     * Gateway.
+     * Name of the private link resource that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -40,6 +35,10 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ApplicationGatewayPrivateLinkResourceInner class. */
+    public ApplicationGatewayPrivateLinkResourceInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the application gateway private link resource.

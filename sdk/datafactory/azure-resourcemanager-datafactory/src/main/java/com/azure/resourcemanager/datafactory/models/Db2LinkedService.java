@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.Db2LinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("Db2")
 @Fluent
 public final class Db2LinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Db2LinkedService.class);
-
     /*
      * DB2 linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private Db2LinkedServiceTypeProperties innerTypeProperties = new Db2LinkedServiceTypeProperties();
+
+    /** Creates an instance of Db2LinkedService class. */
+    public Db2LinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: DB2 linked service properties.
@@ -300,7 +301,7 @@ public final class Db2LinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model Db2LinkedService"));
@@ -308,4 +309,6 @@ public final class Db2LinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Db2LinkedService.class);
 }

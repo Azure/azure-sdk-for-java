@@ -6,20 +6,15 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.IpVersion;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetUpdatePublicIpAddressConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a virtual machine scale set network profile's IP configuration properties. */
 @Fluent
 public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateIpConfigurationProperties.class);
-
     /*
      * The subnet.
      */
@@ -27,8 +22,7 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
     private ApiEntityReference subnet;
 
     /*
-     * Specifies the primary IP Configuration in case the network interface has
-     * more than one IP Configuration.
+     * Specifies the primary IP Configuration in case the network interface has more than one IP Configuration.
      */
     @JsonProperty(value = "primary")
     private Boolean primary;
@@ -40,9 +34,8 @@ public final class VirtualMachineScaleSetUpdateIpConfigurationProperties {
     private VirtualMachineScaleSetUpdatePublicIpAddressConfiguration publicIpAddressConfiguration;
 
     /*
-     * Available from Api-Version 2017-03-30 onwards, it represents whether the
-     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
-     * Possible values are: 'IPv4' and 'IPv6'.
+     * Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or
+     * IPv6. Default is taken as IPv4.  Possible values are: 'IPv4' and 'IPv6'.
      */
     @JsonProperty(value = "privateIPAddressVersion")
     private IpVersion privateIpAddressVersion;

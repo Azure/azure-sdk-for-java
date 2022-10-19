@@ -30,7 +30,11 @@ public final class BackupEngineType extends ExpandableStringEnum<BackupEngineTyp
         return fromString(name, BackupEngineType.class);
     }
 
-    /** @return known BackupEngineType values. */
+    /**
+     * Gets known BackupEngineType values.
+     *
+     * @return known BackupEngineType values.
+     */
     public static Collection<BackupEngineType> values() {
         return values(BackupEngineType.class);
     }

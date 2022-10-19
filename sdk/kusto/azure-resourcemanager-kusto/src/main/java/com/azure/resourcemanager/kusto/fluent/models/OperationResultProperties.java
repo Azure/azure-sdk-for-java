@@ -5,20 +5,23 @@
 package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.kusto.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Operation result properties. */
 @Fluent
 public final class OperationResultProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultProperties.class);
-
     /*
      * The kind of the operation.
      */
     @JsonProperty(value = "operationKind")
     private String operationKind;
+
+    /*
+     * The provisioned state of the resource.
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private ProvisioningState provisioningState;
 
     /*
      * The state of the operation.
@@ -44,6 +47,15 @@ public final class OperationResultProperties {
     public OperationResultProperties withOperationKind(String operationKind) {
         this.operationKind = operationKind;
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioned state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.provisioningState;
     }
 
     /**

@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectedItemsCli
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectedItemResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItemResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectedItems;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProtectedItemsImpl implements ProtectedItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectedItemsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProtectedItemsImpl.class);
 
     private final ProtectedItemsClient innerClient;
 
@@ -83,14 +82,14 @@ public final class ProtectedItemsImpl implements ProtectedItems {
     public ProtectedItemResource getById(String id) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -98,14 +97,14 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         }
         String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
         String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -115,7 +114,7 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         }
         String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,14 +130,14 @@ public final class ProtectedItemsImpl implements ProtectedItems {
     public Response<ProtectedItemResource> getByIdWithResponse(String id, String filter, Context context) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,14 +145,14 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         }
         String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
         String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -163,7 +162,7 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         }
         String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,14 +176,14 @@ public final class ProtectedItemsImpl implements ProtectedItems {
     public void deleteById(String id) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -192,14 +191,14 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         }
         String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
         String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -209,7 +208,7 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         }
         String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -223,14 +222,14 @@ public final class ProtectedItemsImpl implements ProtectedItems {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String vaultName = Utils.getValueFromIdByName(id, "vaults");
         if (vaultName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -238,14 +237,14 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         }
         String fabricName = Utils.getValueFromIdByName(id, "backupFabrics");
         if (fabricName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'backupFabrics'.", id)));
         }
         String containerName = Utils.getValueFromIdByName(id, "protectionContainers");
         if (containerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -255,7 +254,7 @@ public final class ProtectedItemsImpl implements ProtectedItems {
         }
         String protectedItemName = Utils.getValueFromIdByName(id, "protectedItems");
         if (protectedItemName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

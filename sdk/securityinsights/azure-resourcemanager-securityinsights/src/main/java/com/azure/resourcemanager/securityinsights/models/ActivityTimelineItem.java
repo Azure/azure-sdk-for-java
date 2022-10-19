@@ -6,7 +6,6 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("Activity")
 @Fluent
 public final class ActivityTimelineItem extends EntityTimelineItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityTimelineItem.class);
-
     /*
      * The activity query id.
      */
@@ -210,43 +207,45 @@ public final class ActivityTimelineItem extends EntityTimelineItem {
     public void validate() {
         super.validate();
         if (queryId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property queryId in model ActivityTimelineItem"));
         }
         if (bucketStartTimeUtc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property bucketStartTimeUtc in model ActivityTimelineItem"));
         }
         if (bucketEndTimeUtc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property bucketEndTimeUtc in model ActivityTimelineItem"));
         }
         if (firstActivityTimeUtc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property firstActivityTimeUtc in model ActivityTimelineItem"));
         }
         if (lastActivityTimeUtc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property lastActivityTimeUtc in model ActivityTimelineItem"));
         }
         if (content() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property content in model ActivityTimelineItem"));
         }
         if (title() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property title in model ActivityTimelineItem"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ActivityTimelineItem.class);
 }

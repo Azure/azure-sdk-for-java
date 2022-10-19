@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The container group encryption properties. */
 @Fluent
 public final class EncryptionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionProperties.class);
-
     /*
      * The keyvault base url.
      */
@@ -99,20 +96,22 @@ public final class EncryptionProperties {
      */
     public void validate() {
         if (vaultBaseUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property vaultBaseUrl in model EncryptionProperties"));
         }
         if (keyName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyName in model EncryptionProperties"));
         }
         if (keyVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyVersion in model EncryptionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptionProperties.class);
 }

@@ -6,9 +6,7 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Service End point policy resource. */
 @Fluent
 public final class ServiceEndpointPolicyInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyInner.class);
-
     /*
      * Properties of the service end point policy.
      */
@@ -31,8 +27,7 @@ public final class ServiceEndpointPolicyInner extends Resource {
     private String etag;
 
     /*
-     * Kind of service endpoint policy. This is metadata used for the Azure
-     * portal experience.
+     * Kind of service endpoint policy. This is metadata used for the Azure portal experience.
      */
     @JsonProperty(value = "kind", access = JsonProperty.Access.WRITE_ONLY)
     private String kind;
@@ -42,6 +37,10 @@ public final class ServiceEndpointPolicyInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of ServiceEndpointPolicyInner class. */
+    public ServiceEndpointPolicyInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the service end point policy.

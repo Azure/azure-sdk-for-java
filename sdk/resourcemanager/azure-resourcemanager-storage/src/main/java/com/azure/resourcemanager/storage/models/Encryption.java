@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The encryption settings on the storage account. */
 @Fluent
 public final class Encryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Encryption.class);
-
     /*
      * List of services which support encryption.
      */
@@ -21,15 +17,14 @@ public final class Encryption {
     private EncryptionServices services;
 
     /*
-     * The encryption keySource (provider). Possible values (case-insensitive):
-     * Microsoft.Storage, Microsoft.Keyvault
+     * The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.Storage, Microsoft.Keyvault
      */
-    @JsonProperty(value = "keySource", required = true)
+    @JsonProperty(value = "keySource")
     private KeySource keySource;
 
     /*
-     * A boolean indicating whether or not the service applies a secondary
-     * layer of encryption with platform managed keys for data at rest.
+     * A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed
+     * keys for data at rest.
      */
     @JsonProperty(value = "requireInfrastructureEncryption")
     private Boolean requireInfrastructureEncryption;
@@ -158,11 +153,6 @@ public final class Encryption {
     public void validate() {
         if (services() != null) {
             services().validate();
-        }
-        if (keySource() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property keySource in model Encryption"));
         }
         if (keyVaultProperties() != null) {
             keyVaultProperties().validate();

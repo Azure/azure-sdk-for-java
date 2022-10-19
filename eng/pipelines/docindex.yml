@@ -1,5 +1,6 @@
 trigger: none
-
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
 jobs:
   - template: /eng/common/pipelines/templates/jobs/docindex.yml
 
@@ -16,10 +17,12 @@ jobs:
       # Sync docs repo onboarding files/folders
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          SkipDefaultCheckout: true
+          SkipCheckoutNone: true
           Paths:
             - package.json
             - metadata/
+            - docs-ref-mapping/reference-unified.yml
+            - docs-ref-services/
           Repositories:
             - Name: $(DocRepoOwner)/$(DocRepoName)
               WorkingDirectory: $(DocRepoLocation)
@@ -38,6 +41,26 @@ jobs:
         displayName: Update Docs Onboarding
         condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
 
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
+          arguments: >-
+            -DocRepoLocation $(DocRepoLocation)
+            -TenantId '$(opensource-aad-tenant-id)'
+            -ClientId '$(opensource-aad-app-id)'
+            -ClientSecret '$(opensource-aad-secret)'
+        displayName: Generate Service Level Readme
+
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsToc.ps1
+          arguments: >-
+            -DocRepoLocation $(DocRepoLocation)
+            -OutputLocation $(DocRepoLocation)/docs-ref-mapping/reference-unified.yml
+        displayName: Generate ToC for main branch
+        condition: and(succeeded(), or(eq(variables['Build.Reason'], 'Schedule'), eq(variables['Force.MainUpdate'], 'true')))
       # Push changes to docs repo
       - template: /eng/common/pipelines/templates/steps/set-default-branch.yml
         parameters:
@@ -58,14 +81,16 @@ jobs:
           DailyBranchVariableName: DailyDocsBranchName
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
         parameters:
-          SkipDefaultCheckout: true
+          SkipCheckoutNone: true
           Paths:
             - package.json
             - metadata/
+            - docs-ref-mapping/reference-unified.yml
+            - docs-ref-services/
           Repositories:
             - Name: azure-sdk/$(DocRepoName)
               WorkingDirectory: $(DailyDocRepoLocation)
-        
+
       # Docs daily updates is supposed to download packages from public feed repository, so we have to specify additional repositories in a POM or the profile.
       # Here is maven documentation: https://maven.apache.org/guides/mini/guide-multiple-repositories.html
       - powershell: |
@@ -86,13 +111,31 @@ jobs:
           filePath: eng/common/scripts/Update-DocsMsPackages.ps1
           arguments: -DocRepoLocation $(DailyDocRepoLocation)
         displayName: Update Docs Onboarding for Daily branch
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Service-Level-Readme-Automation.ps1
+          arguments: >-
+            -DocRepoLocation $(DailyDocRepoLocation)
+            -TenantId '$(opensource-aad-tenant-id)'
+            -ClientId '$(opensource-aad-app-id)'
+            -ClientSecret '$(opensource-aad-secret)'
+        displayName: Generate Service Level Readme
+      - task: Powershell@2
+        inputs:
+          pwsh: true
+          filePath: eng/common/scripts/Update-DocsMsToc.ps1
+          arguments: >-
+            -DocRepoLocation $(DailyDocRepoLocation)
+            -OutputLocation $(DailyDocRepoLocation)/docs-ref-mapping/reference-unified.yml
+        displayName: Generate ToC for Daily branch
       - template: /eng/common/pipelines/templates/steps/git-push-changes.yml
         parameters:
           BaseRepoBranch: $(DailyDocsBranchName)
           BaseRepoOwner: $(DocRepoOwner)
           CommitMsg: "Update targeting packages based on release metadata. (Daily docs)"
           TargetRepoName: $(DocRepoName)
-          TargetRepoOwner: $(DocRepoOwner)
+          TargetRepoOwner: azure-sdk
           WorkingDirectory: $(DailyDocRepoLocation)
           ScriptDirectory: $(Build.SourcesDirectory)/eng/common/scripts
 

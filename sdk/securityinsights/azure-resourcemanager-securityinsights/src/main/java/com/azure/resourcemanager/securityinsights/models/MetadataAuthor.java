@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Publisher or creator of the content item. */
 @Fluent
 public final class MetadataAuthor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataAuthor.class);
-
     /*
      * Name of the author. Company or person.
      */

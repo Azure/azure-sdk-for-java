@@ -16,7 +16,7 @@ import java.util.HashMap;
  * @see AuthorizationCodeCredential
  */
 public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase<AuthorizationCodeCredentialBuilder> {
-    private final ClientLogger logger = new ClientLogger(AuthorizationCodeCredentialBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AuthorizationCodeCredentialBuilder.class);
 
     private String authCode;
     private String redirectUrl;
@@ -36,7 +36,7 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
     /**
      * Sets redirect URL for the Oauth 2.0 login request, which must be
      * registered as a valid redirect URL on the application. The authorization code
-     * will be sent to this URL so it must be listening on this server and is able
+     * will be sent to this URL, so it must be listening on this server and is able
      * to complete the {@link AuthorizationCodeCredential} construction from there.
      * This is also called Reply URLs in some contexts.
      *
@@ -70,12 +70,12 @@ public class AuthorizationCodeCredentialBuilder extends AadCredentialBuilderBase
                 put("clientId", clientId);
                 put("authorizationCode", authCode);
                 put("redirectUrl", redirectUrl);
-            }});
+            }}, LOGGER);
         try {
             return new AuthorizationCodeCredential(clientId, clientSecret, tenantId, authCode, new URI(redirectUrl),
                 identityClientOptions);
         } catch (URISyntaxException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
     }
 }

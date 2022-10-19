@@ -40,7 +40,7 @@ public interface NetworkStatusClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Connectivity Status to the external resources on which the Api Management service depends from inside
-     *     the Cloud Service.
+     *     the Cloud Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<NetworkStatusContractByLocationInner>> listByServiceWithResponse(
@@ -76,7 +76,7 @@ public interface NetworkStatusClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Connectivity Status to the external resources on which the Api Management service depends from inside
-     *     the Cloud Service.
+     *     the Cloud Service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<NetworkStatusContractInner> listByLocationWithResponse(

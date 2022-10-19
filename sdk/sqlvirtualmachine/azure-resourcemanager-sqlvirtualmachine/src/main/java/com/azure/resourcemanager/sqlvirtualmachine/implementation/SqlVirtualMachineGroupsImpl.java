@@ -9,22 +9,21 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachineGroupsClient;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineGroupInner;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineGroup;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachineGroups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroups {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlVirtualMachineGroupsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlVirtualMachineGroupsImpl.class);
 
     private final SqlVirtualMachineGroupsClient innerClient;
 
-    private final SqlVirtualMachineManager serviceManager;
+    private final com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager;
 
     public SqlVirtualMachineGroupsImpl(
-        SqlVirtualMachineGroupsClient innerClient, SqlVirtualMachineManager serviceManager) {
+        SqlVirtualMachineGroupsClient innerClient,
+        com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -64,29 +63,29 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
 
     public PagedIterable<SqlVirtualMachineGroup> listByResourceGroup(String resourceGroupName) {
         PagedIterable<SqlVirtualMachineGroupInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlVirtualMachineGroup> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<SqlVirtualMachineGroupInner> inner =
             this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlVirtualMachineGroup> list() {
         PagedIterable<SqlVirtualMachineGroupInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlVirtualMachineGroup> list(Context context) {
         PagedIterable<SqlVirtualMachineGroupInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineGroupImpl(inner1, this.manager()));
     }
 
     public SqlVirtualMachineGroup getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -94,7 +93,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,7 +109,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
     public Response<SqlVirtualMachineGroup> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,7 +117,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -132,7 +131,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -140,7 +139,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,7 +153,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -162,7 +161,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,7 +176,7 @@ public final class SqlVirtualMachineGroupsImpl implements SqlVirtualMachineGroup
         return this.innerClient;
     }
 
-    private SqlVirtualMachineManager manager() {
+    private com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager() {
         return this.serviceManager;
     }
 

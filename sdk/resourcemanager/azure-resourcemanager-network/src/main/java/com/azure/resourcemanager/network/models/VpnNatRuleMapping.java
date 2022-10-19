@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Vpn NatRule mapping. */
 @Fluent
 public final class VpnNatRuleMapping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnNatRuleMapping.class);
-
     /*
      * Address space for Vpn NatRule mapping.
      */
@@ -25,6 +21,10 @@ public final class VpnNatRuleMapping {
      */
     @JsonProperty(value = "portRange")
     private String portRange;
+
+    /** Creates an instance of VpnNatRuleMapping class. */
+    public VpnNatRuleMapping() {
+    }
 
     /**
      * Get the addressSpace property: Address space for Vpn NatRule mapping.

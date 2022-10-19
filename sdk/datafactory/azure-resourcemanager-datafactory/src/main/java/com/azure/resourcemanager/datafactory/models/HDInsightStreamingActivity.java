@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.HDInsightStreamingActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("HDInsightStreaming")
 @Fluent
 public final class HDInsightStreamingActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightStreamingActivity.class);
-
     /*
      * HDInsight streaming activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightStreamingActivityTypeProperties innerTypeProperties =
         new HDInsightStreamingActivityTypeProperties();
+
+    /** Creates an instance of HDInsightStreamingActivity class. */
+    public HDInsightStreamingActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: HDInsight streaming activity properties.
@@ -364,7 +365,7 @@ public final class HDInsightStreamingActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model HDInsightStreamingActivity"));
@@ -372,4 +373,6 @@ public final class HDInsightStreamingActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HDInsightStreamingActivity.class);
 }

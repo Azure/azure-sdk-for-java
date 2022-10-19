@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines an update domain for the cloud service. */
 @Immutable
 public final class UpdateDomainInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateDomainInner.class);
-
     /*
      * Resource Id
      */

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,13 +14,15 @@ import java.util.List;
  */
 @Fluent
 public final class DhcpOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DhcpOptions.class);
-
     /*
      * The list of DNS servers IP addresses.
      */
     @JsonProperty(value = "dnsServers")
     private List<String> dnsServers;
+
+    /** Creates an instance of DhcpOptions class. */
+    public DhcpOptions() {
+    }
 
     /**
      * Get the dnsServers property: The list of DNS servers IP addresses.

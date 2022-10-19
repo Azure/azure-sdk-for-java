@@ -10,17 +10,13 @@ import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SqlAlwaysEncryptedProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure SQL Database linked service properties. */
 @Fluent
 public final class AzureSqlDatabaseLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlDatabaseLinkedServiceTypeProperties.class);
-
     /*
-     * The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
@@ -32,39 +28,36 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference password;
 
     /*
-     * The ID of the service principal used to authenticate against Azure SQL
-     * Database. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against Azure SQL Database. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against Azure SQL
-     * Database.
+     * The key of the service principal used to authenticate against Azure SQL Database.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed
-     * values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany.
-     * Default value is the data factory regions’ cloud type. Type: string (or
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
     @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
@@ -80,6 +73,10 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties {
      */
     @JsonProperty(value = "credential")
     private CredentialReference credential;
+
+    /** Creates an instance of AzureSqlDatabaseLinkedServiceTypeProperties class. */
+    public AzureSqlDatabaseLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
@@ -283,7 +280,7 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model"
@@ -302,4 +299,6 @@ public final class AzureSqlDatabaseLinkedServiceTypeProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSqlDatabaseLinkedServiceTypeProperties.class);
 }

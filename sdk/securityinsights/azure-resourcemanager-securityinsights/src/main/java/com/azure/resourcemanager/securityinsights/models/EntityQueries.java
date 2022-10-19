@@ -18,7 +18,7 @@ public interface EntityQueries {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity queries.
+     * @return all entity queries as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EntityQuery> list(String resourceGroupName, String workspaceName);
 
@@ -32,7 +32,7 @@ public interface EntityQueries {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all entity queries.
+     * @return all entity queries as paginated response with {@link PagedIterable}.
      */
     PagedIterable<EntityQuery> list(
         String resourceGroupName, String workspaceName, EntityQueriesKind kind, Context context);

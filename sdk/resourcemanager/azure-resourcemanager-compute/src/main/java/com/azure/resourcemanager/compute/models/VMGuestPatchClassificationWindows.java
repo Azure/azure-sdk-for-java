@@ -45,7 +45,11 @@ public final class VMGuestPatchClassificationWindows extends ExpandableStringEnu
         return fromString(name, VMGuestPatchClassificationWindows.class);
     }
 
-    /** @return known VMGuestPatchClassificationWindows values. */
+    /**
+     * Gets known VMGuestPatchClassificationWindows values.
+     *
+     * @return known VMGuestPatchClassificationWindows values.
+     */
     public static Collection<VMGuestPatchClassificationWindows> values() {
         return values(VMGuestPatchClassificationWindows.class);
     }

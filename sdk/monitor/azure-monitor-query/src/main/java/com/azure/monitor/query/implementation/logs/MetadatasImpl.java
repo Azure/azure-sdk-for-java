@@ -48,7 +48,7 @@ public final class MetadatasImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureLogAnalyticsMet")
-    private interface MetadatasService {
+    public interface MetadatasService {
         @Get("/workspaces/{workspaceId}/metadata")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorResponseException.class)

@@ -36,7 +36,14 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: search
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-search-documents
         groupId: com.azure
         safeName: azuresearch
+    AdditionalModules:
+      - name: azure-search-perf
+        groupId: com.azure
+        # required by the above perf library
+      - name: perf-test-core
+        groupId: com.azure

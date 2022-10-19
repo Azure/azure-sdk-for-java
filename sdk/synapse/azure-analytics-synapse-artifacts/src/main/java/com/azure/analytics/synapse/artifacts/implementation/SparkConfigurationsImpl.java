@@ -59,7 +59,7 @@ public final class SparkConfigurationsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientSpark")
-    private interface SparkConfigurationsService {
+    public interface SparkConfigurationsService {
         @Get("/sparkconfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)
@@ -128,7 +128,8 @@ public final class SparkConfigurationsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sparkconfiguration resources.
+     * @return a list of sparkconfiguration resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SparkConfigurationResource>> getSparkConfigurationsByWorkspaceSinglePageAsync() {
@@ -156,7 +157,8 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sparkconfiguration resources.
+     * @return a list of sparkconfiguration resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SparkConfigurationResource>> getSparkConfigurationsByWorkspaceSinglePageAsync(
@@ -180,7 +182,7 @@ public final class SparkConfigurationsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sparkconfiguration resources.
+     * @return a list of sparkconfiguration resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SparkConfigurationResource> getSparkConfigurationsByWorkspaceAsync() {
@@ -196,7 +198,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sparkconfiguration resources.
+     * @return a list of sparkconfiguration resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SparkConfigurationResource> getSparkConfigurationsByWorkspaceAsync(Context context) {
@@ -210,7 +212,7 @@ public final class SparkConfigurationsImpl {
      *
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sparkconfiguration resources.
+     * @return a list of sparkconfiguration resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SparkConfigurationResource> getSparkConfigurationsByWorkspace() {
@@ -224,7 +226,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sparkconfiguration resources.
+     * @return a list of sparkconfiguration resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SparkConfigurationResource> getSparkConfigurationsByWorkspace(Context context) {
@@ -241,7 +243,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spark Configuration resource type.
+     * @return spark Configuration resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkConfigurationResource>> createOrUpdateSparkConfigurationWithResponseAsync(
@@ -271,7 +273,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spark Configuration resource type.
+     * @return spark Configuration resource type along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkConfigurationResource>> createOrUpdateSparkConfigurationWithResponseAsync(
@@ -301,20 +303,13 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spark Configuration resource type.
+     * @return spark Configuration resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkConfigurationResource> createOrUpdateSparkConfigurationAsync(
             String sparkConfigurationName, SparkConfigurationResource sparkConfiguration, String ifMatch) {
         return createOrUpdateSparkConfigurationWithResponseAsync(sparkConfigurationName, sparkConfiguration, ifMatch)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -325,21 +320,14 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spark Configuration resource type.
+     * @return spark Configuration resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkConfigurationResource> createOrUpdateSparkConfigurationAsync(
             String sparkConfigurationName, SparkConfigurationResource sparkConfiguration) {
         final String ifMatch = null;
         return createOrUpdateSparkConfigurationWithResponseAsync(sparkConfigurationName, sparkConfiguration, ifMatch)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -353,7 +341,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spark Configuration resource type.
+     * @return spark Configuration resource type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkConfigurationResource> createOrUpdateSparkConfigurationAsync(
@@ -363,14 +351,7 @@ public final class SparkConfigurationsImpl {
             Context context) {
         return createOrUpdateSparkConfigurationWithResponseAsync(
                         sparkConfigurationName, sparkConfiguration, ifMatch, context)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -419,7 +400,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return spark Configuration resource type.
+     * @return spark Configuration resource type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SparkConfigurationResource> createOrUpdateSparkConfigurationWithResponse(
@@ -441,7 +422,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sparkConfiguration.
+     * @return a sparkConfiguration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkConfigurationResource>> getSparkConfigurationWithResponseAsync(
@@ -469,7 +450,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sparkConfiguration.
+     * @return a sparkConfiguration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SparkConfigurationResource>> getSparkConfigurationWithResponseAsync(
@@ -489,20 +470,13 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sparkConfiguration.
+     * @return a sparkConfiguration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkConfigurationResource> getSparkConfigurationAsync(
             String sparkConfigurationName, String ifNoneMatch) {
         return getSparkConfigurationWithResponseAsync(sparkConfigurationName, ifNoneMatch)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -512,20 +486,13 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sparkConfiguration.
+     * @return a sparkConfiguration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkConfigurationResource> getSparkConfigurationAsync(String sparkConfigurationName) {
         final String ifNoneMatch = null;
         return getSparkConfigurationWithResponseAsync(sparkConfigurationName, ifNoneMatch)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -538,20 +505,13 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sparkConfiguration.
+     * @return a sparkConfiguration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SparkConfigurationResource> getSparkConfigurationAsync(
             String sparkConfigurationName, String ifNoneMatch, Context context) {
         return getSparkConfigurationWithResponseAsync(sparkConfigurationName, ifNoneMatch, context)
-                .flatMap(
-                        (Response<SparkConfigurationResource> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -595,7 +555,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a sparkConfiguration.
+     * @return a sparkConfiguration along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SparkConfigurationResource> getSparkConfigurationWithResponse(
@@ -610,7 +570,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSparkConfigurationWithResponseAsync(String sparkConfigurationName) {
@@ -630,7 +590,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteSparkConfigurationWithResponseAsync(
@@ -648,12 +608,11 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSparkConfigurationAsync(String sparkConfigurationName) {
-        return deleteSparkConfigurationWithResponseAsync(sparkConfigurationName)
-                .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteSparkConfigurationWithResponseAsync(sparkConfigurationName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -664,12 +623,12 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteSparkConfigurationAsync(String sparkConfigurationName, Context context) {
         return deleteSparkConfigurationWithResponseAsync(sparkConfigurationName, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -693,7 +652,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteSparkConfigurationWithResponse(String sparkConfigurationName, Context context) {
@@ -708,7 +667,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSparkConfigurationWithResponseAsync(
@@ -735,7 +694,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameSparkConfigurationWithResponseAsync(
@@ -754,12 +713,12 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameSparkConfigurationAsync(String sparkConfigurationName, ArtifactRenameRequest request) {
         return renameSparkConfigurationWithResponseAsync(sparkConfigurationName, request)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -771,13 +730,13 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> renameSparkConfigurationAsync(
             String sparkConfigurationName, ArtifactRenameRequest request, Context context) {
         return renameSparkConfigurationWithResponseAsync(sparkConfigurationName, request, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -803,7 +762,7 @@ public final class SparkConfigurationsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> renameSparkConfigurationWithResponse(
@@ -814,11 +773,13 @@ public final class SparkConfigurationsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sparkconfiguration resources.
+     * @return a list of sparkconfiguration resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SparkConfigurationResource>> getSparkConfigurationsByWorkspaceNextSinglePageAsync(
@@ -842,12 +803,14 @@ public final class SparkConfigurationsImpl {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CloudErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of sparkconfiguration resources.
+     * @return a list of sparkconfiguration resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SparkConfigurationResource>> getSparkConfigurationsByWorkspaceNextSinglePageAsync(

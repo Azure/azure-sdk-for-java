@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** SecurityGroup entity property bag. */
 @Immutable
 public final class SecurityGroupEntityProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityGroupEntityProperties.class);
-
     /*
      * The group distinguished name
      */
@@ -23,15 +19,13 @@ public final class SecurityGroupEntityProperties extends EntityCommonProperties 
     private String distinguishedName;
 
     /*
-     * A single-value attribute that is the unique identifier for the object,
-     * assigned by active directory.
+     * A single-value attribute that is the unique identifier for the object, assigned by active directory.
      */
     @JsonProperty(value = "objectGuid", access = JsonProperty.Access.WRITE_ONLY)
     private UUID objectGuid;
 
     /*
-     * The SID attribute is a single-value attribute that specifies the
-     * security identifier (SID) of the group
+     * The SID attribute is a single-value attribute that specifies the security identifier (SID) of the group
      */
     @JsonProperty(value = "sid", access = JsonProperty.Access.WRITE_ONLY)
     private String sid;

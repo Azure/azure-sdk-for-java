@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionMonitorType. */
+/** Type of connection monitor. */
 public final class ConnectionMonitorType extends ExpandableStringEnum<ConnectionMonitorType> {
     /** Static value MultiEndpoint for ConnectionMonitorType. */
     public static final ConnectionMonitorType MULTI_ENDPOINT = fromString("MultiEndpoint");
@@ -27,7 +27,11 @@ public final class ConnectionMonitorType extends ExpandableStringEnum<Connection
         return fromString(name, ConnectionMonitorType.class);
     }
 
-    /** @return known ConnectionMonitorType values. */
+    /**
+     * Gets known ConnectionMonitorType values.
+     *
+     * @return known ConnectionMonitorType values.
+     */
     public static Collection<ConnectionMonitorType> values() {
         return values(ConnectionMonitorType.class);
     }

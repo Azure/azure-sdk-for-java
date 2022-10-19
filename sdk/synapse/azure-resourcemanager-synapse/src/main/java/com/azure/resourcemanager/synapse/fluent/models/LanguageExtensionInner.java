@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The language extension object. */
 @Fluent
 public final class LanguageExtensionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LanguageExtensionInner.class);
-
     /*
      * The language extension name.
      */

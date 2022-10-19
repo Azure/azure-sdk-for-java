@@ -8,21 +8,30 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
+import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Entities. */
@@ -49,183 +58,651 @@ public final class EntitiesImpl {
      */
     @Host("{Endpoint}/catalog/api")
     @ServiceInterface(name = "PurviewCatalogClient")
-    private interface EntitiesService {
+    public interface EntitiesService {
         @Post("/atlas/v2/entity")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdate(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entity,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("/atlas/v2/entity/bulk")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listByGuids(
-                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam(value = "guid", multipleQueryParams = true) List<String> guids,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/entity/bulk")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createOrUpdateEntities(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entities,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Delete("/atlas/v2/entity/bulk")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteByGuids(
-                @HostParam("Endpoint") String endpoint, RequestOptions requestOptions, Context context);
+                @HostParam("Endpoint") String endpoint,
+                @QueryParam(value = "guid", multipleQueryParams = true) List<String> guids,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
 
         @Post("/atlas/v2/entity/bulk/classification")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addClassification(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData request,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("/atlas/v2/entity/guid/{guid}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Put("/atlas/v2/entity/guid/{guid}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @QueryParam("name") String name,
                 @BodyParam("application/json") BinaryData body,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteByGuid(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("/atlas/v2/entity/guid/{guid}/classification/{classificationName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getClassification(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @PathParam("classificationName") String classificationName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}/classification/{classificationName}")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteClassification(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @PathParam("classificationName") String classificationName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("/atlas/v2/entity/guid/{guid}/classifications")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Post("/atlas/v2/entity/guid/{guid}/classifications")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @BodyParam("application/json") BinaryData classifications,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Put("/atlas/v2/entity/guid/{guid}/classifications")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updateClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
                 @BodyParam("application/json") BinaryData classifications,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("/atlas/v2/entity/uniqueAttribute/type/{typeName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getByUniqueAttributes(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Put("/atlas/v2/entity/uniqueAttribute/type/{typeName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> partialUpdateEntityByUniqueAttributes(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
                 @BodyParam("application/json") BinaryData atlasEntityWithExtInfo,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Delete("/atlas/v2/entity/uniqueAttribute/type/{typeName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> deleteByUniqueAttribute(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Delete("/atlas/v2/entity/uniqueAttribute/type/{typeName}/classification/{classificationName}")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteClassificationByUniqueAttribute(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
                 @PathParam("classificationName") String classificationName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Post("/atlas/v2/entity/uniqueAttribute/type/{typeName}/classifications")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> addClassificationsByUniqueAttribute(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
                 @BodyParam("application/json") BinaryData atlasClassificationArray,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Put("/atlas/v2/entity/uniqueAttribute/type/{typeName}/classifications")
         @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> updateClassificationsByUniqueAttribute(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
                 @BodyParam("application/json") BinaryData atlasClassificationArray,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Post("/atlas/v2/entity/bulk/setClassifications")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> setClassifications(
                 @HostParam("Endpoint") String endpoint,
                 @BodyParam("application/json") BinaryData entityHeaders,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("/atlas/v2/entity/bulk/uniqueAttribute/type/{typeName}")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getEntitiesByUniqueAttributes(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("typeName") String typeName,
+                @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
 
         @Get("/atlas/v2/entity/guid/{guid}/header")
         @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getHeader(
                 @HostParam("Endpoint") String endpoint,
                 @PathParam("guid") String guid,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/atlas/v2/entity/guid/{guid}/businessmetadata")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteBusinessMetadata(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("guid") String guid,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/atlas/v2/entity/guid/{guid}/businessmetadata")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> addOrUpdateBusinessMetadata(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("guid") String guid,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/atlas/v2/entity/guid/{guid}/businessmetadata/{bmName}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteBusinessMetadataAttributes(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("bmName") String bmName,
+                @PathParam("guid") String guid,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/atlas/v2/entity/guid/{guid}/businessmetadata/{bmName}")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> addOrUpdateBusinessMetadataAttributes(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("bmName") String bmName,
+                @PathParam("guid") String guid,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Get("/atlas/v2/entity/businessmetadata/import/template")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> getSampleBusinessMetadataTemplate(
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        // @Multipart not supported by RestProxy
+        @Post("/atlas/v2/entity/businessmetadata/import")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> importBusinessMetadata(
+                @HostParam("Endpoint") String endpoint,
+                @HeaderParam("Accept") String accept,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/atlas/v2/entity/guid/{guid}/labels")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteLabels(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("guid") String guid,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/atlas/v2/entity/guid/{guid}/labels")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> setLabels(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("guid") String guid,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/atlas/v2/entity/guid/{guid}/labels")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> addLabel(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("guid") String guid,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Delete("/atlas/v2/entity/uniqueAttribute/type/{typeName}/labels")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> deleteLabelsByUniqueAttribute(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("typeName") String typeName,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Post("/atlas/v2/entity/uniqueAttribute/type/{typeName}/labels")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> setLabelsByUniqueAttribute(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("typeName") String typeName,
+                RequestOptions requestOptions,
+                Context context);
+
+        @Put("/atlas/v2/entity/uniqueAttribute/type/{typeName}/labels")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(
+                value = ClientAuthenticationException.class,
+                code = {401})
+        @UnexpectedResponseExceptionType(
+                value = ResourceNotFoundException.class,
+                code = {404})
+        @UnexpectedResponseExceptionType(
+                value = ResourceModifiedException.class,
+                code = {409})
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<Void>> addLabelsByUniqueAttribute(
+                @HostParam("Endpoint") String endpoint,
+                @PathParam("typeName") String typeName,
                 RequestOptions requestOptions,
                 Context context);
     }
@@ -246,6 +723,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -271,8 +751,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -357,6 +844,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -387,13 +878,17 @@ public final class EntitiesImpl {
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             BinaryData entity, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.createOrUpdate(this.client.getEndpoint(), entity, requestOptions, context));
+                context -> service.createOrUpdate(this.client.getEndpoint(), entity, accept, requestOptions, context));
     }
 
     /**
@@ -412,6 +907,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -437,8 +935,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -523,6 +1028,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -554,12 +1063,16 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             BinaryData entity, RequestOptions requestOptions, Context context) {
-        return service.createOrUpdate(this.client.getEndpoint(), entity, requestOptions, context);
+        final String accept = "application/json";
+        return service.createOrUpdate(this.client.getEndpoint(), entity, accept, requestOptions, context);
     }
 
     /**
@@ -578,6 +1091,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -603,8 +1119,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -689,6 +1212,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -719,6 +1246,9 @@ public final class EntitiesImpl {
      * @param entity Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -734,10 +1264,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list.</td></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -751,6 +1280,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -776,8 +1308,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -821,13 +1360,23 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasEntitiesWithExtInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listByGuidsWithResponseAsync(RequestOptions requestOptions) {
-        return FluxUtil.withContext(context -> service.listByGuids(this.client.getEndpoint(), requestOptions, context));
+    public Mono<Response<BinaryData>> listByGuidsWithResponseAsync(List<String> guids, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        List<String> guidsConverted =
+                guids.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return FluxUtil.withContext(
+                context ->
+                        service.listByGuids(
+                                this.client.getEndpoint(), guidsConverted, accept, requestOptions, context));
     }
 
     /**
@@ -838,10 +1387,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list.</td></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -855,6 +1403,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -880,8 +1431,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -925,14 +1483,22 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasEntitiesWithExtInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> listByGuidsWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.listByGuids(this.client.getEndpoint(), requestOptions, context);
+    public Mono<Response<BinaryData>> listByGuidsWithResponseAsync(
+            List<String> guids, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
+        List<String> guidsConverted =
+                guids.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.listByGuids(this.client.getEndpoint(), guidsConverted, accept, requestOptions, context);
     }
 
     /**
@@ -943,10 +1509,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to list.</td></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>excludeRelationshipTypes</td><td>String</td><td>No</td><td>An array of the relationship types need to be excluded from the response.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>excludeRelationshipTypes</td><td>List&lt;String&gt;</td><td>No</td><td>An array of the relationship types need to be excluded from the response. Call {@link RequestOptions#addQueryParam} to add string to array.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -960,6 +1525,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -985,8 +1553,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -1030,13 +1605,17 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to list.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasEntitiesWithExtInfo along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listByGuidsWithResponse(RequestOptions requestOptions) {
-        return listByGuidsWithResponseAsync(requestOptions).block();
+    public Response<BinaryData> listByGuidsWithResponse(List<String> guids, RequestOptions requestOptions) {
+        return listByGuidsWithResponseAsync(guids, requestOptions).block();
     }
 
     /**
@@ -1055,6 +1634,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -1080,8 +1662,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -1168,6 +1757,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1198,14 +1791,19 @@ public final class EntitiesImpl {
      * @param entities An array of entities to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateEntitiesWithResponseAsync(
             BinaryData entities, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createOrUpdateEntities(this.client.getEndpoint(), entities, requestOptions, context));
+                        service.createOrUpdateEntities(
+                                this.client.getEndpoint(), entities, accept, requestOptions, context));
     }
 
     /**
@@ -1224,6 +1822,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -1249,8 +1850,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -1337,6 +1945,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1368,12 +1980,16 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createOrUpdateEntitiesWithResponseAsync(
             BinaryData entities, RequestOptions requestOptions, Context context) {
-        return service.createOrUpdateEntities(this.client.getEndpoint(), entities, requestOptions, context);
+        final String accept = "application/json";
+        return service.createOrUpdateEntities(this.client.getEndpoint(), entities, accept, requestOptions, context);
     }
 
     /**
@@ -1392,6 +2008,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -1417,8 +2036,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -1505,6 +2131,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1535,6 +2165,9 @@ public final class EntitiesImpl {
      * @param entities An array of entities to create or update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1545,14 +2178,6 @@ public final class EntitiesImpl {
     /**
      * Delete a list of entities in bulk identified by their GUIDs or unique attributes.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete.</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1596,6 +2221,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1623,27 +2252,29 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteByGuidsWithResponseAsync(RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> deleteByGuidsWithResponseAsync(
+            List<String> guids, RequestOptions requestOptions) {
+        final String accept = "application/json";
+        List<String> guidsConverted =
+                guids.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
         return FluxUtil.withContext(
-                context -> service.deleteByGuids(this.client.getEndpoint(), requestOptions, context));
+                context ->
+                        service.deleteByGuids(
+                                this.client.getEndpoint(), guidsConverted, accept, requestOptions, context));
     }
 
     /**
      * Delete a list of entities in bulk identified by their GUIDs or unique attributes.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete.</td></tr>
-     * </table>
-     *
      * <p><strong>Response Body Schema</strong>
      *
      * <pre>{@code
@@ -1687,6 +2318,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1714,26 +2349,26 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> deleteByGuidsWithResponseAsync(RequestOptions requestOptions, Context context) {
-        return service.deleteByGuids(this.client.getEndpoint(), requestOptions, context);
+    public Mono<Response<BinaryData>> deleteByGuidsWithResponseAsync(
+            List<String> guids, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
+        List<String> guidsConverted =
+                guids.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
+        return service.deleteByGuids(this.client.getEndpoint(), guidsConverted, accept, requestOptions, context);
     }
 
     /**
      * Delete a list of entities in bulk identified by their GUIDs or unique attributes.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>guids</td><td>String</td><td>Yes</td><td>An array of GUIDs of entities to delete.</td></tr>
-     * </table>
      *
      * <p><strong>Response Body Schema</strong>
      *
@@ -1778,6 +2413,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -1805,13 +2444,17 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      *
+     * @param guids An array of GUIDs of entities to delete.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteByGuidsWithResponse(RequestOptions requestOptions) {
-        return deleteByGuidsWithResponseAsync(requestOptions).block();
+    public Response<BinaryData> deleteByGuidsWithResponse(List<String> guids, RequestOptions requestOptions) {
+        return deleteByGuidsWithResponseAsync(guids, requestOptions).block();
     }
 
     /**
@@ -1851,12 +2494,17 @@ public final class EntitiesImpl {
      * @param request The request to associate a classification to multiple entities.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationWithResponseAsync(BinaryData request, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.addClassification(this.client.getEndpoint(), request, requestOptions, context));
+                context ->
+                        service.addClassification(this.client.getEndpoint(), request, accept, requestOptions, context));
     }
 
     /**
@@ -1897,12 +2545,16 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationWithResponseAsync(
             BinaryData request, RequestOptions requestOptions, Context context) {
-        return service.addClassification(this.client.getEndpoint(), request, requestOptions, context);
+        final String accept = "application/json";
+        return service.addClassification(this.client.getEndpoint(), request, accept, requestOptions, context);
     }
 
     /**
@@ -1942,6 +2594,9 @@ public final class EntitiesImpl {
      * @param request The request to associate a classification to multiple entities.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1957,8 +2612,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -1972,6 +2627,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -1997,8 +2655,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -2043,13 +2708,17 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return complete definition of an entity given its GUID along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getByGuid(this.client.getEndpoint(), guid, requestOptions, context));
+                context -> service.getByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -2060,8 +2729,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2075,6 +2744,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -2100,8 +2772,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -2147,13 +2826,17 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return complete definition of an entity given its GUID along with {@link Response} on successful completion of
      *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getByGuid(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -2164,8 +2847,8 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -2179,6 +2862,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -2204,8 +2890,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -2250,6 +2943,9 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return complete definition of an entity given its GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2262,14 +2958,6 @@ public final class EntitiesImpl {
      * attribute type and entity references. It does not support updating complex types like arrays, and maps. Null
      * updates are not possible.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>name</td><td>String</td><td>Yes</td><td>The name of the attribute.</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -2319,6 +3007,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -2347,18 +3039,23 @@ public final class EntitiesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param name The name of the attribute.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuidWithResponseAsync(
-            String guid, BinaryData body, RequestOptions requestOptions) {
+            String guid, String name, BinaryData body, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateEntityAttributeByGuid(
-                                this.client.getEndpoint(), guid, body, requestOptions, context));
+                                this.client.getEndpoint(), guid, name, body, accept, requestOptions, context));
     }
 
     /**
@@ -2366,14 +3063,6 @@ public final class EntitiesImpl {
      * attribute type and entity references. It does not support updating complex types like arrays, and maps. Null
      * updates are not possible.
      *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>name</td><td>String</td><td>Yes</td><td>The name of the attribute.</td></tr>
-     * </table>
-     *
      * <p><strong>Request Body Schema</strong>
      *
      * <pre>{@code
@@ -2423,6 +3112,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -2451,31 +3144,28 @@ public final class EntitiesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param name The name of the attribute.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityAttributeByGuidWithResponseAsync(
-            String guid, BinaryData body, RequestOptions requestOptions, Context context) {
+            String guid, String name, BinaryData body, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.partialUpdateEntityAttributeByGuid(
-                this.client.getEndpoint(), guid, body, requestOptions, context);
+                this.client.getEndpoint(), guid, name, body, accept, requestOptions, context);
     }
 
     /**
      * Update entity partially - create or update entity attribute identified by its GUID. Supports only primitive
      * attribute type and entity references. It does not support updating complex types like arrays, and maps. Null
      * updates are not possible.
-     *
-     * <p><strong>Query Parameters</strong>
-     *
-     * <table border="1">
-     *     <caption>Query Parameters</caption>
-     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>name</td><td>String</td><td>Yes</td><td>The name of the attribute.</td></tr>
-     * </table>
      *
      * <p><strong>Request Body Schema</strong>
      *
@@ -2526,6 +3216,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -2554,15 +3248,19 @@ public final class EntitiesImpl {
      * }</pre>
      *
      * @param guid The globally unique identifier of the entity.
+     * @param name The name of the attribute.
      * @param body The value of the attribute.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateEntityAttributeByGuidWithResponse(
-            String guid, BinaryData body, RequestOptions requestOptions) {
-        return partialUpdateEntityAttributeByGuidWithResponseAsync(guid, body, requestOptions).block();
+            String guid, String name, BinaryData body, RequestOptions requestOptions) {
+        return partialUpdateEntityAttributeByGuidWithResponseAsync(guid, name, body, requestOptions).block();
     }
 
     /**
@@ -2611,6 +3309,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -2641,12 +3343,16 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByGuidWithResponseAsync(String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.deleteByGuid(this.client.getEndpoint(), guid, requestOptions, context));
+                context -> service.deleteByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -2695,6 +3401,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -2726,12 +3436,16 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByGuidWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.deleteByGuid(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.deleteByGuid(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -2780,6 +3494,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -2810,6 +3528,9 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2850,15 +3571,19 @@ public final class EntitiesImpl {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasClassification along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationWithResponseAsync(
             String guid, String classificationName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getClassification(
-                                this.client.getEndpoint(), guid, classificationName, requestOptions, context));
+                                this.client.getEndpoint(), guid, classificationName, accept, requestOptions, context));
     }
 
     /**
@@ -2895,12 +3620,17 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasClassification along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationWithResponseAsync(
             String guid, String classificationName, RequestOptions requestOptions, Context context) {
-        return service.getClassification(this.client.getEndpoint(), guid, classificationName, requestOptions, context);
+        final String accept = "application/json";
+        return service.getClassification(
+                this.client.getEndpoint(), guid, classificationName, accept, requestOptions, context);
     }
 
     /**
@@ -2936,6 +3666,9 @@ public final class EntitiesImpl {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasClassification along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2951,15 +3684,19 @@ public final class EntitiesImpl {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationWithResponseAsync(
             String guid, String classificationName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteClassification(
-                                this.client.getEndpoint(), guid, classificationName, requestOptions, context));
+                                this.client.getEndpoint(), guid, classificationName, accept, requestOptions, context));
     }
 
     /**
@@ -2970,13 +3707,17 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationWithResponseAsync(
             String guid, String classificationName, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteClassification(
-                this.client.getEndpoint(), guid, classificationName, requestOptions, context);
+                this.client.getEndpoint(), guid, classificationName, accept, requestOptions, context);
     }
 
     /**
@@ -2986,6 +3727,9 @@ public final class EntitiesImpl {
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3015,12 +3759,17 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasClassifications along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationsWithResponseAsync(String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getClassifications(this.client.getEndpoint(), guid, requestOptions, context));
+                context ->
+                        service.getClassifications(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -3045,12 +3794,16 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasClassifications along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationsWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getClassifications(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getClassifications(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -3074,6 +3827,9 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasClassifications along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3116,15 +3872,19 @@ public final class EntitiesImpl {
      * @param classifications An array of classifications to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationsWithResponseAsync(
             String guid, BinaryData classifications, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.addClassifications(
-                                this.client.getEndpoint(), guid, classifications, requestOptions, context));
+                                this.client.getEndpoint(), guid, classifications, accept, requestOptions, context));
     }
 
     /**
@@ -3163,12 +3923,17 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationsWithResponseAsync(
             String guid, BinaryData classifications, RequestOptions requestOptions, Context context) {
-        return service.addClassifications(this.client.getEndpoint(), guid, classifications, requestOptions, context);
+        final String accept = "application/json";
+        return service.addClassifications(
+                this.client.getEndpoint(), guid, classifications, accept, requestOptions, context);
     }
 
     /**
@@ -3206,6 +3971,9 @@ public final class EntitiesImpl {
      * @param classifications An array of classifications to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3249,15 +4017,19 @@ public final class EntitiesImpl {
      * @param classifications An array of classifications to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateClassificationsWithResponseAsync(
             String guid, BinaryData classifications, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateClassifications(
-                                this.client.getEndpoint(), guid, classifications, requestOptions, context));
+                                this.client.getEndpoint(), guid, classifications, accept, requestOptions, context));
     }
 
     /**
@@ -3296,12 +4068,17 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateClassificationsWithResponseAsync(
             String guid, BinaryData classifications, RequestOptions requestOptions, Context context) {
-        return service.updateClassifications(this.client.getEndpoint(), guid, classifications, requestOptions, context);
+        final String accept = "application/json";
+        return service.updateClassifications(
+                this.client.getEndpoint(), guid, classifications, accept, requestOptions, context);
     }
 
     /**
@@ -3339,6 +4116,9 @@ public final class EntitiesImpl {
      * @param classifications An array of classifications to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -3359,9 +4139,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3375,6 +4155,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -3400,8 +4183,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -3446,6 +4236,9 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return complete definition of an entity given its type and unique attribute. In addition to the typeName path
      *     parameter, attribute key-value pair(s) can be provided in the following format:
      *     attr:\&lt;attrName&gt;=&lt;attrValue&gt; along with {@link Response} on successful completion of {@link
@@ -3454,8 +4247,11 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getByUniqueAttributes(this.client.getEndpoint(), typeName, requestOptions, context));
+                context ->
+                        service.getByUniqueAttributes(
+                                this.client.getEndpoint(), typeName, accept, requestOptions, context));
     }
 
     /**
@@ -3470,9 +4266,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3486,6 +4282,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -3511,8 +4310,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -3558,6 +4364,9 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return complete definition of an entity given its type and unique attribute. In addition to the typeName path
      *     parameter, attribute key-value pair(s) can be provided in the following format:
      *     attr:\&lt;attrName&gt;=&lt;attrValue&gt; along with {@link Response} on successful completion of {@link
@@ -3566,7 +4375,8 @@ public final class EntitiesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions, Context context) {
-        return service.getByUniqueAttributes(this.client.getEndpoint(), typeName, requestOptions, context);
+        final String accept = "application/json";
+        return service.getByUniqueAttributes(this.client.getEndpoint(), typeName, accept, requestOptions, context);
     }
 
     /**
@@ -3581,9 +4391,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -3597,6 +4407,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -3622,8 +4435,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -3668,6 +4488,9 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return complete definition of an entity given its type and unique attribute. In addition to the typeName path
      *     parameter, attribute key-value pair(s) can be provided in the following format:
      *     attr:\&lt;attrName&gt;=&lt;attrValue&gt; along with {@link Response}.
@@ -3690,7 +4513,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3704,6 +4527,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -3729,8 +4555,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -3815,6 +4648,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -3846,15 +4683,24 @@ public final class EntitiesImpl {
      * @param atlasEntityWithExtInfo Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityByUniqueAttributesWithResponseAsync(
             String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.partialUpdateEntityByUniqueAttributes(
-                                this.client.getEndpoint(), typeName, atlasEntityWithExtInfo, requestOptions, context));
+                                this.client.getEndpoint(),
+                                typeName,
+                                atlasEntityWithExtInfo,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -3870,7 +4716,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -3884,6 +4730,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -3909,8 +4758,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -3995,6 +4851,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -4027,13 +4887,17 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateEntityByUniqueAttributesWithResponseAsync(
             String typeName, BinaryData atlasEntityWithExtInfo, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.partialUpdateEntityByUniqueAttributes(
-                this.client.getEndpoint(), typeName, atlasEntityWithExtInfo, requestOptions, context);
+                this.client.getEndpoint(), typeName, atlasEntityWithExtInfo, accept, requestOptions, context);
     }
 
     /**
@@ -4049,7 +4913,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4063,6 +4927,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -4088,8 +4955,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -4174,6 +5048,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -4205,6 +5083,9 @@ public final class EntitiesImpl {
      * @param atlasEntityWithExtInfo Atlas entity with extended information.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4225,7 +5106,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -4271,6 +5152,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -4301,14 +5186,19 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByUniqueAttributeWithResponseAsync(
             String typeName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.deleteByUniqueAttribute(this.client.getEndpoint(), typeName, requestOptions, context));
+                        service.deleteByUniqueAttribute(
+                                this.client.getEndpoint(), typeName, accept, requestOptions, context));
     }
 
     /**
@@ -4322,7 +5212,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -4368,6 +5258,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -4399,12 +5293,16 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteByUniqueAttributeWithResponseAsync(
             String typeName, RequestOptions requestOptions, Context context) {
-        return service.deleteByUniqueAttribute(this.client.getEndpoint(), typeName, requestOptions, context);
+        final String accept = "application/json";
+        return service.deleteByUniqueAttribute(this.client.getEndpoint(), typeName, accept, requestOptions, context);
     }
 
     /**
@@ -4418,7 +5316,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -4464,6 +5362,10 @@ public final class EntitiesImpl {
      *                 ]
      *                 displayText: String
      *                 guid: String
+     *                 isIncomplete: Boolean
+     *                 labels: [
+     *                     String
+     *                 ]
      *                 meaningNames: [
      *                     String
      *                 ]
@@ -4494,6 +5396,9 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entityMutationResponse along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4509,22 +5414,31 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationByUniqueAttributeWithResponseAsync(
             String typeName, String classificationName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.deleteClassificationByUniqueAttribute(
-                                this.client.getEndpoint(), typeName, classificationName, requestOptions, context));
+                                this.client.getEndpoint(),
+                                typeName,
+                                classificationName,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -4535,7 +5449,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * @param typeName The name of the type.
@@ -4543,13 +5457,17 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteClassificationByUniqueAttributeWithResponseAsync(
             String typeName, String classificationName, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.deleteClassificationByUniqueAttribute(
-                this.client.getEndpoint(), typeName, classificationName, requestOptions, context);
+                this.client.getEndpoint(), typeName, classificationName, accept, requestOptions, context);
     }
 
     /**
@@ -4560,13 +5478,16 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * @param typeName The name of the type.
      * @param classificationName The name of the classification.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4584,7 +5505,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4619,17 +5540,22 @@ public final class EntitiesImpl {
      * @param atlasClassificationArray An array of classification to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationsByUniqueAttributeWithResponseAsync(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.addClassificationsByUniqueAttribute(
                                 this.client.getEndpoint(),
                                 typeName,
                                 atlasClassificationArray,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -4642,7 +5568,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4678,13 +5604,17 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> addClassificationsByUniqueAttributeWithResponseAsync(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.addClassificationsByUniqueAttribute(
-                this.client.getEndpoint(), typeName, atlasClassificationArray, requestOptions, context);
+                this.client.getEndpoint(), typeName, atlasClassificationArray, accept, requestOptions, context);
     }
 
     /**
@@ -4695,7 +5625,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4730,6 +5660,9 @@ public final class EntitiesImpl {
      * @param atlasClassificationArray An array of classification to be added.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4747,7 +5680,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4782,17 +5715,22 @@ public final class EntitiesImpl {
      * @param atlasClassificationArray An array of classification to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateClassificationsByUniqueAttributeWithResponseAsync(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.updateClassificationsByUniqueAttribute(
                                 this.client.getEndpoint(),
                                 typeName,
                                 atlasClassificationArray,
+                                accept,
                                 requestOptions,
                                 context));
     }
@@ -4805,7 +5743,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4841,13 +5779,17 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> updateClassificationsByUniqueAttributeWithResponseAsync(
             String typeName, BinaryData atlasClassificationArray, RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
         return service.updateClassificationsByUniqueAttribute(
-                this.client.getEndpoint(), typeName, atlasClassificationArray, requestOptions, context);
+                this.client.getEndpoint(), typeName, atlasClassificationArray, accept, requestOptions, context);
     }
 
     /**
@@ -4858,7 +5800,7 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>attrQualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity.</td></tr>
      * </table>
      *
      * <p><strong>Request Body Schema</strong>
@@ -4893,6 +5835,9 @@ public final class EntitiesImpl {
      * @param atlasClassificationArray An array of classification to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -4945,6 +5890,10 @@ public final class EntitiesImpl {
      *             ]
      *             displayText: String
      *             guid: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meaningNames: [
      *                 String
      *             ]
@@ -4979,15 +5928,20 @@ public final class EntitiesImpl {
      * @param entityHeaders Atlas entity headers.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response that indicates each classification mutation result along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> setClassificationsWithResponseAsync(
             BinaryData entityHeaders, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.setClassifications(this.client.getEndpoint(), entityHeaders, requestOptions, context));
+                        service.setClassifications(
+                                this.client.getEndpoint(), entityHeaders, accept, requestOptions, context));
     }
 
     /**
@@ -5032,6 +5986,10 @@ public final class EntitiesImpl {
      *             ]
      *             displayText: String
      *             guid: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meaningNames: [
      *                 String
      *             ]
@@ -5067,13 +6025,17 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response that indicates each classification mutation result along with {@link Response} on successful
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> setClassificationsWithResponseAsync(
             BinaryData entityHeaders, RequestOptions requestOptions, Context context) {
-        return service.setClassifications(this.client.getEndpoint(), entityHeaders, requestOptions, context);
+        final String accept = "application/json";
+        return service.setClassifications(this.client.getEndpoint(), entityHeaders, accept, requestOptions, context);
     }
 
     /**
@@ -5118,6 +6080,10 @@ public final class EntitiesImpl {
      *             ]
      *             displayText: String
      *             guid: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meaningNames: [
      *                 String
      *             ]
@@ -5152,6 +6118,9 @@ public final class EntitiesImpl {
      * @param entityHeaders Atlas entity headers.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return response that indicates each classification mutation result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5180,9 +6149,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrNQualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -5196,6 +6165,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -5221,8 +6193,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -5269,15 +6248,19 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasEntitiesWithExtInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.getEntitiesByUniqueAttributes(
-                                this.client.getEndpoint(), typeName, requestOptions, context));
+                                this.client.getEndpoint(), typeName, accept, requestOptions, context));
     }
 
     /**
@@ -5300,9 +6283,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrNQualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -5316,6 +6299,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -5341,8 +6327,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -5390,12 +6383,17 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasEntitiesWithExtInfo along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesByUniqueAttributesWithResponseAsync(
             String typeName, RequestOptions requestOptions, Context context) {
-        return service.getEntitiesByUniqueAttributes(this.client.getEndpoint(), typeName, requestOptions, context);
+        final String accept = "application/json";
+        return service.getEntitiesByUniqueAttributes(
+                this.client.getEndpoint(), typeName, accept, requestOptions, context);
     }
 
     /**
@@ -5418,9 +6416,9 @@ public final class EntitiesImpl {
      * <table border="1">
      *     <caption>Query Parameters</caption>
      *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     *     <tr><td>minExtInfo</td><td>String</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
-     *     <tr><td>ignoreRelationships</td><td>String</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
-     *     <tr><td>attrNQualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
+     *     <tr><td>minExtInfo</td><td>Boolean</td><td>No</td><td>Whether to return minimal information for referred entities.</td></tr>
+     *     <tr><td>ignoreRelationships</td><td>Boolean</td><td>No</td><td>Whether to ignore relationship attributes.</td></tr>
+     *     <tr><td>attr_N:qualifiedName</td><td>String</td><td>No</td><td>Qualified name of an entity. E.g. to find 2 entities you can set attrs_0:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1</td></tr>
      * </table>
      *
      * <p><strong>Response Body Schema</strong>
@@ -5434,6 +6432,9 @@ public final class EntitiesImpl {
      *             }
      *             typeName: String
      *             lastModifiedTS: String
+     *             businessAttributes: {
+     *                 String: Object
+     *             }
      *             classifications: [
      *                 {
      *                     attributes: {
@@ -5459,8 +6460,15 @@ public final class EntitiesImpl {
      *             ]
      *             createTime: Float
      *             createdBy: String
+     *             customAttributes: {
+     *                 String: String
+     *             }
      *             guid: String
      *             homeId: String
+     *             isIncomplete: Boolean
+     *             labels: [
+     *                 String
+     *             ]
      *             meanings: [
      *                 {
      *                     confidence: Integer
@@ -5507,6 +6515,9 @@ public final class EntitiesImpl {
      * @param typeName The name of the type.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return atlasEntitiesWithExtInfo along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -5555,6 +6566,10 @@ public final class EntitiesImpl {
      *     ]
      *     displayText: String
      *     guid: String
+     *     isIncomplete: Boolean
+     *     labels: [
+     *         String
+     *     ]
      *     meaningNames: [
      *         String
      *     ]
@@ -5579,12 +6594,16 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entity header given its GUID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getHeaderWithResponseAsync(String guid, RequestOptions requestOptions) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getHeader(this.client.getEndpoint(), guid, requestOptions, context));
+                context -> service.getHeader(this.client.getEndpoint(), guid, accept, requestOptions, context));
     }
 
     /**
@@ -5627,6 +6646,10 @@ public final class EntitiesImpl {
      *     ]
      *     displayText: String
      *     guid: String
+     *     isIncomplete: Boolean
+     *     labels: [
+     *         String
+     *     ]
      *     meaningNames: [
      *         String
      *     ]
@@ -5652,12 +6675,16 @@ public final class EntitiesImpl {
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entity header given its GUID along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getHeaderWithResponseAsync(
             String guid, RequestOptions requestOptions, Context context) {
-        return service.getHeader(this.client.getEndpoint(), guid, requestOptions, context);
+        final String accept = "application/json";
+        return service.getHeader(this.client.getEndpoint(), guid, accept, requestOptions, context);
     }
 
     /**
@@ -5700,6 +6727,10 @@ public final class EntitiesImpl {
      *     ]
      *     displayText: String
      *     guid: String
+     *     isIncomplete: Boolean
+     *     labels: [
+     *         String
+     *     ]
      *     meaningNames: [
      *         String
      *     ]
@@ -5724,10 +6755,1100 @@ public final class EntitiesImpl {
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return entity header given its GUID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getHeaderWithResponse(String guid, RequestOptions requestOptions) {
         return getHeaderWithResponseAsync(guid, requestOptions).block();
+    }
+
+    /**
+     * Remove business metadata from an entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteBusinessMetadataWithResponseAsync(String guid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context -> service.deleteBusinessMetadata(this.client.getEndpoint(), guid, requestOptions, context));
+    }
+
+    /**
+     * Remove business metadata from an entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteBusinessMetadataWithResponseAsync(
+            String guid, RequestOptions requestOptions, Context context) {
+        return service.deleteBusinessMetadata(this.client.getEndpoint(), guid, requestOptions, context);
+    }
+
+    /**
+     * Remove business metadata from an entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteBusinessMetadataWithResponse(String guid, RequestOptions requestOptions) {
+        return deleteBusinessMetadataWithResponseAsync(guid, requestOptions).block();
+    }
+
+    /**
+     * Add business metadata to an entity.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>isOverwrite</td><td>Boolean</td><td>No</td><td>Whether to overwrite the existing business metadata on the entity or not, default is false.</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addOrUpdateBusinessMetadataWithResponseAsync(
+            String guid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.addOrUpdateBusinessMetadata(this.client.getEndpoint(), guid, requestOptions, context));
+    }
+
+    /**
+     * Add business metadata to an entity.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>isOverwrite</td><td>Boolean</td><td>No</td><td>Whether to overwrite the existing business metadata on the entity or not, default is false.</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addOrUpdateBusinessMetadataWithResponseAsync(
+            String guid, RequestOptions requestOptions, Context context) {
+        return service.addOrUpdateBusinessMetadata(this.client.getEndpoint(), guid, requestOptions, context);
+    }
+
+    /**
+     * Add business metadata to an entity.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>isOverwrite</td><td>Boolean</td><td>No</td><td>Whether to overwrite the existing business metadata on the entity or not, default is false.</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addOrUpdateBusinessMetadataWithResponse(String guid, RequestOptions requestOptions) {
+        return addOrUpdateBusinessMetadataWithResponseAsync(guid, requestOptions).block();
+    }
+
+    /**
+     * Delete business metadata attributes from an entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param bmName BusinessMetadata name.
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteBusinessMetadataAttributesWithResponseAsync(
+            String bmName, String guid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteBusinessMetadataAttributes(
+                                this.client.getEndpoint(), bmName, guid, requestOptions, context));
+    }
+
+    /**
+     * Delete business metadata attributes from an entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param bmName BusinessMetadata name.
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteBusinessMetadataAttributesWithResponseAsync(
+            String bmName, String guid, RequestOptions requestOptions, Context context) {
+        return service.deleteBusinessMetadataAttributes(
+                this.client.getEndpoint(), bmName, guid, requestOptions, context);
+    }
+
+    /**
+     * Delete business metadata attributes from an entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param bmName BusinessMetadata name.
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteBusinessMetadataAttributesWithResponse(
+            String bmName, String guid, RequestOptions requestOptions) {
+        return deleteBusinessMetadataAttributesWithResponseAsync(bmName, guid, requestOptions).block();
+    }
+
+    /**
+     * Add or update business metadata attributes.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param bmName BusinessMetadata name.
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addOrUpdateBusinessMetadataAttributesWithResponseAsync(
+            String bmName, String guid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.addOrUpdateBusinessMetadataAttributes(
+                                this.client.getEndpoint(), bmName, guid, requestOptions, context));
+    }
+
+    /**
+     * Add or update business metadata attributes.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param bmName BusinessMetadata name.
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addOrUpdateBusinessMetadataAttributesWithResponseAsync(
+            String bmName, String guid, RequestOptions requestOptions, Context context) {
+        return service.addOrUpdateBusinessMetadataAttributes(
+                this.client.getEndpoint(), bmName, guid, requestOptions, context);
+    }
+
+    /**
+     * Add or update business metadata attributes.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     String: Object
+     * }
+     * }</pre>
+     *
+     * @param bmName BusinessMetadata name.
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addOrUpdateBusinessMetadataAttributesWithResponse(
+            String bmName, String guid, RequestOptions requestOptions) {
+        return addOrUpdateBusinessMetadataAttributesWithResponseAsync(bmName, guid, requestOptions).block();
+    }
+
+    /**
+     * Get the sample Template for uploading/creating bulk BusinessMetaData.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the sample Template for uploading/creating bulk BusinessMetaData along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getSampleBusinessMetadataTemplateWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/octet-stream";
+        return FluxUtil.withContext(
+                context ->
+                        service.getSampleBusinessMetadataTemplate(
+                                this.client.getEndpoint(), accept, requestOptions, context));
+    }
+
+    /**
+     * Get the sample Template for uploading/creating bulk BusinessMetaData.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the sample Template for uploading/creating bulk BusinessMetaData along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> getSampleBusinessMetadataTemplateWithResponseAsync(
+            RequestOptions requestOptions, Context context) {
+        final String accept = "application/octet-stream";
+        return service.getSampleBusinessMetadataTemplate(this.client.getEndpoint(), accept, requestOptions, context);
+    }
+
+    /**
+     * Get the sample Template for uploading/creating bulk BusinessMetaData.
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the sample Template for uploading/creating bulk BusinessMetaData along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> getSampleBusinessMetadataTemplateWithResponse(RequestOptions requestOptions) {
+        return getSampleBusinessMetadataTemplateWithResponseAsync(requestOptions).block();
+    }
+
+    /**
+     * Upload the file for creating Business Metadata in BULK.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * Flux<ByteBuffer>
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     failedImportInfoList: [
+     *         {
+     *             childObjectName: String
+     *             importStatus: String(SUCCESS/FAILED)
+     *             parentObjectName: String
+     *             remarks: String
+     *         }
+     *     ]
+     *     successImportInfoList: [
+     *         (recursive schema, see above)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return bulkImportResponse along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> importBusinessMetadataWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.importBusinessMetadata(this.client.getEndpoint(), accept, requestOptions, context));
+    }
+
+    /**
+     * Upload the file for creating Business Metadata in BULK.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * Flux<ByteBuffer>
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     failedImportInfoList: [
+     *         {
+     *             childObjectName: String
+     *             importStatus: String(SUCCESS/FAILED)
+     *             parentObjectName: String
+     *             remarks: String
+     *         }
+     *     ]
+     *     successImportInfoList: [
+     *         (recursive schema, see above)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return bulkImportResponse along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> importBusinessMetadataWithResponseAsync(
+            RequestOptions requestOptions, Context context) {
+        final String accept = "application/json";
+        return service.importBusinessMetadata(this.client.getEndpoint(), accept, requestOptions, context);
+    }
+
+    /**
+     * Upload the file for creating Business Metadata in BULK.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * Flux<ByteBuffer>
+     * }</pre>
+     *
+     * <p><strong>Response Body Schema</strong>
+     *
+     * <pre>{@code
+     * {
+     *     failedImportInfoList: [
+     *         {
+     *             childObjectName: String
+     *             importStatus: String(SUCCESS/FAILED)
+     *             parentObjectName: String
+     *             remarks: String
+     *         }
+     *     ]
+     *     successImportInfoList: [
+     *         (recursive schema, see above)
+     *     ]
+     * }
+     * }</pre>
+     *
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return bulkImportResponse along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> importBusinessMetadataWithResponse(RequestOptions requestOptions) {
+        return importBusinessMetadataWithResponseAsync(requestOptions).block();
+    }
+
+    /**
+     * delete given labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteLabelsWithResponseAsync(String guid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context -> service.deleteLabels(this.client.getEndpoint(), guid, requestOptions, context));
+    }
+
+    /**
+     * delete given labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteLabelsWithResponseAsync(
+            String guid, RequestOptions requestOptions, Context context) {
+        return service.deleteLabels(this.client.getEndpoint(), guid, requestOptions, context);
+    }
+
+    /**
+     * delete given labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteLabelsWithResponse(String guid, RequestOptions requestOptions) {
+        return deleteLabelsWithResponseAsync(guid, requestOptions).block();
+    }
+
+    /**
+     * Set labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setLabelsWithResponseAsync(String guid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context -> service.setLabels(this.client.getEndpoint(), guid, requestOptions, context));
+    }
+
+    /**
+     * Set labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setLabelsWithResponseAsync(
+            String guid, RequestOptions requestOptions, Context context) {
+        return service.setLabels(this.client.getEndpoint(), guid, requestOptions, context);
+    }
+
+    /**
+     * Set labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setLabelsWithResponse(String guid, RequestOptions requestOptions) {
+        return setLabelsWithResponseAsync(guid, requestOptions).block();
+    }
+
+    /**
+     * add given labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addLabelWithResponseAsync(String guid, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context -> service.addLabel(this.client.getEndpoint(), guid, requestOptions, context));
+    }
+
+    /**
+     * add given labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addLabelWithResponseAsync(String guid, RequestOptions requestOptions, Context context) {
+        return service.addLabel(this.client.getEndpoint(), guid, requestOptions, context);
+    }
+
+    /**
+     * add given labels to a given entity.
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param guid The globally unique identifier of the entity.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addLabelWithResponse(String guid, RequestOptions requestOptions) {
+        return addLabelWithResponseAsync(guid, requestOptions).block();
+    }
+
+    /**
+     * Delete given labels to a given entity identified by its type and unique attributes, if labels is null/empty, no
+     * labels will be removed. If any labels in labels set are non-existing labels, they will be ignored, only existing
+     * labels will be removed. In addition to the typeName path parameter, attribute key-value pair(s) can be provided
+     * in the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be
+     * unique across entities, eg. qualifiedName. The REST request would look something like this: DELETE
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteLabelsByUniqueAttributeWithResponseAsync(
+            String typeName, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.deleteLabelsByUniqueAttribute(
+                                this.client.getEndpoint(), typeName, requestOptions, context));
+    }
+
+    /**
+     * Delete given labels to a given entity identified by its type and unique attributes, if labels is null/empty, no
+     * labels will be removed. If any labels in labels set are non-existing labels, they will be ignored, only existing
+     * labels will be removed. In addition to the typeName path parameter, attribute key-value pair(s) can be provided
+     * in the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be
+     * unique across entities, eg. qualifiedName. The REST request would look something like this: DELETE
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteLabelsByUniqueAttributeWithResponseAsync(
+            String typeName, RequestOptions requestOptions, Context context) {
+        return service.deleteLabelsByUniqueAttribute(this.client.getEndpoint(), typeName, requestOptions, context);
+    }
+
+    /**
+     * Delete given labels to a given entity identified by its type and unique attributes, if labels is null/empty, no
+     * labels will be removed. If any labels in labels set are non-existing labels, they will be ignored, only existing
+     * labels will be removed. In addition to the typeName path parameter, attribute key-value pair(s) can be provided
+     * in the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be
+     * unique across entities, eg. qualifiedName. The REST request would look something like this: DELETE
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return deleteLabelsByUniqueAttributeWithResponseAsync(typeName, requestOptions).block();
+    }
+
+    /**
+     * Set labels to a given entity identified by its type and unique attributes, if labels is null/empty, existing
+     * labels will all be removed. In addition to the typeName path parameter, attribute key-value pair(s) can be
+     * provided in the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue
+     * should be unique across entities, eg. qualifiedName. The REST request would look something like this: POST
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setLabelsByUniqueAttributeWithResponseAsync(
+            String typeName, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.setLabelsByUniqueAttribute(
+                                this.client.getEndpoint(), typeName, requestOptions, context));
+    }
+
+    /**
+     * Set labels to a given entity identified by its type and unique attributes, if labels is null/empty, existing
+     * labels will all be removed. In addition to the typeName path parameter, attribute key-value pair(s) can be
+     * provided in the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue
+     * should be unique across entities, eg. qualifiedName. The REST request would look something like this: POST
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> setLabelsByUniqueAttributeWithResponseAsync(
+            String typeName, RequestOptions requestOptions, Context context) {
+        return service.setLabelsByUniqueAttribute(this.client.getEndpoint(), typeName, requestOptions, context);
+    }
+
+    /**
+     * Set labels to a given entity identified by its type and unique attributes, if labels is null/empty, existing
+     * labels will all be removed. In addition to the typeName path parameter, attribute key-value pair(s) can be
+     * provided in the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue
+     * should be unique across entities, eg. qualifiedName. The REST request would look something like this: POST
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> setLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return setLabelsByUniqueAttributeWithResponseAsync(typeName, requestOptions).block();
+    }
+
+    /**
+     * Add given labels to a given entity identified by its type and unique attributes, if labels is null/empty, no
+     * labels will be added. In addition to the typeName path parameter, attribute key-value pair(s) can be provided in
+     * the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be unique
+     * across entities, eg. qualifiedName. The REST request would look something like this: PUT
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addLabelsByUniqueAttributeWithResponseAsync(
+            String typeName, RequestOptions requestOptions) {
+        return FluxUtil.withContext(
+                context ->
+                        service.addLabelsByUniqueAttribute(
+                                this.client.getEndpoint(), typeName, requestOptions, context));
+    }
+
+    /**
+     * Add given labels to a given entity identified by its type and unique attributes, if labels is null/empty, no
+     * labels will be added. In addition to the typeName path parameter, attribute key-value pair(s) can be provided in
+     * the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be unique
+     * across entities, eg. qualifiedName. The REST request would look something like this: PUT
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param context The context to associate with this operation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> addLabelsByUniqueAttributeWithResponseAsync(
+            String typeName, RequestOptions requestOptions, Context context) {
+        return service.addLabelsByUniqueAttribute(this.client.getEndpoint(), typeName, requestOptions, context);
+    }
+
+    /**
+     * Add given labels to a given entity identified by its type and unique attributes, if labels is null/empty, no
+     * labels will be added. In addition to the typeName path parameter, attribute key-value pair(s) can be provided in
+     * the following format: attr:&lt;attrName&gt;=&lt;attrValue&gt;. NOTE: The attrName and attrValue should be unique
+     * across entities, eg. qualifiedName. The REST request would look something like this: PUT
+     * /v2/entity/uniqueAttribute/type/aType?attr:aTypeAttribute=someValue.
+     *
+     * <p><strong>Query Parameters</strong>
+     *
+     * <table border="1">
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>attr:qualifiedName</td><td>String</td><td>No</td><td>The qualified name of the entity</td></tr>
+     * </table>
+     *
+     * <p><strong>Request Body Schema</strong>
+     *
+     * <pre>{@code
+     * [
+     *     String
+     * ]
+     * }</pre>
+     *
+     * @param typeName The name of the type.
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> addLabelsByUniqueAttributeWithResponse(String typeName, RequestOptions requestOptions) {
+        return addLabelsByUniqueAttributeWithResponseAsync(typeName, requestOptions).block();
     }
 }

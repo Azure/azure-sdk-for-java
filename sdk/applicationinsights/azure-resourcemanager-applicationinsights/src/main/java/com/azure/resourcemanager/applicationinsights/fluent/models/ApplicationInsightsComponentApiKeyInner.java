@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties that define an API key of an Application Insights Component. */
 @Fluent
 public final class ApplicationInsightsComponentApiKeyInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentApiKeyInner.class);
-
     /*
      * The unique ID of the API key inside an Application Insights component.
      * It is auto generated when the API key is created.

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Route Table resource. */
 @Fluent
 public final class RouteTablePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteTablePropertiesFormat.class);
-
     /*
      * Collection of routes contained within a route table.
      */
@@ -29,8 +25,7 @@ public final class RouteTablePropertiesFormat {
     private List<SubnetInner> subnets;
 
     /*
-     * Whether to disable the routes learned by BGP on that route table. True
-     * means disable.
+     * Whether to disable the routes learned by BGP on that route table. True means disable.
      */
     @JsonProperty(value = "disableBgpRoutePropagation")
     private Boolean disableBgpRoutePropagation;
@@ -46,6 +41,10 @@ public final class RouteTablePropertiesFormat {
      */
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
+
+    /** Creates an instance of RouteTablePropertiesFormat class. */
+    public RouteTablePropertiesFormat() {
+    }
 
     /**
      * Get the routes property: Collection of routes contained within a route table.

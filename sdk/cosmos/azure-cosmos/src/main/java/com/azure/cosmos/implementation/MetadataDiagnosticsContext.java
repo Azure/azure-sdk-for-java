@@ -18,6 +18,15 @@ import java.util.List;
 public class MetadataDiagnosticsContext {
     public volatile List<MetadataDiagnostics> metadataDiagnosticList;
 
+    public MetadataDiagnosticsContext() {}
+
+    public MetadataDiagnosticsContext(MetadataDiagnosticsContext toBeCloned) {
+        if (toBeCloned.metadataDiagnosticList != null) {
+            this.metadataDiagnosticList = Collections.synchronizedList(
+                new ArrayList<>(toBeCloned.metadataDiagnosticList));
+        }
+    }
+
     public void addMetaDataDiagnostic(MetadataDiagnostics metaDataDiagnostic) {
         if (metadataDiagnosticList == null) {
             metadataDiagnosticList = Collections.synchronizedList(new ArrayList<>());

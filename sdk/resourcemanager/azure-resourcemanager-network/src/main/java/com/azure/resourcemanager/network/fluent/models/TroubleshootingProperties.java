@@ -6,14 +6,11 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Storage location provided for troubleshoot. */
 @Fluent
 public final class TroubleshootingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingProperties.class);
-
     /*
      * The ID for the storage account to save the troubleshoot result.
      */
@@ -25,6 +22,10 @@ public final class TroubleshootingProperties {
      */
     @JsonProperty(value = "storagePath", required = true)
     private String storagePath;
+
+    /** Creates an instance of TroubleshootingProperties class. */
+    public TroubleshootingProperties() {
+    }
 
     /**
      * Get the storageId property: The ID for the storage account to save the troubleshoot result.
@@ -73,16 +74,18 @@ public final class TroubleshootingProperties {
      */
     public void validate() {
         if (storageId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storageId in model TroubleshootingProperties"));
         }
         if (storagePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storagePath in model TroubleshootingProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TroubleshootingProperties.class);
 }

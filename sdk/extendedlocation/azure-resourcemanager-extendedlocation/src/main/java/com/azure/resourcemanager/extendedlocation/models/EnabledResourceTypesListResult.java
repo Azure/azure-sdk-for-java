@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.extendedlocation.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.extendedlocation.fluent.models.EnabledResourceTypeInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of EnabledResourceTypes definition. */
 @Immutable
 public final class EnabledResourceTypesListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnabledResourceTypesListResult.class);
-
     /*
      * The URL to use for getting the next set of results.
      */

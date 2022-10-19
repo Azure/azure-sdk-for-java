@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -27,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.JobStepsClient;
 import com.azure.resourcemanager.sql.fluent.models.JobStepInner;
 import com.azure.resourcemanager.sql.models.JobStepListResult;
@@ -35,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobStepsClient. */
 public final class JobStepsClientImpl implements JobStepsClient {
-    private final ClientLogger logger = new ClientLogger(JobStepsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobStepsService service;
 
@@ -60,7 +58,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientJ")
     private interface JobStepsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}/steps")
@@ -75,9 +73,10 @@ public final class JobStepsClientImpl implements JobStepsClient {
             @PathParam("jobVersion") int jobVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/versions/{jobVersion}/steps/{stepName}")
@@ -93,9 +92,10 @@ public final class JobStepsClientImpl implements JobStepsClient {
             @PathParam("stepName") String stepName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps")
@@ -109,9 +109,10 @@ public final class JobStepsClientImpl implements JobStepsClient {
             @PathParam("jobName") String jobName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps/{stepName}")
@@ -126,9 +127,10 @@ public final class JobStepsClientImpl implements JobStepsClient {
             @PathParam("stepName") String stepName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/jobAgents/{jobAgentName}/jobs/{jobName}/steps/{stepName}")
@@ -144,6 +146,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") JobStepInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
         @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
@@ -163,19 +166,25 @@ public final class JobStepsClientImpl implements JobStepsClient {
             @QueryParam("api-version") String apiVersion,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobStepListResult>> listByVersionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<JobStepListResult>> listByJobNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -190,7 +199,8 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
+     * @return all job steps in the specified job version along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobStepInner>> listByVersionSinglePageAsync(
@@ -221,6 +231,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -234,6 +245,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                             jobVersion,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<JobStepInner>>map(
                 res ->
@@ -244,7 +256,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -260,7 +272,8 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
+     * @return all job steps in the specified job version along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobStepInner>> listByVersionSinglePageAsync(
@@ -296,6 +309,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByVersion(
@@ -307,6 +321,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                 jobVersion,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -331,7 +346,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
+     * @return all job steps in the specified job version as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobStepInner> listByVersionAsync(
@@ -354,7 +369,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
+     * @return all job steps in the specified job version as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobStepInner> listByVersionAsync(
@@ -382,7 +397,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
+     * @return all job steps in the specified job version as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobStepInner> listByVersion(
@@ -404,7 +419,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps in the specified job version.
+     * @return all job steps in the specified job version as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobStepInner> listByVersion(
@@ -431,7 +446,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of a job step.
+     * @return the specified version of a job step along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobStepInner>> getByVersionWithResponseAsync(
@@ -470,6 +485,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -484,8 +500,9 @@ public final class JobStepsClientImpl implements JobStepsClient {
                             stepName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -502,7 +519,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of a job step.
+     * @return the specified version of a job step along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobStepInner>> getByVersionWithResponseAsync(
@@ -542,6 +559,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .getByVersion(
@@ -554,6 +572,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                 stepName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -570,7 +589,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of a job step.
+     * @return the specified version of a job step on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobStepInner> getByVersionAsync(
@@ -581,14 +600,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
         int jobVersion,
         String stepName) {
         return getByVersionWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, jobVersion, stepName)
-            .flatMap(
-                (Response<JobStepInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -631,7 +643,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified version of a job step.
+     * @return the specified version of a job step along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobStepInner> getByVersionWithResponse(
@@ -658,7 +670,8 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
+     * @return all job steps for a job's current version along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobStepInner>> listByJobSinglePageAsync(
@@ -689,6 +702,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -701,6 +715,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                             jobName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
             .<PagedResponse<JobStepInner>>map(
                 res ->
@@ -711,7 +726,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -726,7 +741,8 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
+     * @return all job steps for a job's current version along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobStepInner>> listByJobSinglePageAsync(
@@ -757,6 +773,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByJob(
@@ -767,6 +784,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                 jobName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context)
             .map(
                 res ->
@@ -790,7 +808,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
+     * @return all job steps for a job's current version as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<JobStepInner> listByJobAsync(
@@ -812,7 +830,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
+     * @return all job steps for a job's current version as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<JobStepInner> listByJobAsync(
@@ -833,7 +851,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
+     * @return all job steps for a job's current version as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobStepInner> listByJob(
@@ -853,7 +871,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all job steps for a job's current version.
+     * @return all job steps for a job's current version as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<JobStepInner> listByJob(
@@ -873,7 +891,8 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step in a job's current version.
+     * @return a job step in a job's current version along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobStepInner>> getWithResponseAsync(
@@ -907,6 +926,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -920,8 +940,9 @@ public final class JobStepsClientImpl implements JobStepsClient {
                             stepName,
                             this.client.getSubscriptionId(),
                             apiVersion,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -937,7 +958,8 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step in a job's current version.
+     * @return a job step in a job's current version along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobStepInner>> getWithResponseAsync(
@@ -976,6 +998,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -987,6 +1010,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                 stepName,
                 this.client.getSubscriptionId(),
                 apiVersion,
+                accept,
                 context);
     }
 
@@ -1002,20 +1026,13 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step in a job's current version.
+     * @return a job step in a job's current version on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobStepInner> getAsync(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName) {
         return getWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName)
-            .flatMap(
-                (Response<JobStepInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1051,7 +1068,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step in a job's current version.
+     * @return a job step in a job's current version along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobStepInner> getWithResponse(
@@ -1073,11 +1090,11 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
      * @param stepName The name of the job step.
-     * @param parameters A job step.
+     * @param parameters The requested state of the job step.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step.
+     * @return a job step along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<JobStepInner>> createOrUpdateWithResponseAsync(
@@ -1121,6 +1138,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
             parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -1135,8 +1153,9 @@ public final class JobStepsClientImpl implements JobStepsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1148,12 +1167,12 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
      * @param stepName The name of the job step.
-     * @param parameters A job step.
+     * @param parameters The requested state of the job step.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step.
+     * @return a job step along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<JobStepInner>> createOrUpdateWithResponseAsync(
@@ -1198,6 +1217,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
             parameters.validate();
         }
         final String apiVersion = "2017-03-01-preview";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -1210,6 +1230,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                 this.client.getSubscriptionId(),
                 apiVersion,
                 parameters,
+                accept,
                 context);
     }
 
@@ -1222,11 +1243,11 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
      * @param stepName The name of the job step.
-     * @param parameters A job step.
+     * @param parameters The requested state of the job step.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step.
+     * @return a job step on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<JobStepInner> createOrUpdateAsync(
@@ -1238,14 +1259,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
         JobStepInner parameters) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, serverName, jobAgentName, jobName, stepName, parameters)
-            .flatMap(
-                (Response<JobStepInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1257,7 +1271,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
      * @param stepName The name of the job step.
-     * @param parameters A job step.
+     * @param parameters The requested state of the job step.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1283,12 +1297,12 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @param jobAgentName The name of the job agent.
      * @param jobName The name of the job.
      * @param stepName The name of the job step.
-     * @param parameters A job step.
+     * @param parameters The requested state of the job step.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a job step.
+     * @return a job step along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<JobStepInner> createOrUpdateWithResponse(
@@ -1316,7 +1330,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -1364,7 +1378,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                             this.client.getSubscriptionId(),
                             apiVersion,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1380,7 +1394,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1445,13 +1459,13 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(
         String resourceGroupName, String serverName, String jobAgentName, String jobName, String stepName) {
         return deleteWithResponseAsync(resourceGroupName, serverName, jobAgentName, jobName, stepName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1486,7 +1500,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1506,15 +1520,22 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job steps.
+     * @return a list of job steps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobStepInner>> listByVersionNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByVersionNext(nextLink, context))
+            .withContext(context -> service.listByVersionNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<JobStepInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1524,7 +1545,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1535,16 +1556,23 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job steps.
+     * @return a list of job steps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobStepInner>> listByVersionNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByVersionNext(nextLink, context)
+            .listByVersionNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(
@@ -1563,15 +1591,22 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job steps.
+     * @return a list of job steps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobStepInner>> listByJobNextSinglePageAsync(String nextLink) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByJobNext(nextLink, context))
+            .withContext(context -> service.listByJobNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<JobStepInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1581,7 +1616,7 @@ public final class JobStepsClientImpl implements JobStepsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1592,16 +1627,23 @@ public final class JobStepsClientImpl implements JobStepsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of job steps.
+     * @return a list of job steps along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<JobStepInner>> listByJobNextSinglePageAsync(String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByJobNext(nextLink, context)
+            .listByJobNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

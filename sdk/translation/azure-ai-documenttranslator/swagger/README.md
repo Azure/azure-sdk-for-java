@@ -7,6 +7,6 @@ namespace: com.azure.ai.documenttranslator
 generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-low-level-client: true
+data-plane: true
 credential-types: azurekeycredential
 ```

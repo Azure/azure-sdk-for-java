@@ -1,0 +1,46 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PATCH",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TESTS-BestWorkerDefaultScoringRule-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "908cc51e-3676-45aa-be3e-195d3a6322df",
+      "Content-Type" : "application/merge-patch+json"
+    },
+    "Response" : {
+      "Transfer-Encoding" : "chunked",
+      "x-azure-ref" : "20220809T220821Z-gu5mc89ux17apbrm5n76u6e4ng00000000kg00000001bna2",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2, 2022-07-18-preview",
+      "Connection" : "keep-alive",
+      "Last-Modified" : "Tue, 09 Aug 2022 22:08:22 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Date" : "Tue, 09 Aug 2022 22:08:22 GMT",
+      "ETag" : "\"2d01769a-0000-0700-0000-62f2dad60000\"",
+      "trace-id" : "1549a270a36321769de0536ddd88b669",
+      "Body" : "{\"id\":\"JAVA_LIVE_TESTS-BestWorkerDefaultScoringRule-DistributionPolicy\",\"name\":\"JAVA_LIVE_TESTS-BestWorkerDefaultScoringRule-DistributionPolicy-Name\",\"offerTtlSeconds\":10,\"mode\":{\"kind\":\"best-worker\",\"scoringRuleOptions\":{\"scoringParameters\":[\"jobLabels\",\"workerSelectors\"],\"allowScoringBatchOfWorkers\":false,\"descendingOrder\":true},\"minConcurrentOffers\":1,\"maxConcurrentOffers\":10,\"bypassSelectors\":false}}",
+      "Content-Type" : "application/json; charset=utf-8",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://REDACTED.int.communication.azure.net/routing/distributionPolicies/JAVA_LIVE_TESTS-BestWorkerDefaultScoringRule-DistributionPolicy?api-version=2022-07-18-preview",
+    "Headers" : {
+      "x-ms-client-request-id" : "5ff03c1d-2f18-454a-8a0b-d0955679758b"
+    },
+    "Response" : {
+      "x-azure-ref" : "20220809T220822Z-gu5mc89ux17apbrm5n76u6e4ng00000000kg00000001bnq1",
+      "X-Cache" : "CONFIG_NOCACHE",
+      "trace-id" : "3a2d5aecc2c796c8fdbe03028670d199",
+      "api-supported-versions" : "2021-04-07-preview1, 2021-10-20-preview2, 2022-07-18-preview",
+      "Connection" : "keep-alive",
+      "retry-after" : "0",
+      "StatusCode" : "204",
+      "Date" : "Tue, 09 Aug 2022 22:08:24 GMT",
+      "Request-Context" : "appId="
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class BootDiagnostics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BootDiagnostics.class);
-
     /*
      * Whether boot diagnostics should be enabled on the Virtual Machine.
      */
@@ -25,9 +21,8 @@ public final class BootDiagnostics {
     private Boolean enabled;
 
     /*
-     * Uri of the storage account to use for placing the console output and
-     * screenshot. <br><br>If storageUri is not specified while enabling boot
-     * diagnostics, managed storage will be used.
+     * Uri of the storage account to use for placing the console output and screenshot. <br><br>If storageUri is not
+     * specified while enabling boot diagnostics, managed storage will be used.
      */
     @JsonProperty(value = "storageUri")
     private String storageUri;

@@ -6,19 +6,16 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the parameters for using a user's KeyVault certificate for securing custom domain. */
 @Fluent
 public final class KeyVaultCertificateSourceParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultCertificateSourceParameters.class);
-
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "KeyVaultCertificateSourceParameters";
 
     /*
      * Subscription Id of the user's Key Vault containing the SSL certificate
@@ -39,8 +36,7 @@ public final class KeyVaultCertificateSourceParameters {
     private String vaultName;
 
     /*
-     * The name of Key Vault Secret (representing the full certificate PFX) in
-     * Key Vault.
+     * The name of Key Vault Secret (representing the full certificate PFX) in Key Vault.
      */
     @JsonProperty(value = "secretName", required = true)
     private String secretName;
@@ -52,41 +48,39 @@ public final class KeyVaultCertificateSourceParameters {
     private String secretVersion;
 
     /*
-     * Describes the action that shall be taken when the certificate is updated
-     * in Key Vault.
+     * Describes the action that shall be taken when the certificate is updated in Key Vault.
      */
     @JsonProperty(value = "updateRule", required = true)
     private UpdateRule updateRule;
 
     /*
-     * Describes the action that shall be taken when the certificate is removed
-     * from Key Vault.
+     * Describes the action that shall be taken when the certificate is removed from Key Vault.
      */
     @JsonProperty(value = "deleteRule", required = true)
     private DeleteRule deleteRule;
 
     /** Creates an instance of KeyVaultCertificateSourceParameters class. */
     public KeyVaultCertificateSourceParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.KeyVaultCertificateSourceParameters";
+        typeName = "KeyVaultCertificateSourceParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the KeyVaultCertificateSourceParameters object itself.
      */
-    public KeyVaultCertificateSourceParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public KeyVaultCertificateSourceParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
@@ -241,40 +235,42 @@ public final class KeyVaultCertificateSourceParameters {
      */
     public void validate() {
         if (subscriptionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property subscriptionId in model KeyVaultCertificateSourceParameters"));
         }
         if (resourceGroupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceGroupName in model KeyVaultCertificateSourceParameters"));
         }
         if (vaultName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property vaultName in model KeyVaultCertificateSourceParameters"));
         }
         if (secretName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretName in model KeyVaultCertificateSourceParameters"));
         }
         if (updateRule() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property updateRule in model KeyVaultCertificateSourceParameters"));
         }
         if (deleteRule() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property deleteRule in model KeyVaultCertificateSourceParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultCertificateSourceParameters.class);
 }

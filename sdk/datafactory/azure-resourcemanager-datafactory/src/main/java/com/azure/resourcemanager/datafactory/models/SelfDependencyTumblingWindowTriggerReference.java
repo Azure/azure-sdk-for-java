@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,22 +15,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SelfDependencyTumblingWindowTriggerReference")
 @Fluent
 public final class SelfDependencyTumblingWindowTriggerReference extends DependencyReference {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SelfDependencyTumblingWindowTriggerReference.class);
-
     /*
-     * Timespan applied to the start time of a tumbling window when evaluating
-     * dependency.
+     * Timespan applied to the start time of a tumbling window when evaluating dependency.
      */
     @JsonProperty(value = "offset", required = true)
     private String offset;
 
     /*
-     * The size of the window when evaluating the dependency. If undefined the
-     * frequency of the tumbling window will be used.
+     * The size of the window when evaluating the dependency. If undefined the frequency of the tumbling window will be
+     * used.
      */
     @JsonProperty(value = "size")
     private String size;
+
+    /** Creates an instance of SelfDependencyTumblingWindowTriggerReference class. */
+    public SelfDependencyTumblingWindowTriggerReference() {
+    }
 
     /**
      * Get the offset property: Timespan applied to the start time of a tumbling window when evaluating dependency.
@@ -84,10 +83,12 @@ public final class SelfDependencyTumblingWindowTriggerReference extends Dependen
     public void validate() {
         super.validate();
         if (offset() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property offset in model SelfDependencyTumblingWindowTriggerReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SelfDependencyTumblingWindowTriggerReference.class);
 }

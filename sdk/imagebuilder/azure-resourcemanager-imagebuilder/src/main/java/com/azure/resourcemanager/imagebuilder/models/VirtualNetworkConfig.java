@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Network configuration. */
 @Fluent
 public final class VirtualNetworkConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkConfig.class);
-
     /*
      * Resource id of a pre-existing subnet.
      */
@@ -21,9 +17,9 @@ public final class VirtualNetworkConfig {
     private String subnetId;
 
     /*
-     * Size of the virtual machine used to build, customize and capture images.
-     * Omit or specify empty string to use the default (Standard_D1_v2 for Gen1
-     * images and Standard_D2ds_v4 for Gen2 images).
+     * Size of the proxy virtual machine used to pass traffic to the build VM
+     * and validation VM. Omit or specify empty string to use the default
+     * (Standard_A1_v2).
      */
     @JsonProperty(value = "proxyVmSize")
     private String proxyVmSize;
@@ -49,8 +45,8 @@ public final class VirtualNetworkConfig {
     }
 
     /**
-     * Get the proxyVmSize property: Size of the virtual machine used to build, customize and capture images. Omit or
-     * specify empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
+     * Get the proxyVmSize property: Size of the proxy virtual machine used to pass traffic to the build VM and
+     * validation VM. Omit or specify empty string to use the default (Standard_A1_v2).
      *
      * @return the proxyVmSize value.
      */
@@ -59,8 +55,8 @@ public final class VirtualNetworkConfig {
     }
 
     /**
-     * Set the proxyVmSize property: Size of the virtual machine used to build, customize and capture images. Omit or
-     * specify empty string to use the default (Standard_D1_v2 for Gen1 images and Standard_D2ds_v4 for Gen2 images).
+     * Set the proxyVmSize property: Size of the proxy virtual machine used to pass traffic to the build VM and
+     * validation VM. Omit or specify empty string to use the default (Standard_A1_v2).
      *
      * @param proxyVmSize the proxyVmSize value to set.
      * @return the VirtualNetworkConfig object itself.

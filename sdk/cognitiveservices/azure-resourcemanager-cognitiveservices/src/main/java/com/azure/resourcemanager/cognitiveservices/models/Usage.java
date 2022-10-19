@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The usage data for a usage request. */
 @Fluent
 public final class Usage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Usage.class);
-
     /*
      * The unit of the metric.
      */

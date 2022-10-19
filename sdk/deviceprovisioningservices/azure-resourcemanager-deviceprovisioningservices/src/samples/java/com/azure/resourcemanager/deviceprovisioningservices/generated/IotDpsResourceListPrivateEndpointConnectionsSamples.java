@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource ListPrivateEndpointConnections. */
 public final class IotDpsResourceListPrivateEndpointConnectionsSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSListPrivateEndpointConnections.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListPrivateEndpointConnections.json
      */
     /**
      * Sample code: PrivateEndpointConnections_List.

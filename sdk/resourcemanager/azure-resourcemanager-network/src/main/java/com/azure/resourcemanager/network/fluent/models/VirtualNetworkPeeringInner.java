@@ -6,21 +6,17 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringLevel;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Peerings in a virtual network resource. */
 @Fluent
 public final class VirtualNetworkPeeringInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkPeeringInner.class);
-
     /*
      * Properties of the virtual network peering.
      */
@@ -28,8 +24,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     private VirtualNetworkPeeringPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -45,6 +40,10 @@ public final class VirtualNetworkPeeringInner extends SubResource {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of VirtualNetworkPeeringInner class. */
+    public VirtualNetworkPeeringInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the virtual network peering.

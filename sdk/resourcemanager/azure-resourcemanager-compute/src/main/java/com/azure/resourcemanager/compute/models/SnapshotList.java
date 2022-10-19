@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.SnapshotInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Snapshots operation response. */
 @Fluent
 public final class SnapshotList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotList.class);
-
     /*
      * A list of snapshots.
      */
@@ -23,8 +20,7 @@ public final class SnapshotList {
     private List<SnapshotInner> value;
 
     /*
-     * The uri to fetch the next page of snapshots. Call ListNext() with this
-     * to fetch the next page of snapshots.
+     * The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -78,11 +74,13 @@ public final class SnapshotList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model SnapshotList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SnapshotList.class);
 }

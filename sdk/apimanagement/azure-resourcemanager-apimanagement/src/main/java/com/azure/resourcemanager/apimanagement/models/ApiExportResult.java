@@ -16,7 +16,7 @@ public interface ApiExportResult {
     String id();
 
     /**
-     * Gets the exportResultFormat property: Format in which the Api Details are exported to the Storage Blob with Sas
+     * Gets the exportResultFormat property: Format in which the API Details are exported to the Storage Blob with Sas
      * Key valid for 5 minutes.
      *
      * @return the exportResultFormat value.
@@ -24,7 +24,7 @@ public interface ApiExportResult {
     ExportResultFormat exportResultFormat();
 
     /**
-     * Gets the value property: The object defining the schema of the exported Api Detail.
+     * Gets the value property: The object defining the schema of the exported API Detail.
      *
      * @return the value value.
      */

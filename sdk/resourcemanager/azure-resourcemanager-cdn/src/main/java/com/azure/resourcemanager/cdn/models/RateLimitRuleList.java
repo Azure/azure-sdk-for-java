@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines contents of rate limit rules. */
 @Fluent
 public final class RateLimitRuleList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RateLimitRuleList.class);
-
     /*
      * List of rules
      */

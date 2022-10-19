@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.MetricAvailability;
 import com.azure.resourcemanager.cosmos.models.MetricName;
 import com.azure.resourcemanager.cosmos.models.PrimaryAggregationType;
 import com.azure.resourcemanager.cosmos.models.UnitType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The definition of a metric. */
 @Immutable
 public final class MetricDefinitionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricDefinitionInner.class);
-
     /*
      * The list of metric availabilities for the account.
      */

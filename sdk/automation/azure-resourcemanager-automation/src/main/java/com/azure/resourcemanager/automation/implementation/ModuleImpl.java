@@ -103,6 +103,10 @@ public final class ModuleImpl implements Module, Module.Definition, Module.Updat
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ModuleInner innerModel() {
         return this.innerObject;
     }

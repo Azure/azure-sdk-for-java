@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The AliasPathMetadata model. */
 @Immutable
 public final class AliasPathMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AliasPathMetadata.class);
-
     /*
      * The type of the token that the alias path is referring to.
      */

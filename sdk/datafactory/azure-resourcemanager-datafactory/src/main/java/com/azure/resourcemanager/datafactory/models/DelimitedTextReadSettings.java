@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,11 +14,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DelimitedTextReadSettings")
 @Fluent
 public final class DelimitedTextReadSettings extends FormatReadSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelimitedTextReadSettings.class);
-
     /*
-     * Indicates the number of non-empty rows to skip when reading data from
-     * input files. Type: integer (or Expression with resultType integer).
+     * Indicates the number of non-empty rows to skip when reading data from input files. Type: integer (or Expression
+     * with resultType integer).
      */
     @JsonProperty(value = "skipLineCount")
     private Object skipLineCount;
@@ -30,6 +26,10 @@ public final class DelimitedTextReadSettings extends FormatReadSettings {
      */
     @JsonProperty(value = "compressionProperties")
     private CompressionReadSettings compressionProperties;
+
+    /** Creates an instance of DelimitedTextReadSettings class. */
+    public DelimitedTextReadSettings() {
+    }
 
     /**
      * Get the skipLineCount property: Indicates the number of non-empty rows to skip when reading data from input

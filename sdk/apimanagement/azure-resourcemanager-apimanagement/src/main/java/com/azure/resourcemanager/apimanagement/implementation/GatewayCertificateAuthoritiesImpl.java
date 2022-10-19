@@ -15,10 +15,9 @@ import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthorit
 import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthoritiesGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthoritiesGetResponse;
 import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthorityContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GatewayCertificateAuthoritiesImpl implements GatewayCertificateAuthorities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayCertificateAuthoritiesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(GatewayCertificateAuthoritiesImpl.class);
 
     private final GatewayCertificateAuthoritiesClient innerClient;
 
@@ -108,7 +107,7 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
     public GatewayCertificateAuthorityContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -116,21 +115,21 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String gatewayId = Utils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
         }
         String certificateId = Utils.getValueFromIdByName(id, "certificateAuthorities");
         if (certificateId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,7 +143,7 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
     public Response<GatewayCertificateAuthorityContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -152,21 +151,21 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String gatewayId = Utils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
         }
         String certificateId = Utils.getValueFromIdByName(id, "certificateAuthorities");
         if (certificateId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,7 +179,7 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -188,21 +187,21 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String gatewayId = Utils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
         }
         String certificateId = Utils.getValueFromIdByName(id, "certificateAuthorities");
         if (certificateId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -211,15 +210,13 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
                                 id)));
         }
         String localIfMatch = null;
-        this
-            .deleteWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, localIfMatch, Context.NONE)
-            .getValue();
+        this.deleteWithResponse(resourceGroupName, serviceName, gatewayId, certificateId, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -227,21 +224,21 @@ public final class GatewayCertificateAuthoritiesImpl implements GatewayCertifica
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String gatewayId = Utils.getValueFromIdByName(id, "gateways");
         if (gatewayId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'gateways'.", id)));
         }
         String certificateId = Utils.getValueFromIdByName(id, "certificateAuthorities");
         if (certificateId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

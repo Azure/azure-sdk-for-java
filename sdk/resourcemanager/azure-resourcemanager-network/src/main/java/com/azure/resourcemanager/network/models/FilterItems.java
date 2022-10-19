@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Will contain the filter name and values to operate on. */
 @Fluent
 public final class FilterItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FilterItems.class);
-
     /*
      * The name of the field we would like to filter
      */
@@ -26,6 +22,10 @@ public final class FilterItems {
      */
     @JsonProperty(value = "values")
     private List<String> values;
+
+    /** Creates an instance of FilterItems class. */
+    public FilterItems() {
+    }
 
     /**
      * Get the field property: The name of the field we would like to filter.

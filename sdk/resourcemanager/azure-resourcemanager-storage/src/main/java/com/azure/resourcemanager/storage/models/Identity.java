@@ -6,7 +6,6 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +13,6 @@ import java.util.Map;
 /** Identity for the resource. */
 @Fluent
 public class Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
-
     /*
      * The principal ID of resource identity.
      */
@@ -35,10 +32,9 @@ public class Identity {
     private IdentityType type;
 
     /*
-     * Gets or sets a list of key value pairs that describe the set of User
-     * Assigned identities that will be used with this storage account. The key
-     * is the ARM resource identifier of the identity. Only 1 User Assigned
-     * identity is permitted here.
+     * Gets or sets a list of key value pairs that describe the set of User Assigned identities that will be used with
+     * this storage account. The key is the ARM resource identifier of the identity. Only 1 User Assigned identity is
+     * permitted here.
      */
     @JsonProperty(value = "userAssignedIdentities")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -113,7 +109,7 @@ public class Identity {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property type in model Identity"));
         }
         if (userAssignedIdentities() != null) {
@@ -127,4 +123,6 @@ public class Identity {
                     });
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Identity.class);
 }

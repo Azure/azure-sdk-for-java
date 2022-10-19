@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** workbookChartDataLabels. */
 @Fluent
 public final class MicrosoftGraphWorkbookChartDataLabels extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphWorkbookChartDataLabels.class);
-
     /*
      * DataLabelPosition value that represents the position of the data label.
      * The possible values are: None, Center, InsideEnd, InsideBase,

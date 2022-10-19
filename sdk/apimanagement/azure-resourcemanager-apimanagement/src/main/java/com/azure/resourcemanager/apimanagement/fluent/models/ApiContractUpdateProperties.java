@@ -5,21 +5,19 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.apimanagement.models.ApiContactInformation;
 import com.azure.resourcemanager.apimanagement.models.ApiEntityBaseContract;
+import com.azure.resourcemanager.apimanagement.models.ApiLicenseInformation;
 import com.azure.resourcemanager.apimanagement.models.ApiType;
 import com.azure.resourcemanager.apimanagement.models.AuthenticationSettingsContract;
 import com.azure.resourcemanager.apimanagement.models.Protocol;
 import com.azure.resourcemanager.apimanagement.models.SubscriptionKeyParameterNamesContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** API update contract properties. */
 @Fluent
 public final class ApiContractUpdateProperties extends ApiEntityBaseContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiContractUpdateProperties.class);
-
     /*
      * API name.
      */
@@ -207,6 +205,27 @@ public final class ApiContractUpdateProperties extends ApiEntityBaseContract {
     @Override
     public ApiContractUpdateProperties withSubscriptionRequired(Boolean subscriptionRequired) {
         super.withSubscriptionRequired(subscriptionRequired);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiContractUpdateProperties withTermsOfServiceUrl(String termsOfServiceUrl) {
+        super.withTermsOfServiceUrl(termsOfServiceUrl);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiContractUpdateProperties withContact(ApiContactInformation contact) {
+        super.withContact(contact);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiContractUpdateProperties withLicense(ApiLicenseInformation license) {
+        super.withLicense(license);
         return this;
     }
 

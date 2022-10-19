@@ -6,7 +6,6 @@ package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
@@ -16,19 +15,15 @@ import java.util.UUID;
  */
 @Fluent
 public final class AccessPolicyEntry {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPolicyEntry.class);
-
     /*
-     * The Azure Active Directory tenant ID that should be used for
-     * authenticating requests to the key vault.
+     * The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.
      */
     @JsonProperty(value = "tenantId", required = true)
     private UUID tenantId;
 
     /*
-     * The object ID of a user, service principal or security group in the
-     * Azure Active Directory tenant for the vault. The object ID must be
-     * unique for the list of access policies.
+     * The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault.
+     * The object ID must be unique for the list of access policies.
      */
     @JsonProperty(value = "objectId", required = true)
     private String objectId;
@@ -136,21 +131,23 @@ public final class AccessPolicyEntry {
      */
     public void validate() {
         if (tenantId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property tenantId in model AccessPolicyEntry"));
         }
         if (objectId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property objectId in model AccessPolicyEntry"));
         }
         if (permissions() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property permissions in model AccessPolicyEntry"));
         } else {
             permissions().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AccessPolicyEntry.class);
 }

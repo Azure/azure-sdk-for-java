@@ -190,7 +190,8 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
-                assertSchemaProperties(response, null, SchemaFormat.AVRO);
+                assertSchemaProperties(response, null, SchemaFormat.AVRO, schemaGroup, schemaName);
+                assertEquals(1, response.getVersion());
                 schemaId.set(response.getId());
             }).verifyComplete();
 
@@ -201,7 +202,12 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         // Act & Assert
         StepVerifier.create(client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
-            .assertNext(schema -> assertEquals(schemaIdToGet, schema.getId()))
+            .assertNext(schema -> {
+                assertSchemaProperties(schema, schemaIdToGet, SchemaFormat.AVRO, schemaGroup, schemaName);
+
+                // Should be the same version since we did not register a new one.
+                assertEquals(1, schema.getVersion());
+            })
             .verifyComplete();
     }
 
@@ -307,6 +313,33 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
             .verify();
     }
 
+    @Test
+    public void getSchemaByGroupNameVersion() {
+        // Arrange
+        final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
+        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
+
+        // Register a schema first.
+        final SchemaProperties registeredSchema = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
+            SchemaFormat.AVRO).block(Duration.ofSeconds(10));
+
+        assertNotNull(registeredSchema);
+
+        // Act & Assert
+        StepVerifier.create(client1.getSchema(schemaGroup, schemaName, registeredSchema.getVersion()))
+            .assertNext(actual -> {
+                SchemaProperties properties = actual.getProperties();
+                assertNotNull(properties);
+
+                assertEquals(registeredSchema.getVersion(), properties.getVersion());
+                assertEquals(schemaGroup, registeredSchema.getGroupName());
+                assertEquals(schemaName, registeredSchema.getName());
+                assertEquals(registeredSchema.getId(), registeredSchema.getId());
+            })
+            .expectComplete()
+            .verify();
+    }
+
     static void assertSchemaRegistrySchema(SchemaRegistrySchema actual, String expectedSchemaId, SchemaFormat format,
         String expectedContents) {
 
@@ -327,13 +360,16 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         assertEquals(expectedContentsNoWhitespace, actualContents);
     }
 
-    static void assertSchemaProperties(SchemaProperties actual, String expectedSchemaId, SchemaFormat schemaFormat) {
+    static void assertSchemaProperties(SchemaProperties actual, String expectedSchemaId, SchemaFormat schemaFormat,
+        String schemaGroup, String schemaName) {
         assertNotNull(actual);
 
         if (expectedSchemaId != null) {
             assertEquals(expectedSchemaId, actual.getId());
         }
 
+        assertEquals(schemaGroup, actual.getGroupName());
+        assertEquals(schemaName, actual.getName());
         assertEquals(schemaFormat, actual.getFormat());
     }
 }

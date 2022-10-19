@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.EventSubscriptionsClient;
@@ -46,8 +45,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in EventSubscriptionsClient. */
 public final class EventSubscriptionsClientImpl implements EventSubscriptionsClient {
-    private final ClientLogger logger = new ClientLogger(EventSubscriptionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final EventSubscriptionsService service;
 
@@ -517,15 +514,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EventSubscriptionInner> getAsync(String scope, String eventSubscriptionName) {
-        return getWithResponseAsync(scope, eventSubscriptionName)
-            .flatMap(
-                (Response<EventSubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(scope, eventSubscriptionName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -706,7 +695,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdateAsync(
@@ -742,7 +731,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdateAsync(
@@ -778,7 +767,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
@@ -805,7 +794,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginCreateOrUpdate(
@@ -1022,7 +1011,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String scope, String eventSubscriptionName) {
@@ -1049,7 +1038,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1076,7 +1065,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName) {
@@ -1099,7 +1088,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String scope, String eventSubscriptionName, Context context) {
@@ -1331,7 +1320,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(
@@ -1367,7 +1356,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdateAsync(
@@ -1404,7 +1393,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
@@ -1431,7 +1420,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return event Subscription along with {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of event Subscription.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<EventSubscriptionInner>, EventSubscriptionInner> beginUpdate(
@@ -1666,14 +1655,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<EventSubscriptionFullUrlInner> getFullUrlAsync(String scope, String eventSubscriptionName) {
         return getFullUrlWithResponseAsync(scope, eventSubscriptionName)
-            .flatMap(
-                (Response<EventSubscriptionFullUrlInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1847,7 +1829,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listAsync(String filter, Integer top) {
@@ -1860,7 +1842,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listAsync() {
@@ -1885,7 +1867,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listAsync(String filter, Integer top, Context context) {
@@ -1899,7 +1881,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> list() {
@@ -1923,7 +1905,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> list(String filter, Integer top, Context context) {
@@ -2067,7 +2049,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listGlobalBySubscriptionForTopicTypeAsync(
@@ -2084,7 +2066,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listGlobalBySubscriptionForTopicTypeAsync(String topicTypeName) {
@@ -2111,7 +2093,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listGlobalBySubscriptionForTopicTypeAsync(
@@ -2128,7 +2110,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listGlobalBySubscriptionForTopicType(String topicTypeName) {
@@ -2153,7 +2135,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listGlobalBySubscriptionForTopicType(
@@ -2300,7 +2282,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listByResourceGroupAsync(
@@ -2317,7 +2299,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -2344,7 +2326,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listByResourceGroupAsync(
@@ -2361,7 +2343,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByResourceGroup(String resourceGroupName) {
@@ -2386,7 +2368,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByResourceGroup(
@@ -2544,7 +2526,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listGlobalByResourceGroupForTopicTypeAsync(
@@ -2562,7 +2544,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listGlobalByResourceGroupForTopicTypeAsync(
@@ -2591,7 +2573,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listGlobalByResourceGroupForTopicTypeAsync(
@@ -2611,7 +2593,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(
@@ -2639,7 +2621,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listGlobalByResourceGroupForTopicType(
@@ -2785,7 +2767,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionAsync(
@@ -2802,7 +2784,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionAsync(String location) {
@@ -2829,7 +2811,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionAsync(
@@ -2846,7 +2828,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalBySubscription(String location) {
@@ -2871,7 +2853,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalBySubscription(
@@ -3029,7 +3011,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupAsync(
@@ -3047,7 +3029,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupAsync(
@@ -3076,7 +3058,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupAsync(
@@ -3094,7 +3076,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroup(
@@ -3121,7 +3103,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroup(
@@ -3277,7 +3259,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionForTopicTypeAsync(
@@ -3295,7 +3277,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionForTopicTypeAsync(
@@ -3324,7 +3306,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalBySubscriptionForTopicTypeAsync(
@@ -3342,7 +3324,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalBySubscriptionForTopicType(
@@ -3369,7 +3351,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalBySubscriptionForTopicType(
@@ -3542,7 +3524,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupForTopicTypeAsync(
@@ -3564,7 +3546,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupForTopicTypeAsync(
@@ -3597,7 +3579,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listRegionalByResourceGroupForTopicTypeAsync(
@@ -3619,7 +3601,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(
@@ -3649,7 +3631,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listRegionalByResourceGroupForTopicType(
@@ -3660,7 +3642,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3745,7 +3727,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3829,7 +3811,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3846,7 +3828,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listByResourceAsync(
@@ -3864,7 +3846,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3873,7 +3855,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listByResourceAsync(
@@ -3888,7 +3870,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3906,7 +3888,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listByResourceAsync(
@@ -3925,7 +3907,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3934,7 +3916,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByResource(
@@ -3946,7 +3928,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     }
 
     /**
-     * List all event subscriptions that have been created for a specific topic.
+     * List all event subscriptions that have been created for a specific resource.
      *
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param providerNamespace Namespace of the provider of the topic.
@@ -3964,7 +3946,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByResource(
@@ -4141,7 +4123,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listByDomainTopicAsync(
@@ -4160,7 +4142,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listByDomainTopicAsync(
@@ -4190,7 +4172,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<EventSubscriptionInner> listByDomainTopicAsync(
@@ -4209,7 +4191,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByDomainTopic(
@@ -4237,7 +4219,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List EventSubscriptions operation.
+     * @return result of the List EventSubscriptions operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<EventSubscriptionInner> listByDomainTopic(
@@ -4358,14 +4340,7 @@ public final class EventSubscriptionsClientImpl implements EventSubscriptionsCli
     private Mono<DeliveryAttributeListResultInner> getDeliveryAttributesAsync(
         String scope, String eventSubscriptionName) {
         return getDeliveryAttributesWithResponseAsync(scope, eventSubscriptionName)
-            .flatMap(
-                (Response<DeliveryAttributeListResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

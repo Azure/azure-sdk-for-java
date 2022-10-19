@@ -6,9 +6,9 @@ package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.VolumeBackups;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -16,8 +16,6 @@ import java.util.Map;
 /** Backup policy information. */
 @Fluent
 public final class BackupPolicyInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupPolicyInner.class);
-
     /*
      * A unique read-only string that changes whenever the resource is updated.
      */
@@ -29,6 +27,12 @@ public final class BackupPolicyInner extends Resource {
      */
     @JsonProperty(value = "properties", required = true)
     private BackupPolicyProperties innerProperties = new BackupPolicyProperties();
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -46,6 +50,15 @@ public final class BackupPolicyInner extends Resource {
      */
     private BackupPolicyProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */
@@ -197,7 +210,7 @@ public final class BackupPolicyInner extends Resource {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model BackupPolicyInner"));
@@ -205,4 +218,6 @@ public final class BackupPolicyInner extends Resource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupPolicyInner.class);
 }

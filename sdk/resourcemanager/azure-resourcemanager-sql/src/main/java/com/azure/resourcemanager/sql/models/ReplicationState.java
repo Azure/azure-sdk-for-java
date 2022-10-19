@@ -33,7 +33,11 @@ public final class ReplicationState extends ExpandableStringEnum<ReplicationStat
         return fromString(name, ReplicationState.class);
     }
 
-    /** @return known ReplicationState values. */
+    /**
+     * Gets known ReplicationState values.
+     *
+     * @return known ReplicationState values.
+     */
     public static Collection<ReplicationState> values() {
         return values(ReplicationState.class);
     }

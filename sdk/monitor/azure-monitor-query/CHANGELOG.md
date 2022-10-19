@@ -10,6 +10,89 @@
 
 ### Other Changes
 
+## 1.0.11 (2022-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+
+## 1.0.10 (2022-09-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+
+## 1.0.9 (2022-08-11)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` to version `1.12.4`.
+
+## 1.0.8 (2022-07-07)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.30.0`.
+- Upgraded `azure-core-http-netty` to version `1.12.3`.
+
+## 1.0.7 (2022-06-09)
+
+### Bugs Fixed
+
+- Fixed bug where partial queries fail when `LogsQueryOptions.setAllowPartialErrors(true)`.
+- [Fixed bug that causes `NullPointerException` when batch queries have server timeout configured.](https://github.com/Azure/azure-sdk-for-java/issues/29339) 
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` to version `1.12.2`.
+
+## 1.0.6 (2022-05-12)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` to version `1.12.0`.
+
+## 1.0.5 (2022-04-08)
+
+### Other Changes
+
+#### Dependency updates
+- Upgraded `azure-core` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` to version `1.11.9`.
+
+## 1.0.4 (2022-03-11)
+
+### Bugs Fixed
+- [Fixed metrics aggregation enum value](https://github.com/Azure/azure-sdk-for-java/issues/27454)
+
+### Other Changes
+
+#### Dependency updates 
+- Upgraded `azure-core` to version `1.26.0`.
+- Upgraded `azure-core-http-netty` to version `1.11.8`.
+
+## 1.0.3 (2022-02-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+
 ## 1.0.2 (2022-01-14)
 
 ### Other Changes

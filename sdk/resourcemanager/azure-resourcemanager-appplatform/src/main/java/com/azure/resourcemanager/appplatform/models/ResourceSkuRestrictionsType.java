@@ -27,7 +27,11 @@ public final class ResourceSkuRestrictionsType extends ExpandableStringEnum<Reso
         return fromString(name, ResourceSkuRestrictionsType.class);
     }
 
-    /** @return known ResourceSkuRestrictionsType values. */
+    /**
+     * Gets known ResourceSkuRestrictionsType values.
+     *
+     * @return known ResourceSkuRestrictionsType values.
+     */
     public static Collection<ResourceSkuRestrictionsType> values() {
         return values(ResourceSkuRestrictionsType.class);
     }

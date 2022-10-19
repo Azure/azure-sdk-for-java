@@ -43,7 +43,11 @@ public final class RequestMethodMatchConditionParametersMatchValuesItem
         return fromString(name, RequestMethodMatchConditionParametersMatchValuesItem.class);
     }
 
-    /** @return known RequestMethodMatchConditionParametersMatchValuesItem values. */
+    /**
+     * Gets known RequestMethodMatchConditionParametersMatchValuesItem values.
+     *
+     * @return known RequestMethodMatchConditionParametersMatchValuesItem values.
+     */
     public static Collection<RequestMethodMatchConditionParametersMatchValuesItem> values() {
         return values(RequestMethodMatchConditionParametersMatchValuesItem.class);
     }

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Relation property bag. */
 @Fluent
 public final class RelationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationProperties.class);
-
     /*
      * The resource ID of the related resource
      */
@@ -92,10 +89,12 @@ public final class RelationProperties {
      */
     public void validate() {
         if (relatedResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property relatedResourceId in model RelationProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RelationProperties.class);
 }

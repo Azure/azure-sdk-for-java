@@ -63,7 +63,7 @@ public interface Domains {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation.
+     * @return result of the List Domains operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Domain> list();
 
@@ -82,7 +82,7 @@ public interface Domains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation.
+     * @return result of the List Domains operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Domain> list(String filter, Integer top, Context context);
 
@@ -93,7 +93,7 @@ public interface Domains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation.
+     * @return result of the List Domains operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Domain> listByResourceGroup(String resourceGroupName);
 
@@ -113,7 +113,7 @@ public interface Domains {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the List Domains operation.
+     * @return result of the List Domains operation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Domain> listByResourceGroup(String resourceGroupName, String filter, Integer top, Context context);
 

@@ -12,7 +12,9 @@ import java.util.concurrent.locks.Lock;
 
 /**
  * {@code ProgressReporter} offers a convenient way to add progress tracking to a given Flux.
+ * @deprecated Use {@link com.azure.core.util.ProgressReporter}
  */
+@Deprecated
 public final class ProgressReporter {
 
     private abstract static class ProgressReporterImpl implements ProgressReceiver {
@@ -136,7 +138,9 @@ public final class ProgressReporter {
      * @param progressReceiver {@link ProgressReceiver}
      * @return A {@code Flux} that emits the same data as the source but calls a callback to report the total amount of
      * data emitted so far.
+     * @deprecated Use {@link com.azure.core.util.ProgressReporter} instead.
      */
+    @Deprecated
     public static Flux<ByteBuffer> addProgressReporting(Flux<ByteBuffer> data, ProgressReceiver progressReceiver) {
         if (progressReceiver == null) {
             return data;
@@ -159,7 +163,9 @@ public final class ProgressReporter {
      * synchronizing with the lock, we don't incur any additional performance hit here by the synchronization.
      * @return A {@code Flux} that emits the same data as the source but calls a callback to report the total amount of
      * data emitted so far.
+     * @deprecated Use {@link com.azure.core.util.ProgressReporter} instead.
      */
+    @Deprecated
     public static Flux<ByteBuffer> addParallelProgressReporting(Flux<ByteBuffer> data,
         ProgressReceiver progressReceiver, Lock lock, AtomicLong totalProgress) {
         if (progressReceiver == null) {

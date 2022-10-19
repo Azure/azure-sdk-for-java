@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cloud service properties. */
 @Fluent
 public final class CloudServiceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceProperties.class);
-
     /*
-     * Specifies a URL that refers to the location of the service package in
-     * the Blob service. The service package URL can be Shared Access Signature
-     * (SAS) URI from any storage account.
+     * Specifies a URL that refers to the location of the service package in the Blob service. The service package URL
+     * can be Shared Access Signature (SAS) URI from any storage account.
      * This is a write-only property and is not returned in GET calls.
      */
     @JsonProperty(value = "packageUrl")
@@ -30,45 +25,37 @@ public final class CloudServiceProperties {
     private String configuration;
 
     /*
-     * Specifies a URL that refers to the location of the service configuration
-     * in the Blob service. The service package URL  can be Shared Access
-     * Signature (SAS) URI from any storage account.
+     * Specifies a URL that refers to the location of the service configuration in the Blob service. The service
+     * package URL  can be Shared Access Signature (SAS) URI from any storage account.
      * This is a write-only property and is not returned in GET calls.
      */
     @JsonProperty(value = "configurationUrl")
     private String configurationUrl;
 
     /*
-     * (Optional) Indicates whether to start the cloud service immediately
-     * after it is created. The default value is `true`.
-     * If false, the service model is still deployed, but the code is not run
-     * immediately. Instead, the service is PoweredOff until you call Start, at
-     * which time the service will be started. A deployed service still incurs
+     * (Optional) Indicates whether to start the cloud service immediately after it is created. The default value is
+     * `true`.
+     * If false, the service model is still deployed, but the code is not run immediately. Instead, the service is
+     * PoweredOff until you call Start, at which time the service will be started. A deployed service still incurs
      * charges, even if it is poweredoff.
      */
     @JsonProperty(value = "startCloudService")
     private Boolean startCloudService;
 
     /*
-     * (Optional) Indicates whether the role sku properties
-     * (roleProfile.roles.sku) specified in the model/template should override
-     * the role instance count and vm size specified in the .cscfg and .csdef
-     * respectively.
+     * (Optional) Indicates whether the role sku properties (roleProfile.roles.sku) specified in the model/template
+     * should override the role instance count and vm size specified in the .cscfg and .csdef respectively.
      * The default value is `false`.
      */
     @JsonProperty(value = "allowModelOverride")
     private Boolean allowModelOverride;
 
     /*
-     * Update mode for the cloud service. Role instances are allocated to
-     * update domains when the service is deployed. Updates can be initiated
-     * manually in each update domain or initiated automatically in all update
-     * domains.
-     * Possible Values are <br /><br />**Auto**<br /><br />**Manual** <br /><br
-     * />**Simultaneous**<br /><br />
-     * If not specified, the default value is Auto. If set to Manual, PUT
-     * UpdateDomain must be called to apply the update. If set to Auto, the
-     * update is automatically applied to each update domain in sequence.
+     * Update mode for the cloud service. Role instances are allocated to update domains when the service is deployed.
+     * Updates can be initiated manually in each update domain or initiated automatically in all update domains.
+     * Possible Values are <br /><br />**Auto**<br /><br />**Manual** <br /><br />**Simultaneous**<br /><br />
+     * If not specified, the default value is Auto. If set to Manual, PUT UpdateDomain must be called to apply the
+     * update. If set to Auto, the update is automatically applied to each update domain in sequence.
      */
     @JsonProperty(value = "upgradeMode")
     private CloudServiceUpgradeMode upgradeMode;

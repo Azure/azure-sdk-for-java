@@ -6,14 +6,11 @@ package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Plan for the resource. */
 @Fluent
 public class Plan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Plan.class);
-
     /*
      * A user defined name of the 3rd Party Artifact that is being procured.
      */
@@ -159,16 +156,18 @@ public class Plan {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Plan"));
         }
         if (publisher() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property publisher in model Plan"));
         }
         if (product() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property product in model Plan"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Plan.class);
 }

@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
@@ -16,7 +17,6 @@ import com.azure.resourcemanager.resources.fluentcore.policy.AuxiliaryAuthentica
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 
-import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,33 +31,17 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     implements AzureConfigurable<T> {
     private HttpClient httpClient;
     private HttpLogOptions httpLogOptions;
-    private List<HttpPipelinePolicy> policies;
-    private List<String> scopes;
+    private final List<HttpPipelinePolicy> policies;
+    private final List<String> scopes;
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
     private Configuration configuration;
-    private List<TokenCredential> tokens;
-    private HttpPipeline httpPipeline;
-
-    /**
-     *  Configures the http pipeline.
-     * (Internal use only)
-     *
-     * @param httpPipeline the http pipeline
-     * @param azureConfigurable the azure configurable instance
-     * @param <T> the type of azure configurable
-     * @return the azure configurable instance
-     */
-    public static <T extends AzureConfigurable<?>> T configureHttpPipeline(HttpPipeline httpPipeline,
-                                                                           T azureConfigurable) {
-        ((AzureConfigurableImpl) azureConfigurable).withHttpPipeline(httpPipeline);
-        return azureConfigurable;
-    }
+    private final List<TokenCredential> tokens;
 
     protected AzureConfigurableImpl() {
         policies = new ArrayList<>();
         scopes = new ArrayList<>();
         tokens = new ArrayList<>();
-        retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
         httpLogOptions = new HttpLogOptions().setLogLevel(HttpLogDetailLevel.NONE);
     }
 
@@ -141,26 +125,22 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         return (T) this;
     }
 
-    /**
-     *  Sets the http pipeline.
-     * (Internal use only)
-     *
-     * @param httpPipeline the http pipeline
-     */
-    public void withHttpPipeline(HttpPipeline httpPipeline) {
-        Objects.requireNonNull(httpPipeline);
-        this.httpPipeline = httpPipeline;
+    @Override
+    @SuppressWarnings("unchecked")
+    public T withRetryOptions(RetryOptions retryOptions) {
+        Objects.requireNonNull(retryOptions);
+        this.retryOptions = retryOptions;
+        return (T) this;
     }
 
     protected HttpPipeline buildHttpPipeline(TokenCredential credential, AzureProfile profile) {
-        // Check if this is internal build to make sure all managers could share same http pipeline in each module.
-        if (this.httpPipeline != null) {
-            return httpPipeline;
-        }
         Objects.requireNonNull(credential);
         if (!tokens.isEmpty()) {
             policies.add(
                 new AuxiliaryAuthenticationPolicy(profile.getEnvironment(), tokens.toArray(new TokenCredential[0])));
+        }
+        if (this.retryPolicy == null && this.retryOptions != null) {
+            this.retryPolicy = new RetryPolicy(this.retryOptions);
         }
         return HttpPipelineProvider.buildHttpPipeline(credential, profile, scopes(), httpLogOptions, configuration,
             retryPolicy, policies, httpClient);

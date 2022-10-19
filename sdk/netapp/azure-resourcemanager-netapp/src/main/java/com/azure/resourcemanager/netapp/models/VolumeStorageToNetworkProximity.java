@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VolumeStorageToNetworkProximity. */
+/**
+ * Storage to Network Proximity
+ *
+ * <p>Provides storage to network proximity information for the volume.
+ */
 public final class VolumeStorageToNetworkProximity extends ExpandableStringEnum<VolumeStorageToNetworkProximity> {
     /** Static value Default for VolumeStorageToNetworkProximity. */
     public static final VolumeStorageToNetworkProximity DEFAULT = fromString("Default");
@@ -30,7 +34,11 @@ public final class VolumeStorageToNetworkProximity extends ExpandableStringEnum<
         return fromString(name, VolumeStorageToNetworkProximity.class);
     }
 
-    /** @return known VolumeStorageToNetworkProximity values. */
+    /**
+     * Gets known VolumeStorageToNetworkProximity values.
+     *
+     * @return known VolumeStorageToNetworkProximity values.
+     */
     public static Collection<VolumeStorageToNetworkProximity> values() {
         return values(VolumeStorageToNetworkProximity.class);
     }

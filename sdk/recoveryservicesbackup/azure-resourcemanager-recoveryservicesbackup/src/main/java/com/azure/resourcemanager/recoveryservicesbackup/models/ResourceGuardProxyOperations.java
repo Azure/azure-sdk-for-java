@@ -32,37 +32,9 @@ public interface ResourceGuardProxyOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     Response<ResourceGuardProxyBaseResource> getWithResponse(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context);
-
-    /**
-     * Add or Update ResourceGuardProxy under vault Secures vault critical operations.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    ResourceGuardProxyBaseResource put(String vaultName, String resourceGroupName, String resourceGuardProxyName);
-
-    /**
-     * Add or Update ResourceGuardProxy under vault Secures vault critical operations.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param resourceGuardProxyName The resourceGuardProxyName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    Response<ResourceGuardProxyBaseResource> putWithResponse(
         String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context);
 
     /**
@@ -87,7 +59,7 @@ public interface ResourceGuardProxyOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context);
@@ -118,7 +90,7 @@ public interface ResourceGuardProxyOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of Unlock Delete API.
+     * @return response of Unlock Delete API along with {@link Response}.
      */
     Response<UnlockDeleteResponse> unlockDeleteWithResponse(
         String vaultName,
@@ -126,4 +98,57 @@ public interface ResourceGuardProxyOperations {
         String resourceGuardProxyName,
         UnlockDeleteRequest parameters,
         Context context);
+
+    /**
+     * Returns ResourceGuardProxy under vault and with the name referenced in request.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    ResourceGuardProxyBaseResource getById(String id);
+
+    /**
+     * Returns ResourceGuardProxy under vault and with the name referenced in request.
+     *
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    Response<ResourceGuardProxyBaseResource> getByIdWithResponse(String id, Context context);
+
+    /**
+     * Delete ResourceGuardProxy under vault.
+     *
+     * @param id the resource ID.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void deleteById(String id);
+
+    /**
+     * Delete ResourceGuardProxy under vault.
+     *
+     * @param id the resource ID.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    Response<Void> deleteByIdWithResponse(String id, Context context);
+
+    /**
+     * Begins definition for a new ResourceGuardProxyBaseResource resource.
+     *
+     * @param name resource name.
+     * @return the first stage of the new ResourceGuardProxyBaseResource definition.
+     */
+    ResourceGuardProxyBaseResource.DefinitionStages.Blank define(String name);
 }

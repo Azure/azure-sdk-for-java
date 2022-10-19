@@ -6,15 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that define the representation of topology. */
 @Fluent
 public final class TopologyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyParameters.class);
-
     /*
      * The name of the target resource group to perform topology on.
      */
@@ -32,6 +28,10 @@ public final class TopologyParameters {
      */
     @JsonProperty(value = "targetSubnet")
     private SubResource targetSubnet;
+
+    /** Creates an instance of TopologyParameters class. */
+    public TopologyParameters() {
+    }
 
     /**
      * Get the targetResourceGroupName property: The name of the target resource group to perform topology on.

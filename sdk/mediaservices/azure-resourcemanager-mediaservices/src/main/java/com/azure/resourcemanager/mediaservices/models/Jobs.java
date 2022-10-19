@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of Jobs. */
 public interface Jobs {
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -19,12 +21,14 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Job items.
+     * @return a collection of Job items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Job> list(String resourceGroupName, String accountName, String transformName);
 
     /**
-     * Lists all of the Jobs for the Transform.
+     * List Jobs
+     *
+     * <p>Lists all of the Jobs for the Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -35,7 +39,7 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Job items.
+     * @return a collection of Job items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Job> list(
         String resourceGroupName,
@@ -46,7 +50,9 @@ public interface Jobs {
         Context context);
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -60,7 +66,9 @@ public interface Jobs {
     Job get(String resourceGroupName, String accountName, String transformName, String jobName);
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -70,13 +78,15 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job.
+     * @return a Job along with {@link Response}.
      */
     Response<Job> getWithResponse(
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -89,7 +99,9 @@ public interface Jobs {
     void delete(String resourceGroupName, String accountName, String transformName, String jobName);
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -99,13 +111,15 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -118,7 +132,9 @@ public interface Jobs {
     void cancelJob(String resourceGroupName, String accountName, String transformName, String jobName);
 
     /**
-     * Cancel a Job.
+     * Cancel Job
+     *
+     * <p>Cancel a Job.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -128,36 +144,42 @@ public interface Jobs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> cancelJobWithResponse(
         String resourceGroupName, String accountName, String transformName, String jobName, Context context);
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job.
+     * @return a Job along with {@link Response}.
      */
     Job getById(String id);
 
     /**
-     * Gets a Job.
+     * Get Job
+     *
+     * <p>Gets a Job.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Job.
+     * @return a Job along with {@link Response}.
      */
     Response<Job> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,14 +189,16 @@ public interface Jobs {
     void deleteById(String id);
 
     /**
-     * Deletes a Job.
+     * Delete Job
+     *
+     * <p>Deletes a Job.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

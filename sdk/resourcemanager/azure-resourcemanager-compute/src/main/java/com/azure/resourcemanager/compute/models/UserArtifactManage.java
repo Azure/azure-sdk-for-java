@@ -6,33 +6,27 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The UserArtifactManage model. */
 @Fluent
 public final class UserArtifactManage {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserArtifactManage.class);
-
     /*
-     * Required. The path and arguments to install the gallery application.
-     * This is limited to 4096 characters.
+     * Required. The path and arguments to install the gallery application. This is limited to 4096 characters.
      */
     @JsonProperty(value = "install", required = true)
     private String install;
 
     /*
-     * Required. The path and arguments to remove the gallery application. This
-     * is limited to 4096 characters.
+     * Required. The path and arguments to remove the gallery application. This is limited to 4096 characters.
      */
     @JsonProperty(value = "remove", required = true)
     private String remove;
 
     /*
-     * Optional. The path and arguments to update the gallery application. If
-     * not present, then update operation will invoke remove command on the
-     * previous version and install command on the current version of the
-     * gallery application. This is limited to 4096 characters.
+     * Optional. The path and arguments to update the gallery application. If not present, then update operation will
+     * invoke remove command on the previous version and install command on the current version of the gallery
+     * application. This is limited to 4096 characters.
      */
     @JsonProperty(value = "update")
     private String update;
@@ -112,14 +106,16 @@ public final class UserArtifactManage {
      */
     public void validate() {
         if (install() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property install in model UserArtifactManage"));
         }
         if (remove() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property remove in model UserArtifactManage"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserArtifactManage.class);
 }

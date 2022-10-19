@@ -50,6 +50,7 @@ public final class ReactorDispatcher {
     private final ConcurrentLinkedQueue<Work> workQueue;
     private final WorkScheduler workScheduler;
     private final AtomicInteger wip = new AtomicInteger();
+    private final AtomicBoolean isIOPipeInterrupted = new AtomicBoolean();
     private final AtomicBoolean isClosed = new AtomicBoolean();
     private final Sinks.One<AmqpShutdownSignal> shutdownSignal = Sinks.one();
 
@@ -149,9 +150,13 @@ public final class ReactorDispatcher {
         } catch (ClosedChannelException ignorePipeClosedDuringReactorShutdown) {
             if (!isClosed.get()) {
                 logger.warning("signalWorkQueue failed before reactor closed.", ignorePipeClosedDuringReactorShutdown);
-                shutdownSignal.emitError(new RuntimeException(String.format(
-                    "connectionId[%s] IO Sink was interrupted before reactor closed.", connectionId),
-                    ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
+                if (!isIOPipeInterrupted.getAndSet(true)) {
+                    shutdownSignal.emitError(new RuntimeException(String.format(
+                        "connectionId[%s] IO Sink was interrupted before reactor closed.", connectionId),
+                        ignorePipeClosedDuringReactorShutdown), Sinks.EmitFailureHandler.FAIL_FAST);
+                } else {
+                    logger.verbose("shutdown signal is already emitted. Can be ignored.", ignorePipeClosedDuringReactorShutdown);
+                }
             } else {
                 logger.verbose("signalWorkQueue failed with an error after closed. Can be ignored.", ignorePipeClosedDuringReactorShutdown);
             }

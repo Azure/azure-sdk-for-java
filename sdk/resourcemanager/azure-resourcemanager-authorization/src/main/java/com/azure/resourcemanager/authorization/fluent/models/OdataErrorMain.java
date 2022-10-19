@@ -6,20 +6,18 @@ package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The OdataErrorMain model. */
 @Immutable
 public final class OdataErrorMain extends ManagementError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OdataErrorMain.class);
-
     /*
      * The structure of this object is service-specific
      */
     @JsonProperty(value = "innererror", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> innererror;
 
     /**

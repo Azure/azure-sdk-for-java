@@ -6,18 +6,13 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRedirectType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Redirect configuration of an application gateway. */
 @Fluent
 public final class ApplicationGatewayRedirectConfigurationInner extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayRedirectConfigurationInner.class);
-
     /*
      * Properties of the application gateway redirect configuration.
      */
@@ -25,8 +20,7 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
     private ApplicationGatewayRedirectConfigurationPropertiesFormat innerProperties;
 
     /*
-     * Name of the redirect configuration that is unique within an Application
-     * Gateway.
+     * Name of the redirect configuration that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -42,6 +36,10 @@ public final class ApplicationGatewayRedirectConfigurationInner extends SubResou
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ApplicationGatewayRedirectConfigurationInner class. */
+    public ApplicationGatewayRedirectConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the application gateway redirect configuration.

@@ -12,11 +12,13 @@ import com.azure.resourcemanager.containerinstance.implementation.ContainerGroup
 import com.azure.resourcemanager.containerinstance.models.ContainerGroups;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
-import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.resourcemanager.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.storage.StorageManager;
+
+import java.util.Objects;
 
 /** Entry point to Azure container instance management. */
 public final class ContainerInstanceManager
@@ -45,17 +47,21 @@ public final class ContainerInstanceManager
      * @return the ContainerInstanceManager
      */
     public static ContainerInstanceManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
     /**
      * Creates an instance of ContainerInstanceManager that exposes resource management API entry points.
      *
-     * @param httpPipeline the HttpPipeline to be used for API calls.
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the profile to use
      * @return the ContainerInstanceManager
      */
-    private static ContainerInstanceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ContainerInstanceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new ContainerInstanceManager(httpPipeline, profile);
     }
 
@@ -89,13 +95,9 @@ public final class ContainerInstanceManager
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
 
-        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
-        this.authorizationManager = AzureConfigurableImpl
-            .configureHttpPipeline(httpPipeline, AuthorizationManager.configure())
-            .authenticate(null, profile);
-        this.networkManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, NetworkManager.configure())
-            .authenticate(null, profile);
+        this.storageManager = StorageManager.authenticate(httpPipeline, profile);
+        this.authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
+        this.networkManager = NetworkManager.authenticate(httpPipeline, profile);
     }
 
     /** @return the storage manager in container instance manager */

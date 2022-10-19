@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,21 +14,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureDatabricksDeltaLakeExportCommand")
 @Fluent
 public final class AzureDatabricksDeltaLakeExportCommand extends ExportSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDatabricksDeltaLakeExportCommand.class);
-
     /*
-     * Specify the date format for the csv in Azure Databricks Delta Lake Copy.
-     * Type: string (or Expression with resultType string).
+     * Specify the date format for the csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "dateFormat")
     private Object dateFormat;
 
     /*
-     * Specify the timestamp format for the csv in Azure Databricks Delta Lake
-     * Copy. Type: string (or Expression with resultType string).
+     * Specify the timestamp format for the csv in Azure Databricks Delta Lake Copy. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "timestampFormat")
     private Object timestampFormat;
+
+    /** Creates an instance of AzureDatabricksDeltaLakeExportCommand class. */
+    public AzureDatabricksDeltaLakeExportCommand() {
+    }
 
     /**
      * Get the dateFormat property: Specify the date format for the csv in Azure Databricks Delta Lake Copy. Type:

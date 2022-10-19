@@ -39,7 +39,11 @@ public final class ProtectionState extends ExpandableStringEnum<ProtectionState>
         return fromString(name, ProtectionState.class);
     }
 
-    /** @return known ProtectionState values. */
+    /**
+     * Gets known ProtectionState values.
+     *
+     * @return known ProtectionState values.
+     */
     public static Collection<ProtectionState> values() {
         return values(ProtectionState.class);
     }

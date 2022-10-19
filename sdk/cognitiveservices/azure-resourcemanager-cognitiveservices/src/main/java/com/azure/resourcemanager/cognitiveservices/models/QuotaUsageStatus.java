@@ -33,7 +33,11 @@ public final class QuotaUsageStatus extends ExpandableStringEnum<QuotaUsageStatu
         return fromString(name, QuotaUsageStatus.class);
     }
 
-    /** @return known QuotaUsageStatus values. */
+    /**
+     * Gets known QuotaUsageStatus values.
+     *
+     * @return known QuotaUsageStatus values.
+     */
     public static Collection<QuotaUsageStatus> values() {
         return values(QuotaUsageStatus.class);
     }

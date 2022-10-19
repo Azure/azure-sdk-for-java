@@ -28,8 +28,8 @@ public class ThroughputControlCodeSnippet {
         // BEGIN: com.azure.cosmos.throughputControl.localControl
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
-                .setGroupName("localControlGroup")
-                .setTargetThroughputThreshold(0.1)
+                .groupName("localControlGroup")
+                .targetThroughputThreshold(0.1)
                 .build();
 
         container.enableLocalThroughputControlGroup(groupConfig);
@@ -40,8 +40,8 @@ public class ThroughputControlCodeSnippet {
         // BEGIN: com.azure.cosmos.throughputControl.globalControl
         ThroughputControlGroupConfig groupConfig =
             new ThroughputControlGroupConfigBuilder()
-                .setGroupName("localControlGroup")
-                .setTargetThroughputThreshold(0.1)
+                .groupName("localControlGroup")
+                .targetThroughputThreshold(0.1)
                 .build();
 
         GlobalThroughputControlConfig globalControlConfig =

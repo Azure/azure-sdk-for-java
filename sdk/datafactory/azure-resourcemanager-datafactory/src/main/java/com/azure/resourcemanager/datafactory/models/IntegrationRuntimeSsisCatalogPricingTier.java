@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeSsisCatalogPricingTier. */
+/**
+ * The pricing tier for the catalog database. The valid values could be found in
+ * https://azure.microsoft.com/en-us/pricing/details/sql-database/.
+ */
 public final class IntegrationRuntimeSsisCatalogPricingTier
     extends ExpandableStringEnum<IntegrationRuntimeSsisCatalogPricingTier> {
     /** Static value Basic for IntegrationRuntimeSsisCatalogPricingTier. */
@@ -34,7 +37,11 @@ public final class IntegrationRuntimeSsisCatalogPricingTier
         return fromString(name, IntegrationRuntimeSsisCatalogPricingTier.class);
     }
 
-    /** @return known IntegrationRuntimeSsisCatalogPricingTier values. */
+    /**
+     * Gets known IntegrationRuntimeSsisCatalogPricingTier values.
+     *
+     * @return known IntegrationRuntimeSsisCatalogPricingTier values.
+     */
     public static Collection<IntegrationRuntimeSsisCatalogPricingTier> values() {
         return values(IntegrationRuntimeSsisCatalogPricingTier.class);
     }

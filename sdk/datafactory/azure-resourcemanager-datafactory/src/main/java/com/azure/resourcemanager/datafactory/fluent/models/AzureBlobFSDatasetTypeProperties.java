@@ -5,27 +5,21 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Data Lake Storage Gen2 dataset properties. */
 @Fluent
 public final class AzureBlobFSDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureBlobFSDatasetTypeProperties.class);
-
     /*
-     * The path of the Azure Data Lake Storage Gen2 storage. Type: string (or
-     * Expression with resultType string).
+     * The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "folderPath")
     private Object folderPath;
 
     /*
-     * The name of the Azure Data Lake Storage Gen2. Type: string (or
-     * Expression with resultType string).
+     * The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "fileName")
     private Object fileName;
@@ -41,6 +35,10 @@ public final class AzureBlobFSDatasetTypeProperties {
      */
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
+
+    /** Creates an instance of AzureBlobFSDatasetTypeProperties class. */
+    public AzureBlobFSDatasetTypeProperties() {
+    }
 
     /**
      * Get the folderPath property: The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression

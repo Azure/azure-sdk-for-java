@@ -6,19 +6,20 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Integration runtime debug resource. */
 @Fluent
 public final class IntegrationRuntimeDebugResource extends SubResourceDebugResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IntegrationRuntimeDebugResource.class);
-
     /*
      * Integration runtime properties.
      */
     @JsonProperty(value = "properties", required = true)
     private IntegrationRuntime properties;
+
+    /** Creates an instance of IntegrationRuntimeDebugResource class. */
+    public IntegrationRuntimeDebugResource() {
+    }
 
     /**
      * Get the properties property: Integration runtime properties.
@@ -56,7 +57,7 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
     public void validate() {
         super.validate();
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model IntegrationRuntimeDebugResource"));
@@ -64,4 +65,6 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(IntegrationRuntimeDebugResource.class);
 }

@@ -18,6 +18,7 @@ import com.azure.resourcemanager.datafactory.models.GitHubAccessTokenRequest;
 import com.azure.resourcemanager.datafactory.models.GitHubAccessTokenResponse;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterSpecification;
 import com.azure.resourcemanager.datafactory.models.PublicNetworkAccess;
+import com.azure.resourcemanager.datafactory.models.PurviewConfiguration;
 import com.azure.resourcemanager.datafactory.models.UserAccessPolicy;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -82,6 +83,10 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
         return this.innerModel().version();
     }
 
+    public PurviewConfiguration purviewConfiguration() {
+        return this.innerModel().purviewConfiguration();
+    }
+
     public FactoryRepoConfiguration repoConfiguration() {
         return this.innerModel().repoConfiguration();
     }
@@ -109,6 +114,10 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public FactoryInner innerModel() {
@@ -214,12 +223,6 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
         return this;
     }
 
-    public GitHubAccessTokenResponse getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest) {
-        return serviceManager
-            .factories()
-            .getGitHubAccessToken(resourceGroupName, factoryName, gitHubAccessTokenRequest);
-    }
-
     public Response<GitHubAccessTokenResponse> getGitHubAccessTokenWithResponse(
         GitHubAccessTokenRequest gitHubAccessTokenRequest, Context context) {
         return serviceManager
@@ -227,14 +230,20 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
             .getGitHubAccessTokenWithResponse(resourceGroupName, factoryName, gitHubAccessTokenRequest, context);
     }
 
-    public AccessPolicyResponse getDataPlaneAccess(UserAccessPolicy policy) {
-        return serviceManager.factories().getDataPlaneAccess(resourceGroupName, factoryName, policy);
+    public GitHubAccessTokenResponse getGitHubAccessToken(GitHubAccessTokenRequest gitHubAccessTokenRequest) {
+        return serviceManager
+            .factories()
+            .getGitHubAccessToken(resourceGroupName, factoryName, gitHubAccessTokenRequest);
     }
 
     public Response<AccessPolicyResponse> getDataPlaneAccessWithResponse(UserAccessPolicy policy, Context context) {
         return serviceManager
             .factories()
             .getDataPlaneAccessWithResponse(resourceGroupName, factoryName, policy, context);
+    }
+
+    public AccessPolicyResponse getDataPlaneAccess(UserAccessPolicy policy) {
+        return serviceManager.factories().getDataPlaneAccess(resourceGroupName, factoryName, policy);
     }
 
     public FactoryImpl withRegion(Region location) {
@@ -269,6 +278,11 @@ public final class FactoryImpl implements Factory, Factory.Definition, Factory.U
 
     public FactoryImpl withAdditionalProperties(Map<String, Object> additionalProperties) {
         this.innerModel().withAdditionalProperties(additionalProperties);
+        return this;
+    }
+
+    public FactoryImpl withPurviewConfiguration(PurviewConfiguration purviewConfiguration) {
+        this.innerModel().withPurviewConfiguration(purviewConfiguration);
         return this;
     }
 

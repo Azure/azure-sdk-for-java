@@ -15,10 +15,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.OperationStatus;
 import com.azure.resourcemanager.recoveryservicesbackup.models.PrepareDataMoveRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceProviders;
 import com.azure.resourcemanager.recoveryservicesbackup.models.TriggerDataMoveRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ResourceProvidersImpl implements ResourceProviders {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceProvidersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceProvidersImpl.class);
 
     private final ResourceProvidersClient innerClient;
 

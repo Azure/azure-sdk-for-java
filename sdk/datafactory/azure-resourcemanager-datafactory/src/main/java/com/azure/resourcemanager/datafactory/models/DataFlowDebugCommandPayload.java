@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Structure of command payload. */
 @Fluent
 public final class DataFlowDebugCommandPayload {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowDebugCommandPayload.class);
-
     /*
      * The stream name which is used for preview.
      */
@@ -38,6 +35,10 @@ public final class DataFlowDebugCommandPayload {
      */
     @JsonProperty(value = "expression")
     private String expression;
+
+    /** Creates an instance of DataFlowDebugCommandPayload class. */
+    public DataFlowDebugCommandPayload() {
+    }
 
     /**
      * Get the streamName property: The stream name which is used for preview.
@@ -126,10 +127,12 @@ public final class DataFlowDebugCommandPayload {
      */
     public void validate() {
         if (streamName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property streamName in model DataFlowDebugCommandPayload"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataFlowDebugCommandPayload.class);
 }

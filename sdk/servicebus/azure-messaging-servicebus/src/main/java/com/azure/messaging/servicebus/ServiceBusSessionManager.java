@@ -9,7 +9,6 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.exception.SessionErrorContext;
 import com.azure.core.amqp.implementation.MessageSerializer;
 import com.azure.core.amqp.implementation.StringUtil;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
@@ -39,8 +38,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.NUMBER_OF_REQUESTED_MESSAGES_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_QUEUESIZE;
 import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 
@@ -51,15 +53,15 @@ class ServiceBusSessionManager implements AutoCloseable {
     // Time to delay before trying to accept another session.
     private static final Duration SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION = Duration.ofMinutes(1);
 
-    private final ClientLogger logger = new ClientLogger(ServiceBusSessionManager.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusSessionManager.class);
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
     private final ServiceBusReceiveLink receiveLink;
     private final ServiceBusConnectionProcessor connectionProcessor;
     private final Duration operationTimeout;
-    private final TracerProvider tracerProvider;
     private final MessageSerializer messageSerializer;
+    private final String identifier;
 
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicBoolean isStarted = new AtomicBoolean();
@@ -77,16 +79,16 @@ class ServiceBusSessionManager implements AutoCloseable {
     private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink) {
+        ServiceBusConnectionProcessor connectionProcessor,
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier) {
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
         this.connectionProcessor = connectionProcessor;
         this.operationTimeout = connectionProcessor.getRetryOptions().getTryTimeout();
-        this.tracerProvider = tracerProvider;
         this.messageSerializer = messageSerializer;
         this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
+        this.identifier = identifier;
 
         // According to the documentation, if a sequence is not finite, it should be published on their own scheduler.
         // It's possible that some of these sessions have a lot of messages.
@@ -108,10 +110,10 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, TracerProvider tracerProvider,
-        MessageSerializer messageSerializer, ReceiverOptions receiverOptions) {
-        this(entityPath, entityType, connectionProcessor, tracerProvider,
-            messageSerializer, receiverOptions, null);
+        ServiceBusConnectionProcessor connectionProcessor,
+        MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier) {
+        this(entityPath, entityType, connectionProcessor,
+            messageSerializer, receiverOptions, null, identifier);
     }
 
     /**
@@ -124,6 +126,15 @@ class ServiceBusSessionManager implements AutoCloseable {
     String getLinkName(String sessionId) {
         final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
         return receiver != null ? receiver.getLinkName() : null;
+    }
+
+    /**
+     * Gets the identifier of the instance of {@link ServiceBusSessionManager}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusSessionManager}.
+     */
+    public String getIdentifier() {
+        return this.identifier;
     }
 
     /**
@@ -250,7 +261,7 @@ class ServiceBusSessionManager implements AutoCloseable {
         return connectionProcessor
             .flatMap(connection -> {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                null, entityType, sessionId);
+                null, entityType, identifier, sessionId);
             });
     }
 
@@ -271,8 +282,10 @@ class ServiceBusSessionManager implements AutoCloseable {
                 .then(Mono.just(link))))
             .retryWhen(Retry.from(retrySignals -> retrySignals.flatMap(signal -> {
                 final Throwable failure = signal.failure();
-                logger.info("entityPath[{}] attempt[{}]. Error occurred while getting unnamed session.",
-                    entityPath, signal.totalRetriesInARow(), failure);
+                LOGGER.atInfo()
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .addKeyValue("attempt", signal.totalRetriesInARow())
+                    .log("Error occurred while getting unnamed session.", failure);
 
                 if (isDisposed.get()) {
                     return Mono.<Long>error(new AmqpException(false, "SessionManager is already disposed.", failure,
@@ -308,7 +321,10 @@ class ServiceBusSessionManager implements AutoCloseable {
                     maxSessionLockRenewDuration);
             })))
             .flatMapMany(sessionReceiver -> sessionReceiver.receive().doFinally(signalType -> {
-                logger.verbose("Closing session receiver for session id [{}].", sessionReceiver.getSessionId());
+                LOGGER.atVerbose()
+                    .addKeyValue(SESSION_ID_KEY, sessionReceiver.getSessionId())
+                    .log("Closing session receiver.");
+
                 availableSchedulers.push(scheduler);
                 sessionReceivers.remove(sessionReceiver.getSessionId());
                 sessionReceiver.closeAsync().subscribe();
@@ -316,8 +332,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                 if (receiverOptions.isRollingSessionReceiver()) {
                     onSessionRequest(1L);
                 }
-            }))
-            .publishOn(scheduler, 1);
+            }));
     }
 
     private Mono<ServiceBusManagementNode> getManagementNode() {
@@ -331,10 +346,14 @@ class ServiceBusSessionManager implements AutoCloseable {
      */
     private void onSessionRequest(long request) {
         if (isDisposed.get()) {
-            logger.info("Session manager is disposed. Not emitting more unnamed sessions.");
+            LOGGER.info("Session manager is disposed. Not emitting more unnamed sessions.");
             return;
         }
-        logger.verbose("Requested {} unnamed sessions.", request);
+
+        LOGGER.atVerbose()
+            .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, request)
+            .log("Requested unnamed sessions.");
+
         for (int i = 0; i < request; i++) {
             final Scheduler scheduler = availableSchedulers.poll();
 
@@ -342,7 +361,9 @@ class ServiceBusSessionManager implements AutoCloseable {
             // expecting a free item. return an error.
             if (scheduler == null) {
                 if (request != Long.MAX_VALUE) {
-                    logger.verbose("request[{}]: There are no available schedulers to fetch.", request);
+                    LOGGER.atVerbose()
+                        .addKeyValue(NUMBER_OF_REQUESTED_MESSAGES_KEY, request)
+                        .log("There are no available schedulers to fetch.");
                 }
 
                 return;
@@ -356,12 +377,12 @@ class ServiceBusSessionManager implements AutoCloseable {
 
     private <T> Mono<Void> validateParameter(T parameter, String parameterName, String operation) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, operation)));
         } else if (parameter == null) {
-            return monoError(logger, new NullPointerException(String.format("'%s' cannot be null.", parameterName)));
+            return monoError(LOGGER, new NullPointerException(String.format("'%s' cannot be null.", parameterName)));
         } else if ((parameter instanceof String) && (((String) parameter).isEmpty())) {
-            return monoError(logger, new IllegalArgumentException(String.format("'%s' cannot be an empty string.",
+            return monoError(LOGGER, new IllegalArgumentException(String.format("'%s' cannot be an empty string.",
                 parameterName)));
         } else {
             return Mono.empty();

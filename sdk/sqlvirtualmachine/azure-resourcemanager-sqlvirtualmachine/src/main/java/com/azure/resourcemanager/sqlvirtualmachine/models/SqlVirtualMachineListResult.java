@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of SQL virtual machines. */
 @Immutable
 public final class SqlVirtualMachineListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlVirtualMachineListResult.class);
-
     /*
      * Array of results.
      */

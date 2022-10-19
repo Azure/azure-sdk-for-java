@@ -22,18 +22,21 @@ import com.azure.cosmos.implementation.RequestChargeTracker;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
+import com.azure.cosmos.implementation.SessionTokenHelper;
 import com.azure.cosmos.implementation.StoreResponseBuilder;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.VectorSessionToken;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
 import io.reactivex.subscribers.TestSubscriber;
 import org.assertj.core.api.AssertionsForClassTypes;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Mono;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.CyclicBarrier;
@@ -168,7 +171,7 @@ public class StoreReaderTest {
         TimeoutHelper timeoutHelper = Mockito.mock(TimeoutHelper.class);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
-        dsr.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        dsr.requestContext = new DocumentServiceRequestContext();
         dsr.requestContext.timeoutHelper = timeoutHelper;
         dsr.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("1");
         Mono<List<StoreResult>> res = storeReader.readMultipleReplicaAsync(dsr, true, 3, true, true, ReadMode.Strong);
@@ -185,6 +188,10 @@ public class StoreReaderTest {
         subscriber.assertNotComplete();
         assertThat(subscriber.errorCount()).isEqualTo(1);
         failureValidator.validate(subscriber.errors().get(0));
+
+        if (expectedStatusCode == 410) {
+            assertThat(dsr.requestContext.getFailedEndpoints().size()).isEqualTo(1);
+        }
     }
 
     /**
@@ -563,6 +570,43 @@ public class StoreReaderTest {
     }
 
     @Test(groups = "unit")
+    public void readPrimaryAsync_Error() {
+        TransportClient transportClient = Mockito.mock(TransportClient.class);
+        AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
+        ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
+
+        Uri primaryURI = Uri.create("primaryLoc");
+
+        RxDocumentServiceRequest request = RxDocumentServiceRequest.createFromName(mockDiagnosticsClientContext(),
+            OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
+
+        request.requestContext = Mockito.mock(DocumentServiceRequestContext.class);
+        request.requestContext.timeoutHelper = Mockito.mock(TimeoutHelper.class);
+        request.requestContext.resolvedPartitionKeyRange = partitionKeyRangeWithId("12");
+        request.requestContext.requestChargeTracker = new RequestChargeTracker();
+
+        Mockito.doReturn(Mono.just(primaryURI)).when(addressSelector).resolvePrimaryUriAsync(
+            Mockito.eq(request) , Mockito.eq(false));
+
+        StoreResponse storeResponse = Mockito.mock(StoreResponse.class);
+        Mockito.doReturn(Mono.just(storeResponse)).when(transportClient).invokeResourceOperationAsync(Mockito.eq(primaryURI), Mockito.eq(request));
+
+        StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
+
+        String outOfMemoryError = "Custom out of memory error";
+        MockedStatic<SessionTokenHelper> sessionTokenHelperMockedStatic = Mockito.mockStatic(SessionTokenHelper.class);
+        Mockito.doThrow(new OutOfMemoryError(outOfMemoryError)).when(SessionTokenHelper.class);
+        SessionTokenHelper.setOriginalSessionToken(request, null);
+
+        Mono<StoreResult> readResult = storeReader.readPrimaryAsync(request, true, true);
+
+        FailureValidator validator = FailureValidator.builder().instanceOf(OutOfMemoryError.class).errorMessageContains(outOfMemoryError).build();
+        validateError(readResult, validator);
+        //  Finally, close the mocked static thread
+        sessionTokenHelperMockedStatic.close();
+    }
+
+    @Test(groups = "unit")
     public void canParseLongLsn() {
         TransportClient transportClient = Mockito.mock(TransportClient.class);
         AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
@@ -592,7 +636,13 @@ public class StoreReaderTest {
                 .withGlobalCommittedLsn(bigLsn)
                 .build();
 
-        StoreResult result = storeReader.createStoreResult(storeResponse, null, false, false, null);
+        StoreResult result = storeReader.createStoreResult(
+                storeResponse,
+                null,
+                false,
+                false,
+                null,
+                Arrays.asList(primaryURI.getHealthStatusDiagnosticString()));
         assertThat(result.globalCommittedLSN).isEqualTo(bigLsn);
         assertThat(result.lsn).isEqualTo(bigLsn);
     }
@@ -847,6 +897,33 @@ public class StoreReaderTest {
 
         String cosmosDiagnostics = dsr.requestContext.cosmosDiagnostics.toString();
         assertThat(this.getMatchingElementCount(cosmosDiagnostics, "storeResult") >= 1).isTrue();
+
+        // validate failed endpoints in request context
+        if (ex != null) {
+            // validate failed endpoints based on exception type.
+            if (ex instanceof CosmosException) {
+                try {
+                    StoreReader.verifyCanContinueOnException((CosmosException) ex);
+
+                    // for continuable exception, SDK will retry on all other replicas, so the failed endpoints should match replica counts.
+                    List<Uri> expectedFailedEndpoints = Arrays.asList(primaryUri, secondaryUri1, secondaryUri2, secondaryUri3);
+                    assertThat(dsr.requestContext.getFailedEndpoints()).hasSize(expectedFailedEndpoints.size()).containsAll(expectedFailedEndpoints);
+
+                } catch (Exception exception) {
+                    if (exception instanceof CosmosException) {
+                        assertThat(dsr.requestContext.getFailedEndpoints()).hasSize(1);
+                    } else {
+                        assertThat(dsr.requestContext.getFailedEndpoints()).isEmpty();
+                    }
+                }
+            } else {
+                // Not a cosmosException, so the failed endpoints should be empty.
+                assertThat(dsr.requestContext.getFailedEndpoints()).isEmpty();
+            }
+        } else {
+            // There is no exception, so the failedEndpoints should be empty.
+            assertThat(dsr.requestContext.getFailedEndpoints()).isEmpty();
+        }
     }
 
     @Test(groups = "unit")
@@ -855,7 +932,14 @@ public class StoreReaderTest {
         AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         StoreReader storeReader = new StoreReader(transportClient, addressSelector, sessionContainer);
-        StoreResult storeResult = storeReader.createStoreResult(null, new IllegalStateException("Test"), false, false, null);
+        StoreResult storeResult =
+                storeReader.createStoreResult(
+                        null,
+                        new IllegalStateException("Test"),
+                        false,
+                        false,
+                        null,
+                        null);
         assertThat(storeResult.getException().toString()).contains("\"causeInfo\":\"[class: class java.lang.IllegalStateException, message:" +
             " Test]\"");
     }
@@ -909,6 +993,18 @@ public class StoreReaderTest {
     public static <T> void validateException(Mono<T> single,
                                             FailureValidator validator) {
         validateException(single, validator, TIMEOUT);
+    }
+
+    public static <T> void validateError(Mono<T> single,
+                                             FailureValidator validator) {
+        TestSubscriber<T> testSubscriber = new TestSubscriber<>();
+
+        try {
+            single.flux().subscribe(testSubscriber);
+        } catch (Throwable throwable) {
+            assertThat(throwable).isInstanceOf(Error.class);
+            validator.validate(throwable);
+        }
     }
 
     private int getMatchingElementCount(String cosmosDiagnostics, String regex) {

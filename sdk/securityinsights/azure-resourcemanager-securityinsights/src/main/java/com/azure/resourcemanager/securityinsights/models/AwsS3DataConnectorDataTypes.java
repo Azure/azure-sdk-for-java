@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The available data types for Amazon Web Services S3 data connector. */
 @Fluent
 public final class AwsS3DataConnectorDataTypes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AwsS3DataConnectorDataTypes.class);
-
     /*
      * Logs data type.
      */
@@ -47,7 +44,7 @@ public final class AwsS3DataConnectorDataTypes {
      */
     public void validate() {
         if (logs() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property logs in model AwsS3DataConnectorDataTypes"));
@@ -55,4 +52,6 @@ public final class AwsS3DataConnectorDataTypes {
             logs().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AwsS3DataConnectorDataTypes.class);
 }

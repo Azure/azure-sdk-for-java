@@ -8,7 +8,7 @@ import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.publisher.ReplayProcessor;
+import reactor.core.publisher.Sinks;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -140,7 +140,7 @@ public abstract class ExternalChildResourceCollectionImpl<
         final List<Throwable> exceptionsList = Collections.synchronizedList(new ArrayList<>());
         final List<FluentModelTImpl> successfullyRemoved = new ArrayList<>();
 
-        ReplayProcessor<FluentModelTImpl> aggregatedErrorStream = ReplayProcessor.create();
+        Sinks.Many<FluentModelTImpl> aggregatedErrorStream = Sinks.many().replay().all();
         Flux<FluentModelTImpl> deleteStream = Flux.fromIterable(items)
                 .filter(childResource ->
                     childResource.pendingOperation() == ExternalChildResourceImpl.PendingOperation.ToBeRemoved)
@@ -188,16 +188,16 @@ public abstract class ExternalChildResourceCollectionImpl<
                     }
                     if (successfullyRemoved.size() > 0) {
                         for (FluentModelTImpl removed : successfullyRemoved) {
-                            aggregatedErrorStream.sink().next(removed);
+                            aggregatedErrorStream.tryEmitNext(removed);
                         }
                     }
                     if (!exceptionsList.isEmpty()) {
-                        aggregatedErrorStream.sink().error(Exceptions.multiple(exceptionsList));
+                        aggregatedErrorStream.tryEmitError(Exceptions.multiple(exceptionsList));
                     } else {
-                        aggregatedErrorStream.sink().complete();
+                        aggregatedErrorStream.tryEmitComplete();
                     }
                 });
-        return Flux.concat(operationsStream, aggregatedErrorStream);
+        return Flux.concat(operationsStream, aggregatedErrorStream.asFlux());
     }
 
     /**

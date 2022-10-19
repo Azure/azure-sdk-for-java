@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IpAllocationType. */
+/** IpAllocation type. */
 public final class IpAllocationType extends ExpandableStringEnum<IpAllocationType> {
     /** Static value Undefined for IpAllocationType. */
     public static final IpAllocationType UNDEFINED = fromString("Undefined");
@@ -27,7 +27,11 @@ public final class IpAllocationType extends ExpandableStringEnum<IpAllocationTyp
         return fromString(name, IpAllocationType.class);
     }
 
-    /** @return known IpAllocationType values. */
+    /**
+     * Gets known IpAllocationType values.
+     *
+     * @return known IpAllocationType values.
+     */
     public static Collection<IpAllocationType> values() {
         return values(IpAllocationType.class);
     }

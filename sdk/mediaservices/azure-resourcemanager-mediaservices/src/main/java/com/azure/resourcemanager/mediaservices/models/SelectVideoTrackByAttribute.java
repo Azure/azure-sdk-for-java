@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Select video tracks from the input by specifying an attribute and an attribute filter. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.SelectVideoTrackByAttribute")
-@JsonFlatten
 @Fluent
-public class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SelectVideoTrackByAttribute.class);
-
+public final class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
     /*
      * The TrackAttribute to filter the tracks by.
      */
@@ -27,18 +22,15 @@ public class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
     private TrackAttribute attribute;
 
     /*
-     * The type of AttributeFilter to apply to the TrackAttribute in order to
-     * select the tracks.
+     * The type of AttributeFilter to apply to the TrackAttribute in order to select the tracks.
      */
     @JsonProperty(value = "filter", required = true)
     private AttributeFilter filter;
 
     /*
-     * The value to filter the tracks by.  Only used when
-     * AttributeFilter.ValueEquals is specified for the Filter property. For
-     * TrackAttribute.Bitrate, this should be an integer value in bits per
-     * second (e.g: '1500000').  The TrackAttribute.Language is not supported
-     * for video tracks.
+     * The value to filter the tracks by.  Only used when AttributeFilter.ValueEquals is specified for the Filter
+     * property. For TrackAttribute.Bitrate, this should be an integer value in bits per second (e.g: '1500000').  The
+     * TrackAttribute.Language is not supported for video tracks.
      */
     @JsonProperty(value = "filterValue")
     private String filterValue;
@@ -118,16 +110,18 @@ public class SelectVideoTrackByAttribute extends VideoTrackDescriptor {
     public void validate() {
         super.validate();
         if (attribute() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property attribute in model SelectVideoTrackByAttribute"));
         }
         if (filter() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property filter in model SelectVideoTrackByAttribute"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SelectVideoTrackByAttribute.class);
 }

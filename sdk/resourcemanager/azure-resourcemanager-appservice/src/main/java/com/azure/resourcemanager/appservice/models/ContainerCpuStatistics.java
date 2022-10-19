@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerCpuStatistics model. */
 @Fluent
 public final class ContainerCpuStatistics {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerCpuStatistics.class);
-
     /*
      * The cpuUsage property.
      */

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SparkAuthenticationType. */
+/** The authentication method used to access the Spark server. */
 public final class SparkAuthenticationType extends ExpandableStringEnum<SparkAuthenticationType> {
     /** Static value Anonymous for SparkAuthenticationType. */
     public static final SparkAuthenticationType ANONYMOUS = fromString("Anonymous");
@@ -34,7 +34,11 @@ public final class SparkAuthenticationType extends ExpandableStringEnum<SparkAut
         return fromString(name, SparkAuthenticationType.class);
     }
 
-    /** @return known SparkAuthenticationType values. */
+    /**
+     * Gets known SparkAuthenticationType values.
+     *
+     * @return known SparkAuthenticationType values.
+     */
     public static Collection<SparkAuthenticationType> values() {
         return values(SparkAuthenticationType.class);
     }

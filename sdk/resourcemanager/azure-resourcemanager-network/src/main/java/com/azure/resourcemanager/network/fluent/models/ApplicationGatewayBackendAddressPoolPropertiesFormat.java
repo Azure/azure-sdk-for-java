@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddress;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of Backend Address Pool of an application gateway. */
 @Fluent
 public final class ApplicationGatewayBackendAddressPoolPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayBackendAddressPoolPropertiesFormat.class);
-
     /*
      * Collection of references to IPs defined in network interfaces.
      */
@@ -35,6 +30,10 @@ public final class ApplicationGatewayBackendAddressPoolPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ApplicationGatewayBackendAddressPoolPropertiesFormat class. */
+    public ApplicationGatewayBackendAddressPoolPropertiesFormat() {
+    }
 
     /**
      * Get the backendIpConfigurations property: Collection of references to IPs defined in network interfaces.

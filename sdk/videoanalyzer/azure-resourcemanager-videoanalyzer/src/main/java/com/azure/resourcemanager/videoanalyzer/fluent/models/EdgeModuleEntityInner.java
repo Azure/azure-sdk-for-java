@@ -6,16 +6,12 @@ package com.azure.resourcemanager.videoanalyzer.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** The representation of an edge module. */
 @Fluent
 public final class EdgeModuleEntityInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdgeModuleEntityInner.class);
-
     /*
      * The resource properties.
      */

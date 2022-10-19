@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.LocationBasedCapabilitiesClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.CapabilityPropertiesInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.CapabilitiesListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LocationBasedCapabilitiesClient. */
 public final class LocationBasedCapabilitiesClientImpl implements LocationBasedCapabilitiesClient {
-    private final ClientLogger logger = new ClientLogger(LocationBasedCapabilitiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LocationBasedCapabilitiesService service;
 
@@ -91,7 +88,8 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capabilities at specified location in a given subscription.
+     * @return capabilities at specified location in a given subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapabilityPropertiesInner>> listSinglePageAsync(String locationName) {
@@ -142,7 +140,8 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capabilities at specified location in a given subscription.
+     * @return capabilities at specified location in a given subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapabilityPropertiesInner>> listSinglePageAsync(String locationName, Context context) {
@@ -189,7 +188,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capabilities at specified location in a given subscription.
+     * @return capabilities at specified location in a given subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CapabilityPropertiesInner> listAsync(String locationName) {
@@ -204,7 +203,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capabilities at specified location in a given subscription.
+     * @return capabilities at specified location in a given subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CapabilityPropertiesInner> listAsync(String locationName, Context context) {
@@ -219,7 +218,8 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capabilities at specified location in a given subscription.
+     * @return capabilities at specified location in a given subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityPropertiesInner> list(String locationName) {
@@ -234,7 +234,8 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return capabilities at specified location in a given subscription.
+     * @return capabilities at specified location in a given subscription as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapabilityPropertiesInner> list(String locationName, Context context) {
@@ -248,7 +249,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location capability.
+     * @return location capability along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapabilityPropertiesInner>> listNextSinglePageAsync(String nextLink) {
@@ -284,7 +285,7 @@ public final class LocationBasedCapabilitiesClientImpl implements LocationBasedC
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location capability.
+     * @return location capability along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<CapabilityPropertiesInner>> listNextSinglePageAsync(String nextLink, Context context) {

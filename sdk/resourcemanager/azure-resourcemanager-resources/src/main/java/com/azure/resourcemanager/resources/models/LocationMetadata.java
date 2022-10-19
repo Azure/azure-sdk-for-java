@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Location metadata information. */
 @Fluent
 public final class LocationMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationMetadata.class);
-
     /*
      * The type of the region.
      */

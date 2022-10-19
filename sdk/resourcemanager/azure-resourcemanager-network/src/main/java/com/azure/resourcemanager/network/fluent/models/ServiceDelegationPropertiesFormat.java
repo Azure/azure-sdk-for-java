@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of a service delegation. */
 @Fluent
 public final class ServiceDelegationPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceDelegationPropertiesFormat.class);
-
     /*
-     * The name of the service to whom the subnet should be delegated (e.g.
-     * Microsoft.Sql/servers).
+     * The name of the service to whom the subnet should be delegated (e.g. Microsoft.Sql/servers).
      */
     @JsonProperty(value = "serviceName")
     private String serviceName;
@@ -34,6 +29,10 @@ public final class ServiceDelegationPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ServiceDelegationPropertiesFormat class. */
+    public ServiceDelegationPropertiesFormat() {
+    }
 
     /**
      * Get the serviceName property: The name of the service to whom the subnet should be delegated (e.g.

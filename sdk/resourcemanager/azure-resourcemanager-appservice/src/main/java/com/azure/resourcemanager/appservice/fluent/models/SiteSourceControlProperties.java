@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.GitHubActionConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SiteSourceControl resource specific properties. */
 @Fluent
 public final class SiteSourceControlProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteSourceControlProperties.class);
-
     /*
      * Repository or source control URL.
      */

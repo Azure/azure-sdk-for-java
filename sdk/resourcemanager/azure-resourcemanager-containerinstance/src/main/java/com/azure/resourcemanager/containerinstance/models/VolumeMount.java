@@ -6,14 +6,11 @@ package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of the volume mount. */
 @Fluent
 public final class VolumeMount {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeMount.class);
-
     /*
      * The name of the volume mount.
      */
@@ -102,14 +99,16 @@ public final class VolumeMount {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model VolumeMount"));
         }
         if (mountPath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property mountPath in model VolumeMount"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VolumeMount.class);
 }

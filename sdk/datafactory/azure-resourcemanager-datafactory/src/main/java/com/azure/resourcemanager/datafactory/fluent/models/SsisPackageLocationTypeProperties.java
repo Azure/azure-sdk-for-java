@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.azure.resourcemanager.datafactory.models.SsisAccessCredential;
 import com.azure.resourcemanager.datafactory.models.SsisChildPackage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** SSIS package location properties. */
 @Fluent
 public final class SsisPackageLocationTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisPackageLocationTypeProperties.class);
-
     /*
      * Password of the package.
      */
@@ -31,8 +27,7 @@ public final class SsisPackageLocationTypeProperties {
     private SsisAccessCredential accessCredential;
 
     /*
-     * The configuration file of the package execution. Type: string (or
-     * Expression with resultType string).
+     * The configuration file of the package execution. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "configurationPath")
     private Object configurationPath;
@@ -50,8 +45,7 @@ public final class SsisPackageLocationTypeProperties {
     private String packageName;
 
     /*
-     * The embedded package content. Type: string (or Expression with
-     * resultType string).
+     * The embedded package content. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "packageContent")
     private Object packageContent;
@@ -67,6 +61,10 @@ public final class SsisPackageLocationTypeProperties {
      */
     @JsonProperty(value = "childPackages")
     private List<SsisChildPackage> childPackages;
+
+    /** Creates an instance of SsisPackageLocationTypeProperties class. */
+    public SsisPackageLocationTypeProperties() {
+    }
 
     /**
      * Get the packagePassword property: Password of the package.

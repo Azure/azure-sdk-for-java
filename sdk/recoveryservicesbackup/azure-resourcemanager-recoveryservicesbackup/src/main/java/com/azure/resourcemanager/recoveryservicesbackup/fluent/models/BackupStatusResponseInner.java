@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.FabricName;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** BackupStatus response. */
 @Fluent
 public final class BackupStatusResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupStatusResponseInner.class);
-
     /*
      * Specifies whether the container is registered or not
      */

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** Properties of a managed private endpoint. */
 @Fluent
 public final class ManagedPrivateEndpoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedPrivateEndpoint.class);
-
     /*
      * The managed private endpoint connection state
      */
@@ -44,8 +41,7 @@ public final class ManagedPrivateEndpoint {
     private Boolean isReserved;
 
     /*
-     * The ARM resource ID of the resource to which the managed private
-     * endpoint is created
+     * The ARM resource ID of the resource to which the managed private endpoint is created
      */
     @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
@@ -60,6 +56,10 @@ public final class ManagedPrivateEndpoint {
      * Properties of a managed private endpoint
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of ManagedPrivateEndpoint class. */
+    public ManagedPrivateEndpoint() {
+    }
 
     /**
      * Get the connectionState property: The managed private endpoint connection state.

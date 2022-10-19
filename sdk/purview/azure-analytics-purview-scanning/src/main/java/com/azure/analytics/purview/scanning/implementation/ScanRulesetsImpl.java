@@ -56,7 +56,7 @@ public final class ScanRulesetsImpl {
      */
     @Host("{Endpoint}")
     @ServiceInterface(name = "PurviewScanningClien")
-    private interface ScanRulesetsService {
+    public interface ScanRulesetsService {
         @Get("/scanrulesets/{scanRulesetName}")
         @ExpectedResponses({200})
         Mono<Response<BinaryData>> get(

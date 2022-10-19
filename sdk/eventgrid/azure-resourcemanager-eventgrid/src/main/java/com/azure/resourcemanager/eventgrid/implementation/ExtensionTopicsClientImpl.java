@@ -21,15 +21,12 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.fluent.ExtensionTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.models.ExtensionTopicInner;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ExtensionTopicsClient. */
 public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
-    private final ClientLogger logger = new ClientLogger(ExtensionTopicsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ExtensionTopicsService service;
 
@@ -147,15 +144,7 @@ public final class ExtensionTopicsClientImpl implements ExtensionTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ExtensionTopicInner> getAsync(String scope) {
-        return getWithResponseAsync(scope)
-            .flatMap(
-                (Response<ExtensionTopicInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(scope).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

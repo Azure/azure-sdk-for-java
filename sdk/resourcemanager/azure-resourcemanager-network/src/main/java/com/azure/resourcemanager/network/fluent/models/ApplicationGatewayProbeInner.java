@@ -6,18 +6,14 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProbeHealthResponseMatch;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Probe of the application gateway. */
 @Fluent
 public final class ApplicationGatewayProbeInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayProbeInner.class);
-
     /*
      * Properties of the application gateway probe.
      */
@@ -41,6 +37,10 @@ public final class ApplicationGatewayProbeInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ApplicationGatewayProbeInner class. */
+    public ApplicationGatewayProbeInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the application gateway probe.
@@ -265,6 +265,31 @@ public final class ApplicationGatewayProbeInner extends SubResource {
             this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
         }
         this.innerProperties().withPickHostnameFromBackendHttpSettings(pickHostnameFromBackendHttpSettings);
+        return this;
+    }
+
+    /**
+     * Get the pickHostnameFromBackendSettings property: Whether the server name indication should be picked from the
+     * backend settings for Tls protocol. Default value is false.
+     *
+     * @return the pickHostnameFromBackendSettings value.
+     */
+    public Boolean pickHostnameFromBackendSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().pickHostnameFromBackendSettings();
+    }
+
+    /**
+     * Set the pickHostnameFromBackendSettings property: Whether the server name indication should be picked from the
+     * backend settings for Tls protocol. Default value is false.
+     *
+     * @param pickHostnameFromBackendSettings the pickHostnameFromBackendSettings value to set.
+     * @return the ApplicationGatewayProbeInner object itself.
+     */
+    public ApplicationGatewayProbeInner withPickHostnameFromBackendSettings(Boolean pickHostnameFromBackendSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApplicationGatewayProbePropertiesFormat();
+        }
+        this.innerProperties().withPickHostnameFromBackendSettings(pickHostnameFromBackendSettings);
         return this;
     }
 

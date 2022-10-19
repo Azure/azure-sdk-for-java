@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Effective network security group. */
 @Fluent
 public final class EffectiveNetworkSecurityGroup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveNetworkSecurityGroup.class);
-
     /*
      * The ID of network security group that is applied.
      */
@@ -39,6 +35,10 @@ public final class EffectiveNetworkSecurityGroup {
      */
     @JsonProperty(value = "tagMap")
     private String tagMap;
+
+    /** Creates an instance of EffectiveNetworkSecurityGroup class. */
+    public EffectiveNetworkSecurityGroup() {
+    }
 
     /**
      * Get the networkSecurityGroup property: The ID of network security group that is applied.

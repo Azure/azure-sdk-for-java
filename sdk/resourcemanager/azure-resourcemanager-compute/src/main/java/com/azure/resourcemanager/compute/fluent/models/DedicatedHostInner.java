@@ -11,7 +11,6 @@ import com.azure.resourcemanager.compute.models.DedicatedHostInstanceView;
 import com.azure.resourcemanager.compute.models.DedicatedHostLicenseTypes;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -20,8 +19,6 @@ import java.util.Map;
 /** Specifies information about the Dedicated host. */
 @Fluent
 public final class DedicatedHostInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostInner.class);
-
     /*
      * Properties of the dedicated host.
      */
@@ -29,9 +26,8 @@ public final class DedicatedHostInner extends Resource {
     private DedicatedHostProperties innerProperties;
 
     /*
-     * SKU of the dedicated host for Hardware Generation and VM family. Only
-     * name is required to be set. List Microsoft.Compute SKUs for a list of
-     * possible values.
+     * SKU of the dedicated host for Hardware Generation and VM family. Only name is required to be set. List
+     * Microsoft.Compute SKUs for a list of possible values.
      */
     @JsonProperty(value = "sku", required = true)
     private Sku sku;
@@ -224,11 +220,13 @@ public final class DedicatedHostInner extends Resource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property sku in model DedicatedHostInner"));
         } else {
             sku().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DedicatedHostInner.class);
 }

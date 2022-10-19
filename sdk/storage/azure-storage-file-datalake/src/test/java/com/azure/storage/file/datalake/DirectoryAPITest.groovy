@@ -5,24 +5,41 @@ import com.azure.core.http.HttpPipelineCallContext
 import com.azure.core.http.HttpPipelineNextPolicy
 import com.azure.core.http.HttpRequest
 import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.ExponentialBackoffOptions
 import com.azure.core.http.policy.HttpPipelinePolicy
+import com.azure.core.http.policy.RetryOptions
 import com.azure.core.http.rest.Response
 import com.azure.core.util.Context
+import com.azure.core.util.HttpClientOptions
 import com.azure.identity.DefaultAzureCredentialBuilder
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.common.Utility
+import com.azure.storage.common.implementation.Constants
+import com.azure.storage.common.sas.AccountSasPermission
+import com.azure.storage.common.sas.AccountSasResourceType
+import com.azure.storage.common.sas.AccountSasService
+import com.azure.storage.common.sas.AccountSasSignatureValues
+import com.azure.storage.common.policy.RequestRetryOptions
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.*
+import com.azure.storage.file.datalake.options.DataLakePathCreateOptions
+import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions
+import com.azure.storage.file.datalake.options.DataLakePathScheduleDeletionOptions
+import com.azure.storage.file.datalake.options.FileSystemEncryptionScopeOptions
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions
 import com.azure.storage.file.datalake.sas.DataLakeServiceSasSignatureValues
+import com.azure.storage.file.datalake.sas.FileSystemSasPermission
 import com.azure.storage.file.datalake.sas.PathSasPermission
 import reactor.core.publisher.Mono
 import spock.lang.IgnoreIf
+import spock.lang.Retry
 import spock.lang.Unroll
 
+import java.time.Duration
+import java.time.OffsetDateTime
 import java.util.function.Consumer
 import java.util.stream.Collectors
 
@@ -66,6 +83,36 @@ class DirectoryAPITest extends APISpec {
 
         when:
         def createResponse = dc.createWithResponse(null, null, null, null, null, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
+    def "Create defaults with options"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions()
+        def metadata = new HashMap<String, String>()
+        metadata.put("foo", "bar")
+        options.setMetadata(metadata)
+            .setAccessControlList(pathAccessControlEntries)
+
+        when:
+        def createResponse = dc.createWithResponse(options, null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+        compareACL(dc.getAccessControl().getAccessControlList(), pathAccessControlEntries)
+    }
+
+    def "Create defaults with null options"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        def createResponse = dc.createWithResponse(null, null, null)
 
         then:
         createResponse.getStatusCode() == 201
@@ -226,6 +273,376 @@ class DirectoryAPITest extends APISpec {
         dc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    def "Create encryption scope"() {
+        setup:
+        def encryptionScope = new FileSystemEncryptionScopeOptions()
+            .setDefaultEncryptionScope(encryptionScopeString)
+            .setEncryptionScopeOverridePrevented(true)
+
+        def dirName = generatePathName()
+        fsc = primaryDataLakeServiceClient.getFileSystemClient(generateFileSystemName())
+        def client = getFileSystemClientBuilder(fsc.getFileSystemUrl())
+            .credential(environment.dataLakeAccount.credential)
+            .fileSystemEncryptionScopeOptions(encryptionScope)
+            .buildClient()
+
+        client.create()
+
+        def directoryClient = client.getDirectoryClient(dirName)
+
+        when:
+        directoryClient.create()
+        def properties = directoryClient.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "create encryption scope sas"() {
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setMovePermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setDeletePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setEncryptionScope(encryptionScopeString)
+        def sas = fsc.generateSas(sasValues)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), generatePathName())
+
+        when:
+        client.create()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "create encryption scope account sas"() {
+        setup:
+        def service = new AccountSasService()
+            .setBlobAccess(true)
+        def resourceType = new AccountSasResourceType()
+            .setContainer(true)
+            .setService(true)
+            .setObject(true)
+        def permissions = new AccountSasPermission()
+            .setReadPermission(true)
+            .setWritePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new AccountSasSignatureValues(expiryTime, permissions, service, resourceType)
+
+        def sas = getServiceClientBuilder(environment.dataLakeAccount.credential, environment.dataLakeAccount.dataLakeEndpoint)
+            .encryptionScope(encryptionScopeString)
+            .buildClient()
+            .generateAccountSas(sasValues)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), generatePathName())
+
+        when:
+        client.create()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
+    def "create encryption scope identity sas"() {
+        def key = getOAuthServiceClient().getUserDelegationKey(null, namer.getUtcNow().plusHours(1))
+        def keyOid = namer.recordValueFromConfig(key.getSignedObjectId())
+        key.setSignedObjectId(keyOid)
+        def keyTid = namer.recordValueFromConfig(key.getSignedTenantId())
+        key.setSignedTenantId(keyTid)
+
+        def permissions = new PathSasPermission()
+            .setReadPermission(true)
+            .setMovePermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setDeletePermission(true)
+
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions).setEncryptionScope(encryptionScopeString)
+
+        def sas = fsc.generateUserDelegationSas(sasValues.setAgentObjectId(owner), key)
+
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), generatePathName())
+
+        when:
+        client.create()
+        def properties = client.getProperties()
+
+        then:
+        properties.getEncryptionScope() == encryptionScopeString
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
+    def "Create options with ACL"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions()
+            .setAccessControlList(pathAccessControlEntries)
+        dc.createWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        def acl = dc.getAccessControl().getAccessControlList()
+        acl.get(0) == pathAccessControlEntries.get(0) // testing if owner is set the same
+        acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2021_06_08")
+    def "Create options with owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def ownerName = namer.getRandomUuid()
+        def groupName = namer.getRandomUuid()
+        def options = new DataLakePathCreateOptions()
+            .setOwner(ownerName)
+            .setGroup(groupName)
+        dc.createWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        dc.getAccessControl().getOwner() == ownerName
+        dc.getAccessControl().getGroup() == groupName
+    }
+
+    def "Create options with null owner and group"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions()
+            .setOwner(owner)
+            .setGroup(group)
+        dc.createWithResponse(options, null, null)
+
+        then:
+        notThrown(DataLakeStorageException)
+        dc.getAccessControl().getOwner() == "\$superuser"
+        dc.getAccessControl().getGroup() == "\$superuser"
+    }
+
+    def "Create options with path http headers"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def putHeaders = new PathHttpHeaders()
+            .setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentMd5(contentMD5)
+            .setContentType(contentType)
+
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(putHeaders)
+
+        dc.createWithResponse(options, null, null)
+
+        expect:
+        validatePathProperties(
+            dc.getPropertiesWithResponse(null, null, null),
+            cacheControl, contentDisposition, contentEncoding, contentLanguage, contentMD5, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5 | contentType
+        null         | null               | null            | null            | null       | "application/octet-stream"
+        "control"    | "disposition"      | "encoding"      | "language"      | null       | "type"
+    }
+
+    def "Create options with metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+
+        expect:
+        dc.createWithResponse(options, null, null).getStatusCode() == statusCode
+        def properties = dc.getProperties()
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            properties.getMetadata().containsKey(k)
+            properties.getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 201
+        "foo" | "bar"  | "fizz" | "buzz" || 201
+    }
+
+    def "Create options with permissions and umask"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+        dc.createWithResponse(options, null, null)
+
+        when:
+        def acl = dc.getAccessControlWithResponse(true, null, null, null).getValue()
+
+        then:
+        PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
+
+    }
+
+    def "Create options with error"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions()
+            .setScheduleDeletionOptions(deletionOptions)
+            .setProposedLeaseId(leaseId)
+            .setLeaseDuration(leaseDuration)
+
+
+        when:
+        dc.createWithResponse(options, null, null)
+
+        then:
+        // assert not supported for directory
+        thrown(IllegalArgumentException)
+
+        where:
+        leaseId                         | leaseDuration | deletionOptions
+        UUID.randomUUID().toString()    | null          | null
+        UUID.randomUUID().toString()    | 15            | null
+        UUID.randomUUID().toString()    | null          | new DataLakePathScheduleDeletionOptions(OffsetDateTime.now())
+        UUID.randomUUID().toString()    | null          | new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
+    }
+
+    def "Create if not exists min"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        dc.createIfNotExists()
+
+        then:
+        notThrown(DataLakeStorageException)
+    }
+
+    def "Create if not exists defaults"() {
+        setup:
+        dc = fsc.getDirectoryClient(generatePathName())
+
+        when:
+        def createResponse = dc.createIfNotExistsWithResponse(new DataLakePathCreateOptions(), null, null)
+
+        then:
+        createResponse.getValue()
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    def "Create if not exists overwrite"() {
+        setup:
+        def options = new DataLakePathCreateOptions()
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        def initialResponse = dc.createIfNotExistsWithResponse(options, null, null)
+
+        // Try to create the resource again
+        def secondResponse = dc.createIfNotExistsWithResponse(options, null, null)
+
+        then:
+        initialResponse.getValue()
+        initialResponse.getStatusCode() == 201
+        !secondResponse.getValue()
+        secondResponse.getStatusCode() == 409
+    }
+
+    def "Create if not exists does exist"() {
+        when:
+        dc = fsc.getDirectoryClient(generatePathName())
+        dc.createIfNotExists()
+
+        then:
+        dc.exists()
+    }
+
+    @Unroll
+    def "Create if not exists headers"() {
+        // Create does not set md5
+        setup:
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+        dc = fsc.getDirectoryClient(generatePathName())
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
+
+        when:
+        dc.createIfNotExistsWithResponse(options, null, null)
+        def response = dc.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
+        null         | null               | null            | null            | null
+        "control"    | "disposition"      | "encoding"      | "language"      | "type"
+    }
+
+    @Unroll
+    def "Create if not exists metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+
+        when:
+        dc.createIfNotExistsWithResponse(options, null, Context.NONE)
+        def response = dc.getProperties()
+
+        then:
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            response.getMetadata().containsKey(k)
+            response.getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    def "Create if not exists permissions and umask"() {
+        setup:
+        def client = fsc.getDirectoryClient(generatePathName())
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+
+        expect:
+        client.createIfNotExistsWithResponse(options, null, Context.NONE).getStatusCode() == 201
+    }
+
     def "Delete min"() {
         expect:
         dc.deleteWithResponse(false, null, null, null).getStatusCode() == 200
@@ -287,6 +704,96 @@ class DirectoryAPITest extends APISpec {
 
         when:
         dc.deleteWithResponse(false, drc, null, null).getStatusCode()
+
+        then:
+        thrown(DataLakeStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Delete if exists"() {
+        expect:
+        dc.deleteIfExists()
+    }
+
+    def "Delete if exists min"() {
+        expect:
+        dc.deleteIfExistsWithResponse(null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete if exists recursive"() {
+        expect:
+        dc.deleteIfExistsWithResponse(new DataLakePathDeleteOptions().setIsRecursive(true),
+            null, null).getStatusCode() == 200
+    }
+
+    def "Delete if exists dir does not exist anymore"() {
+        when:
+        def response = dc.deleteIfExistsWithResponse(null, null, null)
+        dc.getPropertiesWithResponse(null, null, null)
+
+        then:
+        thrown(DataLakeStorageException)
+        response.getStatusCode() == 200
+    }
+
+    def "Delete if exists dir that was already deleted"() {
+        when:
+        def initialResponse = dc.deleteIfExistsWithResponse(null, null, null)
+        def secondResponse = dc.deleteIfExistsWithResponse(null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 200
+        secondResponse.getStatusCode() == 404
+    }
+
+    @Unroll
+    def "Delete if exists AC"() {
+        setup:
+        match = setupPathMatchCondition(dc, match)
+        leaseID = setupPathLeaseCondition(dc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
+
+        expect:
+        dc.deleteIfExistsWithResponse(options, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists AC fail"() {
+        setup:
+        noneMatch = setupPathMatchCondition(dc, noneMatch)
+        setupPathLeaseCondition(dc, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
+
+        when:
+        dc.deleteIfExistsWithResponse(options, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)
@@ -1970,6 +2477,29 @@ class DirectoryAPITest extends APISpec {
         null     | null       | null        | null         | garbageLeaseID
     }
 
+    def "Rename sas token"() {
+        setup:
+        def permissions = new FileSystemSasPermission()
+            .setReadPermission(true)
+            .setMovePermission(true)
+            .setWritePermission(true)
+            .setCreatePermission(true)
+            .setAddPermission(true)
+            .setDeletePermission(true)
+        def expiryTime = namer.getUtcNow().plusDays(1)
+
+        def sasValues = new DataLakeServiceSasSignatureValues(expiryTime, permissions)
+        def sas = fsc.generateSas(sasValues)
+        def client = getDirectoryClient(sas, fsc.getFileSystemUrl(), dc.getDirectoryPath())
+
+        when:
+        def destClient = client.rename(fsc.getFileSystemName(), generatePathName())
+
+        then:
+        notThrown(DataLakeStorageException)
+        destClient.getProperties()
+    }
+
     def "Get properties default"() {
         when:
         def response = dc.getPropertiesWithResponse(null, null, null)
@@ -2334,15 +2864,6 @@ class DirectoryAPITest extends APISpec {
         false     || _
     }
 
-    def "Create file defaults"() {
-        when:
-        def createResponse = dc.createFileWithResponse(generatePathName(), null, null, null, null, null, null, null)
-
-        then:
-        createResponse.getStatusCode() == 201
-        validateBasicHeaders(createResponse.getHeaders())
-    }
-
     def "Create file error"() {
         when:
         dc.createFileWithResponse(generatePathName(), null, null, null, null, new DataLakeRequestConditions().setIfMatch("garbage"), null,
@@ -2470,6 +2991,104 @@ class DirectoryAPITest extends APISpec {
         dc.createFileWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    def "Create if not exists file min"() {
+        when:
+        def result = dc.createFileIfNotExists(generatePathName())
+
+        then:
+        notThrown(DataLakeStorageException)
+        result.exists()
+    }
+
+    @Unroll
+    def "Create if not exists file overwrite"() {
+        setup:
+        def pathName = generatePathName()
+        def initialResponse = dc.createFileIfNotExistsWithResponse(pathName, null, null, null)
+
+        when:
+        def secondResponse = dc.createFileIfNotExistsWithResponse(pathName, null, null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        secondResponse.getStatusCode() == 409
+    }
+
+    def "Create if not exists file defaults"() {
+        when:
+        def createResponse = dc.createFileIfNotExistsWithResponse(generatePathName(), new DataLakePathCreateOptions(), null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    @Unroll
+    def "Create if not exists file headers"() {
+        // Create does not set md5
+        setup:
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
+
+        when:
+        def client = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, null).getValue()
+        def response = client.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
+        null         | null               | null            | null            | null
+        "control"    | "disposition"      | "encoding"      | "language"      | "type"
+    }
+
+    @Unroll
+    def "Create if not exists file metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+
+        when:
+        def client = dc.createFileIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getValue()
+        def response = client.getProperties()
+
+        then:
+        client.exists()
+        response.getMetadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    def "Create if not exists file permissions and umask"() {
+        setup:
+        def client = fsc.getDirectoryClient(generatePathName())
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+
+        expect:
+        client.createFileIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getStatusCode() == 201
+    }
+
     def "Delete file min"() {
         expect:
         def pathName = generatePathName()
@@ -2534,6 +3153,102 @@ class DirectoryAPITest extends APISpec {
 
         when:
         dc.deleteFileWithResponse(pathName, drc, null, null).getStatusCode()
+
+        then:
+        thrown(DataLakeStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Delete if exists file"() {
+        expect:
+        def pathName = generatePathName()
+        dc.createFile(pathName)
+        dc.deleteFileIfExists(pathName)
+    }
+
+    def "Delete if exists file min"() {
+        expect:
+        def pathName = generatePathName()
+        dc.createFile(pathName)
+        dc.deleteFileIfExistsWithResponse(pathName, null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete if exists file file does not exist anymore"() {
+        when:
+        def pathName = generatePathName()
+        def client = dc.createFile(pathName)
+        def response = dc.deleteFileIfExistsWithResponse(pathName, null, null, null)
+
+        then:
+        response.getStatusCode() == 200
+        !client.exists()
+    }
+
+    def "Delete if exists file file that was already deleted"() {
+        when:
+        def pathName = generatePathName()
+        def client = dc.createFile(pathName)
+        def response = dc.deleteFileIfExistsWithResponse(pathName, null, null, null)
+        def response2 = dc.deleteFileIfExistsWithResponse(pathName, null, null, null)
+
+        then:
+        response.getStatusCode() == 200
+        !client.exists()
+        response2.getStatusCode() == 404
+    }
+
+    @Unroll
+    def "Delete if exists file AC"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.createFile(pathName)
+        match = setupPathMatchCondition(client, match)
+        leaseID = setupPathLeaseCondition(client, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+
+        expect:
+        dc.deleteFileIfExistsWithResponse(pathName, options, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists file AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.createFile(pathName)
+        noneMatch = setupPathMatchCondition(client, noneMatch)
+        setupPathLeaseCondition(client, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc)
+
+        when:
+        dc.deleteFileIfExistsWithResponse(pathName, options, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)
@@ -2719,6 +3434,123 @@ class DirectoryAPITest extends APISpec {
         dc.createSubdirectoryWithResponse(generatePathName(), permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    def "Create if not exists sub dir min"() {
+        when:
+        def client = dc.createSubdirectoryIfNotExists(generatePathName())
+
+        then:
+        notThrown(DataLakeStorageException)
+        client.exists()
+    }
+
+    @Unroll
+    def "Create if not exists sub dir overwrite"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.createSubdirectoryIfNotExists(pathName)
+
+        when:
+        def secondClient = dc.createSubdirectoryIfNotExists(pathName)
+
+        then:
+        client.exists()
+        // same client is returned since subdirectory has already been created
+        secondClient.exists()
+        client.getDirectoryName() == secondClient.getDirectoryName()
+    }
+
+    @Unroll
+    def "Create if not exists sub dir that already exists"() {
+        setup:
+        def pathName = generatePathName()
+        def initialResponse = dc.createSubdirectoryIfNotExistsWithResponse(pathName, new DataLakePathCreateOptions(), null, null)
+
+        when:
+        def secondResponse = dc.createSubdirectoryIfNotExistsWithResponse(pathName, new DataLakePathCreateOptions(), null, null)
+
+        then:
+        initialResponse.getStatusCode() == 201
+        secondResponse.getStatusCode() == 409
+    }
+
+    def "Create if not exists sub dir defaults"() {
+        when:
+        def createResponse = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), new DataLakePathCreateOptions(), null, null)
+
+        then:
+        createResponse.getStatusCode() == 201
+        validateBasicHeaders(createResponse.getHeaders())
+    }
+
+    @Unroll
+    def "Create if not exists sub dir headers"() {
+        // Create does not set md5
+        setup:
+        def headers = new PathHttpHeaders().setCacheControl(cacheControl)
+            .setContentDisposition(contentDisposition)
+            .setContentEncoding(contentEncoding)
+            .setContentLanguage(contentLanguage)
+            .setContentType(contentType)
+        def options = new DataLakePathCreateOptions().setPathHttpHeaders(headers)
+
+        when:
+        def client = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, null).getValue()
+        def response = client.getPropertiesWithResponse(null, null, null)
+
+        // If the value isn't set the service will automatically set it
+        contentType = (contentType == null) ? "application/octet-stream" : contentType
+
+        then:
+        validatePathProperties(response, cacheControl, contentDisposition, contentEncoding, contentLanguage, null, contentType)
+
+        where:
+        cacheControl | contentDisposition | contentEncoding | contentLanguage | contentType
+        null         | null               | null            | null            | null
+        "control"    | "disposition"      | "encoding"      | "language"      | "type"
+    }
+
+    @Unroll
+    def "Create if not exists sub dir metadata"() {
+        setup:
+        def metadata = new HashMap<String, String>()
+        if (key1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null) {
+            metadata.put(key2, value2)
+        }
+        def options = new DataLakePathCreateOptions().setMetadata(metadata)
+
+        when:
+        def client = dc.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getValue()
+        def response = client.getProperties()
+
+        then:
+        // Directory adds a directory metadata value
+        for(String k : metadata.keySet()) {
+            response.getMetadata().containsKey(k)
+            response.getMetadata().get(k) == metadata.get(k)
+        }
+
+        where:
+        key1  | value1 | key2   | value2
+        null  | null   | null   | null
+        "foo" | "bar"  | "fizz" | "buzz"
+    }
+
+    def "Create if not exists sub dir permissions and umask"() {
+        setup:
+        def client = fsc.getDirectoryClient(generatePathName())
+        def permissions = "0777"
+        def umask = "0057"
+        def options = new DataLakePathCreateOptions()
+            .setPermissions(permissions)
+            .setUmask(umask)
+
+        expect:
+        client.createSubdirectoryIfNotExistsWithResponse(generatePathName(), options, null, Context.NONE).getStatusCode() == 201
+    }
+
     def "Delete sub dir min"() {
         expect:
         def pathName = generatePathName()
@@ -2790,6 +3622,96 @@ class DirectoryAPITest extends APISpec {
 
         when:
         dc.deleteSubdirectoryWithResponse(pathName, false, drc, null, null).getStatusCode()
+
+        then:
+        thrown(DataLakeStorageException)
+
+        where:
+        modified | unmodified | match       | noneMatch    | leaseID
+        newDate  | null       | null        | null         | null
+        null     | oldDate    | null        | null         | null
+        null     | null       | garbageEtag | null         | null
+        null     | null       | null        | receivedEtag | null
+        null     | null       | null        | null         | garbageLeaseID
+    }
+
+    def "Delete if exists sub dir"() {
+        expect:
+        def pathName = generatePathName()
+        dc.createSubdirectoryIfNotExists(pathName)
+        dc.deleteSubdirectoryIfExists(pathName)
+    }
+
+    def "Delete if exists sub dir min"() {
+        expect:
+        def pathName = generatePathName()
+        dc.createSubdirectoryIfNotExists(pathName)
+        dc.deleteSubdirectoryIfExistsWithResponse(pathName, null, null, null).getStatusCode() == 200
+    }
+
+    def "Delete if exists sub dir recursive"() {
+        expect:
+        def pathName = generatePathName()
+        dc.createSubdirectory(pathName)
+        dc.deleteSubdirectoryIfExistsWithResponse(pathName, new DataLakePathDeleteOptions().setIsRecursive(true), null, null).getStatusCode() == 200
+    }
+
+    def "Delete if exists sub dir dir does not exist anymore"() {
+        when:
+        def pathName = generatePathName()
+        def client = dc.createSubdirectory(pathName)
+        def response = dc.deleteSubdirectoryIfExistsWithResponse(pathName, null, null, null)
+
+        then:
+        response.getStatusCode() == 200
+        !client.exists()
+    }
+
+    @Unroll
+    def "Delete if exists sub dir AC"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.createSubdirectory(pathName)
+        match = setupPathMatchCondition(client, match)
+        leaseID = setupPathLeaseCondition(client, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
+
+        expect:
+        dc.deleteSubdirectoryIfExistsWithResponse(pathName, options, null, null).getStatusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Delete if exists sub dir AC fail"() {
+        setup:
+        def pathName = generatePathName()
+        def client = dc.createSubdirectory(pathName)
+        noneMatch = setupPathMatchCondition(client, noneMatch)
+        setupPathLeaseCondition(client, leaseID)
+        def drc = new DataLakeRequestConditions()
+            .setLeaseId(leaseID)
+            .setIfMatch(match)
+            .setIfNoneMatch(noneMatch)
+            .setIfModifiedSince(modified)
+            .setIfUnmodifiedSince(unmodified)
+        def options = new DataLakePathDeleteOptions().setRequestConditions(drc).setIsRecursive(false)
+
+        when:
+        dc.deleteSubdirectoryIfExistsWithResponse(pathName, options, null, null).getStatusCode()
 
         then:
         thrown(DataLakeStorageException)
@@ -3119,5 +4041,31 @@ class DirectoryAPITest extends APISpec {
         then:
         renamedDir.getObjectPath() == renamedName
         renamedDir.getProperties().getETag() == renamedDir.setAccessControlList(pathAccessControlEntries, group, owner).getETag()
+    }
+
+    @Retry(count = 5, delay = 1000)
+    def "create file system with small timeouts fail for service client"() {
+        setup:
+        def clientOptions = new HttpClientOptions()
+            .setApplicationId("client-options-id")
+            .setResponseTimeout(Duration.ofNanos(1))
+            .setReadTimeout(Duration.ofNanos(1))
+            .setWriteTimeout(Duration.ofNanos(1))
+            .setConnectTimeout(Duration.ofNanos(1))
+
+        def clientBuilder = new DataLakeServiceClientBuilder()
+            .endpoint(environment.primaryAccount.blobEndpoint)
+            .credential(environment.primaryAccount.credential)
+            .retryOptions(new RequestRetryOptions(null, 1, null, null, null, null))
+            .clientOptions(clientOptions)
+
+        def serviceClient = clientBuilder.buildClient()
+
+        when:
+        serviceClient.createFileSystem(generateFileSystemName())
+
+        then:
+        // test whether failure occurs due to small timeout intervals set on the service client
+        thrown(RuntimeException)
     }
 }

@@ -9,17 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure SQL Data Warehouse linked service properties. */
 @Fluent
 public final class AzureSqlDWLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlDWLinkedServiceTypeProperties.class);
-
     /*
-     * The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or
+     * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
@@ -32,39 +28,36 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference password;
 
     /*
-     * The ID of the service principal used to authenticate against Azure SQL
-     * Data Warehouse. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against Azure SQL Data Warehouse. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * The key of the service principal used to authenticate against Azure SQL
-     * Data Warehouse.
+     * The key of the service principal used to authenticate against Azure SQL Data Warehouse.
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed
-     * values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany.
-     * Default value is the data factory regions’ cloud type. Type: string (or
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
     @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
@@ -74,6 +67,10 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
      */
     @JsonProperty(value = "credential")
     private CredentialReference credential;
+
+    /** Creates an instance of AzureSqlDWLinkedServiceTypeProperties class. */
+    public AzureSqlDWLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionString property: The connection string. Type: string, SecureString or
@@ -256,7 +253,7 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model AzureSqlDWLinkedServiceTypeProperties"));
@@ -271,4 +268,6 @@ public final class AzureSqlDWLinkedServiceTypeProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSqlDWLinkedServiceTypeProperties.class);
 }

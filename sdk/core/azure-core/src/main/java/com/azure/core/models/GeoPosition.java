@@ -13,7 +13,8 @@ import java.util.Objects;
  */
 @Immutable
 public final class GeoPosition {
-    private final ClientLogger logger = new ClientLogger(GeoPosition.class);
+    // GeoPosition is a commonly used model, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(GeoPosition.class);
 
     private final double longitude;
     private final double latitude;
@@ -119,13 +120,13 @@ public final class GeoPosition {
                 return latitude;
             case 2:
                 if (altitude == null) {
-                    throw logger.logExceptionAsError(new IndexOutOfBoundsException("Index out of range: " + index));
+                    throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("Index out of range: " + index));
                 }
 
                 return altitude;
 
             default:
-                throw logger.logExceptionAsError(new IndexOutOfBoundsException("Index out of range: " + index));
+                throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("Index out of range: " + index));
         }
     }
 

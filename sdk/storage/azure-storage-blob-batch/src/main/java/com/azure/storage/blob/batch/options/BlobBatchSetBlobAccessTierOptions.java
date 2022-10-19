@@ -17,7 +17,7 @@ import com.azure.storage.common.implementation.StorageImplUtils;
 @Fluent
 public class BlobBatchSetBlobAccessTierOptions {
 
-    private final ClientLogger logger = new ClientLogger(BlobBatchSetBlobAccessTierOptions.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobBatchSetBlobAccessTierOptions.class);
 
     private final BlobUrlParts blobUrlParts;
     private final AccessTier tier;
@@ -76,11 +76,11 @@ public class BlobBatchSetBlobAccessTierOptions {
      * @return Identifier of the blob to set its access tier.
      */
     public String getBlobIdentifier() {
-        String basePath = String.format("%s/%s", blobUrlParts.getBlobContainerName(), blobUrlParts.getBlobName());
+        String basePath = blobUrlParts.getBlobContainerName() + "/" + blobUrlParts.getBlobName();
         String snapshot = blobUrlParts.getSnapshot();
         String versionId = blobUrlParts.getVersionId();
         if (snapshot != null && versionId != null) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'snapshot' and 'versionId' cannot be used at the same time."));
         }
         if (snapshot != null) {

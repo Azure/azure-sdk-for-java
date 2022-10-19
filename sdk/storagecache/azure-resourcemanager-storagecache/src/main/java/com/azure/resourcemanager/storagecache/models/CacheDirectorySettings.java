@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cache Directory Services settings. */
 @Fluent
 public final class CacheDirectorySettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheDirectorySettings.class);
-
     /*
      * Specifies settings for joining the HPC Cache to an Active Directory
      * domain.

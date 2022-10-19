@@ -7,17 +7,16 @@ package com.azure.resourcemanager.kusto.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.Compression;
+import com.azure.resourcemanager.kusto.models.DatabaseRouting;
 import com.azure.resourcemanager.kusto.models.EventHubDataFormat;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Class representing the Kusto event hub connection properties. */
 @Fluent
 public final class EventHubConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubConnectionProperties.class);
-
     /*
      * The resource ID of the event hub to be used to create a data connection.
      */
@@ -31,22 +30,19 @@ public final class EventHubConnectionProperties {
     private String consumerGroup;
 
     /*
-     * The table where the data should be ingested. Optionally the table
-     * information can be added to each message.
+     * The table where the data should be ingested. Optionally the table information can be added to each message.
      */
     @JsonProperty(value = "tableName")
     private String tableName;
 
     /*
-     * The mapping rule to be used to ingest the data. Optionally the mapping
-     * information can be added to each message.
+     * The mapping rule to be used to ingest the data. Optionally the mapping information can be added to each message.
      */
     @JsonProperty(value = "mappingRuleName")
     private String mappingRuleName;
 
     /*
-     * The data format of the message. Optionally the data format can be added
-     * to each message.
+     * The data format of the message. Optionally the data format can be added to each message.
      */
     @JsonProperty(value = "dataFormat")
     private EventHubDataFormat dataFormat;
@@ -70,11 +66,30 @@ public final class EventHubConnectionProperties {
     private ProvisioningState provisioningState;
 
     /*
-     * The resource ID of a managed identity (system or user assigned) to be
-     * used to authenticate with event hub.
+     * The resource ID of a managed identity (system or user assigned) to be used to authenticate with event hub.
      */
     @JsonProperty(value = "managedIdentityResourceId")
     private String managedIdentityResourceId;
+
+    /*
+     * The object ID of the managedIdentityResourceId
+     */
+    @JsonProperty(value = "managedIdentityObjectId", access = JsonProperty.Access.WRITE_ONLY)
+    private String managedIdentityObjectId;
+
+    /*
+     * Indication for database routing information from the data connection, by default only database routing
+     * information is allowed
+     */
+    @JsonProperty(value = "databaseRouting")
+    private DatabaseRouting databaseRouting;
+
+    /*
+     * When defined, the data connection retrieves existing Event hub events created since the Retrieval start date. It
+     * can only retrieve events retained by the Event hub, based on its retention period.
+     */
+    @JsonProperty(value = "retrievalStartDate")
+    private OffsetDateTime retrievalStartDate;
 
     /**
      * Get the eventHubResourceId property: The resource ID of the event hub to be used to create a data connection.
@@ -254,22 +269,79 @@ public final class EventHubConnectionProperties {
     }
 
     /**
+     * Get the managedIdentityObjectId property: The object ID of the managedIdentityResourceId.
+     *
+     * @return the managedIdentityObjectId value.
+     */
+    public String managedIdentityObjectId() {
+        return this.managedIdentityObjectId;
+    }
+
+    /**
+     * Get the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @return the databaseRouting value.
+     */
+    public DatabaseRouting databaseRouting() {
+        return this.databaseRouting;
+    }
+
+    /**
+     * Set the databaseRouting property: Indication for database routing information from the data connection, by
+     * default only database routing information is allowed.
+     *
+     * @param databaseRouting the databaseRouting value to set.
+     * @return the EventHubConnectionProperties object itself.
+     */
+    public EventHubConnectionProperties withDatabaseRouting(DatabaseRouting databaseRouting) {
+        this.databaseRouting = databaseRouting;
+        return this;
+    }
+
+    /**
+     * Get the retrievalStartDate property: When defined, the data connection retrieves existing Event hub events
+     * created since the Retrieval start date. It can only retrieve events retained by the Event hub, based on its
+     * retention period.
+     *
+     * @return the retrievalStartDate value.
+     */
+    public OffsetDateTime retrievalStartDate() {
+        return this.retrievalStartDate;
+    }
+
+    /**
+     * Set the retrievalStartDate property: When defined, the data connection retrieves existing Event hub events
+     * created since the Retrieval start date. It can only retrieve events retained by the Event hub, based on its
+     * retention period.
+     *
+     * @param retrievalStartDate the retrievalStartDate value to set.
+     * @return the EventHubConnectionProperties object itself.
+     */
+    public EventHubConnectionProperties withRetrievalStartDate(OffsetDateTime retrievalStartDate) {
+        this.retrievalStartDate = retrievalStartDate;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (eventHubResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property eventHubResourceId in model EventHubConnectionProperties"));
         }
         if (consumerGroup() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property consumerGroup in model EventHubConnectionProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubConnectionProperties.class);
 }

@@ -5,7 +5,6 @@ package com.azure.resourcemanager.authorization.implementation;
 
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.fluent.RoleAssignmentsClient;
 import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentInner;
@@ -16,15 +15,12 @@ import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementat
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import reactor.core.publisher.Mono;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.Objects;
 
 /** The implementation of RoleAssignments and its parent interfaces. */
 public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, RoleAssignmentImpl, RoleAssignmentInner>
     implements RoleAssignments {
     private final AuthorizationManager manager;
-    private final ClientLogger logger = new ClientLogger(RoleAssignmentsImpl.class);
 
     public RoleAssignmentsImpl(final AuthorizationManager manager) {
         this.manager = manager;
@@ -80,7 +76,7 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
     @Override
     public PagedFlux<RoleAssignment> listByServicePrincipalAsync(String principalId) {
         String filterStr = String.format("principalId eq '%s'", Objects.requireNonNull(principalId));
-        return PagedConverter.mapPage(inner().listAsync(urlEncode(filterStr), null), this::wrapModel);
+        return PagedConverter.mapPage(inner().listAsync(filterStr), this::wrapModel);
     }
 
     @Override
@@ -119,17 +115,5 @@ public class RoleAssignmentsImpl extends CreatableResourcesImpl<RoleAssignment, 
 
     public RoleAssignmentsClient inner() {
         return manager().roleServiceClient().getRoleAssignments();
-    }
-
-    /*
-     * url encode the given string
-     */
-    private String urlEncode(String str) {
-        try {
-            //method "URLEncoder.encode(String s, Charset charset)" appears after java 10, so it's not used here
-            return URLEncoder.encode(str, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e));
-        }
     }
 }

@@ -10,11 +10,13 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
@@ -96,6 +98,19 @@ public final class BotServiceManager {
     }
 
     /**
+     * Creates an instance of BotService service API entry point.
+     *
+     * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
+     * @param profile the Azure profile for client.
+     * @return the BotService service API instance.
+     */
+    public static BotServiceManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
+        return new BotServiceManager(httpPipeline, profile, null);
+    }
+
+    /**
      * Gets a Configurable instance that can be used to create BotServiceManager with optional configuration.
      *
      * @return the Configurable instance allowing configurations.
@@ -106,13 +121,14 @@ public final class BotServiceManager {
 
     /** The Configurable allowing configurations to be set. */
     public static final class Configurable {
-        private final ClientLogger logger = new ClientLogger(Configurable.class);
+        private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
         private final List<HttpPipelinePolicy> policies = new ArrayList<>();
         private final List<String> scopes = new ArrayList<>();
         private RetryPolicy retryPolicy;
+        private RetryOptions retryOptions;
         private Duration defaultPollInterval;
 
         private Configurable() {
@@ -174,15 +190,30 @@ public final class BotServiceManager {
         }
 
         /**
+         * Sets the retry options for the HTTP pipeline retry policy.
+         *
+         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         *
+         * @param retryOptions the retry options for the HTTP pipeline retry policy.
+         * @return the configurable object itself.
+         */
+        public Configurable withRetryOptions(RetryOptions retryOptions) {
+            this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
+            return this;
+        }
+
+        /**
          * Sets the default poll interval, used when service does not provide "Retry-After" header.
          *
          * @param defaultPollInterval the default poll interval.
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval = Objects.requireNonNull(defaultPollInterval, "'retryPolicy' cannot be null.");
+            this.defaultPollInterval =
+                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException("'httpPipeline' cannot be negative"));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
             }
             return this;
         }
@@ -204,7 +235,7 @@ public final class BotServiceManager {
                 .append("-")
                 .append("com.azure.resourcemanager.botservice")
                 .append("/")
-                .append("1.0.0-beta.3");
+                .append("1.0.0-beta.5");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -222,10 +253,15 @@ public final class BotServiceManager {
                 scopes.add(profile.getEnvironment().getManagementEndpoint() + "/.default");
             }
             if (retryPolicy == null) {
-                retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                if (retryOptions != null) {
+                    retryPolicy = new RetryPolicy(retryOptions);
+                } else {
+                    retryPolicy = new RetryPolicy("Retry-After", ChronoUnit.SECONDS);
+                }
             }
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
+            policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
             policies
                 .addAll(
@@ -256,7 +292,11 @@ public final class BotServiceManager {
         }
     }
 
-    /** @return Resource collection API of Bots. */
+    /**
+     * Gets the resource collection API of Bots. It manages Bot.
+     *
+     * @return Resource collection API of Bots.
+     */
     public Bots bots() {
         if (this.bots == null) {
             this.bots = new BotsImpl(clientObject.getBots(), this);
@@ -264,7 +304,11 @@ public final class BotServiceManager {
         return bots;
     }
 
-    /** @return Resource collection API of Channels. */
+    /**
+     * Gets the resource collection API of Channels.
+     *
+     * @return Resource collection API of Channels.
+     */
     public Channels channels() {
         if (this.channels == null) {
             this.channels = new ChannelsImpl(clientObject.getChannels(), this);
@@ -272,7 +316,11 @@ public final class BotServiceManager {
         return channels;
     }
 
-    /** @return Resource collection API of DirectLines. */
+    /**
+     * Gets the resource collection API of DirectLines.
+     *
+     * @return Resource collection API of DirectLines.
+     */
     public DirectLines directLines() {
         if (this.directLines == null) {
             this.directLines = new DirectLinesImpl(clientObject.getDirectLines(), this);
@@ -280,7 +328,11 @@ public final class BotServiceManager {
         return directLines;
     }
 
-    /** @return Resource collection API of Operations. */
+    /**
+     * Gets the resource collection API of Operations.
+     *
+     * @return Resource collection API of Operations.
+     */
     public Operations operations() {
         if (this.operations == null) {
             this.operations = new OperationsImpl(clientObject.getOperations(), this);
@@ -288,7 +340,11 @@ public final class BotServiceManager {
         return operations;
     }
 
-    /** @return Resource collection API of BotConnections. */
+    /**
+     * Gets the resource collection API of BotConnections. It manages ConnectionSetting.
+     *
+     * @return Resource collection API of BotConnections.
+     */
     public BotConnections botConnections() {
         if (this.botConnections == null) {
             this.botConnections = new BotConnectionsImpl(clientObject.getBotConnections(), this);
@@ -296,7 +352,11 @@ public final class BotServiceManager {
         return botConnections;
     }
 
-    /** @return Resource collection API of HostSettings. */
+    /**
+     * Gets the resource collection API of HostSettings.
+     *
+     * @return Resource collection API of HostSettings.
+     */
     public HostSettings hostSettings() {
         if (this.hostSettings == null) {
             this.hostSettings = new HostSettingsImpl(clientObject.getHostSettings(), this);
@@ -304,7 +364,11 @@ public final class BotServiceManager {
         return hostSettings;
     }
 
-    /** @return Resource collection API of OperationResults. */
+    /**
+     * Gets the resource collection API of OperationResults.
+     *
+     * @return Resource collection API of OperationResults.
+     */
     public OperationResults operationResults() {
         if (this.operationResults == null) {
             this.operationResults = new OperationResultsImpl(clientObject.getOperationResults(), this);
@@ -312,7 +376,11 @@ public final class BotServiceManager {
         return operationResults;
     }
 
-    /** @return Resource collection API of PrivateEndpointConnections. */
+    /**
+     * Gets the resource collection API of PrivateEndpointConnections. It manages PrivateEndpointConnection.
+     *
+     * @return Resource collection API of PrivateEndpointConnections.
+     */
     public PrivateEndpointConnections privateEndpointConnections() {
         if (this.privateEndpointConnections == null) {
             this.privateEndpointConnections =
@@ -321,7 +389,11 @@ public final class BotServiceManager {
         return privateEndpointConnections;
     }
 
-    /** @return Resource collection API of PrivateLinkResources. */
+    /**
+     * Gets the resource collection API of PrivateLinkResources.
+     *
+     * @return Resource collection API of PrivateLinkResources.
+     */
     public PrivateLinkResources privateLinkResources() {
         if (this.privateLinkResources == null) {
             this.privateLinkResources = new PrivateLinkResourcesImpl(clientObject.getPrivateLinkResources(), this);

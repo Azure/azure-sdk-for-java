@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A resource SKU capability. */
 @Fluent
 public final class ResourceSkuCapabilities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuCapabilities.class);
-
     /*
      * Name of a capability, such as ops/sec.
      */

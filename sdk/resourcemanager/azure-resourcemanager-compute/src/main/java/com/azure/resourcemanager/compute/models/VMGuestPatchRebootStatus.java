@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VMGuestPatchRebootStatus. */
+/** The reboot state of the VM following completion of the operation. */
 public final class VMGuestPatchRebootStatus extends ExpandableStringEnum<VMGuestPatchRebootStatus> {
     /** Static value Unknown for VMGuestPatchRebootStatus. */
     public static final VMGuestPatchRebootStatus UNKNOWN = fromString("Unknown");
@@ -39,7 +39,11 @@ public final class VMGuestPatchRebootStatus extends ExpandableStringEnum<VMGuest
         return fromString(name, VMGuestPatchRebootStatus.class);
     }
 
-    /** @return known VMGuestPatchRebootStatus values. */
+    /**
+     * Gets known VMGuestPatchRebootStatus values.
+     *
+     * @return known VMGuestPatchRebootStatus values.
+     */
     public static Collection<VMGuestPatchRebootStatus> values() {
         return values(VMGuestPatchRebootStatus.class);
     }

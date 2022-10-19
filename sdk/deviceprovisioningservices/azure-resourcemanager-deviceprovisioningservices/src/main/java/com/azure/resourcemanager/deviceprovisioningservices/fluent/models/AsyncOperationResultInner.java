@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.deviceprovisioningservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorMesssage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.deviceprovisioningservices.models.ErrorMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Result of a long running operation. */
 @Fluent
 public final class AsyncOperationResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AsyncOperationResultInner.class);
-
     /*
      * current status of a long running operation.
      */
@@ -25,7 +21,7 @@ public final class AsyncOperationResultInner {
      * Error message containing code, description and details
      */
     @JsonProperty(value = "error")
-    private ErrorMesssage error;
+    private ErrorMessage error;
 
     /**
      * Get the status property: current status of a long running operation.
@@ -52,7 +48,7 @@ public final class AsyncOperationResultInner {
      *
      * @return the error value.
      */
-    public ErrorMesssage error() {
+    public ErrorMessage error() {
         return this.error;
     }
 
@@ -62,7 +58,7 @@ public final class AsyncOperationResultInner {
      * @param error the error value to set.
      * @return the AsyncOperationResultInner object itself.
      */
-    public AsyncOperationResultInner withError(ErrorMesssage error) {
+    public AsyncOperationResultInner withError(ErrorMessage error) {
         this.error = error;
         return this;
     }

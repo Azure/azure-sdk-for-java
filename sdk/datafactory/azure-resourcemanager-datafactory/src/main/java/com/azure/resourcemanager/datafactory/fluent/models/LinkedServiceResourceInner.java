@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.LinkedService;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Linked service resource type. */
 @Fluent
 public final class LinkedServiceResourceInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedServiceResourceInner.class);
-
     /*
      * Properties of linked service.
      */
@@ -39,6 +36,10 @@ public final class LinkedServiceResourceInner extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of LinkedServiceResourceInner class. */
+    public LinkedServiceResourceInner() {
+    }
 
     /**
      * Get the properties property: Properties of linked service.
@@ -101,7 +102,7 @@ public final class LinkedServiceResourceInner extends SubResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model LinkedServiceResourceInner"));
@@ -109,4 +110,6 @@ public final class LinkedServiceResourceInner extends SubResource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedServiceResourceInner.class);
 }

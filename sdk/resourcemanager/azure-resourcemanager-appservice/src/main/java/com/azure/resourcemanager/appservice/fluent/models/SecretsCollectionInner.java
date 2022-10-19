@@ -7,15 +7,12 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ContainerAppSecret;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Container App Secrets Collection ARM resource. */
 @Fluent
 public final class SecretsCollectionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecretsCollectionInner.class);
-
     /*
      * Collection of resources.
      */
@@ -49,11 +46,13 @@ public final class SecretsCollectionInner {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model SecretsCollectionInner"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecretsCollectionInner.class);
 }

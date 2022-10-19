@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.ActivityEntityQuery;
 import com.azure.resourcemanager.securityinsights.models.ExpansionEntityQuery;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -27,8 +25,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class EntityQueryInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityQueryInner.class);
-
     /** {@inheritDoc} */
     @Override
     public EntityQueryInner withEtag(String etag) {

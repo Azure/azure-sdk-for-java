@@ -5,22 +5,18 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.sql.fluent.models.JobVersionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of job versions. */
 @Immutable
 public final class JobVersionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobVersionListResult.class);
-
     /*
      * Array of results.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<Resource> value;
+    private List<JobVersionInner> value;
 
     /*
      * Link to retrieve next page of results.
@@ -33,7 +29,7 @@ public final class JobVersionListResult {
      *
      * @return the value value.
      */
-    public List<Resource> value() {
+    public List<JobVersionInner> value() {
         return this.value;
     }
 
@@ -52,5 +48,8 @@ public final class JobVersionListResult {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
     }
 }

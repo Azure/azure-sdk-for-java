@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.HDInsightActivityDebugInfoOption;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,18 +16,16 @@ import java.util.Map;
 /** HDInsight spark activity properties. */
 @Fluent
 public final class HDInsightSparkActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightSparkActivityTypeProperties.class);
-
     /*
-     * The root path in 'sparkJobLinkedService' for all the job’s files. Type:
-     * string (or Expression with resultType string).
+     * The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "rootPath", required = true)
     private Object rootPath;
 
     /*
-     * The relative path to the root folder of the code/package to be executed.
-     * Type: string (or Expression with resultType string).
+     * The relative path to the root folder of the code/package to be executed. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "entryFilePath", required = true)
     private Object entryFilePath;
@@ -46,8 +43,7 @@ public final class HDInsightSparkActivityTypeProperties {
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
-     * The storage linked service for uploading the entry file and
-     * dependencies, and for receiving logs.
+     * The storage linked service for uploading the entry file and dependencies, and for receiving logs.
      */
     @JsonProperty(value = "sparkJobLinkedService")
     private LinkedServiceReference sparkJobLinkedService;
@@ -59,8 +55,7 @@ public final class HDInsightSparkActivityTypeProperties {
     private String className;
 
     /*
-     * The user to impersonate that will execute the job. Type: string (or
-     * Expression with resultType string).
+     * The user to impersonate that will execute the job. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "proxyUser")
     private Object proxyUser;
@@ -71,6 +66,10 @@ public final class HDInsightSparkActivityTypeProperties {
     @JsonProperty(value = "sparkConfig")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> sparkConfig;
+
+    /** Creates an instance of HDInsightSparkActivityTypeProperties class. */
+    public HDInsightSparkActivityTypeProperties() {
+    }
 
     /**
      * Get the rootPath property: The root path in 'sparkJobLinkedService' for all the job’s files. Type: string (or
@@ -248,13 +247,13 @@ public final class HDInsightSparkActivityTypeProperties {
      */
     public void validate() {
         if (rootPath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property rootPath in model HDInsightSparkActivityTypeProperties"));
         }
         if (entryFilePath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property entryFilePath in model HDInsightSparkActivityTypeProperties"));
@@ -263,4 +262,6 @@ public final class HDInsightSparkActivityTypeProperties {
             sparkJobLinkedService().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HDInsightSparkActivityTypeProperties.class);
 }

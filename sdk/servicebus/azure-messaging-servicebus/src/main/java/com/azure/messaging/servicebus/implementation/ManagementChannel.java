@@ -50,6 +50,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_GET_SESSION_STATE;
@@ -58,6 +59,8 @@ import static com.azure.messaging.servicebus.implementation.ManagementConstants.
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SCHEDULE_MESSAGE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_SET_SESSION_STATE;
 import static com.azure.messaging.servicebus.implementation.ManagementConstants.OPERATION_UPDATE_DISPOSITION;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DISPOSITION_STATUS_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
  * Channel responsible for Service Bus related metadata, peek  and management plane operations. Management plane
@@ -79,8 +82,12 @@ public class ManagementChannel implements ServiceBusManagementNode {
         this.createChannel = Objects.requireNonNull(createChannel, "'createChannel' cannot be null.");
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
-        this.logger = new ClientLogger(String.format("%s<%s>", ManagementChannel.class, entityPath));
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
+
+        Map<String, Object> loggingContext = new HashMap<>(1);
+        loggingContext.put(ENTITY_PATH_KEY, entityPath);
+        this.logger = new ClientLogger(ManagementChannel.class, loggingContext);
+
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.tokenManager = Objects.requireNonNull(tokenManager, "'tokenManager' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
@@ -144,7 +151,9 @@ public class ManagementChannel implements ServiceBusManagementNode {
             final Object sessionState = map.get(ManagementConstants.SESSION_STATE);
 
             if (sessionState == null) {
-                logger.info("sessionId[{}]. Does not have a session state.", sessionId);
+                logger.atInfo()
+                    .addKeyValue(SESSION_ID_KEY, sessionId)
+                    .log("Does not have a session state.");
                 return Mono.empty();
             }
 
@@ -369,7 +378,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             TransactionalState transactionalState = null;
             if (transactionContext != null && transactionContext.getTransactionId() != null) {
                 transactionalState = new TransactionalState();
-                transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                transactionalState.setTxnId(Binary.create(transactionContext.getTransactionId()));
             }
 
             return sendWithVerify(channel, requestMessage, transactionalState);
@@ -412,8 +421,11 @@ public class ManagementChannel implements ServiceBusManagementNode {
 
         final UUID[] lockTokens = new UUID[]{UUID.fromString(lockToken)};
         return isAuthorized(OPERATION_UPDATE_DISPOSITION).then(createChannel.flatMap(channel -> {
-            logger.verbose("Update disposition of deliveries '{}' to '{}' on entity '{}', session '{}'",
-                Arrays.toString(lockTokens), dispositionStatus, entityPath, sessionId);
+            logger.atVerbose()
+                .addKeyValue("lockTokens", Arrays.toString(lockTokens))
+                .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                .addKeyValue(SESSION_ID_KEY, sessionId)
+                .log("Update disposition of deliveries.");
 
             final Message message = createManagementMessage(OPERATION_UPDATE_DISPOSITION, associatedLinkName);
 
@@ -442,7 +454,7 @@ public class ManagementChannel implements ServiceBusManagementNode {
             TransactionalState transactionalState = null;
             if (transactionContext != null && transactionContext.getTransactionId() != null) {
                 transactionalState = new TransactionalState();
-                transactionalState.setTxnId(new Binary(transactionContext.getTransactionId().array()));
+                transactionalState.setTxnId(Binary.create(transactionContext.getTransactionId()));
             }
 
             return sendWithVerify(channel, message, transactionalState);
@@ -498,8 +510,11 @@ public class ManagementChannel implements ServiceBusManagementNode {
                 final Throwable throwable = ExceptionUtil.toException(errorCondition, statusDescription,
                     channel.getErrorContext());
 
-                logger.warning("status[{}] description[{}] condition[{}] Operation not successful.",
-                    statusCode, statusDescription, errorCondition);
+                logger.atWarning()
+                    .addKeyValue("status", statusCode)
+                    .addKeyValue("description", statusDescription)
+                    .addKeyValue("condition", errorCondition)
+                    .log("Operation not successful.");
 
                 sink.error(throwable);
             })

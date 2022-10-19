@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancingRuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListLoadBalancingRule API service call. */
 @Fluent
 public final class LoadBalancerLoadBalancingRuleListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerLoadBalancingRuleListResult.class);
-
     /*
      * A list of load balancing rules in a load balancer.
      */
@@ -27,6 +23,10 @@ public final class LoadBalancerLoadBalancingRuleListResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of LoadBalancerLoadBalancingRuleListResult class. */
+    public LoadBalancerLoadBalancingRuleListResult() {
+    }
 
     /**
      * Get the value property: A list of load balancing rules in a load balancer.

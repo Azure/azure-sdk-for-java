@@ -18,7 +18,8 @@ public interface WorkspaceManagedSqlServerRecoverableSqlPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server.
+     * @return list of recoverable sql pools for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<RecoverableSqlPool> list(String resourceGroupName, String workspaceName);
 
@@ -31,7 +32,8 @@ public interface WorkspaceManagedSqlServerRecoverableSqlPools {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of recoverable sql pools for workspace managed sql server.
+     * @return list of recoverable sql pools for workspace managed sql server as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<RecoverableSqlPool> list(String resourceGroupName, String workspaceName, Context context);
 

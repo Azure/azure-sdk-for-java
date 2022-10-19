@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleDefinitionGetResultsInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The relevant Role Definitions. */
 @Immutable
 public final class SqlRoleDefinitionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRoleDefinitionListResult.class);
-
     /*
      * List of Role Definitions and their properties.
      */

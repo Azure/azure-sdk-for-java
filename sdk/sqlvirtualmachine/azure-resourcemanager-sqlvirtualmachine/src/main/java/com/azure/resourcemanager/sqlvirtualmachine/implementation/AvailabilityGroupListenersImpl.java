@@ -9,22 +9,21 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.AvailabilityGroupListenersClient;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.AvailabilityGroupListenerInner;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListener;
 import com.azure.resourcemanager.sqlvirtualmachine.models.AvailabilityGroupListeners;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AvailabilityGroupListenersImpl implements AvailabilityGroupListeners {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilityGroupListenersImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvailabilityGroupListenersImpl.class);
 
     private final AvailabilityGroupListenersClient innerClient;
 
-    private final SqlVirtualMachineManager serviceManager;
+    private final com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager;
 
     public AvailabilityGroupListenersImpl(
-        AvailabilityGroupListenersClient innerClient, SqlVirtualMachineManager serviceManager) {
+        AvailabilityGroupListenersClient innerClient,
+        com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -44,11 +43,13 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         String resourceGroupName,
         String sqlVirtualMachineGroupName,
         String availabilityGroupListenerName,
+        String expand,
         Context context) {
         Response<AvailabilityGroupListenerInner> inner =
             this
                 .serviceClient()
-                .getWithResponse(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, context);
+                .getWithResponse(
+                    resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand, context);
         if (inner != null) {
             return new SimpleResponse<>(
                 inner.getRequest(),
@@ -79,20 +80,20 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         String resourceGroupName, String sqlVirtualMachineGroupName) {
         PagedIterable<AvailabilityGroupListenerInner> inner =
             this.serviceClient().listByGroup(resourceGroupName, sqlVirtualMachineGroupName);
-        return inner.mapPage(inner1 -> new AvailabilityGroupListenerImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AvailabilityGroupListenerImpl(inner1, this.manager()));
     }
 
     public PagedIterable<AvailabilityGroupListener> listByGroup(
         String resourceGroupName, String sqlVirtualMachineGroupName, Context context) {
         PagedIterable<AvailabilityGroupListenerInner> inner =
             this.serviceClient().listByGroup(resourceGroupName, sqlVirtualMachineGroupName, context);
-        return inner.mapPage(inner1 -> new AvailabilityGroupListenerImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new AvailabilityGroupListenerImpl(inner1, this.manager()));
     }
 
     public AvailabilityGroupListener getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -100,7 +101,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -110,7 +111,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -118,15 +119,17 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
                                 "The resource ID '%s' is not valid. Missing path segment 'availabilityGroupListeners'.",
                                 id)));
         }
+        String localExpand = null;
         return this
-            .getWithResponse(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, Context.NONE)
+            .getWithResponse(
+                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, localExpand, Context.NONE)
             .getValue();
     }
 
-    public Response<AvailabilityGroupListener> getByIdWithResponse(String id, Context context) {
+    public Response<AvailabilityGroupListener> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,7 +137,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -144,7 +147,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -153,13 +156,14 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
                                 id)));
         }
         return this
-            .getWithResponse(resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, context);
+            .getWithResponse(
+                resourceGroupName, sqlVirtualMachineGroupName, availabilityGroupListenerName, expand, context);
     }
 
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,7 +171,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -177,7 +181,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -191,7 +195,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -199,7 +203,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String sqlVirtualMachineGroupName = Utils.getValueFromIdByName(id, "sqlVirtualMachineGroups");
         if (sqlVirtualMachineGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -209,7 +213,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         }
         String availabilityGroupListenerName = Utils.getValueFromIdByName(id, "availabilityGroupListeners");
         if (availabilityGroupListenerName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -224,7 +228,7 @@ public final class AvailabilityGroupListenersImpl implements AvailabilityGroupLi
         return this.innerClient;
     }
 
-    private SqlVirtualMachineManager manager() {
+    private com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager() {
         return this.serviceManager;
     }
 

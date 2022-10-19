@@ -47,7 +47,7 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
+     * @return a list of server extended auditing settings as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ExtendedServerBlobAuditingPolicy> listByWorkspace(String resourceGroupName, String workspaceName);
 
@@ -60,7 +60,7 @@ public interface WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of server extended auditing settings.
+     * @return a list of server extended auditing settings as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ExtendedServerBlobAuditingPolicy> listByWorkspace(
         String resourceGroupName, String workspaceName, Context context);

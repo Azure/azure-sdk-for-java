@@ -1,15 +1,206 @@
 # Release History
 
-## 1.25.0-beta.1 (Unreleased)
+## 1.34.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added a static method `toRfc1123String` that allows to convert the `OffsetDateTime` datetime to datetime string in RFC1123 format.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.33.0 (2022-10-07)
+
+### Features Added
+
+- Added configuration options to specify which `HttpClient` implementation to use from the classpath when using 
+  `HttpClient.createDefault(HttpClientOptions)`. ([#30894](https://github.com/Azure/azure-sdk-for-java/pull/30894))
+- Added `BinaryData.fromByteBuffer(ByteBuffer)`.
+- Added `SyncPoller.createPoller(Duration, Function, Function, BiFunction, Function)`. ([#31296](https://github.com/Azure/azure-sdk-for-java/pull/31296))
+- Added `TokenCredential.getTokenSync(TokenRequestContext)`. ([#31056](https://github.com/Azure/azure-sdk-for-java/pull/31056))
+
+### Bugs Fixed
+
+- Added a short delay to `AccessTokenCache.getToken()` to avoid an async-busy-loop when the first thread to retrieve a fresh token takes longer than usual and the cache is shared amongst many threads. ([#31110](https://github.com/Azure/azure-sdk-for-java/pull/31110))
+- Fixed issue when deserializing InputStream from an HTTP response.
+
+### Other Changes
+
+- Defer creation of `XmlMapper` allowing for non-XML applications to exclude `jackson-dataformat-xml` dependency. ([#30663](https://github.com/Azure/azure-sdk-for-java/pull/30663))
+- Miscellaneous performance improvements.
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.3` to `2.13.4`.
+- Upgraded Reactor from `3.4.22` to `3.4.23`.
+
+## 1.32.0 (2022-09-01)
+
+### Features Added
+
+- Added new constructor overloads to `PagedIterable` and introduced `PageRetrieverSync`.
+- Added `com.azure.core.util.metrics.LongGauge` instrument support to metrics.
+- Added `CoreUtils.stringJoin` which optimizes `String.join` for small `List`s.
+
+### Other Changes
+
+- Miscellaneous performance improvements.
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.21` to `3.4.22`.
+
+## 1.31.0 (2022-08-05)
+
+### Features Added
+
+- Added support for relative paths returned by polling operations. ([#29676](https://github.com/Azure/azure-sdk-for-java/pull/29676))
+- Added the ability to transfer the body of an `HttpResponse` to an `AsynchronousByteChannel` or `WriteableByteChannel`.
+- Added `AZURE_CLIENT_CERTIFICATE_PASSWORD` property to `Configuration`.
+- Added `AZURE_METRICS_DISABLED` property to `Configuration`.
+
+### Bugs Fixed
+
+- Fixed bug where `RestProxy` could leak connection if service method returned `Mono<Void>` or `void`. ([#30072](https://github.com/Azure/azure-sdk-for-java/pull/30072))
+- Fixed bug where query parameters with Base64 encoded values with trailing `=`s would be stripped. ([#30164](https://github.com/Azure/azure-sdk-for-java/pull/30164))
+
+### Other Changes
+
+- Added additional information to log messages and exceptions when requests are retried.
+- Removed requirement for `Multi-Release: true` to be included in a manifest when creating an all-in-one JAR including `azure-core`.
+- Updated log messages to mention when there is a fallback being used.
+- Miscellaneous performance improvements.
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.19` to `3.4.21`.
+
+## 1.30.0 (2022-06-30)
+
+### Features Added
+
+- Added `BinaryData.isReplayable()` to indicate if multiple consumptions of the content are safe.
+- Added `BinaryData.toReplayableBinaryData` and `BinaryData.toReplayableBinaryDataAsync` to allow
+  transforming `BinaryData` instances into replayable `BinaryData` for all content types.
+- Added support for sending synchronous requests using `sendSync` in `HttpPipeline`:
+  - Added `HttpPipelinePolicy.processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next)` to allow processing policies synchronously.
+  - Added `HttpPipelineSyncPolicy` to represent synchronous `HttpPipelinePolicy`.
+  - Added `HttpPipelineNextSyncPolicy` to invoke the next synchronous policy in pipeline. to process synchronous policy pipeline.
+  - Added `HttpPipelineCallState` to maintain request specific pipeline and contextual data.
+- Added `ProgressReporter` and `ProgressListener` to provide ability to track progress of I/O operations.
+- Added `Contexts` utility to manipulate known cross-cutting key-value pairs.
+  - Added ability to get and set `ProgressReporter` on `Context`.
+- Added `HttpPipelineCallContext.getContext()`.
+- Added `com.azure.core.util.metrics` package and metrics abstractions (intended for client libraries):
+  `MeterProvider`, `Meter`, `LongCounter` and `DoubleHistogram`.
+
+### Bugs Fixed
+
+- Fixed bug where `BinaryData.fromFile(path).toFluxByteBuffer()` and `BinaryData.fromFile(path).toBytes()`
+  could block file deletion on Windows.
+- Fixed bug where `Context.getData("key")` throws if the `null` value has been set by calling `Context.addData("key", null)`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.17` to `3.4.19`.
+- Upgraded Jackson from `2.13.2.2` to `2.13.3`.
+
+## 1.29.1 (2022-06-03)
+
+### Other changes
+- Revert module-info version to Java 11
+
+## 1.29.0 (2022-06-03)
+
+### Features Added
+
+- Added support for `BinaryData` in `HttpRequest`:
+  - Added `HttpRequest(HttpMethod, URL, HttpHeaders)` and `HttpRequest(HttpMethod, URL, HttpHeaders, BinaryData)` constructors.
+  - Added `HttpRequest.getBodyAsBinaryData()`.
+  - Added `HttpRequest.setBody(BinaryData)`.
+  - Added `BinaryData.fromFlux(Flux<ByteBuffer>, Long, boolean)` that allows both buffered and non-buffered handling of `Flux<ByteBuffer>`.
+- Added `BinaryData.fromFile(Path file, Long position, Long length)` and `BinaryData.fromFile(Path file, Long position, Long length, int chunkSize)`
+  that represents slice of the file.
+
+## 1.28.0 (2022-05-06)
+
+### Features Added
+
+- Add `com.azure.core.models.MessageContent`.
+- Added support for custom configuration sources and rich configuration properties:
+  - `ConfigurationSource` supplies properties from the give source
+  - `ConfigurationBuilder` allows to build immutable `Configuration` per-client instances with shared properties sections.
+  - `ConfigurationProperty<T>` describes how configuration property is retrieved. `ConfigurationPropertyBuilder` allows
+    to conveniently build properties.
+  - `Configuration.get(ConfigurationProperty<T>)` allows to retrieve new properties and 
+    `Configuration.contains(ConfigurationProperty<T>)` checks if 
+
+### Breaking Changes
+
+- Deprecated `Configuration.put`, `Configuration.remove`, `Configuration.clone`, and default `Configuration` constructor.
+  Use `ConfigurationBuilder` to build immutable configuration using `ConfigurationSource`.
+- Moved Netty TC Native dependency to `azure-core-http-netty`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.14` to `3.4.17`.
+- Upgraded Jackson from `2.13.2.1` to `2.13.2.2`.
+
+## 1.27.0 (2022-04-01)
+
+### Features Added
+
+- Added support for strongly-typed HTTP header objects to be deserialized lazily on a per-field basis rather than all
+  at once during construction.
+- Added `Context` support for `DefaultPollingStrategy`, `OperationResourcPollingStrategy` and `LocationPollingStrategy`.  
+
+### Other Changes
+
+- Reduced usage of reflection when sending requests and receiving responses in `RestProxy`.
+- Improved handling for catching and rethrowing exceptions to reduce wrapping exceptions and to not wrap `Error`s.
+
+#### Dependency Updates
+
+- Upgraded Jackson from `2.13.2` to `2.13.2.1`.
+
+## 1.26.0 (2022-03-04)
+
+### Features Added
+
+- Added `FluxUtil.writeToOutputStream` which provides an optimized way to write a stream of `Flux<ByteBuffer>` to an
+  `OutputStream` with minimal overhead. ([#26821](https://github.com/Azure/azure-sdk-for-java/pull/26821))
+
+### Bugs Fixed
+
+- Fixed `com.azure.core.implementation.ReflectionUtils.getLookupToUse` which fails with `java.lang.SecurityException` 
+  under `SecurityManager`. ([#27182](https://github.com/Azure/azure-sdk-for-java/pull/27182), thank you @reta!)
+- Fixed an issue where converting Azure `Context` to Reactor `Context` could result in an `IndexOutOfBoundsException`. ([#27197](https://github.com/Azure/azure-sdk-for-java/pull/27197))
+
+### Other Changes
+
+- Added `x-ms-request-id`, `MS-CV`, `WWW-Authenticate` as default logged headers and `api-version` as a default logged
+  query parameter. ([#26973](https://github.com/Azure/azure-sdk-for-java/pull/26973))
+- Updated how `Response` types are constructed in `RestProxy` to reduce the usage of reflection. ([#27207](https://github.com/Azure/azure-sdk-for-java/pull/27207))
+- Updated all `ClientLogger`s to be static constants instead of instance variables. ([#27339](https://github.com/Azure/azure-sdk-for-java/pull/27339))
+- Updated the usage of `AZURE_LOG_LEVEL` to be constant. ([#27193](https://github.com/Azure/azure-sdk-for-java/pull/27193))
+
+#### Dependency Updates
+
+- Upgraded Reactor from `3.4.13` to `3.4.14`.
+
+## 1.25.0 (2022-02-04)
+
+### Features Added
+
+- Added `AzureKeyCredentialTrait`, `AzureNamedKeyCredentialTrait`, `AzureSasCredentialTrait`, `ConfigurationTrait`,
+  `ConnectionStringTrait`, `EndpointTrait`, `HttpTrait`, and `TokenCredentialTrait` interfaces that represent common 
+  cross-cutting aspects of functionality offered by libraries in the Azure SDK for Java.
+- Added a static method `toRfc1123String` which converts an `OffsetDateTime` to an RFC1123 datetime string.
 
 ## 1.24.1 (2022-01-11)
 

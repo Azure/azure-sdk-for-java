@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,10 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("FactoryGitHubConfiguration")
 @Fluent
 public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FactoryGitHubConfiguration.class);
-
     /*
-     * GitHub Enterprise host name. For example: https://github.mydomain.com
+     * GitHub Enterprise host name. For example: `https://github.mydomain.com`
      */
     @JsonProperty(value = "hostName")
     private String hostname;
@@ -36,8 +32,12 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
     @JsonProperty(value = "clientSecret")
     private GitHubClientSecret clientSecret;
 
+    /** Creates an instance of FactoryGitHubConfiguration class. */
+    public FactoryGitHubConfiguration() {
+    }
+
     /**
-     * Get the hostname property: GitHub Enterprise host name. For example: https://github.mydomain.com.
+     * Get the hostname property: GitHub Enterprise host name. For example: `https://github.mydomain.com`.
      *
      * @return the hostname value.
      */
@@ -46,7 +46,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
     }
 
     /**
-     * Set the hostname property: GitHub Enterprise host name. For example: https://github.mydomain.com.
+     * Set the hostname property: GitHub Enterprise host name. For example: `https://github.mydomain.com`.
      *
      * @param hostname the hostname value to set.
      * @return the FactoryGitHubConfiguration object itself.
@@ -128,6 +128,13 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
     @Override
     public FactoryGitHubConfiguration withLastCommitId(String lastCommitId) {
         super.withLastCommitId(lastCommitId);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public FactoryGitHubConfiguration withDisablePublish(Boolean disablePublish) {
+        super.withDisablePublish(disablePublish);
         return this;
     }
 

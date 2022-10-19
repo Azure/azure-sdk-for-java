@@ -1,5 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.cosmos.implementation;
 
 public class SpyClientBuilder extends AsyncDocumentClient.Builder {
@@ -13,6 +14,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
         super.serviceEndpoint = builder.serviceEndpoint;
         super.credential = builder.credential;
         super.contentResponseOnWriteEnabled = builder.contentResponseOnWriteEnabled;
+        super.clientTelemetryConfig = builder.clientTelemetryConfig;
     }
 
     public SpyClientUnderTestFactory.ClientUnderTest build() {
@@ -23,7 +25,8 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             desiredConsistencyLevel,
             configs,
             credential,
-            contentResponseOnWriteEnabled);
+            contentResponseOnWriteEnabled,
+            clientTelemetryConfig);
     }
 
     public SpyClientUnderTestFactory.ClientWithGatewaySpy buildWithGatewaySpy() {
@@ -34,7 +37,8 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             desiredConsistencyLevel,
             configs,
             credential,
-            contentResponseOnWriteEnabled);
+            contentResponseOnWriteEnabled,
+            clientTelemetryConfig);
     }
 
     public SpyClientUnderTestFactory.DirectHttpsClientUnderTest buildWithDirectHttps() {
@@ -44,6 +48,7 @@ public class SpyClientBuilder extends AsyncDocumentClient.Builder {
             connectionPolicy,
             desiredConsistencyLevel,
             credential,
-            contentResponseOnWriteEnabled);
+            contentResponseOnWriteEnabled,
+            clientTelemetryConfig);
     }
 }

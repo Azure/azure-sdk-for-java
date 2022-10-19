@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Virtual Network information contract. */
 @Fluent
 public final class VnetInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetInfo.class);
-
     /*
      * The Virtual Network's resource ID.
      */

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TrackPropertyCompareOperation. */
+/** Track property condition operation. */
 public final class TrackPropertyCompareOperation extends ExpandableStringEnum<TrackPropertyCompareOperation> {
     /** Static value Unknown for TrackPropertyCompareOperation. */
     public static final TrackPropertyCompareOperation UNKNOWN = fromString("Unknown");
@@ -27,7 +27,11 @@ public final class TrackPropertyCompareOperation extends ExpandableStringEnum<Tr
         return fromString(name, TrackPropertyCompareOperation.class);
     }
 
-    /** @return known TrackPropertyCompareOperation values. */
+    /**
+     * Gets known TrackPropertyCompareOperation values.
+     *
+     * @return known TrackPropertyCompareOperation values.
+     */
     public static Collection<TrackPropertyCompareOperation> values() {
         return values(TrackPropertyCompareOperation.class);
     }

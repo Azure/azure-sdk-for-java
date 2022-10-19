@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,11 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureDatabricksDeltaLakeSource")
 @Fluent
 public final class AzureDatabricksDeltaLakeSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDatabricksDeltaLakeSource.class);
-
     /*
-     * Azure Databricks Delta Lake Sql query. Type: string (or Expression with
-     * resultType string).
+     * Azure Databricks Delta Lake Sql query. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
@@ -30,6 +25,10 @@ public final class AzureDatabricksDeltaLakeSource extends CopySource {
      */
     @JsonProperty(value = "exportSettings")
     private AzureDatabricksDeltaLakeExportCommand exportSettings;
+
+    /** Creates an instance of AzureDatabricksDeltaLakeSource class. */
+    public AzureDatabricksDeltaLakeSource() {
+    }
 
     /**
      * Get the query property: Azure Databricks Delta Lake Sql query. Type: string (or Expression with resultType

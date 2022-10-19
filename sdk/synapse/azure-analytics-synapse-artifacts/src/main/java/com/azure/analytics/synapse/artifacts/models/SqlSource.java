@@ -22,34 +22,29 @@ public final class SqlSource extends TabularSource {
     private Object sqlReaderQuery;
 
     /*
-     * Name of the stored procedure for a SQL Database source. This cannot be
-     * used at the same time as SqlReaderQuery. Type: string (or Expression
-     * with resultType string).
+     * Name of the stored procedure for a SQL Database source. This cannot be used at the same time as SqlReaderQuery.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlReaderStoredProcedureName")
     private Object sqlReaderStoredProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example:
-     * "{Parameter1: {value: "1", type: "int"}}".
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
      */
     @JsonProperty(value = "storedProcedureParameters")
     private Map<String, StoredProcedureParameter> storedProcedureParameters;
 
     /*
-     * Specifies the transaction locking behavior for the SQL source. Allowed
-     * values:
-     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The
-     * default value is ReadCommitted. Type: string (or Expression with
-     * resultType string).
+     * Specifies the transaction locking behavior for the SQL source. Allowed values:
+     * ReadCommitted/ReadUncommitted/RepeatableRead/Serializable/Snapshot. The default value is ReadCommitted. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "isolationLevel")
     private Object isolationLevel;
 
     /*
-     * The partition mechanism that will be used for Sql read in parallel.
-     * Possible values include: "None", "PhysicalPartitionsOfTable",
-     * "DynamicRange".
+     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
+     * "PhysicalPartitionsOfTable", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
@@ -187,6 +182,41 @@ public final class SqlSource extends TabularSource {
      */
     public SqlSource setPartitionSettings(SqlPartitionSettings partitionSettings) {
         this.partitionSettings = partitionSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlSource setQueryTimeout(Object queryTimeout) {
+        super.setQueryTimeout(queryTimeout);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlSource setAdditionalColumns(Object additionalColumns) {
+        super.setAdditionalColumns(additionalColumns);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlSource setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlSource setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public SqlSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

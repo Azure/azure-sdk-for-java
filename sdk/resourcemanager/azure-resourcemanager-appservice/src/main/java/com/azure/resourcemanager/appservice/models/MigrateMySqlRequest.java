@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.MigrateMySqlRequestProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MySQL migration request. */
 @Fluent
 public final class MigrateMySqlRequest extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MigrateMySqlRequest.class);
-
     /*
      * MigrateMySqlRequest resource specific properties
      */

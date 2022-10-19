@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Details of the Credentials used to connect to Backend. */
 @Fluent
 public final class BackendCredentialsContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendCredentialsContract.class);
-
     /*
      * List of Client Certificate Ids.
      */

@@ -30,7 +30,11 @@ public final class SoftDeleteFeatureState extends ExpandableStringEnum<SoftDelet
         return fromString(name, SoftDeleteFeatureState.class);
     }
 
-    /** @return known SoftDeleteFeatureState values. */
+    /**
+     * Gets known SoftDeleteFeatureState values.
+     *
+     * @return known SoftDeleteFeatureState values.
+     */
     public static Collection<SoftDeleteFeatureState> values() {
         return values(SoftDeleteFeatureState.class);
     }

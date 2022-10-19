@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 class LockRenewalOperationTest {
     private static final String A_LOCK_TOKEN = "a-lock-token";
 
-    private final ClientLogger logger = new ClientLogger(LockRenewalOperationTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LockRenewalOperationTest.class);
     private LockRenewalOperation operation;
 
     @AfterEach
@@ -147,7 +147,7 @@ class LockRenewalOperationTest {
         // Act
         StepVerifier.create(operation.getCompletionOperation())
             .thenAwait(totalSleepPeriod)
-            .then(() -> logger.info("Finished renewals for first sleep."))
+            .then(() -> LOGGER.info("Finished renewals for first sleep."))
             .expectComplete()
             .verify(Duration.ofMillis(2000));
 
@@ -190,7 +190,7 @@ class LockRenewalOperationTest {
         StepVerifier.create(operation.getCompletionOperation())
             .thenAwait(totalSleepPeriod)
             .then(() -> {
-                logger.info("Finished renewals for first sleep. Cancelling.");
+                LOGGER.info("Finished renewals for first sleep. Cancelling.");
                 operation.close();
             })
             .expectComplete()
@@ -266,9 +266,9 @@ class LockRenewalOperationTest {
 
         // Act
         Thread.sleep(totalSleepPeriod.toMillis());
-        logger.info("Finished renewals for first sleep.");
+        LOGGER.info("Finished renewals for first sleep.");
         Thread.sleep(2000);
-        logger.info("Finished second sleep. Should not have any more renewals.");
+        LOGGER.info("Finished second sleep. Should not have any more renewals.");
 
         // Assert
         assertEquals(LockRenewalStatus.COMPLETE, operation.getStatus());

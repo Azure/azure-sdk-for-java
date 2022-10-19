@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.LoggersClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.LoggerContractInner;
 import com.azure.resourcemanager.apimanagement.models.LoggerCollection;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in LoggersClient. */
 public final class LoggersClientImpl implements LoggersClient {
-    private final ClientLogger logger = new ClientLogger(LoggersClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final LoggersService service;
 
@@ -197,7 +194,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Logger list representation.
+     * @return paged Logger list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoggerContractInner>> listByServiceSinglePageAsync(
@@ -265,7 +263,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Logger list representation.
+     * @return paged Logger list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoggerContractInner>> listByServiceSinglePageAsync(
@@ -329,7 +328,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Logger list representation.
+     * @return paged Logger list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoggerContractInner> listByServiceAsync(
@@ -347,7 +346,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Logger list representation.
+     * @return paged Logger list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoggerContractInner> listByServiceAsync(String resourceGroupName, String serviceName) {
@@ -375,7 +374,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Logger list representation.
+     * @return paged Logger list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LoggerContractInner> listByServiceAsync(
@@ -393,7 +392,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Logger list representation.
+     * @return paged Logger list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoggerContractInner> listByService(String resourceGroupName, String serviceName) {
@@ -419,7 +418,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Logger list representation.
+     * @return paged Logger list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LoggerContractInner> listByService(
@@ -436,7 +435,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the logger specified by its identifier.
+     * @return the entity state (Etag) version of the logger specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggersGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -490,7 +490,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the logger specified by its identifier.
+     * @return the entity state (Etag) version of the logger specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggersGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -540,7 +541,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the entity state (Etag) version of the logger specified by its identifier.
+     * @return the entity state (Etag) version of the logger specified by its identifier on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String loggerId) {
@@ -590,7 +592,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the logger specified by its identifier.
+     * @return the details of the logger specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggersGetResponse> getWithResponseAsync(
@@ -644,7 +646,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the logger specified by its identifier.
+     * @return the details of the logger specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggersGetResponse> getWithResponseAsync(
@@ -694,7 +696,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of the logger specified by its identifier.
+     * @return the details of the logger specified by its identifier on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggerContractInner> getAsync(String resourceGroupName, String serviceName, String loggerId) {
@@ -754,7 +756,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logger details.
+     * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -817,7 +819,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logger details.
+     * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggersCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -881,7 +883,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logger details.
+     * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggerContractInner> createOrUpdateAsync(
@@ -907,7 +909,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logger details.
+     * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggerContractInner> createOrUpdateAsync(
@@ -981,7 +983,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logger details.
+     * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggersUpdateResponse> updateWithResponseAsync(
@@ -1052,7 +1054,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logger details.
+     * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggersUpdateResponse> updateWithResponseAsync(
@@ -1120,7 +1122,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return logger details.
+     * @return logger details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<LoggerContractInner> updateAsync(
@@ -1201,7 +1203,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1261,7 +1263,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1317,7 +1319,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String serviceName, String loggerId, String ifMatch) {
@@ -1354,7 +1356,7 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1369,7 +1371,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Logger list representation.
+     * @return paged Logger list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoggerContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1405,7 +1408,8 @@ public final class LoggersClientImpl implements LoggersClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Logger list representation.
+     * @return paged Logger list representation along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LoggerContractInner>> listByServiceNextSinglePageAsync(

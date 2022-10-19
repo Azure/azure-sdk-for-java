@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.DatabricksNotebookActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("DatabricksNotebook")
 @Fluent
 public final class DatabricksNotebookActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabricksNotebookActivity.class);
-
     /*
      * Databricks Notebook activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private DatabricksNotebookActivityTypeProperties innerTypeProperties =
         new DatabricksNotebookActivityTypeProperties();
+
+    /** Creates an instance of DatabricksNotebookActivity class. */
+    public DatabricksNotebookActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: Databricks Notebook activity properties.
@@ -161,7 +162,7 @@ public final class DatabricksNotebookActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model DatabricksNotebookActivity"));
@@ -169,4 +170,6 @@ public final class DatabricksNotebookActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabricksNotebookActivity.class);
 }

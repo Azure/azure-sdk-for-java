@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** lobbyBypassSettings. */
 @Fluent
 public final class MicrosoftGraphLobbyBypassSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphLobbyBypassSettings.class);
-
     /*
      * Specifies whether or not to always let dial-in callers bypass the lobby.
      * Optional.
@@ -26,7 +23,7 @@ public final class MicrosoftGraphLobbyBypassSettings {
     private Boolean isDialInBypassEnabled;
 
     /*
-     * The scope property.
+     * lobbyBypassScope
      */
     @JsonProperty(value = "scope")
     private MicrosoftGraphLobbyBypassScope scope;
@@ -59,7 +56,7 @@ public final class MicrosoftGraphLobbyBypassSettings {
     }
 
     /**
-     * Get the scope property: The scope property.
+     * Get the scope property: lobbyBypassScope.
      *
      * @return the scope value.
      */
@@ -68,7 +65,7 @@ public final class MicrosoftGraphLobbyBypassSettings {
     }
 
     /**
-     * Set the scope property: The scope property.
+     * Set the scope property: lobbyBypassScope.
      *
      * @param scope the scope value to set.
      * @return the MicrosoftGraphLobbyBypassSettings object itself.

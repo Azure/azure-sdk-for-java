@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Diagnostics GetSiteDetectorResponse. */
 public final class DiagnosticsGetSiteDetectorResponseSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteDetectorResponseSlot.json
      */
     /**
      * Sample code: Get App Slot Detector Response.
@@ -27,7 +27,7 @@ public final class DiagnosticsGetSiteDetectorResponseSamples {
     }
 
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/Diagnostics_GetSiteDetectorResponse.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/Diagnostics_GetSiteDetectorResponse.json
      */
     /**
      * Sample code: Get App Detector Response.

@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP configuration profile properties. */
 @Fluent
 public final class IpConfigurationProfilePropertiesFormatInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationProfilePropertiesFormatInner.class);
-
     /*
-     * The reference to the subnet resource to create a container network
-     * interface ip configuration.
+     * The reference to the subnet resource to create a container network interface ip configuration.
      */
     @JsonProperty(value = "subnet")
     private SubnetInner subnet;
@@ -27,6 +22,10 @@ public final class IpConfigurationProfilePropertiesFormatInner {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of IpConfigurationProfilePropertiesFormatInner class. */
+    public IpConfigurationProfilePropertiesFormatInner() {
+    }
 
     /**
      * Get the subnet property: The reference to the subnet resource to create a container network interface ip

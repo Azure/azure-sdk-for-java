@@ -11,10 +11,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.ReplicasClient;
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.ServerInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Replicas;
 import com.azure.resourcemanager.mysqlflexibleserver.models.Server;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ReplicasImpl implements Replicas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ReplicasImpl.class);
 
     private final ReplicasClient innerClient;
 

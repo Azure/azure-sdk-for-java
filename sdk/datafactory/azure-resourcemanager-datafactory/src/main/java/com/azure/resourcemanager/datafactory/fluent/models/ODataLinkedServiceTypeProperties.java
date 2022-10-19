@@ -9,17 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.ODataAadServicePrincipalCredentialType;
 import com.azure.resourcemanager.datafactory.models.ODataAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** OData linked service properties. */
 @Fluent
 public final class ODataLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ODataLinkedServiceTypeProperties.class);
-
     /*
-     * The URL of the OData service endpoint. Type: string (or Expression with
-     * resultType string).
+     * The URL of the OData service endpoint. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
@@ -31,8 +27,7 @@ public final class ODataLinkedServiceTypeProperties {
     private ODataAuthenticationType authenticationType;
 
     /*
-     * User name of the OData service. Type: string (or Expression with
-     * resultType string).
+     * User name of the OData service. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -44,39 +39,37 @@ public final class ODataLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The additional HTTP headers in the request to RESTful API used for
-     * authorization. Type: object (or Expression with resultType object).
+     * The additional HTTP headers in the request to RESTful API used for authorization. Type: object (or Expression
+     * with resultType object).
      */
     @JsonProperty(value = "authHeaders")
     private Object authHeaders;
 
     /*
-     * Specify the tenant information (domain name or tenant ID) under which
-     * your application resides. Type: string (or Expression with resultType
-     * string).
+     * Specify the tenant information (domain name or tenant ID) under which your application resides. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
 
     /*
-     * Specify the application id of your application registered in Azure
-     * Active Directory. Type: string (or Expression with resultType string).
+     * Specify the application id of your application registered in Azure Active Directory. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
 
     /*
-     * Indicates the azure cloud type of the service principle auth. Allowed
-     * values are AzurePublic, AzureChina, AzureUsGovernment, AzureGermany.
-     * Default value is the data factory regions’ cloud type. Type: string (or
+     * Indicates the azure cloud type of the service principle auth. Allowed values are AzurePublic, AzureChina,
+     * AzureUsGovernment, AzureGermany. Default value is the data factory regions’ cloud type. Type: string (or
      * Expression with resultType string).
      */
     @JsonProperty(value = "azureCloudType")
     private Object azureCloudType;
 
     /*
-     * Specify the resource you are requesting authorization to use Directory.
-     * Type: string (or Expression with resultType string).
+     * Specify the resource you are requesting authorization to use Directory. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "aadResourceId")
     private Object aadResourceId;
@@ -88,35 +81,36 @@ public final class ODataLinkedServiceTypeProperties {
     private ODataAadServicePrincipalCredentialType aadServicePrincipalCredentialType;
 
     /*
-     * Specify the secret of your application registered in Azure Active
-     * Directory. Type: string (or Expression with resultType string).
+     * Specify the secret of your application registered in Azure Active Directory. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "servicePrincipalKey")
     private SecretBase servicePrincipalKey;
 
     /*
-     * Specify the base64 encoded certificate of your application registered in
-     * Azure Active Directory. Type: string (or Expression with resultType
-     * string).
+     * Specify the base64 encoded certificate of your application registered in Azure Active Directory. Type: string
+     * (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalEmbeddedCert")
     private SecretBase servicePrincipalEmbeddedCert;
 
     /*
-     * Specify the password of your certificate if your certificate has a
-     * password and you are using AadServicePrincipal authentication. Type:
-     * string (or Expression with resultType string).
+     * Specify the password of your certificate if your certificate has a password and you are using
+     * AadServicePrincipal authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "servicePrincipalEmbeddedCertPassword")
     private SecretBase servicePrincipalEmbeddedCertPassword;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of ODataLinkedServiceTypeProperties class. */
+    public ODataLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the url property: The URL of the OData service endpoint. Type: string (or Expression with resultType string).
@@ -431,7 +425,7 @@ public final class ODataLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model ODataLinkedServiceTypeProperties"));
@@ -449,4 +443,6 @@ public final class ODataLinkedServiceTypeProperties {
             servicePrincipalEmbeddedCertPassword().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ODataLinkedServiceTypeProperties.class);
 }

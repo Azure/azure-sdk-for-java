@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Definition of a single variable for a Pipeline. */
 @Fluent
 public final class VariableSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VariableSpecification.class);
-
     /*
      * Variable type.
      */
@@ -25,6 +22,10 @@ public final class VariableSpecification {
      */
     @JsonProperty(value = "defaultValue")
     private Object defaultValue;
+
+    /** Creates an instance of VariableSpecification class. */
+    public VariableSpecification() {
+    }
 
     /**
      * Get the type property: Variable type.
@@ -73,9 +74,11 @@ public final class VariableSpecification {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model VariableSpecification"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VariableSpecification.class);
 }

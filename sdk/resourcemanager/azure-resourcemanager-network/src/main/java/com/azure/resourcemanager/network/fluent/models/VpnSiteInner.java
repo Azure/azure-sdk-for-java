@@ -7,13 +7,11 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -21,8 +19,6 @@ import java.util.Map;
 /** VpnSite Resource. */
 @Fluent
 public final class VpnSiteInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnSiteInner.class);
-
     /*
      * Properties of the VPN site.
      */
@@ -40,6 +36,10 @@ public final class VpnSiteInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of VpnSiteInner class. */
+    public VpnSiteInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the VPN site.

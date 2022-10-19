@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("BinarySource")
 @Fluent
 public final class BinarySource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BinarySource.class);
-
     /*
      * Binary store settings.
      */
@@ -29,6 +25,10 @@ public final class BinarySource extends CopySource {
      */
     @JsonProperty(value = "formatSettings")
     private BinaryReadSettings formatSettings;
+
+    /** Creates an instance of BinarySource class. */
+    public BinarySource() {
+    }
 
     /**
      * Get the storeSettings property: Binary store settings.

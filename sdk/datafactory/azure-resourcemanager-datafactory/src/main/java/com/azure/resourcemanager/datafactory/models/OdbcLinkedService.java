@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.OdbcLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("Odbc")
 @Fluent
 public final class OdbcLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OdbcLinkedService.class);
-
     /*
      * ODBC linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private OdbcLinkedServiceTypeProperties innerTypeProperties = new OdbcLinkedServiceTypeProperties();
+
+    /** Creates an instance of OdbcLinkedService class. */
+    public OdbcLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: ODBC linked service properties.
@@ -221,7 +222,7 @@ public final class OdbcLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model OdbcLinkedService"));
@@ -229,4 +230,6 @@ public final class OdbcLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OdbcLinkedService.class);
 }

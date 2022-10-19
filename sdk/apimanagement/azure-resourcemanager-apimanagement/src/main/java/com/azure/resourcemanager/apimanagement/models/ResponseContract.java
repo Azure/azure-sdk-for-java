@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Operation response details. */
 @Fluent
 public final class ResponseContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResponseContract.class);
-
     /*
      * Operation response HTTP status code.
      */

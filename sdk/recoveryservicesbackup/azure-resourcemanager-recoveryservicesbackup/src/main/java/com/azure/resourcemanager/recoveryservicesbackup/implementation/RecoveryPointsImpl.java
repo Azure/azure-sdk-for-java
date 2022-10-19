@@ -13,10 +13,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.RecoveryPointsCli
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPointResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPoints;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RecoveryPointsImpl implements RecoveryPoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryPointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecoveryPointsImpl.class);
 
     private final RecoveryPointsClient innerClient;
 

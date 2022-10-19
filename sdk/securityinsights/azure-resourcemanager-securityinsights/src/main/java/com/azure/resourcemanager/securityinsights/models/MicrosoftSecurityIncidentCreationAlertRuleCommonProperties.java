@@ -6,17 +6,12 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** MicrosoftSecurityIncidentCreation rule common property bag. */
 @Fluent
 public class MicrosoftSecurityIncidentCreationAlertRuleCommonProperties {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(MicrosoftSecurityIncidentCreationAlertRuleCommonProperties.class);
-
     /*
      * the alerts' displayNames on which the cases will be generated
      */
@@ -132,11 +127,14 @@ public class MicrosoftSecurityIncidentCreationAlertRuleCommonProperties {
      */
     public void validate() {
         if (productFilter() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property productFilter in model"
                             + " MicrosoftSecurityIncidentCreationAlertRuleCommonProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER =
+        new ClientLogger(MicrosoftSecurityIncidentCreationAlertRuleCommonProperties.class);
 }

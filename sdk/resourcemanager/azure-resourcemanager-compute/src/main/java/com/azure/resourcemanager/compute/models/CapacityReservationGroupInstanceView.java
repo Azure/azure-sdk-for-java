@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CapacityReservationGroupInstanceView model. */
 @Immutable
 public final class CapacityReservationGroupInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationGroupInstanceView.class);
-
     /*
-     * List of instance view of the capacity reservations under the capacity
-     * reservation group.
+     * List of instance view of the capacity reservations under the capacity reservation group.
      */
     @JsonProperty(value = "capacityReservations", access = JsonProperty.Access.WRITE_ONLY)
     private List<CapacityReservationInstanceViewWithName> capacityReservations;

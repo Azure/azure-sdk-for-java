@@ -14,9 +14,9 @@ public interface Operations {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available operations of the service.
+     * @return a list of REST API operations supported by an Azure Resource Provider.
      */
-    AvailableOperations list();
+    OperationListResult list();
 
     /**
      * List all available Microsoft.AzureStackHCI provider operations.
@@ -25,7 +25,7 @@ public interface Operations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return available operations of the service.
+     * @return a list of REST API operations supported by an Azure Resource Provider along with {@link Response}.
      */
-    Response<AvailableOperations> listWithResponse(Context context);
+    Response<OperationListResult> listWithResponse(Context context);
 }

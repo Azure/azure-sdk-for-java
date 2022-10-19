@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Web Category Resource. */
 @Fluent
 public final class AzureWebCategoryInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWebCategoryInner.class);
-
     /*
      * Properties of the Azure Web Category.
      */
@@ -43,6 +39,10 @@ public final class AzureWebCategoryInner {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of AzureWebCategoryInner class. */
+    public AzureWebCategoryInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the Azure Web Category.

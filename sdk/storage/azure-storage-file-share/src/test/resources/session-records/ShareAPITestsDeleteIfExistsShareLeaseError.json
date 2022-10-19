@@ -1,0 +1,47 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "PUT",
+    "Uri" : "http://REDACTED.file.core.windows.net/f05cbcdbf05cbcdb0d1765605a8c891901f6409e89?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2ac06f5e-5489-4740-9b83-61796a8aa3f2"
+    },
+    "Response" : {
+      "content-length" : "0",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "eTag" : "0x8DA1F7BBB4929C5",
+      "Last-Modified" : "Sat, 16 Apr 2022 07:35:50 GMT",
+      "retry-after" : "0",
+      "StatusCode" : "201",
+      "x-ms-request-id" : "726c5b9e-301a-000c-7364-5185f0000000",
+      "x-ms-client-request-id" : "2ac06f5e-5489-4740-9b83-61796a8aa3f2",
+      "Date" : "Sat, 16 Apr 2022 07:35:50 GMT"
+    },
+    "Exception" : null
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.file.core.windows.net/f05cbcdbf05cbcdb0d1765605a8c891901f6409e89?restype=share",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-file-share/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "2578f4b6-1f77-49f8-9268-34ae69b68ff2"
+    },
+    "Response" : {
+      "content-length" : "252",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-File/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "LeaseNotPresentWithContainerOperation",
+      "retry-after" : "0",
+      "StatusCode" : "412",
+      "x-ms-request-id" : "5b700844-101a-0034-7764-512130000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>LeaseNotPresentWithContainerOperation</Code><Message>There is currently no lease on the file share.\nRequestId:5b700844-101a-0034-7764-512130000000\nTime:2022-04-16T07:35:51.1881618Z</Message></Error>",
+      "x-ms-client-request-id" : "2578f4b6-1f77-49f8-9268-34ae69b68ff2",
+      "Date" : "Sat, 16 Apr 2022 07:35:51 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "f05cbcdbf05cbcdb0d1765605a8c891901f6409e89" ]
+}

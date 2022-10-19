@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The routes table associated with the ExpressRouteCircuit. */
 @Fluent
 public final class ExpressRouteCircuitRoutesTable {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitRoutesTable.class);
-
     /*
      * IP address of a network entity.
      */
@@ -27,8 +23,7 @@ public final class ExpressRouteCircuitRoutesTable {
     private String nextHop;
 
     /*
-     * Local preference value as set with the set local-preference route-map
-     * configuration command.
+     * Local preference value as set with the set local-preference route-map configuration command.
      */
     @JsonProperty(value = "locPrf")
     private String locPrf;
@@ -44,6 +39,10 @@ public final class ExpressRouteCircuitRoutesTable {
      */
     @JsonProperty(value = "path")
     private String path;
+
+    /** Creates an instance of ExpressRouteCircuitRoutesTable class. */
+    public ExpressRouteCircuitRoutesTable() {
+    }
 
     /**
      * Get the network property: IP address of a network entity.

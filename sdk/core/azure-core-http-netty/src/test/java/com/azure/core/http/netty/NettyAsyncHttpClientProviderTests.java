@@ -6,6 +6,7 @@ package com.azure.core.http.netty;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.HttpClientOptions;
+import io.netty.channel.ChannelOption;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.netty.transport.ProxyProvider;
@@ -72,6 +73,7 @@ public class NettyAsyncHttpClientProviderTests {
         long expectedTimeout = 15000;
         Duration timeout = Duration.ofMillis(expectedTimeout);
         HttpClientOptions clientOptions = new HttpClientOptions()
+            .setConnectTimeout(timeout)
             .setWriteTimeout(timeout)
             .setResponseTimeout(timeout)
             .setReadTimeout(timeout);
@@ -79,6 +81,9 @@ public class NettyAsyncHttpClientProviderTests {
         NettyAsyncHttpClient httpClient = (NettyAsyncHttpClient) new NettyAsyncHttpClientProvider()
             .createInstance(clientOptions);
 
+        Integer connectTimeout = (Integer) httpClient.nettyClient.configuration().options()
+            .get(ChannelOption.CONNECT_TIMEOUT_MILLIS);
+        assertEquals((int) expectedTimeout, connectTimeout.intValue());
         assertEquals(expectedTimeout, httpClient.writeTimeout);
         assertEquals(expectedTimeout, httpClient.responseTimeout);
         assertEquals(expectedTimeout, httpClient.readTimeout);

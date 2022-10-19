@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.ManagedVirtualNetwork;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed Virtual Network resource type. */
 @Fluent
 public final class ManagedVirtualNetworkResourceInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedVirtualNetworkResourceInner.class);
-
     /*
      * Managed Virtual Network properties.
      */
@@ -39,6 +36,10 @@ public final class ManagedVirtualNetworkResourceInner extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of ManagedVirtualNetworkResourceInner class. */
+    public ManagedVirtualNetworkResourceInner() {
+    }
 
     /**
      * Get the properties property: Managed Virtual Network properties.
@@ -101,7 +102,7 @@ public final class ManagedVirtualNetworkResourceInner extends SubResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model ManagedVirtualNetworkResourceInner"));
@@ -109,4 +110,6 @@ public final class ManagedVirtualNetworkResourceInner extends SubResource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedVirtualNetworkResourceInner.class);
 }

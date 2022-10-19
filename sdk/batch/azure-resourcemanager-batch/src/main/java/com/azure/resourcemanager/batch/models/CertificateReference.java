@@ -6,7 +6,6 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -16,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class CertificateReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateReference.class);
-
     /*
      * The fully qualified ID of the certificate to install on the pool. This
      * must be inside the same batch account as the pool.
@@ -172,9 +169,11 @@ public final class CertificateReference {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model CertificateReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateReference.class);
 }

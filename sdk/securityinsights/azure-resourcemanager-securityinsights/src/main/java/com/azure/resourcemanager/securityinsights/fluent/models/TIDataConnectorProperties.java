@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorTenantId;
 import com.azure.resourcemanager.securityinsights.models.TIDataConnectorDataTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** TI (Threat Intelligence) data connector properties. */
 @Fluent
 public final class TIDataConnectorProperties extends DataConnectorTenantId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TIDataConnectorProperties.class);
-
     /*
      * The lookback period for the feed to be imported.
      */
@@ -85,7 +82,7 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
     public void validate() {
         super.validate();
         if (dataTypes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataTypes in model TIDataConnectorProperties"));
@@ -93,4 +90,6 @@ public final class TIDataConnectorProperties extends DataConnectorTenantId {
             dataTypes().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TIDataConnectorProperties.class);
 }

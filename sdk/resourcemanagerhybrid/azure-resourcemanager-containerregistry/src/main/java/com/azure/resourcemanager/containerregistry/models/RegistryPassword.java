@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The login password for the container registry. */
 @Fluent
 public final class RegistryPassword {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegistryPassword.class);
-
     /*
      * The password name.
      */

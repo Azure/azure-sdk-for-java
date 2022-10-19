@@ -66,7 +66,11 @@ public final class BackupItemType extends ExpandableStringEnum<BackupItemType> {
         return fromString(name, BackupItemType.class);
     }
 
-    /** @return known BackupItemType values. */
+    /**
+     * Gets known BackupItemType values.
+     *
+     * @return known BackupItemType values.
+     */
     public static Collection<BackupItemType> values() {
         return values(BackupItemType.class);
     }

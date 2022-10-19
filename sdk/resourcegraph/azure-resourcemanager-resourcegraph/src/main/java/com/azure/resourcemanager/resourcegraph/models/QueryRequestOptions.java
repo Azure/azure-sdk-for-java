@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resourcegraph.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The options for query evaluation. */
 @Fluent
 public final class QueryRequestOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryRequestOptions.class);
-
     /*
      * Continuation token for pagination, capturing the next page size and
      * offset, as well as the context of the query.

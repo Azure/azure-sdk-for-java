@@ -6,20 +6,15 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An object to provide order by options for listing runs. */
 @Fluent
 public final class RunQueryOrderBy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunQueryOrderBy.class);
-
     /*
-     * Parameter name to be used for order by. The allowed parameters to order
-     * by for pipeline runs are PipelineName, RunStart, RunEnd and Status; for
-     * activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and
-     * Status; for trigger runs are TriggerName, TriggerRunTimestamp and
-     * Status.
+     * Parameter name to be used for order by. The allowed parameters to order by for pipeline runs are PipelineName,
+     * RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart, ActivityRunEnd and Status;
+     * for trigger runs are TriggerName, TriggerRunTimestamp and Status.
      */
     @JsonProperty(value = "orderBy", required = true)
     private RunQueryOrderByField orderBy;
@@ -29,6 +24,10 @@ public final class RunQueryOrderBy {
      */
     @JsonProperty(value = "order", required = true)
     private RunQueryOrder order;
+
+    /** Creates an instance of RunQueryOrderBy class. */
+    public RunQueryOrderBy() {
+    }
 
     /**
      * Get the orderBy property: Parameter name to be used for order by. The allowed parameters to order by for pipeline
@@ -81,14 +80,16 @@ public final class RunQueryOrderBy {
      */
     public void validate() {
         if (orderBy() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property orderBy in model RunQueryOrderBy"));
         }
         if (order() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property order in model RunQueryOrderBy"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RunQueryOrderBy.class);
 }

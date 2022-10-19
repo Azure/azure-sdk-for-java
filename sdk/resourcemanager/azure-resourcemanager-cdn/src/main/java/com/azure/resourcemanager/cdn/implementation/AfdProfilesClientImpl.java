@@ -27,18 +27,15 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.fluent.AfdProfilesClient;
+import com.azure.resourcemanager.cdn.fluent.models.CheckNameAvailabilityOutputInner;
 import com.azure.resourcemanager.cdn.fluent.models.UsageInner;
-import com.azure.resourcemanager.cdn.fluent.models.ValidateCustomDomainOutputInner;
+import com.azure.resourcemanager.cdn.models.CheckHostnameAvailabilityInput;
 import com.azure.resourcemanager.cdn.models.UsagesListResult;
-import com.azure.resourcemanager.cdn.models.ValidateCustomDomainInput;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AfdProfilesClient. */
 public final class AfdProfilesClientImpl implements AfdProfilesClient {
-    private final ClientLogger logger = new ClientLogger(AfdProfilesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AfdProfilesService service;
 
@@ -84,13 +81,13 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
                 + "/{profileName}/checkHostNameAvailability")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ValidateCustomDomainOutputInner>> checkHostnameAvailability(
+        Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailability(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("profileName") String profileName,
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") ValidateCustomDomainInput checkHostnameAvailabilityInput,
+            @BodyParam("application/json") CheckHostnameAvailabilityInput checkHostnameAvailabilityInput,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -106,14 +103,16 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listResourceUsageSinglePageAsync(
@@ -159,19 +158,21 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listResourceUsageSinglePageAsync(
@@ -218,14 +219,15 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listResourceUsageAsync(String resourceGroupName, String profileName) {
@@ -235,15 +237,16 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UsageInner> listResourceUsageAsync(
@@ -254,14 +257,15 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listResourceUsage(String resourceGroupName, String profileName) {
@@ -269,15 +273,16 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of AzureFrontDoor endpoints under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listResourceUsage(String resourceGroupName, String profileName, Context context) {
@@ -285,19 +290,21 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of check name availability API along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ValidateCustomDomainOutputInner>> checkHostnameAvailabilityWithResponseAsync(
-        String resourceGroupName, String profileName, String hostname) {
+    public Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailabilityWithResponseAsync(
+        String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -317,12 +324,15 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (hostname == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
+        if (checkHostnameAvailabilityInput == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter checkHostnameAvailabilityInput is required and cannot be null."));
+        } else {
+            checkHostnameAvailabilityInput.validate();
         }
         final String accept = "application/json";
-        ValidateCustomDomainInput checkHostnameAvailabilityInput = new ValidateCustomDomainInput();
-        checkHostnameAvailabilityInput.withHostname(hostname);
         return FluxUtil
             .withContext(
                 context ->
@@ -336,24 +346,29 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
                             checkHostnameAvailabilityInput,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of check name availability API along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ValidateCustomDomainOutputInner>> checkHostnameAvailabilityWithResponseAsync(
-        String resourceGroupName, String profileName, String hostname, Context context) {
+    private Mono<Response<CheckNameAvailabilityOutputInner>> checkHostnameAvailabilityWithResponseAsync(
+        String resourceGroupName,
+        String profileName,
+        CheckHostnameAvailabilityInput checkHostnameAvailabilityInput,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -373,12 +388,15 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (hostname == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
+        if (checkHostnameAvailabilityInput == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter checkHostnameAvailabilityInput is required and cannot be null."));
+        } else {
+            checkHostnameAvailabilityInput.validate();
         }
         final String accept = "application/json";
-        ValidateCustomDomainInput checkHostnameAvailabilityInput = new ValidateCustomDomainInput();
-        checkHostnameAvailabilityInput.withHostname(hostname);
         context = this.client.mergeContext(context);
         return service
             .checkHostnameAvailability(
@@ -393,73 +411,77 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of check name availability API on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ValidateCustomDomainOutputInner> checkHostnameAvailabilityAsync(
-        String resourceGroupName, String profileName, String hostname) {
-        return checkHostnameAvailabilityWithResponseAsync(resourceGroupName, profileName, hostname)
-            .flatMap(
-                (Response<ValidateCustomDomainOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+    public Mono<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityAsync(
+        String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput) {
+        return checkHostnameAvailabilityWithResponseAsync(
+                resourceGroupName, profileName, checkHostnameAvailabilityInput)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of check name availability API.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ValidateCustomDomainOutputInner checkHostnameAvailability(
-        String resourceGroupName, String profileName, String hostname) {
-        return checkHostnameAvailabilityAsync(resourceGroupName, profileName, hostname).block();
+    public CheckNameAvailabilityOutputInner checkHostnameAvailability(
+        String resourceGroupName, String profileName, CheckHostnameAvailabilityInput checkHostnameAvailabilityInput) {
+        return checkHostnameAvailabilityAsync(resourceGroupName, profileName, checkHostnameAvailabilityInput).block();
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Check the name availability of a host name.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium or CDN profile which is
+     *     unique within the resource group.
+     * @param checkHostnameAvailabilityInput Custom domain to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of check name availability API along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ValidateCustomDomainOutputInner> checkHostnameAvailabilityWithResponse(
-        String resourceGroupName, String profileName, String hostname, Context context) {
-        return checkHostnameAvailabilityWithResponseAsync(resourceGroupName, profileName, hostname, context).block();
+    public Response<CheckNameAvailabilityOutputInner> checkHostnameAvailabilityWithResponse(
+        String resourceGroupName,
+        String profileName,
+        CheckHostnameAvailabilityInput checkHostnameAvailabilityInput,
+        Context context) {
+        return checkHostnameAvailabilityWithResponseAsync(
+                resourceGroupName, profileName, checkHostnameAvailabilityInput, context)
+            .block();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listResourceUsageNextSinglePageAsync(String nextLink) {
@@ -484,18 +506,20 @@ public final class AfdProfilesClientImpl implements AfdProfilesClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listResourceUsageNextSinglePageAsync(String nextLink, Context context) {

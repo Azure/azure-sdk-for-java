@@ -15,6 +15,7 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.management.polling.PollerFactory;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -28,6 +29,7 @@ import com.azure.resourcemanager.datafactory.fluent.DataFlowsClient;
 import com.azure.resourcemanager.datafactory.fluent.DatasetsClient;
 import com.azure.resourcemanager.datafactory.fluent.ExposureControlsClient;
 import com.azure.resourcemanager.datafactory.fluent.FactoriesClient;
+import com.azure.resourcemanager.datafactory.fluent.GlobalParametersClient;
 import com.azure.resourcemanager.datafactory.fluent.IntegrationRuntimeNodesClient;
 import com.azure.resourcemanager.datafactory.fluent.IntegrationRuntimeObjectMetadatasClient;
 import com.azure.resourcemanager.datafactory.fluent.IntegrationRuntimesClient;
@@ -48,15 +50,12 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the DataFactoryManagementClientImpl type. */
 @ServiceClient(builder = DataFactoryManagementClientBuilder.class)
 public final class DataFactoryManagementClientImpl implements DataFactoryManagementClient {
-    private final ClientLogger logger = new ClientLogger(DataFactoryManagementClientImpl.class);
-
     /** The subscription identifier. */
     private final String subscriptionId;
 
@@ -369,6 +368,18 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
         return this.privateLinkResources;
     }
 
+    /** The GlobalParametersClient object to access its operations. */
+    private final GlobalParametersClient globalParameters;
+
+    /**
+     * Gets the GlobalParametersClient object to access its operations.
+     *
+     * @return the GlobalParametersClient object.
+     */
+    public GlobalParametersClient getGlobalParameters() {
+        return this.globalParameters;
+    }
+
     /**
      * Initializes an instance of DataFactoryManagementClient client.
      *
@@ -412,6 +423,7 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
         this.privateEndPointConnections = new PrivateEndPointConnectionsClientImpl(this);
         this.privateEndpointConnectionOperations = new PrivateEndpointConnectionOperationsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
+        this.globalParameters = new GlobalParametersClientImpl(this);
     }
 
     /**
@@ -430,10 +442,7 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
      * @return the merged context.
      */
     public Context mergeContext(Context context) {
-        for (Map.Entry<Object, Object> entry : this.getContext().getValues().entrySet()) {
-            context = context.addData(entry.getKey(), entry.getValue());
-        }
-        return context;
+        return CoreUtils.mergeContexts(this.getContext(), context);
     }
 
     /**
@@ -497,7 +506,7 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -556,4 +565,6 @@ public final class DataFactoryManagementClientImpl implements DataFactoryManagem
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataFactoryManagementClientImpl.class);
 }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Contains details on the failure. */
 @Immutable
 public final class SessionHostHealthCheckFailureDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SessionHostHealthCheckFailureDetails.class);
-
     /*
      * Failure message: hints on what is wrong and how to recover.
      */

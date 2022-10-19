@@ -5,24 +5,37 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AccessTier;
+import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
+import com.azure.resourcemanager.storage.models.DnsEndpointType;
 import com.azure.resourcemanager.storage.models.Encryption;
+import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
 import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
+import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The parameters used to create the storage account. */
 @Fluent
 public final class StorageAccountPropertiesCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountPropertiesCreateParameters.class);
+    /*
+     * Restrict copy to and from Storage Accounts within an AAD tenant or with Private Links to the same VNet.
+     */
+    @JsonProperty(value = "allowedCopyScope")
+    private AllowedCopyScope allowedCopyScope;
+
+    /*
+     * Allow or disallow public network access to Storage Account. Value is optional but if passed in, must be
+     * 'Enabled' or 'Disabled'.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * SasPolicy assigned to the storage account.
@@ -37,17 +50,15 @@ public final class StorageAccountPropertiesCreateParameters {
     private KeyPolicy keyPolicy;
 
     /*
-     * User domain assigned to the storage account. Name is the CNAME source.
-     * Only one custom domain is supported per storage account at this time. To
-     * clear the existing custom domain, use an empty string for the custom
-     * domain name property.
+     * User domain assigned to the storage account. Name is the CNAME source. Only one custom domain is supported per
+     * storage account at this time. To clear the existing custom domain, use an empty string for the custom domain
+     * name property.
      */
     @JsonProperty(value = "customDomain")
     private CustomDomain customDomain;
 
     /*
-     * Not applicable. Azure Storage encryption is enabled for all storage
-     * accounts and cannot be disabled.
+     * Encryption settings to be used for server-side encryption for the storage account.
      */
     @JsonProperty(value = "encryption")
     private Encryption encryption;
@@ -59,8 +70,9 @@ public final class StorageAccountPropertiesCreateParameters {
     private NetworkRuleSet networkRuleSet;
 
     /*
-     * Required for storage accounts where kind = BlobStorage. The access tier
-     * used for billing.
+     * Required for storage accounts where kind = BlobStorage. The access tier is used for billing. The 'Premium'
+     * access tier is the default value for premium block blobs storage account type and it cannot be changed for the
+     * premium block blobs storage account type.
      */
     @JsonProperty(value = "accessTier")
     private AccessTier accessTier;
@@ -72,11 +84,23 @@ public final class StorageAccountPropertiesCreateParameters {
     private AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication;
 
     /*
-     * Allows https traffic only to storage service if sets to true. The
-     * default value is true since API version 2019-04-01.
+     * Allows https traffic only to storage service if sets to true. The default value is true since API version
+     * 2019-04-01.
      */
     @JsonProperty(value = "supportsHttpsTrafficOnly")
     private Boolean enableHttpsTrafficOnly;
+
+    /*
+     * Enables Secure File Transfer Protocol, if set to true
+     */
+    @JsonProperty(value = "isSftpEnabled")
+    private Boolean isSftpEnabled;
+
+    /*
+     * Enables local users feature, if set to true
+     */
+    @JsonProperty(value = "isLocalUserEnabled")
+    private Boolean isLocalUserEnabled;
 
     /*
      * Account HierarchicalNamespace enabled if sets to true.
@@ -85,39 +109,35 @@ public final class StorageAccountPropertiesCreateParameters {
     private Boolean isHnsEnabled;
 
     /*
-     * Allow large file shares if sets to Enabled. It cannot be disabled once
-     * it is enabled.
+     * Allow large file shares if sets to Enabled. It cannot be disabled once it is enabled.
      */
     @JsonProperty(value = "largeFileSharesState")
     private LargeFileSharesState largeFileSharesState;
 
     /*
-     * Maintains information about the network routing choice opted by the user
-     * for data transfer
+     * Maintains information about the network routing choice opted by the user for data transfer
      */
     @JsonProperty(value = "routingPreference")
     private RoutingPreference routingPreference;
 
     /*
-     * Allow or disallow public access to all blobs or containers in the
-     * storage account. The default interpretation is true for this property.
+     * Allow or disallow public access to all blobs or containers in the storage account. The default interpretation is
+     * true for this property.
      */
     @JsonProperty(value = "allowBlobPublicAccess")
     private Boolean allowBlobPublicAccess;
 
     /*
-     * Set the minimum TLS version to be permitted on requests to storage. The
-     * default interpretation is TLS 1.0 for this property.
+     * Set the minimum TLS version to be permitted on requests to storage. The default interpretation is TLS 1.0 for
+     * this property.
      */
     @JsonProperty(value = "minimumTlsVersion")
     private MinimumTlsVersion minimumTlsVersion;
 
     /*
-     * Indicates whether the storage account permits requests to be authorized
-     * with the account access key via Shared Key. If false, then all requests,
-     * including shared access signatures, must be authorized with Azure Active
-     * Directory (Azure AD). The default value is null, which is equivalent to
-     * true.
+     * Indicates whether the storage account permits requests to be authorized with the account access key via Shared
+     * Key. If false, then all requests, including shared access signatures, must be authorized with Azure Active
+     * Directory (Azure AD). The default value is null, which is equivalent to true.
      */
     @JsonProperty(value = "allowSharedKeyAccess")
     private Boolean allowSharedKeyAccess;
@@ -129,11 +149,76 @@ public final class StorageAccountPropertiesCreateParameters {
     private Boolean enableNfsV3;
 
     /*
-     * Allow or disallow cross AAD tenant object replication. The default
-     * interpretation is true for this property.
+     * Allow or disallow cross AAD tenant object replication. The default interpretation is true for this property.
      */
     @JsonProperty(value = "allowCrossTenantReplication")
     private Boolean allowCrossTenantReplication;
+
+    /*
+     * A boolean flag which indicates whether the default authentication is OAuth or not. The default interpretation is
+     * false for this property.
+     */
+    @JsonProperty(value = "defaultToOAuthAuthentication")
+    private Boolean defaultToOAuthAuthentication;
+
+    /*
+     * The property is immutable and can only be set to true at the account creation time. When set to true, it enables
+     * object level immutability for all the new containers in the account by default.
+     */
+    @JsonProperty(value = "immutableStorageWithVersioning")
+    private ImmutableStorageAccount immutableStorageWithVersioning;
+
+    /*
+     * Allows you to specify the type of endpoint. Set this to AzureDNSZone to create a large number of accounts in a
+     * single subscription, which creates accounts in an Azure DNS Zone and the endpoint URL will have an alphanumeric
+     * DNS Zone identifier.
+     */
+    @JsonProperty(value = "dnsEndpointType")
+    private DnsEndpointType dnsEndpointType;
+
+    /**
+     * Get the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
+     * Private Links to the same VNet.
+     *
+     * @return the allowedCopyScope value.
+     */
+    public AllowedCopyScope allowedCopyScope() {
+        return this.allowedCopyScope;
+    }
+
+    /**
+     * Set the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
+     * Private Links to the same VNet.
+     *
+     * @param allowedCopyScope the allowedCopyScope value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters withAllowedCopyScope(AllowedCopyScope allowedCopyScope) {
+        this.allowedCopyScope = allowedCopyScope;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
 
     /**
      * Get the sasPolicy property: SasPolicy assigned to the storage account.
@@ -200,8 +285,7 @@ public final class StorageAccountPropertiesCreateParameters {
     }
 
     /**
-     * Get the encryption property: Not applicable. Azure Storage encryption is enabled for all storage accounts and
-     * cannot be disabled.
+     * Get the encryption property: Encryption settings to be used for server-side encryption for the storage account.
      *
      * @return the encryption value.
      */
@@ -210,8 +294,7 @@ public final class StorageAccountPropertiesCreateParameters {
     }
 
     /**
-     * Set the encryption property: Not applicable. Azure Storage encryption is enabled for all storage accounts and
-     * cannot be disabled.
+     * Set the encryption property: Encryption settings to be used for server-side encryption for the storage account.
      *
      * @param encryption the encryption value to set.
      * @return the StorageAccountPropertiesCreateParameters object itself.
@@ -242,8 +325,9 @@ public final class StorageAccountPropertiesCreateParameters {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @return the accessTier value.
      */
@@ -252,8 +336,9 @@ public final class StorageAccountPropertiesCreateParameters {
     }
 
     /**
-     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountPropertiesCreateParameters object itself.
@@ -305,6 +390,46 @@ public final class StorageAccountPropertiesCreateParameters {
      */
     public StorageAccountPropertiesCreateParameters withEnableHttpsTrafficOnly(Boolean enableHttpsTrafficOnly) {
         this.enableHttpsTrafficOnly = enableHttpsTrafficOnly;
+        return this;
+    }
+
+    /**
+     * Get the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
+     *
+     * @return the isSftpEnabled value.
+     */
+    public Boolean isSftpEnabled() {
+        return this.isSftpEnabled;
+    }
+
+    /**
+     * Set the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
+     *
+     * @param isSftpEnabled the isSftpEnabled value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters withIsSftpEnabled(Boolean isSftpEnabled) {
+        this.isSftpEnabled = isSftpEnabled;
+        return this;
+    }
+
+    /**
+     * Get the isLocalUserEnabled property: Enables local users feature, if set to true.
+     *
+     * @return the isLocalUserEnabled value.
+     */
+    public Boolean isLocalUserEnabled() {
+        return this.isLocalUserEnabled;
+    }
+
+    /**
+     * Set the isLocalUserEnabled property: Enables local users feature, if set to true.
+     *
+     * @param isLocalUserEnabled the isLocalUserEnabled value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters withIsLocalUserEnabled(Boolean isLocalUserEnabled) {
+        this.isLocalUserEnabled = isLocalUserEnabled;
         return this;
     }
 
@@ -485,6 +610,78 @@ public final class StorageAccountPropertiesCreateParameters {
     }
 
     /**
+     * Get the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
+     * is OAuth or not. The default interpretation is false for this property.
+     *
+     * @return the defaultToOAuthAuthentication value.
+     */
+    public Boolean defaultToOAuthAuthentication() {
+        return this.defaultToOAuthAuthentication;
+    }
+
+    /**
+     * Set the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
+     * is OAuth or not. The default interpretation is false for this property.
+     *
+     * @param defaultToOAuthAuthentication the defaultToOAuthAuthentication value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters withDefaultToOAuthAuthentication(
+        Boolean defaultToOAuthAuthentication) {
+        this.defaultToOAuthAuthentication = defaultToOAuthAuthentication;
+        return this;
+    }
+
+    /**
+     * Get the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
+     * account creation time. When set to true, it enables object level immutability for all the new containers in the
+     * account by default.
+     *
+     * @return the immutableStorageWithVersioning value.
+     */
+    public ImmutableStorageAccount immutableStorageWithVersioning() {
+        return this.immutableStorageWithVersioning;
+    }
+
+    /**
+     * Set the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
+     * account creation time. When set to true, it enables object level immutability for all the new containers in the
+     * account by default.
+     *
+     * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters withImmutableStorageWithVersioning(
+        ImmutableStorageAccount immutableStorageWithVersioning) {
+        this.immutableStorageWithVersioning = immutableStorageWithVersioning;
+        return this;
+    }
+
+    /**
+     * Get the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @return the dnsEndpointType value.
+     */
+    public DnsEndpointType dnsEndpointType() {
+        return this.dnsEndpointType;
+    }
+
+    /**
+     * Set the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @param dnsEndpointType the dnsEndpointType value to set.
+     * @return the StorageAccountPropertiesCreateParameters object itself.
+     */
+    public StorageAccountPropertiesCreateParameters withDnsEndpointType(DnsEndpointType dnsEndpointType) {
+        this.dnsEndpointType = dnsEndpointType;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -510,6 +707,9 @@ public final class StorageAccountPropertiesCreateParameters {
         }
         if (routingPreference() != null) {
             routingPreference().validate();
+        }
+        if (immutableStorageWithVersioning() != null) {
+            immutableStorageWithVersioning().validate();
         }
     }
 }

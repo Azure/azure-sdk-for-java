@@ -6,14 +6,11 @@ package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Database backup settings. */
 @Fluent
 public final class DatabaseBackupSetting {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabaseBackupSetting.class);
-
     /*
      * Database type (e.g. SqlAzure / MySql).
      */
@@ -133,10 +130,12 @@ public final class DatabaseBackupSetting {
      */
     public void validate() {
         if (databaseType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property databaseType in model DatabaseBackupSetting"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabaseBackupSetting.class);
 }

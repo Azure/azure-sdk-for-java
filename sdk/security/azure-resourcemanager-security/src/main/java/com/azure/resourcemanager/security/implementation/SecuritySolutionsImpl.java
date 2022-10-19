@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.SecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.models.SecuritySolutionInner;
 import com.azure.resourcemanager.security.models.SecuritySolution;
 import com.azure.resourcemanager.security.models.SecuritySolutions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SecuritySolutionsImpl implements SecuritySolutions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecuritySolutionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecuritySolutionsImpl.class);
 
     private final SecuritySolutionsClient innerClient;
 

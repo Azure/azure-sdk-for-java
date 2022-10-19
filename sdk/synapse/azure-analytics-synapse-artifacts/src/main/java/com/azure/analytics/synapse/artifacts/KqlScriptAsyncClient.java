@@ -8,6 +8,7 @@ import com.azure.analytics.synapse.artifacts.implementation.KqlScriptsOperations
 import com.azure.analytics.synapse.artifacts.models.ArtifactRenameRequest;
 import com.azure.analytics.synapse.artifacts.models.ErrorContractException;
 import com.azure.analytics.synapse.artifacts.models.KqlScriptResource;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous ArtifactsClient type. */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class KqlScriptAsyncClient {
-    private final KqlScriptsOperationsImpl serviceClient;
+    @Generated private final KqlScriptsOperationsImpl serviceClient;
 
     /**
-     * Initializes an instance of KqlScriptsOperations client.
+     * Initializes an instance of KqlScriptAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     KqlScriptAsyncClient(KqlScriptsOperationsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -36,8 +38,9 @@ public final class KqlScriptAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KqlScriptResource>> createOrUpdateWithResponse(
             String kqlScriptName, KqlScriptResource kqlScript) {
@@ -52,8 +55,9 @@ public final class KqlScriptAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KqlScriptResource> createOrUpdate(String kqlScriptName, KqlScriptResource kqlScript) {
         return this.serviceClient.createOrUpdateAsync(kqlScriptName, kqlScript);
@@ -66,8 +70,9 @@ public final class KqlScriptAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kQL script by name.
+     * @return kQL script by name along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KqlScriptResource>> getByNameWithResponse(String kqlScriptName) {
         return this.serviceClient.getByNameWithResponseAsync(kqlScriptName);
@@ -80,8 +85,9 @@ public final class KqlScriptAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return kQL script by name.
+     * @return kQL script by name on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KqlScriptResource> getByName(String kqlScriptName) {
         return this.serviceClient.getByNameAsync(kqlScriptName);
@@ -94,8 +100,9 @@ public final class KqlScriptAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteByNameWithResponse(String kqlScriptName) {
         return this.serviceClient.deleteByNameWithResponseAsync(kqlScriptName);
@@ -108,8 +115,9 @@ public final class KqlScriptAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteByName(String kqlScriptName) {
         return this.serviceClient.deleteByNameAsync(kqlScriptName);
@@ -123,8 +131,9 @@ public final class KqlScriptAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameWithResponse(String kqlScriptName, ArtifactRenameRequest renameRequest) {
         return this.serviceClient.renameWithResponseAsync(kqlScriptName, renameRequest);
@@ -138,8 +147,9 @@ public final class KqlScriptAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rename(String kqlScriptName, ArtifactRenameRequest renameRequest) {
         return this.serviceClient.renameAsync(kqlScriptName, renameRequest);

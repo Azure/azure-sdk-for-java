@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -18,14 +17,8 @@ import java.util.UUID;
 /** assignedPlan. */
 @Fluent
 public final class MicrosoftGraphAssignedPlan {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphAssignedPlan.class);
-
     /*
-     * The date and time at which the plan was assigned; for example:
-     * 2013-01-02T19:32:30Z. The Timestamp type represents date and time
-     * information using ISO 8601 format and is always in UTC time. For
-     * example, midnight UTC on Jan 1, 2014 would look like this:
-     * '2014-01-01T00:00:00Z'
+     * The assignedDateTime property.
      */
     @JsonProperty(value = "assignedDateTime")
     private OffsetDateTime assignedDateTime;
@@ -55,9 +48,7 @@ public final class MicrosoftGraphAssignedPlan {
     @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
-     * Get the assignedDateTime property: The date and time at which the plan was assigned; for example:
-     * 2013-01-02T19:32:30Z. The Timestamp type represents date and time information using ISO 8601 format and is always
-     * in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
+     * Get the assignedDateTime property: The assignedDateTime property.
      *
      * @return the assignedDateTime value.
      */
@@ -66,9 +57,7 @@ public final class MicrosoftGraphAssignedPlan {
     }
 
     /**
-     * Set the assignedDateTime property: The date and time at which the plan was assigned; for example:
-     * 2013-01-02T19:32:30Z. The Timestamp type represents date and time information using ISO 8601 format and is always
-     * in UTC time. For example, midnight UTC on Jan 1, 2014 would look like this: '2014-01-01T00:00:00Z'.
+     * Set the assignedDateTime property: The assignedDateTime property.
      *
      * @param assignedDateTime the assignedDateTime value to set.
      * @return the MicrosoftGraphAssignedPlan object itself.

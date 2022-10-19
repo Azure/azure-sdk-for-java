@@ -6,18 +6,14 @@ package com.azure.resourcemanager.kusto.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.kusto.models.PrincipalType;
 import com.azure.resourcemanager.kusto.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing a database principal assignment. */
 @Fluent
 public final class DatabasePrincipalAssignmentInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasePrincipalAssignmentInner.class);
-
     /*
      * The database principal.
      */
@@ -152,6 +148,15 @@ public final class DatabasePrincipalAssignmentInner extends ProxyResource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the aadObjectId property: The service principal object id in AAD (Azure active directory).
+     *
+     * @return the aadObjectId value.
+     */
+    public String aadObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadObjectId();
     }
 
     /**

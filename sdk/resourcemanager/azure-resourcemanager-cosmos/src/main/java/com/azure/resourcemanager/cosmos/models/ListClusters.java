@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.ClusterResourceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of managed Cassandra clusters. */
 @Fluent
 public final class ListClusters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListClusters.class);
-
     /*
      * Container for the array of clusters.
      */

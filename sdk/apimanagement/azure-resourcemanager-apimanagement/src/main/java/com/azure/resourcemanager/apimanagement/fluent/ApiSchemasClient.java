@@ -27,7 +27,7 @@ public interface ApiSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schema configuration at the API level.
+     * @return the schema configuration at the API level as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SchemaContractInner> listByApi(String resourceGroupName, String serviceName, String apiId);
@@ -48,7 +48,7 @@ public interface ApiSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the schema configuration at the API level.
+     * @return the schema configuration at the API level as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SchemaContractInner> listByApi(
@@ -67,7 +67,7 @@ public interface ApiSchemasClient {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema identifier within an API. Must be unique in the current API Management service instance.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -82,7 +82,7 @@ public interface ApiSchemasClient {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema identifier within an API. Must be unique in the current API Management service instance.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -100,7 +100,7 @@ public interface ApiSchemasClient {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema identifier within an API. Must be unique in the current API Management service instance.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -116,7 +116,7 @@ public interface ApiSchemasClient {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema identifier within an API. Must be unique in the current API Management service instance.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,15 +134,15 @@ public interface ApiSchemasClient {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema identifier within an API. Must be unique in the current API Management service instance.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param parameters The schema contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema Contract details.
+     * @return the {@link SyncPoller} for polling of aPI Schema Contract details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
@@ -158,16 +158,16 @@ public interface ApiSchemasClient {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema identifier within an API. Must be unique in the current API Management service instance.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param parameters The schema contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema Contract details.
+     * @return the {@link SyncPoller} for polling of aPI Schema Contract details.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SchemaContractInner>, SchemaContractInner> beginCreateOrUpdate(
         String resourceGroupName,
         String serviceName,
@@ -184,13 +184,13 @@ public interface ApiSchemasClient {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema identifier within an API. Must be unique in the current API Management service instance.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param parameters The schema contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema Contract details.
+     * @return aPI Schema Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SchemaContractInner createOrUpdate(
@@ -208,12 +208,12 @@ public interface ApiSchemasClient {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema identifier within an API. Must be unique in the current API Management service instance.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param parameters The schema contents to apply.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema Contract details.
+     * @return aPI Schema Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SchemaContractInner createOrUpdate(
@@ -226,14 +226,14 @@ public interface ApiSchemasClient {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema identifier within an API. Must be unique in the current API Management service instance.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param parameters The schema contents to apply.
      * @param ifMatch ETag of the Entity. Not required when creating an entity, but required when updating an entity.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema Contract details.
+     * @return aPI Schema Contract details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     SchemaContractInner createOrUpdate(
@@ -252,7 +252,7 @@ public interface ApiSchemasClient {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema identifier within an API. Must be unique in the current API Management service instance.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -269,7 +269,7 @@ public interface ApiSchemasClient {
      * @param serviceName The name of the API Management service.
      * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
      *     revision has ;rev=n as a suffix where n is the revision number.
-     * @param schemaId Schema identifier within an API. Must be unique in the current API Management service instance.
+     * @param schemaId Schema id identifier. Must be unique in the current API Management service instance.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      *     request or it should be * for unconditional update.
      * @param force If true removes all references to the schema before deleting it.
@@ -277,7 +277,7 @@ public interface ApiSchemasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(

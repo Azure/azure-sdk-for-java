@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for NetworkInterfaceNicType. */
+/** Type of Network Interface resource. */
 public final class NetworkInterfaceNicType extends ExpandableStringEnum<NetworkInterfaceNicType> {
     /** Static value Standard for NetworkInterfaceNicType. */
     public static final NetworkInterfaceNicType STANDARD = fromString("Standard");
@@ -27,7 +27,11 @@ public final class NetworkInterfaceNicType extends ExpandableStringEnum<NetworkI
         return fromString(name, NetworkInterfaceNicType.class);
     }
 
-    /** @return known NetworkInterfaceNicType values. */
+    /**
+     * Gets known NetworkInterfaceNicType values.
+     *
+     * @return known NetworkInterfaceNicType values.
+     */
     public static Collection<NetworkInterfaceNicType> values() {
         return values(NetworkInterfaceNicType.class);
     }

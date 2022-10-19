@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Cache security settings. */
 @Fluent
 public final class CacheSecuritySettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheSecuritySettings.class);
-
     /*
      * NFS access policies defined for this cache.
      */

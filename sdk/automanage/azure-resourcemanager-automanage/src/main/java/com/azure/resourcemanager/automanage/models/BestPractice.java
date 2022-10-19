@@ -6,7 +6,6 @@ package com.azure.resourcemanager.automanage.models;
 
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.automanage.fluent.models.BestPracticeInner;
-import java.util.List;
 
 /** An immutable client-side representation of BestPractice. */
 public interface BestPractice {
@@ -44,13 +43,6 @@ public interface BestPractice {
      * @return the configuration value.
      */
     Object configuration();
-
-    /**
-     * Gets the overrides property: overrides of the configuration profile.
-     *
-     * @return the overrides value.
-     */
-    List<Object> overrides();
 
     /**
      * Gets the inner com.azure.resourcemanager.automanage.fluent.models.BestPracticeInner object.

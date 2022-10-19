@@ -30,7 +30,11 @@ public final class InquiryStatus extends ExpandableStringEnum<InquiryStatus> {
         return fromString(name, InquiryStatus.class);
     }
 
-    /** @return known InquiryStatus values. */
+    /**
+     * Gets known InquiryStatus values.
+     *
+     * @return known InquiryStatus values.
+     */
     public static Collection<InquiryStatus> values() {
         return values(InquiryStatus.class);
     }

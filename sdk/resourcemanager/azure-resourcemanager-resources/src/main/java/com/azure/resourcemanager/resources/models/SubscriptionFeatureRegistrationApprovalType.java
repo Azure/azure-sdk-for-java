@@ -31,7 +31,11 @@ public final class SubscriptionFeatureRegistrationApprovalType
         return fromString(name, SubscriptionFeatureRegistrationApprovalType.class);
     }
 
-    /** @return known SubscriptionFeatureRegistrationApprovalType values. */
+    /**
+     * Gets known SubscriptionFeatureRegistrationApprovalType values.
+     *
+     * @return known SubscriptionFeatureRegistrationApprovalType values.
+     */
     public static Collection<SubscriptionFeatureRegistrationApprovalType> values() {
         return values(SubscriptionFeatureRegistrationApprovalType.class);
     }

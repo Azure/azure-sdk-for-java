@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data connector properties. */
 @Fluent
 public class DataConnectorWithAlertsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataConnectorWithAlertsProperties.class);
-
     /*
      * The available data types for the connector.
      */

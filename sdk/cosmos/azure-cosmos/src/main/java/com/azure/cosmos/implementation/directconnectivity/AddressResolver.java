@@ -9,9 +9,11 @@ import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ICollectionRoutingMapCache;
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -30,9 +32,9 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.util.concurrent.Callable;
 import java.util.function.Function;
 
@@ -85,8 +87,13 @@ public class AddressResolver implements IAddressResolver {
     }
 
     @Override
-    public void updateAddresses(RxDocumentServiceRequest request, URI serverKey) {
-        throw new NotImplementedException("updateAddresses() is not supported in AddressResolver");
+    public Flux<OpenConnectionResponse> openConnectionsAndInitCaches(String containerLink) {
+        return Flux.empty();
+    }
+
+    @Override
+    public void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionHandler) {
+        throw new NotImplementedException("setOpenConnectionsHandler is not supported on AddressResolver");
     }
 
     private static boolean isSameCollection(PartitionKeyRange initiallyResolved, PartitionKeyRange newlyResolved) {
@@ -330,7 +337,6 @@ public class AddressResolver implements IAddressResolver {
         volatile boolean collectionRoutingMapCacheIsUptoDate;
         volatile DocumentCollection collection;
         volatile CollectionRoutingMap routingMap;
-        volatile ResolutionResult resolutionResult;
     }
 
     private Mono<RefreshState> getOrRefreshRoutingMap(RxDocumentServiceRequest request, boolean forceRefreshPartitionAddresses) {

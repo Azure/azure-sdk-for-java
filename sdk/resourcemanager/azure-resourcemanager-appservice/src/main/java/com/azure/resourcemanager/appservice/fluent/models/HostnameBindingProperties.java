@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AzureResourceType;
 import com.azure.resourcemanager.appservice.models.CustomHostnameDnsRecordType;
 import com.azure.resourcemanager.appservice.models.HostnameType;
 import com.azure.resourcemanager.appservice.models.SslState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** HostNameBinding resource specific properties. */
 @Fluent
 public final class HostnameBindingProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostnameBindingProperties.class);
-
     /*
      * App Service app name.
      */

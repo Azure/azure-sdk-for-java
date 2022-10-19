@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Availability of the metric. */
 @Fluent
 public final class Availability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Availability.class);
-
     /*
      * The time grain of the availability.
      */
@@ -31,6 +27,10 @@ public final class Availability {
      */
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
+
+    /** Creates an instance of Availability class. */
+    public Availability() {
+    }
 
     /**
      * Get the timeGrain property: The time grain of the availability.

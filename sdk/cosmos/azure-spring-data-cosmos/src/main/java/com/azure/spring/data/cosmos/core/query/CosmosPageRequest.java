@@ -34,7 +34,7 @@ public class CosmosPageRequest extends PageRequest {
      *
      * @param page zero-based page index, must not be negative.
      * @param size the size of the page to be returned, must be greater than 0.
-     * @param requestContinuation must not be {@literal null}.
+     * @param requestContinuation the continuation token of the request.
      */
     public CosmosPageRequest(int page, int size, String requestContinuation) {
         super(page, size, Sort.unsorted());
@@ -47,7 +47,7 @@ public class CosmosPageRequest extends PageRequest {
      * @param page zero-based page index, must not be negative.
      * @param size the size of the page to be returned, must be greater than 0.
      * @param sort must not be {@literal null}, use {@link Sort#unsorted()} instead.
-     * @param requestContinuation must not be {@literal null}.
+     * @param requestContinuation the continuation token of the request.
      */
     public CosmosPageRequest(int page, int size, String requestContinuation, Sort sort) {
         super(page, size, sort);

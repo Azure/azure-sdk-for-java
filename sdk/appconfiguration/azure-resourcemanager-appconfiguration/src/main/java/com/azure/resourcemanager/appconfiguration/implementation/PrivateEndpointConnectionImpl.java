@@ -41,6 +41,10 @@ public final class PrivateEndpointConnectionImpl
         return this.innerModel().privateLinkServiceConnectionState();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PrivateEndpointConnectionInner innerModel() {
         return this.innerObject;
     }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.LogAnalyticsOutput;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** LogAnalytics operation status response. */
 @Immutable
 public final class LogAnalyticsOperationResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogAnalyticsOperationResultInner.class);
-
     /*
      * LogAnalyticsOutput
      */

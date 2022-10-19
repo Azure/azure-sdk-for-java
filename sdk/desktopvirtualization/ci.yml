@@ -33,6 +33,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: desktopvirtualization
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-resourcemanager-desktopvirtualization
         groupId: com.azure.resourcemanager

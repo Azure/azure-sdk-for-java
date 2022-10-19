@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** Select audio tracks from the input by specifying a track identifier. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.SelectAudioTrackById")
-@JsonFlatten
 @Fluent
-public class SelectAudioTrackById extends AudioTrackDescriptor {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SelectAudioTrackById.class);
-
+public final class SelectAudioTrackById extends AudioTrackDescriptor {
     /*
      * Track identifier to select
      */

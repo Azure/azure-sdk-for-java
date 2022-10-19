@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("TeradataSource")
 @Fluent
 public final class TeradataSource extends TabularSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TeradataSource.class);
-
     /*
      * Teradata query. Type: string (or Expression with resultType string).
      */
@@ -25,8 +21,8 @@ public final class TeradataSource extends TabularSource {
     private Object query;
 
     /*
-     * The partition mechanism that will be used for teradata read in parallel.
-     * Possible values include: "None", "Hash", "DynamicRange".
+     * The partition mechanism that will be used for teradata read in parallel. Possible values include: "None",
+     * "Hash", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
@@ -36,6 +32,10 @@ public final class TeradataSource extends TabularSource {
      */
     @JsonProperty(value = "partitionSettings")
     private TeradataPartitionSettings partitionSettings;
+
+    /** Creates an instance of TeradataSource class. */
+    public TeradataSource() {
+    }
 
     /**
      * Get the query property: Teradata query. Type: string (or Expression with resultType string).

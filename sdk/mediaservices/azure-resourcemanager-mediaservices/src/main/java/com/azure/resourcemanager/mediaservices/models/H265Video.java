@@ -5,9 +5,6 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,27 +12,22 @@ import java.time.Duration;
 import java.util.List;
 
 /** Describes all the properties for encoding a video with the H.265 codec. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.H265Video")
-@JsonFlatten
 @Fluent
-public class H265Video extends Video {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(H265Video.class);
-
+public final class H265Video extends Video {
     /*
-     * Specifies whether or not the encoder should insert key frames at scene
-     * changes. If not specified, the default is false. This flag should be set
-     * to true only when the encoder is being configured to produce a single
-     * output video.
+     * Specifies whether or not the encoder should insert key frames at scene changes. If not specified, the default is
+     * false. This flag should be set to true only when the encoder is being configured to produce a single output
+     * video.
      */
     @JsonProperty(value = "sceneChangeDetection")
     private Boolean sceneChangeDetection;
 
     /*
-     * Tells the encoder how to choose its encoding settings.  Quality will
-     * provide for a higher compression ratio but at a higher cost and longer
-     * compute time.  Speed will produce a relatively larger file but is faster
-     * and more economical. The default value is Balanced.
+     * Tells the encoder how to choose its encoding settings.  Quality will provide for a higher compression ratio but
+     * at a higher cost and longer compute time.  Speed will produce a relatively larger file but is faster and more
+     * economical. The default value is Balanced.
      */
     @JsonProperty(value = "complexity")
     private H265Complexity complexity;

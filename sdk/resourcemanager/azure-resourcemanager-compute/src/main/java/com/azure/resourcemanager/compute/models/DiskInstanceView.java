@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The instance view of the disk. */
 @Fluent
 public final class DiskInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskInstanceView.class);
-
     /*
      * The disk name.
      */
@@ -22,8 +18,7 @@ public final class DiskInstanceView {
     private String name;
 
     /*
-     * Specifies the encryption settings for the OS Disk. <br><br> Minimum
-     * api-version: 2015-06-15
+     * Specifies the encryption settings for the OS Disk. <br><br> Minimum api-version: 2015-06-15
      */
     @JsonProperty(value = "encryptionSettings")
     private List<DiskEncryptionSettings> encryptionSettings;

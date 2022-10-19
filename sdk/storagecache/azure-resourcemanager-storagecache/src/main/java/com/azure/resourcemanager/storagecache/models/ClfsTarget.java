@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties pertaining to the ClfsTarget. */
 @Fluent
 public final class ClfsTarget {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClfsTarget.class);
-
     /*
      * Resource ID of storage container.
      */

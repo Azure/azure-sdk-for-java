@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.HdfsLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("Hdfs")
 @Fluent
 public final class HdfsLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HdfsLinkedService.class);
-
     /*
      * HDFS linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private HdfsLinkedServiceTypeProperties innerTypeProperties = new HdfsLinkedServiceTypeProperties();
+
+    /** Creates an instance of HdfsLinkedService class. */
+    public HdfsLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: HDFS linked service properties.
@@ -196,7 +197,7 @@ public final class HdfsLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model HdfsLinkedService"));
@@ -204,4 +205,6 @@ public final class HdfsLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HdfsLinkedService.class);
 }

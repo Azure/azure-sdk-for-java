@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.RestorableSqlDatabasePropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an Azure Cosmos DB SQL database event. */
 @Fluent
 public final class RestorableSqlDatabaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableSqlDatabaseProperties.class);
-
     /*
      * The resource of an Azure Cosmos DB SQL database event
      */

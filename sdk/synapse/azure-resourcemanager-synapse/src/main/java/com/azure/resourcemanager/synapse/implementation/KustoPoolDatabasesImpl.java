@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.KustoPoolDatabasesClient;
 import com.azure.resourcemanager.synapse.fluent.models.DatabaseInner;
 import com.azure.resourcemanager.synapse.models.Database;
 import com.azure.resourcemanager.synapse.models.KustoPoolDatabases;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class KustoPoolDatabasesImpl implements KustoPoolDatabases {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KustoPoolDatabasesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(KustoPoolDatabasesImpl.class);
 
     private final KustoPoolDatabasesClient innerClient;
 

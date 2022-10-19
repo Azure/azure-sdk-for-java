@@ -33,7 +33,7 @@ public interface Desktops {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a desktop.
+     * @return a desktop along with {@link Response}.
      */
     Response<Desktop> getWithResponse(
         String resourceGroupName, String applicationGroupName, String desktopName, Context context);
@@ -62,7 +62,7 @@ public interface Desktops {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return schema for Desktop properties.
+     * @return schema for Desktop properties along with {@link Response}.
      */
     Response<Desktop> updateWithResponse(
         String resourceGroupName,
@@ -79,7 +79,7 @@ public interface Desktops {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Desktop> list(String resourceGroupName, String applicationGroupName);
 
@@ -92,7 +92,7 @@ public interface Desktops {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return desktopList.
+     * @return desktopList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Desktop> list(String resourceGroupName, String applicationGroupName, Context context);
 }

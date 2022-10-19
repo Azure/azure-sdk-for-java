@@ -6,7 +6,6 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,17 +15,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("UrlSigningKey")
 @Fluent
 public final class UrlSigningKeyParameters extends SecretParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UrlSigningKeyParameters.class);
-
     /*
-     * Defines the customer defined key Id. This id will exist in the incoming
-     * request to indicate the key used to form the hash.
+     * Defines the customer defined key Id. This id will exist in the incoming request to indicate the key used to form
+     * the hash.
      */
     @JsonProperty(value = "keyId", required = true)
     private String keyId;
 
     /*
-     * Resource reference to the KV secret
+     * Resource reference to the Azure Key Vault secret. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
     @JsonProperty(value = "secretSource", required = true)
     private ResourceReference secretSource;
@@ -60,7 +58,8 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     }
 
     /**
-     * Get the secretSource property: Resource reference to the KV secret.
+     * Get the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
      *
      * @return the secretSource value.
      */
@@ -69,7 +68,8 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     }
 
     /**
-     * Set the secretSource property: Resource reference to the KV secret.
+     * Set the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
      *
      * @param secretSource the secretSource value to set.
      * @return the UrlSigningKeyParameters object itself.
@@ -108,12 +108,12 @@ public final class UrlSigningKeyParameters extends SecretParameters {
     public void validate() {
         super.validate();
         if (keyId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyId in model UrlSigningKeyParameters"));
         }
         if (secretSource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretSource in model UrlSigningKeyParameters"));
@@ -121,4 +121,6 @@ public final class UrlSigningKeyParameters extends SecretParameters {
             secretSource().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UrlSigningKeyParameters.class);
 }

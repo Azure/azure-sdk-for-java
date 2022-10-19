@@ -9,6 +9,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.mediaservices.fluent.models.MediaServiceInner;
+import com.azure.resourcemanager.mediaservices.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.mediaservices.models.AccountEncryption;
 import com.azure.resourcemanager.mediaservices.models.EdgePolicies;
 import com.azure.resourcemanager.mediaservices.models.KeyDelivery;
@@ -16,6 +17,8 @@ import com.azure.resourcemanager.mediaservices.models.ListEdgePoliciesInput;
 import com.azure.resourcemanager.mediaservices.models.MediaService;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceIdentity;
 import com.azure.resourcemanager.mediaservices.models.MediaServiceUpdate;
+import com.azure.resourcemanager.mediaservices.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.mediaservices.models.ProvisioningState;
 import com.azure.resourcemanager.mediaservices.models.PublicNetworkAccess;
 import com.azure.resourcemanager.mediaservices.models.StorageAccount;
 import com.azure.resourcemanager.mediaservices.models.StorageAuthentication;
@@ -24,6 +27,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public final class MediaServiceImpl implements MediaService, MediaService.Definition, MediaService.Update {
     private MediaServiceInner innerObject;
@@ -55,12 +59,12 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
         }
     }
 
-    public MediaServiceIdentity identity() {
-        return this.innerModel().identity();
-    }
-
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public MediaServiceIdentity identity() {
+        return this.innerModel().identity();
     }
 
     public UUID mediaServiceId() {
@@ -92,12 +96,34 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
         return this.innerModel().publicNetworkAccess();
     }
 
+    public ProvisioningState provisioningState() {
+        return this.innerModel().provisioningState();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections
+                .unmodifiableList(
+                    inner
+                        .stream()
+                        .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager()))
+                        .collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public MediaServiceInner innerModel() {
@@ -124,8 +150,7 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
             serviceManager
                 .serviceClient()
                 .getMediaservices()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, this.innerModel(), Context.NONE)
-                .getValue();
+                .createOrUpdate(resourceGroupName, accountName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -134,8 +159,7 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
             serviceManager
                 .serviceClient()
                 .getMediaservices()
-                .createOrUpdateWithResponse(resourceGroupName, accountName, this.innerModel(), context)
-                .getValue();
+                .createOrUpdate(resourceGroupName, accountName, this.innerModel(), context);
         return this;
     }
 
@@ -155,8 +179,7 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
             serviceManager
                 .serviceClient()
                 .getMediaservices()
-                .updateWithResponse(resourceGroupName, accountName, updateParameters, Context.NONE)
-                .getValue();
+                .update(resourceGroupName, accountName, updateParameters, Context.NONE);
         return this;
     }
 
@@ -165,8 +188,7 @@ public final class MediaServiceImpl implements MediaService, MediaService.Defini
             serviceManager
                 .serviceClient()
                 .getMediaservices()
-                .updateWithResponse(resourceGroupName, accountName, updateParameters, context)
-                .getValue();
+                .update(resourceGroupName, accountName, updateParameters, context);
         return this;
     }
 

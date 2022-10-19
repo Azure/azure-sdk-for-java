@@ -11,6 +11,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.identity.implementation.IdentityClientBuilder;
 import com.azure.identity.implementation.IdentityClientOptions;
+import com.azure.identity.implementation.IdentitySyncClient;
 import com.azure.identity.implementation.MsalAuthenticationAccount;
 import com.azure.identity.implementation.MsalToken;
 import com.azure.identity.implementation.util.LoggingUtil;
@@ -24,12 +25,14 @@ import java.util.function.Consumer;
  */
 @Immutable
 public class DeviceCodeCredential implements TokenCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(DeviceCodeCredential.class);
+
     private final Consumer<DeviceCodeInfo> challengeConsumer;
     private final IdentityClient identityClient;
+    private final IdentitySyncClient identitySyncClient;
     private final AtomicReference<MsalAuthenticationAccount> cachedToken;
     private final String authorityHost;
     private final boolean automaticAuthentication;
-    private final ClientLogger logger = new ClientLogger(DeviceCodeCredential.class);
 
 
     /**
@@ -44,11 +47,13 @@ public class DeviceCodeCredential implements TokenCredential {
     DeviceCodeCredential(String clientId, String tenantId, Consumer<DeviceCodeInfo> challengeConsumer,
                          boolean automaticAuthentication, IdentityClientOptions identityClientOptions) {
         this.challengeConsumer = challengeConsumer;
-        identityClient = new IdentityClientBuilder()
+        IdentityClientBuilder builder =  new IdentityClientBuilder()
             .tenantId(tenantId)
             .clientId(clientId)
-            .identityClientOptions(identityClientOptions)
-            .build();
+            .identityClientOptions(identityClientOptions);
+
+        identityClient = builder.build();
+        identitySyncClient = builder.buildSyncClient();
         this.cachedToken = new AtomicReference<>();
         this.authorityHost = identityClientOptions.getAuthorityHost();
         this.automaticAuthentication = automaticAuthentication;
@@ -69,16 +74,42 @@ public class DeviceCodeCredential implements TokenCredential {
         }).switchIfEmpty(
             Mono.defer(() -> {
                 if (!automaticAuthentication) {
-                    return Mono.error(logger.logExceptionAsError(new AuthenticationRequiredException("Interactive "
+                    return Mono.error(LOGGER.logExceptionAsError(new AuthenticationRequiredException("Interactive "
                          + "authentication is needed to acquire token. Call Authenticate to initiate the device "
                          + "code authentication.", request)));
                 }
                 return identityClient.authenticateWithDeviceCode(request, challengeConsumer);
             }))
             .map(this::updateCache)
-            .doOnNext(token -> LoggingUtil.logTokenSuccess(logger, request))
-            .doOnError(error -> LoggingUtil.logTokenError(logger, request, error));
+            .doOnNext(token -> LoggingUtil.logTokenSuccess(LOGGER, request))
+            .doOnError(error -> LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(),
+                request, error));
     }
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        if (cachedToken.get() != null) {
+            try {
+                return identitySyncClient.authenticateWithPublicClientCache(request, cachedToken.get());
+            } catch (Exception e) { }
+        }
+        try {
+            if (!automaticAuthentication) {
+                throw LOGGER.logExceptionAsError(new AuthenticationRequiredException("Interactive "
+                    + "authentication is needed to acquire token. Call Authenticate to initiate the device "
+                    + "code authentication.", request));
+            }
+            MsalToken accessToken =  identitySyncClient.authenticateWithDeviceCode(request, challengeConsumer);
+            updateCache(accessToken);
+            LoggingUtil.logTokenSuccess(LOGGER, request);
+            return accessToken;
+        } catch (Exception e) {
+            LoggingUtil.logTokenError(LOGGER, identityClient.getIdentityClientOptions(), request, e);
+            throw e;
+        }
+    }
+
+
 
     /**
      * Authenticates a user via the device code flow.
@@ -115,7 +146,8 @@ public class DeviceCodeCredential implements TokenCredential {
     public Mono<AuthenticationRecord> authenticate() {
         String defaultScope = AzureAuthorityHosts.getDefaultScope(authorityHost);
         if (defaultScope == null) {
-            return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException("Authenticating in this "
+            return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER,
+                identityClient.getIdentityClientOptions(), new CredentialUnavailableException("Authenticating in this "
                                                     + "environment requires specifying a TokenRequestContext.")));
         }
         return authenticate(new TokenRequestContext().addScopes(defaultScope));

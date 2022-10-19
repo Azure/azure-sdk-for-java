@@ -47,13 +47,16 @@
       "metadata": {
         "description": "The location of the resources. By default, this is the same as the resource group."
       }
+    },
+    "serviceBusEndpointSuffix": {
+      "type": "string",
+      "defaultValue": ".servicebus.windows.net"
     }
   },
   "variables": {
     "authRuleResourceId": "[resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('namespaceName'), variables('sharedAccessKeyName'))]",
     "contributorRoleId": "b24988ac-6180-42a0-ab88-20f7382dd24c",
     "namespaceName": "[concat('sb-java-', parameters('baseName'))]",
-    "namespaceDomainNameSuffix": "servicebus.windows.net",
     "queueName": "queue",
     "queueSessionName": "queue-session",
     "numberOfInstances": 25,
@@ -68,7 +71,7 @@
   "resources": [
     {
       "type": "Microsoft.ServiceBus/namespaces",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-01-01-preview",
       "name": "[variables('namespaceName')]",
       "location": "[parameters('location')]",
       "sku": {
@@ -77,7 +80,7 @@
       "properties": {},
       "resources": [
         {
-          "apiVersion": "2021-05-01",
+          "apiVersion": "2021-01-01-preview",
           "type": "AuthorizationRules",
           "name": "[variables('sharedAccessKeyName')]",
           "dependsOn": [
@@ -131,7 +134,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/topics",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-01-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex())]",
       "properties": {
         "maxSizeInMegabytes": 1024,
@@ -147,7 +150,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-01-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('queueName'), '-', copyIndex())]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
@@ -165,7 +168,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/queues",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-01-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('queueSessionName'), '-', copyIndex())]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'))]"
@@ -182,7 +185,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-01-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionName'))]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'), '-', copyIndex())]"
@@ -199,7 +202,7 @@
     },
     {
       "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
-      "apiVersion": "2021-05-01",
+      "apiVersion": "2021-01-01-preview",
       "name": "[concat(variables('namespaceName'), '/', variables('topicName'), '-', copyIndex(), '/', variables('subscriptionSessionName'))]",
       "dependsOn": [
         "[concat('Microsoft.ServiceBus/namespaces/', variables('namespaceName'), '/topics/', variables('topicName'), '-', copyIndex())]"
@@ -230,11 +233,11 @@
     },
     "AZURE_SERVICEBUS_FULLY_QUALIFIED_DOMAIN_NAME": {
       "type": "string",
-      "value": "[concat(variables('namespaceName'), '.', variables('namespaceDomainNameSuffix'))]"
+      "value": "[concat(variables('namespaceName'), parameters('serviceBusEndpointSuffix'))]"
     },
     "AZURE_SERVICEBUS_NAMESPACE_CONNECTION_STRING": {
       "type": "string",
-      "value": "[listkeys(variables('authRuleResourceId'), '2021-05-01').primaryConnectionString]"
+      "value": "[listkeys(variables('authRuleResourceId'), '2021-01-01-preview').primaryConnectionString]"
     },
     "AZURE_SERVICEBUS_QUEUE_NAME": {
       "type": "string",
@@ -275,6 +278,10 @@
     "AZURE_SERVICEBUS_SAMPLE_SESSION_SUBSCRIPTION_NAME": {
       "type": "string",
       "value": "[variables('subscriptionSessionName')]"
+    },
+    "AZURE_SERVICEBUS_EDNPOINT_SUFFIX": {
+      "type": "string",
+      "value": "[parameters('serviceBusEndpointSuffix')]"
     }
   }
 }

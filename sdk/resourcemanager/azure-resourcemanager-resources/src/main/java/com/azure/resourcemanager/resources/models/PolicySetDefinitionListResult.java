@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.PolicySetDefinitionInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of policy set definitions. */
 @Fluent
 public final class PolicySetDefinitionListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicySetDefinitionListResult.class);
-
     /*
      * An array of policy set definitions.
      */

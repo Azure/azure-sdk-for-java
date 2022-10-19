@@ -18,7 +18,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Certificates list representation.
+     * @return paged Certificates list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CertificateContract> listByService(String resourceGroupName, String serviceName);
 
@@ -41,7 +41,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Certificates list representation.
+     * @return paged Certificates list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<CertificateContract> listByService(
         String resourceGroupName,
@@ -139,7 +139,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String certificateId, String ifMatch, Context context);
@@ -217,7 +217,7 @@ public interface Certificates {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context);
 

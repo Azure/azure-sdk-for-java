@@ -23,7 +23,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.ProactiveDetectionConfigurationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentProactiveDetectionConfigurationInner;
 import java.util.List;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ProactiveDetectionConfigurationsClient.
  */
 public final class ProactiveDetectionConfigurationsClientImpl implements ProactiveDetectionConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(ProactiveDetectionConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProactiveDetectionConfigurationsService service;
 
@@ -225,15 +222,7 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> listAsync(
         String resourceGroupName, String resourceName) {
-        return listWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap(
-                (Response<List<ApplicationInsightsComponentProactiveDetectionConfigurationInner>> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return listWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -398,14 +387,7 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
     private Mono<ApplicationInsightsComponentProactiveDetectionConfigurationInner> getAsync(
         String resourceGroupName, String resourceName, String configurationId) {
         return getWithResponseAsync(resourceGroupName, resourceName, configurationId)
-            .flatMap(
-                (Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -607,14 +589,7 @@ public final class ProactiveDetectionConfigurationsClientImpl implements Proacti
         String configurationId,
         ApplicationInsightsComponentProactiveDetectionConfigurationInner proactiveDetectionProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, configurationId, proactiveDetectionProperties)
-            .flatMap(
-                (Response<ApplicationInsightsComponentProactiveDetectionConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

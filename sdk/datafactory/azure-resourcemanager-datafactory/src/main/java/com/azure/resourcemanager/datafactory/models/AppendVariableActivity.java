@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AppendVariableActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,13 +17,15 @@ import java.util.List;
 @JsonTypeName("AppendVariable")
 @Fluent
 public final class AppendVariableActivity extends ControlActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppendVariableActivity.class);
-
     /*
      * Append Variable activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private AppendVariableActivityTypeProperties innerTypeProperties = new AppendVariableActivityTypeProperties();
+
+    /** Creates an instance of AppendVariableActivity class. */
+    public AppendVariableActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: Append Variable activity properties.
@@ -118,7 +119,7 @@ public final class AppendVariableActivity extends ControlActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AppendVariableActivity"));
@@ -126,4 +127,6 @@ public final class AppendVariableActivity extends ControlActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AppendVariableActivity.class);
 }

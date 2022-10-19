@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DeliveryRuleActionValue. */
+/** The name of the action for the delivery rule. */
 public final class DeliveryRuleActionValue extends ExpandableStringEnum<DeliveryRuleActionValue> {
     /** Static value CacheExpiration for DeliveryRuleActionValue. */
     public static final DeliveryRuleActionValue CACHE_EXPIRATION = fromString("CacheExpiration");
@@ -34,6 +34,9 @@ public final class DeliveryRuleActionValue extends ExpandableStringEnum<Delivery
     /** Static value OriginGroupOverride for DeliveryRuleActionValue. */
     public static final DeliveryRuleActionValue ORIGIN_GROUP_OVERRIDE = fromString("OriginGroupOverride");
 
+    /** Static value RouteConfigurationOverride for DeliveryRuleActionValue. */
+    public static final DeliveryRuleActionValue ROUTE_CONFIGURATION_OVERRIDE = fromString("RouteConfigurationOverride");
+
     /**
      * Creates or finds a DeliveryRuleActionValue from its string representation.
      *
@@ -45,7 +48,11 @@ public final class DeliveryRuleActionValue extends ExpandableStringEnum<Delivery
         return fromString(name, DeliveryRuleActionValue.class);
     }
 
-    /** @return known DeliveryRuleActionValue values. */
+    /**
+     * Gets known DeliveryRuleActionValue values.
+     *
+     * @return known DeliveryRuleActionValue values.
+     */
     public static Collection<DeliveryRuleActionValue> values() {
         return values(DeliveryRuleActionValue.class);
     }

@@ -6,19 +6,16 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the parameters for the cache-key query string action. */
 @Fluent
 public final class CacheKeyQueryStringActionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheKeyQueryStringActionParameters.class);
-
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleCacheKeyQueryStringBehaviorActionParameters";
 
     /*
      * Caching behavior for the requests
@@ -34,26 +31,26 @@ public final class CacheKeyQueryStringActionParameters {
 
     /** Creates an instance of CacheKeyQueryStringActionParameters class. */
     public CacheKeyQueryStringActionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleCacheKeyQueryStringBehaviorActionParameters";
+        typeName = "DeliveryRuleCacheKeyQueryStringBehaviorActionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the CacheKeyQueryStringActionParameters object itself.
      */
-    public CacheKeyQueryStringActionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public CacheKeyQueryStringActionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
@@ -104,10 +101,12 @@ public final class CacheKeyQueryStringActionParameters {
      */
     public void validate() {
         if (queryStringBehavior() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property queryStringBehavior in model CacheKeyQueryStringActionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CacheKeyQueryStringActionParameters.class);
 }

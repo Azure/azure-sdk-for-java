@@ -6,21 +6,20 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** CosmosDB (SQL API) Collection dataset properties. */
 @Fluent
 public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CosmosDbSqlApiCollectionDatasetTypeProperties.class);
-
     /*
-     * CosmosDB (SQL API) collection name. Type: string (or Expression with
-     * resultType string).
+     * CosmosDB (SQL API) collection name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "collectionName", required = true)
     private Object collectionName;
+
+    /** Creates an instance of CosmosDbSqlApiCollectionDatasetTypeProperties class. */
+    public CosmosDbSqlApiCollectionDatasetTypeProperties() {
+    }
 
     /**
      * Get the collectionName property: CosmosDB (SQL API) collection name. Type: string (or Expression with resultType
@@ -51,11 +50,13 @@ public final class CosmosDbSqlApiCollectionDatasetTypeProperties {
      */
     public void validate() {
         if (collectionName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property collectionName in model"
                             + " CosmosDbSqlApiCollectionDatasetTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CosmosDbSqlApiCollectionDatasetTypeProperties.class);
 }

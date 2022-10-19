@@ -6,19 +6,16 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed Virtual Network reference type. */
 @Fluent
 public final class ManagedVirtualNetworkReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedVirtualNetworkReference.class);
-
     /*
      * Managed Virtual Network reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type = "ManagedVirtualNetworkReference";
+    private ManagedVirtualNetworkReferenceType type;
 
     /*
      * Reference ManagedVirtualNetwork name.
@@ -28,7 +25,6 @@ public final class ManagedVirtualNetworkReference {
 
     /** Creates an instance of ManagedVirtualNetworkReference class. */
     public ManagedVirtualNetworkReference() {
-        type = "ManagedVirtualNetworkReference";
     }
 
     /**
@@ -36,7 +32,7 @@ public final class ManagedVirtualNetworkReference {
      *
      * @return the type value.
      */
-    public String type() {
+    public ManagedVirtualNetworkReferenceType type() {
         return this.type;
     }
 
@@ -46,7 +42,7 @@ public final class ManagedVirtualNetworkReference {
      * @param type the type value to set.
      * @return the ManagedVirtualNetworkReference object itself.
      */
-    public ManagedVirtualNetworkReference withType(String type) {
+    public ManagedVirtualNetworkReference withType(ManagedVirtualNetworkReferenceType type) {
         this.type = type;
         return this;
     }
@@ -77,11 +73,19 @@ public final class ManagedVirtualNetworkReference {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (type() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property type in model ManagedVirtualNetworkReference"));
+        }
         if (referenceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property referenceName in model ManagedVirtualNetworkReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ManagedVirtualNetworkReference.class);
 }

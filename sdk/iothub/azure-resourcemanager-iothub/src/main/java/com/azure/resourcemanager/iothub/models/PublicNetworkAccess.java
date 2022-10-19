@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PublicNetworkAccess. */
+/** Whether requests from Public Network are allowed. */
 public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetworkAccess> {
     /** Static value Enabled for PublicNetworkAccess. */
     public static final PublicNetworkAccess ENABLED = fromString("Enabled");
@@ -27,7 +27,11 @@ public final class PublicNetworkAccess extends ExpandableStringEnum<PublicNetwor
         return fromString(name, PublicNetworkAccess.class);
     }
 
-    /** @return known PublicNetworkAccess values. */
+    /**
+     * Gets known PublicNetworkAccess values.
+     *
+     * @return known PublicNetworkAccess values.
+     */
     public static Collection<PublicNetworkAccess> values() {
         return values(PublicNetworkAccess.class);
     }

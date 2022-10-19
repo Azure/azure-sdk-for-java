@@ -13,10 +13,9 @@ import com.azure.resourcemanager.datafactory.fluent.models.TriggerRunsQueryRespo
 import com.azure.resourcemanager.datafactory.models.RunFilterParameters;
 import com.azure.resourcemanager.datafactory.models.TriggerRuns;
 import com.azure.resourcemanager.datafactory.models.TriggerRunsQueryResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TriggerRunsImpl implements TriggerRuns {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggerRunsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TriggerRunsImpl.class);
 
     private final TriggerRunsClient innerClient;
 
@@ -28,17 +27,13 @@ public final class TriggerRunsImpl implements TriggerRuns {
         this.serviceManager = serviceManager;
     }
 
-    public void rerun(String resourceGroupName, String factoryName, String triggerName, String runId) {
-        this.serviceClient().rerun(resourceGroupName, factoryName, triggerName, runId);
-    }
-
     public Response<Void> rerunWithResponse(
         String resourceGroupName, String factoryName, String triggerName, String runId, Context context) {
         return this.serviceClient().rerunWithResponse(resourceGroupName, factoryName, triggerName, runId, context);
     }
 
-    public void cancel(String resourceGroupName, String factoryName, String triggerName, String runId) {
-        this.serviceClient().cancel(resourceGroupName, factoryName, triggerName, runId);
+    public void rerun(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        this.serviceClient().rerun(resourceGroupName, factoryName, triggerName, runId);
     }
 
     public Response<Void> cancelWithResponse(
@@ -46,15 +41,8 @@ public final class TriggerRunsImpl implements TriggerRuns {
         return this.serviceClient().cancelWithResponse(resourceGroupName, factoryName, triggerName, runId, context);
     }
 
-    public TriggerRunsQueryResponse queryByFactory(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
-        TriggerRunsQueryResponseInner inner =
-            this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
-        if (inner != null) {
-            return new TriggerRunsQueryResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void cancel(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        this.serviceClient().cancel(resourceGroupName, factoryName, triggerName, runId);
     }
 
     public Response<TriggerRunsQueryResponse> queryByFactoryWithResponse(
@@ -67,6 +55,17 @@ public final class TriggerRunsImpl implements TriggerRuns {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TriggerRunsQueryResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TriggerRunsQueryResponse queryByFactory(
+        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
+        TriggerRunsQueryResponseInner inner =
+            this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
+        if (inner != null) {
+            return new TriggerRunsQueryResponseImpl(inner, this.manager());
         } else {
             return null;
         }

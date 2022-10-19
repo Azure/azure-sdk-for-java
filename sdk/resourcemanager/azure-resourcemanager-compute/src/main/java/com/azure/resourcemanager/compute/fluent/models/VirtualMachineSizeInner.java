@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a VM size. */
 @Fluent
 public final class VirtualMachineSizeInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSizeInner.class);
-
     /*
      * The name of the virtual machine size.
      */
@@ -21,10 +17,9 @@ public final class VirtualMachineSizeInner {
     private String name;
 
     /*
-     * The number of cores supported by the virtual machine size. For
-     * Constrained vCPU capable VM sizes, this number represents the total
-     * vCPUs of quota that the VM uses. For accurate vCPU count, please refer
-     * to https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or
+     * The number of cores supported by the virtual machine size. For Constrained vCPU capable VM sizes, this number
+     * represents the total vCPUs of quota that the VM uses. For accurate vCPU count, please refer to
+     * https://docs.microsoft.com/azure/virtual-machines/constrained-vcpu or
      * https://docs.microsoft.com/rest/api/compute/resourceskus/list
      */
     @JsonProperty(value = "numberOfCores")
@@ -49,8 +44,7 @@ public final class VirtualMachineSizeInner {
     private Integer memoryInMB;
 
     /*
-     * The maximum number of data disks that can be attached to the virtual
-     * machine size.
+     * The maximum number of data disks that can be attached to the virtual machine size.
      */
     @JsonProperty(value = "maxDataDiskCount")
     private Integer maxDataDiskCount;

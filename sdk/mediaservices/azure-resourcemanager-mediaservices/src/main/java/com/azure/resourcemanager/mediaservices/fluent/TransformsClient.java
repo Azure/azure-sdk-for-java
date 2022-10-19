@@ -14,20 +14,24 @@ import com.azure.resourcemanager.mediaservices.fluent.models.TransformInner;
 /** An instance of this class provides access to all the operations defined in TransformsClient. */
 public interface TransformsClient {
     /**
-     * Lists the Transforms in the account.
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Transform items.
+     * @return a collection of Transform items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TransformInner> list(String resourceGroupName, String accountName);
 
     /**
-     * Lists the Transforms in the account.
+     * List Transforms
+     *
+     * <p>Lists the Transforms in the account.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -37,14 +41,16 @@ public interface TransformsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of Transform items.
+     * @return a collection of Transform items as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<TransformInner> list(
         String resourceGroupName, String accountName, String filter, String orderby, Context context);
 
     /**
-     * Gets a Transform.
+     * Get Transform
+     *
+     * <p>Gets a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -58,7 +64,9 @@ public interface TransformsClient {
     TransformInner get(String resourceGroupName, String accountName, String transformName);
 
     /**
-     * Gets a Transform.
+     * Get Transform
+     *
+     * <p>Gets a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -67,14 +75,16 @@ public interface TransformsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Transform.
+     * @return a Transform along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TransformInner> getWithResponse(
         String resourceGroupName, String accountName, String transformName, Context context);
 
     /**
-     * Creates or updates a new Transform.
+     * Create or Update Transform
+     *
+     * <p>Creates or updates a new Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -91,7 +101,9 @@ public interface TransformsClient {
         String resourceGroupName, String accountName, String transformName, TransformInner parameters);
 
     /**
-     * Creates or updates a new Transform.
+     * Create or Update Transform
+     *
+     * <p>Creates or updates a new Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -102,14 +114,16 @@ public interface TransformsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights.
+     *     as by transcoding or by extracting insights along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TransformInner> createOrUpdateWithResponse(
         String resourceGroupName, String accountName, String transformName, TransformInner parameters, Context context);
 
     /**
-     * Deletes a Transform.
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -122,7 +136,9 @@ public interface TransformsClient {
     void delete(String resourceGroupName, String accountName, String transformName);
 
     /**
-     * Deletes a Transform.
+     * Delete Transform
+     *
+     * <p>Deletes a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -131,14 +147,16 @@ public interface TransformsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String transformName, Context context);
 
     /**
-     * Updates a Transform.
+     * Update Transform
+     *
+     * <p>Updates a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -155,7 +173,9 @@ public interface TransformsClient {
         String resourceGroupName, String accountName, String transformName, TransformInner parameters);
 
     /**
-     * Updates a Transform.
+     * Update Transform
+     *
+     * <p>Updates a Transform.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -166,7 +186,7 @@ public interface TransformsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Transform encapsulates the rules or instructions for generating desired outputs from input media, such
-     *     as by transcoding or by extracting insights.
+     *     as by transcoding or by extracting insights along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<TransformInner> updateWithResponse(

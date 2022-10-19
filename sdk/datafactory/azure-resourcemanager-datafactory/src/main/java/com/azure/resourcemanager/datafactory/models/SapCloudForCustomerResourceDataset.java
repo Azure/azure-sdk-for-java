@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SapCloudForCustomerResourceDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("SapCloudForCustomerResource")
 @Fluent
 public final class SapCloudForCustomerResourceDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SapCloudForCustomerResourceDataset.class);
-
     /*
      * SAP Cloud For Customer OData resource dataset properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private SapCloudForCustomerResourceDatasetTypeProperties innerTypeProperties =
         new SapCloudForCustomerResourceDatasetTypeProperties();
+
+    /** Creates an instance of SapCloudForCustomerResourceDataset class. */
+    public SapCloudForCustomerResourceDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: SAP Cloud For Customer OData resource dataset properties.
@@ -120,7 +121,7 @@ public final class SapCloudForCustomerResourceDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model SapCloudForCustomerResourceDataset"));
@@ -128,4 +129,6 @@ public final class SapCloudForCustomerResourceDataset extends Dataset {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SapCloudForCustomerResourceDataset.class);
 }

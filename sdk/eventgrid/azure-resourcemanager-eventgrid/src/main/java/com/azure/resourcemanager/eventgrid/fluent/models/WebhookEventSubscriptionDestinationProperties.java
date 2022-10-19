@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Information about the webhook destination properties for an event subscription. */
 @Fluent
 public final class WebhookEventSubscriptionDestinationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WebhookEventSubscriptionDestinationProperties.class);
-
     /*
      * The URL that represents the endpoint of the destination of an event
      * subscription.

@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.HBaseAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** HBase server linked service properties. */
 @Fluent
 public final class HBaseLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HBaseLinkedServiceTypeProperties.class);
-
     /*
      * The IP address or host name of the HBase server. (i.e. 192.168.222.160)
      */
@@ -23,15 +20,13 @@ public final class HBaseLinkedServiceTypeProperties {
     private Object host;
 
     /*
-     * The TCP port that the HBase instance uses to listen for client
-     * connections. The default value is 9090.
+     * The TCP port that the HBase instance uses to listen for client connections. The default value is 9090.
      */
     @JsonProperty(value = "port")
     private Object port;
 
     /*
-     * The partial URL corresponding to the HBase server. (i.e.
-     * /gateway/sandbox/hbase/version)
+     * The partial URL corresponding to the HBase server. (i.e. /gateway/sandbox/hbase/version)
      */
     @JsonProperty(value = "httpPath")
     private Object httpPath;
@@ -55,43 +50,42 @@ public final class HBaseLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * Specifies whether the connections to the server are encrypted using SSL.
-     * The default value is false.
+     * Specifies whether the connections to the server are encrypted using SSL. The default value is false.
      */
     @JsonProperty(value = "enableSsl")
     private Object enableSsl;
 
     /*
-     * The full path of the .pem file containing trusted CA certificates for
-     * verifying the server when connecting over SSL. This property can only be
-     * set when using SSL on self-hosted IR. The default value is the
-     * cacerts.pem file installed with the IR.
+     * The full path of the .pem file containing trusted CA certificates for verifying the server when connecting over
+     * SSL. This property can only be set when using SSL on self-hosted IR. The default value is the cacerts.pem file
+     * installed with the IR.
      */
     @JsonProperty(value = "trustedCertPath")
     private Object trustedCertPath;
 
     /*
-     * Specifies whether to require a CA-issued SSL certificate name to match
-     * the host name of the server when connecting over SSL. The default value
-     * is false.
+     * Specifies whether to require a CA-issued SSL certificate name to match the host name of the server when
+     * connecting over SSL. The default value is false.
      */
     @JsonProperty(value = "allowHostNameCNMismatch")
     private Object allowHostnameCNMismatch;
 
     /*
-     * Specifies whether to allow self-signed certificates from the server. The
-     * default value is false.
+     * Specifies whether to allow self-signed certificates from the server. The default value is false.
      */
     @JsonProperty(value = "allowSelfSignedServerCert")
     private Object allowSelfSignedServerCert;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of HBaseLinkedServiceTypeProperties class. */
+    public HBaseLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the host property: The IP address or host name of the HBase server. (i.e. 192.168.222.160).
@@ -336,13 +330,13 @@ public final class HBaseLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model HBaseLinkedServiceTypeProperties"));
         }
         if (authenticationType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authenticationType in model HBaseLinkedServiceTypeProperties"));
@@ -351,4 +345,6 @@ public final class HBaseLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HBaseLinkedServiceTypeProperties.class);
 }

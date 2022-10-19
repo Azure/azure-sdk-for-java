@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.config.properties;
 
 import static com.azure.spring.cloud.config.AppConfigurationConstants.EMPTY_LABEL;
+import static com.azure.spring.cloud.config.AppConfigurationConstants.LABEL_SEPARATOR;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -24,11 +25,6 @@ public final class AppConfigurationStoreSelects {
      * Label for requesting all configurations with (No Label)
      */
     private static final String[] EMPTY_LABEL_ARRAY = { EMPTY_LABEL };
-
-    /**
-     * Separator for multiple labels
-     */
-    public static final String LABEL_SEPARATOR = ",";
 
     @NotNull
     private String keyFilter = "/application/";
@@ -65,7 +61,7 @@ public final class AppConfigurationStoreSelects {
 
         // The use of trim makes label= dev,prod and label= dev, prod equal.
         List<String> labels = Arrays.stream(labelFilter.split(LABEL_SEPARATOR))
-            .map(label -> mapLabel(label))
+            .map(this::mapLabel)
             .distinct()
             .collect(Collectors.toList());
 

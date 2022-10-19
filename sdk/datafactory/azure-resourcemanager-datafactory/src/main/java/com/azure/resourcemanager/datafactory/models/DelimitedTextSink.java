@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DelimitedTextSink")
 @Fluent
 public final class DelimitedTextSink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DelimitedTextSink.class);
-
     /*
      * DelimitedText store settings.
      */
@@ -29,6 +25,10 @@ public final class DelimitedTextSink extends CopySink {
      */
     @JsonProperty(value = "formatSettings")
     private DelimitedTextWriteSettings formatSettings;
+
+    /** Creates an instance of DelimitedTextSink class. */
+    public DelimitedTextSink() {
+    }
 
     /**
      * Get the storeSettings property: DelimitedText store settings.

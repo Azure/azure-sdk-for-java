@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SSL certificates of an application gateway. */
 @Fluent
 public final class ApplicationGatewaySslCertificateInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslCertificateInner.class);
-
     /*
      * Properties of the application gateway SSL certificate.
      */
@@ -23,8 +19,7 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
     private ApplicationGatewaySslCertificatePropertiesFormat innerProperties;
 
     /*
-     * Name of the SSL certificate that is unique within an Application
-     * Gateway.
+     * Name of the SSL certificate that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -40,6 +35,10 @@ public final class ApplicationGatewaySslCertificateInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ApplicationGatewaySslCertificateInner class. */
+    public ApplicationGatewaySslCertificateInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the application gateway SSL certificate.

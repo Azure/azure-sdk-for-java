@@ -10,6 +10,7 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.util.Context;
+import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyService;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptParameters;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptParameters;
@@ -313,7 +314,9 @@ public class CryptographyClient {
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param ciphertext The content to be decrypted.
+     * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
+     * integrity of the ciphertext using an HMAC, for example.
+     * See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      *
      * @return The {@link DecryptResult} whose {@link DecryptResult#getPlainText() plain text} contains the decrypted
      * content.
@@ -363,7 +366,9 @@ public class CryptographyClient {
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context -->
      *
      * @param algorithm The algorithm to be used for decryption.
-     * @param ciphertext The content to be decrypted.
+     * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
+     * integrity of the ciphertext using an HMAC, for example.
+     * See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
      *
      * @return The {@link DecryptResult} whose {@link DecryptResult#getPlainText() plain text} contains the decrypted
@@ -417,7 +422,9 @@ public class CryptographyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context -->
      *
-     * @param decryptParameters The parameters to use in the decryption operation.
+     * @param decryptParameters The parameters to use in the decryption operation. Microsoft recommends you not use CBC
+     * without first ensuring the integrity of the ciphertext using an HMAC, for example.
+     * See https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * @param context Additional context that is passed through the {@link HttpPipeline} during the service call.
      *
      * @return The {@link DecryptResult} whose {@link DecryptResult#getPlainText() plain text} contains the decrypted

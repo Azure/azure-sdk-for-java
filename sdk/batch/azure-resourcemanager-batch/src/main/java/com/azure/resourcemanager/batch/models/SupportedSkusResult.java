@@ -7,15 +7,12 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.fluent.models.SupportedSkuInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Batch List supported SKUs operation response. */
 @Fluent
 public final class SupportedSkusResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SupportedSkusResult.class);
-
     /*
      * The list of SKUs available for the Batch service in the location.
      */
@@ -64,11 +61,13 @@ public final class SupportedSkusResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model SupportedSkusResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SupportedSkusResult.class);
 }

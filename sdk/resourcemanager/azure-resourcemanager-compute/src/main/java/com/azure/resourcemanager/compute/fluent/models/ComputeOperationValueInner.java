@@ -4,16 +4,12 @@
 
 package com.azure.resourcemanager.compute.fluent.models;
 
-import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Compute Operation value. */
-@Fluent
+@Immutable
 public final class ComputeOperationValueInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeOperationValueInner.class);
-
     /*
      * The origin of the compute operation.
      */

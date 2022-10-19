@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for HyperVGenerationTypes. */
+/** Specifies the HyperVGeneration Type. */
 public final class HyperVGenerationTypes extends ExpandableStringEnum<HyperVGenerationTypes> {
     /** Static value V1 for HyperVGenerationTypes. */
     public static final HyperVGenerationTypes V1 = fromString("V1");
@@ -27,7 +27,11 @@ public final class HyperVGenerationTypes extends ExpandableStringEnum<HyperVGene
         return fromString(name, HyperVGenerationTypes.class);
     }
 
-    /** @return known HyperVGenerationTypes values. */
+    /**
+     * Gets known HyperVGenerationTypes values.
+     *
+     * @return known HyperVGenerationTypes values.
+     */
     public static Collection<HyperVGenerationTypes> values() {
         return values(HyperVGenerationTypes.class);
     }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.BgpCommunity;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of Service Community. */
 @Fluent
 public final class BgpServiceCommunityPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpServiceCommunityPropertiesFormat.class);
-
     /*
      * The name of the bgp community. e.g. Skype.
      */
@@ -27,6 +23,10 @@ public final class BgpServiceCommunityPropertiesFormat {
      */
     @JsonProperty(value = "bgpCommunities")
     private List<BgpCommunity> bgpCommunities;
+
+    /** Creates an instance of BgpServiceCommunityPropertiesFormat class. */
+    public BgpServiceCommunityPropertiesFormat() {
+    }
 
     /**
      * Get the serviceName property: The name of the bgp community. e.g. Skype.

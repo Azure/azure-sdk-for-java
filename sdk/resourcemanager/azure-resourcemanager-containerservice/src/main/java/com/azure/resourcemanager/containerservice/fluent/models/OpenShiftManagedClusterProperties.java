@@ -11,18 +11,14 @@ import com.azure.resourcemanager.containerservice.models.OpenShiftManagedCluster
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterAuthProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterMasterPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftRouterProfile;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the OpenShift managed cluster. */
 @Fluent
 public final class OpenShiftManagedClusterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterProperties.class);
-
     /*
-     * The current deployment or provisioning state, which only appears in the
-     * response.
+     * The current deployment or provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
@@ -46,8 +42,7 @@ public final class OpenShiftManagedClusterProperties {
     private String publicHostname;
 
     /*
-     * Service generated FQDN for OpenShift API server loadbalancer internal
-     * hostname.
+     * Service generated FQDN for OpenShift API server loadbalancer internal hostname.
      */
     @JsonProperty(value = "fqdn", access = JsonProperty.Access.WRITE_ONLY)
     private String fqdn;
@@ -248,7 +243,7 @@ public final class OpenShiftManagedClusterProperties {
      */
     public void validate() {
         if (openShiftVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property openShiftVersion in model OpenShiftManagedClusterProperties"));
@@ -269,4 +264,6 @@ public final class OpenShiftManagedClusterProperties {
             authProfile().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OpenShiftManagedClusterProperties.class);
 }

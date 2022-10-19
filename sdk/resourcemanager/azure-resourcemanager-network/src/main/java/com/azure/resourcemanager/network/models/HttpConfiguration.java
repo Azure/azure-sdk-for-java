@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** HTTP configuration of the connectivity check. */
 @Fluent
 public final class HttpConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpConfiguration.class);
-
     /*
      * HTTP method.
      */
@@ -32,6 +28,10 @@ public final class HttpConfiguration {
      */
     @JsonProperty(value = "validStatusCodes")
     private List<Integer> validStatusCodes;
+
+    /** Creates an instance of HttpConfiguration class. */
+    public HttpConfiguration() {
+    }
 
     /**
      * Get the method property: HTTP method.

@@ -3,6 +3,8 @@
 # Args:
   # service: name of service, used for namespace and artifact id
   # suffix: suffix for sdk automation, usually it is due to premium sdk
+app:
+  service: appcontainers
 appplatform:
   suffix: generated
 authorization:
@@ -24,12 +26,16 @@ cosmos-db:
   suffix: generated
 cost-management:
   service: costmanagement
+cpim:
+  service: azureadexternalidentities
 customer-insights:
   service: customerinsights
 datalake-analytics:
   service: datalakeanalytics
 datalake-store:
   service: datalakestore
+developerhub:
+  service: devhub
 dnc:
   service: delegatednetwork
 dns:
@@ -37,8 +43,12 @@ dns:
 eventhub:
   service: eventhubs
   suffix: generated
+hybridaks:
+  service: hybridcontainerservice
 keyvault:
   suffix: generated
+machinelearningservices:
+  service: machinelearning
 monitor:
   suffix: generated
 msi:

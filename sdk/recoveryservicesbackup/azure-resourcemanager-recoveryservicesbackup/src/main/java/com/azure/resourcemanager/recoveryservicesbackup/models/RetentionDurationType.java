@@ -36,7 +36,11 @@ public final class RetentionDurationType extends ExpandableStringEnum<RetentionD
         return fromString(name, RetentionDurationType.class);
     }
 
-    /** @return known RetentionDurationType values. */
+    /**
+     * Gets known RetentionDurationType values.
+     *
+     * @return known RetentionDurationType values.
+     */
     public static Collection<RetentionDurationType> values() {
         return values(RetentionDurationType.class);
     }

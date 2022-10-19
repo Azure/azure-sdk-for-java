@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ExportJobsOperati
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.OperationResultInfoBaseResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ExportJobsOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.OperationResultInfoBaseResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ExportJobsOperationResultsImpl implements ExportJobsOperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportJobsOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ExportJobsOperationResultsImpl.class);
 
     private final ExportJobsOperationResultsClient innerClient;
 

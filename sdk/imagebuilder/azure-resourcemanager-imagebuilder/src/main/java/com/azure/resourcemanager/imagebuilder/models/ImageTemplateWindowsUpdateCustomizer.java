@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,8 +18,6 @@ import java.util.List;
 @JsonTypeName("WindowsUpdate")
 @Fluent
 public final class ImageTemplateWindowsUpdateCustomizer extends ImageTemplateCustomizer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateWindowsUpdateCustomizer.class);
-
     /*
      * Criteria to search updates. Omit or specify empty string to use the
      * default (search all). Refer to above link for examples and detailed

@@ -177,6 +177,10 @@ public final class ApplicationInsightsComponentImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ApplicationInsightsComponentInner innerModel() {
         return this.innerObject;
     }

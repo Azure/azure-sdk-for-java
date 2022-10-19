@@ -30,7 +30,7 @@ public interface SharedKeysOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
+     * @return the shared keys for a workspace along with {@link Response}.
      */
     Response<SharedKeys> getSharedKeysWithResponse(String resourceGroupName, String workspaceName, Context context);
 
@@ -57,7 +57,7 @@ public interface SharedKeysOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the shared keys for a workspace.
+     * @return the shared keys for a workspace along with {@link Response}.
      */
     Response<SharedKeys> regenerateWithResponse(String resourceGroupName, String workspaceName, Context context);
 }

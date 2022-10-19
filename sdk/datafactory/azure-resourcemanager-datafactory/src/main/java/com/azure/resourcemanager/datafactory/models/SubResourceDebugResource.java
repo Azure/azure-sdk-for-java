@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Data Factory nested debug resource. */
 @Fluent
 public class SubResourceDebugResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubResourceDebugResource.class);
-
     /*
      * The resource name.
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of SubResourceDebugResource class. */
+    public SubResourceDebugResource() {
+    }
 
     /**
      * Get the name property: The resource name.

@@ -36,7 +36,11 @@ public final class ConfigServerState extends ExpandableStringEnum<ConfigServerSt
         return fromString(name, ConfigServerState.class);
     }
 
-    /** @return known ConfigServerState values. */
+    /**
+     * Gets known ConfigServerState values.
+     *
+     * @return known ConfigServerState values.
+     */
     public static Collection<ConfigServerState> values() {
         return values(ConfigServerState.class);
     }

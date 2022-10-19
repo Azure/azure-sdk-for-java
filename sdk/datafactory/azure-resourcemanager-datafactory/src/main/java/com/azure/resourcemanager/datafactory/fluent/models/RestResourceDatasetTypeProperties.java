@@ -5,49 +5,48 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to this dataset type. */
 @Fluent
 public final class RestResourceDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestResourceDatasetTypeProperties.class);
-
     /*
-     * The relative URL to the resource that the RESTful API provides. Type:
-     * string (or Expression with resultType string).
+     * The relative URL to the resource that the RESTful API provides. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;
 
     /*
-     * The HTTP method used to call the RESTful API. The default is GET. Type:
-     * string (or Expression with resultType string).
+     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
-     * The HTTP request body to the RESTful API if requestMethod is POST. Type:
-     * string (or Expression with resultType string).
+     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type:
-     * string (or Expression with resultType string).
+     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
-     * The pagination rules to compose next page requests. Type: string (or
-     * Expression with resultType string).
+     * The pagination rules to compose next page requests. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "paginationRules")
     private Object paginationRules;
+
+    /** Creates an instance of RestResourceDatasetTypeProperties class. */
+    public RestResourceDatasetTypeProperties() {
+    }
 
     /**
      * Get the relativeUrl property: The relative URL to the resource that the RESTful API provides. Type: string (or

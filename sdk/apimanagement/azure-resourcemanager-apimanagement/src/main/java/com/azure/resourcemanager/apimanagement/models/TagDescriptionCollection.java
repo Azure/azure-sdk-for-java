@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagDescriptionContractInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Paged TagDescription list representation. */
 @Fluent
 public final class TagDescriptionCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagDescriptionCollection.class);
-
     /*
      * Page values.
      */

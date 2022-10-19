@@ -24,7 +24,7 @@ public interface VpnSiteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSiteLink Resource.
+     * @return vpnSiteLink Resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VpnSiteLinkInner>> getWithResponseAsync(
@@ -39,10 +39,26 @@ public interface VpnSiteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSiteLink Resource.
+     * @return vpnSiteLink Resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VpnSiteLinkInner> getAsync(String resourceGroupName, String vpnSiteName, String vpnSiteLinkName);
+
+    /**
+     * Retrieves the details of a VPN site link.
+     *
+     * @param resourceGroupName The resource group name of the VpnSite.
+     * @param vpnSiteName The name of the VpnSite.
+     * @param vpnSiteLinkName The name of the VpnSiteLink being retrieved.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnSiteLink Resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VpnSiteLinkInner> getWithResponse(
+        String resourceGroupName, String vpnSiteName, String vpnSiteLinkName, Context context);
 
     /**
      * Retrieves the details of a VPN site link.
@@ -59,22 +75,6 @@ public interface VpnSiteLinksClient {
     VpnSiteLinkInner get(String resourceGroupName, String vpnSiteName, String vpnSiteLinkName);
 
     /**
-     * Retrieves the details of a VPN site link.
-     *
-     * @param resourceGroupName The resource group name of the VpnSite.
-     * @param vpnSiteName The name of the VpnSite.
-     * @param vpnSiteLinkName The name of the VpnSiteLink being retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnSiteLink Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VpnSiteLinkInner> getWithResponse(
-        String resourceGroupName, String vpnSiteName, String vpnSiteLinkName, Context context);
-
-    /**
      * Lists all the vpnSiteLinks in a resource group for a vpn site.
      *
      * @param resourceGroupName The resource group name of the VpnSite.
@@ -82,7 +82,7 @@ public interface VpnSiteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnSiteLinks.
+     * @return result of the request to list VpnSiteLinks as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<VpnSiteLinkInner> listByVpnSiteAsync(String resourceGroupName, String vpnSiteName);
@@ -95,7 +95,7 @@ public interface VpnSiteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnSiteLinks.
+     * @return result of the request to list VpnSiteLinks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VpnSiteLinkInner> listByVpnSite(String resourceGroupName, String vpnSiteName);
@@ -109,7 +109,7 @@ public interface VpnSiteLinksClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list VpnSiteLinks.
+     * @return result of the request to list VpnSiteLinks as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VpnSiteLinkInner> listByVpnSite(String resourceGroupName, String vpnSiteName, Context context);

@@ -17,8 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class ManagedIntegrationRuntime extends IntegrationRuntime {
     /*
-     * Integration runtime state, only valid for managed dedicated integration
-     * runtime.
+     * Integration runtime state, only valid for managed dedicated integration runtime.
      */
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private IntegrationRuntimeState state;
@@ -107,6 +106,13 @@ public class ManagedIntegrationRuntime extends IntegrationRuntime {
      */
     public ManagedIntegrationRuntime setSsisProperties(IntegrationRuntimeSsisProperties ssisProperties) {
         this.ssisProperties = ssisProperties;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ManagedIntegrationRuntime setDescription(String description) {
+        super.setDescription(description);
         return this;
     }
 }

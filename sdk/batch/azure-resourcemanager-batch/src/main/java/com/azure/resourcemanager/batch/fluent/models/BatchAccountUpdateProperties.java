@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.batch.models.AuthenticationMode;
 import com.azure.resourcemanager.batch.models.AutoStorageBaseProperties;
 import com.azure.resourcemanager.batch.models.EncryptionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of a Batch account. */
 @Fluent
 public final class BatchAccountUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchAccountUpdateProperties.class);
-
     /*
      * The properties related to the auto-storage account.
      */

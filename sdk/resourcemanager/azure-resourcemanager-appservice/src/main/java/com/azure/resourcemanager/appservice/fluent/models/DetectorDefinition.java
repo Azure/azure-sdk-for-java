@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing detector definition. */
 @Immutable
 public final class DetectorDefinition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DetectorDefinition.class);
-
     /*
      * Display name of the detector
      */

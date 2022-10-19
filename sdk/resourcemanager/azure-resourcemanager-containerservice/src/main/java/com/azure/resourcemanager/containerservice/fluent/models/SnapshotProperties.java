@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.CreationData;
+import com.azure.resourcemanager.containerservice.models.OSSku;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.azure.resourcemanager.containerservice.models.Ossku;
 import com.azure.resourcemanager.containerservice.models.SnapshotType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties used to configure a node pool snapshot. */
 @Fluent
 public final class SnapshotProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotProperties.class);
-
     /*
-     * CreationData to be used to specify the source agent pool resource ID to
-     * create this snapshot.
+     * CreationData to be used to specify the source agent pool resource ID to create this snapshot.
      */
     @JsonProperty(value = "creationData")
     private CreationData creationData;
@@ -44,18 +39,17 @@ public final class SnapshotProperties {
     private String nodeImageVersion;
 
     /*
-     * OsType to be used to specify os type. Choose from Linux and Windows.
-     * Default to Linux.
+     * OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
      */
     @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OSType osType;
 
     /*
-     * Specifies an OS SKU. This value must not be specified if OSType is
-     * Windows.
+     * Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux. The default is
+     * Windows2019 when Kubernetes <= 1.24 or Windows2022 when Kubernetes >= 1.25 if OSType is Windows.
      */
     @JsonProperty(value = "osSku", access = JsonProperty.Access.WRITE_ONLY)
-    private Ossku osSku;
+    private OSSku osSku;
 
     /*
      * The size of the VM.
@@ -139,11 +133,13 @@ public final class SnapshotProperties {
     }
 
     /**
-     * Get the osSku property: Specifies an OS SKU. This value must not be specified if OSType is Windows.
+     * Get the osSku property: Specifies the OS SKU used by the agent pool. The default is Ubuntu if OSType is Linux.
+     * The default is Windows2019 when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is
+     * Windows.
      *
      * @return the osSku value.
      */
-    public Ossku osSku() {
+    public OSSku osSku() {
         return this.osSku;
     }
 

@@ -3,10 +3,6 @@
 
 package com.azure.storage.blob.nio;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.blob.models.BlobStorageException;
-
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.attribute.BasicFileAttributes;
@@ -24,10 +20,10 @@ import java.util.Set;
  * {@link AzureBlobFileAttributes} is generally preferred.
  * <p>
  * Some attributes are not supported. Refer to the javadocs on each method for more information.
+ * <p>
+ * If the target file is a virtual directory, most attributes will be set to null.
  */
 public final class AzureBasicFileAttributes implements BasicFileAttributes {
-    private final ClientLogger logger = new ClientLogger(AzureBasicFileAttributes.class);
-
     // For verifying parameters on FileSystemProvider.readAttributes
     static final Set<String> ATTRIBUTE_STRINGS;
     static {
@@ -35,6 +31,7 @@ public final class AzureBasicFileAttributes implements BasicFileAttributes {
         set.add("lastModifiedTime");
         set.add("isRegularFile");
         set.add("isDirectory");
+        set.add("isVirtualDirectory");
         set.add("isSymbolicLink");
         set.add("isOther");
         set.add("size");
@@ -42,57 +39,52 @@ public final class AzureBasicFileAttributes implements BasicFileAttributes {
         ATTRIBUTE_STRINGS = Collections.unmodifiableSet(set);
     }
 
-    private final BlobProperties properties;
-    private final AzureResource resource;
+    private final AzureBlobFileAttributes internalAttributes;
 
     /*
-    There are some work-arounds we could do to try to accommodate virtual directories such as making a checkDirStatus
-    call before or after getProperties to throw an appropriate error or adding an isVirtualDirectory method. However,
-    the former wastes network time only to throw a slightly more specific error when we will throw on 404 anyway. The
-    latter introduces virtual directories into the actual code path/api surface. While we are clear in our docs about
-    the possible pitfalls of virtual directories, and customers should be aware of it, they shouldn't have to code
-    against it. Therefore, we fall back to documenting that reading attributes on a virtual directory will throw.
+    In order to support Files.exist() and other methods like Files.walkFileTree() which depend on it, we have had to add
+    support for virtual directories. This is not ideal as customers will have to now perform null checks when inspecting
+    attributes (or at least check if it is a virtual directory before inspecting properties). It also incurs extra
+    network requests as we have to call a checkDirectoryExists() after receiving the initial 404. This is two
+    additional network requests, though they only happen in the case when a file doesn't exist or is virtual, so it
+    shouldn't happen in the majority of api calls.
      */
     AzureBasicFileAttributes(Path path) throws IOException {
-        try {
-            this.resource = new AzureResource(path);
-            this.properties = resource.getBlobClient().getProperties();
-        } catch (BlobStorageException e) {
-            throw LoggingUtility.logError(logger, new IOException(e));
-        }
+        this.internalAttributes = new AzureBlobFileAttributes(path);
     }
 
     /**
-     * Returns the time of last modification.
+     * Returns the time of last modification or null if this is a virtual directory.
      *
-     * @return the time of last modification.
+     * @return the time of last modification or null if this is a virtual directory
      */
     @Override
     public FileTime lastModifiedTime() {
-        return FileTime.from(properties.getLastModified().toInstant());
+        return this.internalAttributes.lastModifiedTime();
     }
 
     /**
-     * Returns the time of last modification.
+     * Returns the time of last modification or null if this is a virtual directory
      * <p>
      * Last access time is not supported by the blob service. In this case, it is typical for implementations to return
      * the {@link #lastModifiedTime()}.
      *
-     * @return the time of last modification.
+     * @return the time of last modification or null if this is a virtual directory
      */
     @Override
     public FileTime lastAccessTime() {
-        return this.lastModifiedTime();
+        return this.internalAttributes.lastAccessTime();
     }
 
     /**
-     * Returns the creation time. The creation time is the time that the file was created.
+     * Returns the creation time. The creation time is the time that the file was created. Returns null if this is a
+     * virtual directory.
      *
-     * @return The creation time.
+     * @return The creation time or null if this is a virtual directory
      */
     @Override
     public FileTime creationTime() {
-        return FileTime.from(properties.getCreationTime().toInstant());
+        return this.internalAttributes.creationTime();
     }
 
     /**
@@ -102,7 +94,7 @@ public final class AzureBasicFileAttributes implements BasicFileAttributes {
      */
     @Override
     public boolean isRegularFile() {
-        return !this.properties.getMetadata().getOrDefault(AzureResource.DIR_METADATA_MARKER, "false").equals("true");
+        return this.internalAttributes.isRegularFile();
     }
 
     /**
@@ -116,7 +108,19 @@ public final class AzureBasicFileAttributes implements BasicFileAttributes {
      */
     @Override
     public boolean isDirectory() {
-        return !this.isRegularFile();
+        return this.internalAttributes.isDirectory();
+    }
+
+    /**
+     * Tells whether the file is a virtual directory.
+     * <p>
+     * See {@link AzureFileSystemProvider#createDirectory(Path, FileAttribute[])} for more information on virtual and
+     * concrete directories.
+     *
+     * @return whether the file is a virtual directory
+     */
+    public boolean isVirtualDirectory() {
+        return this.internalAttributes.isVirtualDirectory();
     }
 
     /**
@@ -126,7 +130,7 @@ public final class AzureBasicFileAttributes implements BasicFileAttributes {
      */
     @Override
     public boolean isSymbolicLink() {
-        return false;
+        return this.internalAttributes.isSymbolicLink();
     }
 
     /**
@@ -136,7 +140,7 @@ public final class AzureBasicFileAttributes implements BasicFileAttributes {
      */
     @Override
     public boolean isOther() {
-        return false;
+        return this.internalAttributes.isOther();
     }
 
     /**
@@ -146,7 +150,7 @@ public final class AzureBasicFileAttributes implements BasicFileAttributes {
      */
     @Override
     public long size() {
-        return properties.getBlobSize();
+        return this.internalAttributes.size();
     }
 
     /**
@@ -156,6 +160,6 @@ public final class AzureBasicFileAttributes implements BasicFileAttributes {
      */
     @Override
     public Object fileKey() {
-        return this.resource.getBlobClient().getBlobUrl();
+        return this.internalAttributes.fileKey();
     }
 }

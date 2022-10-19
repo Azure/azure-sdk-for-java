@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.digitaltwins.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("EventHub")
 @Fluent
 public final class EventHub extends DigitalTwinsEndpointResourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHub.class);
-
     /*
      * PrimaryConnectionString of the endpoint for key-based authentication.
      * Will be obfuscated during read.
@@ -34,7 +30,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
 
     /*
      * The URL of the EventHub namespace for identity-based authentication. It
-     * must include the protocol sb://
+     * must include the protocol 'sb://'.
      */
     @JsonProperty(value = "endpointUri")
     private String endpointUri;
@@ -92,7 +88,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Get the endpointUri property: The URL of the EventHub namespace for identity-based authentication. It must
-     * include the protocol sb://.
+     * include the protocol 'sb://'.
      *
      * @return the endpointUri value.
      */
@@ -102,7 +98,7 @@ public final class EventHub extends DigitalTwinsEndpointResourceProperties {
 
     /**
      * Set the endpointUri property: The URL of the EventHub namespace for identity-based authentication. It must
-     * include the protocol sb://.
+     * include the protocol 'sb://'.
      *
      * @param endpointUri the endpointUri value to set.
      * @return the EventHub object itself.

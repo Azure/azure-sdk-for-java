@@ -26,7 +26,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.FeaturesClient;
 import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 import com.azure.resourcemanager.resources.models.FeatureOperationsListResult;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in FeaturesClient. */
 public final class FeaturesClientImpl implements FeaturesClient {
-    private final ClientLogger logger = new ClientLogger(FeaturesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final FeaturesService service;
 
@@ -155,7 +152,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features that are available through AFEC for the subscription.
+     * @return all the preview features that are available through AFEC for the subscription along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FeatureResultInner>> listAllSinglePageAsync() {
@@ -201,7 +199,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features that are available through AFEC for the subscription.
+     * @return all the preview features that are available through AFEC for the subscription along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FeatureResultInner>> listAllSinglePageAsync(Context context) {
@@ -242,7 +241,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features that are available through AFEC for the subscription.
+     * @return all the preview features that are available through AFEC for the subscription as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FeatureResultInner> listAllAsync() {
@@ -256,7 +256,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features that are available through AFEC for the subscription.
+     * @return all the preview features that are available through AFEC for the subscription as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FeatureResultInner> listAllAsync(Context context) {
@@ -269,7 +270,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features that are available through AFEC for the subscription.
+     * @return all the preview features that are available through AFEC for the subscription as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeatureResultInner> listAll() {
@@ -283,7 +285,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features that are available through AFEC for the subscription.
+     * @return all the preview features that are available through AFEC for the subscription as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeatureResultInner> listAll(Context context) {
@@ -297,7 +300,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
+     * @return all the preview features in a provider namespace that are available through AFEC for the subscription
+     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FeatureResultInner>> listSinglePageAsync(String resourceProviderNamespace) {
@@ -351,7 +355,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
+     * @return all the preview features in a provider namespace that are available through AFEC for the subscription
+     *     along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FeatureResultInner>> listSinglePageAsync(
@@ -402,7 +407,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
+     * @return all the preview features in a provider namespace that are available through AFEC for the subscription as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<FeatureResultInner> listAsync(String resourceProviderNamespace) {
@@ -418,7 +424,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
+     * @return all the preview features in a provider namespace that are available through AFEC for the subscription as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FeatureResultInner> listAsync(String resourceProviderNamespace, Context context) {
@@ -434,7 +441,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
+     * @return all the preview features in a provider namespace that are available through AFEC for the subscription as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeatureResultInner> list(String resourceProviderNamespace) {
@@ -449,7 +457,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the preview features in a provider namespace that are available through AFEC for the subscription.
+     * @return all the preview features in a provider namespace that are available through AFEC for the subscription as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FeatureResultInner> list(String resourceProviderNamespace, Context context) {
@@ -464,7 +473,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview feature with the specified name.
+     * @return the preview feature with the specified name along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FeatureResultInner>> getWithResponseAsync(
@@ -515,7 +525,8 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview feature with the specified name.
+     * @return the preview feature with the specified name along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FeatureResultInner>> getWithResponseAsync(
@@ -562,19 +573,12 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview feature with the specified name.
+     * @return the preview feature with the specified name on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> getAsync(String resourceProviderNamespace, String featureName) {
         return getWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -601,7 +605,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the preview feature with the specified name.
+     * @return the preview feature with the specified name along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FeatureResultInner> getWithResponse(
@@ -617,7 +621,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
+     * @return previewed feature information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FeatureResultInner>> registerWithResponseAsync(
@@ -668,7 +672,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
+     * @return previewed feature information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FeatureResultInner>> registerWithResponseAsync(
@@ -715,19 +719,12 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
+     * @return previewed feature information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> registerAsync(String resourceProviderNamespace, String featureName) {
         return registerWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -754,7 +751,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
+     * @return previewed feature information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FeatureResultInner> registerWithResponse(
@@ -770,7 +767,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
+     * @return previewed feature information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<FeatureResultInner>> unregisterWithResponseAsync(
@@ -821,7 +818,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
+     * @return previewed feature information along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<FeatureResultInner>> unregisterWithResponseAsync(
@@ -868,19 +865,12 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
+     * @return previewed feature information on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<FeatureResultInner> unregisterAsync(String resourceProviderNamespace, String featureName) {
         return unregisterWithResponseAsync(resourceProviderNamespace, featureName)
-            .flatMap(
-                (Response<FeatureResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -907,7 +897,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return previewed feature information.
+     * @return previewed feature information along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<FeatureResultInner> unregisterWithResponse(
@@ -922,7 +912,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of previewed features.
+     * @return list of previewed features along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FeatureResultInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -958,7 +948,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of previewed features.
+     * @return list of previewed features along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FeatureResultInner>> listAllNextSinglePageAsync(String nextLink, Context context) {
@@ -993,7 +983,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of previewed features.
+     * @return list of previewed features along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FeatureResultInner>> listNextSinglePageAsync(String nextLink) {
@@ -1029,7 +1019,7 @@ public final class FeaturesClientImpl implements FeaturesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of previewed features.
+     * @return list of previewed features along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FeatureResultInner>> listNextSinglePageAsync(String nextLink, Context context) {

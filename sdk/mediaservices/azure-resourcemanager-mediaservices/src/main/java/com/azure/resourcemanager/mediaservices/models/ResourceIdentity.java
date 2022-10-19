@@ -5,25 +5,19 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ResourceIdentity model. */
 @Fluent
 public class ResourceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceIdentity.class);
-
     /*
-     * The user assigned managed identity's ARM ID to use when accessing a
-     * resource.
+     * The user assigned managed identity's ARM ID to use when accessing a resource.
      */
     @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
     /*
-     * Indicates whether to use System Assigned Managed Identity. Mutual
-     * exclusive with User Assigned Managed Identity.
+     * Indicates whether to use System Assigned Managed Identity. Mutual exclusive with User Assigned Managed Identity.
      */
     @JsonProperty(value = "useSystemAssignedIdentity", required = true)
     private boolean useSystemAssignedIdentity;

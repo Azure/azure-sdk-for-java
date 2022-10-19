@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ScheduledEventsProfile model. */
 @Fluent
 public final class ScheduledEventsProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduledEventsProfile.class);
-
     /*
      * Specifies Terminate Scheduled Event related configurations.
      */

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** MAB workload-specific error information. */
 @Immutable
 public final class MabErrorInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MabErrorInfo.class);
-
     /*
      * Localized error string.
      */

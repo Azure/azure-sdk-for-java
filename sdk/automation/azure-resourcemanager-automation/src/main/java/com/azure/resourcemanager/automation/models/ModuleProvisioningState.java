@@ -7,7 +7,7 @@ package com.azure.resourcemanager.automation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ModuleProvisioningState. */
+/** Gets or sets the provisioning state of the module. */
 public enum ModuleProvisioningState {
     /** Enum value Created. */
     CREATED("Created"),
@@ -72,6 +72,9 @@ public enum ModuleProvisioningState {
      */
     @JsonCreator
     public static ModuleProvisioningState fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ModuleProvisioningState[] items = ModuleProvisioningState.values();
         for (ModuleProvisioningState item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -81,6 +84,7 @@ public enum ModuleProvisioningState {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

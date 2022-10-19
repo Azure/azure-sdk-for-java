@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** searchResult. */
 @Fluent
 public final class MicrosoftGraphSearchResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphSearchResult.class);
-
     /*
      * A callback URL that can be used to record telemetry information. The
      * application should issue a GET on this URL if the user interacts with

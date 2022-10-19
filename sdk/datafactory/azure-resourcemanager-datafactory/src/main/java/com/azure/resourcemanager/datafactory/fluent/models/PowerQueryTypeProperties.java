@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.PowerQuerySource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Power Query data flow type properties. */
 @Fluent
 public final class PowerQueryTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PowerQueryTypeProperties.class);
-
     /*
      * List of sources in Power Query.
      */
@@ -33,6 +29,10 @@ public final class PowerQueryTypeProperties {
      */
     @JsonProperty(value = "documentLocale")
     private String documentLocale;
+
+    /** Creates an instance of PowerQueryTypeProperties class. */
+    public PowerQueryTypeProperties() {
+    }
 
     /**
      * Get the sources property: List of sources in Power Query.

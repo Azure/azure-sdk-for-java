@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Publishing Credentials Policies parameters. */
 @Fluent
 public final class CsmPublishingCredentialsPoliciesEntityInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmPublishingCredentialsPoliciesEntityInner.class);
-
     /*
      * CsmPublishingCredentialsPoliciesEntity resource specific properties
      */

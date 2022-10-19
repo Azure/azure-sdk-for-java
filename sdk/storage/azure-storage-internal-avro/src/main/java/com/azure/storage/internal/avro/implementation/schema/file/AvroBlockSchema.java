@@ -28,7 +28,7 @@ import java.util.function.Consumer;
  */
 public class AvroBlockSchema extends AvroCompositeSchema {
 
-    private final ClientLogger logger = new ClientLogger(AvroBlockSchema.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AvroBlockSchema.class);
 
     private final Consumer<Object> onAvroObject;
     private final AvroType objectType;
@@ -165,12 +165,12 @@ public class AvroBlockSchema extends AvroCompositeSchema {
             this.done = true;
             this.result = 0L;
         } else {
-            throw logger.logExceptionAsError(new IllegalStateException("Sync marker validation failed."));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Sync marker validation failed."));
         }
     }
 
     /**
-     * @return Whether or not the block has a next object.
+     * @return Whether the block has a next object.
      */
     public boolean hasNext() {
         return this.blockCount != 0;

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ManagementLocks GetByResourceGroup. */
 public final class ManagementLocksGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2016-09-01/examples/ManagementLocks_GetAtResourceGroupLevel.json
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2017-04-01/examples/ManagementLocks_GetAtResourceGroupLevel.json
      */
     /**
      * Sample code: Get management lock at resource group level.

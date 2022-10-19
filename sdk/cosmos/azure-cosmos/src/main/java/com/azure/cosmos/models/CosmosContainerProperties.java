@@ -303,7 +303,6 @@ public final class CosmosContainerProperties {
      *
      * @return ClientEncryptionPolicy
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionPolicy getClientEncryptionPolicy() {
         return this.documentCollection.getClientEncryptionPolicy();
     }
@@ -314,7 +313,6 @@ public final class CosmosContainerProperties {
      * @param value ClientEncryptionPolicy to be used.
      * @return the CosmosContainerProperties.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosContainerProperties setClientEncryptionPolicy(ClientEncryptionPolicy value) {
         if (value != null) {
             value.validatePartitionKeyPathsAreNotEncrypted(this.getPartitionKeyPathTokensList());
@@ -361,14 +359,20 @@ public final class CosmosContainerProperties {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.setCosmosContainerPropertiesAccessor(
             new ImplementationBridgeHelpers.CosmosContainerPropertiesHelper.CosmosContainerPropertiesAccessor() {
                 @Override
                 public String getSelfLink(CosmosContainerProperties cosmosContainerProperties) {
                     return cosmosContainerProperties.getSelfLink();
                 }
+
+                @Override
+                public void setSelfLink(CosmosContainerProperties cosmosContainerProperties, String selfLink) {
+                    cosmosContainerProperties.documentCollection.setSelfLink(selfLink);
+                }
             });
     }
+
+    static { initialize(); }
 }

@@ -10,6 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageInner;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageResourceInner;
+import com.azure.resourcemanager.compute.fluent.models.VmImagesInEdgeZoneListResultInner;
 import java.util.List;
 import reactor.core.publisher.Mono;
 
@@ -353,4 +354,60 @@ public interface VirtualMachineImagesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<List<VirtualMachineImageResourceInner>> listSkusWithResponse(
         String location, String publisherName, String offer, Context context);
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified edge zone.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified edge zone along with {@link Response} on
+     *     successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<VmImagesInEdgeZoneListResultInner>> listByEdgeZoneWithResponseAsync(String location, String edgeZone);
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified edge zone.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified edge zone on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VmImagesInEdgeZoneListResultInner> listByEdgeZoneAsync(String location, String edgeZone);
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified edge zone.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified edge zone.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VmImagesInEdgeZoneListResultInner listByEdgeZone(String location, String edgeZone);
+
+    /**
+     * Gets a list of all virtual machine image versions for the specified edge zone.
+     *
+     * @param location The name of a supported Azure region.
+     * @param edgeZone The name of the edge zone.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of all virtual machine image versions for the specified edge zone along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VmImagesInEdgeZoneListResultInner> listByEdgeZoneWithResponse(
+        String location, String edgeZone, Context context);
 }

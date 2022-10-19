@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Criteria to limit import of WSDL to a subset of the document. */
 @Fluent
 public final class ApiCreateOrUpdatePropertiesWsdlSelector {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiCreateOrUpdatePropertiesWsdlSelector.class);
-
     /*
      * Name of service to import from WSDL
      */

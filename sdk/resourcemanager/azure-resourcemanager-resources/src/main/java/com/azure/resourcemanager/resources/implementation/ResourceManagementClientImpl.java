@@ -7,7 +7,6 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.DeploymentOperationsClient;
 import com.azure.resourcemanager.resources.fluent.DeploymentsClient;
@@ -24,8 +23,6 @@ import java.time.Duration;
 /** Initializes a new instance of the ResourceManagementClientImpl type. */
 @ServiceClient(builder = ResourceManagementClientBuilder.class)
 public final class ResourceManagementClientImpl extends AzureServiceClient implements ResourceManagementClient {
-    private final ClientLogger logger = new ClientLogger(ResourceManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 

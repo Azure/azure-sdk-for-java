@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleDefinitions/c19d1c0b-fccd-4a2d-90a9-33cd3afbd8d8?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleDefinitions/24ccef9f-a9c6-4667-8504-4f798115a06e?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -12,20 +12,20 @@
       "retry-after" : "0",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "95",
+      "x-ms-server-latency" : "42",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "6b477706-1dbf-11ec-afdf-000d3a9f7bf5",
-      "Body" : "{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/c19d1c0b-fccd-4a2d-90a9-33cd3afbd8d8\",\"name\":\"c19d1c0b-fccd-4a2d-90a9-33cd3afbd8d8\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[],\"roleName\":\"c19d1c0b-fccd-4a2d-90a9-33cd3afbd8d8\",\"type\":\"CustomRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"}"
+      "x-ms-request-id" : "b6d6ca64-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"id\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/24ccef9f-a9c6-4667-8504-4f798115a06e\",\"name\":\"24ccef9f-a9c6-4667-8504-4f798115a06e\",\"properties\":{\"assignableScopes\":[\"/\"],\"description\":\"\",\"permissions\":[],\"roleName\":\"24ccef9f-a9c6-4667-8504-4f798115a06e\",\"type\":\"CustomRole\"},\"type\":\"Microsoft.Authorization/roleDefinitions\"}"
     },
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/3c366465-5801-4cb5-8319-c203b0fb70a0?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/044b3e6b-740a-40a1-aaa8-728acb1f1a49?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
       "Content-Type" : "application/json"
@@ -36,27 +36,27 @@
       "retry-after" : "0",
       "StatusCode" : "201",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
-      "x-ms-server-latency" : "39",
+      "x-ms-server-latency" : "42",
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "6b5e1cc2-1dbf-11ec-afdf-000d3a9f7bf5",
-      "Body" : "{\"id\":\"/providers/Microsoft.Authorization/roleAssignments/3c366465-5801-4cb5-8319-c203b0fb70a0\",\"name\":\"3c366465-5801-4cb5-8319-c203b0fb70a0\",\"properties\":{\"principalId\":\"49acc88b-8f9e-4619-9856-16691db66767\",\"roleDefinitionId\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/c19d1c0b-fccd-4a2d-90a9-33cd3afbd8d8\",\"scope\":\"/\"},\"type\":\"Microsoft.Authorization/roleAssignments\"}"
+      "x-ms-request-id" : "b6dee5aa-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"id\":\"/providers/Microsoft.Authorization/roleAssignments/044b3e6b-740a-40a1-aaa8-728acb1f1a49\",\"name\":\"044b3e6b-740a-40a1-aaa8-728acb1f1a49\",\"properties\":{\"principalId\":\"49acc88b-8f9e-4619-9856-16691db66767\",\"roleDefinitionId\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/24ccef9f-a9c6-4667-8504-4f798115a06e\",\"scope\":\"/\"},\"type\":\"Microsoft.Authorization/roleAssignments\"}"
     },
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/3c366465-5801-4cb5-8319-c203b0fb70a0?api-version=7.3-preview",
+    "Uri" : "https://REDACTED.managedhsm.azure.net///providers/Microsoft.Authorization/roleAssignments/044b3e6b-740a-40a1-aaa8-728acb1f1a49?api-version=7.3",
     "Headers" : {
       "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)"
     },
     "Response" : {
       "content-length" : "398",
       "x-frame-options" : "SAMEORIGIN",
-      "x-ms-build-version" : "1.0.20210907-1-d3b7f466-develop",
+      "x-ms-build-version" : "1.0.20220314-1-3dc5f232-develop",
       "retry-after" : "0",
       "StatusCode" : "200",
       "strict-transport-security" : "max-age=31536000; includeSubDomains",
@@ -64,13 +64,13 @@
       "content-security-policy" : "default-src 'self'",
       "x-content-type-options" : "nosniff",
       "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "centralus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=Ipv4;",
+      "x-ms-keyvault-region" : "westus2",
+      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=172.92.148.195;act_addr_fam=Ipv4;",
       "cache-control" : "no-cache",
-      "x-ms-request-id" : "6b6c2c9a-1dbf-11ec-afdf-000d3a9f7bf5",
-      "Body" : "{\"id\":\"/providers/Microsoft.Authorization/roleAssignments/3c366465-5801-4cb5-8319-c203b0fb70a0\",\"name\":\"3c366465-5801-4cb5-8319-c203b0fb70a0\",\"properties\":{\"principalId\":\"49acc88b-8f9e-4619-9856-16691db66767\",\"roleDefinitionId\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/c19d1c0b-fccd-4a2d-90a9-33cd3afbd8d8\",\"scope\":\"/\"},\"type\":\"Microsoft.Authorization/roleAssignments\"}"
+      "x-ms-request-id" : "b6e69f16-af00-11ec-99c9-002248787e69",
+      "Body" : "{\"id\":\"/providers/Microsoft.Authorization/roleAssignments/044b3e6b-740a-40a1-aaa8-728acb1f1a49\",\"name\":\"044b3e6b-740a-40a1-aaa8-728acb1f1a49\",\"properties\":{\"principalId\":\"49acc88b-8f9e-4619-9856-16691db66767\",\"roleDefinitionId\":\"Microsoft.KeyVault/providers/Microsoft.Authorization/roleDefinitions/24ccef9f-a9c6-4667-8504-4f798115a06e\",\"scope\":\"/\"},\"type\":\"Microsoft.Authorization/roleAssignments\"}"
     },
     "Exception" : null
   } ],
-  "variables" : [ "c19d1c0b-fccd-4a2d-90a9-33cd3afbd8d8", "3c366465-5801-4cb5-8319-c203b0fb70a0" ]
+  "variables" : [ "24ccef9f-a9c6-4667-8504-4f798115a06e", "044b3e6b-740a-40a1-aaa8-728acb1f1a49" ]
 }

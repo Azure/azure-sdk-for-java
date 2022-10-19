@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SnowflakeLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("Snowflake")
 @Fluent
 public final class SnowflakeLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnowflakeLinkedService.class);
-
     /*
      * Snowflake linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private SnowflakeLinkedServiceTypeProperties innerTypeProperties = new SnowflakeLinkedServiceTypeProperties();
+
+    /** Creates an instance of SnowflakeLinkedService class. */
+    public SnowflakeLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Snowflake linked service properties.
@@ -144,7 +145,7 @@ public final class SnowflakeLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model SnowflakeLinkedService"));
@@ -152,4 +153,6 @@ public final class SnowflakeLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SnowflakeLinkedService.class);
 }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,22 +14,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SharePointOnlineListSource")
 @Fluent
 public final class SharePointOnlineListSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SharePointOnlineListSource.class);
-
     /*
-     * The OData query to filter the data in SharePoint Online list. For
-     * example, "$top=1". Type: string (or Expression with resultType string).
+     * The OData query to filter the data in SharePoint Online list. For example, "$top=1". Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * The wait time to get a response from SharePoint Online. Default value is
-     * 5 minutes (00:05:00). Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * The wait time to get a response from SharePoint Online. Default value is 5 minutes (00:05:00). Type: string (or
+     * Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
+
+    /** Creates an instance of SharePointOnlineListSource class. */
+    public SharePointOnlineListSource() {
+    }
 
     /**
      * Get the query property: The OData query to filter the data in SharePoint Online list. For example, "$top=1".

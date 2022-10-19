@@ -86,7 +86,7 @@ public interface DelegationSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> updateWithResponse(
         String resourceGroupName,
@@ -120,7 +120,7 @@ public interface DelegationSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return delegation settings for a developer portal.
+     * @return delegation settings for a developer portal along with {@link Response}.
      */
     Response<PortalDelegationSettings> createOrUpdateWithResponse(
         String resourceGroupName,
@@ -150,7 +150,7 @@ public interface DelegationSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the secret validation key of the DelegationSettings.
+     * @return the secret validation key of the DelegationSettings along with {@link Response}.
      */
     Response<PortalSettingValidationKeyContract> listSecretsWithResponse(
         String resourceGroupName, String serviceName, Context context);

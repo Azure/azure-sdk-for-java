@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Vpn device configuration script generation parameters. */
 @Fluent
 public final class VpnDeviceScriptParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnDeviceScriptParameters.class);
-
     /*
      * The vendor for the vpn device.
      */
@@ -31,6 +27,10 @@ public final class VpnDeviceScriptParameters {
      */
     @JsonProperty(value = "firmwareVersion")
     private String firmwareVersion;
+
+    /** Creates an instance of VpnDeviceScriptParameters class. */
+    public VpnDeviceScriptParameters() {
+    }
 
     /**
      * Get the vendor property: The vendor for the vpn device.

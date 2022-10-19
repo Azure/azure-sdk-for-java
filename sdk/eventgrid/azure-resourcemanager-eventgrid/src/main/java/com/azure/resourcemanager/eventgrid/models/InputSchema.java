@@ -30,7 +30,11 @@ public final class InputSchema extends ExpandableStringEnum<InputSchema> {
         return fromString(name, InputSchema.class);
     }
 
-    /** @return known InputSchema values. */
+    /**
+     * Gets known InputSchema values.
+     *
+     * @return known InputSchema values.
+     */
     public static Collection<InputSchema> values() {
         return values(InputSchema.class);
     }

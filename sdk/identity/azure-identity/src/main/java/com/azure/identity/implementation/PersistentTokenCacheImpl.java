@@ -11,7 +11,6 @@ import com.microsoft.aad.msal4jextensions.PersistenceSettings;
 import com.microsoft.aad.msal4jextensions.PersistenceTokenCacheAccessAspect;
 import com.microsoft.aad.msal4jextensions.persistence.linux.KeyRingAccessException;
 import com.sun.jna.Platform;
-import reactor.core.publisher.Mono;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -32,7 +31,7 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
     private static final String DEFAULT_KEYRING_ATTR_NAME = "MsalClientID";
     private static final String DEFAULT_KEYRING_ATTR_VALUE = "Microsoft.Developer.IdentityService";
 
-    private final ClientLogger logger = new ClientLogger(PersistentTokenCacheImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PersistentTokenCacheImpl.class);
     private boolean allowUnencryptedStorage;
     private String name;
     private PersistenceTokenCacheAccessAspect cacheAccessAspect;
@@ -51,17 +50,15 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
         return this;
     }
 
-    Mono<Boolean> registerCache() {
-        return Mono.defer(() -> {
-            try {
-                PersistenceSettings persistenceSettings = getPersistenceSettings();
-                cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
-                return Mono.just(true);
-            } catch (Throwable t) {
-                return Mono.error(logger.logExceptionAsError(new ClientAuthenticationException(
-                    "Shared token cache is unavailable in this environment.", null, t)));
-            }
-        });
+    boolean registerCache() {
+        try {
+            PersistenceSettings persistenceSettings = getPersistenceSettings();
+            cacheAccessAspect = new PersistenceTokenCacheAccessAspect(persistenceSettings);
+            return true;
+        } catch (Throwable t) {
+            throw LOGGER.logExceptionAsError(new ClientAuthenticationException(
+                "Shared token cache is unavailable in this environment.", null, t));
+        }
     }
 
     public void beforeCacheAccess(ITokenCacheAccessContext iTokenCacheAccessContext) {
@@ -88,7 +85,7 @@ public class PersistentTokenCacheImpl implements ITokenCacheAccessAspect {
                 return persistenceSettingsBuilder.build();
             } catch (KeyRingAccessException e) {
                 if (!allowUnencryptedStorage) {
-                    throw logger.logExceptionAsError(e);
+                    throw LOGGER.logExceptionAsError(e);
                 }
                 persistenceSettingsBuilder.setLinuxUseUnprotectedFileAsCacheStorage(true);
                 return persistenceSettingsBuilder.build();

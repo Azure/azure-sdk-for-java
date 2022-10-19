@@ -6,20 +6,20 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** MongoDB database dataset properties. */
 @Fluent
 public final class MongoDbV2CollectionDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MongoDbV2CollectionDatasetTypeProperties.class);
-
     /*
-     * The collection name of the MongoDB database. Type: string (or Expression
-     * with resultType string).
+     * The collection name of the MongoDB database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "collection", required = true)
     private Object collection;
+
+    /** Creates an instance of MongoDbV2CollectionDatasetTypeProperties class. */
+    public MongoDbV2CollectionDatasetTypeProperties() {
+    }
 
     /**
      * Get the collection property: The collection name of the MongoDB database. Type: string (or Expression with
@@ -50,10 +50,12 @@ public final class MongoDbV2CollectionDatasetTypeProperties {
      */
     public void validate() {
         if (collection() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property collection in model MongoDbV2CollectionDatasetTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MongoDbV2CollectionDatasetTypeProperties.class);
 }

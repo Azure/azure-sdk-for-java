@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -27,8 +25,6 @@ import java.util.List;
 })
 @Fluent
 public class DataFlow {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlow.class);
-
     /*
      * The description of the data flow.
      */
@@ -42,11 +38,14 @@ public class DataFlow {
     private List<Object> annotations;
 
     /*
-     * The folder that this data flow is in. If not specified, Data flow will
-     * appear at the root level.
+     * The folder that this data flow is in. If not specified, Data flow will appear at the root level.
      */
     @JsonProperty(value = "folder")
     private DataFlowFolder folder;
+
+    /** Creates an instance of DataFlow class. */
+    public DataFlow() {
+    }
 
     /**
      * Get the description property: The description of the data flow.

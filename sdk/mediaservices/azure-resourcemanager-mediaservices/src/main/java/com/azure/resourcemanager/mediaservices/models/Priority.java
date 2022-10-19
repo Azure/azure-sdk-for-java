@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Priority. */
+/**
+ * Sets the relative priority of the TransformOutputs within a Transform. This sets the priority that the service uses
+ * for processing TransformOutputs. The default priority is Normal.
+ */
 public final class Priority extends ExpandableStringEnum<Priority> {
     /** Static value Low for Priority. */
     public static final Priority LOW = fromString("Low");
@@ -30,7 +33,11 @@ public final class Priority extends ExpandableStringEnum<Priority> {
         return fromString(name, Priority.class);
     }
 
-    /** @return known Priority values. */
+    /**
+     * Gets known Priority values.
+     *
+     * @return known Priority values.
+     */
     public static Collection<Priority> values() {
         return values(Priority.class);
     }

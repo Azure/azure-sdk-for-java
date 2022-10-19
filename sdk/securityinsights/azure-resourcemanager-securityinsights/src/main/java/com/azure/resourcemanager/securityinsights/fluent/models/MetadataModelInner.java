@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.Kind;
 import com.azure.resourcemanager.securityinsights.models.MetadataAuthor;
 import com.azure.resourcemanager.securityinsights.models.MetadataCategories;
@@ -13,7 +12,6 @@ import com.azure.resourcemanager.securityinsights.models.MetadataDependencies;
 import com.azure.resourcemanager.securityinsights.models.MetadataSource;
 import com.azure.resourcemanager.securityinsights.models.MetadataSupport;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,8 +19,6 @@ import java.util.List;
 /** Metadata resource definition. */
 @Fluent
 public final class MetadataModelInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetadataModelInner.class);
-
     /*
      * Metadata properties
      */
@@ -332,6 +328,173 @@ public final class MetadataModelInner extends ResourceWithEtag {
             this.innerProperties = new MetadataProperties();
         }
         this.innerProperties().withLastPublishDate(lastPublishDate);
+        return this;
+    }
+
+    /**
+     * Get the customVersion property: The custom version of the content. A optional free text.
+     *
+     * @return the customVersion value.
+     */
+    public String customVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().customVersion();
+    }
+
+    /**
+     * Set the customVersion property: The custom version of the content. A optional free text.
+     *
+     * @param customVersion the customVersion value to set.
+     * @return the MetadataModelInner object itself.
+     */
+    public MetadataModelInner withCustomVersion(String customVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataProperties();
+        }
+        this.innerProperties().withCustomVersion(customVersion);
+        return this;
+    }
+
+    /**
+     * Get the contentSchemaVersion property: Schema version of the content. Can be used to distinguish between
+     * different flow based on the schema version.
+     *
+     * @return the contentSchemaVersion value.
+     */
+    public String contentSchemaVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().contentSchemaVersion();
+    }
+
+    /**
+     * Set the contentSchemaVersion property: Schema version of the content. Can be used to distinguish between
+     * different flow based on the schema version.
+     *
+     * @param contentSchemaVersion the contentSchemaVersion value to set.
+     * @return the MetadataModelInner object itself.
+     */
+    public MetadataModelInner withContentSchemaVersion(String contentSchemaVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataProperties();
+        }
+        this.innerProperties().withContentSchemaVersion(contentSchemaVersion);
+        return this;
+    }
+
+    /**
+     * Get the icon property: the icon identifier. this id can later be fetched from the solution template.
+     *
+     * @return the icon value.
+     */
+    public String icon() {
+        return this.innerProperties() == null ? null : this.innerProperties().icon();
+    }
+
+    /**
+     * Set the icon property: the icon identifier. this id can later be fetched from the solution template.
+     *
+     * @param icon the icon value to set.
+     * @return the MetadataModelInner object itself.
+     */
+    public MetadataModelInner withIcon(String icon) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataProperties();
+        }
+        this.innerProperties().withIcon(icon);
+        return this;
+    }
+
+    /**
+     * Get the threatAnalysisTactics property: the tactics the resource covers.
+     *
+     * @return the threatAnalysisTactics value.
+     */
+    public List<String> threatAnalysisTactics() {
+        return this.innerProperties() == null ? null : this.innerProperties().threatAnalysisTactics();
+    }
+
+    /**
+     * Set the threatAnalysisTactics property: the tactics the resource covers.
+     *
+     * @param threatAnalysisTactics the threatAnalysisTactics value to set.
+     * @return the MetadataModelInner object itself.
+     */
+    public MetadataModelInner withThreatAnalysisTactics(List<String> threatAnalysisTactics) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataProperties();
+        }
+        this.innerProperties().withThreatAnalysisTactics(threatAnalysisTactics);
+        return this;
+    }
+
+    /**
+     * Get the threatAnalysisTechniques property: the techniques the resource covers, these have to be aligned with the
+     * tactics being used.
+     *
+     * @return the threatAnalysisTechniques value.
+     */
+    public List<String> threatAnalysisTechniques() {
+        return this.innerProperties() == null ? null : this.innerProperties().threatAnalysisTechniques();
+    }
+
+    /**
+     * Set the threatAnalysisTechniques property: the techniques the resource covers, these have to be aligned with the
+     * tactics being used.
+     *
+     * @param threatAnalysisTechniques the threatAnalysisTechniques value to set.
+     * @return the MetadataModelInner object itself.
+     */
+    public MetadataModelInner withThreatAnalysisTechniques(List<String> threatAnalysisTechniques) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataProperties();
+        }
+        this.innerProperties().withThreatAnalysisTechniques(threatAnalysisTechniques);
+        return this;
+    }
+
+    /**
+     * Get the previewImages property: preview image file names. These will be taken from the solution artifacts.
+     *
+     * @return the previewImages value.
+     */
+    public List<String> previewImages() {
+        return this.innerProperties() == null ? null : this.innerProperties().previewImages();
+    }
+
+    /**
+     * Set the previewImages property: preview image file names. These will be taken from the solution artifacts.
+     *
+     * @param previewImages the previewImages value to set.
+     * @return the MetadataModelInner object itself.
+     */
+    public MetadataModelInner withPreviewImages(List<String> previewImages) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataProperties();
+        }
+        this.innerProperties().withPreviewImages(previewImages);
+        return this;
+    }
+
+    /**
+     * Get the previewImagesDark property: preview image file names. These will be taken from the solution artifacts.
+     * used for dark theme support.
+     *
+     * @return the previewImagesDark value.
+     */
+    public List<String> previewImagesDark() {
+        return this.innerProperties() == null ? null : this.innerProperties().previewImagesDark();
+    }
+
+    /**
+     * Set the previewImagesDark property: preview image file names. These will be taken from the solution artifacts.
+     * used for dark theme support.
+     *
+     * @param previewImagesDark the previewImagesDark value to set.
+     * @return the MetadataModelInner object itself.
+     */
+    public MetadataModelInner withPreviewImagesDark(List<String> previewImagesDark) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MetadataProperties();
+        }
+        this.innerProperties().withPreviewImagesDark(previewImagesDark);
         return this;
     }
 

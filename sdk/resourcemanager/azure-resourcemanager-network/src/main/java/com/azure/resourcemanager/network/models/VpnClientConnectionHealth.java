@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** VpnClientConnectionHealth properties. */
 @Fluent
 public final class VpnClientConnectionHealth {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientConnectionHealth.class);
-
     /*
      * Total of the Ingress Bytes Transferred in this P2S Vpn connection.
      */
@@ -28,8 +24,7 @@ public final class VpnClientConnectionHealth {
     private Long totalEgressBytesTransferred;
 
     /*
-     * The total of p2s vpn clients connected at this time to this
-     * P2SVpnGateway.
+     * The total of p2s vpn clients connected at this time to this P2SVpnGateway.
      */
     @JsonProperty(value = "vpnClientConnectionsCount")
     private Integer vpnClientConnectionsCount;
@@ -39,6 +34,10 @@ public final class VpnClientConnectionHealth {
      */
     @JsonProperty(value = "allocatedIpAddresses")
     private List<String> allocatedIpAddresses;
+
+    /** Creates an instance of VpnClientConnectionHealth class. */
+    public VpnClientConnectionHealth() {
+    }
 
     /**
      * Get the totalIngressBytesTransferred property: Total of the Ingress Bytes Transferred in this P2S Vpn connection.

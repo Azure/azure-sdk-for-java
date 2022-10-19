@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AuthPlatform;
 import com.azure.resourcemanager.appservice.models.GlobalValidation;
 import com.azure.resourcemanager.appservice.models.HttpSettings;
 import com.azure.resourcemanager.appservice.models.IdentityProviders;
 import com.azure.resourcemanager.appservice.models.Login;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SiteAuthSettingsV2 resource specific properties. */
 @Fluent
 public final class SiteAuthSettingsV2Properties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteAuthSettingsV2Properties.class);
-
     /*
      * The configuration settings of the platform of App Service
      * Authentication/Authorization.

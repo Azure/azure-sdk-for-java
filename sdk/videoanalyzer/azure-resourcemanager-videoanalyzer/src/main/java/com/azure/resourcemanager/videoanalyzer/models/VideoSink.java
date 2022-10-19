@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,8 +20,6 @@ import java.util.List;
 @JsonTypeName("#Microsoft.VideoAnalyzer.VideoSink")
 @Fluent
 public final class VideoSink extends SinkNodeBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoSink.class);
-
     /*
      * Name of a new or existing video resource used to capture and publish
      * content. Note: if downstream of RTSP source, and if disableArchive is
@@ -135,7 +132,7 @@ public final class VideoSink extends SinkNodeBase {
     public void validate() {
         super.validate();
         if (videoName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property videoName in model VideoSink"));
         }
@@ -146,4 +143,6 @@ public final class VideoSink extends SinkNodeBase {
             videoPublishingOptions().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VideoSink.class);
 }

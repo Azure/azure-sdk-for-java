@@ -11,7 +11,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of AssetFilters. */
 public interface AssetFilters {
     /**
-     * List Asset Filters associated with the specified Asset.
+     * List Asset Filters
+     *
+     * <p>List Asset Filters associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -19,12 +21,14 @@ public interface AssetFilters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AssetFilter items.
+     * @return a collection of AssetFilter items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AssetFilter> list(String resourceGroupName, String accountName, String assetName);
 
     /**
-     * List Asset Filters associated with the specified Asset.
+     * List Asset Filters
+     *
+     * <p>List Asset Filters associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -33,12 +37,14 @@ public interface AssetFilters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a collection of AssetFilter items.
+     * @return a collection of AssetFilter items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AssetFilter> list(String resourceGroupName, String accountName, String assetName, Context context);
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -52,7 +58,9 @@ public interface AssetFilters {
     AssetFilter get(String resourceGroupName, String accountName, String assetName, String filterName);
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -62,13 +70,15 @@ public interface AssetFilters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Asset Filter associated with the specified Asset.
+     * @return the details of an Asset Filter associated with the specified Asset along with {@link Response}.
      */
     Response<AssetFilter> getWithResponse(
         String resourceGroupName, String accountName, String assetName, String filterName, Context context);
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -81,7 +91,9 @@ public interface AssetFilters {
     void delete(String resourceGroupName, String accountName, String assetName, String filterName);
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param resourceGroupName The name of the resource group within the Azure subscription.
      * @param accountName The Media Services account name.
@@ -91,36 +103,42 @@ public interface AssetFilters {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String accountName, String assetName, String filterName, Context context);
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Asset Filter associated with the specified Asset.
+     * @return the details of an Asset Filter associated with the specified Asset along with {@link Response}.
      */
     AssetFilter getById(String id);
 
     /**
-     * Get the details of an Asset Filter associated with the specified Asset.
+     * Get an Asset Filter.
+     *
+     * <p>Get the details of an Asset Filter associated with the specified Asset.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the details of an Asset Filter associated with the specified Asset.
+     * @return the details of an Asset Filter associated with the specified Asset along with {@link Response}.
      */
     Response<AssetFilter> getByIdWithResponse(String id, Context context);
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,14 +148,16 @@ public interface AssetFilters {
     void deleteById(String id);
 
     /**
-     * Deletes an Asset Filter associated with the specified Asset.
+     * Delete an Asset Filter.
+     *
+     * <p>Deletes an Asset Filter associated with the specified Asset.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

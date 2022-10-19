@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.GenericDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("QuickBooksObject")
 @Fluent
 public final class QuickBooksObjectDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuickBooksObjectDataset.class);
-
     /*
      * Properties specific to this dataset type.
      */
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of QuickBooksObjectDataset class. */
+    public QuickBooksObjectDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the delivery for an event subscription with resource identity. */
 @Fluent
 public class DeliveryWithResourceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryWithResourceIdentity.class);
-
     /*
      * The identity to use when delivering events.
      */

@@ -27,7 +27,11 @@ public final class RtspTransport extends ExpandableStringEnum<RtspTransport> {
         return fromString(name, RtspTransport.class);
     }
 
-    /** @return known RtspTransport values. */
+    /**
+     * Gets known RtspTransport values.
+     *
+     * @return known RtspTransport values.
+     */
     public static Collection<RtspTransport> values() {
         return values(RtspTransport.class);
     }

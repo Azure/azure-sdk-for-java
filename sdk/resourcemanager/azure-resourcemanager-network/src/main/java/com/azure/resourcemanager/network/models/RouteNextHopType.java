@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RouteNextHopType. */
+/** The type of Azure hop the packet should be sent to. */
 public final class RouteNextHopType extends ExpandableStringEnum<RouteNextHopType> {
     /** Static value VirtualNetworkGateway for RouteNextHopType. */
     public static final RouteNextHopType VIRTUAL_NETWORK_GATEWAY = fromString("VirtualNetworkGateway");
@@ -36,7 +36,11 @@ public final class RouteNextHopType extends ExpandableStringEnum<RouteNextHopTyp
         return fromString(name, RouteNextHopType.class);
     }
 
-    /** @return known RouteNextHopType values. */
+    /**
+     * Gets known RouteNextHopType values.
+     *
+     * @return known RouteNextHopType values.
+     */
     public static Collection<RouteNextHopType> values() {
         return values(RouteNextHopType.class);
     }

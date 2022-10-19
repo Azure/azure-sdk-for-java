@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.DscConfigurationsClient;
 import com.azure.resourcemanager.automation.fluent.models.DscConfigurationInner;
 import com.azure.resourcemanager.automation.models.DscConfigurationCreateOrUpdateParameters;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DscConfigurationsClient. */
 public final class DscConfigurationsClientImpl implements DscConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(DscConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DscConfigurationsService service;
 
@@ -97,23 +94,6 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
             @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: text/plain; charset=utf-8"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
-                + "/automationAccounts/{automationAccountName}/configurations/{configurationName}")
-        @ExpectedResponses({200, 201})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DscConfigurationInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("automationAccountName") String automationAccountName,
-            @PathParam("configurationName") String configurationName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("text/plain; charset=utf-8") String parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
         @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
@@ -132,12 +112,12 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
             Context context);
 
         @Headers({"Content-Type: text/plain; charset=utf-8"})
-        @Patch(
+        @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
                 + "/automationAccounts/{automationAccountName}/configurations/{configurationName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DscConfigurationInner>> update(
+        Mono<Response<DscConfigurationInner>> createOrUpdate(
             @HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("automationAccountName") String automationAccountName,
@@ -162,6 +142,23 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") DscConfigurationUpdateParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: text/plain; charset=utf-8"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Automation"
+                + "/automationAccounts/{automationAccountName}/configurations/{configurationName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<DscConfigurationInner>> update(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("automationAccountName") String automationAccountName,
+            @PathParam("configurationName") String configurationName,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("text/plain; charset=utf-8") String parameters,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -220,7 +217,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -277,7 +274,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -330,12 +327,12 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String automationAccountName, String configurationName) {
         return deleteWithResponseAsync(resourceGroupName, automationAccountName, configurationName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -363,7 +360,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -380,7 +377,8 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DscConfigurationInner>> getWithResponseAsync(
@@ -437,7 +435,8 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DscConfigurationInner>> getWithResponseAsync(
@@ -490,20 +489,13 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DscConfigurationInner> getAsync(
         String resourceGroupName, String automationAccountName, String configurationName) {
         return getWithResponseAsync(resourceGroupName, automationAccountName, configurationName)
-            .flatMap(
-                (Response<DscConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -532,7 +524,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DscConfigurationInner> getWithResponse(
@@ -550,200 +542,8 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (automationAccountName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
-        }
-        if (configurationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            automationAccountName,
-                            configurationName,
-                            this.client.getSubscriptionId(),
-                            apiVersion,
-                            parameters,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @param parameters The create or update parameters for configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DscConfigurationInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String configurationName,
-        String parameters,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (automationAccountName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
-        }
-        if (configurationName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
-        }
-        final String apiVersion = "2019-06-01";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                automationAccountName,
-                configurationName,
-                this.client.getSubscriptionId(),
-                apiVersion,
-                parameters,
-                accept,
-                context);
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @param parameters The create or update parameters for configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DscConfigurationInner> createOrUpdateAsync(
-        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters)
-            .flatMap(
-                (Response<DscConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @param parameters The create or update parameters for configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DscConfigurationInner createOrUpdate(
-        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
-        return createOrUpdateAsync(resourceGroupName, automationAccountName, configurationName, parameters).block();
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @param parameters The create or update parameters for configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DscConfigurationInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String automationAccountName,
-        String configurationName,
-        String parameters,
-        Context context) {
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, automationAccountName, configurationName, parameters, context)
-            .block();
-    }
-
-    /**
-     * Create the configuration identified by configuration name.
-     *
-     * @param resourceGroupName Name of an Azure Resource group.
-     * @param automationAccountName The name of the automation account.
-     * @param configurationName The create or update parameters for configuration.
-     * @param parameters The create or update parameters for configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DscConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -810,7 +610,8 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DscConfigurationInner>> createOrUpdateWithResponseAsync(
@@ -874,7 +675,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DscConfigurationInner> createOrUpdateAsync(
@@ -883,14 +684,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
         String configurationName,
         DscConfigurationCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters)
-            .flatMap(
-                (Response<DscConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -925,7 +719,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DscConfigurationInner> createOrUpdateWithResponse(
@@ -949,11 +743,203 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration type along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DscConfigurationInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (automationAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
+        }
+        if (configurationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            automationAccountName,
+                            configurationName,
+                            this.client.getSubscriptionId(),
+                            apiVersion,
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create the configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The create or update parameters for configuration.
+     * @param parameters The create or update parameters for configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration type along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<DscConfigurationInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String automationAccountName,
+        String configurationName,
+        String parameters,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (automationAccountName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter automationAccountName is required and cannot be null."));
+        }
+        if (configurationName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter configurationName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        }
+        final String apiVersion = "2019-06-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                automationAccountName,
+                configurationName,
+                this.client.getSubscriptionId(),
+                apiVersion,
+                parameters,
+                accept,
+                context);
+    }
+
+    /**
+     * Create the configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The create or update parameters for configuration.
+     * @param parameters The create or update parameters for configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration type on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<DscConfigurationInner> createOrUpdateAsync(
+        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create the configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The create or update parameters for configuration.
+     * @param parameters The create or update parameters for configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return definition of the configuration type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DscConfigurationInner createOrUpdate(
+        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
+        return createOrUpdateAsync(resourceGroupName, automationAccountName, configurationName, parameters).block();
+    }
+
+    /**
+     * Create the configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The create or update parameters for configuration.
+     * @param parameters The create or update parameters for configuration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration type along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DscConfigurationInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String automationAccountName,
+        String configurationName,
+        String parameters,
+        Context context) {
+        return createOrUpdateWithResponseAsync(
+                resourceGroupName, automationAccountName, configurationName, parameters, context)
+            .block();
+    }
+
+    /**
+     * Create the configuration identified by configuration name.
+     *
+     * @param resourceGroupName Name of an Azure Resource group.
+     * @param automationAccountName The name of the automation account.
+     * @param configurationName The create or update parameters for configuration.
+     * @param parameters The create or update parameters for configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return definition of the configuration type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DscConfigurationInner>> updateWithResponseAsync(
-        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
+        String resourceGroupName,
+        String automationAccountName,
+        String configurationName,
+        DscConfigurationUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -977,6 +963,9 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters != null) {
+            parameters.validate();
         }
         final String apiVersion = "2019-06-01";
         final String accept = "application/json";
@@ -1008,14 +997,15 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DscConfigurationInner>> updateWithResponseAsync(
         String resourceGroupName,
         String automationAccountName,
         String configurationName,
-        String parameters,
+        DscConfigurationUpdateParameters parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1040,6 +1030,9 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (parameters != null) {
+            parameters.validate();
         }
         final String apiVersion = "2019-06-01";
         final String accept = "application/json";
@@ -1067,20 +1060,16 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DscConfigurationInner> updateAsync(
-        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
+        String resourceGroupName,
+        String automationAccountName,
+        String configurationName,
+        DscConfigurationUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters)
-            .flatMap(
-                (Response<DscConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1092,21 +1081,14 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DscConfigurationInner> updateAsync(
         String resourceGroupName, String automationAccountName, String configurationName) {
-        final String parameters = null;
+        final DscConfigurationUpdateParameters parameters = null;
         return updateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters)
-            .flatMap(
-                (Response<DscConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1123,7 +1105,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DscConfigurationInner update(
         String resourceGroupName, String automationAccountName, String configurationName) {
-        final String parameters = null;
+        final DscConfigurationUpdateParameters parameters = null;
         return updateAsync(resourceGroupName, automationAccountName, configurationName, parameters).block();
     }
 
@@ -1138,14 +1120,14 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DscConfigurationInner> updateWithResponse(
         String resourceGroupName,
         String automationAccountName,
         String configurationName,
-        String parameters,
+        DscConfigurationUpdateParameters parameters,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters, context)
             .block();
@@ -1161,14 +1143,12 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DscConfigurationInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String configurationName,
-        DscConfigurationUpdateParameters parameters) {
+        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1192,9 +1172,6 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters != null) {
-            parameters.validate();
         }
         final String apiVersion = "2019-06-01";
         final String accept = "application/json";
@@ -1226,14 +1203,15 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DscConfigurationInner>> updateWithResponseAsync(
         String resourceGroupName,
         String automationAccountName,
         String configurationName,
-        DscConfigurationUpdateParameters parameters,
+        String parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1258,9 +1236,6 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
                 .error(
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (parameters != null) {
-            parameters.validate();
         }
         final String apiVersion = "2019-06-01";
         final String accept = "application/json";
@@ -1288,23 +1263,13 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DscConfigurationInner> updateAsync(
-        String resourceGroupName,
-        String automationAccountName,
-        String configurationName,
-        DscConfigurationUpdateParameters parameters) {
+        String resourceGroupName, String automationAccountName, String configurationName, String parameters) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters)
-            .flatMap(
-                (Response<DscConfigurationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1318,14 +1283,14 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the configuration type.
+     * @return definition of the configuration type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DscConfigurationInner> updateWithResponse(
         String resourceGroupName,
         String automationAccountName,
         String configurationName,
-        DscConfigurationUpdateParameters parameters,
+        String parameters,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, configurationName, parameters, context)
             .block();
@@ -1340,7 +1305,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<String>> getContentWithResponseAsync(
@@ -1397,7 +1362,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<String>> getContentWithResponseAsync(
@@ -1450,20 +1415,13 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<String> getContentAsync(
         String resourceGroupName, String automationAccountName, String configurationName) {
         return getContentWithResponseAsync(resourceGroupName, automationAccountName, configurationName)
-            .flatMap(
-                (Response<String> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1492,7 +1450,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<String> getContentWithResponse(
@@ -1513,7 +1471,8 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list configuration operation.
+     * @return the response model for the list configuration operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscConfigurationInner>> listByAutomationAccountSinglePageAsync(
@@ -1586,7 +1545,8 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list configuration operation.
+     * @return the response model for the list configuration operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscConfigurationInner>> listByAutomationAccountSinglePageAsync(
@@ -1656,7 +1616,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list configuration operation.
+     * @return the response model for the list configuration operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DscConfigurationInner> listByAutomationAccountAsync(
@@ -1681,7 +1641,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list configuration operation.
+     * @return the response model for the list configuration operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DscConfigurationInner> listByAutomationAccountAsync(
@@ -1710,7 +1670,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list configuration operation.
+     * @return the response model for the list configuration operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DscConfigurationInner> listByAutomationAccountAsync(
@@ -1736,7 +1696,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list configuration operation.
+     * @return the response model for the list configuration operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DscConfigurationInner> listByAutomationAccount(
@@ -1762,7 +1722,7 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list configuration operation.
+     * @return the response model for the list configuration operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DscConfigurationInner> listByAutomationAccount(
@@ -1781,11 +1741,13 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list configuration operation.
+     * @return the response model for the list configuration operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscConfigurationInner>> listByAutomationAccountNextSinglePageAsync(String nextLink) {
@@ -1817,12 +1779,14 @@ public final class DscConfigurationsClientImpl implements DscConfigurationsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list configuration operation.
+     * @return the response model for the list configuration operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DscConfigurationInner>> listByAutomationAccountNextSinglePageAsync(

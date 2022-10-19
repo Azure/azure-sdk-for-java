@@ -6,29 +6,28 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Fail activity properties. */
 @Fluent
 public final class FailActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FailActivityTypeProperties.class);
-
     /*
-     * The error message that surfaced in the Fail activity. It can be dynamic
-     * content that's evaluated to a non empty/blank string at runtime. Type:
-     * string (or Expression with resultType string).
+     * The error message that surfaced in the Fail activity. It can be dynamic content that's evaluated to a non
+     * empty/blank string at runtime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "message", required = true)
     private Object message;
 
     /*
-     * The error code that categorizes the error type of the Fail activity. It
-     * can be dynamic content that's evaluated to a non empty/blank string at
-     * runtime. Type: string (or Expression with resultType string).
+     * The error code that categorizes the error type of the Fail activity. It can be dynamic content that's evaluated
+     * to a non empty/blank string at runtime. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "errorCode", required = true)
     private Object errorCode;
+
+    /** Creates an instance of FailActivityTypeProperties class. */
+    public FailActivityTypeProperties() {
+    }
 
     /**
      * Get the message property: The error message that surfaced in the Fail activity. It can be dynamic content that's
@@ -83,16 +82,18 @@ public final class FailActivityTypeProperties {
      */
     public void validate() {
         if (message() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property message in model FailActivityTypeProperties"));
         }
         if (errorCode() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property errorCode in model FailActivityTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FailActivityTypeProperties.class);
 }

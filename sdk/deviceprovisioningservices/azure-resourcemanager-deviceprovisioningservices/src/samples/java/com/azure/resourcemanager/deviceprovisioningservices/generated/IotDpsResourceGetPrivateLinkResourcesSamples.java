@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource GetPrivateLinkResources. */
 public final class IotDpsResourceGetPrivateLinkResourcesSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSGetPrivateLinkResources.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSGetPrivateLinkResources.json
      */
     /**
      * Sample code: PrivateLinkResources_List.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The status of the operation. */
 @Fluent
 public final class SsisObjectMetadataStatusResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsisObjectMetadataStatusResponseInner.class);
-
     /*
      * The status of the operation.
      */

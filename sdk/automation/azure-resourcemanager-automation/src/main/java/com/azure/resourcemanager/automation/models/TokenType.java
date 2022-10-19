@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TokenType. */
+/** The token type. Must be either PersonalAccessToken or Oauth. */
 public final class TokenType extends ExpandableStringEnum<TokenType> {
     /** Static value PersonalAccessToken for TokenType. */
     public static final TokenType PERSONAL_ACCESS_TOKEN = fromString("PersonalAccessToken");
@@ -27,7 +27,11 @@ public final class TokenType extends ExpandableStringEnum<TokenType> {
         return fromString(name, TokenType.class);
     }
 
-    /** @return known TokenType values. */
+    /**
+     * Gets known TokenType values.
+     *
+     * @return known TokenType values.
+     */
     public static Collection<TokenType> values() {
         return values(TokenType.class);
     }

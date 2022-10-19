@@ -7,38 +7,31 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cassandra linked service properties. */
 @Fluent
 public final class CassandraLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraLinkedServiceTypeProperties.class);
-
     /*
-     * Host name for connection. Type: string (or Expression with resultType
-     * string).
+     * Host name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
-     * AuthenticationType to be used for connection. Type: string (or
-     * Expression with resultType string).
+     * AuthenticationType to be used for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
-     * The port for the connection. Type: integer (or Expression with
-     * resultType integer).
+     * The port for the connection. Type: integer (or Expression with resultType integer).
      */
     @JsonProperty(value = "port")
     private Object port;
 
     /*
-     * Username for authentication. Type: string (or Expression with resultType
-     * string).
+     * Username for authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username")
     private Object username;
@@ -50,12 +43,15 @@ public final class CassandraLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of CassandraLinkedServiceTypeProperties class. */
+    public CassandraLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the host property: Host name for connection. Type: string (or Expression with resultType string).
@@ -188,7 +184,7 @@ public final class CassandraLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model CassandraLinkedServiceTypeProperties"));
@@ -197,4 +193,6 @@ public final class CassandraLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CassandraLinkedServiceTypeProperties.class);
 }

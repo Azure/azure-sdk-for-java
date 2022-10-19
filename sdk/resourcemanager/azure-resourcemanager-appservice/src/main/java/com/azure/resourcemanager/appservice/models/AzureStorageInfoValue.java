@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Files or Blob Storage access information value for dictionary storage. */
 @Fluent
 public final class AzureStorageInfoValue {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStorageInfoValue.class);
-
     /*
      * Type of storage.
      */

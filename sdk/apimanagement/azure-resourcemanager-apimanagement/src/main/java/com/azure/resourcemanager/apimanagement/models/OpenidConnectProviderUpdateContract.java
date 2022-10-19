@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.OpenidConnectProviderUpdateContractProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters supplied to the Update OpenID Connect Provider operation. */
 @Fluent
 public final class OpenidConnectProviderUpdateContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenidConnectProviderUpdateContract.class);
-
     /*
      * OpenId Connect Provider Update contract properties.
      */

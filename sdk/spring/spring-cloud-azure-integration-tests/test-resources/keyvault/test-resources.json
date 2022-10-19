@@ -1,0 +1,92 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "testApplicationOid": {
+      "type": "String"
+    },
+    "tenantId": {
+      "defaultValue": "[subscription().tenantId]",
+      "type": "string"
+    },
+    "baseName": {
+      "defaultValue": "[resourceGroup().name]",
+      "type": "String"
+    },
+    "keyVaultEndpointSuffix": {
+      "type": "String",
+      "defaultValue": ".vault.azure.net"
+    }
+  },
+  "variables": {
+    "azureKeyVaultName": "[parameters('baseName')]",
+    "azureKeyVaultUri": "[concat('https://', variables('azureKeyVaultName'), parameters('keyVaultEndpointSuffix'), '/')]",
+    "location": "[resourceGroup().location]",
+    "azureKeyVaultSecretName": "kv-test-key",
+    "azureKeyVaultSecretValue": "kv-test-val"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.KeyVault/vaults",
+      "apiVersion": "2021-11-01-preview",
+      "name": "[variables('azureKeyVaultName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "sku": {
+          "family": "A",
+          "name": "Standard"
+        },
+        "tenantId": "[parameters('tenantId')]",
+        "accessPolicies": [
+          {
+            "tenantId": "[parameters('tenantId')]",
+            "objectId": "[parameters('testApplicationOid')]",
+            "permissions": {
+              "keys": [],
+              "secrets": [
+                "Get",
+                "Set",
+                "List"
+              ],
+              "certificates": []
+            }
+          }
+        ],
+        "enabledForDeployment": false,
+        "enabledForDiskEncryption": false,
+        "enabledForTemplateDeployment": false,
+        "enableSoftDelete": true,
+        "softDeleteRetentionInDays": 90,
+        "enableRbacAuthorization": false,
+        "provisioningState": "Succeeded",
+        "publicNetworkAccess": "Enabled"
+      }
+    },
+    {
+      "type": "Microsoft.KeyVault/vaults/secrets",
+      "name":"[concat(variables('azureKeyVaultName'), '/', variables('azureKeyVaultSecretName'))]",
+      "apiVersion": "2022-07-01",
+      "properties":{
+        "contentType": "string",
+        "value": "[variables('azureKeyVaultSecretValue')]"
+      },
+      "dependsOn":[
+        "[resourceId('Microsoft.KeyVault/vaults', variables('azureKeyVaultName'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "AZURE_KEYVAULT_SECRET_ENDPOINT": {
+      "type": "string",
+      "value": "[variables('azureKeyVaultUri')]"
+    },
+    "AZURE_KEYVAULT_SECRET_NAME": {
+      "type": "string",
+      "value": "[variables('azureKeyVaultSecretName')]"
+    },
+    "AZURE_KEYVAULT_SECRET_VALUE": {
+      "type": "string",
+      "value": "[variables('azureKeyVaultSecretValue')]"
+    }
+  }
+}

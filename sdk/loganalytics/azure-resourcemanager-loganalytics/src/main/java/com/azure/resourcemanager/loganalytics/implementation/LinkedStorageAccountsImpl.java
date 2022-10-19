@@ -14,10 +14,9 @@ import com.azure.resourcemanager.loganalytics.fluent.models.LinkedStorageAccount
 import com.azure.resourcemanager.loganalytics.models.DataSourceType;
 import com.azure.resourcemanager.loganalytics.models.LinkedStorageAccounts;
 import com.azure.resourcemanager.loganalytics.models.LinkedStorageAccountsResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedStorageAccountsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LinkedStorageAccountsImpl.class);
 
     private final LinkedStorageAccountsClient innerClient;
 
@@ -82,7 +81,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
     public LinkedStorageAccountsResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -90,7 +89,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -98,7 +97,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         DataSourceType dataSourceType =
             DataSourceType.fromString(Utils.getValueFromIdByName(id, "linkedStorageAccounts"));
         if (dataSourceType == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -112,7 +111,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
     public Response<LinkedStorageAccountsResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -120,7 +119,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -128,7 +127,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         DataSourceType dataSourceType =
             DataSourceType.fromString(Utils.getValueFromIdByName(id, "linkedStorageAccounts"));
         if (dataSourceType == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -142,7 +141,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -150,7 +149,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -158,7 +157,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         DataSourceType dataSourceType =
             DataSourceType.fromString(Utils.getValueFromIdByName(id, "linkedStorageAccounts"));
         if (dataSourceType == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -166,13 +165,13 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
                                 "The resource ID '%s' is not valid. Missing path segment 'linkedStorageAccounts'.",
                                 id)));
         }
-        this.deleteWithResponse(resourceGroupName, workspaceName, dataSourceType, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, workspaceName, dataSourceType, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -180,7 +179,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -188,7 +187,7 @@ public final class LinkedStorageAccountsImpl implements LinkedStorageAccounts {
         DataSourceType dataSourceType =
             DataSourceType.fromString(Utils.getValueFromIdByName(id, "linkedStorageAccounts"));
         if (dataSourceType == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

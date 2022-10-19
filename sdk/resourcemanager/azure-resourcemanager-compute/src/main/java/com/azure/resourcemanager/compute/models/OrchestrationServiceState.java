@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OrchestrationServiceState. */
+/** The current state of the service. */
 public final class OrchestrationServiceState extends ExpandableStringEnum<OrchestrationServiceState> {
     /** Static value NotRunning for OrchestrationServiceState. */
     public static final OrchestrationServiceState NOT_RUNNING = fromString("NotRunning");
@@ -30,7 +30,11 @@ public final class OrchestrationServiceState extends ExpandableStringEnum<Orches
         return fromString(name, OrchestrationServiceState.class);
     }
 
-    /** @return known OrchestrationServiceState values. */
+    /**
+     * Gets known OrchestrationServiceState values.
+     *
+     * @return known OrchestrationServiceState values.
+     */
     public static Collection<OrchestrationServiceState> values() {
         return values(OrchestrationServiceState.class);
     }

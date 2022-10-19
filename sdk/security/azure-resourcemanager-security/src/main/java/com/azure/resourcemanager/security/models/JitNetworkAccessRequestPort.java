@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.List;
 /** The JitNetworkAccessRequestPort model. */
 @Fluent
 public final class JitNetworkAccessRequestPort {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JitNetworkAccessRequestPort.class);
-
     /*
      * The number property.
      */
@@ -23,9 +20,8 @@ public final class JitNetworkAccessRequestPort {
     private int number;
 
     /*
-     * Mutually exclusive with the "allowedSourceAddressPrefixes" parameter.
-     * Should be an IP address or CIDR, for example "192.168.0.3" or
-     * "192.168.0.0/16".
+     * Mutually exclusive with the "allowedSourceAddressPrefixes" parameter. Should be an IP address or CIDR, for
+     * example "192.168.0.3" or "192.168.0.0/16".
      */
     @JsonProperty(value = "allowedSourceAddressPrefix")
     private String allowedSourceAddressPrefix;
@@ -55,8 +51,7 @@ public final class JitNetworkAccessRequestPort {
     private StatusReason statusReason;
 
     /*
-     * The port which is mapped to this port's `number` in the Azure Firewall,
-     * if applicable
+     * The port which is mapped to this port's `number` in the Azure Firewall, if applicable
      */
     @JsonProperty(value = "mappedPort")
     private Integer mappedPort;
@@ -214,22 +209,24 @@ public final class JitNetworkAccessRequestPort {
      */
     public void validate() {
         if (endTimeUtc() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endTimeUtc in model JitNetworkAccessRequestPort"));
         }
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property status in model JitNetworkAccessRequestPort"));
         }
         if (statusReason() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property statusReason in model JitNetworkAccessRequestPort"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessRequestPort.class);
 }

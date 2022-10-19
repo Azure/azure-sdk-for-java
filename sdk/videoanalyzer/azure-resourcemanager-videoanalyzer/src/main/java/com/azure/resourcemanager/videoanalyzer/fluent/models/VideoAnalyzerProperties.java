@@ -13,15 +13,12 @@ import com.azure.resourcemanager.videoanalyzer.models.NetworkAccessControl;
 import com.azure.resourcemanager.videoanalyzer.models.ProvisioningState;
 import com.azure.resourcemanager.videoanalyzer.models.PublicNetworkAccess;
 import com.azure.resourcemanager.videoanalyzer.models.StorageAccount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of the Video Analyzer account. */
 @Fluent
 public final class VideoAnalyzerProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoAnalyzerProperties.class);
-
     /*
      * The storage accounts for this resource.
      */
@@ -207,7 +204,7 @@ public final class VideoAnalyzerProperties {
      */
     public void validate() {
         if (storageAccounts() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storageAccounts in model VideoAnalyzerProperties"));
@@ -230,4 +227,6 @@ public final class VideoAnalyzerProperties {
             privateEndpointConnections().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VideoAnalyzerProperties.class);
 }

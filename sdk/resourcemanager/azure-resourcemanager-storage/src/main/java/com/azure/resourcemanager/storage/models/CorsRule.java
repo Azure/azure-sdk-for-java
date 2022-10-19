@@ -6,46 +6,40 @@ package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies a CORS rule for the Blob service. */
 @Fluent
 public final class CorsRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CorsRule.class);
-
     /*
-     * Required if CorsRule element is present. A list of origin domains that
-     * will be allowed via CORS, or "*" to allow all domains
+     * Required if CorsRule element is present. A list of origin domains that will be allowed via CORS, or "*" to allow
+     * all domains
      */
     @JsonProperty(value = "allowedOrigins", required = true)
     private List<String> allowedOrigins;
 
     /*
-     * Required if CorsRule element is present. A list of HTTP methods that are
-     * allowed to be executed by the origin.
+     * Required if CorsRule element is present. A list of HTTP methods that are allowed to be executed by the origin.
      */
     @JsonProperty(value = "allowedMethods", required = true)
     private List<CorsRuleAllowedMethodsItem> allowedMethods;
 
     /*
-     * Required if CorsRule element is present. The number of seconds that the
-     * client/browser should cache a preflight response.
+     * Required if CorsRule element is present. The number of seconds that the client/browser should cache a preflight
+     * response.
      */
     @JsonProperty(value = "maxAgeInSeconds", required = true)
     private int maxAgeInSeconds;
 
     /*
-     * Required if CorsRule element is present. A list of response headers to
-     * expose to CORS clients.
+     * Required if CorsRule element is present. A list of response headers to expose to CORS clients.
      */
     @JsonProperty(value = "exposedHeaders", required = true)
     private List<String> exposedHeaders;
 
     /*
-     * Required if CorsRule element is present. A list of headers allowed to be
-     * part of the cross-origin request.
+     * Required if CorsRule element is present. A list of headers allowed to be part of the cross-origin request.
      */
     @JsonProperty(value = "allowedHeaders", required = true)
     private List<String> allowedHeaders;
@@ -167,24 +161,26 @@ public final class CorsRule {
      */
     public void validate() {
         if (allowedOrigins() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property allowedOrigins in model CorsRule"));
         }
         if (allowedMethods() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property allowedMethods in model CorsRule"));
         }
         if (exposedHeaders() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property exposedHeaders in model CorsRule"));
         }
         if (allowedHeaders() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property allowedHeaders in model CorsRule"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CorsRule.class);
 }

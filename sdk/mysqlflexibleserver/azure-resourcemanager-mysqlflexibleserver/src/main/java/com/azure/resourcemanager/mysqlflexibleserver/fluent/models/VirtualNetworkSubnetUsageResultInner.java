@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.models.DelegatedSubnetUsage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Virtual network subnet usage data. */
 @Immutable
 public final class VirtualNetworkSubnetUsageResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkSubnetUsageResultInner.class);
-
     /*
      * A list of delegated subnet usage
      */

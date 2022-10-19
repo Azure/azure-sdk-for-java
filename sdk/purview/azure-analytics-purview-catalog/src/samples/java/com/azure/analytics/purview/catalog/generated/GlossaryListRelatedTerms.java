@@ -5,7 +5,7 @@
 package com.azure.analytics.purview.catalog.generated;
 
 import com.azure.analytics.purview.catalog.GlossaryClient;
-import com.azure.analytics.purview.catalog.PurviewCatalogClientBuilder;
+import com.azure.analytics.purview.catalog.GlossaryClientBuilder;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
@@ -13,16 +13,19 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class GlossaryListRelatedTerms {
     public static void main(String[] args) {
-        GlossaryClient client =
-                new PurviewCatalogClientBuilder()
+        GlossaryClient glossaryClient =
+                new GlossaryClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .endpoint("{Endpoint}")
-                        .buildGlossaryClient();
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.addQueryParam("limit", "-1");
-        requestOptions.addQueryParam("sort", "ASC");
-        requestOptions.addQueryParam("offset", "0");
+                        .buildClient();
+        // BEGIN:com.azure.analytics.purview.catalog.generated.glossarylistrelatedterms.glossarylistrelatedterms
+        RequestOptions requestOptions =
+                new RequestOptions()
+                        .addQueryParam("limit", "-1")
+                        .addQueryParam("offset", "0")
+                        .addQueryParam("sort", "ASC");
         Response<BinaryData> response =
-                client.listRelatedTermsWithResponse("54688d39-b298-4104-9e80-f2a16f44aaea", requestOptions);
+                glossaryClient.listRelatedTermsWithResponse("54688d39-b298-4104-9e80-f2a16f44aaea", requestOptions);
+        // END:com.azure.analytics.purview.catalog.generated.glossarylistrelatedterms.glossarylistrelatedterms
     }
 }

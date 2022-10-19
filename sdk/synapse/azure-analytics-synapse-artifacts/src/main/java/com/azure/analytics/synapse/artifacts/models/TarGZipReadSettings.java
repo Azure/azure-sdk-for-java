@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class TarGZipReadSettings extends CompressionReadSettings {
     /*
-     * Preserve the compression file name as folder path. Type: boolean (or
-     * Expression with resultType boolean).
+     * Preserve the compression file name as folder path. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "preserveCompressionFileNameAsFolder")
     private Object preserveCompressionFileNameAsFolder;

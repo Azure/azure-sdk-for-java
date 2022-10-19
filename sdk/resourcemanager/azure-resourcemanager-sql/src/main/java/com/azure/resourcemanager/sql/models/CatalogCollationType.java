@@ -27,7 +27,11 @@ public final class CatalogCollationType extends ExpandableStringEnum<CatalogColl
         return fromString(name, CatalogCollationType.class);
     }
 
-    /** @return known CatalogCollationType values. */
+    /**
+     * Gets known CatalogCollationType values.
+     *
+     * @return known CatalogCollationType values.
+     */
     public static Collection<CatalogCollationType> values() {
         return values(CatalogCollationType.class);
     }

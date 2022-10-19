@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An access key for the storage account. */
 @Immutable
 public final class StorageAccountKey {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountKey.class);
-
     /*
      * Name of the key.
      */

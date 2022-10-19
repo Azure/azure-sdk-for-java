@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -18,8 +16,6 @@ import java.util.Map;
 @JsonTypeName("AzureWorkloadSAPHanaRecoveryPoint")
 @Fluent
 public final class AzureWorkloadSapHanaRecoveryPoint extends AzureWorkloadRecoveryPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadSapHanaRecoveryPoint.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadSapHanaRecoveryPoint withRecoveryPointTimeInUtc(OffsetDateTime recoveryPointTimeInUtc) {
@@ -37,7 +33,7 @@ public final class AzureWorkloadSapHanaRecoveryPoint extends AzureWorkloadRecove
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadSapHanaRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformation> recoveryPointTierDetails) {
+        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         super.withRecoveryPointTierDetails(recoveryPointTierDetails);
         return this;
     }

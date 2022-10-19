@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DedicatedHosts Restart. */
 public final class DedicatedHostsRestartSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/compute/DedicatedHostRestart.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/dedicatedHostExamples/DedicatedHost_Restart.json
      */
     /**
      * Sample code: Restart Dedicated Host.

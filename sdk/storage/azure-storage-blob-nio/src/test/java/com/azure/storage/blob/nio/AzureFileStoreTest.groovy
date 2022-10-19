@@ -26,7 +26,7 @@ class AzureFileStoreTest extends APISpec {
     def "Name"() {
         setup:
         def name = generateContainerName()
-        def store = new AzureFileStore(fs, name)
+        def store = new AzureFileStore(fs, name, false)
 
         expect:
         store.name() == name

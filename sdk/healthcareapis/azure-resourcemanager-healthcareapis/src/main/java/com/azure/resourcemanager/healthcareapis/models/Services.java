@@ -31,7 +31,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata of a service instance.
+     * @return the metadata of a service instance along with {@link Response}.
      */
     Response<ServicesDescription> getByResourceGroupWithResponse(
         String resourceGroupName, String resourceName, Context context);
@@ -64,7 +64,7 @@ public interface Services {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service instances in a subscription.
+     * @return all the service instances in a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ServicesDescription> list();
 
@@ -75,7 +75,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service instances in a subscription.
+     * @return all the service instances in a subscription as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ServicesDescription> list(Context context);
 
@@ -86,7 +86,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service instances in a resource group.
+     * @return all the service instances in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ServicesDescription> listByResourceGroup(String resourceGroupName);
 
@@ -98,7 +98,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the service instances in a resource group.
+     * @return all the service instances in a resource group as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ServicesDescription> listByResourceGroup(String resourceGroupName, Context context);
 
@@ -123,7 +123,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties indicating whether a given service name is available.
+     * @return the properties indicating whether a given service name is available along with {@link Response}.
      */
     Response<ServicesNameAvailabilityInfo> checkNameAvailabilityWithResponse(
         CheckNameAvailabilityParameters checkNameAvailabilityInputs, Context context);
@@ -135,7 +135,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata of a service instance.
+     * @return the metadata of a service instance along with {@link Response}.
      */
     ServicesDescription getById(String id);
 
@@ -147,7 +147,7 @@ public interface Services {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the metadata of a service instance.
+     * @return the metadata of a service instance along with {@link Response}.
      */
     Response<ServicesDescription> getByIdWithResponse(String id, Context context);
 

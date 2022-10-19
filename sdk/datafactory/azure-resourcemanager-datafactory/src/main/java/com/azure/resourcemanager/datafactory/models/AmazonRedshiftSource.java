@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AmazonRedshiftSource")
 @Fluent
 public final class AmazonRedshiftSource extends TabularSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonRedshiftSource.class);
-
     /*
      * Database query. Type: string (or Expression with resultType string).
      */
@@ -25,13 +21,16 @@ public final class AmazonRedshiftSource extends TabularSource {
     private Object query;
 
     /*
-     * The Amazon S3 settings needed for the interim Amazon S3 when copying
-     * from Amazon Redshift with unload. With this, data from Amazon Redshift
-     * source will be unloaded into S3 first and then copied into the targeted
-     * sink from the interim S3.
+     * The Amazon S3 settings needed for the interim Amazon S3 when copying from Amazon Redshift with unload. With
+     * this, data from Amazon Redshift source will be unloaded into S3 first and then copied into the targeted sink
+     * from the interim S3.
      */
     @JsonProperty(value = "redshiftUnloadSettings")
     private RedshiftUnloadSettings redshiftUnloadSettings;
+
+    /** Creates an instance of AmazonRedshiftSource class. */
+    public AmazonRedshiftSource() {
+    }
 
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).

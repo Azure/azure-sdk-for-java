@@ -17,15 +17,13 @@ public final class RequestStatistics {
     private int documentsCount;
 
     /*
-     * Number of valid documents. This excludes empty, over-size limit or
-     * non-supported languages documents.
+     * Number of valid documents. This excludes empty, over-size limit or non-supported languages documents.
      */
     @JsonProperty(value = "validDocumentsCount", required = true)
     private int validDocumentsCount;
 
     /*
-     * Number of invalid documents. This includes empty, over-size limit or
-     * non-supported languages documents.
+     * Number of invalid documents. This includes empty, over-size limit or non-supported languages documents.
      */
     @JsonProperty(value = "erroneousDocumentsCount", required = true)
     private int erroneousDocumentsCount;

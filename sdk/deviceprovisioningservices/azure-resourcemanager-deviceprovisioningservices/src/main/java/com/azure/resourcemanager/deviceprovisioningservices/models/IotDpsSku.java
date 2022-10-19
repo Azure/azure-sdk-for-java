@@ -24,7 +24,11 @@ public final class IotDpsSku extends ExpandableStringEnum<IotDpsSku> {
         return fromString(name, IotDpsSku.class);
     }
 
-    /** @return known IotDpsSku values. */
+    /**
+     * Gets known IotDpsSku values.
+     *
+     * @return known IotDpsSku values.
+     */
     public static Collection<IotDpsSku> values() {
         return values(IotDpsSku.class);
     }

@@ -13,22 +13,23 @@ object SampleReadE2EMain {
     val cosmosMasterKey = TestConfigurations.MASTER_KEY
     val cosmosDatabase = "testDB"
     val cosmosContainer = "testContainer"
+    val dummy: Option[CosmosItemsDataSource] = None
 
-//    val client = new CosmosClientBuilder()
-//      .endpoint(cosmosEndpoint)
-//      .key(cosmosMasterKey)
-//      .consistencyLevel(ConsistencyLevel.EVENTUAL)
-//      .buildAsyncClient()
-//
-//    client.createDatabaseIfNotExists(cosmosDatabase).block()
-//    client.getDatabase(cosmosDatabase).createContainerIfNotExists(cosmosContainer, "/id").block()
-//    client.close()
+    //    val client = new CosmosClientBuilder()
+    //      .endpoint(cosmosEndpoint)
+    //      .key(cosmosMasterKey)
+    //      .consistencyLevel(ConsistencyLevel.EVENTUAL)
+    //      .buildAsyncClient()
+    //
+    //    client.createDatabaseIfNotExists(cosmosDatabase).block()
+    //    client.getDatabase(cosmosDatabase).createContainerIfNotExists(cosmosContainer, "/id").block()
+    //    client.close()
 
     val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
       "spark.cosmos.accountKey" -> cosmosMasterKey,
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
-      "spark.cosmos.read.inferSchemaEnabled" -> "true"
+      "spark.cosmos.read.inferSchema.enabled" -> "true"
     )
 
     val spark = SparkSession.builder()
@@ -37,21 +38,21 @@ object SampleReadE2EMain {
       .getOrCreate()
 
     val df = spark.read.format("cosmos.oltp").options(cfg).load()
-    df.where("number = 1").show()
+    df.show(numRows = 10)
 
-      // With raw json as inference
-      val cfgForRaw = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-          "spark.cosmos.accountKey" -> cosmosMasterKey,
-          "spark.cosmos.database" -> cosmosDatabase,
-          "spark.cosmos.container" -> cosmosContainer,
-          "spark.cosmos.read.inferSchemaEnabled" -> "false"
-      )
+    // With raw json as inference
+    val cfgForRaw = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+      "spark.cosmos.read.inferSchema.enabled" -> "false"
+    )
 
-      val dfForRaw = spark.read.format("cosmos.oltp").options(cfgForRaw).load()
-      dfForRaw.show(1)
-      val rawJson = dfForRaw.first.getAs[String](CosmosTableSchemaInferrer.RawJsonBodyAttributeName)
-      val mapper = new ObjectMapper();
-      mapper.readTree(rawJson);
+    val dfForRaw = spark.read.format("cosmos.oltp").options(cfgForRaw).load()
+    dfForRaw.show(numRows = 10)
+    val rawJson = dfForRaw.first.getAs[String](CosmosTableSchemaInferrer.RawJsonBodyAttributeName)
+    val mapper = new ObjectMapper();
+    mapper.readTree(rawJson);
 
     spark.close()
   }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** BGP settings details for a link. */
 @Fluent
 public final class VpnLinkBgpSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnLinkBgpSettings.class);
-
     /*
      * The BGP speaker's ASN.
      */
@@ -25,6 +21,10 @@ public final class VpnLinkBgpSettings {
      */
     @JsonProperty(value = "bgpPeeringAddress")
     private String bgpPeeringAddress;
+
+    /** Creates an instance of VpnLinkBgpSettings class. */
+    public VpnLinkBgpSettings() {
+    }
 
     /**
      * Get the asn property: The BGP speaker's ASN.

@@ -187,4 +187,32 @@ public class AppendBlobAsyncClientJavaDocCodeSnippets {
             .subscribe(response -> System.out.println("Sealed AppendBlob"));
         // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions
     }
+
+    /**
+     * Code snippet for {@link AppendBlobAsyncClient#createIfNotExists()} and
+     * {@link AppendBlobAsyncClient#createIfNotExistsWithResponse(AppendBlobCreateOptions)}
+     */
+    public void createIfNotExistsCodeSnippets() {
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists
+        client.createIfNotExists().subscribe(response ->
+            System.out.printf("Created AppendBlob at %s%n", response.getLastModified()));
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExists
+
+        // BEGIN: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions
+        BlobHttpHeaders headers = new BlobHttpHeaders()
+            .setContentType("binary")
+            .setContentLanguage("en-US");
+        Map<String, String> metadata = Collections.singletonMap("metadata", "value");
+        Map<String, String> tags = Collections.singletonMap("tag", "value");
+
+        client.createIfNotExistsWithResponse(new AppendBlobCreateOptions().setHeaders(headers)
+            .setMetadata(metadata).setTags(tags)).subscribe(response -> {
+                if (response.getStatusCode() == 409) {
+                    System.out.println("Already exists.");
+                } else {
+                    System.out.println("successfully created.");
+                }
+            });
+        // END: com.azure.storage.blob.specialized.AppendBlobAsyncClient.createIfNotExistsWithResponse#AppendBlobCreateOptions
+    }
 }

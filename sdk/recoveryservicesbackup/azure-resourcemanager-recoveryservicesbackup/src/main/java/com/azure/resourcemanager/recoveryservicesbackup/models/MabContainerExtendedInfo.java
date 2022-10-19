@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,8 +12,6 @@ import java.util.List;
 /** Additional information of the container. */
 @Fluent
 public final class MabContainerExtendedInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MabContainerExtendedInfo.class);
-
     /*
      * Time stamp when this container was refreshed.
      */

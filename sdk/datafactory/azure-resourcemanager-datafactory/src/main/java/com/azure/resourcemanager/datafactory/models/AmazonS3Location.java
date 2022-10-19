@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,21 +14,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AmazonS3Location")
 @Fluent
 public final class AmazonS3Location extends DatasetLocation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonS3Location.class);
-
     /*
-     * Specify the bucketName of amazon S3. Type: string (or Expression with
-     * resultType string)
+     * Specify the bucketName of amazon S3. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "bucketName")
     private Object bucketName;
 
     /*
-     * Specify the version of amazon S3. Type: string (or Expression with
-     * resultType string).
+     * Specify the version of amazon S3. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "version")
     private Object version;
+
+    /** Creates an instance of AmazonS3Location class. */
+    public AmazonS3Location() {
+    }
 
     /**
      * Get the bucketName property: Specify the bucketName of amazon S3. Type: string (or Expression with resultType

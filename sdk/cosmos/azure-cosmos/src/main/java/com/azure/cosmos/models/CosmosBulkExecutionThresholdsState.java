@@ -37,8 +37,7 @@ public final class CosmosBulkExecutionThresholdsState {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper.setBulkExecutionThresholdsAccessor(
             new ImplementationBridgeHelpers.CosmosBulkExecutionThresholdsStateHelper.CosmosBulkExecutionThresholdsStateAccessor() {
                 @Override
@@ -53,4 +52,6 @@ public final class CosmosBulkExecutionThresholdsState {
             }
         );
     }
+
+    static { initialize(); }
 }

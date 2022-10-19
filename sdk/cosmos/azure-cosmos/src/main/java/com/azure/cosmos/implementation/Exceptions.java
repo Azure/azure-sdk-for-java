@@ -18,6 +18,18 @@ public class Exceptions {
         return subStatus == e.getSubStatusCode();
     }
 
+    public static boolean isGone(CosmosException e) {
+        return isStatusCode(e, HttpConstants.StatusCodes.GONE);
+    }
+
+    public static boolean isConflict(CosmosException e) {
+        return isStatusCode(e, HttpConstants.StatusCodes.CONFLICT);
+    }
+
+    public static boolean isNotFound(CosmosException e) {
+        return isStatusCode(e, HttpConstants.StatusCodes.NOTFOUND);
+    }
+
     public static boolean isPartitionSplit(CosmosException e) {
         return isStatusCode(e, HttpConstants.StatusCodes.GONE)
                 && isSubStatusCode(e, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);

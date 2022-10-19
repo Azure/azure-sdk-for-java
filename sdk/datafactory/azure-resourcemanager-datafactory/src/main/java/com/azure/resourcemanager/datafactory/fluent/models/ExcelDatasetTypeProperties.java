@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Excel dataset properties. */
 @Fluent
 public final class ExcelDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExcelDatasetTypeProperties.class);
-
     /*
      * The location of the excel storage.
      */
@@ -23,30 +20,26 @@ public final class ExcelDatasetTypeProperties {
     private DatasetLocation location;
 
     /*
-     * The sheet name of excel file. Type: string (or Expression with
-     * resultType string).
+     * The sheet name of excel file. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sheetName")
     private Object sheetName;
 
     /*
-     * The sheet index of excel file and default value is 0. Type: integer (or
-     * Expression with resultType integer)
+     * The sheet index of excel file and default value is 0. Type: integer (or Expression with resultType integer)
      */
     @JsonProperty(value = "sheetIndex")
     private Object sheetIndex;
 
     /*
-     * The partial data of one sheet. Type: string (or Expression with
-     * resultType string).
+     * The partial data of one sheet. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "range")
     private Object range;
 
     /*
-     * When used as input, treat the first row of data as headers. When used as
-     * output,write the headers into the output as the first row of data. The
-     * default value is false. Type: boolean (or Expression with resultType
+     * When used as input, treat the first row of data as headers. When used as output,write the headers into the
+     * output as the first row of data. The default value is false. Type: boolean (or Expression with resultType
      * boolean).
      */
     @JsonProperty(value = "firstRowAsHeader")
@@ -59,11 +52,14 @@ public final class ExcelDatasetTypeProperties {
     private DatasetCompression compression;
 
     /*
-     * The null value string. Type: string (or Expression with resultType
-     * string).
+     * The null value string. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "nullValue")
     private Object nullValue;
+
+    /** Creates an instance of ExcelDatasetTypeProperties class. */
+    public ExcelDatasetTypeProperties() {
+    }
 
     /**
      * Get the location property: The location of the excel storage.
@@ -218,7 +214,7 @@ public final class ExcelDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model ExcelDatasetTypeProperties"));
@@ -229,4 +225,6 @@ public final class ExcelDatasetTypeProperties {
             compression().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExcelDatasetTypeProperties.class);
 }

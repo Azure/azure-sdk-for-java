@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Setting for SMB protocol. */
 @Fluent
 public final class SmbSetting {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SmbSetting.class);
-
     /*
      * Multichannel setting. Applies to Premium FileStorage only.
      */
@@ -21,30 +17,29 @@ public final class SmbSetting {
     private Multichannel multichannel;
 
     /*
-     * SMB protocol versions supported by server. Valid values are SMB2.1,
-     * SMB3.0, SMB3.1.1. Should be passed as a string with delimiter ';'.
+     * SMB protocol versions supported by server. Valid values are SMB2.1, SMB3.0, SMB3.1.1. Should be passed as a
+     * string with delimiter ';'.
      */
     @JsonProperty(value = "versions")
     private String versions;
 
     /*
-     * SMB authentication methods supported by server. Valid values are NTLMv2,
-     * Kerberos. Should be passed as a string with delimiter ';'.
+     * SMB authentication methods supported by server. Valid values are NTLMv2, Kerberos. Should be passed as a string
+     * with delimiter ';'.
      */
     @JsonProperty(value = "authenticationMethods")
     private String authenticationMethods;
 
     /*
-     * Kerberos ticket encryption supported by server. Valid values are
-     * RC4-HMAC, AES-256. Should be passed as a string with delimiter ';'
+     * Kerberos ticket encryption supported by server. Valid values are RC4-HMAC, AES-256. Should be passed as a string
+     * with delimiter ';'
      */
     @JsonProperty(value = "kerberosTicketEncryption")
     private String kerberosTicketEncryption;
 
     /*
-     * SMB channel encryption supported by server. Valid values are
-     * AES-128-CCM, AES-128-GCM, AES-256-GCM. Should be passed as a string with
-     * delimiter ';'.
+     * SMB channel encryption supported by server. Valid values are AES-128-CCM, AES-128-GCM, AES-256-GCM. Should be
+     * passed as a string with delimiter ';'.
      */
     @JsonProperty(value = "channelEncryption")
     private String channelEncryption;

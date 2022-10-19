@@ -16,6 +16,10 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.OWNER_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.SEQUENCE_NUMBER_KEY;
+
 /**
  * A simple in-memory implementation of a {@link CheckpointStore}. This implementation keeps track of partition
  * ownership details including checkpointing information in-memory. Using this implementation will only facilitate
@@ -28,7 +32,7 @@ public class SampleCheckpointStore implements CheckpointStore {
     private static final String CHECKPOINT = "checkpoint";
     private final Map<String, PartitionOwnership> partitionOwnershipMap = new ConcurrentHashMap<>();
     private final Map<String, Checkpoint> checkpointsMap = new ConcurrentHashMap<>();
-    private final ClientLogger logger = new ClientLogger(SampleCheckpointStore.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SampleCheckpointStore.class);
 
     /**
      * {@inheritDoc}
@@ -36,7 +40,7 @@ public class SampleCheckpointStore implements CheckpointStore {
     @Override
     public Flux<PartitionOwnership> listOwnership(String fullyQualifiedNamespace, String eventHubName,
         String consumerGroup) {
-        logger.info("Listing partition ownership");
+        LOGGER.info("Listing partition ownership");
 
         String prefix = prefixBuilder(fullyQualifiedNamespace, eventHubName, consumerGroup, OWNERSHIP);
         return Flux.fromIterable(partitionOwnershipMap.keySet())
@@ -81,9 +85,11 @@ public class SampleCheckpointStore implements CheckpointStore {
                     || partitionOwnershipMap.get(partitionOwnership.getPartitionId()).getETag()
                     .equals(partitionOwnership.getETag());
             })
-            .doOnNext(partitionOwnership -> logger
-                .info("Ownership of partition {} claimed by {}", partitionOwnership.getPartitionId(),
-                    partitionOwnership.getOwnerId()))
+            .doOnNext(partitionOwnership ->
+                LOGGER.atInfo()
+                    .addKeyValue(PARTITION_ID_KEY, partitionOwnership.getPartitionId())
+                    .addKeyValue(OWNER_ID_KEY, partitionOwnership.getOwnerId())
+                    .log("Ownership claimed."))
             .map(partitionOwnership -> {
                 partitionOwnership.setETag(UUID.randomUUID().toString())
                     .setLastModifiedTime(System.currentTimeMillis());
@@ -113,14 +119,16 @@ public class SampleCheckpointStore implements CheckpointStore {
     @Override
     public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
         if (checkpoint == null) {
-            return Mono.error(logger.logExceptionAsError(new NullPointerException("checkpoint cannot be null")));
+            return Mono.error(LOGGER.logExceptionAsError(new NullPointerException("checkpoint cannot be null")));
         }
 
         String prefix = prefixBuilder(checkpoint.getFullyQualifiedNamespace(), checkpoint.getEventHubName(),
             checkpoint.getConsumerGroup(), CHECKPOINT);
         checkpointsMap.put(prefix + SEPARATOR + checkpoint.getPartitionId(), checkpoint);
-        logger.info("Updated checkpoint for partition {} with sequence number {}", checkpoint.getPartitionId(),
-            checkpoint.getSequenceNumber());
+        LOGGER.atInfo()
+            .addKeyValue(PARTITION_ID_KEY, checkpoint.getPartitionId())
+            .addKeyValue(SEQUENCE_NUMBER_KEY, checkpoint.getSequenceNumber())
+            .log("Updated checkpoint.");
         return Mono.empty();
     }
 }

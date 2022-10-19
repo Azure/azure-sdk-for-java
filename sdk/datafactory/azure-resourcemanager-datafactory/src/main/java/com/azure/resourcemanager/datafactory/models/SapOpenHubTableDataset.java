@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SapOpenHubTableDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("SapOpenHubTable")
 @Fluent
 public final class SapOpenHubTableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SapOpenHubTableDataset.class);
-
     /*
      * Sap Business Warehouse Open Hub Destination Table properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private SapOpenHubTableDatasetTypeProperties innerTypeProperties = new SapOpenHubTableDatasetTypeProperties();
+
+    /** Creates an instance of SapOpenHubTableDataset class. */
+    public SapOpenHubTableDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Sap Business Warehouse Open Hub Destination Table properties.
@@ -171,7 +172,7 @@ public final class SapOpenHubTableDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model SapOpenHubTableDataset"));
@@ -179,4 +180,6 @@ public final class SapOpenHubTableDataset extends Dataset {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SapOpenHubTableDataset.class);
 }

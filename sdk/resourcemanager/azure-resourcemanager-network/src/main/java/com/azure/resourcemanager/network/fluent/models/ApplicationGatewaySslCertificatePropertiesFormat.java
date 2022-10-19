@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of SSL certificates of an application gateway. */
 @Fluent
 public final class ApplicationGatewaySslCertificatePropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslCertificatePropertiesFormat.class);
-
     /*
      * Base-64 encoded pfx certificate. Only applicable in PUT Request.
      */
@@ -23,22 +18,19 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     private String data;
 
     /*
-     * Password for the pfx file specified in data. Only applicable in PUT
-     * request.
+     * Password for the pfx file specified in data. Only applicable in PUT request.
      */
     @JsonProperty(value = "password")
     private String password;
 
     /*
-     * Base-64 encoded Public cert data corresponding to pfx specified in data.
-     * Only applicable in GET request.
+     * Base-64 encoded Public cert data corresponding to pfx specified in data. Only applicable in GET request.
      */
     @JsonProperty(value = "publicCertData", access = JsonProperty.Access.WRITE_ONLY)
     private String publicCertData;
 
     /*
-     * Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
-     * object stored in KeyVault.
+     * Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
      */
     @JsonProperty(value = "keyVaultSecretId")
     private String keyVaultSecretId;
@@ -48,6 +40,10 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ApplicationGatewaySslCertificatePropertiesFormat class. */
+    public ApplicationGatewaySslCertificatePropertiesFormat() {
+    }
 
     /**
      * Get the data property: Base-64 encoded pfx certificate. Only applicable in PUT Request.

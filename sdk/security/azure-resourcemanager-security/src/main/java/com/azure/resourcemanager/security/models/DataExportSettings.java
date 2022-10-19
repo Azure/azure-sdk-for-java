@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.security.fluent.models.DataExportSettingProperties;
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,16 +14,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Represents a data export setting. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("DataExportSettings")
-@JsonFlatten
 @Fluent
-public class DataExportSettings extends SettingInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataExportSettings.class);
-
+public final class DataExportSettings extends SettingInner {
     /*
-     * Is the data export setting enabled
+     * Data export setting data
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
+    @JsonProperty(value = "properties")
+    private DataExportSettingProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Data export setting data.
+     *
+     * @return the innerProperties value.
+     */
+    private DataExportSettingProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the enabled property: Is the data export setting enabled.
@@ -33,7 +37,7 @@ public class DataExportSettings extends SettingInner {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -43,7 +47,10 @@ public class DataExportSettings extends SettingInner {
      * @return the DataExportSettings object itself.
      */
     public DataExportSettings withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DataExportSettingProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -55,5 +62,8 @@ public class DataExportSettings extends SettingInner {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

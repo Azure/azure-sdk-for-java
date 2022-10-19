@@ -6,15 +6,12 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** The Asset File Storage encryption metadata. */
 @Fluent
 public final class AssetFileEncryptionMetadata {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssetFileEncryptionMetadata.class);
-
     /*
      * The Asset File initialization vector.
      */
@@ -100,10 +97,12 @@ public final class AssetFileEncryptionMetadata {
      */
     public void validate() {
         if (assetFileId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property assetFileId in model AssetFileEncryptionMetadata"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AssetFileEncryptionMetadata.class);
 }

@@ -51,7 +51,7 @@ public final class AttestationsImpl {
      */
     @Host("{instanceUrl}")
     @ServiceInterface(name = "AttestationClientAtt")
-    private interface AttestationsService {
+    public interface AttestationsService {
         @Post("/attest/OpenEnclave")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudErrorException.class)

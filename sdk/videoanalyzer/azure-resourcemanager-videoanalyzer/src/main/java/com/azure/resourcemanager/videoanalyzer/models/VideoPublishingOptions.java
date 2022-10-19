@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class VideoPublishingOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoPublishingOptions.class);
-
     /*
      * When set to 'true' content will not be archived or recorded. This is
      * used, for example, when the topology is used only for low latency video

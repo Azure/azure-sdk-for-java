@@ -30,7 +30,11 @@ public final class IpFilterTag extends ExpandableStringEnum<IpFilterTag> {
         return fromString(name, IpFilterTag.class);
     }
 
-    /** @return known IpFilterTag values. */
+    /**
+     * Gets known IpFilterTag values.
+     *
+     * @return known IpFilterTag values.
+     */
     public static Collection<IpFilterTag> values() {
         return values(IpFilterTag.class);
     }

@@ -1,0 +1,39 @@
+{
+    "data": [
+        {
+            "coordinate": {
+                "latitude": 46.84646479863713,
+                "longitude": -121.66853362143818
+            },
+            "elevationInMeter": 2298.65819
+        },
+        {
+            "coordinate": {
+                "latitude": 46.848964798637127,
+                "longitude": -121.67103362143818
+            },
+            "elevationInMeter": 2466.4059
+        },
+        {
+            "coordinate": {
+                "latitude": 46.851464798637124,
+                "longitude": -121.67353362143818
+            },
+            "elevationInMeter": 2504.88558
+        },
+        {
+            "coordinate": {
+                "latitude": 46.853964798637129,
+                "longitude": -121.67603362143818
+            },
+            "elevationInMeter": 2477.8929
+        },
+        {
+            "coordinate": {
+                "latitude": 46.85646479863713,
+                "longitude": -121.67853362143818
+            },
+            "elevationInMeter": 2394.52901
+        }
+    ]
+}

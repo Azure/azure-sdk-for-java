@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The file system to mount on each node. */
 @Fluent
 public final class MountConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MountConfiguration.class);
-
     /*
      * Information used to connect to an Azure Storage Container using
      * Blobfuse. This property is mutually exclusive with all other properties.

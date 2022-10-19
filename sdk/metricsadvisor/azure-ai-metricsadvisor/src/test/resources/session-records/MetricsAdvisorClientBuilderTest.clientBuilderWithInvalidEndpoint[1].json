@@ -3,8 +3,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c9536697-c554-4c4c-a5fc-db5c90a31e6d",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "43abf40f-add9-42ad-afc1-18d54476364a",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -16,8 +16,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c9536697-c554-4c4c-a5fc-db5c90a31e6d",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "43abf40f-add9-42ad-afc1-18d54476364a",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -29,8 +29,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c9536697-c554-4c4c-a5fc-db5c90a31e6d",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "43abf40f-add9-42ad-afc1-18d54476364a",
       "Content-Type" : "application/json"
     },
     "Response" : null,
@@ -42,8 +42,8 @@
     "Method" : "POST",
     "Uri" : "https://REDACTED.azure.com/metricsadvisor/v1.0/feedback/metric/query",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "c9536697-c554-4c4c-a5fc-db5c90a31e6d",
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.2.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "43abf40f-add9-42ad-afc1-18d54476364a",
       "Content-Type" : "application/json"
     },
     "Response" : null,

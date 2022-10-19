@@ -31,8 +31,6 @@ import java.util.Map;
 })
 @Fluent
 public class Activity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Activity.class);
-
     /*
      * Activity name.
      */
@@ -61,6 +59,10 @@ public class Activity {
      * A pipeline activity.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of Activity class. */
+    public Activity() {
+    }
 
     /**
      * Get the name property: Activity name.
@@ -178,7 +180,7 @@ public class Activity {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Activity"));
         }
         if (dependsOn() != null) {
@@ -188,4 +190,6 @@ public class Activity {
             userProperties().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Activity.class);
 }

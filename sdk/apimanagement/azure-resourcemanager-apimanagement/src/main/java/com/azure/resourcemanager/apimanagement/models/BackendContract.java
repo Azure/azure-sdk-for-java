@@ -61,7 +61,7 @@ public interface BackendContract {
 
     /**
      * Gets the resourceId property: Management Uri of the Resource in External System. This url can be the Arm Resource
-     * Id of Logic Apps, Function Apps or Api Apps.
+     * Id of Logic Apps, Function Apps or API Apps.
      *
      * @return the resourceId value.
      */
@@ -196,10 +196,10 @@ public interface BackendContract {
         interface WithResourceId {
             /**
              * Specifies the resourceId property: Management Uri of the Resource in External System. This url can be the
-             * Arm Resource Id of Logic Apps, Function Apps or Api Apps..
+             * Arm Resource Id of Logic Apps, Function Apps or API Apps..
              *
              * @param resourceId Management Uri of the Resource in External System. This url can be the Arm Resource Id
-             *     of Logic Apps, Function Apps or Api Apps.
+             *     of Logic Apps, Function Apps or API Apps.
              * @return the next definition stage.
              */
             WithCreate withResourceId(String resourceId);
@@ -337,10 +337,10 @@ public interface BackendContract {
         interface WithResourceId {
             /**
              * Specifies the resourceId property: Management Uri of the Resource in External System. This url can be the
-             * Arm Resource Id of Logic Apps, Function Apps or Api Apps..
+             * Arm Resource Id of Logic Apps, Function Apps or API Apps..
              *
              * @param resourceId Management Uri of the Resource in External System. This url can be the Arm Resource Id
-             *     of Logic Apps, Function Apps or Api Apps.
+             *     of Logic Apps, Function Apps or API Apps.
              * @return the next definition stage.
              */
             Update withResourceId(String resourceId);
@@ -431,7 +431,7 @@ public interface BackendContract {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> reconnectWithResponse(BackendReconnectContract parameters, Context context);
 }

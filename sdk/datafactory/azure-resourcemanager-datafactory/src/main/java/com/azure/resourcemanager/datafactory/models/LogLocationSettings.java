@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Log location settings. */
 @Fluent
 public final class LogLocationSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogLocationSettings.class);
-
     /*
      * Log storage linked service reference.
      */
@@ -21,11 +18,15 @@ public final class LogLocationSettings {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The path to storage for storing detailed logs of activity execution.
-     * Type: string (or Expression with resultType string).
+     * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "path")
     private Object path;
+
+    /** Creates an instance of LogLocationSettings class. */
+    public LogLocationSettings() {
+    }
 
     /**
      * Get the linkedServiceName property: Log storage linked service reference.
@@ -76,7 +77,7 @@ public final class LogLocationSettings {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property linkedServiceName in model LogLocationSettings"));
@@ -84,4 +85,6 @@ public final class LogLocationSettings {
             linkedServiceName().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LogLocationSettings.class);
 }

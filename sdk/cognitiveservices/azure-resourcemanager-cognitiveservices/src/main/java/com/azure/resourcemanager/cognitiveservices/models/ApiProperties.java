@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.cognitiveservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** The api properties for special APIs. */
 @Fluent
 public final class ApiProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiProperties.class);
-
     /*
      * (QnAMaker Only) The runtime endpoint of QnAMaker.
      */

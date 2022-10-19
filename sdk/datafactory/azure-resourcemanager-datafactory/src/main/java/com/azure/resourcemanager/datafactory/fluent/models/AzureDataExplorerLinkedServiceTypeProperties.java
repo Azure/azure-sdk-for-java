@@ -8,26 +8,21 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Data Explorer (Kusto) linked service properties. */
 @Fluent
 public final class AzureDataExplorerLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureDataExplorerLinkedServiceTypeProperties.class);
-
     /*
-     * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be
-     * in the format https://<clusterName>.<regionName>.kusto.windows.net.
-     * Type: string (or Expression with resultType string)
+     * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://<clusterName>.<regionName>.kusto.windows.net. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "endpoint", required = true)
     private Object endpoint;
 
     /*
-     * The ID of the service principal used to authenticate against Azure Data
-     * Explorer. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against Azure Data Explorer. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "servicePrincipalId")
     private Object servicePrincipalId;
@@ -39,15 +34,14 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
     private SecretBase servicePrincipalKey;
 
     /*
-     * Database name for connection. Type: string (or Expression with
-     * resultType string).
+     * Database name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "database", required = true)
     private Object database;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "tenant")
     private Object tenant;
@@ -57,6 +51,10 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
      */
     @JsonProperty(value = "credential")
     private CredentialReference credential;
+
+    /** Creates an instance of AzureDataExplorerLinkedServiceTypeProperties class. */
+    public AzureDataExplorerLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the endpoint property: The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
@@ -193,7 +191,7 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endpoint in model AzureDataExplorerLinkedServiceTypeProperties"));
@@ -202,7 +200,7 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
             servicePrincipalKey().validate();
         }
         if (database() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property database in model AzureDataExplorerLinkedServiceTypeProperties"));
@@ -211,4 +209,6 @@ public final class AzureDataExplorerLinkedServiceTypeProperties {
             credential().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDataExplorerLinkedServiceTypeProperties.class);
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitArpTable;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListArpTable associated with the Express Route Circuits API. */
 @Fluent
 public final class ExpressRouteCircuitsArpTableListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitsArpTableListResultInner.class);
-
     /*
      * A list of the ARP tables.
      */
@@ -27,6 +23,10 @@ public final class ExpressRouteCircuitsArpTableListResultInner {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of ExpressRouteCircuitsArpTableListResultInner class. */
+    public ExpressRouteCircuitsArpTableListResultInner() {
+    }
 
     /**
      * Get the value property: A list of the ARP tables.

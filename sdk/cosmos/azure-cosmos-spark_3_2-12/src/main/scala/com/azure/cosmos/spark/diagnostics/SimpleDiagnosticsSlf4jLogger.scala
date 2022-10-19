@@ -7,9 +7,8 @@ import com.azure.cosmos.implementation.spark.OperationContext
 import com.azure.cosmos.implementation.{HttpConstants, OperationType, RxDocumentServiceRequest, RxDocumentServiceResponse}
 
 // scalastyle:off multiple.string.literals
-
 private[spark] class SimpleDiagnosticsSlf4jLogger(classType: Class[_])
-  extends DefaultMinimalSlf4jLogger(classType: Class[_]) {
+  extends FeedDiagnosticsSlf4jLogger(classType: Class[_]) {
 
   override def logItemWriteCompletion(writeOperation: WriteOperation): Unit = {
     logInfo(s"$writeOperation completed")
@@ -81,7 +80,7 @@ private[spark] class SimpleDiagnosticsSlf4jLogger(classType: Class[_])
     }
 
     if (req.getOperationType == OperationType.Batch) {
-      sb.append(", items:").append(req.getNumberOfItemsInBatchRequest);
+      sb.append(", items:").append(req.getNumberOfItemsInBatchRequest)
     }
     sb.append("}")
   }

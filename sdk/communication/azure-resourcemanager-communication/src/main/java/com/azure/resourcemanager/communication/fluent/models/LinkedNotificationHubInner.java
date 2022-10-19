@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.communication.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A notification hub that has been linked to the communication service. */
 @Fluent
 public final class LinkedNotificationHubInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedNotificationHubInner.class);
-
     /*
      * The resource ID of the notification hub
      */

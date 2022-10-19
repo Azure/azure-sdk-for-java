@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SKU of Firewall policy. */
 @Fluent
 public final class FirewallPolicySku {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicySku.class);
-
     /*
      * Tier of Firewall Policy.
      */
     @JsonProperty(value = "tier")
     private FirewallPolicySkuTier tier;
+
+    /** Creates an instance of FirewallPolicySku class. */
+    public FirewallPolicySku() {
+    }
 
     /**
      * Get the tier property: Tier of Firewall Policy.

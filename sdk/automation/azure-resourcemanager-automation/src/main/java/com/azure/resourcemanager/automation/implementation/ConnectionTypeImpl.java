@@ -55,6 +55,10 @@ public final class ConnectionTypeImpl implements ConnectionType, ConnectionType.
         return this.innerModel().description();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ConnectionTypeInner innerModel() {
         return this.innerObject;
     }

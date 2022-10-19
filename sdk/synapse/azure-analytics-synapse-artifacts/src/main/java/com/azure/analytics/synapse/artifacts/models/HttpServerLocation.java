@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class HttpServerLocation extends DatasetLocation {
     /*
-     * Specify the relativeUrl of http server. Type: string (or Expression with
-     * resultType string)
+     * Specify the relativeUrl of http server. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;
@@ -40,6 +39,20 @@ public final class HttpServerLocation extends DatasetLocation {
      */
     public HttpServerLocation setRelativeUrl(Object relativeUrl) {
         this.relativeUrl = relativeUrl;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HttpServerLocation setFolderPath(Object folderPath) {
+        super.setFolderPath(folderPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public HttpServerLocation setFileName(Object fileName) {
+        super.setFileName(fileName);
         return this;
     }
 }

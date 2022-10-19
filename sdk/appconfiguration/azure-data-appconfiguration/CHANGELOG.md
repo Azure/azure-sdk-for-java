@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.1 (Unreleased)
+## 1.4.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,88 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.3.8 (2022-10-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.33.0`.
+- Updated `azure-core-http-netty` to `1.12.6`.
+
+## 1.3.7 (2022-09-06)
+
+### Bugs Fixed
+- Fixed the issue of sharing the same default http pipeline instance between App Configuration clients.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.32.0`.
+- Updated `azure-core-http-netty` to `1.12.5`.
+
+## 1.3.6 (2022-08-12)
+
+### Features Added
+- Integrate synchronous workflow for sync clients so that they do not block on async client APIs.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.31.0`.
+- Updated `azure-core-http-netty` to `1.12.4`.
+
+## 1.3.5 (2022-07-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.30.0`.
+- Updated `azure-core-http-netty` to `1.12.3`.
+
+## 1.3.4 (2022-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.29.1`.
+- Updated `azure-core-http-netty` to `1.12.2`.
+
+## 1.3.3 (2022-05-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.28.0`.
+- Updated `azure-core-http-netty` to `1.12.0`.
+
+## 1.3.2 (2022-04-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.27.0`.
+- Updated `azure-core-http-netty` to `1.11.9`.
+
+## 1.3.1 (2022-03-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.26.0`.
+- Updated `azure-core-http-netty` to `1.11.8`.
+
+## 1.3.0 (2022-02-10)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `ConfigurationClientBuilder`.
+- Added a new method `retryOptions` to `ConfigurationClientBuilder`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
 
 ## 1.2.5 (2022-01-13)
 ### Other Changes

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request body structure for data flow debug command. */
 @Fluent
 public final class DataFlowDebugCommandRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowDebugCommandRequest.class);
-
     /*
      * The ID of data flow debug session.
      */
@@ -31,6 +27,10 @@ public final class DataFlowDebugCommandRequest {
      */
     @JsonProperty(value = "commandPayload")
     private DataFlowDebugCommandPayload commandPayload;
+
+    /** Creates an instance of DataFlowDebugCommandRequest class. */
+    public DataFlowDebugCommandRequest() {
+    }
 
     /**
      * Get the sessionId property: The ID of data flow debug session.

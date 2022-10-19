@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** domain. */
 @Fluent
 public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDomainInner.class);
-
     /*
      * Indicates the configured authentication type for the domain. The value
      * is either Managed or Federated. Managed indicates a cloud managed domain
@@ -132,7 +129,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * the domain can be used by Microsoft Online services.Read-only, Nullable
      */
     @JsonProperty(value = "serviceConfigurationRecords")
-    private List<MicrosoftGraphDomainDnsRecordInner> serviceConfigurationRecords;
+    private List<MicrosoftGraphDomainDnsRecord> serviceConfigurationRecords;
 
     /*
      * DNS records that the customer adds to the DNS zone file of the domain
@@ -140,7 +137,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * Azure AD.Read-only, Nullable
      */
     @JsonProperty(value = "verificationDnsRecords")
-    private List<MicrosoftGraphDomainDnsRecordInner> verificationDnsRecords;
+    private List<MicrosoftGraphDomainDnsRecord> verificationDnsRecords;
 
     /*
      * domain
@@ -466,7 +463,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      *
      * @return the serviceConfigurationRecords value.
      */
-    public List<MicrosoftGraphDomainDnsRecordInner> serviceConfigurationRecords() {
+    public List<MicrosoftGraphDomainDnsRecord> serviceConfigurationRecords() {
         return this.serviceConfigurationRecords;
     }
 
@@ -478,7 +475,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * @return the MicrosoftGraphDomainInner object itself.
      */
     public MicrosoftGraphDomainInner withServiceConfigurationRecords(
-        List<MicrosoftGraphDomainDnsRecordInner> serviceConfigurationRecords) {
+        List<MicrosoftGraphDomainDnsRecord> serviceConfigurationRecords) {
         this.serviceConfigurationRecords = serviceConfigurationRecords;
         return this;
     }
@@ -489,7 +486,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      *
      * @return the verificationDnsRecords value.
      */
-    public List<MicrosoftGraphDomainDnsRecordInner> verificationDnsRecords() {
+    public List<MicrosoftGraphDomainDnsRecord> verificationDnsRecords() {
         return this.verificationDnsRecords;
     }
 
@@ -501,7 +498,7 @@ public final class MicrosoftGraphDomainInner extends MicrosoftGraphEntity {
      * @return the MicrosoftGraphDomainInner object itself.
      */
     public MicrosoftGraphDomainInner withVerificationDnsRecords(
-        List<MicrosoftGraphDomainDnsRecordInner> verificationDnsRecords) {
+        List<MicrosoftGraphDomainDnsRecord> verificationDnsRecords) {
         this.verificationDnsRecords = verificationDnsRecords;
         return this;
     }

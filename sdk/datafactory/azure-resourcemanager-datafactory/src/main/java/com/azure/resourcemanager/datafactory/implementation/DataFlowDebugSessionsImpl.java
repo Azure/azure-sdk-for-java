@@ -23,10 +23,9 @@ import com.azure.resourcemanager.datafactory.models.DataFlowDebugPackage;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugSessionInfo;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugSessions;
 import com.azure.resourcemanager.datafactory.models.DeleteDataFlowDebugSessionRequest;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowDebugSessionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DataFlowDebugSessionsImpl.class);
 
     private final DataFlowDebugSessionsClient innerClient;
 
@@ -74,17 +73,6 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
         return Utils.mapPage(inner, inner1 -> new DataFlowDebugSessionInfoImpl(inner1, this.manager()));
     }
 
-    public AddDataFlowToDebugSessionResponse addDataFlow(
-        String resourceGroupName, String factoryName, DataFlowDebugPackage request) {
-        AddDataFlowToDebugSessionResponseInner inner =
-            this.serviceClient().addDataFlow(resourceGroupName, factoryName, request);
-        if (inner != null) {
-            return new AddDataFlowToDebugSessionResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AddDataFlowToDebugSessionResponse> addDataFlowWithResponse(
         String resourceGroupName, String factoryName, DataFlowDebugPackage request, Context context) {
         Response<AddDataFlowToDebugSessionResponseInner> inner =
@@ -100,13 +88,24 @@ public final class DataFlowDebugSessionsImpl implements DataFlowDebugSessions {
         }
     }
 
-    public void delete(String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request) {
-        this.serviceClient().delete(resourceGroupName, factoryName, request);
+    public AddDataFlowToDebugSessionResponse addDataFlow(
+        String resourceGroupName, String factoryName, DataFlowDebugPackage request) {
+        AddDataFlowToDebugSessionResponseInner inner =
+            this.serviceClient().addDataFlow(resourceGroupName, factoryName, request);
+        if (inner != null) {
+            return new AddDataFlowToDebugSessionResponseImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, request, context);
+    }
+
+    public void delete(String resourceGroupName, String factoryName, DeleteDataFlowDebugSessionRequest request) {
+        this.serviceClient().delete(resourceGroupName, factoryName, request);
     }
 
     public DataFlowDebugCommandResponse executeCommand(

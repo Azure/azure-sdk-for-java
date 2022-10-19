@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ServiceNowLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("ServiceNow")
 @Fluent
 public final class ServiceNowLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceNowLinkedService.class);
-
     /*
      * ServiceNow server linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private ServiceNowLinkedServiceTypeProperties innerTypeProperties = new ServiceNowLinkedServiceTypeProperties();
+
+    /** Creates an instance of ServiceNowLinkedService class. */
+    public ServiceNowLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: ServiceNow server linked service properties.
@@ -313,7 +314,7 @@ public final class ServiceNowLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ServiceNowLinkedService"));
@@ -321,4 +322,6 @@ public final class ServiceNowLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceNowLinkedService.class);
 }

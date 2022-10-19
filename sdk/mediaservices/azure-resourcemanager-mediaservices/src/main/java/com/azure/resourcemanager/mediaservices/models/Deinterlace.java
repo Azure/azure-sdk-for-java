@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the de-interlacing settings. */
 @Fluent
 public final class Deinterlace {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Deinterlace.class);
-
     /*
      * The field parity for de-interlacing, defaults to Auto.
      */

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes scaling information of a SKU. */
 @Immutable
 public final class ApiManagementSkuCapacity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiManagementSkuCapacity.class);
-
     /*
      * The minimum capacity.
      */

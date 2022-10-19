@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDatabricksLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("AzureDatabricks")
 @Fluent
 public final class AzureDatabricksLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDatabricksLinkedService.class);
-
     /*
      * Azure Databricks linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private AzureDatabricksLinkedServiceTypeProperties innerTypeProperties =
         new AzureDatabricksLinkedServiceTypeProperties();
+
+    /** Creates an instance of AzureDatabricksLinkedService class. */
+    public AzureDatabricksLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Azure Databricks linked service properties.
@@ -559,7 +560,7 @@ public final class AzureDatabricksLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzureDatabricksLinkedService"));
@@ -567,4 +568,6 @@ public final class AzureDatabricksLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDatabricksLinkedService.class);
 }

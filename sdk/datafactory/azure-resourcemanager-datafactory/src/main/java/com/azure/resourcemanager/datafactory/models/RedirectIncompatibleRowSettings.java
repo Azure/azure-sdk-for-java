@@ -16,20 +16,16 @@ import java.util.Map;
 /** Redirect incompatible row settings. */
 @Fluent
 public final class RedirectIncompatibleRowSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedirectIncompatibleRowSettings.class);
-
     /*
-     * Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked
-     * service used for redirecting incompatible row. Must be specified if
-     * redirectIncompatibleRowSettings is specified. Type: string (or
-     * Expression with resultType string).
+     * Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked service used for redirecting
+     * incompatible row. Must be specified if redirectIncompatibleRowSettings is specified. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "linkedServiceName", required = true)
     private Object linkedServiceName;
 
     /*
-     * The path for storing the redirect incompatible row data. Type: string
-     * (or Expression with resultType string).
+     * The path for storing the redirect incompatible row data. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "path")
     private Object path;
@@ -38,6 +34,10 @@ public final class RedirectIncompatibleRowSettings {
      * Redirect incompatible row settings
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of RedirectIncompatibleRowSettings class. */
+    public RedirectIncompatibleRowSettings() {
+    }
 
     /**
      * Get the linkedServiceName property: Name of the Azure Storage, Storage SAS, or Azure Data Lake Store linked
@@ -121,10 +121,12 @@ public final class RedirectIncompatibleRowSettings {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property linkedServiceName in model RedirectIncompatibleRowSettings"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RedirectIncompatibleRowSettings.class);
 }

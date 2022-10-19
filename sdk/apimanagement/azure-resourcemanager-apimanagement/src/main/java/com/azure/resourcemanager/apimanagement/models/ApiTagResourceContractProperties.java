@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** API contract properties for the Tag Resources. */
 @Fluent
 public final class ApiTagResourceContractProperties extends ApiEntityBaseContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiTagResourceContractProperties.class);
-
     /*
      * API identifier in the form /apis/{apiId}.
      */
@@ -228,6 +224,27 @@ public final class ApiTagResourceContractProperties extends ApiEntityBaseContrac
     @Override
     public ApiTagResourceContractProperties withSubscriptionRequired(Boolean subscriptionRequired) {
         super.withSubscriptionRequired(subscriptionRequired);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiTagResourceContractProperties withTermsOfServiceUrl(String termsOfServiceUrl) {
+        super.withTermsOfServiceUrl(termsOfServiceUrl);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiTagResourceContractProperties withContact(ApiContactInformation contact) {
+        super.withContact(contact);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public ApiTagResourceContractProperties withLicense(ApiLicenseInformation license) {
+        super.withLicense(license);
         return this;
     }
 

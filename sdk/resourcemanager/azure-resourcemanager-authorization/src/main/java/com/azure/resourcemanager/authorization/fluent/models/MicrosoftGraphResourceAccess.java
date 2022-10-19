@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.UUID;
 /** resourceAccess. */
 @Fluent
 public final class MicrosoftGraphResourceAccess {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphResourceAccess.class);
-
     /*
      * The unique identifier for one of the oauth2PermissionScopes or appRole
      * instances that the resource application exposes.

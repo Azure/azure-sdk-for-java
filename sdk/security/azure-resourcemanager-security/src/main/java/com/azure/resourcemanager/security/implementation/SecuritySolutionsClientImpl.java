@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.SecuritySolutionsClient;
 import com.azure.resourcemanager.security.fluent.models.SecuritySolutionInner;
 import com.azure.resourcemanager.security.models.SecuritySolutionList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SecuritySolutionsClient. */
 public final class SecuritySolutionsClientImpl implements SecuritySolutionsClient {
-    private final ClientLogger logger = new ClientLogger(SecuritySolutionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SecuritySolutionsService service;
 
@@ -102,7 +99,8 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Security Solutions for the subscription.
+     * @return a list of Security Solutions for the subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySolutionInner>> listSinglePageAsync() {
@@ -144,7 +142,8 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Security Solutions for the subscription.
+     * @return a list of Security Solutions for the subscription along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySolutionInner>> listSinglePageAsync(Context context) {
@@ -181,7 +180,7 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Security Solutions for the subscription.
+     * @return a list of Security Solutions for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecuritySolutionInner> listAsync() {
@@ -195,7 +194,7 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Security Solutions for the subscription.
+     * @return a list of Security Solutions for the subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecuritySolutionInner> listAsync(Context context) {
@@ -208,7 +207,7 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Security Solutions for the subscription.
+     * @return a list of Security Solutions for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySolutionInner> list() {
@@ -222,7 +221,7 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of Security Solutions for the subscription.
+     * @return a list of Security Solutions for the subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySolutionInner> list(Context context) {
@@ -240,7 +239,7 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Security Solution.
+     * @return a specific Security Solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecuritySolutionInner>> getWithResponseAsync(
@@ -298,7 +297,7 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Security Solution.
+     * @return a specific Security Solution along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecuritySolutionInner>> getWithResponseAsync(
@@ -352,20 +351,13 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Security Solution.
+     * @return a specific Security Solution on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SecuritySolutionInner> getAsync(
         String resourceGroupName, String ascLocation, String securitySolutionName) {
         return getWithResponseAsync(resourceGroupName, ascLocation, securitySolutionName)
-            .flatMap(
-                (Response<SecuritySolutionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -398,7 +390,7 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a specific Security Solution.
+     * @return a specific Security Solution along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecuritySolutionInner> getWithResponse(
@@ -409,11 +401,12 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySolutionInner>> listNextSinglePageAsync(String nextLink) {
@@ -444,12 +437,13 @@ public final class SecuritySolutionsClientImpl implements SecuritySolutionsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySolutionInner>> listNextSinglePageAsync(String nextLink, Context context) {

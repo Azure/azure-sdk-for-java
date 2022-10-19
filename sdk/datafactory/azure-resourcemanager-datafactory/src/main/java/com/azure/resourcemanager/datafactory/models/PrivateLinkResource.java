@@ -6,15 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A private link resource. */
 @Fluent
 public final class PrivateLinkResource extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResource.class);
-
     /*
      * Core resource properties
      */
@@ -38,6 +34,10 @@ public final class PrivateLinkResource extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of PrivateLinkResource class. */
+    public PrivateLinkResource() {
+    }
 
     /**
      * Get the properties property: Core resource properties.

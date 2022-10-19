@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SyncType. */
+/** The sync type. */
 public final class SyncType extends ExpandableStringEnum<SyncType> {
     /** Static value PartialSync for SyncType. */
     public static final SyncType PARTIAL_SYNC = fromString("PartialSync");
@@ -27,7 +27,11 @@ public final class SyncType extends ExpandableStringEnum<SyncType> {
         return fromString(name, SyncType.class);
     }
 
-    /** @return known SyncType values. */
+    /**
+     * Gets known SyncType values.
+     *
+     * @return known SyncType values.
+     */
     public static Collection<SyncType> values() {
         return values(SyncType.class);
     }

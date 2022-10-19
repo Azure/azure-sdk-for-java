@@ -7,15 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Oracle Service Cloud linked service properties. */
 @Fluent
 public final class OracleServiceCloudLinkedServiceTypeProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OracleServiceCloudLinkedServiceTypeProperties.class);
-
     /*
      * The URL of the Oracle Service Cloud instance.
      */
@@ -29,44 +25,42 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
     private Object username;
 
     /*
-     * The password corresponding to the user name that you provided in the
-     * username key.
+     * The password corresponding to the user name that you provided in the username key.
      */
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true. Type: boolean
+     * (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true. Type: boolean (or Expression with resultType
-     * boolean).
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true. Type: boolean (or Expression with
-     * resultType boolean).
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
+     * Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of OracleServiceCloudLinkedServiceTypeProperties class. */
+    public OracleServiceCloudLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the host property: The URL of the Oracle Service Cloud instance.
@@ -225,19 +219,19 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model OracleServiceCloudLinkedServiceTypeProperties"));
         }
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property username in model OracleServiceCloudLinkedServiceTypeProperties"));
         }
         if (password() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property password in model OracleServiceCloudLinkedServiceTypeProperties"));
@@ -245,4 +239,6 @@ public final class OracleServiceCloudLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OracleServiceCloudLinkedServiceTypeProperties.class);
 }

@@ -6,15 +6,12 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Quota counter details. */
 @Fluent
 public final class QuotaCounterContractInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaCounterContractInner.class);
-
     /*
      * The Key value of the Counter. Must not be empty.
      */
@@ -163,25 +160,25 @@ public final class QuotaCounterContractInner {
      */
     public void validate() {
         if (counterKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property counterKey in model QuotaCounterContractInner"));
         }
         if (periodKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property periodKey in model QuotaCounterContractInner"));
         }
         if (periodStartTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property periodStartTime in model QuotaCounterContractInner"));
         }
         if (periodEndTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property periodEndTime in model QuotaCounterContractInner"));
@@ -190,4 +187,6 @@ public final class QuotaCounterContractInner {
             value().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(QuotaCounterContractInner.class);
 }

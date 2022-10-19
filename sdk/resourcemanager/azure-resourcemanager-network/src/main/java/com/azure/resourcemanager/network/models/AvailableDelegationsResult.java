@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.AvailableDelegationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An array of available delegations. */
 @Fluent
 public final class AvailableDelegationsResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableDelegationsResult.class);
-
     /*
      * An array of available delegations.
      */
@@ -27,6 +23,10 @@ public final class AvailableDelegationsResult {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of AvailableDelegationsResult class. */
+    public AvailableDelegationsResult() {
+    }
 
     /**
      * Get the value property: An array of available delegations.

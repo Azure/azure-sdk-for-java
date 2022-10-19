@@ -4,7 +4,9 @@ package com.azure.security.keyvault.administration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -32,7 +34,7 @@ public class KeyVaultAccessControlClientBuilderTest {
         vaultUrl = "https://key-vault-url.vault.azure.net/";
         roleDefinitionId = "RoleDefinitionId";
         principalId = "PrincipalId";
-        serviceVersion = KeyVaultAdministrationServiceVersion.V7_2;
+        serviceVersion = KeyVaultAdministrationServiceVersion.V7_3;
     }
 
     @Test
@@ -139,6 +141,18 @@ public class KeyVaultAccessControlClientBuilderTest {
 
         assertThrows(RuntimeException.class, () ->
             keyVaultAccessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId, principalId));
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySpecified() {
+        assertThrows(RuntimeException.class, () ->
+            new KeyVaultAccessControlClientBuilder()
+                .vaultUrl(vaultUrl)
+                .serviceVersion(serviceVersion)
+                .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+                .retryPolicy(new RetryPolicy())
+                .credential(new TestUtils.TestCredential())
+                .buildClient());
     }
 
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials

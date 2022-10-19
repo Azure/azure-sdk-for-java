@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.EncryptionScopeInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of encryption scopes requested, and if paging is required, a URL to the next page of encryption scopes. */
 @Immutable
 public final class EncryptionScopeListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionScopeListResult.class);
-
     /*
      * List of encryption scopes requested.
      */
@@ -23,9 +19,8 @@ public final class EncryptionScopeListResult {
     private List<EncryptionScopeInner> value;
 
     /*
-     * Request URL that can be used to query next page of encryption scopes.
-     * Returned when total number of requested encryption scopes exceeds the
-     * maximum page size.
+     * Request URL that can be used to query next page of encryption scopes. Returned when total number of requested
+     * encryption scopes exceeds the maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;

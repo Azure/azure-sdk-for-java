@@ -15,10 +15,9 @@ import com.azure.resourcemanager.apimanagement.models.ApiIssueComments;
 import com.azure.resourcemanager.apimanagement.models.ApiIssueCommentsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.ApiIssueCommentsGetResponse;
 import com.azure.resourcemanager.apimanagement.models.IssueCommentContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ApiIssueCommentsImpl implements ApiIssueComments {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiIssueCommentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ApiIssueCommentsImpl.class);
 
     private final ApiIssueCommentsClient innerClient;
 
@@ -113,7 +112,7 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
     public IssueCommentContract getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -121,28 +120,28 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String issueId = Utils.getValueFromIdByName(id, "issues");
         if (issueId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'issues'.", id)));
         }
         String commentId = Utils.getValueFromIdByName(id, "comments");
         if (commentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'comments'.", id)));
@@ -153,7 +152,7 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
     public Response<IssueCommentContract> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -161,28 +160,28 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String issueId = Utils.getValueFromIdByName(id, "issues");
         if (issueId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'issues'.", id)));
         }
         String commentId = Utils.getValueFromIdByName(id, "comments");
         if (commentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'comments'.", id)));
@@ -193,7 +192,7 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -201,42 +200,40 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String issueId = Utils.getValueFromIdByName(id, "issues");
         if (issueId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'issues'.", id)));
         }
         String commentId = Utils.getValueFromIdByName(id, "comments");
         if (commentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'comments'.", id)));
         }
         String localIfMatch = null;
-        this
-            .deleteWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, localIfMatch, Context.NONE)
-            .getValue();
+        this.deleteWithResponse(resourceGroupName, serviceName, apiId, issueId, commentId, localIfMatch, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, String ifMatch, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -244,28 +241,28 @@ public final class ApiIssueCommentsImpl implements ApiIssueComments {
         }
         String serviceName = Utils.getValueFromIdByName(id, "service");
         if (serviceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'service'.", id)));
         }
         String apiId = Utils.getValueFromIdByName(id, "apis");
         if (apiId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'apis'.", id)));
         }
         String issueId = Utils.getValueFromIdByName(id, "issues");
         if (issueId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'issues'.", id)));
         }
         String commentId = Utils.getValueFromIdByName(id, "comments");
         if (commentId == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'comments'.", id)));

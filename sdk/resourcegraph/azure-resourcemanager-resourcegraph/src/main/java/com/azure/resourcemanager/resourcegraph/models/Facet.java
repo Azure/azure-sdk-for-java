@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resourcegraph.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -25,8 +24,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class Facet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Facet.class);
-
     /*
      * Facet expression, same as in the corresponding facet request.
      */
@@ -60,9 +57,11 @@ public class Facet {
      */
     public void validate() {
         if (expression() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property expression in model Facet"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Facet.class);
 }

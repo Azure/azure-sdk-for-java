@@ -18,18 +18,19 @@ import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.implementation.BuilderUtils;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.implementation.credentials.CredentialValidator;
 import com.azure.storage.common.policy.MetadataValidationPolicy;
 import com.azure.storage.common.policy.RequestRetryOptions;
-import com.azure.storage.common.policy.RequestRetryPolicy;
 import com.azure.storage.common.policy.ResponseValidationPolicyBuilder;
 import com.azure.storage.common.policy.ScrubEtagPolicy;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
@@ -93,8 +94,7 @@ public final class BuilderHelper {
                     parts.setQueueName(pathPieces[1]);
                 }
 
-                parts.setEndpoint(String.format("%s://%s/%s", url.getProtocol(), url.getAuthority(),
-                    parts.getAccountName()));
+                parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority() + "/" + parts.getAccountName());
             } else {
                 // URL is using a pattern of http://accountName.queue.core.windows.net/queueName
                 String host = url.getHost();
@@ -116,7 +116,7 @@ public final class BuilderHelper {
                     parts.setQueueName(pathSegments[1]);
                 }
 
-                parts.setEndpoint(String.format("%s://%s", url.getProtocol(), url.getAuthority()));
+                parts.setEndpoint(url.getProtocol() + "://" + url.getAuthority());
             }
 
             // Attempt to get the SAS token from the URL passed
@@ -141,7 +141,8 @@ public final class BuilderHelper {
      * @param azureSasCredential {@link AzureSasCredential} if present.
      * @param sasToken The SAS token if present.
      * @param endpoint The endpoint for the client.
-     * @param retryOptions Retry options to set in the retry policy.
+     * @param retryOptions Storage retry options to set in the retry policy.
+     * @param coreRetryOptions Core retry options to set in the retry policy.
      * @param logOptions Logging options to set in the logging policy.
      * @param clientOptions Client options.
      * @param httpClient HttpClient to use in the builder.
@@ -154,7 +155,8 @@ public final class BuilderHelper {
     public static HttpPipeline buildPipeline(
         StorageSharedKeyCredential storageSharedKeyCredential,
         TokenCredential tokenCredential, AzureSasCredential azureSasCredential, String sasToken, String endpoint,
-        RequestRetryOptions retryOptions, HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
+        RequestRetryOptions retryOptions, RetryOptions coreRetryOptions,
+        HttpLogOptions logOptions, ClientOptions clientOptions, HttpClient httpClient,
         List<HttpPipelinePolicy> perCallPolicies, List<HttpPipelinePolicy> perRetryPolicies,
         Configuration configuration, ClientLogger logger) {
 
@@ -169,7 +171,7 @@ public final class BuilderHelper {
 
         policies.addAll(perCallPolicies);
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
-        policies.add(new RequestRetryPolicy(retryOptions));
+        policies.add(BuilderUtils.createRetryPolicy(retryOptions, coreRetryOptions, logger));
 
         policies.add(new AddDatePolicy());
 
@@ -213,6 +215,7 @@ public final class BuilderHelper {
         return new HttpPipelineBuilder()
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
+            .clientOptions(clientOptions)
             .build();
     }
 

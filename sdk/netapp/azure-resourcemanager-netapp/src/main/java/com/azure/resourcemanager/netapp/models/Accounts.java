@@ -11,50 +11,60 @@ import com.azure.core.util.Context;
 /** Resource collection API of Accounts. */
 public interface Accounts {
     /**
-     * List and describe all NetApp accounts in the subscription.
+     * Describe all NetApp Accounts in a subscription
+     *
+     * <p>List and describe all NetApp accounts in the subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources.
+     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetAppAccount> list();
 
     /**
-     * List and describe all NetApp accounts in the subscription.
+     * Describe all NetApp Accounts in a subscription
+     *
+     * <p>List and describe all NetApp accounts in the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources.
+     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetAppAccount> list(Context context);
 
     /**
-     * List and describe all NetApp accounts in the resource group.
+     * Describe all NetApp Accounts in a resource group
+     *
+     * <p>List and describe all NetApp accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources.
+     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetAppAccount> listByResourceGroup(String resourceGroupName);
 
     /**
-     * List and describe all NetApp accounts in the resource group.
+     * Describe all NetApp Accounts in a resource group
+     *
+     * <p>List and describe all NetApp accounts in the resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of NetApp account resources.
+     * @return list of NetApp account resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<NetAppAccount> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Get the NetApp account.
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -66,7 +76,9 @@ public interface Accounts {
     NetAppAccount getByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Get the NetApp account.
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -74,13 +86,15 @@ public interface Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetApp account.
+     * @return the NetApp account along with {@link Response}.
      */
     Response<NetAppAccount> getByResourceGroupWithResponse(
         String resourceGroupName, String accountName, Context context);
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -91,7 +105,9 @@ public interface Accounts {
     void deleteByResourceGroup(String resourceGroupName, String accountName);
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -103,30 +119,65 @@ public interface Accounts {
     void delete(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get the NetApp account.
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void renewCredentials(String resourceGroupName, String accountName);
+
+    /**
+     * Renew identity credentials
+     *
+     * <p>Renew identity credentials that are used to authenticate to key vault, for customer-managed key encryption. If
+     * encryption.identity.principalId does not match identity.principalId, running this operation will fix it.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param accountName The name of the NetApp account.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void renewCredentials(String resourceGroupName, String accountName, Context context);
+
+    /**
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetApp account.
+     * @return the NetApp account along with {@link Response}.
      */
     NetAppAccount getById(String id);
 
     /**
-     * Get the NetApp account.
+     * Describe a NetApp Account
+     *
+     * <p>Get the NetApp account.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the NetApp account.
+     * @return the NetApp account along with {@link Response}.
      */
     Response<NetAppAccount> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,7 +187,9 @@ public interface Accounts {
     void deleteById(String id);
 
     /**
-     * Delete the specified NetApp account.
+     * Delete a NetApp account
+     *
+     * <p>Delete the specified NetApp account.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

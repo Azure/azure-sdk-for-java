@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupResourceVau
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.BackupResourceVaultConfigResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfigResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfigs;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupResourceVaultConfigsImpl implements BackupResourceVaultConfigs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceVaultConfigsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupResourceVaultConfigsImpl.class);
 
     private final BackupResourceVaultConfigsClient innerClient;
 

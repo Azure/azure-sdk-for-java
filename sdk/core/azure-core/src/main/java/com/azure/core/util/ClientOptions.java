@@ -19,10 +19,13 @@ public class ClientOptions {
         + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
 
-    private final ClientLogger logger = new ClientLogger(ClientOptions.class);
+    // ClientOptions is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(ClientOptions.class);
     private Iterable<Header> headers;
 
     private String applicationId;
+
+    private MetricsOptions metricsOptions;
 
     /**
      * Gets the application ID.
@@ -62,9 +65,9 @@ public class ClientOptions {
     public ClientOptions setApplicationId(String applicationId) {
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
             if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH));
             } else if (applicationId.contains(" ")) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE));
             }
         }
 
@@ -92,7 +95,7 @@ public class ClientOptions {
      * <!-- end com.azure.core.util.ClientOptions.setHeaders#Iterable -->
      *
      * @param headers The headers.
-     * @return The updated ClientOptions object.
+     * @return The updated {@link ClientOptions} object.
      */
     public ClientOptions setHeaders(Iterable<Header> headers) {
         this.headers = headers;
@@ -109,5 +112,25 @@ public class ClientOptions {
             return Collections.emptyList();
         }
         return headers;
+    }
+
+    /**
+     * Sets {@link MetricsOptions} that are applied to each metric reported by the client.
+     * Use metrics options to enable and disable metrics or pass implementation-specific configuration.
+     *
+     * @param metricsOptions instance of {@link MetricsOptions} to set.
+     * @return The updated {@link ClientOptions} object.
+     */
+    public ClientOptions setMetricsOptions(MetricsOptions metricsOptions) {
+        this.metricsOptions = metricsOptions;
+        return this;
+    }
+
+    /**
+     * Gets {@link MetricsOptions}
+     * @return The {@link MetricsOptions} instance, if metric options weren't set previously, {@code null} is returned.
+     */
+    public MetricsOptions getMetricsOptions() {
+        return metricsOptions;
     }
 }

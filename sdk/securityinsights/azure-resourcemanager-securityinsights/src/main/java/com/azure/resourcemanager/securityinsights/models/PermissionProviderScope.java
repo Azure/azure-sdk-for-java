@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for PermissionProviderScope. */
+/** Permission provider scope. */
 public final class PermissionProviderScope extends ExpandableStringEnum<PermissionProviderScope> {
     /** Static value ResourceGroup for PermissionProviderScope. */
     public static final PermissionProviderScope RESOURCE_GROUP = fromString("ResourceGroup");
@@ -30,7 +30,11 @@ public final class PermissionProviderScope extends ExpandableStringEnum<Permissi
         return fromString(name, PermissionProviderScope.class);
     }
 
-    /** @return known PermissionProviderScope values. */
+    /**
+     * Gets known PermissionProviderScope values.
+     *
+     * @return known PermissionProviderScope values.
+     */
     public static Collection<PermissionProviderScope> values() {
         return values(PermissionProviderScope.class);
     }

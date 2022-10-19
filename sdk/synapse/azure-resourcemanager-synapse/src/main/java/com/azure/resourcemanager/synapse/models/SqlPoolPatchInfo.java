@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolResourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** SQL pool patch info A SQL Analytics pool patch info. */
 @Fluent
 public final class SqlPoolPatchInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolPatchInfo.class);
-
     /*
      * Resource tags.
      */

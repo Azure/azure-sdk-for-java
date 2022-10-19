@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Individual port mappings for inbound NAT rule created for backend pool. */
 @Immutable
 public final class InboundNatRulePortMapping {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundNatRulePortMapping.class);
-
     /*
      * Name of inbound NAT rule.
      */
@@ -37,6 +33,10 @@ public final class InboundNatRulePortMapping {
      */
     @JsonProperty(value = "backendPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer backendPort;
+
+    /** Creates an instance of InboundNatRulePortMapping class. */
+    public InboundNatRulePortMapping() {
+    }
 
     /**
      * Get the inboundNatRuleName property: Name of inbound NAT rule.

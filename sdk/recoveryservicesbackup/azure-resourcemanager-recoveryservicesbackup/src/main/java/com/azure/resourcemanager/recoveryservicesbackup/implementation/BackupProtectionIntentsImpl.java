@@ -11,10 +11,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.BackupProtectionI
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionIntentResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupProtectionIntents;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionIntentResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class BackupProtectionIntentsImpl implements BackupProtectionIntents {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupProtectionIntentsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BackupProtectionIntentsImpl.class);
 
     private final BackupProtectionIntentsClient innerClient;
 

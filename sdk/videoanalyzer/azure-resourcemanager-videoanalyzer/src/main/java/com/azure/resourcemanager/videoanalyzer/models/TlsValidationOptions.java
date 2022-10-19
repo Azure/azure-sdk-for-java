@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Options for controlling the validation of TLS endpoints. */
 @Fluent
 public final class TlsValidationOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TlsValidationOptions.class);
-
     /*
      * When set to 'true' causes the certificate subject name validation to be
      * skipped. Default is 'false'.

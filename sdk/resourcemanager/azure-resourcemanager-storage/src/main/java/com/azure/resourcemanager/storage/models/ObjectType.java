@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ObjectType. */
+/**
+ * This is a required field. This field specifies the scope of the inventory created either at the blob or container
+ * level.
+ */
 public final class ObjectType extends ExpandableStringEnum<ObjectType> {
     /** Static value Blob for ObjectType. */
     public static final ObjectType BLOB = fromString("Blob");
@@ -27,7 +30,11 @@ public final class ObjectType extends ExpandableStringEnum<ObjectType> {
         return fromString(name, ObjectType.class);
     }
 
-    /** @return known ObjectType values. */
+    /**
+     * Gets known ObjectType values.
+     *
+     * @return known ObjectType values.
+     */
     public static Collection<ObjectType> values() {
         return values(ObjectType.class);
     }

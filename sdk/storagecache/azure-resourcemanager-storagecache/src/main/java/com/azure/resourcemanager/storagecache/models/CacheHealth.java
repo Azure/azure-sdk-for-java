@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An indication of Cache health. Gives more information about health than just that related to provisioning. */
 @Fluent
 public final class CacheHealth {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheHealth.class);
-
     /*
      * List of Cache health states.
      */

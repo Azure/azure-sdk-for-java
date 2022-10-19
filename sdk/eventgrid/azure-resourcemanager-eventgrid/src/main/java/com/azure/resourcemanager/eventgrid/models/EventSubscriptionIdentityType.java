@@ -27,7 +27,11 @@ public final class EventSubscriptionIdentityType extends ExpandableStringEnum<Ev
         return fromString(name, EventSubscriptionIdentityType.class);
     }
 
-    /** @return known EventSubscriptionIdentityType values. */
+    /**
+     * Gets known EventSubscriptionIdentityType values.
+     *
+     * @return known EventSubscriptionIdentityType values.
+     */
     public static Collection<EventSubscriptionIdentityType> values() {
         return values(EventSubscriptionIdentityType.class);
     }

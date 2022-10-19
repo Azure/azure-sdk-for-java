@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ShareInfoElement model. */
 @Immutable
 public final class ShareInfoElement {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ShareInfoElement.class);
-
     /*
      * A relative URI containing the ID of the VM that has the disk attached.
      */

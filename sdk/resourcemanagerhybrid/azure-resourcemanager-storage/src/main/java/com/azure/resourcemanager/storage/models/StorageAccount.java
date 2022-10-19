@@ -94,7 +94,7 @@ public interface StorageAccount
 
     /**
      * @return true if authenticated application from any network is allowed to access the storage account, false if
-     *     only application from whitelisted network (subnet, ip address, ip address range) can access the storage
+     *     only application from allowlisted network (subnet, ip address, ip address range) can access the storage
      *     account.
      */
     boolean isAccessAllowedFromAllNetworks();

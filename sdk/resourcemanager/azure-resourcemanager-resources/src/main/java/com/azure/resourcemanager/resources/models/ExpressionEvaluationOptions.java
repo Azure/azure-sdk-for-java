@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies whether template expressions are evaluated within the scope of the parent template or nested template. */
 @Fluent
 public final class ExpressionEvaluationOptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressionEvaluationOptions.class);
-
     /*
      * The scope to be used for evaluation of parameters, variables and
      * functions in a nested template.

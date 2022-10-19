@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A set of Azure Batch account keys. */
 @Immutable
 public final class BatchAccountKeysInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BatchAccountKeysInner.class);
-
     /*
      * The Batch account name.
      */

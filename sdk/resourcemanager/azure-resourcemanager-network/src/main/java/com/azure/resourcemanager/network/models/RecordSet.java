@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A collective group of information about the record set information. */
 @Fluent
 public final class RecordSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecordSet.class);
-
     /*
      * Resource record type.
      */
@@ -50,6 +46,10 @@ public final class RecordSet {
      */
     @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;
+
+    /** Creates an instance of RecordSet class. */
+    public RecordSet() {
+    }
 
     /**
      * Get the recordType property: Resource record type.

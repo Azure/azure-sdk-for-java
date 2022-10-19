@@ -5,38 +5,31 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a storage profile. */
 @Fluent
 public final class ImageStorageProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageStorageProfile.class);
-
     /*
-     * Specifies information about the operating system disk used by the
-     * virtual machine. <br><br> For more information about disks, see [About
-     * disks and VHDs for Azure virtual
+     * Specifies information about the operating system disk used by the virtual machine. <br><br> For more information
+     * about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "osDisk")
     private ImageOSDisk osDisk;
 
     /*
-     * Specifies the parameters that are used to add a data disk to a virtual
-     * machine. <br><br> For more information about disks, see [About disks and
-     * VHDs for Azure virtual
+     * Specifies the parameters that are used to add a data disk to a virtual machine. <br><br> For more information
+     * about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
      */
     @JsonProperty(value = "dataDisks")
     private List<ImageDataDisk> dataDisks;
 
     /*
-     * Specifies whether an image is zone resilient or not. Default is false.
-     * Zone resilient images can be created only in regions that provide Zone
-     * Redundant Storage (ZRS).
+     * Specifies whether an image is zone resilient or not. Default is false. Zone resilient images can be created only
+     * in regions that provide Zone Redundant Storage (ZRS).
      */
     @JsonProperty(value = "zoneResilient")
     private Boolean zoneResilient;

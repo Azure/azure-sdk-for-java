@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("BinarySink")
 @Fluent
 public final class BinarySink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BinarySink.class);
-
     /*
      * Binary store settings.
      */
     @JsonProperty(value = "storeSettings")
     private StoreWriteSettings storeSettings;
+
+    /** Creates an instance of BinarySink class. */
+    public BinarySink() {
+    }
 
     /**
      * Get the storeSettings property: Binary store settings.

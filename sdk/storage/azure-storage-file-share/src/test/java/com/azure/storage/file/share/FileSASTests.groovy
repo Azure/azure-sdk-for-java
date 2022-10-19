@@ -378,7 +378,7 @@ class FileSASTests extends APISpec {
         def sharec = getShareClientBuilder(primaryFileServiceClient.getFileServiceUrl() + "/" + shareName + "?" + sas).buildClient()
         sharec.createFile(pathName, 1024)
 
-        def fc = getFileClient(null, primaryFileServiceClient.getFileServiceUrl() + "/" + shareName + "/" + pathName + "?" + sas)
+        def fc = getFileClient((StorageSharedKeyCredential)null, primaryFileServiceClient.getFileServiceUrl() + "/" + shareName + "/" + pathName + "?" + sas)
         fc.download(new ByteArrayOutputStream())
 
         then:

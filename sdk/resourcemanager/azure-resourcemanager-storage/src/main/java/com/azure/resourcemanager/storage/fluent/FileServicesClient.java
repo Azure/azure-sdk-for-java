@@ -24,7 +24,7 @@ public interface FileServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<FileServiceItemsInner>> listWithResponseAsync(String resourceGroupName, String accountName);
@@ -39,7 +39,7 @@ public interface FileServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<FileServiceItemsInner> listAsync(String resourceGroupName, String accountName);
@@ -70,7 +70,7 @@ public interface FileServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FileServiceItemsInner> listWithResponse(String resourceGroupName, String accountName, Context context);
@@ -87,7 +87,8 @@ public interface FileServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of File services in storage account.
+     * @return the properties of File services in storage account along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<FileServicePropertiesInner>> setServicePropertiesWithResponseAsync(
@@ -105,7 +106,7 @@ public interface FileServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of File services in storage account.
+     * @return the properties of File services in storage account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<FileServicePropertiesInner> setServicePropertiesAsync(
@@ -142,7 +143,7 @@ public interface FileServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of File services in storage account.
+     * @return the properties of File services in storage account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FileServicePropertiesInner> setServicePropertiesWithResponse(
@@ -158,8 +159,8 @@ public interface FileServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing)
-     *     rules.
+     * @return the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<FileServicePropertiesInner>> getServicePropertiesWithResponseAsync(
@@ -175,8 +176,8 @@ public interface FileServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing)
-     *     rules.
+     * @return the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<FileServicePropertiesInner> getServicePropertiesAsync(String resourceGroupName, String accountName);
@@ -208,8 +209,8 @@ public interface FileServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing)
-     *     rules.
+     * @return the properties of file services in storage accounts, including CORS (Cross-Origin Resource Sharing) rules
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<FileServicePropertiesInner> getServicePropertiesWithResponse(

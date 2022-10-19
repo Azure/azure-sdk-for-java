@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Contains the list of gallery applications that should be made available to the VM/VMSS. */
 @Fluent
 public final class ApplicationProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationProfile.class);
-
     /*
-     * Specifies the gallery applications that should be made available to the
-     * VM/VMSS
+     * Specifies the gallery applications that should be made available to the VM/VMSS
      */
     @JsonProperty(value = "galleryApplications")
     private List<VMGalleryApplication> galleryApplications;

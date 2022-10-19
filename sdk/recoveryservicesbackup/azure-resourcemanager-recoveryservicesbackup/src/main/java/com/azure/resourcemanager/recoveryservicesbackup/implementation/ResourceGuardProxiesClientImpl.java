@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.ResourceGuardProxiesClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ResourceGuardProxyBaseResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBaseResourceList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ResourceGuardProxiesClient. */
 public final class ResourceGuardProxiesClientImpl implements ResourceGuardProxiesClient {
-    private final ClientLogger logger = new ClientLogger(ResourceGuardProxiesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ResourceGuardProxiesService service;
 
@@ -94,7 +91,8 @@ public final class ResourceGuardProxiesClientImpl implements ResourceGuardProxie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources.
+     * @return list of ResourceGuardProxyBase resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardProxyBaseResourceInner>> getSinglePageAsync(
@@ -152,7 +150,8 @@ public final class ResourceGuardProxiesClientImpl implements ResourceGuardProxie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources.
+     * @return list of ResourceGuardProxyBase resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardProxyBaseResourceInner>> getSinglePageAsync(
@@ -206,7 +205,7 @@ public final class ResourceGuardProxiesClientImpl implements ResourceGuardProxie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources.
+     * @return list of ResourceGuardProxyBase resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceGuardProxyBaseResourceInner> getAsync(String vaultName, String resourceGroupName) {
@@ -223,7 +222,7 @@ public final class ResourceGuardProxiesClientImpl implements ResourceGuardProxie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources.
+     * @return list of ResourceGuardProxyBase resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ResourceGuardProxyBaseResourceInner> getAsync(
@@ -241,7 +240,7 @@ public final class ResourceGuardProxiesClientImpl implements ResourceGuardProxie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources.
+     * @return list of ResourceGuardProxyBase resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardProxyBaseResourceInner> get(String vaultName, String resourceGroupName) {
@@ -257,7 +256,7 @@ public final class ResourceGuardProxiesClientImpl implements ResourceGuardProxie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources.
+     * @return list of ResourceGuardProxyBase resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ResourceGuardProxyBaseResourceInner> get(
@@ -272,7 +271,8 @@ public final class ResourceGuardProxiesClientImpl implements ResourceGuardProxie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources.
+     * @return list of ResourceGuardProxyBase resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardProxyBaseResourceInner>> getNextSinglePageAsync(String nextLink) {
@@ -308,7 +308,8 @@ public final class ResourceGuardProxiesClientImpl implements ResourceGuardProxie
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of ResourceGuardProxyBase resources.
+     * @return list of ResourceGuardProxyBase resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ResourceGuardProxyBaseResourceInner>> getNextSinglePageAsync(

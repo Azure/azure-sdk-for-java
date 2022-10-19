@@ -1,6 +1,6 @@
 # Release History
 
-## 12.15.0-beta.3 (Unreleased)
+## 12.20.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,113 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.19.0 (2022-10-11)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-storage-blob` from `12.19.1` to version `12.20.0`.
+
+## 12.18.1 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+- Upgraded `azure-storage-blob` from `12.19.0` to version `12.19.1`.
+
+## 12.19.0-beta.1 (2022-09-06)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+
+## 12.18.0 (2022-08-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
+- Upgraded `azure-storage-blob` from `12.18.0` to version `12.19.0`.
+
+## 12.17.0 (2022-07-07)
+
+### Features Added
+- GA release for 2021-08-06 service version.
+- GA release for encryption protocol version 2.
+
+## 12.17.0-beta.1 (2022-06-15)
+
+### Features Added
+- Added support for encryption protocol version 2, using AES/GCM/NoPadding. 
+- Added support for 2021-08-06 service version.
+
+## 12.16.1 (2022-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-storage-blob` from `12.17.0` to version `12.17.1`.
+
+## 12.16.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
+
+## 12.15.2 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-storage-blob` from `12.16.0` to version `12.16.1`.
+
+## 12.16.0-beta.1 (2022-05-06)
+
+### Features Added
+- Added support for 2021-06-08 service version.
+
+## 12.15.1 (2022-04-07)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+- Upgraded `azure-storage-blob` from `12.15.0` to version `12.16.0`.
+
+## 12.15.0 (2022-03-09)
+
+### Other Changes
+- GA release for STG 79, 80, 81
+
+## 12.14.4 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-storage-blob` from `12.14.3` to version `12.14.4`.
+
+## 12.15.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
+
+### Bugs Fixed
+- Fixed a bug in builders that would cause container or blobName to be erased if specified before the connection string.
 
 ## 12.14.3 (2022-01-14)
 

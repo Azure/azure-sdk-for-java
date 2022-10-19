@@ -15,10 +15,9 @@ import com.azure.resourcemanager.synapse.models.SensitivityLabel;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelSource;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelUpdateList;
 import com.azure.resourcemanager.synapse.models.SqlPoolSensitivityLabels;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLabels {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolSensitivityLabelsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolSensitivityLabelsImpl.class);
 
     private final SqlPoolSensitivityLabelsClient innerClient;
 
@@ -226,7 +225,7 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -234,35 +233,35 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String schemaName = Utils.getValueFromIdByName(id, "schemas");
         if (schemaName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
         }
         String tableName = Utils.getValueFromIdByName(id, "tables");
         if (tableName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'tables'.", id)));
         }
         String columnName = Utils.getValueFromIdByName(id, "columns");
         if (columnName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'columns'.", id)));
@@ -275,7 +274,7 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -283,35 +282,35 @@ public final class SqlPoolSensitivityLabelsImpl implements SqlPoolSensitivityLab
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
         }
         String schemaName = Utils.getValueFromIdByName(id, "schemas");
         if (schemaName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'schemas'.", id)));
         }
         String tableName = Utils.getValueFromIdByName(id, "tables");
         if (tableName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'tables'.", id)));
         }
         String columnName = Utils.getValueFromIdByName(id, "columns");
         if (columnName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'columns'.", id)));

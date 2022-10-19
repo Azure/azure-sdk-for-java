@@ -7,17 +7,13 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Windows Azure Search Service linked service properties. */
 @Fluent
 public final class AzureSearchLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSearchLinkedServiceTypeProperties.class);
-
     /*
-     * URL for Azure Search service. Type: string (or Expression with
-     * resultType string).
+     * URL for Azure Search service. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
@@ -29,12 +25,15 @@ public final class AzureSearchLinkedServiceTypeProperties {
     private SecretBase key;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of AzureSearchLinkedServiceTypeProperties class. */
+    public AzureSearchLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the url property: URL for Azure Search service. Type: string (or Expression with resultType string).
@@ -105,7 +104,7 @@ public final class AzureSearchLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model AzureSearchLinkedServiceTypeProperties"));
@@ -114,4 +113,6 @@ public final class AzureSearchLinkedServiceTypeProperties {
             key().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSearchLinkedServiceTypeProperties.class);
 }

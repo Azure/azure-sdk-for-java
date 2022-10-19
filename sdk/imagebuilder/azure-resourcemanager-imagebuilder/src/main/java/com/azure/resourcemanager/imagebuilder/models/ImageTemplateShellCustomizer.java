@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -20,8 +18,6 @@ import java.util.List;
 @JsonTypeName("Shell")
 @Fluent
 public final class ImageTemplateShellCustomizer extends ImageTemplateCustomizer {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateShellCustomizer.class);
-
     /*
      * URI of the shell script to be run for customizing. It can be a github
      * link, SAS URI for Azure Storage, etc

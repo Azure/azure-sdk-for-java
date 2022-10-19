@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SapHanaSource")
 @Fluent
 public final class SapHanaSource extends TabularSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SapHanaSource.class);
-
     /*
      * SAP HANA Sql query. Type: string (or Expression with resultType string).
      */
@@ -25,16 +21,14 @@ public final class SapHanaSource extends TabularSource {
     private Object query;
 
     /*
-     * The packet size of data read from SAP HANA. Type: integer(or Expression
-     * with resultType integer).
+     * The packet size of data read from SAP HANA. Type: integer(or Expression with resultType integer).
      */
     @JsonProperty(value = "packetSize")
     private Object packetSize;
 
     /*
-     * The partition mechanism that will be used for SAP HANA read in parallel.
-     * Possible values include: "None", "PhysicalPartitionsOfTable",
-     * "SapHanaDynamicRange".
+     * The partition mechanism that will be used for SAP HANA read in parallel. Possible values include: "None",
+     * "PhysicalPartitionsOfTable", "SapHanaDynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
@@ -44,6 +38,10 @@ public final class SapHanaSource extends TabularSource {
      */
     @JsonProperty(value = "partitionSettings")
     private SapHanaPartitionSettings partitionSettings;
+
+    /** Creates an instance of SapHanaSource class. */
+    public SapHanaSource() {
+    }
 
     /**
      * Get the query property: SAP HANA Sql query. Type: string (or Expression with resultType string).

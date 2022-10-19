@@ -57,6 +57,13 @@ public interface StreamingEndpoint {
     SystemData systemData();
 
     /**
+     * Gets the sku property: The streaming endpoint sku.
+     *
+     * @return the sku value.
+     */
+    ArmStreamingEndpointCurrentSku sku();
+
+    /**
      * Gets the description property: The streaming endpoint description.
      *
      * @return the description value.
@@ -68,7 +75,7 @@ public interface StreamingEndpoint {
      *
      * @return the scaleUnits value.
      */
-    Integer scaleUnits();
+    int scaleUnits();
 
     /**
      * Gets the availabilitySetName property: This feature is deprecated, do not set a value for this property.
@@ -183,6 +190,13 @@ public interface StreamingEndpoint {
     String regionName();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.mediaservices.fluent.models.StreamingEndpointInner object.
      *
      * @return the inner object.
@@ -236,6 +250,7 @@ public interface StreamingEndpoint {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithSku,
                 DefinitionStages.WithDescription,
                 DefinitionStages.WithScaleUnits,
                 DefinitionStages.WithAvailabilitySetName,
@@ -272,6 +287,16 @@ public interface StreamingEndpoint {
              */
             WithCreate withTags(Map<String, String> tags);
         }
+        /** The stage of the StreamingEndpoint definition allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The streaming endpoint sku..
+             *
+             * @param sku The streaming endpoint sku.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(ArmStreamingEndpointCurrentSku sku);
+        }
         /** The stage of the StreamingEndpoint definition allowing to specify description. */
         interface WithDescription {
             /**
@@ -291,7 +316,7 @@ public interface StreamingEndpoint {
              * @param scaleUnits The number of scale units. Use the Scale operation to adjust this value.
              * @return the next definition stage.
              */
-            WithCreate withScaleUnits(Integer scaleUnits);
+            WithCreate withScaleUnits(int scaleUnits);
         }
         /** The stage of the StreamingEndpoint definition allowing to specify availabilitySetName. */
         interface WithAvailabilitySetName {
@@ -396,6 +421,7 @@ public interface StreamingEndpoint {
     /** The template for StreamingEndpoint update. */
     interface Update
         extends UpdateStages.WithTags,
+            UpdateStages.WithSku,
             UpdateStages.WithDescription,
             UpdateStages.WithScaleUnits,
             UpdateStages.WithAvailabilitySetName,
@@ -433,6 +459,16 @@ public interface StreamingEndpoint {
              */
             Update withTags(Map<String, String> tags);
         }
+        /** The stage of the StreamingEndpoint update allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The streaming endpoint sku..
+             *
+             * @param sku The streaming endpoint sku.
+             * @return the next definition stage.
+             */
+            Update withSku(ArmStreamingEndpointCurrentSku sku);
+        }
         /** The stage of the StreamingEndpoint update allowing to specify description. */
         interface WithDescription {
             /**
@@ -452,7 +488,7 @@ public interface StreamingEndpoint {
              * @param scaleUnits The number of scale units. Use the Scale operation to adjust this value.
              * @return the next definition stage.
              */
-            Update withScaleUnits(Integer scaleUnits);
+            Update withScaleUnits(int scaleUnits);
         }
         /** The stage of the StreamingEndpoint update allowing to specify availabilitySetName. */
         interface WithAvailabilitySetName {
@@ -552,7 +588,9 @@ public interface StreamingEndpoint {
     StreamingEndpoint refresh(Context context);
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -560,7 +598,9 @@ public interface StreamingEndpoint {
     void start();
 
     /**
-     * Starts an existing streaming endpoint.
+     * Start StreamingEndpoint
+     *
+     * <p>Starts an existing streaming endpoint.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -570,7 +610,9 @@ public interface StreamingEndpoint {
     void start(Context context);
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -578,7 +620,9 @@ public interface StreamingEndpoint {
     void stop();
 
     /**
-     * Stops an existing streaming endpoint.
+     * Stop StreamingEndpoint
+     *
+     * <p>Stops an existing streaming endpoint.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -588,7 +632,9 @@ public interface StreamingEndpoint {
     void stop(Context context);
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param parameters Streaming endpoint scale parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -598,7 +644,9 @@ public interface StreamingEndpoint {
     void scale(StreamingEntityScaleUnit parameters);
 
     /**
-     * Scales an existing streaming endpoint.
+     * Scale StreamingEndpoint
+     *
+     * <p>Scales an existing streaming endpoint.
      *
      * @param parameters Streaming endpoint scale parameters.
      * @param context The context to associate with this operation.

@@ -6,19 +6,16 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the parameters for using a user's KeyVault for URL Signing Key. */
 @Fluent
 public final class KeyVaultSigningKeyParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultSigningKeyParameters.class);
-
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "KeyVaultSigningKeyParameters";
 
     /*
      * Subscription Id of the user's Key Vault containing the secret
@@ -52,26 +49,26 @@ public final class KeyVaultSigningKeyParameters {
 
     /** Creates an instance of KeyVaultSigningKeyParameters class. */
     public KeyVaultSigningKeyParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.KeyVaultSigningKeyParameters";
+        typeName = "KeyVaultSigningKeyParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the KeyVaultSigningKeyParameters object itself.
      */
-    public KeyVaultSigningKeyParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public KeyVaultSigningKeyParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
@@ -182,34 +179,36 @@ public final class KeyVaultSigningKeyParameters {
      */
     public void validate() {
         if (subscriptionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property subscriptionId in model KeyVaultSigningKeyParameters"));
         }
         if (resourceGroupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resourceGroupName in model KeyVaultSigningKeyParameters"));
         }
         if (vaultName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property vaultName in model KeyVaultSigningKeyParameters"));
         }
         if (secretName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretName in model KeyVaultSigningKeyParameters"));
         }
         if (secretVersion() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretVersion in model KeyVaultSigningKeyParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSigningKeyParameters.class);
 }

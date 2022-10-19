@@ -31,7 +31,7 @@ public interface DeletedServiceContract {
     String type();
 
     /**
-     * Gets the location property: Api Management Service Master Location.
+     * Gets the location property: API Management Service Master Location.
      *
      * @return the location value.
      */

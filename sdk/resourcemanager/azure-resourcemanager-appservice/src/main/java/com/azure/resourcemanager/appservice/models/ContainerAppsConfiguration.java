@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerAppsConfiguration model. */
 @Fluent
 public final class ContainerAppsConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerAppsConfiguration.class);
-
     /*
      * Azure Monitor instrumentation key used by Dapr to export Service to
      * Service communication telemetry

@@ -7,22 +7,19 @@ package com.azure.resourcemanager.containerservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.TimeInWeek;
 import com.azure.resourcemanager.containerservice.models.TimeSpan;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster. See [planned
- * maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about planned
- * maintenance.
+ * Planned maintenance configuration, used to configure when updates can be deployed to a Managed Cluster.
+ *
+ * <p>See [planned maintenance](https://docs.microsoft.com/azure/aks/planned-maintenance) for more information about
+ * planned maintenance.
  */
 @Fluent
 public final class MaintenanceConfigurationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceConfigurationInner.class);
-
     /*
      * The system metadata relating to this resource.
      */
@@ -36,8 +33,7 @@ public final class MaintenanceConfigurationInner extends SubResource {
     private MaintenanceConfigurationProperties innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
@@ -93,8 +89,10 @@ public final class MaintenanceConfigurationInner extends SubResource {
     }
 
     /**
-     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
-     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      *
      * @return the timeInWeek value.
      */
@@ -103,8 +101,10 @@ public final class MaintenanceConfigurationInner extends SubResource {
     }
 
     /**
-     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed. If two
-     * array entries specify the same day of the week, the applied configuration is the union of times in both entries.
+     * Set the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
+     *
+     * <p>If two array entries specify the same day of the week, the applied configuration is the union of times in both
+     * entries.
      *
      * @param timeInWeek the timeInWeek value to set.
      * @return the MaintenanceConfigurationInner object itself.

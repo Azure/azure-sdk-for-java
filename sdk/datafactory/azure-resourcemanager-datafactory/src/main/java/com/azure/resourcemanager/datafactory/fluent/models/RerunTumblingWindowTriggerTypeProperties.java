@@ -6,15 +6,12 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Rerun Trigger properties. */
 @Fluent
 public final class RerunTumblingWindowTriggerTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RerunTumblingWindowTriggerTypeProperties.class);
-
     /*
      * The parent trigger reference.
      */
@@ -22,25 +19,26 @@ public final class RerunTumblingWindowTriggerTypeProperties {
     private Object parentTrigger;
 
     /*
-     * The start time for the time period for which restatement is initiated.
-     * Only UTC time is currently supported.
+     * The start time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
     @JsonProperty(value = "requestedStartTime", required = true)
     private OffsetDateTime requestedStartTime;
 
     /*
-     * The end time for the time period for which restatement is initiated.
-     * Only UTC time is currently supported.
+     * The end time for the time period for which restatement is initiated. Only UTC time is currently supported.
      */
     @JsonProperty(value = "requestedEndTime", required = true)
     private OffsetDateTime requestedEndTime;
 
     /*
-     * The max number of parallel time windows (ready for execution) for which
-     * a rerun is triggered.
+     * The max number of parallel time windows (ready for execution) for which a rerun is triggered.
      */
     @JsonProperty(value = "rerunConcurrency", required = true)
     private int rerunConcurrency;
+
+    /** Creates an instance of RerunTumblingWindowTriggerTypeProperties class. */
+    public RerunTumblingWindowTriggerTypeProperties() {
+    }
 
     /**
      * Get the parentTrigger property: The parent trigger reference.
@@ -135,24 +133,26 @@ public final class RerunTumblingWindowTriggerTypeProperties {
      */
     public void validate() {
         if (parentTrigger() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property parentTrigger in model RerunTumblingWindowTriggerTypeProperties"));
         }
         if (requestedStartTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property requestedStartTime in model"
                             + " RerunTumblingWindowTriggerTypeProperties"));
         }
         if (requestedEndTime() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property requestedEndTime in model"
                             + " RerunTumblingWindowTriggerTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RerunTumblingWindowTriggerTypeProperties.class);
 }

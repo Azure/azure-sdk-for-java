@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB SQL container resource object. */
 @Fluent
 public class SqlContainerResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlContainerResource.class);
-
     /*
      * Name of the Cosmos DB SQL container
      */
@@ -21,15 +18,14 @@ public class SqlContainerResource {
     private String id;
 
     /*
-     * The configuration of the indexing policy. By default, the indexing is
-     * automatic for all document paths within the container
+     * The configuration of the indexing policy. By default, the indexing is automatic for all document paths within
+     * the container
      */
     @JsonProperty(value = "indexingPolicy")
     private IndexingPolicy indexingPolicy;
 
     /*
-     * The configuration of the partition key to be used for partitioning data
-     * into multiple partitions
+     * The configuration of the partition key to be used for partitioning data into multiple partitions
      */
     @JsonProperty(value = "partitionKey")
     private ContainerPartitionKey partitionKey;
@@ -41,9 +37,8 @@ public class SqlContainerResource {
     private Integer defaultTtl;
 
     /*
-     * The unique key policy configuration for specifying uniqueness
-     * constraints on documents in the collection in the Azure Cosmos DB
-     * service.
+     * The unique key policy configuration for specifying uniqueness constraints on documents in the collection in the
+     * Azure Cosmos DB service.
      */
     @JsonProperty(value = "uniqueKeyPolicy")
     private UniqueKeyPolicy uniqueKeyPolicy;
@@ -213,7 +208,7 @@ public class SqlContainerResource {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property id in model SqlContainerResource"));
         }
@@ -230,4 +225,6 @@ public class SqlContainerResource {
             conflictResolutionPolicy().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SqlContainerResource.class);
 }

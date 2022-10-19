@@ -6,9 +6,8 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.securityinsights.models.Source;
+import com.azure.resourcemanager.securityinsights.models.SourceType;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -17,8 +16,6 @@ import java.util.List;
 /** Describes watchlist properties. */
 @Fluent
 public final class WatchlistProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WatchlistProperties.class);
-
     /*
      * The id (a Guid) of the watchlist
      */
@@ -38,10 +35,16 @@ public final class WatchlistProperties {
     private String provider;
 
     /*
-     * The source of the watchlist
+     * The filename of the watchlist, called 'source'
      */
-    @JsonProperty(value = "source", required = true)
-    private Source source;
+    @JsonProperty(value = "source")
+    private String source;
+
+    /*
+     * The sourceType of the watchlist
+     */
+    @JsonProperty(value = "sourceType")
+    private SourceType sourceType;
 
     /*
      * The time the watchlist was created
@@ -116,18 +119,16 @@ public final class WatchlistProperties {
     private Integer numberOfLinesToSkip;
 
     /*
-     * The raw content that represents to watchlist items to create. In case of
-     * csv/tsv content type, it's the content of the file that will parsed by
-     * the endpoint
+     * The raw content that represents to watchlist items to create. In case of csv/tsv content type, it's the content
+     * of the file that will parsed by the endpoint
      */
     @JsonProperty(value = "rawContent")
     private String rawContent;
 
     /*
-     * The search key is used to optimize query performance when using
-     * watchlists for joins with other data. For example, enable a column with
-     * IP addresses to be the designated SearchKey field, then use this field
-     * as the key field when joining to other event data by IP address.
+     * The search key is used to optimize query performance when using watchlists for joins with other data. For
+     * example, enable a column with IP addresses to be the designated SearchKey field, then use this field as the key
+     * field when joining to other event data by IP address.
      */
     @JsonProperty(value = "itemsSearchKey", required = true)
     private String itemsSearchKey;
@@ -139,18 +140,11 @@ public final class WatchlistProperties {
     private String contentType;
 
     /*
-     * The status of the Watchlist upload : New, InProgress or Complete. Pls
-     * note : When a Watchlist upload status is equal to InProgress, the
-     * Watchlist cannot be deleted
+     * The status of the Watchlist upload : New, InProgress or Complete. Pls note : When a Watchlist upload status is
+     * equal to InProgress, the Watchlist cannot be deleted
      */
     @JsonProperty(value = "uploadStatus")
     private String uploadStatus;
-
-    /*
-     * The number of Watchlist Items in the Watchlist
-     */
-    @JsonProperty(value = "watchlistItemsCount")
-    private Integer watchlistItemsCount;
 
     /**
      * Get the watchlistId property: The id (a Guid) of the watchlist.
@@ -213,22 +207,42 @@ public final class WatchlistProperties {
     }
 
     /**
-     * Get the source property: The source of the watchlist.
+     * Get the source property: The filename of the watchlist, called 'source'.
      *
      * @return the source value.
      */
-    public Source source() {
+    public String source() {
         return this.source;
     }
 
     /**
-     * Set the source property: The source of the watchlist.
+     * Set the source property: The filename of the watchlist, called 'source'.
      *
      * @param source the source value to set.
      * @return the WatchlistProperties object itself.
      */
-    public WatchlistProperties withSource(Source source) {
+    public WatchlistProperties withSource(String source) {
         this.source = source;
+        return this;
+    }
+
+    /**
+     * Get the sourceType property: The sourceType of the watchlist.
+     *
+     * @return the sourceType value.
+     */
+    public SourceType sourceType() {
+        return this.sourceType;
+    }
+
+    /**
+     * Set the sourceType property: The sourceType of the watchlist.
+     *
+     * @param sourceType the sourceType value to set.
+     * @return the WatchlistProperties object itself.
+     */
+    public WatchlistProperties withSourceType(SourceType sourceType) {
+        this.sourceType = sourceType;
         return this;
     }
 
@@ -561,45 +575,20 @@ public final class WatchlistProperties {
     }
 
     /**
-     * Get the watchlistItemsCount property: The number of Watchlist Items in the Watchlist.
-     *
-     * @return the watchlistItemsCount value.
-     */
-    public Integer watchlistItemsCount() {
-        return this.watchlistItemsCount;
-    }
-
-    /**
-     * Set the watchlistItemsCount property: The number of Watchlist Items in the Watchlist.
-     *
-     * @param watchlistItemsCount the watchlistItemsCount value to set.
-     * @return the WatchlistProperties object itself.
-     */
-    public WatchlistProperties withWatchlistItemsCount(Integer watchlistItemsCount) {
-        this.watchlistItemsCount = watchlistItemsCount;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property displayName in model WatchlistProperties"));
         }
         if (provider() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property provider in model WatchlistProperties"));
-        }
-        if (source() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property source in model WatchlistProperties"));
         }
         if (createdBy() != null) {
             createdBy().validate();
@@ -608,10 +597,12 @@ public final class WatchlistProperties {
             updatedBy().validate();
         }
         if (itemsSearchKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property itemsSearchKey in model WatchlistProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WatchlistProperties.class);
 }

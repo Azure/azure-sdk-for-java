@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.ManagedByTenant;
 import com.azure.resourcemanager.resources.models.SubscriptionPolicies;
 import com.azure.resourcemanager.resources.models.SubscriptionState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** Subscription information. */
 @Fluent
 public final class SubscriptionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionInner.class);
-
     /*
      * The fully qualified ID for the subscription. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000.

@@ -6,17 +6,13 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.PortalRevisionStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Portal revisions contract details. */
+/** Portal Revision's contract details. */
 @Fluent
 public final class PortalRevisionContractInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PortalRevisionContractInner.class);
-
     /*
      * Properties of the portal revisions.
      */
@@ -65,7 +61,7 @@ public final class PortalRevisionContractInner extends ProxyResource {
     }
 
     /**
-     * Get the status property: Portal revision publishing status.
+     * Get the status property: Status of the portal's revision.
      *
      * @return the status value.
      */
@@ -74,7 +70,7 @@ public final class PortalRevisionContractInner extends ProxyResource {
     }
 
     /**
-     * Get the isCurrent property: Indicates if the Portal Revision is public.
+     * Get the isCurrent property: Indicates if the portal's revision is public.
      *
      * @return the isCurrent value.
      */
@@ -83,7 +79,7 @@ public final class PortalRevisionContractInner extends ProxyResource {
     }
 
     /**
-     * Set the isCurrent property: Indicates if the Portal Revision is public.
+     * Set the isCurrent property: Indicates if the portal's revision is public.
      *
      * @param isCurrent the isCurrent value to set.
      * @return the PortalRevisionContractInner object itself.
@@ -97,7 +93,7 @@ public final class PortalRevisionContractInner extends ProxyResource {
     }
 
     /**
-     * Get the createdDateTime property: Portal revision creation date and time.
+     * Get the createdDateTime property: Portal's revision creation date and time.
      *
      * @return the createdDateTime value.
      */

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.NetAppAccountInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of NetApp account resources. */
 @Fluent
 public final class NetAppAccountList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetAppAccountList.class);
-
     /*
      * Multiple NetApp accounts
      */

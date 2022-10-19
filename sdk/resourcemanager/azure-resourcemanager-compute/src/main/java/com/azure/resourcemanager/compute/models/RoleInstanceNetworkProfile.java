@@ -6,19 +6,14 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the network profile for the role instance. */
 @Immutable
 public final class RoleInstanceNetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleInstanceNetworkProfile.class);
-
     /*
-     * Specifies the list of resource Ids for the network interfaces associated
-     * with the role instance.
+     * Specifies the list of resource Ids for the network interfaces associated with the role instance.
      */
     @JsonProperty(value = "networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> networkInterfaces;

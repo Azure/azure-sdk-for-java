@@ -8,7 +8,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
-/** Defines values for KeyExportEncryptionAlgorithm. */
+/**
+ * Defines values for {@link KeyExportEncryptionAlgorithm}.
+ */
 public final class KeyExportEncryptionAlgorithm extends ExpandableStringEnum<KeyExportEncryptionAlgorithm> {
     /** Static value CKM_RSA_AES_KEY_WRAP for KeyExportEncryptionAlgorithm. */
     public static final KeyExportEncryptionAlgorithm CKM_RSA_AES_KEY_WRAP = fromString("CKM_RSA_AES_KEY_WRAP");

@@ -12,15 +12,12 @@ import com.azure.resourcemanager.apimanagement.models.BearerTokenSendingMethod;
 import com.azure.resourcemanager.apimanagement.models.ClientAuthenticationMethod;
 import com.azure.resourcemanager.apimanagement.models.GrantType;
 import com.azure.resourcemanager.apimanagement.models.TokenBodyParameterContract;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** External OAuth authorization server settings Properties. */
 @Fluent
 public final class AuthorizationServerContractProperties extends AuthorizationServerContractBaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationServerContractProperties.class);
-
     /*
      * User-friendly authorization server name.
      */
@@ -272,36 +269,38 @@ public final class AuthorizationServerContractProperties extends AuthorizationSe
     public void validate() {
         super.validate();
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayName in model AuthorizationServerContractProperties"));
         }
         if (clientRegistrationEndpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clientRegistrationEndpoint in model"
                             + " AuthorizationServerContractProperties"));
         }
         if (authorizationEndpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property authorizationEndpoint in model"
                             + " AuthorizationServerContractProperties"));
         }
         if (grantTypes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property grantTypes in model AuthorizationServerContractProperties"));
         }
         if (clientId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clientId in model AuthorizationServerContractProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AuthorizationServerContractProperties.class);
 }

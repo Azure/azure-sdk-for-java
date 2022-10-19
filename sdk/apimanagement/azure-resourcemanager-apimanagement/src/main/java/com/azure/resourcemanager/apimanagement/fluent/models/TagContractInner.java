@@ -6,15 +6,11 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Tag Contract details. */
 @Fluent
 public final class TagContractInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagContractInner.class);
-
     /*
      * Tag entity contract properties.
      */

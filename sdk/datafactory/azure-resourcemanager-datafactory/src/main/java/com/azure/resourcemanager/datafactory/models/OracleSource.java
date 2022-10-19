@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,26 +14,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("OracleSource")
 @Fluent
 public final class OracleSource extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OracleSource.class);
-
     /*
-     * Oracle reader query. Type: string (or Expression with resultType
-     * string).
+     * Oracle reader query. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "oracleReaderQuery")
     private Object oracleReaderQuery;
 
     /*
-     * Query timeout. Type: string (or Expression with resultType string),
-     * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Query timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "queryTimeout")
     private Object queryTimeout;
 
     /*
-     * The partition mechanism that will be used for Oracle read in parallel.
-     * Possible values include: "None", "PhysicalPartitionsOfTable",
-     * "DynamicRange".
+     * The partition mechanism that will be used for Oracle read in parallel. Possible values include: "None",
+     * "PhysicalPartitionsOfTable", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
@@ -47,12 +41,15 @@ public final class OracleSource extends CopySource {
     private OraclePartitionSettings partitionSettings;
 
     /*
-     * Specifies the additional columns to be added to source data. Type: array
-     * of objects(AdditionalColumns) (or Expression with resultType array of
-     * objects).
+     * Specifies the additional columns to be added to source data. Type: array of objects(AdditionalColumns) (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
+
+    /** Creates an instance of OracleSource class. */
+    public OracleSource() {
+    }
 
     /**
      * Get the oracleReaderQuery property: Oracle reader query. Type: string (or Expression with resultType string).

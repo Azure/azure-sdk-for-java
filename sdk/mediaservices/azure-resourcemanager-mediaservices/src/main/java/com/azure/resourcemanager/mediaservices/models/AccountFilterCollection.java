@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mediaservices.fluent.models.AccountFilterInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A collection of AccountFilter items. */
 @Fluent
 public final class AccountFilterCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccountFilterCollection.class);
-
     /*
      * A collection of AccountFilter items.
      */
@@ -23,8 +19,8 @@ public final class AccountFilterCollection {
     private List<AccountFilterInner> value;
 
     /*
-     * A link to the next page of the collection (when the collection contains
-     * too many results to return in one response).
+     * A link to the next page of the collection (when the collection contains too many results to return in one
+     * response).
      */
     @JsonProperty(value = "@odata.nextLink")
     private String odataNextLink;

@@ -44,7 +44,7 @@ public class ExtractKeyPhrasesBatchStringDocumentsAsync {
         client.extractKeyPhrasesBatch(documents, "en", requestOptions).subscribe(
             keyPhrasesBatchResultCollection -> {
                 // Model version
-                System.out.printf("Results of Azure Text Analytics \"Key Phrases Extraction\" Model, version: %s%n", keyPhrasesBatchResultCollection.getModelVersion());
+                System.out.printf("Results of \"Key Phrases Extraction\" Model, version: %s%n", keyPhrasesBatchResultCollection.getModelVersion());
 
                 // Batch statistics
                 TextDocumentBatchStatistics batchStatistics = keyPhrasesBatchResultCollection.getStatistics();

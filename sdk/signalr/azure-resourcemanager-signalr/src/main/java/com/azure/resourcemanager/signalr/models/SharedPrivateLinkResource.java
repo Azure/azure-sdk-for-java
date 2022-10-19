@@ -53,7 +53,7 @@ public interface SharedPrivateLinkResource {
     String privateLinkResourceId();
 
     /**
-     * Gets the provisioningState property: Provisioning state of the shared private link resource.
+     * Gets the provisioningState property: Provisioning state of the resource.
      *
      * @return the provisioningState value.
      */

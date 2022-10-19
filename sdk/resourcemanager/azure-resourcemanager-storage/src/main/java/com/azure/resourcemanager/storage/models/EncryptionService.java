@@ -5,42 +5,36 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A service that allows server-side encryption to be used. */
 @Fluent
 public final class EncryptionService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionService.class);
-
     /*
-     * A boolean indicating whether or not the service encrypts the data as it
-     * is stored.
+     * A boolean indicating whether or not the service encrypts the data as it is stored. Encryption at rest is enabled
+     * by default today and cannot be disabled.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * Gets a rough estimate of the date/time when the encryption was last
-     * enabled by the user. Only returned when encryption is enabled. There
-     * might be some unencrypted blobs which were written after this time, as
-     * it is just a rough estimate.
+     * Gets a rough estimate of the date/time when the encryption was last enabled by the user. Data is encrypted at
+     * rest by default today and cannot be disabled.
      */
     @JsonProperty(value = "lastEnabledTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastEnabledTime;
 
     /*
-     * Encryption key type to be used for the encryption service. 'Account' key
-     * type implies that an account-scoped encryption key will be used.
-     * 'Service' key type implies that a default service key is used.
+     * Encryption key type to be used for the encryption service. 'Account' key type implies that an account-scoped
+     * encryption key will be used. 'Service' key type implies that a default service key is used.
      */
     @JsonProperty(value = "keyType")
     private KeyType keyType;
 
     /**
      * Get the enabled property: A boolean indicating whether or not the service encrypts the data as it is stored.
+     * Encryption at rest is enabled by default today and cannot be disabled.
      *
      * @return the enabled value.
      */
@@ -50,6 +44,7 @@ public final class EncryptionService {
 
     /**
      * Set the enabled property: A boolean indicating whether or not the service encrypts the data as it is stored.
+     * Encryption at rest is enabled by default today and cannot be disabled.
      *
      * @param enabled the enabled value to set.
      * @return the EncryptionService object itself.
@@ -61,8 +56,7 @@ public final class EncryptionService {
 
     /**
      * Get the lastEnabledTime property: Gets a rough estimate of the date/time when the encryption was last enabled by
-     * the user. Only returned when encryption is enabled. There might be some unencrypted blobs which were written
-     * after this time, as it is just a rough estimate.
+     * the user. Data is encrypted at rest by default today and cannot be disabled.
      *
      * @return the lastEnabledTime value.
      */

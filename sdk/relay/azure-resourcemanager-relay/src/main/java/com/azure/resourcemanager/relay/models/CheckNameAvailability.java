@@ -6,14 +6,11 @@ package com.azure.resourcemanager.relay.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of the check name availability request properties. */
 @Fluent
 public final class CheckNameAvailability {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CheckNameAvailability.class);
-
     /*
      * The namespace name to check for availability. The namespace name can
      * contain only letters, numbers, and hyphens. The namespace must start
@@ -51,9 +48,11 @@ public final class CheckNameAvailability {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model CheckNameAvailability"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CheckNameAvailability.class);
 }

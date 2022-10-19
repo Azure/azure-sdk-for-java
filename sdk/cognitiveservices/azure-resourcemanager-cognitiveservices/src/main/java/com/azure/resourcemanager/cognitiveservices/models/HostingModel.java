@@ -30,7 +30,11 @@ public final class HostingModel extends ExpandableStringEnum<HostingModel> {
         return fromString(name, HostingModel.class);
     }
 
-    /** @return known HostingModel values. */
+    /**
+     * Gets known HostingModel values.
+     *
+     * @return known HostingModel values.
+     */
     public static Collection<HostingModel> values() {
         return values(HostingModel.class);
     }

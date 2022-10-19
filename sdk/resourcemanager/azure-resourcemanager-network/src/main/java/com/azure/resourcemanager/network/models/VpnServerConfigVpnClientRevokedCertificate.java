@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the revoked VPN client certificate of VpnServerConfiguration. */
 @Fluent
 public final class VpnServerConfigVpnClientRevokedCertificate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnServerConfigVpnClientRevokedCertificate.class);
-
     /*
      * The certificate name.
      */
@@ -25,6 +21,10 @@ public final class VpnServerConfigVpnClientRevokedCertificate {
      */
     @JsonProperty(value = "thumbprint")
     private String thumbprint;
+
+    /** Creates an instance of VpnServerConfigVpnClientRevokedCertificate class. */
+    public VpnServerConfigVpnClientRevokedCertificate() {
+    }
 
     /**
      * Get the name property: The certificate name.

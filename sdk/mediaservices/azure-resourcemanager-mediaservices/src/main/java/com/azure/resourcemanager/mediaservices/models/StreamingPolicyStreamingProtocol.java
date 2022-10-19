@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StreamingPolicyStreamingProtocol. */
+/** Streaming protocol. */
 public final class StreamingPolicyStreamingProtocol extends ExpandableStringEnum<StreamingPolicyStreamingProtocol> {
     /** Static value Hls for StreamingPolicyStreamingProtocol. */
     public static final StreamingPolicyStreamingProtocol HLS = fromString("Hls");
@@ -33,7 +33,11 @@ public final class StreamingPolicyStreamingProtocol extends ExpandableStringEnum
         return fromString(name, StreamingPolicyStreamingProtocol.class);
     }
 
-    /** @return known StreamingPolicyStreamingProtocol values. */
+    /**
+     * Gets known StreamingPolicyStreamingProtocol values.
+     *
+     * @return known StreamingPolicyStreamingProtocol values.
+     */
     public static Collection<StreamingPolicyStreamingProtocol> values() {
         return values(StreamingPolicyStreamingProtocol.class);
     }

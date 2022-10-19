@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IotDpsResource List. */
 public final class IotDpsResourceListSamples {
     /*
-     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2021-10-15/examples/DPSListBySubscription.json
+     * x-ms-original-file: specification/deviceprovisioningservices/resource-manager/Microsoft.Devices/stable/2022-02-05/examples/DPSListBySubscription.json
      */
     /**
      * Sample code: DPSListBySubscription.

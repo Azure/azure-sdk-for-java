@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.GreenplumDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("GreenplumTable")
 @Fluent
 public final class GreenplumTableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GreenplumTableDataset.class);
-
     /*
      * Properties specific to this dataset type.
      */
     @JsonProperty(value = "typeProperties")
     private GreenplumDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of GreenplumTableDataset class. */
+    public GreenplumTableDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Cosmos DB region to online or offline. */
 @Fluent
 public final class RegionForOnlineOffline {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RegionForOnlineOffline.class);
-
     /*
      * Cosmos DB region, with spaces between words and each word capitalized.
      */
@@ -47,9 +44,11 @@ public final class RegionForOnlineOffline {
      */
     public void validate() {
         if (region() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property region in model RegionForOnlineOffline"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RegionForOnlineOffline.class);
 }

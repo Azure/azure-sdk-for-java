@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.TableGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.TableGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an Azure Cosmos Table. */
 @Fluent
 public final class TableGetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TableGetProperties.class);
-
     /*
      * The resource property.
      */

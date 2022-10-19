@@ -12,10 +12,9 @@ import com.azure.resourcemanager.mysqlflexibleserver.fluent.GetPrivateDnsZoneSuf
 import com.azure.resourcemanager.mysqlflexibleserver.fluent.models.GetPrivateDnsZoneSuffixResponseInner;
 import com.azure.resourcemanager.mysqlflexibleserver.models.GetPrivateDnsZoneSuffixResponse;
 import com.azure.resourcemanager.mysqlflexibleserver.models.GetPrivateDnsZoneSuffixes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class GetPrivateDnsZoneSuffixesImpl implements GetPrivateDnsZoneSuffixes {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetPrivateDnsZoneSuffixesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(GetPrivateDnsZoneSuffixesImpl.class);
 
     private final GetPrivateDnsZoneSuffixesClient innerClient;
 

@@ -302,6 +302,22 @@ public class PhoneNumbersClientBuilderTest {
         });
     }
 
+    @Test
+    public void bothRetryOptionsAndRetryPolicySetSync() {
+        assertThrows(IllegalStateException.class, () -> setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySetAsync() {
+        assertThrows(IllegalStateException.class, () -> setupBuilderWithHttpClientWithCredential(this.clientBuilder)
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildAsyncClient());
+    }
+
     private PhoneNumbersClientBuilder setupBuilderWithHttpClientWithCredential(PhoneNumbersClientBuilder clientBuilder) {
         return clientBuilder
             .endpoint(ENDPOINT)

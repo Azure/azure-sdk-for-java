@@ -214,6 +214,14 @@ public interface RedisCache
             WithCreate withRedisConfiguration(String key, String value);
 
             /**
+             * Specifies Redis Setting.
+             *
+             * @param redisConfiguration the Redis configuration.
+             * @return the next stage of Redis Cache definition.
+             */
+            WithCreate withRedisConfiguration(RedisConfiguration redisConfiguration);
+
+            /**
              * Creates Redis cache firewall rule with range of IP addresses permitted to connect to the cache.
              *
              * @param name name of the rule.
@@ -413,6 +421,14 @@ public interface RedisCache
             Update withRedisConfiguration(String key, String value);
 
             /**
+             * Specifies Redis Setting.
+             *
+             * @param redisConfiguration the Redis configuration.
+             * @return the next stage of Redis Cache update.
+             */
+            Update withRedisConfiguration(RedisConfiguration redisConfiguration);
+
+            /**
              * Cleans all the configuration settings being set on Redis Cache.
              *
              * @return the next stage of Redis Cache update.
@@ -548,7 +564,10 @@ public interface RedisCache
         V6("6"),
         /**
          * version 4.x.x
+         * @deprecated Because Redis version 4 is no longer supported by the open source community,
+         *             it will be retired from Azure Cache for Redis.
          */
+        @Deprecated
         V4("4");
 
         private final String value;
@@ -566,5 +585,4 @@ public interface RedisCache
             return value;
         }
     }
-
 }

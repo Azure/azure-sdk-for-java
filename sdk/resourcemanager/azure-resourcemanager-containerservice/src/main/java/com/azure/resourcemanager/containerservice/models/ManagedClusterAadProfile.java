@@ -5,19 +5,16 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * AADProfile specifies attributes for Azure Active Directory integration. For more details see [managed AAD on
- * AKS](https://docs.microsoft.com/azure/aks/managed-aad).
+ * AADProfile specifies attributes for Azure Active Directory integration.
+ *
+ * <p>For more details see [managed AAD on AKS](https://docs.microsoft.com/azure/aks/managed-aad).
  */
 @Fluent
 public final class ManagedClusterAadProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAadProfile.class);
-
     /*
      * Whether to enable managed AAD.
      */
@@ -31,8 +28,7 @@ public final class ManagedClusterAadProfile {
     private Boolean enableAzureRbac;
 
     /*
-     * The list of AAD group object IDs that will have admin role of the
-     * cluster.
+     * The list of AAD group object IDs that will have admin role of the cluster.
      */
     @JsonProperty(value = "adminGroupObjectIDs")
     private List<String> adminGroupObjectIDs;
@@ -56,8 +52,8 @@ public final class ManagedClusterAadProfile {
     private String serverAppSecret;
 
     /*
-     * The AAD tenant ID to use for authentication. If not specified, will use
-     * the tenant of the deployment subscription.
+     * The AAD tenant ID to use for authentication. If not specified, will use the tenant of the deployment
+     * subscription.
      */
     @JsonProperty(value = "tenantID")
     private String tenantId;

@@ -49,7 +49,7 @@ public final class SearchIndexingPublisher<T> {
     private static final String BATCH_SIZE_SCALED_DOWN =
         "Scaling down batch size due to 413 (Payload too large) response.{}Scaled down from {} to {}";
 
-    private final ClientLogger logger = new ClientLogger(SearchIndexingPublisher.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SearchIndexingPublisher.class);
 
     private final SearchIndexClientImpl restClient;
     private final JsonSerializer serializer;
@@ -143,11 +143,11 @@ public final class SearchIndexingPublisher<T> {
                 this.actions.add(action);
             });
 
-        logger.verbose("Actions added, new pending queue size: {}.", this.actions.size());
+        LOGGER.verbose("Actions added, new pending queue size: {}.", this.actions.size());
 
         if (autoFlush && batchAvailableForProcessing()) {
             rescheduleFlush.run();
-            logger.verbose("Adding documents triggered batch size limit, sending documents for indexing.");
+            LOGGER.verbose("Adding documents triggered batch size limit, sending documents for indexing.");
             return flush(false, false, context);
         }
 
@@ -163,7 +163,7 @@ public final class SearchIndexingPublisher<T> {
             return flushLoop(isClose, context)
                 .doFinally(ignored -> processingSemaphore.release());
         } else {
-            logger.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
+            LOGGER.verbose("Batch already in-flight and not waiting for completion. Performing no-op.");
             return Mono.empty();
         }
     }
@@ -253,14 +253,14 @@ public final class SearchIndexingPublisher<T> {
         List<com.azure.search.documents.implementation.models.IndexAction> actions,
         List<TryTrackingIndexAction<T>> batchActions,
         Context context) {
-        logger.verbose("Sending a batch of size {}.", batchActions.size());
+        LOGGER.verbose("Sending a batch of size {}.", batchActions.size());
 
         if (onActionSentConsumer != null) {
             batchActions.forEach(action -> onActionSentConsumer.accept(new OnActionSentOptions<>(action.getAction())));
         }
 
         Mono<Response<IndexDocumentsResult>> batchCall = Utility.indexDocumentsWithResponse(restClient, actions, true,
-            context, logger);
+            context, LOGGER);
 
         if (!currentRetryDelay.isZero() && !currentRetryDelay.isNegative()) {
             batchCall = batchCall.delaySubscription(currentRetryDelay);
@@ -269,7 +269,7 @@ public final class SearchIndexingPublisher<T> {
         return batchCall.map(response -> new IndexBatchResponse(response.getStatusCode(),
             response.getValue().getResults(), actions.size(), false))
             .doOnCancel(() -> {
-                logger.warning("Request was cancelled before response, adding all in-flight documents back to queue.");
+                LOGGER.warning("Request was cancelled before response, adding all in-flight documents back to queue.");
                 inFlightActions.addAll(batchActions);
             })
             // Handles mixed success responses.
@@ -294,7 +294,7 @@ public final class SearchIndexingPublisher<T> {
                     int previousBatchSize = Math.min(batchActionCount, actions.size());
                     this.batchActionCount = Math.max(1, scaleDownFunction.apply(previousBatchSize));
 
-                    logger.verbose(BATCH_SIZE_SCALED_DOWN, System.lineSeparator(), previousBatchSize, batchActionCount);
+                    LOGGER.verbose(BATCH_SIZE_SCALED_DOWN, System.lineSeparator(), previousBatchSize, batchActionCount);
 
                     int actionCount = actions.size();
                     if (actionCount == 1) {
@@ -350,7 +350,7 @@ public final class SearchIndexingPublisher<T> {
                     .orElse(null);
 
                 if (action == null) {
-                    logger.warning("Unable to correlate result key {} to initial document.", key);
+                    LOGGER.warning("Unable to correlate result key {} to initial document.", key);
                     continue;
                 }
 

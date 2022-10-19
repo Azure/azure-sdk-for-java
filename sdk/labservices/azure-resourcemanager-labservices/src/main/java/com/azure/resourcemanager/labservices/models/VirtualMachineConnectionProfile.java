@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The connection information for the virtual machine. */
 @Immutable
 public final class VirtualMachineConnectionProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineConnectionProfile.class);
-
     /*
      * The private IP address of the virtual machine.
      */
@@ -21,8 +17,7 @@ public final class VirtualMachineConnectionProfile {
     private String privateIpAddress;
 
     /*
-     * Port and host name separated by semicolon for connecting via SSH
-     * protocol to the virtual machine.
+     * Port and host name separated by semicolon for connecting via SSH protocol to the virtual machine.
      */
     @JsonProperty(value = "sshAuthority", access = JsonProperty.Access.WRITE_ONLY)
     private String sshAuthority;
@@ -34,8 +29,7 @@ public final class VirtualMachineConnectionProfile {
     private String sshInBrowserUrl;
 
     /*
-     * Port and host name separated by semicolon for connecting via RDP
-     * protocol to the virtual machine.
+     * Port and host name separated by semicolon for connecting via RDP protocol to the virtual machine.
      */
     @JsonProperty(value = "rdpAuthority", access = JsonProperty.Access.WRITE_ONLY)
     private String rdpAuthority;
@@ -53,8 +47,7 @@ public final class VirtualMachineConnectionProfile {
     private String adminUsername;
 
     /*
-     * The username used to log on to the virtual machine as non-admin, if one
-     * exists.
+     * The username used to log on to the virtual machine as non-admin, if one exists.
      */
     @JsonProperty(value = "nonAdminUsername", access = JsonProperty.Access.WRITE_ONLY)
     private String nonAdminUsername;

@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the AzureFirewallRCAction. */
 @Fluent
 public final class AzureFirewallRCAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallRCAction.class);
-
     /*
      * The type of action.
      */
     @JsonProperty(value = "type")
     private AzureFirewallRCActionType type;
+
+    /** Creates an instance of AzureFirewallRCAction class. */
+    public AzureFirewallRCAction() {
+    }
 
     /**
      * Get the type property: The type of action.

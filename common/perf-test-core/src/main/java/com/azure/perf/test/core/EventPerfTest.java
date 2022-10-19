@@ -6,6 +6,7 @@ package com.azure.perf.test.core;
 import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Represents the abstraction of a Performance test class.
@@ -19,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends PerfTestBase<TOptions> {
 
-    private final AtomicInteger completedOps;
+    private final AtomicLong completedOps;
 
     private volatile boolean errorRaised;
 
@@ -36,7 +37,7 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
         if (options.getTestProxies() != null && options.getTestProxies().size() > 0) {
             throw new IllegalStateException("Test Proxies are not supported for Event Perf Tests.");
         }
-        completedOps = new AtomicInteger(0);
+        completedOps = new AtomicLong(0);
     }
 
     /**
@@ -86,7 +87,7 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
 
     @Override
     public long getCompletedOperations() {
-        return completedOps.longValue();
+        return completedOps.get();
     }
 
 }

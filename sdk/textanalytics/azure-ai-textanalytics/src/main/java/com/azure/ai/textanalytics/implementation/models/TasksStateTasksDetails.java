@@ -8,4 +8,6 @@ import com.azure.core.annotation.Immutable;
 
 /** The TasksStateTasksDetails model. */
 @Immutable
-public final class TasksStateTasksDetails extends TaskState {}
+public final class TasksStateTasksDetails extends TaskState {
+
+}

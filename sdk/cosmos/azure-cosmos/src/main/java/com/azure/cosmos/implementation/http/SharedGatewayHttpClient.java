@@ -20,7 +20,6 @@ public class SharedGatewayHttpClient implements HttpClient {
     private static final Logger logger = LoggerFactory.getLogger(SharedGatewayHttpClient.class);
     private static final AtomicInteger counter = new AtomicInteger(0);
     private static SharedGatewayHttpClient sharedGatewayHttpClient;
-    private final HttpClientConfig effectiveHttpClientConfig;
 
     public static HttpClient getOrCreateInstance(HttpClientConfig httpClientConfig, DiagnosticsClientContext.DiagnosticsClientConfig diagnosticsClientConfig) {
         synchronized (SharedGatewayHttpClient.class) {
@@ -33,7 +32,7 @@ public class SharedGatewayHttpClient implements HttpClient {
             }
 
             counter.incrementAndGet();
-            diagnosticsClientConfig.withGatewayHttpClientConfig(sharedGatewayHttpClient.effectiveHttpClientConfig);
+            diagnosticsClientConfig.withGatewayHttpClientConfig(httpClientConfig.toDiagnosticsString());
             return sharedGatewayHttpClient;
         }
     }
@@ -42,7 +41,6 @@ public class SharedGatewayHttpClient implements HttpClient {
 
     private SharedGatewayHttpClient(HttpClientConfig httpClientConfig) {
         this.httpClient = HttpClient.createFixed(httpClientConfig);
-        this.effectiveHttpClientConfig = httpClientConfig;
     }
 
     @Override

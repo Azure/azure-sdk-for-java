@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -30,12 +29,14 @@ import java.util.Map;
 })
 @Fluent
 public class ExportSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExportSettings.class);
-
     /*
      * Export command settings.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of ExportSettings class. */
+    public ExportSettings() {
+    }
 
     /**
      * Get the additionalProperties property: Export command settings.

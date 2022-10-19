@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -66,18 +65,15 @@ import java.util.Map;
 })
 @Fluent
 public class CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CopySink.class);
-
     /*
-     * Write batch size. Type: integer (or Expression with resultType integer),
-     * minimum: 0.
+     * Write batch size. Type: integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "writeBatchSize")
     private Object writeBatchSize;
 
     /*
-     * Write batch timeout. Type: string (or Expression with resultType
-     * string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Write batch timeout. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "writeBatchTimeout")
     private Object writeBatchTimeout;
@@ -89,22 +85,22 @@ public class CopySink {
     private Object sinkRetryCount;
 
     /*
-     * Sink retry wait. Type: string (or Expression with resultType string),
-     * pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
+     * Sink retry wait. Type: string (or Expression with resultType string), pattern:
+     * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
      */
     @JsonProperty(value = "sinkRetryWait")
     private Object sinkRetryWait;
 
     /*
-     * The maximum concurrent connection count for the sink data store. Type:
-     * integer (or Expression with resultType integer).
+     * The maximum concurrent connection count for the sink data store. Type: integer (or Expression with resultType
+     * integer).
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
 
     /*
-     * If true, disable data store metrics collection. Default is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "disableMetricsCollection")
     private Object disableMetricsCollection;
@@ -113,6 +109,10 @@ public class CopySink {
      * A copy activity sink.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of CopySink class. */
+    public CopySink() {
+    }
 
     /**
      * Get the writeBatchSize property: Write batch size. Type: integer (or Expression with resultType integer),

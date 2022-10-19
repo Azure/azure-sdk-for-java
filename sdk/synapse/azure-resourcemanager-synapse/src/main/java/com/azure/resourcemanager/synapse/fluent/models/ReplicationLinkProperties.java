@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.ReplicationRole;
 import com.azure.resourcemanager.synapse.models.ReplicationState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Represents the properties of a Sql pool replication link. */
 @Immutable
 public final class ReplicationLinkProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReplicationLinkProperties.class);
-
     /*
      * Legacy value indicating whether termination is allowed.  Currently
      * always returns true.

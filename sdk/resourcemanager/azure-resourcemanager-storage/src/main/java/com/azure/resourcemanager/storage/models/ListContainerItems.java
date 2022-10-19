@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.ListContainerItemInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Immutable
 public final class ListContainerItems {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListContainerItems.class);
-
     /*
      * List of blobs containers returned.
      */
@@ -26,8 +22,8 @@ public final class ListContainerItems {
     private List<ListContainerItemInner> value;
 
     /*
-     * Request URL that can be used to query next page of containers. Returned
-     * when total number of requested containers exceed maximum page size.
+     * Request URL that can be used to query next page of containers. Returned when total number of requested
+     * containers exceed maximum page size.
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;

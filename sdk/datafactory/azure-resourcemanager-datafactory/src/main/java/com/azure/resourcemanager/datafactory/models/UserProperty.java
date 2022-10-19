@@ -6,14 +6,11 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** User property. */
 @Fluent
 public final class UserProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserProperty.class);
-
     /*
      * User property name.
      */
@@ -21,11 +18,14 @@ public final class UserProperty {
     private String name;
 
     /*
-     * User property value. Type: string (or Expression with resultType
-     * string).
+     * User property value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "value", required = true)
     private Object value;
+
+    /** Creates an instance of UserProperty class. */
+    public UserProperty() {
+    }
 
     /**
      * Get the name property: User property name.
@@ -74,14 +74,16 @@ public final class UserProperty {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model UserProperty"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model UserProperty"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UserProperty.class);
 }

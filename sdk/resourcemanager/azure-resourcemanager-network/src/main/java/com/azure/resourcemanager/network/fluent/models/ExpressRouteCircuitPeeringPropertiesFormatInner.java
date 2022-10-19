@@ -6,23 +6,18 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ExpressRouteConnectionId;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringState;
 import com.azure.resourcemanager.network.models.ExpressRoutePeeringType;
 import com.azure.resourcemanager.network.models.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the express route circuit peering. */
 @Fluent
 public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringPropertiesFormatInner.class);
-
     /*
      * The peering type.
      */
@@ -132,18 +127,20 @@ public final class ExpressRouteCircuitPeeringPropertiesFormatInner {
     private ExpressRouteConnectionId expressRouteConnection;
 
     /*
-     * The list of circuit connections associated with Azure Private Peering
-     * for this circuit.
+     * The list of circuit connections associated with Azure Private Peering for this circuit.
      */
     @JsonProperty(value = "connections")
     private List<ExpressRouteCircuitConnectionInner> connections;
 
     /*
-     * The list of peered circuit connections associated with Azure Private
-     * Peering for this circuit.
+     * The list of peered circuit connections associated with Azure Private Peering for this circuit.
      */
     @JsonProperty(value = "peeredConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PeerExpressRouteCircuitConnectionInner> peeredConnections;
+
+    /** Creates an instance of ExpressRouteCircuitPeeringPropertiesFormatInner class. */
+    public ExpressRouteCircuitPeeringPropertiesFormatInner() {
+    }
 
     /**
      * Get the peeringType property: The peering type.

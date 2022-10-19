@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.HDInsightOnDemandLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("HDInsightOnDemand")
 @Fluent
 public final class HDInsightOnDemandLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightOnDemandLinkedService.class);
-
     /*
      * HDInsight ondemand linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private HDInsightOnDemandLinkedServiceTypeProperties innerTypeProperties =
         new HDInsightOnDemandLinkedServiceTypeProperties();
+
+    /** Creates an instance of HDInsightOnDemandLinkedService class. */
+    public HDInsightOnDemandLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: HDInsight ondemand linked service properties.
@@ -912,7 +913,7 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model HDInsightOnDemandLinkedService"));
@@ -920,4 +921,6 @@ public final class HDInsightOnDemandLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HDInsightOnDemandLinkedService.class);
 }

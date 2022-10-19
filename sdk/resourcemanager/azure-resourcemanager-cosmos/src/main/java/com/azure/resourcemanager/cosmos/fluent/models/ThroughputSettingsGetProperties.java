@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an Azure Cosmos DB resource throughput. */
 @Fluent
 public final class ThroughputSettingsGetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThroughputSettingsGetProperties.class);
-
     /*
      * The resource property.
      */

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** VnetValidationTestFailure resource specific properties. */
 @Fluent
 public final class VnetValidationTestFailureProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetValidationTestFailureProperties.class);
-
     /*
      * The name of the test that failed.
      */

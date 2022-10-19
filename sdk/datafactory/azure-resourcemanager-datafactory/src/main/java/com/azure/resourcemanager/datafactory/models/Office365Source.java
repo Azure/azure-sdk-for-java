@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,11 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Office365Source")
 @Fluent
 public final class Office365Source extends CopySource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Office365Source.class);
-
     /*
-     * The groups containing all the users. Type: array of strings (or
-     * Expression with resultType array of strings).
+     * The groups containing all the users. Type: array of strings (or Expression with resultType array of strings).
      */
     @JsonProperty(value = "allowedGroups")
     private Object allowedGroups;
@@ -32,33 +27,34 @@ public final class Office365Source extends CopySource {
     private Object userScopeFilterUri;
 
     /*
-     * The Column to apply the <paramref name="StartTime"/> and <paramref
-     * name="EndTime"/>. Type: string (or Expression with resultType string).
+     * The Column to apply the <paramref name="StartTime"/> and <paramref name="EndTime"/>. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "dateFilterColumn")
     private Object dateFilterColumn;
 
     /*
-     * Start time of the requested range for this dataset. Type: string (or
-     * Expression with resultType string).
+     * Start time of the requested range for this dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "startTime")
     private Object startTime;
 
     /*
-     * End time of the requested range for this dataset. Type: string (or
-     * Expression with resultType string).
+     * End time of the requested range for this dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "endTime")
     private Object endTime;
 
     /*
-     * The columns to be read out from the Office 365 table. Type: array of
-     * objects (or Expression with resultType array of objects). Example: [ {
-     * "name": "Id" }, { "name": "CreatedDateTime" } ]
+     * The columns to be read out from the Office 365 table. Type: array of objects (or Expression with resultType
+     * array of objects). Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
      */
     @JsonProperty(value = "outputColumns")
     private Object outputColumns;
+
+    /** Creates an instance of Office365Source class. */
+    public Office365Source() {
+    }
 
     /**
      * Get the allowedGroups property: The groups containing all the users. Type: array of strings (or Expression with

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the Extension Topic. */
 @Fluent
 public final class ExtensionTopicProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtensionTopicProperties.class);
-
     /*
      * Description of the extension topic.
      */

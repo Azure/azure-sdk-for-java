@@ -1,9 +1,10 @@
 {
-  "version": "0.1",
+  "version": "0.2",
   "language": "en",
   "languageId": "java",
   "dictionaries": ["powershell"],
   "ignorePaths": [
+    "eng",
     "**/session-records/**",
     "*.jar",
     "*.zip",
@@ -35,28 +36,217 @@
     "*.x509",
     "*.certificate",
     "*.crt",
-    ".vscode/cspell.json",
-    "eng/code-quality-reports/src/main/resources"
+    "*.yml",
+    ".vscode/cspell.json"
   ],
-  "words": ["azsdk", "pwsh"],
+  "words": [
+    "azsdk",
+    "codesnippet",
+    "revapi",
+    "checkstyle",
+    "spotbugs",
+    "OLTP",
+    "jacoco",
+    "branchcoverage",
+    "linecoverage",
+    "javadoc",
+    "javadocs",
+    "fileset",
+    "toFile",
+    "scalastyle",
+    "scalatest",
+    "junitxml",
+    "filereports",
+    "Classpath",
+    "boringssl",
+    "SBOM",
+    "credscan",
+    "gdnbaselines",
+    "Sonatype",
+    "graalvm",
+    "doclinting",
+    "doclint",
+    "requireReleaseDeps",
+    "XLint",
+    "linksource",
+    "doctitle",
+    "windowtitle",
+    "autodetection",
+    "databind",
+    "Intellij",
+    "destfile",
+    "pwsh",
+    "Dgenerate",
+    "amqp",
+    "gson",
+    "VNET"
+  ],
   "overrides": [
     {
-      "filename": "**/eng/pipelines/templates/jobs/ci.yml",
-      "words": [
-        "dskip",
-        "dinject",
-        "codesnippets",
-        "dgenerate",
-        "dspotbugs",
-        "dcheckstyle",
-        "drevapi",
-        "dalt",
-        "apireview",
-        "setuptools",
-        "dgpg",
-        "dmaven",
-        "checkstyle",
-        "dverify"
+      "filename": "**/pom.xml",
+      "patterns": [
+        {
+          "name": "artifactName",
+          "pattern": ".*<artifactId>.*"
+        },
+        {
+          "name": "groupId",
+          "pattern": ".*<groupId>.*"
+        },
+        {
+          "name": "version",
+          "pattern": ".*<version>.*"
+        },
+        {
+          "name": "include",
+          "pattern": ".*<include>.*"
+        },
+        {
+          "name": "exclude",
+          "pattern": ".*<exclude>.*"
+        },
+        {
+          "name": "id",
+          "pattern": ".*<id>.*"
+        },
+        {
+          "name": "exists",
+          "pattern": ".*<exists>.*"
+        },
+        {
+          "name": "pattern",
+          "pattern": ".*<pattern>.*"
+        },
+        {
+          "name": "shadedPattern",
+          "pattern": ".*<shadedPattern>.*"
+        },
+        {
+          "name": "stylesheet",
+          "pattern": ".*<stylesheet>.*"
+        },
+        {
+          "name": "value",
+          "pattern": ".*<value>.*"
+        },
+        {
+          "name": "arg",
+          "pattern": ".*<arg>.*"
+        },
+        {
+          "name": "propertyExpansion",
+          "pattern": ".*<propertyExpansion>.*"
+        },
+        {
+          "name": "fileMapper",
+          "pattern": ".*<fileMapper.*"
+        },
+        {
+          "name": "packages",
+          "pattern": ".*<packages>.*"
+        },
+        {
+          "name": "sourceFileExclude",
+          "pattern": ".*<sourceFileExclude>.*"
+        },
+        {
+          "name": "filesets",
+          "pattern": ".*<filesets>.*"
+        },
+        {
+          "name": "checkstyle.excludes",
+          "pattern": ".*<checkstyle.excludes>.*"
+        },
+        {
+          "name": "module",
+          "pattern": ".*<module>.*"
+        },
+        {
+          "name": "suiteXmlFile",
+          "pattern": ".*<suiteXmlFile>.*"
+        },
+        {
+          "name": "test.groups",
+          "pattern": ".*<test.groups>.*"
+        },
+        {
+          "name": "perf.test",
+          "pattern": ".*<perf.test..*"
+        },
+        {
+          "name": "excludePackageNames",
+          "pattern": "/<excludePackageNames>([\\s\\S]*?)<\/excludePackageNames>/im"
+        },
+        {
+          "name": "heapDumpOnOom",
+          "pattern": "/<heapDumpOnOom>([\\s\\S]*?)<\/heapDumpOnOom>/im"
+        },
+        {
+          "name": "environmentVariables",
+          "pattern": "/<environmentVariables>([\\s\\S]*?)<\/environmentVariables>/im"
+        },
+        {
+          "name": "javaModulesSurefireArgLine",
+          "pattern": "/<javaModulesSurefireArgLine>([\\s\\S]*?)<\/javaModulesSurefireArgLine>/im"
+        },
+        {
+          "name": "additionalSurefireArgLine",
+          "pattern": "/<additionalSurefireArgLine>([\\s\\S]*?)<\/additionalSurefireArgLine>/im"
+        },
+        {
+          "name": "argLine",
+          "pattern": "/<argLine>([\\s\\S]*?)<\/argLine>/im"
+        },
+        {
+          "name": "property",
+          "pattern": "/<property>([\\s\\S]*?)<\/property>/im"
+        },
+        {
+          "name": "manifestEntries",
+          "pattern": "/<manifestEntries>([\\s\\S]*?)<\/manifestEntries>/im"
+        },
+        {
+          "name": "compilerArguments",
+          "pattern": "/<compilerArguments>([\\s\\S]*?)<\/compilerArguments>/im"
+        },
+        {
+          "name": "annotationProcessors",
+          "pattern": "/<annotationProcessors>([\\s\\S]*?)<\/annotationProcessors>/im"
+        }
+      ],
+      "ignoreRegExpList": [
+        "artifactName",
+        "groupId",
+        "version",
+        "include",
+        "exclude",
+        "id",
+        "exists",
+        "pattern",
+        "shadedPattern",
+        "stylesheet",
+        "value",
+        "arg",
+        "propertyExpansion",
+        "fileMapper",
+        "packages",
+        "sourceFileExclude",
+        "filesets",
+        "checkstyle.excludes",
+        "module",
+        "suiteXmlFile",
+        "test.groups",
+        "perf.test",
+        "excludePackageNames",
+        "heapDumpOnOom",
+        "environmentVariables",
+        "javaModulesSurefireArgLine",
+        "additionalSurefireArgLine",
+        "argLine",
+        "property",
+        "manifestEntries",
+        "compilerArguments",
+        "annotationProcessors"
       ]
     }
   ],

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Kind. */
+/** The kind of content the metadata is for. */
 public final class Kind extends ExpandableStringEnum<Kind> {
     /** Static value DataConnector for Kind. */
     public static final Kind DATA_CONNECTOR = fromString("DataConnector");
@@ -52,6 +52,15 @@ public final class Kind extends ExpandableStringEnum<Kind> {
     /** Static value Solution for Kind. */
     public static final Kind SOLUTION = fromString("Solution");
 
+    /** Static value AzureFunction for Kind. */
+    public static final Kind AZURE_FUNCTION = fromString("AzureFunction");
+
+    /** Static value LogicAppsCustomConnector for Kind. */
+    public static final Kind LOGIC_APPS_CUSTOM_CONNECTOR = fromString("LogicAppsCustomConnector");
+
+    /** Static value AutomationRule for Kind. */
+    public static final Kind AUTOMATION_RULE = fromString("AutomationRule");
+
     /**
      * Creates or finds a Kind from its string representation.
      *
@@ -63,7 +72,11 @@ public final class Kind extends ExpandableStringEnum<Kind> {
         return fromString(name, Kind.class);
     }
 
-    /** @return known Kind values. */
+    /**
+     * Gets known Kind values.
+     *
+     * @return known Kind values.
+     */
     public static Collection<Kind> values() {
         return values(Kind.class);
     }

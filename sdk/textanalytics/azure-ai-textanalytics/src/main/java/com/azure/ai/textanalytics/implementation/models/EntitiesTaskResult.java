@@ -6,14 +6,18 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The EntitiesTaskResult model. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
+@JsonTypeName("EntityRecognitionResults")
 @Fluent
-public class EntitiesTaskResult {
+public final class EntitiesTaskResult extends AnalyzeTextTaskResult {
     /*
      * The results property.
      */
-    @JsonProperty(value = "results")
+    @JsonProperty(value = "results", required = true)
     private EntitiesResult results;
 
     /**

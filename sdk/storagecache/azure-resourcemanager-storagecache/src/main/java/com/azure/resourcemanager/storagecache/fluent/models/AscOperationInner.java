@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storagecache.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.models.ErrorResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** The status of operation. */
 @Fluent
 public final class AscOperationInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AscOperationInner.class);
-
     /*
      * The operation Id.
      */

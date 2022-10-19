@@ -57,7 +57,8 @@ public interface EventSubscription {
 
     /**
      * Gets the destination property: Information about the destination where events have to be delivered for the event
-     * subscription.
+     * subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
+     * dead-lettering.
      *
      * @return the destination value.
      */
@@ -109,7 +110,9 @@ public interface EventSubscription {
     RetryPolicy retryPolicy();
 
     /**
-     * Gets the deadLetterDestination property: The DeadLetter destination of the event subscription.
+     * Gets the deadLetterDestination property: The dead letter destination of the event subscription. Any event that
+     * cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's identity
+     * to acquire the authentication tokens being used during delivery / dead-lettering.
      *
      * @return the deadLetterDestination value.
      */
@@ -126,6 +129,13 @@ public interface EventSubscription {
     DeadLetterWithResourceIdentity deadLetterWithResourceIdentity();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.eventgrid.fluent.models.EventSubscriptionInner object.
      *
      * @return the inner object.
@@ -133,30 +143,24 @@ public interface EventSubscription {
     EventSubscriptionInner innerModel();
 
     /** The entirety of the EventSubscription definition. */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
+    interface Definition
+        extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
     /** The EventSubscription definition stages. */
     interface DefinitionStages {
         /** The first stage of the EventSubscription definition. */
-        interface Blank extends WithScope {
+        interface Blank extends WithParentResource {
         }
         /** The stage of the EventSubscription definition allowing to specify parent resource. */
-        interface WithScope {
+        interface WithParentResource {
             /**
-             * Specifies scope.
+             * Specifies resourceGroupName, topicName.
              *
-             * @param scope The identifier of the resource to which the event subscription needs to be created or
-             *     updated. The scope can be a subscription, or a resource group, or a top level resource belonging to a
-             *     resource provider namespace, or an EventGrid topic. For example, use
-             *     '/subscriptions/{subscriptionId}/' for a subscription,
-             *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}' for a resource group, and
-             *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
-             *     for a resource, and
-             *     '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/topics/{topicName}'
-             *     for an EventGrid topic.
+             * @param resourceGroupName The name of the resource group within the user's subscription.
+             * @param topicName Name of the domain topic.
              * @return the next definition stage.
              */
-            WithCreate withExistingScope(String scope);
+            WithCreate withExistingTopic(String resourceGroupName, String topicName);
         }
         /**
          * The stage of the EventSubscription definition which contains all the minimum required properties for the
@@ -191,10 +195,12 @@ public interface EventSubscription {
         interface WithDestination {
             /**
              * Specifies the destination property: Information about the destination where events have to be delivered
-             * for the event subscription..
+             * for the event subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being
+             * used during delivery / dead-lettering..
              *
              * @param destination Information about the destination where events have to be delivered for the event
-             *     subscription.
+             *     subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during
+             *     delivery / dead-lettering.
              * @return the next definition stage.
              */
             WithCreate withDestination(EventSubscriptionDestination destination);
@@ -269,9 +275,13 @@ public interface EventSubscription {
         /** The stage of the EventSubscription definition allowing to specify deadLetterDestination. */
         interface WithDeadLetterDestination {
             /**
-             * Specifies the deadLetterDestination property: The DeadLetter destination of the event subscription..
+             * Specifies the deadLetterDestination property: The dead letter destination of the event subscription. Any
+             * event that cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure
+             * Event Grid's identity to acquire the authentication tokens being used during delivery / dead-lettering..
              *
-             * @param deadLetterDestination The DeadLetter destination of the event subscription.
+             * @param deadLetterDestination The dead letter destination of the event subscription. Any event that cannot
+             *     be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's
+             *     identity to acquire the authentication tokens being used during delivery / dead-lettering.
              * @return the next definition stage.
              */
             WithCreate withDeadLetterDestination(DeadLetterDestination deadLetterDestination);
@@ -333,10 +343,12 @@ public interface EventSubscription {
         interface WithDestination {
             /**
              * Specifies the destination property: Information about the destination where events have to be delivered
-             * for the event subscription..
+             * for the event subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being
+             * used during delivery / dead-lettering..
              *
              * @param destination Information about the destination where events have to be delivered for the event
-             *     subscription.
+             *     subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during
+             *     delivery / dead-lettering.
              * @return the next definition stage.
              */
             Update withDestination(EventSubscriptionDestination destination);
@@ -411,9 +423,13 @@ public interface EventSubscription {
         /** The stage of the EventSubscription update allowing to specify deadLetterDestination. */
         interface WithDeadLetterDestination {
             /**
-             * Specifies the deadLetterDestination property: The DeadLetter destination of the event subscription..
+             * Specifies the deadLetterDestination property: The dead letter destination of the event subscription. Any
+             * event that cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure
+             * Event Grid's identity to acquire the authentication tokens being used during delivery / dead-lettering..
              *
-             * @param deadLetterDestination The DeadLetter destination of the event subscription.
+             * @param deadLetterDestination The dead letter destination of the event subscription. Any event that cannot
+             *     be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's
+             *     identity to acquire the authentication tokens being used during delivery / dead-lettering.
              * @return the next definition stage.
              */
             Update withDeadLetterDestination(DeadLetterDestination deadLetterDestination);
@@ -451,42 +467,42 @@ public interface EventSubscription {
     EventSubscription refresh(Context context);
 
     /**
-     * Get the full endpoint URL for an event subscription.
+     * Get all delivery attributes for an event subscription for topic.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription.
-     */
-    EventSubscriptionFullUrl getFullUrl();
-
-    /**
-     * Get the full endpoint URL for an event subscription.
-     *
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the full endpoint URL for an event subscription along with {@link Response}.
-     */
-    Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context);
-
-    /**
-     * Get all delivery attributes for an event subscription.
-     *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription.
+     * @return all delivery attributes for an event subscription for topic.
      */
     DeliveryAttributeListResult getDeliveryAttributes();
 
     /**
-     * Get all delivery attributes for an event subscription.
+     * Get all delivery attributes for an event subscription for topic.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all delivery attributes for an event subscription along with {@link Response}.
+     * @return all delivery attributes for an event subscription for topic along with {@link Response}.
      */
     Response<DeliveryAttributeListResult> getDeliveryAttributesWithResponse(Context context);
+
+    /**
+     * Get the full endpoint URL for an event subscription for topic.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription for topic.
+     */
+    EventSubscriptionFullUrl getFullUrl();
+
+    /**
+     * Get the full endpoint URL for an event subscription for topic.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the full endpoint URL for an event subscription for topic along with {@link Response}.
+     */
+    Response<EventSubscriptionFullUrl> getFullUrlWithResponse(Context context);
 }

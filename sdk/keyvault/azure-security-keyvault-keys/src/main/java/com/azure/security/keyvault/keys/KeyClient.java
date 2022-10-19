@@ -16,6 +16,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
+import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.models.CreateEcKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateOctKeyOptions;
@@ -27,10 +28,8 @@ import com.azure.security.keyvault.keys.models.KeyCurveName;
 import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicy;
-import com.azure.security.keyvault.keys.models.KeyRotationPolicyProperties;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.security.keyvault.keys.models.RandomBytes;
 import com.azure.security.keyvault.keys.models.ReleaseKeyOptions;
 import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
 
@@ -44,7 +43,7 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.instantiation -->
  * <pre>
  * KeyClient keyClient = new KeyClientBuilder&#40;&#41;
- *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
  *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
  *     .buildClient&#40;&#41;;
  * </pre>
@@ -53,17 +52,17 @@ import com.azure.security.keyvault.keys.models.ReleaseKeyResult;
  * @see KeyClientBuilder
  * @see PagedIterable
  */
-@ServiceClient(builder = KeyClientBuilder.class, serviceInterfaces = KeyService.class)
+@ServiceClient(builder = KeyClientBuilder.class, serviceInterfaces = KeyClientImpl.KeyService.class)
 public final class KeyClient {
-    private final KeyAsyncClient client;
+    private final KeyClientImpl implClient;
 
     /**
-     * Creates a {@link KeyClient} that uses a {@link KeyAsyncClient} to service requests.
+     * Creates a {@link KeyClient} that uses a {@link KeyClientImpl} to service requests.
      *
-     * @param client The {@link KeyAsyncClient} that the client routes its request through.
+     * @param implClient the impl client.
      */
-    KeyClient(KeyAsyncClient client) {
-        this.client = client;
+    KeyClient(KeyClientImpl implClient) {
+        this.implClient = implClient;
     }
 
     /**
@@ -72,7 +71,7 @@ public final class KeyClient {
      * @return The vault endpoint url.
      */
     public String getVaultUrl() {
-        return client.getVaultUrl();
+        return implClient.getVaultUrl();
     }
 
     /**
@@ -95,7 +94,7 @@ public final class KeyClient {
      * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
      */
     public CryptographyClient getCryptographyClient(String keyName) {
-        return client.getCryptographyClientBuilder(keyName, null).buildClient();
+        return implClient.getCryptographyClientBuilder(keyName, null).buildClient();
     }
 
     /**
@@ -110,7 +109,7 @@ public final class KeyClient {
      * @throws IllegalArgumentException If {@code keyName} is {@code null} or empty.
      */
     public CryptographyClient getCryptographyClient(String keyName, String keyVersion) {
-        return client.getCryptographyClientBuilder(keyName, keyVersion).buildClient();
+        return implClient.getCryptographyClientBuilder(keyName, keyVersion).buildClient();
     }
 
     /**
@@ -233,7 +232,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createKeyWithResponse(CreateKeyOptions createKeyOptions, Context context) {
-        return client.createKeyWithResponse(createKeyOptions, context).block();
+        return implClient.createKeyWithResponse(createKeyOptions, context);
     }
 
     /**
@@ -325,7 +324,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions, Context context) {
-        return client.createRsaKeyWithResponse(createRsaKeyOptions, context).block();
+        return implClient.createRsaKeyWithResponse(createRsaKeyOptions, context);
     }
 
     /**
@@ -420,7 +419,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions, Context context) {
-        return client.createEcKeyWithResponse(createEcKeyOptions, context).block();
+        return implClient.createEcKeyWithResponse(createEcKeyOptions, context);
     }
 
     /**
@@ -506,7 +505,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions, Context context) {
-        return client.createOctKeyWithResponse(createOctKeyOptions, context).block();
+        return implClient.createOctKeyWithResponse(createOctKeyOptions, context);
     }
 
     /**
@@ -620,7 +619,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> importKeyWithResponse(ImportKeyOptions importKeyOptions, Context context) {
-        return client.importKeyWithResponse(importKeyOptions, context).block();
+        return implClient.importKeyWithResponse(importKeyOptions, context);
     }
 
     /**
@@ -692,7 +691,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> getKeyWithResponse(String name, String version, Context context) {
-        return client.getKeyWithResponse(name, version, context).block();
+        return implClient.getKeyWithResponse(name, version, context);
     }
 
     /**
@@ -808,7 +807,7 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> updateKeyPropertiesWithResponse(KeyProperties keyProperties, Context context,
                                                                  KeyOperation... keyOperations) {
-        return client.updateKeyPropertiesWithResponse(keyProperties, context, keyOperations).block();
+        return implClient.updateKeyPropertiesWithResponse(keyProperties, context, keyOperations);
     }
 
     /**
@@ -835,7 +834,7 @@ public final class KeyClient {
      * System.out.printf&#40;&quot;Key delete date: %s%n&quot; + deletedKey.getDeletedOn&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Deleted key's recovery id: %s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;;
      *
-     * &#47;&#47; Key is being deleted on server.
+     * &#47;&#47; Key is being deleted on the server.
      * deleteKeyPoller.waitForCompletion&#40;&#41;;
      * &#47;&#47; Key is deleted
      * </pre>
@@ -850,7 +849,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<DeletedKey, Void> beginDeleteKey(String name) {
-        return client.beginDeleteKey(name).getSyncPoller();
+        return implClient.beginDeleteKeyAsync(name).getSyncPoller();
     }
 
     /**
@@ -907,7 +906,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedKey> getDeletedKeyWithResponse(String name, Context context) {
-        return client.getDeletedKeyWithResponse(name, context).block();
+        return implClient.getDeletedKeyWithResponse(name, context);
     }
 
     /**
@@ -960,7 +959,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedKeyWithResponse(String name, Context context) {
-        return client.purgeDeletedKeyWithResponse(name, context).block();
+        return implClient.purgeDeletedKeyWithResponse(name, context);
     }
 
     /**
@@ -981,7 +980,7 @@ public final class KeyClient {
      * System.out.printf&#40;&quot;Recovered key name: %s%n&quot;, recoveredKey.getName&#40;&#41;&#41;;
      * System.out.printf&#40;&quot;Recovered key id: %s%n&quot;, recoveredKey.getId&#40;&#41;&#41;;
      *
-     * &#47;&#47; Key is being recovered on server.
+     * &#47;&#47; Key is being recovered on the server.
      * recoverKeyPoller.waitForCompletion&#40;&#41;;
      * &#47;&#47; Key is recovered
      * </pre>
@@ -996,7 +995,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
-        return client.beginRecoverDeletedKey(name).getSyncPoller();
+        return implClient.beginRecoverDeletedKeyAsync(name).getSyncPoller();
     }
 
     /**
@@ -1069,7 +1068,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupKeyWithResponse(String name, Context context) {
-        return client.backupKeyWithResponse(name, context).block();
+        return implClient.backupKeyWithResponse(name, context);
     }
 
     /**
@@ -1144,7 +1143,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> restoreKeyBackupWithResponse(byte[] backup, Context context) {
-        return client.restoreKeyBackupWithResponse(backup, context).block();
+        return implClient.restoreKeyBackupWithResponse(backup, context);
     }
 
     /**
@@ -1155,6 +1154,7 @@ public final class KeyClient {
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
+     * <p><strong>Code Samples</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Loop over the
      * {@link KeyProperties} and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
@@ -1168,7 +1168,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys -->
      *
-     * <p><strong>Code Samples to iterate keys by page</strong></p>
+     * <p><strong>Iterate keys by page</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Iterate over all
      * the {@link KeyProperties} by page and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
@@ -1202,6 +1202,7 @@ public final class KeyClient {
      * provided in the response. The key material and individual key versions are not listed in the response. This
      * operation requires the {@code keys/list} permission.
      *
+     * <p><strong>Code Samples</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Loop over the
      * {@link KeyProperties} and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
@@ -1216,7 +1217,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.listPropertiesOfKeys#Context -->
      *
-     * <p><strong>Code Samples to iterate keys by page</strong></p>
+     * <p><strong>Iterate by page</strong></p>
      * <p>It is possible to get {@link KeyVaultKey full keys} with key material from this information. Iterate over all
      * the {@link KeyProperties} by page and call {@link KeyClient#getKey(String, String)}. This will return the
      * {@link KeyVaultKey key} with key material included as of its latest version.</p>
@@ -1242,7 +1243,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeys(Context context) {
-        return new PagedIterable<>(client.listPropertiesOfKeys(context));
+        return new PagedIterable<>(implClient.listPropertiesOfKeys(context));
     }
 
     /**
@@ -1321,7 +1322,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedKey> listDeletedKeys(Context context) {
-        return new PagedIterable<>(client.listDeletedKeys(context));
+        return new PagedIterable<>(implClient.listDeletedKeys(context));
     }
 
     /**
@@ -1420,7 +1421,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyProperties> listPropertiesOfKeyVersions(String name, Context context) {
-        return new PagedIterable<>(client.listPropertiesOfKeyVersions(name, context));
+        return new PagedIterable<>(implClient.listPropertiesOfKeyVersions(name, context));
     }
 
     /**
@@ -1432,9 +1433,9 @@ public final class KeyClient {
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int -->
      * <pre>
      * int amount = 16;
-     * RandomBytes randomBytes = keyClient.getRandomBytes&#40;amount&#41;;
+     * byte[] randomBytes = keyClient.getRandomBytes&#40;amount&#41;;
      *
-     * System.out.printf&#40;&quot;Retrieved %d random bytes: %s%n&quot;, amount, Arrays.toString&#40;randomBytes.getBytes&#40;&#41;&#41;&#41;;
+     * System.out.printf&#40;&quot;Retrieved %d random bytes: %s%n&quot;, amount, Arrays.toString&#40;randomBytes&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.getRandomBytes#int -->
      *
@@ -1442,8 +1443,9 @@ public final class KeyClient {
      *
      * @return The requested number of bytes containing random values from a managed HSM.
      */
-    public RandomBytes getRandomBytes(int count) {
-        return client.getRandomBytes(count).block();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public byte[] getRandomBytes(int count) {
+        return getRandomBytesWithResponse(count, Context.NONE).getValue();
     }
 
     /**
@@ -1455,11 +1457,11 @@ public final class KeyClient {
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context -->
      * <pre>
      * int amountOfBytes = 16;
-     * Response&lt;RandomBytes&gt; response =
+     * Response&lt;byte[]&gt; response =
      *     keyClient.getRandomBytesWithResponse&#40;amountOfBytes, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response received successfully with status code: %d. Retrieved %d random bytes: %s%n&quot;,
-     *     response.getStatusCode&#40;&#41;, amountOfBytes, Arrays.toString&#40;response.getValue&#40;&#41;.getBytes&#40;&#41;&#41;&#41;;
+     *     response.getStatusCode&#40;&#41;, amountOfBytes, Arrays.toString&#40;response.getValue&#40;&#41;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.getRandomBytesWithResponse#int-Context -->
      *
@@ -1470,8 +1472,9 @@ public final class KeyClient {
      * @return The {@link Response HTTP response} for this operation and the requested number of bytes containing
      * random values from a managed HSM.
      */
-    public Response<RandomBytes> getRandomBytesWithResponse(int count, Context context) {
-        return client.getRandomBytesWithResponse(count, context).block();
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<byte[]> getRandomBytesWithResponse(int count, Context context) {
+        return implClient.getRandomBytesWithResponse(count, context);
     }
 
     /**
@@ -1484,24 +1487,25 @@ public final class KeyClient {
      * <p>Releases a {@link KeyVaultKey key}. Prints out the signed object that contains the release key.</p>
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.releaseKey#String-String -->
      * <pre>
-     * String target = &quot;someAttestationToken&quot;;
-     * ReleaseKeyResult releaseKeyResult = keyClient.releaseKey&#40;&quot;keyName&quot;, target&#41;;
+     * String targetAttestationToken = &quot;someAttestationToken&quot;;
+     * ReleaseKeyResult releaseKeyResult = keyClient.releaseKey&#40;&quot;keyName&quot;, targetAttestationToken&#41;;
      *
      * System.out.printf&#40;&quot;Signed object containing released key: %s%n&quot;, releaseKeyResult&#41;;
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.releaseKey#String-String -->
      *
      * @param name The name of the {@link KeyVaultKey key} to release.
-     * @param target The attestation assertion for the target of the {@link KeyVaultKey key} release.
+     * @param targetAttestationToken The attestation assertion for the target of the {@link KeyVaultKey key} release.
      *
      * @return The key release result containing the {@link KeyVaultKey released key}.
      *
-     * @throws IllegalArgumentException If {@code name} or {@code target} are {@code null} or empty.
+     * @throws IllegalArgumentException If {@code name} or {@code targetAttestationToken} are {@code null} or empty.
      * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReleaseKeyResult releaseKey(String name, String target) {
-        return client.releaseKey(name, target).block();
+    public ReleaseKeyResult releaseKey(String name, String targetAttestationToken) {
+        return releaseKeyWithResponse(name, "", targetAttestationToken, new ReleaseKeyOptions(), Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1515,8 +1519,9 @@ public final class KeyClient {
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.releaseKey#String-String-String -->
      * <pre>
      * String myKeyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
-     * String myTarget = &quot;someAttestationToken&quot;;
-     * ReleaseKeyResult releaseKeyVersionResult = keyClient.releaseKey&#40;&quot;keyName&quot;, myKeyVersion, myTarget&#41;;
+     * String myTargetAttestationToken = &quot;someAttestationToken&quot;;
+     * ReleaseKeyResult releaseKeyVersionResult =
+     *     keyClient.releaseKey&#40;&quot;keyName&quot;, myKeyVersion, myTargetAttestationToken&#41;;
      *
      * System.out.printf&#40;&quot;Signed object containing released key: %s%n&quot;, releaseKeyVersionResult&#41;;
      * </pre>
@@ -1525,16 +1530,17 @@ public final class KeyClient {
      * @param name The name of the {@link KeyVaultKey key} to release.
      * @param version The version of the key to release. If this is empty or {@code null}, this call is equivalent to
      * calling {@link KeyAsyncClient#releaseKey(String, String)}, with the latest key version being released.
-     * @param target The attestation assertion for the target of the {@link KeyVaultKey key} release.
+     * @param targetAttestationToken The attestation assertion for the target of the {@link KeyVaultKey key} release.
      *
      * @return The key release result containing the {@link KeyVaultKey released key}.
      *
-     * @throws IllegalArgumentException If {@code name} or {@code target} are {@code null} or empty.
+     * @throws IllegalArgumentException If {@code name} or {@code targetAttestationToken} are {@code null} or empty.
      * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ReleaseKeyResult releaseKey(String name, String version, String target) {
-        return client.releaseKey(name, version, target).block();
+    public ReleaseKeyResult releaseKey(String name, String version, String targetAttestationToken) {
+        return releaseKeyWithResponse(name, version, targetAttestationToken, new ReleaseKeyOptions(), Context.NONE)
+            .getValue();
     }
 
     /**
@@ -1548,14 +1554,14 @@ public final class KeyClient {
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.releaseKeyWithResponse#String-String-String-ReleaseKeyOptions-Context -->
      * <pre>
      * String releaseKeyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
-     * String releaseTarget = &quot;someAttestationToken&quot;;
+     * String someTargetAttestationToken = &quot;someAttestationToken&quot;;
      * ReleaseKeyOptions releaseKeyOptions = new ReleaseKeyOptions&#40;&#41;
      *     .setAlgorithm&#40;KeyExportEncryptionAlgorithm.RSA_AES_KEY_WRAP_256&#41;
      *     .setNonce&#40;&quot;someNonce&quot;&#41;;
      *
      * Response&lt;ReleaseKeyResult&gt; releaseKeyResultResponse =
-     *     keyClient.releaseKeyWithResponse&#40;&quot;keyName&quot;, releaseKeyVersion, releaseTarget, releaseKeyOptions,
-     *         new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *     keyClient.releaseKeyWithResponse&#40;&quot;keyName&quot;, releaseKeyVersion, someTargetAttestationToken,
+     *         releaseKeyOptions, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response received successfully with status code: %d. Signed object containing&quot;
      *         + &quot;released key: %s%n&quot;, releaseKeyResultResponse.getStatusCode&#40;&#41;,
@@ -1567,21 +1573,21 @@ public final class KeyClient {
      * @param version The version of the {@link KeyVaultKey key} to release. If this is empty or {@code null}, this call
      * is equivalent to calling {@link KeyAsyncClient#releaseKey(String, String)}, with the latest key version being
      * released.
-     * @param target The attestation assertion for the target of the key release.
-     * @param options Additional {@link ReleaseKeyOptions options} for releasing a {@link KeyVaultKey key}.
+     * @param targetAttestationToken The attestation assertion for the target of the key release.
+     * @param releaseKeyOptions Additional {@link ReleaseKeyOptions options} for releasing a {@link KeyVaultKey key}.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
      * call.
      *
      * @return The {@link Response HTTP response} for this operation and the {@link ReleaseKeyResult} containing the
      * {@link KeyVaultKey released key}.
      *
-     * @throws IllegalArgumentException If {@code name} or {@code target} are {@code null} or empty.
+     * @throws IllegalArgumentException If {@code name} or {@code targetAttestationToken} are {@code null} or empty.
      * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ReleaseKeyResult> releaseKeyWithResponse(String name, String version, String target,
-                                                             ReleaseKeyOptions options, Context context) {
-        return client.releaseKeyWithResponse(name, version, target, options, context).block();
+    public Response<ReleaseKeyResult> releaseKeyWithResponse(String name, String version, String targetAttestationToken,
+                                                             ReleaseKeyOptions releaseKeyOptions, Context context) {
+        return implClient.releaseKeyWithResponse(name, version, targetAttestationToken, releaseKeyOptions, context);
     }
 
     /**
@@ -1609,7 +1615,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey rotateKey(String name) {
-        return client.rotateKey(name).block();
+        return rotateKeyWithResponse(name, Context.NONE).getValue();
     }
 
     /**
@@ -1642,7 +1648,7 @@ public final class KeyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> rotateKeyWithResponse(String name, Context context) {
-        return client.rotateKeyWithResponse(name, context).block();
+        return implClient.rotateKeyWithResponse(name, context);
     }
 
     /**
@@ -1660,7 +1666,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.getKeyRotationPolicy#String -->
      *
-     * @param name The name of the {@link KeyVaultKey key}.
+     * @param keyName The name of the {@link KeyVaultKey key}.
      *
      * @return The {@link KeyRotationPolicy} for the {@link KeyVaultKey key}.
      *
@@ -1668,8 +1674,8 @@ public final class KeyClient {
      * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyRotationPolicy getKeyRotationPolicy(String name) {
-        return client.getKeyRotationPolicy(name).block();
+    public KeyRotationPolicy getKeyRotationPolicy(String keyName) {
+        return getKeyRotationPolicyWithResponse(keyName, Context.NONE).getValue();
     }
 
     /**
@@ -1689,7 +1695,7 @@ public final class KeyClient {
      * </pre>
      * <!-- end com.azure.security.keyvault.keys.KeyClient.getKeyRotationPolicyWithResponse#String-Context -->
      *
-     * @param name The name of the {@link KeyVaultKey key}.
+     * @param keyName The name of the {@link KeyVaultKey key}.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
      * call.
      *
@@ -1700,8 +1706,8 @@ public final class KeyClient {
      * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String name, Context context) {
-        return client.getKeyRotationPolicyWithResponse(name, context).block();
+    public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String keyName, Context context) {
+        return implClient.getKeyRotationPolicyWithResponse(keyName, context);
     }
 
     /**
@@ -1711,7 +1717,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Updates the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Prints out the
      * {@link KeyRotationPolicy rotation policy key} details.</p>
-     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicy#String-KeyRotationPolicyProperties -->
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicy#String-KeyRotationPolicy -->
      * <pre>
      * List&lt;KeyRotationLifetimeAction&gt; lifetimeActions = new ArrayList&lt;&gt;&#40;&#41;;
      * KeyRotationLifetimeAction rotateLifetimeAction = new KeyRotationLifetimeAction&#40;KeyRotationPolicyAction.ROTATE&#41;
@@ -1722,19 +1728,19 @@ public final class KeyClient {
      * lifetimeActions.add&#40;rotateLifetimeAction&#41;;
      * lifetimeActions.add&#40;notifyLifetimeAction&#41;;
      *
-     * KeyRotationPolicyProperties policyProperties = new KeyRotationPolicyProperties&#40;&#41;
+     * KeyRotationPolicy keyRotationPolicy = new KeyRotationPolicy&#40;&#41;
      *     .setLifetimeActions&#40;lifetimeActions&#41;
-     *     .setExpiryTime&#40;&quot;P6M&quot;&#41;;
+     *     .setExpiresIn&#40;&quot;P6M&quot;&#41;;
      *
-     * KeyRotationPolicy keyRotationPolicy =
-     *     keyClient.updateKeyRotationPolicy&#40;&quot;keyName&quot;, policyProperties&#41;;
+     * KeyRotationPolicy updatedPolicy =
+     *     keyClient.updateKeyRotationPolicy&#40;&quot;keyName&quot;, keyRotationPolicy&#41;;
      *
-     * System.out.printf&#40;&quot;Updated key rotation policy with id: %s%n&quot;, keyRotationPolicy.getId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Updated key rotation policy with id: %s%n&quot;, updatedPolicy.getId&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicy#String-KeyRotationPolicyProperties -->
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicy#String-KeyRotationPolicy -->
      *
-     * @param name The name of the {@link KeyVaultKey key}.
-     * @param keyRotationPolicyProperties The {@link KeyRotationPolicy} for the ke{@link KeyVaultKey key}y.
+     * @param keyName The name of the {@link KeyVaultKey key}.
+     * @param keyRotationPolicy The {@link KeyRotationPolicy} for the ke{@link KeyVaultKey key}y.
      *
      * @return The {@link KeyRotationPolicy} for the {@link KeyVaultKey key}.
      *
@@ -1742,8 +1748,8 @@ public final class KeyClient {
      * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyRotationPolicy updateKeyRotationPolicy(String name, KeyRotationPolicyProperties keyRotationPolicyProperties) {
-        return client.updateKeyRotationPolicy(name, keyRotationPolicyProperties).block();
+    public KeyRotationPolicy updateKeyRotationPolicy(String keyName, KeyRotationPolicy keyRotationPolicy) {
+        return updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy, Context.NONE).getValue();
     }
 
     /**
@@ -1753,7 +1759,7 @@ public final class KeyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Updates the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Prints out the
      * {@link Response HTTP Response} and {@link KeyRotationPolicy rotation policy key} details.</p>
-     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicyProperties-Context -->
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicy-Context -->
      * <pre>
      * List&lt;KeyRotationLifetimeAction&gt; myLifetimeActions = new ArrayList&lt;&gt;&#40;&#41;;
      * KeyRotationLifetimeAction myRotateLifetimeAction = new KeyRotationLifetimeAction&#40;KeyRotationPolicyAction.ROTATE&#41;
@@ -1764,20 +1770,20 @@ public final class KeyClient {
      * myLifetimeActions.add&#40;myRotateLifetimeAction&#41;;
      * myLifetimeActions.add&#40;myNotifyLifetimeAction&#41;;
      *
-     * KeyRotationPolicyProperties myPolicyProperties = new KeyRotationPolicyProperties&#40;&#41;
+     * KeyRotationPolicy myKeyRotationPolicy = new KeyRotationPolicy&#40;&#41;
      *     .setLifetimeActions&#40;myLifetimeActions&#41;
-     *     .setExpiryTime&#40;&quot;P6M&quot;&#41;;
+     *     .setExpiresIn&#40;&quot;P6M&quot;&#41;;
      *
      * Response&lt;KeyRotationPolicy&gt; keyRotationPolicyResponse = keyClient.updateKeyRotationPolicyWithResponse&#40;
-     *     &quot;keyName&quot;, myPolicyProperties, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     *     &quot;keyName&quot;, myKeyRotationPolicy, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
      * System.out.printf&#40;&quot;Response received successfully with status code: %d. Updated key rotation policy&quot;
      *     + &quot;with id: %s%n&quot;, keyRotationPolicyResponse.getStatusCode&#40;&#41;, keyRotationPolicyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicyProperties-Context -->
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicy-Context -->
      *
-     * @param name The name of the {@link KeyVaultKey key}.
-     * @param keyRotationPolicyProperties The {@link KeyRotationPolicyProperties} for the key.
+     * @param keyName The name of the {@link KeyVaultKey key}.
+     * @param keyRotationPolicy The {@link KeyRotationPolicy} for the key.
      * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
      * call.
      *
@@ -1788,7 +1794,9 @@ public final class KeyClient {
      * @throws ResourceNotFoundException If the {@link KeyVaultKey key} for the provided {@code name} does not exist.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyRotationPolicy> updateKeyRotationPolicyWithResponse(String name, KeyRotationPolicyProperties keyRotationPolicyProperties, Context context) {
-        return client.updateKeyRotationPolicyWithResponse(name, keyRotationPolicyProperties, context).block();
+    public Response<KeyRotationPolicy> updateKeyRotationPolicyWithResponse(String keyName,
+                                                                           KeyRotationPolicy keyRotationPolicy,
+                                                                           Context context) {
+        return implClient.updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy, context);
     }
 }

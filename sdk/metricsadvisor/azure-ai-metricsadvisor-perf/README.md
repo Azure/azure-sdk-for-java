@@ -44,7 +44,7 @@ METRICS_ADVISOR_MAX_LIST_ELEMENTS=<max-list-elements>
 ## Key concepts
 
 ## Examples
-#### Executing the performance test
+### Executing the performance test
 1. Compile the performance project into a standalone jar using the command from the root of the perf project folder
    ```java
    mvn clean package
@@ -53,13 +53,13 @@ METRICS_ADVISOR_MAX_LIST_ELEMENTS=<max-list-elements>
    ```java
    java -jar <path-to-packaged-jar-with-dependencies-from-step-1> <options-for-the-test>
 
-#### Common perf test command line options for Metrics Advisor
+### Common perf test command line options for Metrics Advisor
 - `--duration` - Number of seconds to run the main test for. Default is 10.
 - `--iterations` - Number of iterations of main test loop.
 - `--parallel` - Number of operations to execute in parallel,
 - `--warmup` - Duration of test warmup time in seconds before the test attributes are calculated.
 
-#### Example
+### Example
 
 The tests can be executed as below
 

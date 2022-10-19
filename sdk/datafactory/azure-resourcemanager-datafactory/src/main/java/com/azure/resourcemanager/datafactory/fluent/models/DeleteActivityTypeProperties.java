@@ -9,18 +9,14 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetReference;
 import com.azure.resourcemanager.datafactory.models.LogStorageSettings;
 import com.azure.resourcemanager.datafactory.models.StoreReadSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Delete activity properties. */
 @Fluent
 public final class DeleteActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeleteActivityTypeProperties.class);
-
     /*
-     * If true, files or sub-folders under current folder path will be deleted
-     * recursively. Default is false. Type: boolean (or Expression with
-     * resultType boolean).
+     * If true, files or sub-folders under current folder path will be deleted recursively. Default is false. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "recursive")
     private Object recursive;
@@ -32,15 +28,14 @@ public final class DeleteActivityTypeProperties {
     private Integer maxConcurrentConnections;
 
     /*
-     * Whether to record detailed logs of delete-activity execution. Default
-     * value is false. Type: boolean (or Expression with resultType boolean).
+     * Whether to record detailed logs of delete-activity execution. Default value is false. Type: boolean (or
+     * Expression with resultType boolean).
      */
     @JsonProperty(value = "enableLogging")
     private Object enableLogging;
 
     /*
-     * Log storage settings customer need to provide when enableLogging is
-     * true.
+     * Log storage settings customer need to provide when enableLogging is true.
      */
     @JsonProperty(value = "logStorageSettings")
     private LogStorageSettings logStorageSettings;
@@ -56,6 +51,10 @@ public final class DeleteActivityTypeProperties {
      */
     @JsonProperty(value = "storeSettings")
     private StoreReadSettings storeSettings;
+
+    /** Creates an instance of DeleteActivityTypeProperties class. */
+    public DeleteActivityTypeProperties() {
+    }
 
     /**
      * Get the recursive property: If true, files or sub-folders under current folder path will be deleted recursively.
@@ -193,7 +192,7 @@ public final class DeleteActivityTypeProperties {
             logStorageSettings().validate();
         }
         if (dataset() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataset in model DeleteActivityTypeProperties"));
@@ -204,4 +203,6 @@ public final class DeleteActivityTypeProperties {
             storeSettings().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DeleteActivityTypeProperties.class);
 }

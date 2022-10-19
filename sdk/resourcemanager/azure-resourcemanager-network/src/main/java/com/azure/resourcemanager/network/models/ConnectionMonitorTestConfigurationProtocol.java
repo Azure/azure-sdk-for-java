@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConnectionMonitorTestConfigurationProtocol. */
+/** The protocol to use in test evaluation. */
 public final class ConnectionMonitorTestConfigurationProtocol
     extends ExpandableStringEnum<ConnectionMonitorTestConfigurationProtocol> {
     /** Static value Tcp for ConnectionMonitorTestConfigurationProtocol. */
@@ -31,7 +31,11 @@ public final class ConnectionMonitorTestConfigurationProtocol
         return fromString(name, ConnectionMonitorTestConfigurationProtocol.class);
     }
 
-    /** @return known ConnectionMonitorTestConfigurationProtocol values. */
+    /**
+     * Gets known ConnectionMonitorTestConfigurationProtocol values.
+     *
+     * @return known ConnectionMonitorTestConfigurationProtocol values.
+     */
     public static Collection<ConnectionMonitorTestConfigurationProtocol> values() {
         return values(ConnectionMonitorTestConfigurationProtocol.class);
     }

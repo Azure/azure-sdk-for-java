@@ -5,34 +5,18 @@
 package com.azure.resourcemanager.imagebuilder.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.imagebuilder.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents an output that was created by running an image template. */
 @Fluent
-public final class RunOutputInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunOutputInner.class);
-
+public final class RunOutputInner extends ProxyResource {
     /*
      * The properties of the run output
      */
     @JsonProperty(value = "properties")
     private RunOutputProperties innerProperties;
-
-    /*
-     * Resource name
-     */
-    @JsonProperty(value = "name", required = true)
-    private String name;
-
-    /*
-     * Resource type
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /**
      * Get the innerProperties property: The properties of the run output.
@@ -41,42 +25,6 @@ public final class RunOutputInner extends SubResource {
      */
     private RunOutputProperties innerProperties() {
         return this.innerProperties;
-    }
-
-    /**
-     * Get the name property: Resource name.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: Resource name.
-     *
-     * @param name the name value to set.
-     * @return the RunOutputInner object itself.
-     */
-    public RunOutputInner withName(String name) {
-        this.name = name;
-        return this;
-    }
-
-    /**
-     * Get the type property: Resource type.
-     *
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RunOutputInner withId(String id) {
-        super.withId(id);
-        return this;
     }
 
     /**
@@ -142,11 +90,6 @@ public final class RunOutputInner extends SubResource {
     public void validate() {
         if (innerProperties() != null) {
             innerProperties().validate();
-        }
-        if (name() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model RunOutputInner"));
         }
     }
 }

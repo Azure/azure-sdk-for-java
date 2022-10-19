@@ -6,16 +6,12 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Premier add-on. */
 @Fluent
 public final class PremierAddOnInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PremierAddOnInner.class);
-
     /*
      * PremierAddOn resource specific properties
      */

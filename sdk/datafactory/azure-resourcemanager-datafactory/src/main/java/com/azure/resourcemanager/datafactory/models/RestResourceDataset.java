@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.RestResourceDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("RestResource")
 @Fluent
 public final class RestResourceDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestResourceDataset.class);
-
     /*
      * Properties specific to this dataset type.
      */
     @JsonProperty(value = "typeProperties")
     private RestResourceDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of RestResourceDataset class. */
+    public RestResourceDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.

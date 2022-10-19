@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Association entity contract properties. */
 @Fluent
 public final class AssociationContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AssociationContractProperties.class);
-
     /*
      * Provisioning state.
      */

@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.models.OperationStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A long running operation result. */
 @Fluent
 public final class OperationResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationResultInner.class);
-
     /*
      * Fully qualified resource ID for the resource. Ex -
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}
@@ -186,9 +183,11 @@ public final class OperationResultInner {
      */
     public void validate() {
         if (status() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property status in model OperationResultInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OperationResultInner.class);
 }

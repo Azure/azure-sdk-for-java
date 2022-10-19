@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SharingUpdateOperationTypes. */
+/**
+ * This property allows you to specify the operation type of gallery sharing update. &lt;br&gt;&lt;br&gt; Possible
+ * values are: &lt;br&gt;&lt;br&gt; **Add** &lt;br&gt;&lt;br&gt; **Remove** &lt;br&gt;&lt;br&gt; **Reset**.
+ */
 public final class SharingUpdateOperationTypes extends ExpandableStringEnum<SharingUpdateOperationTypes> {
     /** Static value Add for SharingUpdateOperationTypes. */
     public static final SharingUpdateOperationTypes ADD = fromString("Add");
@@ -18,6 +21,9 @@ public final class SharingUpdateOperationTypes extends ExpandableStringEnum<Shar
 
     /** Static value Reset for SharingUpdateOperationTypes. */
     public static final SharingUpdateOperationTypes RESET = fromString("Reset");
+
+    /** Static value EnableCommunity for SharingUpdateOperationTypes. */
+    public static final SharingUpdateOperationTypes ENABLE_COMMUNITY = fromString("EnableCommunity");
 
     /**
      * Creates or finds a SharingUpdateOperationTypes from its string representation.
@@ -30,7 +36,11 @@ public final class SharingUpdateOperationTypes extends ExpandableStringEnum<Shar
         return fromString(name, SharingUpdateOperationTypes.class);
     }
 
-    /** @return known SharingUpdateOperationTypes values. */
+    /**
+     * Gets known SharingUpdateOperationTypes values.
+     *
+     * @return known SharingUpdateOperationTypes values.
+     */
     public static Collection<SharingUpdateOperationTypes> values() {
         return values(SharingUpdateOperationTypes.class);
     }

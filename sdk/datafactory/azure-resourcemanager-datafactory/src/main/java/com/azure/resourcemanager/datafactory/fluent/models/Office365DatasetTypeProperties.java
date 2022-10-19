@@ -6,28 +6,27 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Office365 dataset properties. */
 @Fluent
 public final class Office365DatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Office365DatasetTypeProperties.class);
-
     /*
-     * Name of the dataset to extract from Office 365. Type: string (or
-     * Expression with resultType string).
+     * Name of the dataset to extract from Office 365. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName", required = true)
     private Object tableName;
 
     /*
-     * A predicate expression that can be used to filter the specific rows to
-     * extract from Office 365. Type: string (or Expression with resultType
-     * string).
+     * A predicate expression that can be used to filter the specific rows to extract from Office 365. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "predicate")
     private Object predicate;
+
+    /** Creates an instance of Office365DatasetTypeProperties class. */
+    public Office365DatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: Name of the dataset to extract from Office 365. Type: string (or Expression with
@@ -80,10 +79,12 @@ public final class Office365DatasetTypeProperties {
      */
     public void validate() {
         if (tableName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property tableName in model Office365DatasetTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Office365DatasetTypeProperties.class);
 }

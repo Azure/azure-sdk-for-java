@@ -57,7 +57,7 @@ public final class ManagedPrivateEndpointsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ManagedPrivateEndpoi")
-    private interface ManagedPrivateEndpointsService {
+    public interface ManagedPrivateEndpointsService {
         @Get("/managedVirtualNetworks/{managedVirtualNetworkName}/managedPrivateEndpoints/{managedPrivateEndpointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)

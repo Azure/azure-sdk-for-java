@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Qos Traffic Profiler IP Range properties. */
 @Fluent
 public final class QosIpRange {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QosIpRange.class);
-
     /*
      * Start IP Address.
      */
@@ -25,6 +21,10 @@ public final class QosIpRange {
      */
     @JsonProperty(value = "endIP")
     private String endIp;
+
+    /** Creates an instance of QosIpRange class. */
+    public QosIpRange() {
+    }
 
     /**
      * Get the startIp property: Start IP Address.

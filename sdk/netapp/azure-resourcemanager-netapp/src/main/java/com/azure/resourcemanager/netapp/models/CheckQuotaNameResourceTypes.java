@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for CheckQuotaNameResourceTypes. */
+/** Resource type used for verification. */
 public final class CheckQuotaNameResourceTypes extends ExpandableStringEnum<CheckQuotaNameResourceTypes> {
     /** Static value Microsoft.NetApp/netAppAccounts for CheckQuotaNameResourceTypes. */
     public static final CheckQuotaNameResourceTypes MICROSOFT_NET_APP_NET_APP_ACCOUNTS =
@@ -38,7 +38,11 @@ public final class CheckQuotaNameResourceTypes extends ExpandableStringEnum<Chec
         return fromString(name, CheckQuotaNameResourceTypes.class);
     }
 
-    /** @return known CheckQuotaNameResourceTypes values. */
+    /**
+     * Gets known CheckQuotaNameResourceTypes values.
+     *
+     * @return known CheckQuotaNameResourceTypes values.
+     */
     public static Collection<CheckQuotaNameResourceTypes> values() {
         return values(CheckQuotaNameResourceTypes.class);
     }

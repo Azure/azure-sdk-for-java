@@ -25,7 +25,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.RecommendationsClient;
 import com.azure.resourcemanager.appservice.fluent.models.RecommendationInner;
 import com.azure.resourcemanager.appservice.fluent.models.RecommendationRuleInner;
@@ -35,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RecommendationsClient. */
 public final class RecommendationsClientImpl implements RecommendationsClient {
-    private final ClientLogger logger = new ClientLogger(RecommendationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RecommendationsService service;
 
@@ -358,7 +355,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listSinglePageAsync(Boolean featured, String filter) {
@@ -411,7 +408,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listSinglePageAsync(
@@ -461,7 +458,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendationInner> listAsync(Boolean featured, String filter) {
@@ -474,7 +471,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendationInner> listAsync() {
@@ -496,7 +493,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecommendationInner> listAsync(Boolean featured, String filter, Context context) {
@@ -510,7 +507,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> list() {
@@ -531,7 +528,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> list(Boolean featured, String filter, Context context) {
@@ -543,7 +540,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetAllFiltersWithResponseAsync() {
@@ -580,7 +577,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resetAllFiltersWithResponseAsync(Context context) {
@@ -612,7 +609,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      *
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetAllFiltersAsync() {
@@ -637,7 +634,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetAllFiltersWithResponse(Context context) {
@@ -651,7 +648,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableRecommendationForSubscriptionWithResponseAsync(String name) {
@@ -693,7 +690,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableRecommendationForSubscriptionWithResponseAsync(String name, Context context) {
@@ -731,7 +728,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableRecommendationForSubscriptionAsync(String name) {
@@ -760,7 +757,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableRecommendationForSubscriptionWithResponse(String name, Context context) {
@@ -780,7 +777,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentSinglePageAsync(
@@ -847,7 +844,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentSinglePageAsync(
@@ -910,7 +907,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendationInner> listHistoryForHostingEnvironmentAsync(
@@ -930,7 +927,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendationInner> listHistoryForHostingEnvironmentAsync(
@@ -958,7 +955,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecommendationInner> listHistoryForHostingEnvironmentAsync(
@@ -978,7 +975,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(
@@ -1003,7 +1000,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(
@@ -1025,7 +1022,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentSinglePageAsync(
@@ -1091,7 +1088,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentSinglePageAsync(
@@ -1153,7 +1150,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendationInner> listRecommendedRulesForHostingEnvironmentAsync(
@@ -1173,7 +1170,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendationInner> listRecommendedRulesForHostingEnvironmentAsync(
@@ -1200,7 +1197,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecommendationInner> listRecommendedRulesForHostingEnvironmentAsync(
@@ -1220,7 +1217,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
@@ -1245,7 +1242,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(
@@ -1264,7 +1261,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableAllForHostingEnvironmentWithResponseAsync(
@@ -1321,7 +1318,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableAllForHostingEnvironmentWithResponseAsync(
@@ -1374,7 +1371,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableAllForHostingEnvironmentAsync(
@@ -1410,7 +1407,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableAllForHostingEnvironmentWithResponse(
@@ -1429,7 +1426,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetAllFiltersForHostingEnvironmentWithResponseAsync(
@@ -1486,7 +1483,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resetAllFiltersForHostingEnvironmentWithResponseAsync(
@@ -1539,7 +1536,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetAllFiltersForHostingEnvironmentAsync(
@@ -1575,7 +1572,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetAllFiltersForHostingEnvironmentWithResponse(
@@ -1598,7 +1595,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
+     * @return represents a recommendation rule that the recommendation engine can perform along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecommendationRuleInner>> getRuleDetailsByHostingEnvironmentWithResponseAsync(
@@ -1664,7 +1662,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
+     * @return represents a recommendation rule that the recommendation engine can perform along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecommendationRuleInner>> getRuleDetailsByHostingEnvironmentWithResponseAsync(
@@ -1727,7 +1726,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
+     * @return represents a recommendation rule that the recommendation engine can perform on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentAsync(
@@ -1757,7 +1757,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
+     * @return represents a recommendation rule that the recommendation engine can perform on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentAsync(
@@ -1811,7 +1812,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
+     * @return represents a recommendation rule that the recommendation engine can perform along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentWithResponse(
@@ -1836,7 +1837,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableRecommendationForHostingEnvironmentWithResponseAsync(
@@ -1898,7 +1899,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableRecommendationForHostingEnvironmentWithResponseAsync(
@@ -1956,7 +1957,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableRecommendationForHostingEnvironmentAsync(
@@ -1996,7 +1997,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableRecommendationForHostingEnvironmentWithResponse(
@@ -2019,7 +2020,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppSinglePageAsync(
@@ -2084,7 +2085,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppSinglePageAsync(
@@ -2145,7 +2146,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendationInner> listHistoryForWebAppAsync(
@@ -2163,7 +2164,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendationInner> listHistoryForWebAppAsync(String resourceGroupName, String siteName) {
@@ -2188,7 +2189,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecommendationInner> listHistoryForWebAppAsync(
@@ -2206,7 +2207,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName) {
@@ -2229,7 +2230,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> listHistoryForWebApp(
@@ -2250,7 +2251,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppSinglePageAsync(
@@ -2314,7 +2315,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppSinglePageAsync(
@@ -2374,7 +2375,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendationInner> listRecommendedRulesForWebAppAsync(
@@ -2392,7 +2393,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RecommendationInner> listRecommendedRulesForWebAppAsync(
@@ -2417,7 +2418,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RecommendationInner> listRecommendedRulesForWebAppAsync(
@@ -2435,7 +2436,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName) {
@@ -2457,7 +2458,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(
@@ -2474,7 +2475,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableAllForWebAppWithResponseAsync(String resourceGroupName, String siteName) {
@@ -2522,7 +2523,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableAllForWebAppWithResponseAsync(
@@ -2567,7 +2568,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableAllForWebAppAsync(String resourceGroupName, String siteName) {
@@ -2598,7 +2599,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableAllForWebAppWithResponse(String resourceGroupName, String siteName, Context context) {
@@ -2613,7 +2614,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resetAllFiltersForWebAppWithResponseAsync(String resourceGroupName, String siteName) {
@@ -2661,7 +2662,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> resetAllFiltersForWebAppWithResponseAsync(
@@ -2706,7 +2707,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> resetAllFiltersForWebAppAsync(String resourceGroupName, String siteName) {
@@ -2737,7 +2738,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetAllFiltersForWebAppWithResponse(
@@ -2758,7 +2759,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
+     * @return represents a recommendation rule that the recommendation engine can perform along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RecommendationRuleInner>> getRuleDetailsByWebAppWithResponseAsync(
@@ -2818,7 +2820,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
+     * @return represents a recommendation rule that the recommendation engine can perform along with {@link Response}
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RecommendationRuleInner>> getRuleDetailsByWebAppWithResponseAsync(
@@ -2879,7 +2882,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
+     * @return represents a recommendation rule that the recommendation engine can perform on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecommendationRuleInner> getRuleDetailsByWebAppAsync(
@@ -2904,7 +2908,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
+     * @return represents a recommendation rule that the recommendation engine can perform on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RecommendationRuleInner> getRuleDetailsByWebAppAsync(
@@ -2954,7 +2959,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform.
+     * @return represents a recommendation rule that the recommendation engine can perform along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecommendationRuleInner> getRuleDetailsByWebAppWithResponse(
@@ -2978,7 +2983,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> disableRecommendationForSiteWithResponseAsync(
@@ -3032,7 +3037,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> disableRecommendationForSiteWithResponseAsync(
@@ -3082,7 +3087,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> disableRecommendationForSiteAsync(String resourceGroupName, String siteName, String name) {
@@ -3115,7 +3120,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableRecommendationForSiteWithResponse(
@@ -3130,7 +3135,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listNextSinglePageAsync(String nextLink) {
@@ -3166,7 +3171,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -3201,7 +3206,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentNextSinglePageAsync(
@@ -3240,7 +3245,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentNextSinglePageAsync(
@@ -3276,7 +3281,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(
@@ -3317,7 +3322,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(
@@ -3353,7 +3358,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppNextSinglePageAsync(String nextLink) {
@@ -3390,7 +3395,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppNextSinglePageAsync(
@@ -3426,7 +3431,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppNextSinglePageAsync(String nextLink) {
@@ -3464,7 +3469,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations.
+     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppNextSinglePageAsync(

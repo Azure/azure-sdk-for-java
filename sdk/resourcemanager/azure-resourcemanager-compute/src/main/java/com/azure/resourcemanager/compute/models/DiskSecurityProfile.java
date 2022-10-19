@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains the security related information for the resource. */
 @Fluent
 public final class DiskSecurityProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskSecurityProfile.class);
-
     /*
      * Specifies the SecurityType of the VM. Applicable for OS disks only.
      */
@@ -21,8 +17,8 @@ public final class DiskSecurityProfile {
     private DiskSecurityTypes securityType;
 
     /*
-     * ResourceId of the disk encryption set associated to Confidential VM
-     * supported disk encrypted with customer managed key
+     * ResourceId of the disk encryption set associated to Confidential VM supported disk encrypted with customer
+     * managed key
      */
     @JsonProperty(value = "secureVMDiskEncryptionSetId")
     private String secureVMDiskEncryptionSetId;

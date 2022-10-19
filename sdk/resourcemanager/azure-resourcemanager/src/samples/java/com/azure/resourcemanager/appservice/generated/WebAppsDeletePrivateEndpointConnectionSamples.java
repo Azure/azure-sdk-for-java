@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WebApps DeletePrivateEndpointConnection. */
 public final class WebAppsDeletePrivateEndpointConnectionSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/DeleteSitePrivateEndpointConnection.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/DeleteSitePrivateEndpointConnection.json
      */
     /**
      * Sample code: Delete a private endpoint connection for a site.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mysqlflexibleserver.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Maintenance window of a server. */
 @Fluent
 public final class MaintenanceWindow {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MaintenanceWindow.class);
-
     /*
      * indicates whether custom window is enabled or disabled
      */

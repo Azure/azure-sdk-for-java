@@ -48,7 +48,7 @@ public final class SqlPoolsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientSqlPo")
-    private interface SqlPoolsService {
+    public interface SqlPoolsService {
         @Get("/sqlPools")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
@@ -74,7 +74,7 @@ public final class SqlPoolsImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool collection.
+     * @return sQL pool collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlPoolInfoListResult>> listWithResponseAsync() {
@@ -90,7 +90,7 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool collection.
+     * @return sQL pool collection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlPoolInfoListResult>> listWithResponseAsync(Context context) {
@@ -104,19 +104,11 @@ public final class SqlPoolsImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool collection.
+     * @return sQL pool collection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlPoolInfoListResult> listAsync() {
-        return listWithResponseAsync()
-                .flatMap(
-                        (Response<SqlPoolInfoListResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return listWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -126,19 +118,11 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool collection.
+     * @return sQL pool collection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlPoolInfoListResult> listAsync(Context context) {
-        return listWithResponseAsync(context)
-                .flatMap(
-                        (Response<SqlPoolInfoListResult> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return listWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -160,7 +144,7 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sQL pool collection.
+     * @return sQL pool collection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPoolInfoListResult> listWithResponse(Context context) {
@@ -174,7 +158,7 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool.
+     * @return sql Pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlPool>> getWithResponseAsync(String sqlPoolName) {
@@ -192,7 +176,7 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool.
+     * @return sql Pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlPool>> getWithResponseAsync(String sqlPoolName, Context context) {
@@ -208,19 +192,11 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool.
+     * @return sql Pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlPool> getAsync(String sqlPoolName) {
-        return getWithResponseAsync(sqlPoolName)
-                .flatMap(
-                        (Response<SqlPool> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(sqlPoolName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -231,19 +207,11 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool.
+     * @return sql Pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlPool> getAsync(String sqlPoolName, Context context) {
-        return getWithResponseAsync(sqlPoolName, context)
-                .flatMap(
-                        (Response<SqlPool> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(sqlPoolName, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -268,7 +236,7 @@ public final class SqlPoolsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sql Pool.
+     * @return sql Pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SqlPool> getWithResponse(String sqlPoolName, Context context) {

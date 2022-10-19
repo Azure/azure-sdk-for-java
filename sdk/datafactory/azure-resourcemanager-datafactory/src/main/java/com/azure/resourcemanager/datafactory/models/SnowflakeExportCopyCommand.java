@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -18,27 +16,27 @@ import java.util.Map;
 @JsonTypeName("SnowflakeExportCopyCommand")
 @Fluent
 public final class SnowflakeExportCopyCommand extends ExportSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnowflakeExportCopyCommand.class);
-
     /*
-     * Additional copy options directly passed to snowflake Copy Command. Type:
-     * key value pairs (value should be string type) (or Expression with
-     * resultType object). Example: "additionalCopyOptions": { "DATE_FORMAT":
-     * "MM/DD/YYYY", "TIME_FORMAT": "'HH24:MI:SS.FF'" }
+     * Additional copy options directly passed to snowflake Copy Command. Type: key value pairs (value should be string
+     * type) (or Expression with resultType object). Example: "additionalCopyOptions": { "DATE_FORMAT": "MM/DD/YYYY",
+     * "TIME_FORMAT": "'HH24:MI:SS.FF'" }
      */
     @JsonProperty(value = "additionalCopyOptions")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalCopyOptions;
 
     /*
-     * Additional format options directly passed to snowflake Copy Command.
-     * Type: key value pairs (value should be string type) (or Expression with
-     * resultType object). Example: "additionalFormatOptions": { "OVERWRITE":
-     * "TRUE", "MAX_FILE_SIZE": "'FALSE'" }
+     * Additional format options directly passed to snowflake Copy Command. Type: key value pairs (value should be
+     * string type) (or Expression with resultType object). Example: "additionalFormatOptions": { "OVERWRITE": "TRUE",
+     * "MAX_FILE_SIZE": "'FALSE'" }
      */
     @JsonProperty(value = "additionalFormatOptions")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> additionalFormatOptions;
+
+    /** Creates an instance of SnowflakeExportCopyCommand class. */
+    public SnowflakeExportCopyCommand() {
+    }
 
     /**
      * Get the additionalCopyOptions property: Additional copy options directly passed to snowflake Copy Command. Type:

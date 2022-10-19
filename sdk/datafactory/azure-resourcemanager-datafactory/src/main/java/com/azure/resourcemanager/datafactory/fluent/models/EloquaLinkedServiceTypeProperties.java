@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Eloqua server linked service properties. */
 @Fluent
 public final class EloquaLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EloquaLinkedServiceTypeProperties.class);
-
     /*
      * The endpoint of the Eloqua server. (i.e. eloqua.example.com)
      */
@@ -22,8 +19,7 @@ public final class EloquaLinkedServiceTypeProperties {
     private Object endpoint;
 
     /*
-     * The site name and user name of your Eloqua account in the form:
-     * sitename/username. (i.e. Eloqua/Alice)
+     * The site name and user name of your Eloqua account in the form: sitename/username. (i.e. Eloqua/Alice)
      */
     @JsonProperty(value = "username", required = true)
     private Object username;
@@ -35,34 +31,34 @@ public final class EloquaLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
     @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of EloquaLinkedServiceTypeProperties class. */
+    public EloquaLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the endpoint property: The endpoint of the Eloqua server. (i.e. eloqua.example.com).
@@ -221,13 +217,13 @@ public final class EloquaLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endpoint in model EloquaLinkedServiceTypeProperties"));
         }
         if (username() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property username in model EloquaLinkedServiceTypeProperties"));
@@ -236,4 +232,6 @@ public final class EloquaLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EloquaLinkedServiceTypeProperties.class);
 }

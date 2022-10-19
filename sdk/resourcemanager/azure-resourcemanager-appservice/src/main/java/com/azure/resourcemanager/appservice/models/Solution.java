@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class Representing Solution for problems detected. */
 @Fluent
 public final class Solution {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Solution.class);
-
     /*
      * Solution Id.
      */

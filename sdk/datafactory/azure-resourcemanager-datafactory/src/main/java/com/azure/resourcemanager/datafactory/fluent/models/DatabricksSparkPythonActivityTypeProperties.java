@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +13,9 @@ import java.util.Map;
 /** Databricks SparkPython activity properties. */
 @Fluent
 public final class DatabricksSparkPythonActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabricksSparkPythonActivityTypeProperties.class);
-
     /*
-     * The URI of the Python file to be executed. DBFS paths are supported.
-     * Type: string (or Expression with resultType string).
+     * The URI of the Python file to be executed. DBFS paths are supported. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "pythonFile", required = true)
     private Object pythonFile;
@@ -30,11 +27,14 @@ public final class DatabricksSparkPythonActivityTypeProperties {
     private List<Object> parameters;
 
     /*
-     * A list of libraries to be installed on the cluster that will execute the
-     * job.
+     * A list of libraries to be installed on the cluster that will execute the job.
      */
     @JsonProperty(value = "libraries")
     private List<Map<String, Object>> libraries;
+
+    /** Creates an instance of DatabricksSparkPythonActivityTypeProperties class. */
+    public DatabricksSparkPythonActivityTypeProperties() {
+    }
 
     /**
      * Get the pythonFile property: The URI of the Python file to be executed. DBFS paths are supported. Type: string
@@ -105,10 +105,12 @@ public final class DatabricksSparkPythonActivityTypeProperties {
      */
     public void validate() {
         if (pythonFile() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property pythonFile in model DatabricksSparkPythonActivityTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabricksSparkPythonActivityTypeProperties.class);
 }

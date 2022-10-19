@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.VolumeGroupMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Volume group properties. */
 @Fluent
 public final class VolumeGroupListProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeGroupListProperties.class);
-
     /*
      * Azure lifecycle management
      */

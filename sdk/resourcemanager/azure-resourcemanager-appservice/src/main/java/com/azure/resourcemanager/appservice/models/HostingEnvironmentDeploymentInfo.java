@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information needed to create resources on an App Service Environment. */
 @Fluent
 public final class HostingEnvironmentDeploymentInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HostingEnvironmentDeploymentInfo.class);
-
     /*
      * Name of the App Service Environment.
      */

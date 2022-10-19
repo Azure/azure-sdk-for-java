@@ -28,7 +28,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the inbound NAT rules in a load balancer.
+     * @return all the inbound NAT rules in a load balancer as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<InboundNatRuleInner> listAsync(String resourceGroupName, String loadBalancerName);
@@ -41,7 +41,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the inbound NAT rules in a load balancer.
+     * @return all the inbound NAT rules in a load balancer as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InboundNatRuleInner> list(String resourceGroupName, String loadBalancerName);
@@ -55,7 +55,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the inbound NAT rules in a load balancer.
+     * @return all the inbound NAT rules in a load balancer as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<InboundNatRuleInner> list(String resourceGroupName, String loadBalancerName, Context context);
@@ -69,7 +69,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -84,7 +84,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -99,7 +99,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -115,7 +115,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -130,7 +130,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String loadBalancerName, String inboundNatRuleName);
@@ -172,7 +172,8 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer inbound NAT rule.
+     * @return the specified load balancer inbound NAT rule along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<InboundNatRuleInner>> getWithResponseAsync(
@@ -184,15 +185,13 @@ public interface InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
-     * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer inbound NAT rule.
+     * @return the specified load balancer inbound NAT rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<InboundNatRuleInner> getAsync(
-        String resourceGroupName, String loadBalancerName, String inboundNatRuleName, String expand);
+    Mono<InboundNatRuleInner> getAsync(String resourceGroupName, String loadBalancerName, String inboundNatRuleName);
 
     /**
      * Gets the specified load balancer inbound NAT rule.
@@ -200,13 +199,16 @@ public interface InboundNatRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer inbound NAT rule.
+     * @return the specified load balancer inbound NAT rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<InboundNatRuleInner> getAsync(String resourceGroupName, String loadBalancerName, String inboundNatRuleName);
+    Response<InboundNatRuleInner> getWithResponse(
+        String resourceGroupName, String loadBalancerName, String inboundNatRuleName, String expand, Context context);
 
     /**
      * Gets the specified load balancer inbound NAT rule.
@@ -223,23 +225,6 @@ public interface InboundNatRulesClient {
     InboundNatRuleInner get(String resourceGroupName, String loadBalancerName, String inboundNatRuleName);
 
     /**
-     * Gets the specified load balancer inbound NAT rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param inboundNatRuleName The name of the inbound NAT rule.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer inbound NAT rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InboundNatRuleInner> getWithResponse(
-        String resourceGroupName, String loadBalancerName, String inboundNatRuleName, String expand, Context context);
-
-    /**
      * Creates or updates a load balancer inbound NAT rule.
      *
      * @param resourceGroupName The name of the resource group.
@@ -249,7 +234,8 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return inbound NAT rule of the load balancer.
+     * @return inbound NAT rule of the load balancer along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -268,7 +254,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return inbound NAT rule of the load balancer.
+     * @return the {@link PollerFlux} for polling of inbound NAT rule of the load balancer.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdateAsync(
@@ -287,7 +273,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return inbound NAT rule of the load balancer.
+     * @return the {@link SyncPoller} for polling of inbound NAT rule of the load balancer.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(
@@ -307,7 +293,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return inbound NAT rule of the load balancer.
+     * @return the {@link SyncPoller} for polling of inbound NAT rule of the load balancer.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(
@@ -327,7 +313,7 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return inbound NAT rule of the load balancer.
+     * @return inbound NAT rule of the load balancer on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<InboundNatRuleInner> createOrUpdateAsync(

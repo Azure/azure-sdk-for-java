@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.desktopvirtualization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ExpandMsixImageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** ExpandMsixImageList List of MSIX package properties retrieved from MSIX Image expansion. */
 @Fluent
 public final class ExpandMsixImageList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpandMsixImageList.class);
-
     /*
      * List of MSIX package properties from give MSIX Image.
      */

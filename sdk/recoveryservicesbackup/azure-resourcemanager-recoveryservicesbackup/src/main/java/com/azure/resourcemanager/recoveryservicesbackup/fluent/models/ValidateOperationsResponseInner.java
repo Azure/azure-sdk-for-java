@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ValidateOperationResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ValidateOperationsResponse model. */
 @Fluent
 public final class ValidateOperationsResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateOperationsResponseInner.class);
-
     /*
      * Base class for validate operation response.
      */

@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.CassandraTableResource;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties to create and update Azure Cosmos DB Cassandra table. */
 @Fluent
 public final class CassandraTableCreateUpdateProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraTableCreateUpdateProperties.class);
-
     /*
      * The standard JSON format of a Cassandra table
      */
@@ -23,8 +20,8 @@ public final class CassandraTableCreateUpdateProperties {
     private CassandraTableResource resource;
 
     /*
-     * A key-value pair of options to be applied for the request. This
-     * corresponds to the headers sent with the request.
+     * A key-value pair of options to be applied for the request. This corresponds to the headers sent with the
+     * request.
      */
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
@@ -78,7 +75,7 @@ public final class CassandraTableCreateUpdateProperties {
      */
     public void validate() {
         if (resource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property resource in model CassandraTableCreateUpdateProperties"));
@@ -89,4 +86,6 @@ public final class CassandraTableCreateUpdateProperties {
             options().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CassandraTableCreateUpdateProperties.class);
 }

@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,32 +14,29 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("HttpReadSettings")
 @Fluent
 public final class HttpReadSettings extends StoreReadSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpReadSettings.class);
-
     /*
-     * The HTTP method used to call the RESTful API. The default is GET. Type:
-     * string (or Expression with resultType string).
+     * The HTTP method used to call the RESTful API. The default is GET. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "requestMethod")
     private Object requestMethod;
 
     /*
-     * The HTTP request body to the RESTful API if requestMethod is POST. Type:
-     * string (or Expression with resultType string).
+     * The HTTP request body to the RESTful API if requestMethod is POST. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "requestBody")
     private Object requestBody;
 
     /*
-     * The additional HTTP headers in the request to the RESTful API. Type:
-     * string (or Expression with resultType string).
+     * The additional HTTP headers in the request to the RESTful API. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "additionalHeaders")
     private Object additionalHeaders;
 
     /*
-     * Specifies the timeout for a HTTP client to get HTTP response from HTTP
-     * server.
+     * Specifies the timeout for a HTTP client to get HTTP response from HTTP server.
      */
     @JsonProperty(value = "requestTimeout")
     private Object requestTimeout;
@@ -53,11 +48,15 @@ public final class HttpReadSettings extends StoreReadSettings {
     private Boolean enablePartitionDiscovery;
 
     /*
-     * Specify the root path where partition discovery starts from. Type:
-     * string (or Expression with resultType string).
+     * Specify the root path where partition discovery starts from. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "partitionRootPath")
     private Object partitionRootPath;
+
+    /** Creates an instance of HttpReadSettings class. */
+    public HttpReadSettings() {
+    }
 
     /**
      * Get the requestMethod property: The HTTP method used to call the RESTful API. The default is GET. Type: string

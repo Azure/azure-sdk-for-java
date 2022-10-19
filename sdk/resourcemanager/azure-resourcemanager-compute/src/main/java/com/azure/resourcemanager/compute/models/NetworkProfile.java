@@ -5,33 +5,27 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies the network interfaces or the networking configuration of the virtual machine. */
 @Fluent
 public final class NetworkProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfile.class);
-
     /*
-     * Specifies the list of resource Ids for the network interfaces associated
-     * with the virtual machine.
+     * Specifies the list of resource Ids for the network interfaces associated with the virtual machine.
      */
     @JsonProperty(value = "networkInterfaces")
     private List<NetworkInterfaceReference> networkInterfaces;
 
     /*
-     * specifies the Microsoft.Network API version used when creating
-     * networking resources in the Network Interface Configurations
+     * specifies the Microsoft.Network API version used when creating networking resources in the Network Interface
+     * Configurations
      */
     @JsonProperty(value = "networkApiVersion")
     private NetworkApiVersion networkApiVersion;
 
     /*
-     * Specifies the networking configurations that will be used to create the
-     * virtual machine networking resources.
+     * Specifies the networking configurations that will be used to create the virtual machine networking resources.
      */
     @JsonProperty(value = "networkInterfaceConfigurations")
     private List<VirtualMachineNetworkInterfaceConfiguration> networkInterfaceConfigurations;

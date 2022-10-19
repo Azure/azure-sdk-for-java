@@ -7,10 +7,10 @@ package com.azure.resourcemanager.authorization.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
@@ -20,8 +20,6 @@ import java.util.Map;
 /** driveItem. */
 @Fluent
 public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDriveItem.class);
-
     /*
      * audio
      */
@@ -112,6 +110,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
      * root
      */
     @JsonProperty(value = "root")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> root;
 
     /*
@@ -240,7 +239,7 @@ public final class MicrosoftGraphDriveItem extends MicrosoftGraphBaseItemInner {
      */
     public byte[] content() {
         if (this.content == null) {
-            return null;
+            return new byte[0];
         }
         return this.content.decodedBytes();
     }

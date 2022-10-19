@@ -3,6 +3,13 @@
 package com.azure.data.tables;
 
 import com.azure.core.annotation.ServiceClientBuilder;
+import com.azure.core.client.traits.AzureNamedKeyCredentialTrait;
+import com.azure.core.client.traits.AzureSasCredentialTrait;
+import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.ConnectionStringTrait;
+import com.azure.core.client.traits.EndpointTrait;
+import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.credential.TokenCredential;
@@ -12,9 +19,11 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
@@ -64,7 +73,14 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * @see TableServiceClient
  */
 @ServiceClientBuilder(serviceClients = {TableServiceClient.class, TableServiceAsyncClient.class})
-public final class TableServiceClientBuilder {
+public final class TableServiceClientBuilder implements
+    TokenCredentialTrait<TableServiceClientBuilder>,
+    AzureNamedKeyCredentialTrait<TableServiceClientBuilder>,
+    ConnectionStringTrait<TableServiceClientBuilder>,
+    AzureSasCredentialTrait<TableServiceClientBuilder>,
+    HttpTrait<TableServiceClientBuilder>,
+    ConfigurationTrait<TableServiceClientBuilder>,
+    EndpointTrait<TableServiceClientBuilder> {
     private final ClientLogger logger = new ClientLogger(TableServiceClientBuilder.class);
     private final SerializerAdapter serializerAdapter = JacksonAdapter.createDefaultSerializerAdapter();
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
@@ -82,6 +98,8 @@ public final class TableServiceClientBuilder {
     private TokenCredential tokenCredential;
     private String sasToken;
     private RetryPolicy retryPolicy;
+    private RetryOptions retryOptions;
+    private boolean enableTenantDiscovery;
 
     /**
      * Creates a builder instance that is able to configure and construct {@link TableServiceClient} and
@@ -174,8 +192,8 @@ public final class TableServiceClientBuilder {
 
         HttpPipeline pipeline = (httpPipeline != null) ? httpPipeline : BuilderHelper.buildPipeline(
             namedKeyCredential != null ? namedKeyCredential : azureNamedKeyCredential, azureSasCredential,
-            tokenCredential, sasToken, endpoint, retryPolicy, httpLogOptions, clientOptions, httpClient,
-            perCallPolicies, perRetryPolicies, configuration, logger);
+            tokenCredential, sasToken, endpoint, retryPolicy, retryOptions, httpLogOptions, clientOptions, httpClient,
+            perCallPolicies, perRetryPolicies, configuration, logger, enableTenantDiscovery);
 
         return new TableServiceAsyncClient(pipeline, endpoint, serviceVersion, serializerAdapter);
     }
@@ -190,6 +208,7 @@ public final class TableServiceClientBuilder {
      * @throws NullPointerException If {@code connectionString} is {@code null}.
      * @throws IllegalArgumentException If {@code connectionString} isn't a valid connection string.
      */
+    @Override
     public TableServiceClientBuilder connectionString(String connectionString) {
         if (connectionString == null) {
             throw logger.logExceptionAsError(new NullPointerException("'connectionString' cannot be null."));
@@ -211,6 +230,7 @@ public final class TableServiceClientBuilder {
      *
      * @throws IllegalArgumentException If {@code endpoint} isn't a valid URL.
      */
+    @Override
     public TableServiceClientBuilder endpoint(String endpoint) {
         if (endpoint == null) {
             throw logger.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
@@ -219,7 +239,7 @@ public final class TableServiceClientBuilder {
         try {
             new URL(endpoint);
         } catch (MalformedURLException ex) {
-            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL."));
+            throw logger.logExceptionAsWarning(new IllegalArgumentException("'endpoint' must be a valid URL.", ex));
         }
 
         this.endpoint = endpoint;
@@ -228,13 +248,21 @@ public final class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link HttpPipeline} to use for the service client. If {@code pipeline} is set, all other settings are
-     * ignored, aside from {@code endpoint}.
+     * Sets the {@link HttpPipeline} to use for the service client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * The {@link #endpoint(String) endpoint} is not ignored when {@code pipeline} is set.
      *
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
-     *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder pipeline(HttpPipeline pipeline) {
         this.httpPipeline = pipeline;
 
@@ -253,6 +281,7 @@ public final class TableServiceClientBuilder {
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder configuration(Configuration configuration) {
         this.configuration = configuration;
 
@@ -298,6 +327,7 @@ public final class TableServiceClientBuilder {
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public TableServiceClientBuilder credential(AzureSasCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
@@ -320,6 +350,7 @@ public final class TableServiceClientBuilder {
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public TableServiceClientBuilder credential(AzureNamedKeyCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
@@ -331,10 +362,12 @@ public final class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Setting this is mutually
-     * exclusive with using {@link TableServiceClientBuilder#credential(AzureNamedKeyCredential)},
-     * {@link TableServiceClientBuilder#credential(AzureSasCredential)} or
-     * {@link TableServiceClientBuilder#sasToken(String)}.
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a>
+     * documentation for more details on proper usage of the {@link TokenCredential} type.
+     *
+     * Setting this is mutually exclusive with using {@link #credential(AzureNamedKeyCredential)},
+     * {@link #credential(AzureSasCredential)} or {@link #sasToken(String)}.
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.
      *
@@ -342,6 +375,7 @@ public final class TableServiceClientBuilder {
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
+    @Override
     public TableServiceClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
             throw logger.logExceptionAsError(new NullPointerException("'credential' cannot be null."));
@@ -355,10 +389,17 @@ public final class TableServiceClientBuilder {
     /**
      * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
-     * @param httpClient The {@link HttpClient} to use for requests.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
+     * @param httpClient The {@link HttpClient} to use for requests.
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder httpClient(HttpClient httpClient) {
         if (this.httpClient != null && httpClient == null) {
             logger.warning("'httpClient' is being set to 'null' when it was previously configured.");
@@ -373,11 +414,18 @@ public final class TableServiceClientBuilder {
      * Sets the {@link HttpLogOptions logging configuration} to use when sending and receiving requests to and from
      * the service. If a {@code logLevel} is not provided, default value of {@link HttpLogDetailLevel#NONE} is set.
      *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
      * @param logOptions The {@link HttpLogOptions logging configuration} to use when sending and receiving requests to
      * and from the service.
-     *
      * @return The updated {@link TableServiceClientBuilder}.
      */
+    @Override
     public TableServiceClientBuilder httpLogOptions(HttpLogOptions logOptions) {
         this.httpLogOptions = logOptions;
 
@@ -385,16 +433,21 @@ public final class TableServiceClientBuilder {
     }
 
     /**
-     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent. The policy will be added
-     * after the {@link RetryPolicy retry policy}. If the method is called multiple times, all
-     * {@link HttpPipelinePolicy policies} will be added and their order preserved.
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
-     *
      * @return The updated {@link TableServiceClientBuilder}.
      *
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
+    @Override
     public TableServiceClientBuilder addPolicy(HttpPipelinePolicy pipelinePolicy) {
         if (pipelinePolicy == null) {
             throw logger.logExceptionAsError(new NullPointerException("'pipelinePolicy' cannot be null."));
@@ -434,6 +487,7 @@ public final class TableServiceClientBuilder {
     /**
      * Sets the request {@link RetryPolicy} for all the requests made through the client. The default
      * {@link RetryPolicy} will be used in the pipeline, if not provided.
+     * Setting this is mutually exclusive with using {@link #retryOptions(RetryOptions)}.
      *
      * @param retryPolicy {@link RetryPolicy}.
      *
@@ -446,14 +500,65 @@ public final class TableServiceClientBuilder {
     }
 
     /**
-     * Sets the {@link ClientOptions} such as application ID and custom headers to set on a request.
+     * Sets the {@link RetryOptions} for all the requests made through the client.
      *
-     * @param clientOptions The {@link ClientOptions}.
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     * <p>
+     * Setting this is mutually exclusive with using {@link #retryPolicy(RetryPolicy)}.
+     *
+     * @param retryOptions The {@link RetryOptions} to use for all the requests made through the client.
+     * @return The updated {@link TableServiceClientBuilder} object.
+     */
+    @Override
+    public TableServiceClientBuilder retryOptions(RetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+        return this;
+    }
+
+    /**
+     * Allows for setting common properties such as application ID, headers, proxy configuration, etc. Note that it is
+     * recommended that this method be called with an instance of the {@link HttpClientOptions}
+     * class (a subclass of the {@link ClientOptions} base class). The HttpClientOptions subclass provides more
+     * configuration options suitable for HTTP clients, which is applicable for any class that implements this HttpTrait
+     * interface.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the HttpTrait APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, a HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param clientOptions A configured instance of {@link HttpClientOptions}.
+     * @see HttpClientOptions
+     * @return The updated {@link TableServiceClientBuilder}.
+     */
+    @Override
+    public TableServiceClientBuilder clientOptions(ClientOptions clientOptions) {
+        this.clientOptions = clientOptions;
+
+        return this;
+    }
+
+    /**
+     * Enable tenant discovery when authenticating with the Table Service. <strong>This functionality is disabled by
+     * default and only available for Storage endpoints using service version
+     * {@link TableServiceVersion#V2020_12_06 2020_12_06}.</strong>
+     * <p>
+     * Enable this if there is a chance for your application and the Storage account it communicates with to reside in
+     * different tenants. If this is enabled, clients created using this builder will make an unauthorized initial
+     * service request that will be met with a {@code 401} response containing an authentication challenge, which
+     * will be subsequently used to retrieve an access token to authorize all further requests with.
      *
      * @return The updated {@link TableServiceClientBuilder}.
      */
-    public TableServiceClientBuilder clientOptions(ClientOptions clientOptions) {
-        this.clientOptions = clientOptions;
+    public TableServiceClientBuilder enableTenantDiscovery() {
+        this.enableTenantDiscovery = true;
 
         return this;
     }

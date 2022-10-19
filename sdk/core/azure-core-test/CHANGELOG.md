@@ -1,6 +1,6 @@
 # Release History
 
-## 1.8.0-beta.1 (Unreleased)
+## 1.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,112 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.12.1 (2022-10-07)
+
+### Bugs Fixed
+
+- Fixed a bug where `session-records` folder didn't exist a `NullPointerException` would be thrown. Now the folder is
+  created when it doesn't exist.
+- Fixed a bug where `URL.getPath` of a file would contain special characters and result in the file not being found. Now
+  `URL.toURI` is used which converts URL encoded characters to their filesystem representation (`"%20"` -> `" "`).
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+
+## 1.12.0 (2022-09-01)
+
+### Features Added
+
+- Added metrics-based testing utilities.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to `1.32.0`.
+
+## 1.11.0 (2022-08-05)
+
+### Features Added
+
+- Added `AssertingClient` which asserts whether asynchronous or synchronous APIs are called.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to `1.31.0`.
+
+## 1.10.0 (2022-06-30)
+
+### Features Added
+
+- Added `ThreadDumper` which will dump thread data if testing is assumed to be deadlocked.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.1` to `1.30.0`.
+
+## 1.9.1 (2022-06-03)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.29.0` to `1.29.1`.
+
+## 1.9.0 (2022-06-03)
+
+### Features Added
+- Added `getRequestUrl` and `canSendBinaryData` methods to HttpClientTests
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to `1.29.0`.
+- 
+## 1.8.0 (2022-05-06)
+
+### Features Added
+
+- Added `TestConfigurationSource` to enable mocking of a `ConfigurationSource`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to `1.28.0`.
+
+## 1.7.10 (2022-04-01)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.26.0` to `1.27.0`.
+
+## 1.7.9 (2022-03-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.25.0` to `1.26.0`.
+
+## 1.7.8 (2022-02-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to `1.25.0`.
 
 ## 1.7.7 (2022-01-11)
 

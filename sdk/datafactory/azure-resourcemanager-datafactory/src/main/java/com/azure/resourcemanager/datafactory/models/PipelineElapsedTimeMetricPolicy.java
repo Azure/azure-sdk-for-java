@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Pipeline ElapsedTime Metric Policy. */
 @Fluent
 public final class PipelineElapsedTimeMetricPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineElapsedTimeMetricPolicy.class);
-
     /*
      * TimeSpan value, after which an Azure Monitoring Metric is fired.
      */
     @JsonProperty(value = "duration")
     private Object duration;
+
+    /** Creates an instance of PipelineElapsedTimeMetricPolicy class. */
+    public PipelineElapsedTimeMetricPolicy() {
+    }
 
     /**
      * Get the duration property: TimeSpan value, after which an Azure Monitoring Metric is fired.

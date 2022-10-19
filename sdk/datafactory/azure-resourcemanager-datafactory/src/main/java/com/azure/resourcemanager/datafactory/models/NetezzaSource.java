@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,18 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("NetezzaSource")
 @Fluent
 public final class NetezzaSource extends TabularSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetezzaSource.class);
-
     /*
-     * A query to retrieve data from source. Type: string (or Expression with
-     * resultType string).
+     * A query to retrieve data from source. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "query")
     private Object query;
 
     /*
-     * The partition mechanism that will be used for Netezza read in parallel.
-     * Possible values include: "None", "DataSlice", "DynamicRange".
+     * The partition mechanism that will be used for Netezza read in parallel. Possible values include: "None",
+     * "DataSlice", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
@@ -37,6 +32,10 @@ public final class NetezzaSource extends TabularSource {
      */
     @JsonProperty(value = "partitionSettings")
     private NetezzaPartitionSettings partitionSettings;
+
+    /** Creates an instance of NetezzaSource class. */
+    public NetezzaSource() {
+    }
 
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType

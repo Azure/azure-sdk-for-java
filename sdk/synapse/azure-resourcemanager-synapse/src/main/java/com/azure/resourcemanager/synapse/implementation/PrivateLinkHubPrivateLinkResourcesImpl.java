@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.PrivateLinkHubPrivateLinkResourc
 import com.azure.resourcemanager.synapse.fluent.models.PrivateLinkResourceInner;
 import com.azure.resourcemanager.synapse.models.PrivateLinkHubPrivateLinkResources;
 import com.azure.resourcemanager.synapse.models.PrivateLinkResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkHubPrivateLinkResourcesImpl implements PrivateLinkHubPrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkHubPrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkHubPrivateLinkResourcesImpl.class);
 
     private final PrivateLinkHubPrivateLinkResourcesClient innerClient;
 

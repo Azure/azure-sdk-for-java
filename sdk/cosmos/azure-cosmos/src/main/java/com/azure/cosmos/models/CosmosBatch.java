@@ -394,14 +394,10 @@ public final class CosmosBatch {
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
-
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosBatchHelper.setCosmosBatchAccessor(
-            new ImplementationBridgeHelpers.CosmosBatchHelper.CosmosBatchAccessor() {
-                @Override
-                public List<ItemBatchOperation<?>> getOperationsInternal(CosmosBatch cosmosBatch) {
-                    return cosmosBatch.getOperationsInternal();
-                }
-            });
+            cosmosBatch -> cosmosBatch.getOperationsInternal());
     }
+
+    static { initialize(); }
 }

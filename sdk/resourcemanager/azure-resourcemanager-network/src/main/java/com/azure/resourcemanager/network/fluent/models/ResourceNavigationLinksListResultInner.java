@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ResourceNavigationLink;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ResourceNavigationLinks_List operation. */
 @Fluent
 public final class ResourceNavigationLinksListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceNavigationLinksListResultInner.class);
-
     /*
      * The resource navigation links in a subnet.
      */
@@ -27,6 +23,10 @@ public final class ResourceNavigationLinksListResultInner {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ResourceNavigationLinksListResultInner class. */
+    public ResourceNavigationLinksListResultInner() {
+    }
 
     /**
      * Get the value property: The resource navigation links in a subnet.

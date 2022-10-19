@@ -21,7 +21,7 @@ public final class HealthcareJobState extends JobMetadata {
      * The errors property.
      */
     @JsonProperty(value = "errors")
-    private List<TextAnalyticsError> errors;
+    private List<Error> errors;
 
     /*
      * The @nextLink property.
@@ -54,7 +54,7 @@ public final class HealthcareJobState extends JobMetadata {
      *
      * @return the errors value.
      */
-    public List<TextAnalyticsError> getErrors() {
+    public List<Error> getErrors() {
         return this.errors;
     }
 
@@ -64,7 +64,7 @@ public final class HealthcareJobState extends JobMetadata {
      * @param errors the errors value to set.
      * @return the HealthcareJobState object itself.
      */
-    public HealthcareJobState setErrors(List<TextAnalyticsError> errors) {
+    public HealthcareJobState setErrors(List<Error> errors) {
         this.errors = errors;
         return this;
     }

@@ -24,7 +24,7 @@ import java.time.Duration;
  * @param <TOptions> for performance configuration.
  */
 abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
-    private final ClientLogger logger = new ClientLogger(ServiceTest.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceTest.class);
     protected static final int TOTAL_MESSAGE_MULTIPLIER = 300;
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
@@ -47,13 +47,13 @@ abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStres
         super(options);
         String connectionString = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
         if (CoreUtils.isNullOrEmpty(connectionString)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Environment variable "
                 + AZURE_SERVICE_BUS_CONNECTION_STRING + " must be set."));
         }
 
         String queueName = System.getenv(AZURE_SERVICEBUS_QUEUE_NAME);
         if (CoreUtils.isNullOrEmpty(queueName)) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Environment variable "
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("Environment variable "
                 + AZURE_SERVICEBUS_QUEUE_NAME + " must be set."));
         }
 

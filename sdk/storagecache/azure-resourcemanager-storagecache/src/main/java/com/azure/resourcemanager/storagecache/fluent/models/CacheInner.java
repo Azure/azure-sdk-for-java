@@ -7,7 +7,6 @@ package com.azure.resourcemanager.storagecache.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storagecache.models.CacheDirectorySettings;
 import com.azure.resourcemanager.storagecache.models.CacheEncryptionSettings;
 import com.azure.resourcemanager.storagecache.models.CacheHealth;
@@ -15,9 +14,11 @@ import com.azure.resourcemanager.storagecache.models.CacheIdentity;
 import com.azure.resourcemanager.storagecache.models.CacheNetworkSettings;
 import com.azure.resourcemanager.storagecache.models.CacheSecuritySettings;
 import com.azure.resourcemanager.storagecache.models.CacheSku;
+import com.azure.resourcemanager.storagecache.models.CacheUpgradeSettings;
 import com.azure.resourcemanager.storagecache.models.CacheUpgradeStatus;
+import com.azure.resourcemanager.storagecache.models.PrimingJob;
 import com.azure.resourcemanager.storagecache.models.ProvisioningStateType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.storagecache.models.StorageTargetSpaceAllocation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -28,8 +29,6 @@ import java.util.Map;
  */
 @Fluent
 public final class CacheInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheInner.class);
-
     /*
      * The identity of the cache, if configured.
      */
@@ -210,6 +209,29 @@ public final class CacheInner extends Resource {
     }
 
     /**
+     * Get the upgradeSettings property: Upgrade settings of the Cache.
+     *
+     * @return the upgradeSettings value.
+     */
+    public CacheUpgradeSettings upgradeSettings() {
+        return this.innerProperties() == null ? null : this.innerProperties().upgradeSettings();
+    }
+
+    /**
+     * Set the upgradeSettings property: Upgrade settings of the Cache.
+     *
+     * @param upgradeSettings the upgradeSettings value to set.
+     * @return the CacheInner object itself.
+     */
+    public CacheInner withUpgradeSettings(CacheUpgradeSettings upgradeSettings) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheProperties();
+        }
+        this.innerProperties().withUpgradeSettings(upgradeSettings);
+        return this;
+    }
+
+    /**
      * Get the networkSettings property: Specifies network settings of the cache.
      *
      * @return the networkSettings value.
@@ -299,6 +321,49 @@ public final class CacheInner extends Resource {
         }
         this.innerProperties().withDirectoryServicesSettings(directoryServicesSettings);
         return this;
+    }
+
+    /**
+     * Get the zones property: Availability zones for resources. This field should only contain a single element in the
+     * array.
+     *
+     * @return the zones value.
+     */
+    public List<String> zones() {
+        return this.innerProperties() == null ? null : this.innerProperties().zones();
+    }
+
+    /**
+     * Set the zones property: Availability zones for resources. This field should only contain a single element in the
+     * array.
+     *
+     * @param zones the zones value to set.
+     * @return the CacheInner object itself.
+     */
+    public CacheInner withZones(List<String> zones) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new CacheProperties();
+        }
+        this.innerProperties().withZones(zones);
+        return this;
+    }
+
+    /**
+     * Get the primingJobs property: Specifies the priming jobs defined in the cache.
+     *
+     * @return the primingJobs value.
+     */
+    public List<PrimingJob> primingJobs() {
+        return this.innerProperties() == null ? null : this.innerProperties().primingJobs();
+    }
+
+    /**
+     * Get the spaceAllocation property: Specifies the space allocation percentage for each storage target in the cache.
+     *
+     * @return the spaceAllocation value.
+     */
+    public List<StorageTargetSpaceAllocation> spaceAllocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().spaceAllocation();
     }
 
     /**

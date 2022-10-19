@@ -7,14 +7,12 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.FusionAlertRuleTemplate;
 import com.azure.resourcemanager.securityinsights.models.MLBehaviorAnalyticsAlertRuleTemplate;
 import com.azure.resourcemanager.securityinsights.models.MicrosoftSecurityIncidentCreationAlertRuleTemplate;
 import com.azure.resourcemanager.securityinsights.models.NrtAlertRuleTemplate;
 import com.azure.resourcemanager.securityinsights.models.ScheduledAlertRuleTemplate;
 import com.azure.resourcemanager.securityinsights.models.ThreatIntelligenceAlertRuleTemplate;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -39,11 +37,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class AlertRuleTemplateInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertRuleTemplateInner.class);
-
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;

@@ -4,44 +4,50 @@
 
 package com.azure.resourcemanager.loganalytics.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for IdentityType. */
-public enum IdentityType {
-    /** Enum value SystemAssigned. */
-    SYSTEM_ASSIGNED("SystemAssigned"),
+public final class IdentityType extends ExpandableStringEnum<IdentityType> {
+    /** Static value user for IdentityType. */
+    public static final IdentityType USER = fromString("user");
 
-    /** Enum value None. */
-    NONE("None");
+    /** Static value application for IdentityType. */
+    public static final IdentityType APPLICATION = fromString("application");
 
-    /** The actual serialized value for a IdentityType instance. */
-    private final String value;
+    /** Static value managedIdentity for IdentityType. */
+    public static final IdentityType MANAGED_IDENTITY = fromString("managedIdentity");
 
-    IdentityType(String value) {
-        this.value = value;
+    /** Static value key for IdentityType. */
+    public static final IdentityType KEY = fromString("key");
+
+    /** Static value SystemAssigned for IdentityType. */
+    public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
+
+    /** Static value UserAssigned for IdentityType. */
+    public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");
+
+    /** Static value None for IdentityType. */
+    public static final IdentityType NONE = fromString("None");
+
+    /**
+     * Creates or finds a IdentityType from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding IdentityType.
+     */
+    @JsonCreator
+    public static IdentityType fromString(String name) {
+        return fromString(name, IdentityType.class);
     }
 
     /**
-     * Parses a serialized value to a IdentityType instance.
+     * Gets known IdentityType values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed IdentityType object, or null if unable to parse.
+     * @return known IdentityType values.
      */
-    @JsonCreator
-    public static IdentityType fromString(String value) {
-        IdentityType[] items = IdentityType.values();
-        for (IdentityType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<IdentityType> values() {
+        return values(IdentityType.class);
     }
 }

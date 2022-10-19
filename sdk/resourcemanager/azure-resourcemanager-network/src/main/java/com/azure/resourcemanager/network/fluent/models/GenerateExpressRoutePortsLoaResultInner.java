@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Response for GenerateExpressRoutePortsLOA API service call. */
 @Fluent
 public final class GenerateExpressRoutePortsLoaResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GenerateExpressRoutePortsLoaResultInner.class);
-
     /*
      * The content as a base64 encoded string.
      */
     @JsonProperty(value = "encodedContent")
     private String encodedContent;
+
+    /** Creates an instance of GenerateExpressRoutePortsLoaResultInner class. */
+    public GenerateExpressRoutePortsLoaResultInner() {
+    }
 
     /**
      * Get the encodedContent property: The content as a base64 encoded string.

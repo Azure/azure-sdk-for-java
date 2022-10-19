@@ -5,11 +5,13 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.Base64;
 
 /** The BlobsCopyFromURLHeaders model. */
 @JacksonXmlRootElement(localName = "null")
@@ -73,7 +75,7 @@ public final class BlobsCopyFromURLHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The Content-MD5 property.
@@ -86,6 +88,39 @@ public final class BlobsCopyFromURLHeaders {
      */
     @JsonProperty(value = "x-ms-encryption-scope")
     private String xMsEncryptionScope;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of BlobsCopyFromURLHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public BlobsCopyFromURLHeaders(HttpHeaders rawHeaders) {
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsCopyId = rawHeaders.getValue("x-ms-copy-id");
+        this.eTag = rawHeaders.getValue("ETag");
+        String xMsContentCrc64 = rawHeaders.getValue("x-ms-content-crc64");
+        if (xMsContentCrc64 != null) {
+            this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
+        }
+        String lastModified = rawHeaders.getValue("Last-Modified");
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
+        this.xMsCopyStatus = rawHeaders.getValue("x-ms-copy-status");
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        String date = rawHeaders.getValue("Date");
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        }
+        String contentMD5 = rawHeaders.getValue("Content-MD5");
+        if (contentMD5 != null) {
+            this.contentMD5 = Base64.getDecoder().decode(contentMD5);
+        }
+        this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
+    }
 
     /**
      * Get the xMsVersion property: The x-ms-version property.
@@ -275,28 +310,28 @@ public final class BlobsCopyFromURLHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the BlobsCopyFromURLHeaders object itself.
      */
-    public BlobsCopyFromURLHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public BlobsCopyFromURLHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

@@ -8,7 +8,6 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.HDInsightActivityDebugInfoOption;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** HDInsight streaming activity properties. */
 @Fluent
 public final class HDInsightStreamingActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightStreamingActivityTypeProperties.class);
-
     /*
      * Storage linked service references.
      */
@@ -38,15 +35,13 @@ public final class HDInsightStreamingActivityTypeProperties {
     private HDInsightActivityDebugInfoOption getDebugInfo;
 
     /*
-     * Mapper executable name. Type: string (or Expression with resultType
-     * string).
+     * Mapper executable name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "mapper", required = true)
     private Object mapper;
 
     /*
-     * Reducer executable name. Type: string (or Expression with resultType
-     * string).
+     * Reducer executable name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "reducer", required = true)
     private Object reducer;
@@ -76,8 +71,7 @@ public final class HDInsightStreamingActivityTypeProperties {
     private LinkedServiceReference fileLinkedService;
 
     /*
-     * Combiner executable name. Type: string (or Expression with resultType
-     * string).
+     * Combiner executable name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "combiner")
     private Object combiner;
@@ -94,6 +88,10 @@ public final class HDInsightStreamingActivityTypeProperties {
     @JsonProperty(value = "defines")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> defines;
+
+    /** Creates an instance of HDInsightStreamingActivityTypeProperties class. */
+    public HDInsightStreamingActivityTypeProperties() {
+    }
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.
@@ -346,31 +344,31 @@ public final class HDInsightStreamingActivityTypeProperties {
             storageLinkedServices().forEach(e -> e.validate());
         }
         if (mapper() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property mapper in model HDInsightStreamingActivityTypeProperties"));
         }
         if (reducer() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property reducer in model HDInsightStreamingActivityTypeProperties"));
         }
         if (input() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property input in model HDInsightStreamingActivityTypeProperties"));
         }
         if (output() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property output in model HDInsightStreamingActivityTypeProperties"));
         }
         if (filePaths() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property filePaths in model HDInsightStreamingActivityTypeProperties"));
@@ -379,4 +377,6 @@ public final class HDInsightStreamingActivityTypeProperties {
             fileLinkedService().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HDInsightStreamingActivityTypeProperties.class);
 }

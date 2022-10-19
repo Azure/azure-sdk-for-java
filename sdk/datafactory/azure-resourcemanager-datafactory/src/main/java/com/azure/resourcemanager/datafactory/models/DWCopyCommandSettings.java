@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,26 +13,26 @@ import java.util.Map;
 /** DW Copy Command settings. */
 @Fluent
 public final class DWCopyCommandSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DWCopyCommandSettings.class);
-
     /*
-     * Specifies the default values for each target column in SQL DW. The
-     * default values in the property overwrite the DEFAULT constraint set in
-     * the DB, and identity column cannot have a default value. Type: array of
-     * objects (or Expression with resultType array of objects).
+     * Specifies the default values for each target column in SQL DW. The default values in the property overwrite the
+     * DEFAULT constraint set in the DB, and identity column cannot have a default value. Type: array of objects (or
+     * Expression with resultType array of objects).
      */
     @JsonProperty(value = "defaultValues")
     private List<DWCopyCommandDefaultValue> defaultValues;
 
     /*
-     * Additional options directly passed to SQL DW in Copy Command. Type: key
-     * value pairs (value should be string type) (or Expression with resultType
-     * object). Example: "additionalOptions": { "MAXERRORS": "1000",
-     * "DATEFORMAT": "'ymd'" }
+     * Additional options directly passed to SQL DW in Copy Command. Type: key value pairs (value should be string
+     * type) (or Expression with resultType object). Example: "additionalOptions": { "MAXERRORS": "1000", "DATEFORMAT":
+     * "'ymd'" }
      */
     @JsonProperty(value = "additionalOptions")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> additionalOptions;
+
+    /** Creates an instance of DWCopyCommandSettings class. */
+    public DWCopyCommandSettings() {
+    }
 
     /**
      * Get the defaultValues property: Specifies the default values for each target column in SQL DW. The default values

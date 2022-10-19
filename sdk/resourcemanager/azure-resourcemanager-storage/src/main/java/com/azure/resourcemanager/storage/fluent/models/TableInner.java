@@ -6,15 +6,13 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.storage.models.TableSignedIdentifier;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** Properties of the table, including Id, resource name, resource type. */
 @Fluent
 public final class TableInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TableInner.class);
-
     /*
      * Table resource properties.
      */
@@ -37,6 +35,29 @@ public final class TableInner extends ProxyResource {
      */
     public String tableName() {
         return this.innerTableProperties() == null ? null : this.innerTableProperties().tableName();
+    }
+
+    /**
+     * Get the signedIdentifiers property: List of stored access policies specified on the table.
+     *
+     * @return the signedIdentifiers value.
+     */
+    public List<TableSignedIdentifier> signedIdentifiers() {
+        return this.innerTableProperties() == null ? null : this.innerTableProperties().signedIdentifiers();
+    }
+
+    /**
+     * Set the signedIdentifiers property: List of stored access policies specified on the table.
+     *
+     * @param signedIdentifiers the signedIdentifiers value to set.
+     * @return the TableInner object itself.
+     */
+    public TableInner withSignedIdentifiers(List<TableSignedIdentifier> signedIdentifiers) {
+        if (this.innerTableProperties() == null) {
+            this.innerTableProperties = new TableProperties();
+        }
+        this.innerTableProperties().withSignedIdentifiers(signedIdentifiers);
+        return this;
     }
 
     /**

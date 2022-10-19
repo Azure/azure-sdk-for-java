@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Live event preview settings. */
 @Fluent
 public final class LiveEventPreview {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LiveEventPreview.class);
-
     /*
-     * The endpoints for preview. Do not share the preview URL with the live
-     * event audience.
+     * The endpoints for preview. Do not share the preview URL with the live event audience.
      */
     @JsonProperty(value = "endpoints")
     private List<LiveEventEndpoint> endpoints;
@@ -29,28 +24,25 @@ public final class LiveEventPreview {
     private LiveEventPreviewAccessControl accessControl;
 
     /*
-     * The identifier of the preview locator in Guid format. Specifying this at
-     * creation time allows the caller to know the preview locator url before
-     * the event is created. If omitted, the service will generate a random
-     * identifier. This value cannot be updated once the live event is created.
+     * The identifier of the preview locator in Guid format. Specifying this at creation time allows the caller to know
+     * the preview locator url before the event is created. If omitted, the service will generate a random identifier.
+     * This value cannot be updated once the live event is created.
      */
     @JsonProperty(value = "previewLocator")
     private String previewLocator;
 
     /*
-     * The name of streaming policy used for the live event preview. This value
-     * is specified at creation time and cannot be updated.
+     * The name of streaming policy used for the live event preview. This value is specified at creation time and
+     * cannot be updated.
      */
     @JsonProperty(value = "streamingPolicyName")
     private String streamingPolicyName;
 
     /*
-     * An alternative media identifier associated with the streaming locator
-     * created for the preview. This value is specified at creation time and
-     * cannot be updated. The identifier can be used in the
-     * CustomLicenseAcquisitionUrlTemplate or the
-     * CustomKeyAcquisitionUrlTemplate of the StreamingPolicy specified in the
-     * StreamingPolicyName field.
+     * An alternative media identifier associated with the streaming locator created for the preview. This value is
+     * specified at creation time and cannot be updated. The identifier can be used in the
+     * CustomLicenseAcquisitionUrlTemplate or the CustomKeyAcquisitionUrlTemplate of the StreamingPolicy specified in
+     * the StreamingPolicyName field.
      */
     @JsonProperty(value = "alternativeMediaId")
     private String alternativeMediaId;

@@ -60,6 +60,10 @@ public final class LivePipelineImpl implements LivePipeline, LivePipeline.Defini
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public LivePipelineInner innerModel() {
         return this.innerObject;
     }

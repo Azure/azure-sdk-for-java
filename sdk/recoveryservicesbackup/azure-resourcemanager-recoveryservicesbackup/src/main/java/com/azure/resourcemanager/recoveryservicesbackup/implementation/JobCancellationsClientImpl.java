@@ -21,14 +21,11 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobCancellationsClient;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in JobCancellationsClient. */
 public final class JobCancellationsClientImpl implements JobCancellationsClient {
-    private final ClientLogger logger = new ClientLogger(JobCancellationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final JobCancellationsService service;
 
@@ -80,7 +77,7 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> triggerWithResponseAsync(String vaultName, String resourceGroupName, String jobName) {
@@ -134,7 +131,7 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> triggerWithResponseAsync(
@@ -185,12 +182,11 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> triggerAsync(String vaultName, String resourceGroupName, String jobName) {
-        return triggerWithResponseAsync(vaultName, resourceGroupName, jobName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return triggerWithResponseAsync(vaultName, resourceGroupName, jobName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -220,7 +216,7 @@ public final class JobCancellationsClientImpl implements JobCancellationsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> triggerWithResponse(

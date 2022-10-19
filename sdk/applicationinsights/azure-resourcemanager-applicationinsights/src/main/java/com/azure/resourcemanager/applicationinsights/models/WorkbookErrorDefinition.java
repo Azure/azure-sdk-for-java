@@ -6,15 +6,11 @@ package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Error response. */
 @Immutable
 public final class WorkbookErrorDefinition extends ManagementError {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkbookErrorDefinition.class);
-
     /*
      * Internal error details.
      */

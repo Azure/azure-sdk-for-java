@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureSqlMITableDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("AzureSqlMITable")
 @Fluent
 public final class AzureSqlMITableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlMITableDataset.class);
-
     /*
      * Azure SQL Managed Instance dataset properties.
      */
     @JsonProperty(value = "typeProperties")
     private AzureSqlMITableDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of AzureSqlMITableDataset class. */
+    public AzureSqlMITableDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Azure SQL Managed Instance dataset properties.

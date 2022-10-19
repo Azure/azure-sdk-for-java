@@ -11,15 +11,12 @@ import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeReference;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.WebActivityAuthentication;
 import com.azure.resourcemanager.datafactory.models.WebActivityMethod;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Web activity type properties. */
 @Fluent
 public final class WebActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebActivityTypeProperties.class);
-
     /*
      * Rest API method for target endpoint.
      */
@@ -27,25 +24,22 @@ public final class WebActivityTypeProperties {
     private WebActivityMethod method;
 
     /*
-     * Web activity target endpoint and path. Type: string (or Expression with
-     * resultType string).
+     * Web activity target endpoint and path. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private Object url;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to
-     * set the language and type on a request: "headers" : { "Accept-Language":
-     * "en-us", "Content-Type": "application/json" }. Type: string (or
-     * Expression with resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
+     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "headers")
     private Object headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for
-     * POST/PUT method, not allowed for GET method Type: string (or Expression
-     * with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
+     * method Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "body")
     private Object body;
@@ -55,6 +49,12 @@ public final class WebActivityTypeProperties {
      */
     @JsonProperty(value = "authentication")
     private WebActivityAuthentication authentication;
+
+    /*
+     * When set to true, Certificate validation will be disabled.
+     */
+    @JsonProperty(value = "disableCertValidation")
+    private Boolean disableCertValidation;
 
     /*
      * List of datasets passed to web endpoint.
@@ -73,6 +73,10 @@ public final class WebActivityTypeProperties {
      */
     @JsonProperty(value = "connectVia")
     private IntegrationRuntimeReference connectVia;
+
+    /** Creates an instance of WebActivityTypeProperties class. */
+    public WebActivityTypeProperties() {
+    }
 
     /**
      * Get the method property: Rest API method for target endpoint.
@@ -181,6 +185,26 @@ public final class WebActivityTypeProperties {
     }
 
     /**
+     * Get the disableCertValidation property: When set to true, Certificate validation will be disabled.
+     *
+     * @return the disableCertValidation value.
+     */
+    public Boolean disableCertValidation() {
+        return this.disableCertValidation;
+    }
+
+    /**
+     * Set the disableCertValidation property: When set to true, Certificate validation will be disabled.
+     *
+     * @param disableCertValidation the disableCertValidation value to set.
+     * @return the WebActivityTypeProperties object itself.
+     */
+    public WebActivityTypeProperties withDisableCertValidation(Boolean disableCertValidation) {
+        this.disableCertValidation = disableCertValidation;
+        return this;
+    }
+
+    /**
      * Get the datasets property: List of datasets passed to web endpoint.
      *
      * @return the datasets value.
@@ -247,13 +271,13 @@ public final class WebActivityTypeProperties {
      */
     public void validate() {
         if (method() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property method in model WebActivityTypeProperties"));
         }
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property url in model WebActivityTypeProperties"));
         }
@@ -270,4 +294,6 @@ public final class WebActivityTypeProperties {
             connectVia().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(WebActivityTypeProperties.class);
 }

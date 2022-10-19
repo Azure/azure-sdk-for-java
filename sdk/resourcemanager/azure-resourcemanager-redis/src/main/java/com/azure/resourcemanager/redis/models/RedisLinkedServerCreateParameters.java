@@ -7,14 +7,11 @@ package com.azure.resourcemanager.redis.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.models.RedisLinkedServerCreateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameter required for creating a linked server to redis cache. */
 @Fluent
 public final class RedisLinkedServerCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisLinkedServerCreateParameters.class);
-
     /*
      * Properties required to create a linked server.
      */
@@ -106,7 +103,7 @@ public final class RedisLinkedServerCreateParameters {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model RedisLinkedServerCreateParameters"));
@@ -114,4 +111,6 @@ public final class RedisLinkedServerCreateParameters {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RedisLinkedServerCreateParameters.class);
 }

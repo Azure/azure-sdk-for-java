@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkTapInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListVirtualNetworkTap API service call. */
 @Fluent
 public final class VirtualNetworkTapListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkTapListResult.class);
-
     /*
      * A list of VirtualNetworkTaps in a resource group.
      */
@@ -27,6 +23,10 @@ public final class VirtualNetworkTapListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of VirtualNetworkTapListResult class. */
+    public VirtualNetworkTapListResult() {
+    }
 
     /**
      * Get the value property: A list of VirtualNetworkTaps in a resource group.

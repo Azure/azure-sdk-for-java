@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ScheduleTriggerTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,13 +17,15 @@ import java.util.List;
 @JsonTypeName("ScheduleTrigger")
 @Fluent
 public final class ScheduleTrigger extends MultiplePipelineTrigger {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleTrigger.class);
-
     /*
      * Schedule Trigger properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private ScheduleTriggerTypeProperties innerTypeProperties = new ScheduleTriggerTypeProperties();
+
+    /** Creates an instance of ScheduleTrigger class. */
+    public ScheduleTrigger() {
+    }
 
     /**
      * Get the innerTypeProperties property: Schedule Trigger properties.
@@ -88,7 +89,7 @@ public final class ScheduleTrigger extends MultiplePipelineTrigger {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ScheduleTrigger"));
@@ -96,4 +97,6 @@ public final class ScheduleTrigger extends MultiplePipelineTrigger {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ScheduleTrigger.class);
 }

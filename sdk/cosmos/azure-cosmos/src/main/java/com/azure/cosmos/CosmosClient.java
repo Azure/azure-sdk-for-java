@@ -11,10 +11,8 @@ import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.CosmosPagedIterable;
-import com.azure.cosmos.util.UtilBridgeInternal;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -223,13 +221,14 @@ public final class CosmosClient implements Closeable {
      * @param containerId The container id of the control container.
      * @return A {@link GlobalThroughputControlConfigBuilder}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public GlobalThroughputControlConfigBuilder createGlobalThroughputControlConfigBuilder(String databaseId, String containerId) {
         return new GlobalThroughputControlConfigBuilder(this.asyncClientWrapper, databaseId, containerId);
     }
 
-    static {
+    static void initialize() {
         ImplementationBridgeHelpers.CosmosClientHelper.setCosmosClientAccessor(
             cosmosClient -> cosmosClient.asyncClient());
     }
+
+    static { initialize(); }
 }

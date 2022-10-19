@@ -7,6 +7,7 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -26,7 +27,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.sql.fluent.DataMaskingRulesClient;
 import com.azure.resourcemanager.sql.fluent.models.DataMaskingRuleInner;
 import com.azure.resourcemanager.sql.models.DataMaskingRuleListResult;
@@ -34,8 +34,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in DataMaskingRulesClient. */
 public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient {
-    private final ClientLogger logger = new ClientLogger(DataMaskingRulesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DataMaskingRulesService service;
 
@@ -60,7 +58,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
     @Host("{$host}")
     @ServiceInterface(name = "SqlManagementClientD")
     private interface DataMaskingRulesService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules"
@@ -77,9 +75,10 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             @PathParam("dataMaskingPolicyName") String dataMaskingPolicyName,
             @PathParam("dataMaskingRuleName") String dataMaskingRuleName,
             @BodyParam("application/json") DataMaskingRuleInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Sql/servers"
                 + "/{serverName}/databases/{databaseName}/dataMaskingPolicies/{dataMaskingPolicyName}/rules")
@@ -93,6 +92,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
             @PathParam("serverName") String serverName,
             @PathParam("databaseName") String databaseName,
             @PathParam("dataMaskingPolicyName") String dataMaskingPolicyName,
+            @HeaderParam("Accept") String accept,
             Context context);
     }
 
@@ -104,11 +104,12 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters Represents a database data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a database data masking rule.
+     * @return represents a database data masking rule along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(
@@ -150,6 +151,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         }
         final String apiVersion = "2014-04-01";
         final String dataMaskingPolicyName = "Default";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -164,8 +166,9 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
                             dataMaskingPolicyName,
                             dataMaskingRuleName,
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -176,12 +179,13 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters Represents a database data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a database data masking rule.
+     * @return represents a database data masking rule along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DataMaskingRuleInner>> createOrUpdateWithResponseAsync(
@@ -224,6 +228,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         }
         final String apiVersion = "2014-04-01";
         final String dataMaskingPolicyName = "Default";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -236,6 +241,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
                 dataMaskingPolicyName,
                 dataMaskingRuleName,
                 parameters,
+                accept,
                 context);
     }
 
@@ -247,11 +253,11 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters Represents a database data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a database data masking rule.
+     * @return represents a database data masking rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DataMaskingRuleInner> createOrUpdateAsync(
@@ -262,14 +268,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         DataMaskingRuleInner parameters) {
         return createOrUpdateWithResponseAsync(
                 resourceGroupName, serverName, databaseName, dataMaskingRuleName, parameters)
-            .flatMap(
-                (Response<DataMaskingRuleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -280,7 +279,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters Represents a database data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -305,12 +304,12 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @param serverName The name of the server.
      * @param databaseName The name of the database.
      * @param dataMaskingRuleName The name of the data masking rule.
-     * @param parameters Represents a database data masking rule.
+     * @param parameters The required parameters for creating or updating a data masking rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a database data masking rule.
+     * @return represents a database data masking rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DataMaskingRuleInner> createOrUpdateWithResponse(
@@ -335,7 +334,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules.
+     * @return a list of database data masking rules along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMaskingRuleInner>> listByDatabaseSinglePageAsync(
@@ -364,6 +364,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         }
         final String apiVersion = "2014-04-01";
         final String dataMaskingPolicyName = "Default";
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -376,12 +377,13 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
                             serverName,
                             databaseName,
                             dataMaskingPolicyName,
+                            accept,
                             context))
             .<PagedResponse<DataMaskingRuleInner>>map(
                 res ->
                     new PagedResponseBase<>(
                         res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -395,7 +397,8 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules.
+     * @return a list of database data masking rules along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DataMaskingRuleInner>> listByDatabaseSinglePageAsync(
@@ -424,6 +427,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
         }
         final String apiVersion = "2014-04-01";
         final String dataMaskingPolicyName = "Default";
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByDatabase(
@@ -434,6 +438,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
                 serverName,
                 databaseName,
                 dataMaskingPolicyName,
+                accept,
                 context)
             .map(
                 res ->
@@ -451,7 +456,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules.
+     * @return a list of database data masking rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataMaskingRuleInner> listByDatabaseAsync(
@@ -470,7 +475,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules.
+     * @return a list of database data masking rules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DataMaskingRuleInner> listByDatabaseAsync(
@@ -489,7 +494,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules.
+     * @return a list of database data masking rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMaskingRuleInner> listByDatabase(
@@ -508,7 +513,7 @@ public final class DataMaskingRulesClientImpl implements DataMaskingRulesClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of database data masking rules.
+     * @return a list of database data masking rules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DataMaskingRuleInner> listByDatabase(

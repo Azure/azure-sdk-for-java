@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.SensitivityLabelRank;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of a sensitivity label. */
 @Fluent
 public final class SensitivityLabelProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SensitivityLabelProperties.class);
-
     /*
      * The schema name.
      */

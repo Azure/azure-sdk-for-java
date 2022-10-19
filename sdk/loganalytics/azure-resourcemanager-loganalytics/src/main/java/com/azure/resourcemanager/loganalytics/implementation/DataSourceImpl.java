@@ -49,6 +49,10 @@ public final class DataSourceImpl implements DataSource, DataSource.Definition, 
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public DataSourceInner innerModel() {
         return this.innerObject;
     }

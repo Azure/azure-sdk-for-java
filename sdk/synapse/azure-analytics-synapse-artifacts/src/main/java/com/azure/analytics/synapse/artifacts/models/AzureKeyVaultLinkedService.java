@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Azure Key Vault linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,8 +19,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureKeyVaultLinkedService extends LinkedService {
     /*
-     * The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net
-     * Type: string (or Expression with resultType string).
+     * The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.baseUrl", required = true)
     private Object baseUrl;
@@ -42,6 +44,34 @@ public class AzureKeyVaultLinkedService extends LinkedService {
      */
     public AzureKeyVaultLinkedService setBaseUrl(Object baseUrl) {
         this.baseUrl = baseUrl;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureKeyVaultLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureKeyVaultLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureKeyVaultLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureKeyVaultLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

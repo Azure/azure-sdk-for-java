@@ -33,7 +33,7 @@ public interface SessionHosts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a session host.
+     * @return a session host along with {@link Response}.
      */
     Response<SessionHost> getWithResponse(
         String resourceGroupName, String hostPoolName, String sessionHostname, Context context);
@@ -61,7 +61,7 @@ public interface SessionHosts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String hostPoolName, String sessionHostname, Boolean force, Context context);
@@ -91,7 +91,7 @@ public interface SessionHosts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a SessionHost definition.
+     * @return represents a SessionHost definition along with {@link Response}.
      */
     Response<SessionHost> updateWithResponse(
         String resourceGroupName,
@@ -109,7 +109,7 @@ public interface SessionHosts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sessionHostList.
+     * @return sessionHostList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SessionHost> list(String resourceGroupName, String hostPoolName);
 
@@ -122,7 +122,7 @@ public interface SessionHosts {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return sessionHostList.
+     * @return sessionHostList as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SessionHost> list(String resourceGroupName, String hostPoolName, Context context);
 }

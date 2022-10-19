@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for LoadBalancerSkuName. */
+/** Name of a load balancer SKU. */
 public final class LoadBalancerSkuName extends ExpandableStringEnum<LoadBalancerSkuName> {
     /** Static value Basic for LoadBalancerSkuName. */
     public static final LoadBalancerSkuName BASIC = fromString("Basic");
@@ -30,7 +30,11 @@ public final class LoadBalancerSkuName extends ExpandableStringEnum<LoadBalancer
         return fromString(name, LoadBalancerSkuName.class);
     }
 
-    /** @return known LoadBalancerSkuName values. */
+    /**
+     * Gets known LoadBalancerSkuName values.
+     *
+     * @return known LoadBalancerSkuName values.
+     */
     public static Collection<LoadBalancerSkuName> values() {
         return values(LoadBalancerSkuName.class);
     }

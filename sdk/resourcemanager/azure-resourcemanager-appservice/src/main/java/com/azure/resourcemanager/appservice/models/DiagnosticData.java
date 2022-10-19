@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Set of data with rendering instructions. */
 @Fluent
 public final class DiagnosticData {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticData.class);
-
     /*
      * Data in table form
      */

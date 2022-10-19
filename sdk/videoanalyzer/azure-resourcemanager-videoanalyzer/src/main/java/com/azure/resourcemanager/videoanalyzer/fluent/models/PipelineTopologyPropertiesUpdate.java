@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.videoanalyzer.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.models.ParameterDeclaration;
 import com.azure.resourcemanager.videoanalyzer.models.ProcessorNodeBase;
 import com.azure.resourcemanager.videoanalyzer.models.SinkNodeBase;
 import com.azure.resourcemanager.videoanalyzer.models.SourceNodeBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the properties of a pipeline topology. */
 @Fluent
 public final class PipelineTopologyPropertiesUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineTopologyPropertiesUpdate.class);
-
     /*
      * An optional description of the pipeline topology. It is recommended that
      * the expected use of the topology to be described here.

@@ -134,10 +134,13 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
     }
 
     private static void redactedAccountName(UrlBuilder urlBuilder) {
-        String[] hostParts = urlBuilder.getHost().split("\\.");
-        hostParts[0] = "REDACTED";
-
-        urlBuilder.setHost(String.join(".", hostParts));
+        String originalHost = urlBuilder.getHost();
+        int indexOf = originalHost.indexOf(".");
+        if (indexOf == -1) {
+            urlBuilder.setHost("REDACTED");
+        } else {
+            urlBuilder.setHost("REDACTED" + originalHost.substring(indexOf));
+        }
     }
 
     private static void captureRequestHeaders(HttpHeaders requestHeaders, Map<String, String> captureHeaders,
@@ -183,7 +186,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
         final HttpResponse bufferedResponse = response.buffer();
         final Mono<byte[]> responseBody = FluxUtil.collectBytesInByteBufferStream(bufferedResponse.getBody());
         if (contentType == null) {
-            return responseBody.switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
+            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0]))
                 .map(bytes -> {
                     if (bytes.length == 0) {
                         return Tuples.of(bufferedResponse, responseData);
@@ -196,7 +199,7 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 });
         } else if (contentType.equalsIgnoreCase(ContentType.APPLICATION_OCTET_STREAM)
             || "avro/binary".equalsIgnoreCase(contentType)) {
-            return responseBody.switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
+            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0]))
                 .map(bytes -> {
                     if (bytes.length == 0) {
                         return Tuples.of(bufferedResponse, responseData);
@@ -207,13 +210,13 @@ public class RecordNetworkCallPolicy implements HttpPipelinePolicy {
                 });
         } else if (contentType.contains("json") || response.getHeaderValue(CONTENT_ENCODING) == null) {
             return responseBody.map(bytes -> CoreUtils.bomAwareToString(bytes, response.getHeaderValue(CONTENT_TYPE)))
-                .switchIfEmpty(Mono.defer(() -> Mono.just("")))
+                .switchIfEmpty(Mono.just(""))
                 .map(content -> {
                     responseData.put(BODY, redactor.redact(content));
                     return Tuples.of(bufferedResponse, responseData);
                 });
         } else {
-            return responseBody.switchIfEmpty(Mono.defer(() -> Mono.just(new byte[0])))
+            return responseBody.switchIfEmpty(Mono.fromSupplier(() -> new byte[0]))
                 .map(bytes -> {
                     if (bytes.length == 0) {
                         return Tuples.of(bufferedResponse, responseData);

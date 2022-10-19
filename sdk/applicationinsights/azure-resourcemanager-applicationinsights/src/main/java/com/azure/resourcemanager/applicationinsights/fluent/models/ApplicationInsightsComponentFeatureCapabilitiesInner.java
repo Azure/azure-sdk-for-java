@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Application Insights component feature capabilities. */
 @Immutable
 public final class ApplicationInsightsComponentFeatureCapabilitiesInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentFeatureCapabilitiesInner.class);
-
     /*
      * Whether allow to use continuous export feature.
      */

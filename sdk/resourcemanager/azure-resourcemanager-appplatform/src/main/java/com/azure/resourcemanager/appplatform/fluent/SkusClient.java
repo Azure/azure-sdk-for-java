@@ -18,7 +18,8 @@ public interface SkusClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set.
+     * @return object that includes an array of Azure Spring Apps SKU and a possible link for next set as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ResourceSku> listAsync();
@@ -28,7 +29,8 @@ public interface SkusClient {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set.
+     * @return object that includes an array of Azure Spring Apps SKU and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceSku> list();
@@ -40,7 +42,8 @@ public interface SkusClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return object that includes an array of Azure Spring Cloud SKU and a possible link for next set.
+     * @return object that includes an array of Azure Spring Apps SKU and a possible link for next set as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ResourceSku> list(Context context);

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of Subscription Quota Items. */
 @Fluent
 public final class SubscriptionQuotaItemList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionQuotaItemList.class);
-
     /*
      * A list of SubscriptionQuotaItems
      */

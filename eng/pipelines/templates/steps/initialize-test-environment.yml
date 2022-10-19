@@ -15,19 +15,21 @@ parameters:
     default: client
 
 steps:
-  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-    parameters:
-      Paths:
-        - '**/*.xml'
-        - 'sdk/${{ parameters.ServiceDirectory }}'
-        - ${{ if not(parameters.CheckoutRecordings) }}:
-          - '!sdk/**/test-recordings'
-          - '!sdk/**/session-records'
+  # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+  # as we require the github service connection to be loaded.
+  - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      parameters:
+        Paths:
+          - '**/*.xml'
+          - ${{ if not(parameters.CheckoutRecordings) }}:
+            - '!sdk/**/test-recordings'
+            - '!sdk/**/session-records'
 
   - task: UsePythonVersion@0
-    displayName: 'Use Python 3.6'
+    displayName: 'Use Python $(PythonVersion)'
     inputs:
-      versionSpec: '3.6'
+      versionSpec: $(PythonVersion)
 
   - template: /eng/common/pipelines/templates/steps/verify-agent-os.yml
     parameters:
@@ -45,24 +47,48 @@ steps:
     inputs:
       scriptPath: 'eng/versioning/update_versions.py'
       arguments: '--update-type library --build-type client --sr'
-    condition: and(succeeded(), eq(variables['ShouldRunSourceTests'],'true'))
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - template: generate-project-list.yml
+  - task: PythonScript@0
+    displayName: 'Update external dependency versions'
+    inputs:
+      scriptPath: 'eng/versioning/update_versions.py'
+      arguments: '--update-type external_dependency --build-type client --sr --vo $(VersionOverrides)'
+    condition: and(succeeded(), eq(variables['TestVersionSupport'], 'true'))
+
+  - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
     parameters:
       Artifacts: ${{ parameters.Artifacts }}
       AdditionalModules: ${{ parameters.AdditionalModules }}
       JobType: 'test'
-      SDKType: ${{ parameters.SDKType }}
-      ServiceDirectory: ${{ parameters.ServiceDirectory }}
- 
+
+  # This call is used generate the sparse checkout variables for non-FromSource runs.
+  - task: PowerShell@2
+    displayName: Generate directories variable for sparse checkout
+    inputs:
+      pwsh: true
+      filePath: $(Build.SourcesDirectory)/eng/scripts/Generate-ServiceDirectories-From-Project-List.ps1
+      arguments: >
+        -SourcesDirectory $(Build.SourcesDirectory)
+        -ProjectList $(ProjectList)
+    condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
+
+  # The only time generate_from_source_pom.py should be used to set the SparseCheckoutDirectories
+  # is for FromSource runs or, in the case of code quality reports, a run that needs to build
+  # everything using the latest source. It'll greedily set any service directories as it figures
+  # out what libraries, their dependents and so on, that need to be in ClientFromSourcePom.xml
   - task: PythonScript@0
-    displayName: 'Generate directories variable for sparse checkout'
+    displayName: 'Generate FromSource POM and directories for sparse checkout'
     inputs:
       scriptPath: 'eng/scripts/generate_from_source_pom.py'
-      arguments: '--set-pipeline-variable CheckoutDirectories --project-list $(ProjectList)'
+      arguments: '--project-list $(ProjectList)'
       workingDirectory: '$(System.DefaultWorkingDirectory)'
+    condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
-    parameters:
-      SkipDefaultCheckout: true
-      Paths: $(CheckoutDirectories)
+  # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
+  # as we require the github service connection to be loaded.
+  - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
+    - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+      parameters:
+        SkipCheckoutNone: true
+        Paths: $(SparseCheckoutDirectories)

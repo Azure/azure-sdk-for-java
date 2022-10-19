@@ -30,7 +30,11 @@ public final class RegionCategory extends ExpandableStringEnum<RegionCategory> {
         return fromString(name, RegionCategory.class);
     }
 
-    /** @return known RegionCategory values. */
+    /**
+     * Gets known RegionCategory values.
+     *
+     * @return known RegionCategory values.
+     */
     public static Collection<RegionCategory> values() {
         return values(RegionCategory.class);
     }

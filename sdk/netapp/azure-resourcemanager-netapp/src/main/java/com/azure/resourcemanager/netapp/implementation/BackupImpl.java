@@ -78,6 +78,10 @@ public final class BackupImpl implements Backup, Backup.Definition, Backup.Updat
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public BackupInner innerModel() {
         return this.innerObject;
     }

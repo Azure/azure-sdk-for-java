@@ -6,14 +6,12 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ExtendedLocation;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.KubeEnvironmentProfile;
 import com.azure.resourcemanager.appservice.models.ProvisioningState;
 import com.azure.resourcemanager.appservice.models.SkuDescription;
 import com.azure.resourcemanager.appservice.models.StatusOptions;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -21,8 +19,6 @@ import java.util.Map;
 /** App Service plan. */
 @Fluent
 public final class AppServicePlanInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServicePlanInner.class);
-
     /*
      * AppServicePlan resource specific properties
      */
@@ -204,6 +200,15 @@ public final class AppServicePlanInner extends Resource {
      */
     public Integer maximumNumberOfWorkers() {
         return this.innerProperties() == null ? null : this.innerProperties().maximumNumberOfWorkers();
+    }
+
+    /**
+     * Get the numberOfWorkers property: The number of instances that are assigned to this App Service plan.
+     *
+     * @return the numberOfWorkers value.
+     */
+    public Integer numberOfWorkers() {
+        return this.innerProperties() == null ? null : this.innerProperties().numberOfWorkers();
     }
 
     /**

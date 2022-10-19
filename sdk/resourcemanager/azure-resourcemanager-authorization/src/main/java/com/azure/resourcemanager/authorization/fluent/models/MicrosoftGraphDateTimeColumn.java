@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** dateTimeColumn. */
 @Fluent
 public final class MicrosoftGraphDateTimeColumn {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphDateTimeColumn.class);
-
     /*
      * How the value should be presented in the UX. Must be one of default,
      * friendly, or standard. See below for more details. If unspecified,

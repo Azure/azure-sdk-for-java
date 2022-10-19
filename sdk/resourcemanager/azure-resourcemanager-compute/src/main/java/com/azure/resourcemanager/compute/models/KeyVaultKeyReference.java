@@ -7,14 +7,11 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes a reference to Key Vault Key. */
 @Fluent
 public final class KeyVaultKeyReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultKeyReference.class);
-
     /*
      * The URL referencing a key encryption key in Key Vault.
      */
@@ -74,15 +71,17 @@ public final class KeyVaultKeyReference {
      */
     public void validate() {
         if (keyUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property keyUrl in model KeyVaultKeyReference"));
         }
         if (sourceVault() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourceVault in model KeyVaultKeyReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(KeyVaultKeyReference.class);
 }

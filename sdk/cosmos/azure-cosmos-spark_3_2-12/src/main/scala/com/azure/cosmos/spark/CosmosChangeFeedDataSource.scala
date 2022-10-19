@@ -76,3 +76,13 @@ class CosmosChangeFeedDataSource
    */
   override def supportsExternalMetadata(): Boolean = true
 }
+
+object CosmosChangeFeedDataSource {
+  /**
+   * Easy way to validate the version of the Cosmos Data Source
+   * @return the version of the Cosmos Data Source
+   */
+  def version : String = {
+    CosmosConstants.currentVersion
+  }
+}

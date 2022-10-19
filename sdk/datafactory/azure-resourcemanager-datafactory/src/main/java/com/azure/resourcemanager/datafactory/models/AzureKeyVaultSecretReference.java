@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureKeyVaultSecret")
 @Fluent
 public final class AzureKeyVaultSecretReference extends SecretBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureKeyVaultSecretReference.class);
-
     /*
      * The Azure Key Vault linked service reference.
      */
@@ -25,19 +22,21 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     private LinkedServiceReference store;
 
     /*
-     * The name of the secret in Azure Key Vault. Type: string (or Expression
-     * with resultType string).
+     * The name of the secret in Azure Key Vault. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "secretName", required = true)
     private Object secretName;
 
     /*
-     * The version of the secret in Azure Key Vault. The default value is the
-     * latest version of the secret. Type: string (or Expression with
-     * resultType string).
+     * The version of the secret in Azure Key Vault. The default value is the latest version of the secret. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "secretVersion")
     private Object secretVersion;
+
+    /** Creates an instance of AzureKeyVaultSecretReference class. */
+    public AzureKeyVaultSecretReference() {
+    }
 
     /**
      * Get the store property: The Azure Key Vault linked service reference.
@@ -112,7 +111,7 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
     public void validate() {
         super.validate();
         if (store() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property store in model AzureKeyVaultSecretReference"));
@@ -120,10 +119,12 @@ public final class AzureKeyVaultSecretReference extends SecretBase {
             store().validate();
         }
         if (secretName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretName in model AzureKeyVaultSecretReference"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureKeyVaultSecretReference.class);
 }

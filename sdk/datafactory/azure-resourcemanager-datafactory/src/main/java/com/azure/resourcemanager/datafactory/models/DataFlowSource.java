@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Transformation for data flow source. */
 @Fluent
 public class DataFlowSource extends Transformation {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowSource.class);
-
     /*
      * Schema linked service reference.
      */
     @JsonProperty(value = "schemaLinkedService")
     private LinkedServiceReference schemaLinkedService;
+
+    /** Creates an instance of DataFlowSource class. */
+    public DataFlowSource() {
+    }
 
     /**
      * Get the schemaLinkedService property: Schema linked service reference.

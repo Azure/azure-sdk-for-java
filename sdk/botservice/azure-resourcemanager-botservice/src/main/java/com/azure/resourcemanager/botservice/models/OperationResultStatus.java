@@ -36,7 +36,11 @@ public final class OperationResultStatus extends ExpandableStringEnum<OperationR
         return fromString(name, OperationResultStatus.class);
     }
 
-    /** @return known OperationResultStatus values. */
+    /**
+     * Gets known OperationResultStatus values.
+     *
+     * @return known OperationResultStatus values.
+     */
     public static Collection<OperationResultStatus> values() {
         return values(OperationResultStatus.class);
     }

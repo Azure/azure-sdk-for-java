@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.specialized;
 
+import com.azure.core.util.BinaryData;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
@@ -14,6 +15,7 @@ import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.models.BlockList;
 import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import reactor.core.publisher.Flux;
 
 import java.nio.ByteBuffer;
@@ -62,6 +64,19 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobAsyncClient#upload(BinaryData)}
+     */
+    public void uploadWithBinaryData() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData
+        BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> client.upload(binaryData))
+            .subscribe(response ->
+                System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                    Base64.getEncoder().encodeToString(response.getContentMd5())));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData
+    }
+
+    /**
      * Code snippet for {@link BlockBlobAsyncClient#upload(Flux, long, boolean)}
      */
     public void uploadWithOverwrite() {
@@ -71,6 +86,20 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
             System.out.printf("Uploaded BlockBlob MD5 is %s%n",
                 Base64.getEncoder().encodeToString(response.getContentMd5())));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long-boolean
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobAsyncClient#upload(Flux, long, boolean)}
+     */
+    public void uploadWithOverwriteWithBinaryData() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData-boolean
+        boolean overwrite = false; // Default behavior
+        BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> client.upload(binaryData, overwrite))
+            .subscribe(response ->
+            System.out.printf("Uploaded BlockBlob MD5 is %s%n",
+                Base64.getEncoder().encodeToString(response.getContentMd5())));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#BinaryData-boolean
     }
 
     /**
@@ -188,6 +217,19 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
     }
 
     /**
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlock(String, BinaryData)}
+     */
+    public void stageBlockBinaryData() {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-BinaryData
+        BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> client.stageBlock(base64BlockID, binaryData))
+            .subscribe(
+                response -> System.out.println("Staging block completed"),
+                error -> System.out.printf("Error when calling stage Block: %s", error));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-BinaryData
+    }
+
+    /**
      * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(String, Flux, long, byte[], String)}
      *
      * @throws NoSuchAlgorithmException If Md5 calculation fails
@@ -197,6 +239,23 @@ public class BlockBlobAsyncClientJavaDocCodeSnippets {
         client.stageBlockWithResponse(base64BlockID, data, length, md5, leaseId).subscribe(response ->
             System.out.printf("Staging block completed with status %d%n", response.getStatusCode()));
         // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String
+    }
+
+    /**
+     * Code snippet for {@link BlockBlobAsyncClient#stageBlockWithResponse(BlockBlobStageBlockOptions)}
+     *
+     * @throws NoSuchAlgorithmException If Md5 calculation fails
+     */
+    public void stageBlockBinaryData2() throws NoSuchAlgorithmException {
+        // BEGIN: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#BlockBlobStageBlockOptions
+        BinaryData.fromFlux(data, length, false)
+            .flatMap(binaryData -> client.stageBlockWithResponse(
+                new BlockBlobStageBlockOptions(base64BlockID, binaryData)
+                    .setContentMd5(md5)
+                    .setLeaseId(leaseId)))
+            .subscribe(response ->
+                System.out.printf("Staging block completed with status %d%n", response.getStatusCode()));
+        // END: com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#BlockBlobStageBlockOptions
     }
 
     /**

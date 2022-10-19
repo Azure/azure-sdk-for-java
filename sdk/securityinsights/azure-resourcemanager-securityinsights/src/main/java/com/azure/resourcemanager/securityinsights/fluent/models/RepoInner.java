@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents a repository. */
 @Fluent
 public final class RepoInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RepoInner.class);
-
     /*
      * The url to access the repository.
      */

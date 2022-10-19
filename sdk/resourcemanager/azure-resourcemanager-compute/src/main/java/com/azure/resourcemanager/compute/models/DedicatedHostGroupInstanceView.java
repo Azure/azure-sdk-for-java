@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The DedicatedHostGroupInstanceView model. */
 @Fluent
 public final class DedicatedHostGroupInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostGroupInstanceView.class);
-
     /*
-     * List of instance view of the dedicated hosts under the dedicated host
-     * group.
+     * List of instance view of the dedicated hosts under the dedicated host group.
      */
     @JsonProperty(value = "hosts")
     private List<DedicatedHostInstanceViewWithName> hosts;

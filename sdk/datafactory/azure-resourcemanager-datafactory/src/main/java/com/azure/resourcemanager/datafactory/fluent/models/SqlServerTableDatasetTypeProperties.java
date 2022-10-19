@@ -5,35 +5,32 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** On-premises SQL Server dataset properties. */
 @Fluent
 public final class SqlServerTableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlServerTableDatasetTypeProperties.class);
-
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
-     * The schema name of the SQL Server dataset. Type: string (or Expression
-     * with resultType string).
+     * The schema name of the SQL Server dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "schema")
     private Object schema;
 
     /*
-     * The table name of the SQL Server dataset. Type: string (or Expression
-     * with resultType string).
+     * The table name of the SQL Server dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
+
+    /** Creates an instance of SqlServerTableDatasetTypeProperties class. */
+    public SqlServerTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties

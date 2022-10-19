@@ -30,7 +30,11 @@ public final class BlobContainersExtendImmutabilityPolicyResponse
         super(request, statusCode, rawHeaders, value, headers);
     }
 
-    /** @return the deserialized response body. */
+    /**
+     * Gets the deserialized response body.
+     *
+     * @return the deserialized response body.
+     */
     @Override
     public ImmutabilityPolicyInner getValue() {
         return super.getValue();

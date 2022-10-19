@@ -10,17 +10,19 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.extendedlocation.fluent.CustomLocationsClient;
+import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationFindTargetResourceGroupResultInner;
 import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationInner;
 import com.azure.resourcemanager.extendedlocation.fluent.models.CustomLocationOperationInner;
 import com.azure.resourcemanager.extendedlocation.fluent.models.EnabledResourceTypeInner;
 import com.azure.resourcemanager.extendedlocation.models.CustomLocation;
+import com.azure.resourcemanager.extendedlocation.models.CustomLocationFindTargetResourceGroupProperties;
+import com.azure.resourcemanager.extendedlocation.models.CustomLocationFindTargetResourceGroupResult;
 import com.azure.resourcemanager.extendedlocation.models.CustomLocationOperation;
 import com.azure.resourcemanager.extendedlocation.models.CustomLocations;
 import com.azure.resourcemanager.extendedlocation.models.EnabledResourceType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CustomLocationsImpl implements CustomLocations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomLocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CustomLocationsImpl.class);
 
     private final CustomLocationsClient innerClient;
 
@@ -108,10 +110,41 @@ public final class CustomLocationsImpl implements CustomLocations {
         return Utils.mapPage(inner, inner1 -> new EnabledResourceTypeImpl(inner1, this.manager()));
     }
 
+    public CustomLocationFindTargetResourceGroupResult findTargetResourceGroup(
+        String resourceGroupName, String resourceName, CustomLocationFindTargetResourceGroupProperties parameters) {
+        CustomLocationFindTargetResourceGroupResultInner inner =
+            this.serviceClient().findTargetResourceGroup(resourceGroupName, resourceName, parameters);
+        if (inner != null) {
+            return new CustomLocationFindTargetResourceGroupResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<CustomLocationFindTargetResourceGroupResult> findTargetResourceGroupWithResponse(
+        String resourceGroupName,
+        String resourceName,
+        CustomLocationFindTargetResourceGroupProperties parameters,
+        Context context) {
+        Response<CustomLocationFindTargetResourceGroupResultInner> inner =
+            this
+                .serviceClient()
+                .findTargetResourceGroupWithResponse(resourceGroupName, resourceName, parameters, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new CustomLocationFindTargetResourceGroupResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public CustomLocation getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -119,7 +152,7 @@ public final class CustomLocationsImpl implements CustomLocations {
         }
         String resourceName = Utils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -131,7 +164,7 @@ public final class CustomLocationsImpl implements CustomLocations {
     public Response<CustomLocation> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -139,7 +172,7 @@ public final class CustomLocationsImpl implements CustomLocations {
         }
         String resourceName = Utils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -151,7 +184,7 @@ public final class CustomLocationsImpl implements CustomLocations {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -159,7 +192,7 @@ public final class CustomLocationsImpl implements CustomLocations {
         }
         String resourceName = Utils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -171,7 +204,7 @@ public final class CustomLocationsImpl implements CustomLocations {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -179,7 +212,7 @@ public final class CustomLocationsImpl implements CustomLocations {
         }
         String resourceName = Utils.getValueFromIdByName(id, "customLocations");
         if (resourceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

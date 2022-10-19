@@ -24,7 +24,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.apimanagement.fluent.TenantConfigurationsClient;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TenantConfigurationsClient. */
 public final class TenantConfigurationsClientImpl implements TenantConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(TenantConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TenantConfigurationsService service;
 
@@ -145,7 +142,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deployWithResponseAsync(
@@ -211,7 +208,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deployWithResponseAsync(
@@ -274,9 +271,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link PollerFlux} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationResultContractInner>, OperationResultContractInner> beginDeployAsync(
         String resourceGroupName,
         String serviceName,
@@ -291,7 +288,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
                 this.client.getHttpPipeline(),
                 OperationResultContractInner.class,
                 OperationResultContractInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -306,9 +303,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link PollerFlux} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationResultContractInner>, OperationResultContractInner> beginDeployAsync(
         String resourceGroupName,
         String serviceName,
@@ -339,9 +336,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link SyncPoller} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginDeploy(
         String resourceGroupName,
         String serviceName,
@@ -362,9 +359,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link SyncPoller} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginDeploy(
         String resourceGroupName,
         String serviceName,
@@ -385,7 +382,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultContractInner> deployAsync(
@@ -410,7 +407,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultContractInner> deployAsync(
@@ -481,7 +478,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> saveWithResponseAsync(
@@ -547,7 +544,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> saveWithResponseAsync(
@@ -610,9 +607,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link PollerFlux} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationResultContractInner>, OperationResultContractInner> beginSaveAsync(
         String resourceGroupName,
         String serviceName,
@@ -627,7 +624,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
                 this.client.getHttpPipeline(),
                 OperationResultContractInner.class,
                 OperationResultContractInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -642,9 +639,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link PollerFlux} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationResultContractInner>, OperationResultContractInner> beginSaveAsync(
         String resourceGroupName,
         String serviceName,
@@ -675,9 +672,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link SyncPoller} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginSave(
         String resourceGroupName,
         String serviceName,
@@ -698,9 +695,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link SyncPoller} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginSave(
         String resourceGroupName,
         String serviceName,
@@ -721,7 +718,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultContractInner> saveAsync(
@@ -746,7 +743,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultContractInner> saveAsync(
@@ -817,7 +814,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateWithResponseAsync(
@@ -883,7 +880,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> validateWithResponseAsync(
@@ -946,9 +943,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link PollerFlux} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationResultContractInner>, OperationResultContractInner> beginValidateAsync(
         String resourceGroupName,
         String serviceName,
@@ -963,7 +960,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
                 this.client.getHttpPipeline(),
                 OperationResultContractInner.class,
                 OperationResultContractInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -978,9 +975,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link PollerFlux} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OperationResultContractInner>, OperationResultContractInner> beginValidateAsync(
         String resourceGroupName,
         String serviceName,
@@ -1011,9 +1008,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link SyncPoller} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginValidate(
         String resourceGroupName,
         String serviceName,
@@ -1034,9 +1031,9 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return the {@link SyncPoller} for polling of long Running Git Operation Results.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OperationResultContractInner>, OperationResultContractInner> beginValidate(
         String resourceGroupName,
         String serviceName,
@@ -1058,7 +1055,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultContractInner> validateAsync(
@@ -1083,7 +1080,7 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return long Running Git Operation Results.
+     * @return long Running Git Operation Results on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultContractInner> validateAsync(
@@ -1152,7 +1149,8 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the most recent synchronization between the configuration database and the Git repository.
+     * @return the status of the most recent synchronization between the configuration database and the Git repository
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TenantConfigurationSyncStateContractInner>> getSyncStateWithResponseAsync(
@@ -1207,7 +1205,8 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the most recent synchronization between the configuration database and the Git repository.
+     * @return the status of the most recent synchronization between the configuration database and the Git repository
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TenantConfigurationSyncStateContractInner>> getSyncStateWithResponseAsync(
@@ -1258,7 +1257,8 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the most recent synchronization between the configuration database and the Git repository.
+     * @return the status of the most recent synchronization between the configuration database and the Git repository
+     *     on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantConfigurationSyncStateContractInner> getSyncStateAsync(
@@ -1301,7 +1301,8 @@ public final class TenantConfigurationsClientImpl implements TenantConfiguration
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the most recent synchronization between the configuration database and the Git repository.
+     * @return the status of the most recent synchronization between the configuration database and the Git repository
+     *     along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TenantConfigurationSyncStateContractInner> getSyncStateWithResponse(

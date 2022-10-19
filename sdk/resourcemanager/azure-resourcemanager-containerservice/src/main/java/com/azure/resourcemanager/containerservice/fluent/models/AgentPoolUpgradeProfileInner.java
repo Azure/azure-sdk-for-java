@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeProfilePropertiesUpgradesItem;
 import com.azure.resourcemanager.containerservice.models.OSType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The list of available upgrades for an agent pool. */
 @Fluent
 public final class AgentPoolUpgradeProfileInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolUpgradeProfileInner.class);
-
     /*
      * The ID of the agent pool upgrade profile.
      */
@@ -176,7 +173,7 @@ public final class AgentPoolUpgradeProfileInner {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model AgentPoolUpgradeProfileInner"));
@@ -184,4 +181,6 @@ public final class AgentPoolUpgradeProfileInner {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AgentPoolUpgradeProfileInner.class);
 }

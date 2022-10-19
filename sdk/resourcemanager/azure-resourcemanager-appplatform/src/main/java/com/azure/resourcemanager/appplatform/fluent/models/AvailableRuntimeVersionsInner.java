@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appplatform.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appplatform.models.SupportedRuntimeVersion;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The AvailableRuntimeVersions model. */
 @Immutable
 public final class AvailableRuntimeVersionsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableRuntimeVersionsInner.class);
-
     /*
      * A list of all supported runtime versions.
      */

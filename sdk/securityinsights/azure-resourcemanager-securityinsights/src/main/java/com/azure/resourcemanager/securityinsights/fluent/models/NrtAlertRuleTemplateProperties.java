@@ -5,15 +5,14 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AlertDetailsOverride;
 import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateDataSource;
-import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplatePropertiesBase;
+import com.azure.resourcemanager.securityinsights.models.AlertRuleTemplateWithMitreProperties;
 import com.azure.resourcemanager.securityinsights.models.AlertSeverity;
 import com.azure.resourcemanager.securityinsights.models.AttackTactic;
 import com.azure.resourcemanager.securityinsights.models.EntityMapping;
+import com.azure.resourcemanager.securityinsights.models.EventGroupingSettings;
 import com.azure.resourcemanager.securityinsights.models.TemplateStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -21,9 +20,7 @@ import java.util.Map;
 
 /** NRT alert rule template properties. */
 @Fluent
-public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplatePropertiesBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NrtAlertRuleTemplateProperties.class);
-
+public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplateWithMitreProperties {
     /*
      * The query that creates alerts for this rule.
      */
@@ -37,21 +34,13 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplatePrope
     private AlertSeverity severity;
 
     /*
-     * The tactics of the alert rule
-     */
-    @JsonProperty(value = "tactics")
-    private List<AttackTactic> tactics;
-
-    /*
-     * The version of this template - in format <a.b.c>, where all are numbers.
-     * For example <1.0.2>.
+     * The version of this template - in format <a.b.c>, where all are numbers. For example <1.0.2>.
      */
     @JsonProperty(value = "version")
     private String version;
 
     /*
-     * Dictionary of string key-value pairs of columns to be attached to the
-     * alert
+     * Dictionary of string key-value pairs of columns to be attached to the alert
      */
     @JsonProperty(value = "customDetails")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -68,6 +57,12 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplatePrope
      */
     @JsonProperty(value = "alertDetailsOverride")
     private AlertDetailsOverride alertDetailsOverride;
+
+    /*
+     * The event grouping settings.
+     */
+    @JsonProperty(value = "eventGroupingSettings")
+    private EventGroupingSettings eventGroupingSettings;
 
     /**
      * Get the query property: The query that creates alerts for this rule.
@@ -106,26 +101,6 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplatePrope
      */
     public NrtAlertRuleTemplateProperties withSeverity(AlertSeverity severity) {
         this.severity = severity;
-        return this;
-    }
-
-    /**
-     * Get the tactics property: The tactics of the alert rule.
-     *
-     * @return the tactics value.
-     */
-    public List<AttackTactic> tactics() {
-        return this.tactics;
-    }
-
-    /**
-     * Set the tactics property: The tactics of the alert rule.
-     *
-     * @param tactics the tactics value to set.
-     * @return the NrtAlertRuleTemplateProperties object itself.
-     */
-    public NrtAlertRuleTemplateProperties withTactics(List<AttackTactic> tactics) {
-        this.tactics = tactics;
         return this;
     }
 
@@ -211,6 +186,40 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplatePrope
         return this;
     }
 
+    /**
+     * Get the eventGroupingSettings property: The event grouping settings.
+     *
+     * @return the eventGroupingSettings value.
+     */
+    public EventGroupingSettings eventGroupingSettings() {
+        return this.eventGroupingSettings;
+    }
+
+    /**
+     * Set the eventGroupingSettings property: The event grouping settings.
+     *
+     * @param eventGroupingSettings the eventGroupingSettings value to set.
+     * @return the NrtAlertRuleTemplateProperties object itself.
+     */
+    public NrtAlertRuleTemplateProperties withEventGroupingSettings(EventGroupingSettings eventGroupingSettings) {
+        this.eventGroupingSettings = eventGroupingSettings;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NrtAlertRuleTemplateProperties withTactics(List<AttackTactic> tactics) {
+        super.withTactics(tactics);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public NrtAlertRuleTemplateProperties withTechniques(List<String> techniques) {
+        super.withTechniques(techniques);
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public NrtAlertRuleTemplateProperties withAlertRulesCreatedByTemplateCount(
@@ -261,6 +270,9 @@ public final class NrtAlertRuleTemplateProperties extends AlertRuleTemplatePrope
         }
         if (alertDetailsOverride() != null) {
             alertDetailsOverride().validate();
+        }
+        if (eventGroupingSettings() != null) {
+            eventGroupingSettings().validate();
         }
     }
 }

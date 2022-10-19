@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.ImmutabilityPolicyProperty;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The properties of an ImmutabilityPolicy of a blob container. */
 @Fluent
 public final class ImmutabilityPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImmutabilityPolicyProperties.class);
-
     /*
      * The properties of an ImmutabilityPolicy of a blob container.
      */
@@ -123,6 +119,37 @@ public final class ImmutabilityPolicyProperties {
             this.innerProperties = new ImmutabilityPolicyProperty();
         }
         this.innerProperties().withAllowProtectedAppendWrites(allowProtectedAppendWrites);
+        return this;
+    }
+
+    /**
+     * Get the allowProtectedAppendWritesAll property: This property can only be changed for unlocked time-based
+     * retention policies. When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining
+     * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
+     * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
+     * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
+     *
+     * @return the allowProtectedAppendWritesAll value.
+     */
+    public Boolean allowProtectedAppendWritesAll() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowProtectedAppendWritesAll();
+    }
+
+    /**
+     * Set the allowProtectedAppendWritesAll property: This property can only be changed for unlocked time-based
+     * retention policies. When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining
+     * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
+     * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
+     * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
+     *
+     * @param allowProtectedAppendWritesAll the allowProtectedAppendWritesAll value to set.
+     * @return the ImmutabilityPolicyProperties object itself.
+     */
+    public ImmutabilityPolicyProperties withAllowProtectedAppendWritesAll(Boolean allowProtectedAppendWritesAll) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ImmutabilityPolicyProperty();
+        }
+        this.innerProperties().withAllowProtectedAppendWritesAll(allowProtectedAppendWritesAll);
         return this;
     }
 

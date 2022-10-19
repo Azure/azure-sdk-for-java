@@ -53,6 +53,41 @@ public interface ServiceBusManagementClient {
     NamespacesClient getNamespaces();
 
     /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinkResourcesClient object to access its operations.
+     *
+     * @return the PrivateLinkResourcesClient object.
+     */
+    PrivateLinkResourcesClient getPrivateLinkResources();
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     *
+     * @return the OperationsClient object.
+     */
+    OperationsClient getOperations();
+
+    /**
+     * Gets the DisasterRecoveryConfigsClient object to access its operations.
+     *
+     * @return the DisasterRecoveryConfigsClient object.
+     */
+    DisasterRecoveryConfigsClient getDisasterRecoveryConfigs();
+
+    /**
+     * Gets the MigrationConfigsClient object to access its operations.
+     *
+     * @return the MigrationConfigsClient object.
+     */
+    MigrationConfigsClient getMigrationConfigs();
+
+    /**
      * Gets the QueuesClient object to access its operations.
      *
      * @return the QueuesClient object.
@@ -67,53 +102,11 @@ public interface ServiceBusManagementClient {
     TopicsClient getTopics();
 
     /**
-     * Gets the DisasterRecoveryConfigsClient object to access its operations.
-     *
-     * @return the DisasterRecoveryConfigsClient object.
-     */
-    DisasterRecoveryConfigsClient getDisasterRecoveryConfigs();
-
-    /**
-     * Gets the EventHubsClient object to access its operations.
-     *
-     * @return the EventHubsClient object.
-     */
-    EventHubsClient getEventHubs();
-
-    /**
-     * Gets the MigrationConfigsClient object to access its operations.
-     *
-     * @return the MigrationConfigsClient object.
-     */
-    MigrationConfigsClient getMigrationConfigs();
-
-    /**
-     * Gets the OperationsClient object to access its operations.
-     *
-     * @return the OperationsClient object.
-     */
-    OperationsClient getOperations();
-
-    /**
-     * Gets the PremiumMessagingRegionsClient object to access its operations.
-     *
-     * @return the PremiumMessagingRegionsClient object.
-     */
-    PremiumMessagingRegionsClient getPremiumMessagingRegions();
-
-    /**
      * Gets the RulesClient object to access its operations.
      *
      * @return the RulesClient object.
      */
     RulesClient getRules();
-
-    /**
-     * Gets the RegionsClient object to access its operations.
-     *
-     * @return the RegionsClient object.
-     */
-    RegionsClient getRegions();
 
     /**
      * Gets the SubscriptionsClient object to access its operations.

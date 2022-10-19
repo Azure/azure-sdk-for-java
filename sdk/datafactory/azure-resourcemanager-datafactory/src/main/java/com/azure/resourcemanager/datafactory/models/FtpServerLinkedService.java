@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.FtpServerLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("FtpServer")
 @Fluent
 public final class FtpServerLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FtpServerLinkedService.class);
-
     /*
      * Properties specific to this linked service type.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private FtpServerLinkedServiceTypeProperties innerTypeProperties = new FtpServerLinkedServiceTypeProperties();
+
+    /** Creates an instance of FtpServerLinkedService class. */
+    public FtpServerLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
@@ -267,7 +268,7 @@ public final class FtpServerLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model FtpServerLinkedService"));
@@ -275,4 +276,6 @@ public final class FtpServerLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FtpServerLinkedService.class);
 }

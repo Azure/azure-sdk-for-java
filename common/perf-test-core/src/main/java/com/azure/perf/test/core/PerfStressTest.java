@@ -38,22 +38,6 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> extends
     }
 
     /**
-     * Runs the setup required prior to running the performance test.
-     * @return An empty {@link Mono}
-     */
-    public Mono<Void> globalSetupAsync() {
-        return Mono.empty();
-    }
-
-    /**
-     * Runs the setup required prior to running an individual thread in the performance test.
-     * @return An empty {@link Mono}
-     */
-    public Mono<Void> setupAsync() {
-        return Mono.empty();
-    }
-
-    /**
      * Runs the performance test.
      */
     public abstract void run();
@@ -63,20 +47,4 @@ public abstract class PerfStressTest<TOptions extends PerfStressOptions> extends
      * @return An empty {@link Mono}
      */
     public abstract Mono<Void> runAsync();
-
-    /**
-     * Runs the cleanup logic after an individual thread finishes in the performance test.
-     * @return An empty {@link Mono}
-     */
-    public Mono<Void> cleanupAsync() {
-        return Mono.empty();
-    }
-
-    /**
-     * Runs the cleanup logic after the performance test finishes.
-     * @return An empty {@link Mono}
-     */
-    public Mono<Void> globalCleanupAsync() {
-        return Mono.empty();
-    }
 }

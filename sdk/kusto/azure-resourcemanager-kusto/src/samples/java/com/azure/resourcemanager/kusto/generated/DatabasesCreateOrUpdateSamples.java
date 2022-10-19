@@ -5,14 +5,15 @@
 package com.azure.resourcemanager.kusto.generated;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.kusto.fluent.models.DatabaseInner;
+import com.azure.resourcemanager.kusto.models.CallerRole;
 import com.azure.resourcemanager.kusto.models.ReadOnlyFollowingDatabase;
+import com.azure.resourcemanager.kusto.models.ReadWriteDatabase;
 import java.time.Duration;
 
 /** Samples for Databases CreateOrUpdate. */
 public final class DatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabaseReadonlyUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDatabaseReadonlyUpdate.json
      */
     /**
      * Sample code: Kusto ReadOnly database update.
@@ -24,14 +25,15 @@ public final class DatabasesCreateOrUpdateSamples {
             .databases()
             .createOrUpdate(
                 "kustorptest",
-                "kustoclusterrptest4",
-                "KustoreadOnlyDatabase",
+                "kustoCluster",
+                "kustoReadOnlyDatabase",
                 new ReadOnlyFollowingDatabase().withLocation("westus").withHotCachePeriod(Duration.parse("P1D")),
+                null,
                 Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2021-08-27/examples/KustoDatabasesCreateOrUpdate.json
+     * x-ms-original-file: specification/azure-kusto/resource-manager/Microsoft.Kusto/stable/2022-07-07/examples/KustoDatabasesCreateOrUpdate.json
      */
     /**
      * Sample code: Kusto ReadWrite database create or update.
@@ -43,9 +45,10 @@ public final class DatabasesCreateOrUpdateSamples {
             .databases()
             .createOrUpdate(
                 "kustorptest",
-                "kustoclusterrptest4",
+                "kustoCluster",
                 "KustoDatabase8",
-                new DatabaseInner().withLocation("westus"),
+                new ReadWriteDatabase().withLocation("westus").withSoftDeletePeriod(Duration.parse("P1D")),
+                CallerRole.ADMIN,
                 Context.NONE);
     }
 }

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ContainerGroups Restart. */
 public final class ContainerGroupsRestartSamples {
     /*
-     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-09-01/examples/ContainerGroupsRestart.json
+     * x-ms-original-file: specification/containerinstance/resource-manager/Microsoft.ContainerInstance/stable/2021-10-01/examples/ContainerGroupsRestart.json
      */
     /**
      * Sample code: ContainerRestart.

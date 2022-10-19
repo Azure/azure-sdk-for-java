@@ -6,18 +6,14 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Outbound rule of the load balancer. */
 @Fluent
 public final class OutboundRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundRuleInner.class);
-
     /*
      * Properties of load balancer outbound rule.
      */
@@ -25,8 +21,8 @@ public final class OutboundRuleInner extends SubResource {
     private OutboundRulePropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of outbound rules
-     * used by the load balancer. This name can be used to access the resource.
+     * The name of the resource that is unique within the set of outbound rules used by the load balancer. This name
+     * can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -42,6 +38,10 @@ public final class OutboundRuleInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of OutboundRuleInner class. */
+    public OutboundRuleInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of load balancer outbound rule.

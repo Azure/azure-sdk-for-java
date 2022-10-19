@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.MSDeployLogEntry;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** MSDeployLog resource specific properties. */
 @Immutable
 public final class MSDeployLogProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MSDeployLogProperties.class);
-
     /*
      * List of log entry messages
      */

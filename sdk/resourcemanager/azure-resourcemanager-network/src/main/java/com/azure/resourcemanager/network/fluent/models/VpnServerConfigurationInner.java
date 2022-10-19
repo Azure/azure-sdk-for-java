@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AadAuthenticationParameters;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.RadiusServer;
@@ -16,7 +15,6 @@ import com.azure.resourcemanager.network.models.VpnServerConfigRadiusClientRootC
 import com.azure.resourcemanager.network.models.VpnServerConfigRadiusServerRootCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRevokedCertificate;
 import com.azure.resourcemanager.network.models.VpnServerConfigVpnClientRootCertificate;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +22,6 @@ import java.util.Map;
 /** VpnServerConfiguration Resource. */
 @Fluent
 public final class VpnServerConfigurationInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnServerConfigurationInner.class);
-
     /*
      * Properties of the P2SVpnServer configuration.
      */
@@ -43,6 +39,10 @@ public final class VpnServerConfigurationInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of VpnServerConfigurationInner class. */
+    public VpnServerConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the P2SVpnServer configuration.
@@ -398,6 +398,30 @@ public final class VpnServerConfigurationInner extends Resource {
      */
     public List<P2SVpnGatewayInner> p2SVpnGateways() {
         return this.innerProperties() == null ? null : this.innerProperties().p2SVpnGateways();
+    }
+
+    /**
+     * Get the configurationPolicyGroups property: List of all VpnServerConfigurationPolicyGroups.
+     *
+     * @return the configurationPolicyGroups value.
+     */
+    public List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups() {
+        return this.innerProperties() == null ? null : this.innerProperties().configurationPolicyGroups();
+    }
+
+    /**
+     * Set the configurationPolicyGroups property: List of all VpnServerConfigurationPolicyGroups.
+     *
+     * @param configurationPolicyGroups the configurationPolicyGroups value to set.
+     * @return the VpnServerConfigurationInner object itself.
+     */
+    public VpnServerConfigurationInner withConfigurationPolicyGroups(
+        List<VpnServerConfigurationPolicyGroupInner> configurationPolicyGroups) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnServerConfigurationProperties();
+        }
+        this.innerProperties().withConfigurationPolicyGroups(configurationPolicyGroups);
+        return this;
     }
 
     /**

@@ -28,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.ObjectReplicationPoliciesOperationsClient;
 import com.azure.resourcemanager.storage.fluent.models.ObjectReplicationPolicyInner;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicies;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in ObjectReplicationPoliciesOperationsClient.
  */
 public final class ObjectReplicationPoliciesOperationsClientImpl implements ObjectReplicationPoliciesOperationsClient {
-    private final ClientLogger logger = new ClientLogger(ObjectReplicationPoliciesOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ObjectReplicationPoliciesOperationsService service;
 
@@ -143,7 +140,8 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list storage account object replication policies.
+     * @return list storage account object replication policies along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ObjectReplicationPolicyInner>> listSinglePageAsync(
@@ -198,7 +196,8 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list storage account object replication policies.
+     * @return list storage account object replication policies along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ObjectReplicationPolicyInner>> listSinglePageAsync(
@@ -249,7 +248,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list storage account object replication policies.
+     * @return list storage account object replication policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ObjectReplicationPolicyInner> listAsync(String resourceGroupName, String accountName) {
@@ -267,7 +266,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list storage account object replication policies.
+     * @return list storage account object replication policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ObjectReplicationPolicyInner> listAsync(
@@ -285,7 +284,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list storage account object replication policies.
+     * @return list storage account object replication policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ObjectReplicationPolicyInner> list(String resourceGroupName, String accountName) {
@@ -303,7 +302,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list storage account object replication policies.
+     * @return list storage account object replication policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ObjectReplicationPolicyInner> list(
@@ -325,7 +324,8 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object replication policy of the storage account by policy ID.
+     * @return the object replication policy of the storage account by policy ID along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(
@@ -387,7 +387,8 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object replication policy of the storage account by policy ID.
+     * @return the object replication policy of the storage account by policy ID along with {@link Response} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(
@@ -445,20 +446,14 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object replication policy of the storage account by policy ID.
+     * @return the object replication policy of the storage account by policy ID on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ObjectReplicationPolicyInner> getAsync(
         String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         return getWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId)
-            .flatMap(
-                (Response<ObjectReplicationPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -498,7 +493,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the object replication policy of the storage account by policy ID.
+     * @return the object replication policy of the storage account by policy ID along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ObjectReplicationPolicyInner> getWithResponse(
@@ -522,7 +517,8 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replication policy between two storage accounts.
+     * @return the replication policy between two storage accounts along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(
@@ -595,7 +591,8 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replication policy between two storage accounts.
+     * @return the replication policy between two storage accounts along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(
@@ -665,7 +662,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replication policy between two storage accounts.
+     * @return the replication policy between two storage accounts on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ObjectReplicationPolicyInner> createOrUpdateAsync(
@@ -674,14 +671,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
         String objectReplicationPolicyId,
         ObjectReplicationPolicyInner properties) {
         return createOrUpdateWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId, properties)
-            .flatMap(
-                (Response<ObjectReplicationPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -728,7 +718,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the replication policy between two storage accounts.
+     * @return the replication policy between two storage accounts along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ObjectReplicationPolicyInner> createOrUpdateWithResponse(
@@ -756,7 +746,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(
@@ -818,7 +808,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -876,12 +866,12 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId) {
         return deleteWithResponseAsync(resourceGroupName, accountName, objectReplicationPolicyId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -919,7 +909,7 @@ public final class ObjectReplicationPoliciesOperationsClientImpl implements Obje
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(

@@ -23,7 +23,7 @@ public abstract class MetricsAdvisorAdministrationClientTestBase extends TestBas
 
     MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilder(HttpClient httpClient,
         MetricsAdvisorServiceVersion serviceVersion) {
-        return getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, false);
+        return getMetricsAdvisorAdministrationBuilder(httpClient, serviceVersion, true);
     }
 
     MetricsAdvisorAdministrationClientBuilder getMetricsAdvisorAdministrationBuilder(HttpClient httpClient,

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.ContainerAppsRevisionsClient;
 import com.azure.resourcemanager.appservice.fluent.models.RevisionInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ContainerAppsRevisionsClient. */
 public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevisionsClient {
-    private final ClientLogger logger = new ClientLogger(ContainerAppsRevisionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ContainerAppsRevisionsService service;
 
@@ -159,7 +156,8 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Revisions for a given Container App.
+     * @return the Revisions for a given Container App along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RevisionInner>> listRevisionsSinglePageAsync(
@@ -218,7 +216,8 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Revisions for a given Container App.
+     * @return the Revisions for a given Container App along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RevisionInner>> listRevisionsSinglePageAsync(
@@ -273,7 +272,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Revisions for a given Container App.
+     * @return the Revisions for a given Container App as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RevisionInner> listRevisionsAsync(String resourceGroupName, String containerAppName) {
@@ -291,7 +290,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Revisions for a given Container App.
+     * @return the Revisions for a given Container App as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RevisionInner> listRevisionsAsync(
@@ -309,7 +308,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Revisions for a given Container App.
+     * @return the Revisions for a given Container App as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RevisionInner> listRevisions(String resourceGroupName, String containerAppName) {
@@ -325,7 +324,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Revisions for a given Container App.
+     * @return the Revisions for a given Container App as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RevisionInner> listRevisions(
@@ -342,7 +341,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a revision of a Container App.
+     * @return a revision of a Container App along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<RevisionInner>> getRevisionWithResponseAsync(
@@ -397,7 +396,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a revision of a Container App.
+     * @return a revision of a Container App along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<RevisionInner>> getRevisionWithResponseAsync(
@@ -448,7 +447,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a revision of a Container App.
+     * @return a revision of a Container App on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<RevisionInner> getRevisionAsync(String resourceGroupName, String containerAppName, String name) {
@@ -489,7 +488,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a revision of a Container App.
+     * @return a revision of a Container App along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RevisionInner> getRevisionWithResponse(
@@ -506,7 +505,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> activateRevisionWithResponseAsync(
@@ -561,7 +560,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> activateRevisionWithResponseAsync(
@@ -612,7 +611,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> activateRevisionAsync(String resourceGroupName, String containerAppName, String name) {
@@ -645,7 +644,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> activateRevisionWithResponse(
@@ -662,7 +661,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deactivateRevisionWithResponseAsync(
@@ -717,7 +716,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deactivateRevisionWithResponseAsync(
@@ -768,7 +767,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deactivateRevisionAsync(String resourceGroupName, String containerAppName, String name) {
@@ -801,7 +800,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deactivateRevisionWithResponse(
@@ -818,7 +817,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> restartRevisionWithResponseAsync(
@@ -873,7 +872,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> restartRevisionWithResponseAsync(
@@ -924,7 +923,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> restartRevisionAsync(String resourceGroupName, String containerAppName, String name) {
@@ -957,7 +956,7 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> restartRevisionWithResponse(
@@ -972,7 +971,8 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Revisions collection ARM resource.
+     * @return container App Revisions collection ARM resource along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RevisionInner>> listRevisionsNextSinglePageAsync(String nextLink) {
@@ -1008,7 +1008,8 @@ public final class ContainerAppsRevisionsClientImpl implements ContainerAppsRevi
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App Revisions collection ARM resource.
+     * @return container App Revisions collection ARM resource along with {@link PagedResponse} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RevisionInner>> listRevisionsNextSinglePageAsync(String nextLink, Context context) {

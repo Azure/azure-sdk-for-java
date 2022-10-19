@@ -41,7 +41,7 @@ import java.util.List;
  */
 @Immutable
 public class ChainedTokenCredential implements TokenCredential {
-    private final ClientLogger logger = new ClientLogger(getClass());
+    private static final ClientLogger LOGGER = new ClientLogger(ChainedTokenCredential.class);
     private final List<TokenCredential> credentials;
     private final String unavailableError = this.getClass().getSimpleName() + " authentication failed. ---> ";
 
@@ -69,7 +69,7 @@ public class ChainedTokenCredential implements TokenCredential {
         List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
         return Flux.fromIterable(credentials)
             .flatMap(p -> p.getToken(request)
-                .doOnNext(t -> logger.info("Azure Identity => Attempted credential {} returns a token",
+                .doOnNext(t -> LOGGER.info("Azure Identity => Attempted credential {} returns a token",
                     p.getClass().getSimpleName()))
                 .onErrorResume(Exception.class, t -> {
                     if (!t.getClass().getSimpleName().equals("CredentialUnavailableException")) {
@@ -79,7 +79,7 @@ public class ChainedTokenCredential implements TokenCredential {
                             null, t));
                     }
                     exceptions.add((CredentialUnavailableException) t);
-                    logger.info("Azure Identity => Attempted credential {} is unavailable.",
+                    LOGGER.info("Azure Identity => Attempted credential {} is unavailable.",
                         p.getClass().getSimpleName());
                     return Mono.empty();
                 }), 1)
@@ -96,5 +96,40 @@ public class ChainedTokenCredential implements TokenCredential {
                 }
                 return Mono.error(last);
             }));
+    }
+
+
+    @Override
+    public AccessToken getTokenSync(TokenRequestContext request) {
+        List<CredentialUnavailableException> exceptions = new ArrayList<>(4);
+
+        for (TokenCredential credential : credentials) {
+            try {
+                return credential.getTokenSync(request);
+            } catch (Exception e) {
+                if (e.getClass() != CredentialUnavailableException.class) {
+                    throw new ClientAuthenticationException(
+                        unavailableError + credential.getClass().getSimpleName()
+                            + " authentication failed. Error Details: " + e.getMessage(),
+                        null, e);
+                } else {
+                    if (e instanceof CredentialUnavailableException) {
+                        exceptions.add((CredentialUnavailableException) e);
+                    }
+                }
+                LOGGER.info("Azure Identity => Attempted credential {} is unavailable.",
+                    credential.getClass().getSimpleName());
+            }
+        }
+
+        CredentialUnavailableException last = exceptions.get(exceptions.size() - 1);
+        for (int z = exceptions.size() - 2; z >= 0; z--) {
+            CredentialUnavailableException current = exceptions.get(z);
+            last = new CredentialUnavailableException(current.getMessage() + "\r\n" + last.getMessage()
+                + (z == 0 ? "To mitigate this issue, please refer to the troubleshooting guidelines here at "
+                + "https://aka.ms/azure-identity-java-default-azure-credential-troubleshoot"
+                : ""));
+        }
+        throw last;
     }
 }

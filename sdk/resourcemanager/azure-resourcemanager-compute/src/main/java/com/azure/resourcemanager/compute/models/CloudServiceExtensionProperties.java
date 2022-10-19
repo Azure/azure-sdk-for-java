@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Extension Properties. */
 @Fluent
 public final class CloudServiceExtensionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceExtensionProperties.class);
-
     /*
      * The name of the extension handler publisher.
      */
@@ -28,56 +24,50 @@ public final class CloudServiceExtensionProperties {
     private String type;
 
     /*
-     * Specifies the version of the extension. Specifies the version of the
-     * extension. If this element is not specified or an asterisk (*) is used
-     * as the value, the latest version of the extension is used. If the value
-     * is specified with a major version number and an asterisk as the minor
-     * version number (X.), the latest minor version of the specified major
-     * version is selected. If a major version number and a minor version
-     * number are specified (X.Y), the specific extension version is selected.
-     * If a version is specified, an auto-upgrade is performed on the role
+     * Specifies the version of the extension. Specifies the version of the extension. If this element is not specified
+     * or an asterisk (*) is used as the value, the latest version of the extension is used. If the value is specified
+     * with a major version number and an asterisk as the minor version number (X.), the latest minor version of the
+     * specified major version is selected. If a major version number and a minor version number are specified (X.Y),
+     * the specific extension version is selected. If a version is specified, an auto-upgrade is performed on the role
      * instance.
      */
     @JsonProperty(value = "typeHandlerVersion")
     private String typeHandlerVersion;
 
     /*
-     * Explicitly specify whether platform can automatically upgrade
-     * typeHandlerVersion to higher minor versions when they become available.
+     * Explicitly specify whether platform can automatically upgrade typeHandlerVersion to higher minor versions when
+     * they become available.
      */
     @JsonProperty(value = "autoUpgradeMinorVersion")
     private Boolean autoUpgradeMinorVersion;
 
     /*
-     * Public settings for the extension. For JSON extensions, this is the JSON
-     * settings for the extension. For XML Extension (like RDP), this is the
-     * XML setting for the extension.
+     * Public settings for the extension. For JSON extensions, this is the JSON settings for the extension. For XML
+     * Extension (like RDP), this is the XML setting for the extension.
      */
     @JsonProperty(value = "settings")
-    private String settings;
+    private Object settings;
 
     /*
-     * Protected settings for the extension which are encrypted before sent to
-     * the role instance.
+     * Protected settings for the extension which are encrypted before sent to the role instance.
      */
     @JsonProperty(value = "protectedSettings")
-    private String protectedSettings;
+    private Object protectedSettings;
 
     /*
-     * The protectedSettingsFromKeyVault property.
+     * Protected settings for the extension, referenced using KeyVault which are encrypted before sent to the role
+     * instance.
      */
     @JsonProperty(value = "protectedSettingsFromKeyVault")
     private CloudServiceVaultAndSecretReference protectedSettingsFromKeyVault;
 
     /*
      * Tag to force apply the provided public and protected settings.
-     * Changing the tag value allows for re-running the extension without
-     * changing any of the public or protected settings.
-     * If forceUpdateTag is not changed, updates to public or protected
-     * settings would still be applied by the handler.
-     * If neither forceUpdateTag nor any of public or protected settings
-     * change, extension would flow to the role instance with the same
-     * sequence-number, and
+     * Changing the tag value allows for re-running the extension without changing any of the public or protected
+     * settings.
+     * If forceUpdateTag is not changed, updates to public or protected settings would still be applied by the handler.
+     * If neither forceUpdateTag nor any of public or protected settings change, extension would flow to the role
+     * instance with the same sequence-number, and
      * it is up to handler implementation whether to re-run it or not
      */
     @JsonProperty(value = "forceUpdateTag")
@@ -90,9 +80,8 @@ public final class CloudServiceExtensionProperties {
     private String provisioningState;
 
     /*
-     * Optional list of roles to apply this extension. If property is not
-     * specified or '*' is specified, extension is applied to all roles in the
-     * cloud service.
+     * Optional list of roles to apply this extension. If property is not specified or '*' is specified, extension is
+     * applied to all roles in the cloud service.
      */
     @JsonProperty(value = "rolesAppliedTo")
     private List<String> rolesAppliedTo;
@@ -195,7 +184,7 @@ public final class CloudServiceExtensionProperties {
      *
      * @return the settings value.
      */
-    public String settings() {
+    public Object settings() {
         return this.settings;
     }
 
@@ -206,7 +195,7 @@ public final class CloudServiceExtensionProperties {
      * @param settings the settings value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
-    public CloudServiceExtensionProperties withSettings(String settings) {
+    public CloudServiceExtensionProperties withSettings(Object settings) {
         this.settings = settings;
         return this;
     }
@@ -217,7 +206,7 @@ public final class CloudServiceExtensionProperties {
      *
      * @return the protectedSettings value.
      */
-    public String protectedSettings() {
+    public Object protectedSettings() {
         return this.protectedSettings;
     }
 
@@ -228,13 +217,14 @@ public final class CloudServiceExtensionProperties {
      * @param protectedSettings the protectedSettings value to set.
      * @return the CloudServiceExtensionProperties object itself.
      */
-    public CloudServiceExtensionProperties withProtectedSettings(String protectedSettings) {
+    public CloudServiceExtensionProperties withProtectedSettings(Object protectedSettings) {
         this.protectedSettings = protectedSettings;
         return this;
     }
 
     /**
-     * Get the protectedSettingsFromKeyVault property: The protectedSettingsFromKeyVault property.
+     * Get the protectedSettingsFromKeyVault property: Protected settings for the extension, referenced using KeyVault
+     * which are encrypted before sent to the role instance.
      *
      * @return the protectedSettingsFromKeyVault value.
      */
@@ -243,7 +233,8 @@ public final class CloudServiceExtensionProperties {
     }
 
     /**
-     * Set the protectedSettingsFromKeyVault property: The protectedSettingsFromKeyVault property.
+     * Set the protectedSettingsFromKeyVault property: Protected settings for the extension, referenced using KeyVault
+     * which are encrypted before sent to the role instance.
      *
      * @param protectedSettingsFromKeyVault the protectedSettingsFromKeyVault value to set.
      * @return the CloudServiceExtensionProperties object itself.

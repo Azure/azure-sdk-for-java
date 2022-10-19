@@ -14,7 +14,7 @@ public final class CustomSingleClassificationTask {
      * The parameters property.
      */
     @JsonProperty(value = "parameters")
-    private CustomSingleClassificationTaskParameters parameters;
+    private CustomSingleLabelClassificationTaskParameters parameters;
 
     /*
      * The taskName property.
@@ -27,7 +27,7 @@ public final class CustomSingleClassificationTask {
      *
      * @return the parameters value.
      */
-    public CustomSingleClassificationTaskParameters getParameters() {
+    public CustomSingleLabelClassificationTaskParameters getParameters() {
         return this.parameters;
     }
 
@@ -37,7 +37,7 @@ public final class CustomSingleClassificationTask {
      * @param parameters the parameters value to set.
      * @return the CustomSingleClassificationTask object itself.
      */
-    public CustomSingleClassificationTask setParameters(CustomSingleClassificationTaskParameters parameters) {
+    public CustomSingleClassificationTask setParameters(CustomSingleLabelClassificationTaskParameters parameters) {
         this.parameters = parameters;
         return this;
     }

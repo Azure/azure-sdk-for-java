@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.TriggeredJobRun;
 import com.azure.resourcemanager.appservice.models.WebJobType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** TriggeredWebJob resource specific properties. */
 @Fluent
 public final class TriggeredWebJobProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredWebJobProperties.class);
-
     /*
      * Latest job run information.
      */
@@ -71,6 +67,19 @@ public final class TriggeredWebJobProperties {
      */
     @JsonProperty(value = "using_sdk")
     private Boolean usingSdk;
+
+    /*
+     * Property to allow or block all public traffic. Allowed Values:
+     * 'Enabled', 'Disabled' or an empty string.
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private String publicNetworkAccess;
+
+    /*
+     * Checks if Customer provided storage account is required
+     */
+    @JsonProperty(value = "storageAccountRequired")
+    private Boolean storageAccountRequired;
 
     /*
      * Job settings.
@@ -256,6 +265,48 @@ public final class TriggeredWebJobProperties {
      */
     public TriggeredWebJobProperties withUsingSdk(Boolean usingSdk) {
         this.usingSdk = usingSdk;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the TriggeredWebJobProperties object itself.
+     */
+    public TriggeredWebJobProperties withPublicNetworkAccess(String publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
+    }
+
+    /**
+     * Get the storageAccountRequired property: Checks if Customer provided storage account is required.
+     *
+     * @return the storageAccountRequired value.
+     */
+    public Boolean storageAccountRequired() {
+        return this.storageAccountRequired;
+    }
+
+    /**
+     * Set the storageAccountRequired property: Checks if Customer provided storage account is required.
+     *
+     * @param storageAccountRequired the storageAccountRequired value to set.
+     * @return the TriggeredWebJobProperties object itself.
+     */
+    public TriggeredWebJobProperties withStorageAccountRequired(Boolean storageAccountRequired) {
+        this.storageAccountRequired = storageAccountRequired;
         return this;
     }
 

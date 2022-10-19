@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.ActivityEntityQueriesProperties;
 import com.azure.resourcemanager.securityinsights.fluent.models.EntityQueryInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,8 +19,6 @@ import java.util.Map;
 @JsonTypeName("Activity")
 @Fluent
 public final class ActivityEntityQuery extends EntityQueryInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ActivityEntityQuery.class);
-
     /*
      * Activity entity query properties
      */

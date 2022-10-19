@@ -8,6 +8,8 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -30,15 +32,29 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateReadSessionOnAsyncReplication() throws InterruptedException {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
-        this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
+        this.writeClient =
+                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
+                        .withServiceEndpoint(TestConfigurations.HOST)
+                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                        .withConnectionPolicy(connectionPolicy)
+                        .withConsistencyLevel(ConsistencyLevel.SESSION)
+                        .withContentResponseOnWriteEnabled(true)
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
+                        .build();
 
-        this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
+        this.readClient =
+                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
+                        .withServiceEndpoint(TestConfigurations.HOST)
+                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                        .withConnectionPolicy(connectionPolicy)
+                        .withConsistencyLevel(ConsistencyLevel.SESSION)
+                        .withContentResponseOnWriteEnabled(true)
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
+                        .build();
 
         Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
                                                            null, false).block().getResource();
@@ -50,15 +66,29 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateWriteSessionOnAsyncReplication() throws InterruptedException {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
-        this.writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
+        this.writeClient =
+                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
+                        .withServiceEndpoint(TestConfigurations.HOST)
+                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                        .withConnectionPolicy(connectionPolicy)
+                        .withConsistencyLevel(ConsistencyLevel.SESSION)
+                        .withContentResponseOnWriteEnabled(true)
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
+                        .build();
 
-        this.readClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true).build();
+        this.readClient =
+                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
+                        .withServiceEndpoint(TestConfigurations.HOST)
+                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                        .withConnectionPolicy(connectionPolicy)
+                        .withConsistencyLevel(ConsistencyLevel.SESSION)
+                        .withContentResponseOnWriteEnabled(true)
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
+                        .build();
 
         Document document = this.initClient.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
                                                            null, false).block().getResource();
@@ -156,17 +186,29 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     public void validateNoChargeOnFailedSessionRead() throws Exception {
         // DIRECT clients for read and write operations
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        RxDocumentClientImpl writeClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
-                .build();
+        RxDocumentClientImpl writeClient =
+                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
+                        .withServiceEndpoint(TestConfigurations.HOST)
+                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                        .withConnectionPolicy(connectionPolicy)
+                        .withConsistencyLevel(ConsistencyLevel.SESSION)
+                        .withContentResponseOnWriteEnabled(true)
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
+                        .build();
         // Client locked to replica for pause/resume
-        RxDocumentClientImpl readSecondaryClient = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
-                .build();
+        RxDocumentClientImpl readSecondaryClient =
+                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
+                        .withServiceEndpoint(TestConfigurations.HOST)
+                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                        .withConnectionPolicy(connectionPolicy)
+                        .withConsistencyLevel(ConsistencyLevel.SESSION)
+                        .withContentResponseOnWriteEnabled(true)
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
+                        .build();
         try {
             // CREATE collection
             DocumentCollection parentResource = writeClient.createCollection(createdDatabase.getSelfLink(),
@@ -184,7 +226,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
             cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(PartitionKeyInternal.Empty.toJson()));
             cosmosQueryRequestOptions.setSessionToken(token);
             FailureValidator validator = new FailureValidator.Builder().statusCode(HttpConstants.StatusCodes.NOTFOUND).subStatusCode(HttpConstants.SubStatusCodes.READ_SESSION_NOT_AVAILABLE).build();
-            Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(parentResource.getSelfLink(), cosmosQueryRequestOptions);
+            Flux<FeedResponse<Document>> feedObservable = readSecondaryClient.readDocuments(
+                parentResource.getSelfLink(), cosmosQueryRequestOptions, Document.class);
             validateQueryFailure(feedObservable, validator);
         } finally {
             safeClose(writeClient);
@@ -215,11 +258,17 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         }
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
-        RxDocumentClientImpl client = (RxDocumentClientImpl) new AsyncDocumentClient.Builder().withServiceEndpoint(TestConfigurations.HOST)
-                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true)
-                .build();
+        RxDocumentClientImpl client =
+                (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
+                        .withServiceEndpoint(TestConfigurations.HOST)
+                        .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                        .withConnectionPolicy(connectionPolicy)
+                        .withConsistencyLevel(ConsistencyLevel.SESSION)
+                        .withContentResponseOnWriteEnabled(true)
+                        .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
+                        .build();
 
         try {
             Document lastDocument = client.createDocument(createdCollection.getSelfLink(), getDocumentDefinition(),
@@ -235,9 +284,11 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                 try {
                     CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
                     ModelBridgeInternal.setQueryRequestOptionsEmptyPagesAllowed(cosmosQueryRequestOptions, true);
-                    FeedResponse<Document> queryResponse = client.queryDocuments(createdCollection.getSelfLink(),
-                                                                                 "SELECT * FROM c WHERE c.Id = " +
-                                                                                         "'foo'", cosmosQueryRequestOptions)
+                    FeedResponse<Document> queryResponse = client.queryDocuments(
+                        createdCollection.getSelfLink(),
+                        "SELECT * FROM c WHERE c.Id = 'foo'",
+                        cosmosQueryRequestOptions,
+                        Document.class)
                             .blockFirst();
                     String lsnHeaderValue = queryResponse.getResponseHeaders().get(WFConstants.BackendHeaders.LSN);
                     long lsn = Long.valueOf(lsnHeaderValue);

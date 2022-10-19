@@ -6,11 +6,13 @@ package com.azure.storage.common.implementation;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.Context;
-import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.Utility;
+import reactor.core.publisher.Mono;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -24,14 +26,6 @@ import java.util.Base64;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.function.Function;
-import java.util.regex.Pattern;
-
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 
 import static com.azure.storage.common.Utility.urlDecode;
 import static com.azure.storage.common.implementation.Constants.HeaderConstants.ERROR_CODE;
@@ -103,24 +97,17 @@ public class StorageImplUtils {
     @Deprecated
     public static final String ISO8601_PATTERN_NO_SECONDS = "yyyy-MM-dd'T'HH:mm'Z'";
 
-    /**
-     * A compiled Pattern that finds 'Z'. This is used as Java 8's String.replace method uses Pattern.compile
-     * internally without simple case opt-outs.
-     * @deprecated See value in {@link StorageImplUtils}
-     */
-    @Deprecated
-    public static final Pattern Z_PATTERN = Pattern.compile("Z");
+    // Use constant DateTimeFormatters as 'ofPattern' requires the passed pattern to be parsed each time, significantly
+    // increasing the overhead of using DateTimeFormatter.
+    private static final DateTimeFormatter MAX_PRECISION_FORMATTER = DateTimeFormatter.ofPattern(MAX_PRECISION_PATTERN)
+        .withLocale(Locale.ROOT);
 
-    /**
-     * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
-     * stored as a string (ex. key=val1,val2,val3 instead of key=[val1, val2, val3]).
-     *
-     * @param queryString Query string to parse
-     * @return a mapping of query string pieces as key-value pairs.
-     */
-    public static Map<String, String> parseQueryString(final String queryString) {
-        return parseQueryStringHelper(queryString, Utility::urlDecode);
-    }
+    private static final DateTimeFormatter ISO8601_FORMATTER = DateTimeFormatter.ofPattern(ISO8601_PATTERN)
+        .withLocale(Locale.ROOT);
+
+    private static final DateTimeFormatter NO_SECONDS_FORMATTER = DateTimeFormatter
+        .ofPattern(ISO8601_PATTERN_NO_SECONDS)
+        .withLocale(Locale.ROOT);
 
     /**
      * Parses the query string into a key-value pair map that maintains key, query parameter key, order. The value is
@@ -134,28 +121,20 @@ public class StorageImplUtils {
         // query values from query values that container a comma.
         // Example 1: prefix=a%2cb => prefix={decode(a%2cb)} => prefix={"a,b"}
         // Example 2: prefix=a,b => prefix={decode(a),decode(b)} => prefix={"a", "b"}
-        return parseQueryStringHelper(queryString, value -> {
-            String[] v = value.split(",");
-            String[] ret = new String[v.length];
-            for (int i = 0; i < v.length; i++) {
-                ret[i] = urlDecode(v[i]);
-            }
-            return ret;
-        });
-    }
-
-    private static <T> Map<String, T> parseQueryStringHelper(final String queryString,
-                                                             Function<String, T> valueParser) {
-        TreeMap<String, T> pieces = new TreeMap<>();
+        TreeMap<String, String[]> pieces = new TreeMap<>();
 
         if (CoreUtils.isNullOrEmpty(queryString)) {
             return pieces;
         }
 
         for (String kvp : queryString.split("&")) {
-            int equalIndex = kvp.indexOf("=");
+            int equalIndex = kvp.indexOf('=');
             String key = urlDecode(kvp.substring(0, equalIndex).toLowerCase(Locale.ROOT));
-            T value = valueParser.apply(kvp.substring(equalIndex + 1));
+
+            String[] value = kvp.substring(equalIndex + 1).split(",");
+            for (int i = 0; i < value.length; i++) {
+                value[i] = urlDecode(value[i]);
+            }
 
             pieces.putIfAbsent(key, value);
         }
@@ -189,20 +168,6 @@ public class StorageImplUtils {
      * @return Mono with an applied timeout, if any.
      */
     public static <T> Mono<T> applyOptionalTimeout(Mono<T> publisher, Duration timeout) {
-        return timeout == null
-            ? publisher
-            : publisher.timeout(timeout);
-    }
-
-    /**
-     * Applies a timeout to a publisher if the given timeout is not null.
-     *
-     * @param publisher Flux to apply optional timeout to.
-     * @param timeout Optional timeout.
-     * @param <T> Return type of the Flux.
-     * @return Flux with an applied timeout, if any.
-     */
-    public static <T> Flux<T> applyOptionalTimeout(Flux<T> publisher, Duration timeout) {
         return timeout == null
             ? publisher
             : publisher.timeout(timeout);
@@ -371,7 +336,12 @@ public class StorageImplUtils {
             if (response.getRequest() != null && response.getRequest().getHttpMethod() != null
                 && response.getRequest().getHttpMethod().equals(HttpMethod.HEAD)
                 && response.getHeaders().getValue(ERROR_CODE) != null) {
-                return message.replaceFirst("(empty body)", response.getHeaders().getValue(ERROR_CODE));
+                int indexOfEmptyBody = message.indexOf("(empty body)");
+                if (indexOfEmptyBody >= 0) {
+                    return message.substring(0, indexOfEmptyBody)
+                        + response.getHeaders().getValue(ERROR_CODE)
+                        + message.substring(indexOfEmptyBody + 12);
+                }
             }
         }
         return message;
@@ -386,7 +356,7 @@ public class StorageImplUtils {
      * @throws IllegalArgumentException If {@code dateString} doesn't match an ISO8601 pattern
      */
     public static TimeAndFormat parseDateAndFormat(String dateString) {
-        String pattern = MAX_PRECISION_PATTERN;
+        DateTimeFormatter formatter = MAX_PRECISION_FORMATTER;
         switch (dateString.length()) {
             case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
             case 27: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"-> [2012-01-04T23:21:59.123456Z] length = 27
@@ -397,23 +367,26 @@ public class StorageImplUtils {
                 break;
             case 23: // "yyyy-MM-dd'T'HH:mm:ss.SS'Z'"-> [2012-01-04T23:21:59.12Z] length = 23
                 // SS is assumed to be milliseconds, so a trailing 0 is necessary
-                dateString = Z_PATTERN.matcher(dateString).replaceAll("0");
+                if (dateString.endsWith("Z")) {
+                    dateString = dateString.substring(0, 22) + "0";
+                }
                 break;
             case 22: // "yyyy-MM-dd'T'HH:mm:ss.S'Z'"-> [2012-01-04T23:21:59.1Z] length = 22
                 // S is assumed to be milliseconds, so trailing 0's are necessary
-                dateString = Z_PATTERN.matcher(dateString).replaceAll("00");
+                if (dateString.endsWith("Z")) {
+                    dateString = dateString.substring(0, 21) + "00";
+                }
                 break;
             case 20: // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
-                pattern = ISO8601_PATTERN;
+                formatter = ISO8601_FORMATTER;
                 break;
             case 17: // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
-                pattern = ISO8601_PATTERN_NO_SECONDS;
+                formatter = NO_SECONDS_FORMATTER;
                 break;
             default:
                 throw new IllegalArgumentException(String.format(Locale.ROOT, INVALID_DATE_STRING, dateString));
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
         return new TimeAndFormat(LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime(),
             formatter);
     }

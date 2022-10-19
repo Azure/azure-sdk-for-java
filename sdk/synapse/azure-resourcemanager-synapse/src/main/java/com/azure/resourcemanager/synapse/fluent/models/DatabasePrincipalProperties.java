@@ -9,14 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.DatabasePrincipalRole;
 import com.azure.resourcemanager.synapse.models.PrincipalType;
 import com.azure.resourcemanager.synapse.models.ResourceProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A class representing database principal property. */
 @Fluent
 public final class DatabasePrincipalProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabasePrincipalProperties.class);
-
     /*
      * The principal ID assigned to the database principal. It can be a user
      * email, application ID, or security group name.
@@ -176,22 +173,24 @@ public final class DatabasePrincipalProperties {
      */
     public void validate() {
         if (principalId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property principalId in model DatabasePrincipalProperties"));
         }
         if (role() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property role in model DatabasePrincipalProperties"));
         }
         if (principalType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property principalType in model DatabasePrincipalProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabasePrincipalProperties.class);
 }

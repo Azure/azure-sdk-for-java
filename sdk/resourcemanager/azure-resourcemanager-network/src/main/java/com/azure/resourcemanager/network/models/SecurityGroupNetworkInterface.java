@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Network interface and all its associated security rules. */
 @Fluent
 public final class SecurityGroupNetworkInterface {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityGroupNetworkInterface.class);
-
     /*
      * ID of the network interface.
      */
@@ -25,6 +21,10 @@ public final class SecurityGroupNetworkInterface {
      */
     @JsonProperty(value = "securityRuleAssociations")
     private SecurityRuleAssociations securityRuleAssociations;
+
+    /** Creates an instance of SecurityGroupNetworkInterface class. */
+    public SecurityGroupNetworkInterface() {
+    }
 
     /**
      * Get the id property: ID of the network interface.

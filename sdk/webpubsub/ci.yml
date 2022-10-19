@@ -29,14 +29,27 @@ pr:
       - sdk/webpubsub/azure-messaging-webpubsub/pom.xml
       - sdk/webpubsub/azure-resourcemanager-webpubsub/pom.xml
 
+parameters:
+- name: release_azuremessagingwebpubsub
+  displayName: 'azure-messaging-webpubsub'
+  type: boolean
+  default: true
+- name: release_azureresourcemanagerwebpubsub
+  displayName: 'azure-resourcemanager-webpubsub'
+  type: boolean
+  default: false
+
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: webpubsub
+    EnableBatchRelease: true
     Artifacts:
       - name: azure-messaging-webpubsub
         groupId: com.azure
         safeName: azuremessagingwebpubsub
+        releaseInBatch: ${{ parameters.release_azuremessagingwebpubsub }}
       - name: azure-resourcemanager-webpubsub
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerwebpubsub
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerwebpubsub }}

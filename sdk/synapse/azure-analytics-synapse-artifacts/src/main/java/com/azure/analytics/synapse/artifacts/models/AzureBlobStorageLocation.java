@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class AzureBlobStorageLocation extends DatasetLocation {
     /*
-     * Specify the container of azure blob. Type: string (or Expression with
-     * resultType string).
+     * Specify the container of azure blob. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "container")
     private Object container;
@@ -40,6 +39,20 @@ public final class AzureBlobStorageLocation extends DatasetLocation {
      */
     public AzureBlobStorageLocation setContainer(Object container) {
         this.container = container;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLocation setFolderPath(Object folderPath) {
+        super.setFolderPath(folderPath);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureBlobStorageLocation setFileName(Object fileName) {
+        super.setFileName(fileName);
         return this;
     }
 }

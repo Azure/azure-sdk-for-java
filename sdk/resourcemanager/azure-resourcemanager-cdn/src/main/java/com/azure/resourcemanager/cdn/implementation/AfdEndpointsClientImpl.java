@@ -31,7 +31,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.cdn.fluent.AfdEndpointsClient;
@@ -44,14 +43,11 @@ import com.azure.resourcemanager.cdn.models.AfdPurgeParameters;
 import com.azure.resourcemanager.cdn.models.UsagesListResult;
 import com.azure.resourcemanager.cdn.models.ValidateCustomDomainInput;
 import java.nio.ByteBuffer;
-import java.util.List;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AfdEndpointsClient. */
 public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
-    private final ClientLogger logger = new ClientLogger(AfdEndpointsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AfdEndpointsService service;
 
@@ -232,11 +228,13 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * Lists existing AzureFrontDoor endpoints.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list endpoints.
+     * @return result of the request to list endpoints along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AfdEndpointInner>> listByProfileSinglePageAsync(
@@ -282,19 +280,21 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists existing AzureFrontDoor endpoints.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list endpoints.
+     * @return result of the request to list endpoints along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AfdEndpointInner>> listByProfileSinglePageAsync(
@@ -344,11 +344,12 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * Lists existing AzureFrontDoor endpoints.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list endpoints.
+     * @return result of the request to list endpoints as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AfdEndpointInner> listByProfileAsync(String resourceGroupName, String profileName) {
@@ -361,12 +362,13 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * Lists existing AzureFrontDoor endpoints.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list endpoints.
+     * @return result of the request to list endpoints as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AfdEndpointInner> listByProfileAsync(
@@ -380,11 +382,12 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * Lists existing AzureFrontDoor endpoints.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list endpoints.
+     * @return result of the request to list endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AfdEndpointInner> listByProfile(String resourceGroupName, String profileName) {
@@ -395,12 +398,13 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * Lists existing AzureFrontDoor endpoints.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list endpoints.
+     * @return result of the request to list endpoints as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AfdEndpointInner> listByProfile(
@@ -413,13 +417,14 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-     *     resource group and profile.
+     *     resource group and profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<AfdEndpointInner>> getWithResponseAsync(
@@ -460,7 +465,7 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -468,14 +473,15 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-     *     resource group and profile.
+     *     resource group and profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AfdEndpointInner>> getWithResponseAsync(
@@ -521,25 +527,19 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-     *     resource group and profile.
+     *     resource group and profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdEndpointInner> getAsync(String resourceGroupName, String profileName, String endpointName) {
         return getWithResponseAsync(resourceGroupName, profileName, endpointName)
-            .flatMap(
-                (Response<AfdEndpointInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -547,7 +547,8 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -565,14 +566,15 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an existing AzureFrontDoor endpoint with the specified endpoint name under the specified subscription,
-     *     resource group and profile.
+     *     resource group and profile along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AfdEndpointInner> getWithResponse(
@@ -585,18 +587,20 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint Endpoint properties.
+     * @param endpointParam Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpoint) {
+        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpointParam) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -619,10 +623,10 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (endpoint == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpoint is required and cannot be null."));
+        if (endpointParam == null) {
+            return Mono.error(new IllegalArgumentException("Parameter endpointParam is required and cannot be null."));
         } else {
-            endpoint.validate();
+            endpointParam.validate();
         }
         final String accept = "application/json";
         return FluxUtil
@@ -636,10 +640,10 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                             endpointName,
                             this.client.getSubscriptionId(),
                             this.client.getApiVersion(),
-                            endpoint,
+                            endpointParam,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -647,19 +651,25 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint Endpoint properties.
+     * @param endpointParam Endpoint properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpoint, Context context) {
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        AfdEndpointInner endpointParam,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -682,10 +692,10 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (endpoint == null) {
-            return Mono.error(new IllegalArgumentException("Parameter endpoint is required and cannot be null."));
+        if (endpointParam == null) {
+            return Mono.error(new IllegalArgumentException("Parameter endpointParam is required and cannot be null."));
         } else {
-            endpoint.validate();
+            endpointParam.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
@@ -697,7 +707,7 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                 endpointName,
                 this.client.getSubscriptionId(),
                 this.client.getApiVersion(),
-                endpoint,
+                endpointParam,
                 accept,
                 context);
     }
@@ -707,20 +717,21 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint Endpoint properties.
+     * @param endpointParam Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link PollerFlux} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpoint) {
+        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpointParam) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, endpointName, endpoint);
+            createWithResponseAsync(resourceGroupName, profileName, endpointName, endpointParam);
         return this
             .client
             .<AfdEndpointInner, AfdEndpointInner>getLroResult(
@@ -736,22 +747,27 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint Endpoint properties.
+     * @param endpointParam Endpoint properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link PollerFlux} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreateAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpoint, Context context) {
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        AfdEndpointInner endpointParam,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, profileName, endpointName, endpoint, context);
+            createWithResponseAsync(resourceGroupName, profileName, endpointName, endpointParam, context);
         return this
             .client
             .<AfdEndpointInner, AfdEndpointInner>getLroResult(
@@ -763,19 +779,20 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint Endpoint properties.
+     * @param endpointParam Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreate(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpoint) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, endpoint).getSyncPoller();
+        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpointParam) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, endpointParam).getSyncPoller();
     }
 
     /**
@@ -783,20 +800,25 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint Endpoint properties.
+     * @param endpointParam Endpoint properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginCreate(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpoint, Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, endpoint, context).getSyncPoller();
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        AfdEndpointInner endpointParam,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, endpointParam, context).getSyncPoller();
     }
 
     /**
@@ -804,19 +826,20 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint Endpoint properties.
+     * @param endpointParam Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdEndpointInner> createAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpoint) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, endpoint)
+        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpointParam) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, endpointParam)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -826,20 +849,25 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint Endpoint properties.
+     * @param endpointParam Endpoint properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AfdEndpointInner> createAsync(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpoint, Context context) {
-        return beginCreateAsync(resourceGroupName, profileName, endpointName, endpoint, context)
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        AfdEndpointInner endpointParam,
+        Context context) {
+        return beginCreateAsync(resourceGroupName, profileName, endpointName, endpointParam, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -849,9 +877,10 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint Endpoint properties.
+     * @param endpointParam Endpoint properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -860,8 +889,8 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AfdEndpointInner create(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpoint) {
-        return createAsync(resourceGroupName, profileName, endpointName, endpoint).block();
+        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpointParam) {
+        return createAsync(resourceGroupName, profileName, endpointName, endpointParam).block();
     }
 
     /**
@@ -869,9 +898,10 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param endpoint Endpoint properties.
+     * @param endpointParam Endpoint properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -881,8 +911,12 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public AfdEndpointInner create(
-        String resourceGroupName, String profileName, String endpointName, AfdEndpointInner endpoint, Context context) {
-        return createAsync(resourceGroupName, profileName, endpointName, endpoint, context).block();
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        AfdEndpointInner endpointParam,
+        Context context) {
+        return createAsync(resourceGroupName, profileName, endpointName, endpointParam, context).block();
     }
 
     /**
@@ -892,14 +926,16 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -951,7 +987,7 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                             endpointUpdateProperties,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -961,7 +997,8 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @param context The context to associate with this operation.
@@ -969,7 +1006,8 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1029,16 +1067,17 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link PollerFlux} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdateAsync(
         String resourceGroupName,
         String profileName,
@@ -1063,17 +1102,18 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link PollerFlux} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdateAsync(
         String resourceGroupName,
         String profileName,
@@ -1096,16 +1136,17 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -1121,17 +1162,18 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     * @return the {@link SyncPoller} for polling of cDN endpoint is the entity within a CDN profile containing
+     *     configuration information such as origin, protocol, content caching and delivery behavior.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<AfdEndpointInner>, AfdEndpointInner> beginUpdate(
         String resourceGroupName,
         String profileName,
@@ -1149,14 +1191,15 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<AfdEndpointInner> updateAsync(
@@ -1176,7 +1219,8 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @param context The context to associate with this operation.
@@ -1184,7 +1228,7 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return cDN endpoint is the entity within a CDN profile containing configuration information such as origin,
-     *     protocol, content caching and delivery behavior.
+     *     protocol, content caching and delivery behavior on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AfdEndpointInner> updateAsync(
@@ -1205,7 +1249,8 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1230,7 +1275,8 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * the Update Custom Domain operation.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param endpointUpdateProperties Endpoint update properties.
      * @param context The context to associate with this operation.
@@ -1255,12 +1301,13 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1301,7 +1348,7 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                             this.client.getApiVersion(),
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1309,13 +1356,14 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1361,14 +1409,15 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String endpointName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, profileName, endpointName);
@@ -1383,15 +1432,16 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String profileName, String endpointName, Context context) {
         context = this.client.mergeContext(context);
@@ -1407,14 +1457,15 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName) {
         return beginDeleteAsync(resourceGroupName, profileName, endpointName).getSyncPoller();
@@ -1425,15 +1476,16 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String profileName, String endpointName, Context context) {
         return beginDeleteAsync(resourceGroupName, profileName, endpointName, context).getSyncPoller();
@@ -1444,12 +1496,13 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName) {
@@ -1463,13 +1516,14 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String profileName, String endpointName, Context context) {
@@ -1483,7 +1537,8 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1499,7 +1554,8 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * resource group and profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1515,22 +1571,20 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * Removes a content from AzureFrontDoor.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @param domains List of domains.
+     * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
+     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
+     *     '/pictures/*' which removes all folders and files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> purgeContentWithResponseAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        List<String> contentPaths,
-        List<String> domains) {
+        String resourceGroupName, String profileName, String endpointName, AfdPurgeParameters contents) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1553,13 +1607,12 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (contentPaths == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentPaths is required and cannot be null."));
+        if (contents == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contents is required and cannot be null."));
+        } else {
+            contents.validate();
         }
         final String accept = "application/json";
-        AfdPurgeParameters contents = new AfdPurgeParameters();
-        contents.withContentPaths(contentPaths);
-        contents.withDomains(domains);
         return FluxUtil
             .withContext(
                 context ->
@@ -1574,30 +1627,31 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                             contents,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Removes a content from AzureFrontDoor.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @param domains List of domains.
+     * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
+     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
+     *     '/pictures/*' which removes all folders and files in the directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> purgeContentWithResponseAsync(
         String resourceGroupName,
         String profileName,
         String endpointName,
-        List<String> contentPaths,
-        List<String> domains,
+        AfdPurgeParameters contents,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -1621,13 +1675,12 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (contentPaths == null) {
-            return Mono.error(new IllegalArgumentException("Parameter contentPaths is required and cannot be null."));
+        if (contents == null) {
+            return Mono.error(new IllegalArgumentException("Parameter contents is required and cannot be null."));
+        } else {
+            contents.validate();
         }
         final String accept = "application/json";
-        AfdPurgeParameters contents = new AfdPurgeParameters();
-        contents.withContentPaths(contentPaths);
-        contents.withDomains(domains);
         context = this.client.mergeContext(context);
         return service
             .purgeContent(
@@ -1646,24 +1699,22 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * Removes a content from AzureFrontDoor.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @param domains List of domains.
+     * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
+     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
+     *     '/pictures/*' which removes all folders and files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPurgeContentAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        List<String> contentPaths,
-        List<String> domains) {
+        String resourceGroupName, String profileName, String endpointName, AfdPurgeParameters contents) {
         Mono<Response<Flux<ByteBuffer>>> mono =
-            purgeContentWithResponseAsync(resourceGroupName, profileName, endpointName, contentPaths, domains);
+            purgeContentWithResponseAsync(resourceGroupName, profileName, endpointName, contents);
         return this
             .client
             .<Void, Void>getLroResult(
@@ -1674,27 +1725,28 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * Removes a content from AzureFrontDoor.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @param domains List of domains.
+     * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
+     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
+     *     '/pictures/*' which removes all folders and files in the directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPurgeContentAsync(
         String resourceGroupName,
         String profileName,
         String endpointName,
-        List<String> contentPaths,
-        List<String> domains,
+        AfdPurgeParameters contents,
         Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono =
-            purgeContentWithResponseAsync(resourceGroupName, profileName, endpointName, contentPaths, domains, context);
+            purgeContentWithResponseAsync(resourceGroupName, profileName, endpointName, contents, context);
         return this
             .client
             .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
@@ -1704,73 +1756,68 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * Removes a content from AzureFrontDoor.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @param domains List of domains.
+     * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
+     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
+     *     '/pictures/*' which removes all folders and files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeContent(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        List<String> contentPaths,
-        List<String> domains) {
-        return beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contentPaths, domains)
-            .getSyncPoller();
+        String resourceGroupName, String profileName, String endpointName, AfdPurgeParameters contents) {
+        return beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contents).getSyncPoller();
     }
 
     /**
      * Removes a content from AzureFrontDoor.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @param domains List of domains.
+     * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
+     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
+     *     '/pictures/*' which removes all folders and files in the directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPurgeContent(
         String resourceGroupName,
         String profileName,
         String endpointName,
-        List<String> contentPaths,
-        List<String> domains,
+        AfdPurgeParameters contents,
         Context context) {
-        return beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contentPaths, domains, context)
-            .getSyncPoller();
+        return beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contents, context).getSyncPoller();
     }
 
     /**
      * Removes a content from AzureFrontDoor.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @param domains List of domains.
+     * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
+     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
+     *     '/pictures/*' which removes all folders and files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> purgeContentAsync(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        List<String> contentPaths,
-        List<String> domains) {
-        return beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contentPaths, domains)
+        String resourceGroupName, String profileName, String endpointName, AfdPurgeParameters contents) {
+        return beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contents)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1779,46 +1826,26 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * Removes a content from AzureFrontDoor.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> purgeContentAsync(
-        String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        final List<String> domains = null;
-        return beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contentPaths, domains)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Removes a content from AzureFrontDoor.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @param domains List of domains.
+     * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
+     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
+     *     '/pictures/*' which removes all folders and files in the directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> purgeContentAsync(
         String resourceGroupName,
         String profileName,
         String endpointName,
-        List<String> contentPaths,
-        List<String> domains,
+        AfdPurgeParameters contents,
         Context context) {
-        return beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contentPaths, domains, context)
+        return beginPurgeContentAsync(resourceGroupName, profileName, endpointName, contents, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1827,50 +1854,32 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      * Removes a content from AzureFrontDoor.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @param domains List of domains.
+     * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
+     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
+     *     '/pictures/*' which removes all folders and files in the directory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeContent(
-        String resourceGroupName,
-        String profileName,
-        String endpointName,
-        List<String> contentPaths,
-        List<String> domains) {
-        purgeContentAsync(resourceGroupName, profileName, endpointName, contentPaths, domains).block();
+        String resourceGroupName, String profileName, String endpointName, AfdPurgeParameters contents) {
+        purgeContentAsync(resourceGroupName, profileName, endpointName, contents).block();
     }
 
     /**
      * Removes a content from AzureFrontDoor.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void purgeContent(
-        String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
-        final List<String> domains = null;
-        purgeContentAsync(resourceGroupName, profileName, endpointName, contentPaths, domains).block();
-    }
-
-    /**
-     * Removes a content from AzureFrontDoor.
-     *
-     * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
-     * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param contentPaths The path to the content to be purged. Can describe a file path or a wild card directory.
-     * @param domains List of domains.
+     * @param contents The list of paths to the content and the list of linked domains to be purged. Path can be a full
+     *     URL, e.g. '/pictures/city.png' which removes a single file, or a directory with a wildcard, e.g.
+     *     '/pictures/*' which removes all folders and files in the directory.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1881,22 +1890,23 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
         String resourceGroupName,
         String profileName,
         String endpointName,
-        List<String> contentPaths,
-        List<String> domains,
+        AfdPurgeParameters contents,
         Context context) {
-        purgeContentAsync(resourceGroupName, profileName, endpointName, contentPaths, domains, context).block();
+        purgeContentAsync(resourceGroupName, profileName, endpointName, contents, context).block();
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor endpoint under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listResourceUsageSinglePageAsync(
@@ -1946,20 +1956,22 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor endpoint under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listResourceUsageSinglePageAsync(
@@ -2010,15 +2022,16 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor endpoint under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<UsageInner> listResourceUsageAsync(
@@ -2029,16 +2042,17 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor endpoint under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<UsageInner> listResourceUsageAsync(
@@ -2049,15 +2063,16 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor endpoint under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listResourceUsage(
@@ -2066,16 +2081,17 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
     }
 
     /**
-     * Checks the quota and actual usage of endpoints under the given CDN profile.
+     * Checks the quota and actual usage of the given AzureFrontDoor endpoint under the given CDN profile.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<UsageInner> listResourceUsage(
@@ -2084,20 +2100,25 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.This api isn't work for
+     * apex domain.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of custom domain validation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ValidateCustomDomainOutputInner>> validateCustomDomainWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String hostname) {
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        ValidateCustomDomainInput customDomainProperties) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2120,12 +2141,14 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (hostname == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
+        if (customDomainProperties == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter customDomainProperties is required and cannot be null."));
+        } else {
+            customDomainProperties.validate();
         }
         final String accept = "application/json";
-        ValidateCustomDomainInput customDomainProperties = new ValidateCustomDomainInput();
-        customDomainProperties.withHostname(hostname);
         return FluxUtil
             .withContext(
                 context ->
@@ -2140,25 +2163,31 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                             customDomainProperties,
                             accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.This api isn't work for
+     * apex domain.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Custom domain to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of custom domain validation along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ValidateCustomDomainOutputInner>> validateCustomDomainWithResponseAsync(
-        String resourceGroupName, String profileName, String endpointName, String hostname, Context context) {
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        ValidateCustomDomainInput customDomainProperties,
+        Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2181,12 +2210,14 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        if (hostname == null) {
-            return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
+        if (customDomainProperties == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException("Parameter customDomainProperties is required and cannot be null."));
+        } else {
+            customDomainProperties.validate();
         }
         final String accept = "application/json";
-        ValidateCustomDomainInput customDomainProperties = new ValidateCustomDomainInput();
-        customDomainProperties.withHostname(hostname);
         context = this.client.mergeContext(context);
         return service
             .validateCustomDomain(
@@ -2202,38 +2233,39 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.This api isn't work for
+     * apex domain.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of custom domain validation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ValidateCustomDomainOutputInner> validateCustomDomainAsync(
-        String resourceGroupName, String profileName, String endpointName, String hostname) {
-        return validateCustomDomainWithResponseAsync(resourceGroupName, profileName, endpointName, hostname)
-            .flatMap(
-                (Response<ValidateCustomDomainOutputInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        ValidateCustomDomainInput customDomainProperties) {
+        return validateCustomDomainWithResponseAsync(
+                resourceGroupName, profileName, endpointName, customDomainProperties)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.This api isn't work for
+     * apex domain.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Custom domain to be validated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2241,38 +2273,50 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ValidateCustomDomainOutputInner validateCustomDomain(
-        String resourceGroupName, String profileName, String endpointName, String hostname) {
-        return validateCustomDomainAsync(resourceGroupName, profileName, endpointName, hostname).block();
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        ValidateCustomDomainInput customDomainProperties) {
+        return validateCustomDomainAsync(resourceGroupName, profileName, endpointName, customDomainProperties).block();
     }
 
     /**
-     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.
+     * Validates the custom domain mapping to ensure it maps to the correct CDN endpoint in DNS.This api isn't work for
+     * apex domain.
      *
      * @param resourceGroupName Name of the Resource group within the Azure subscription.
-     * @param profileName Name of the CDN profile which is unique within the resource group.
+     * @param profileName Name of the Azure Front Door Standard or Azure Front Door Premium profile which is unique
+     *     within the resource group.
      * @param endpointName Name of the endpoint under the profile which is unique globally.
-     * @param hostname The host name of the custom domain. Must be a domain name.
+     * @param customDomainProperties Custom domain to be validated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of custom domain validation.
+     * @return output of custom domain validation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ValidateCustomDomainOutputInner> validateCustomDomainWithResponse(
-        String resourceGroupName, String profileName, String endpointName, String hostname, Context context) {
-        return validateCustomDomainWithResponseAsync(resourceGroupName, profileName, endpointName, hostname, context)
+        String resourceGroupName,
+        String profileName,
+        String endpointName,
+        ValidateCustomDomainInput customDomainProperties,
+        Context context) {
+        return validateCustomDomainWithResponseAsync(
+                resourceGroupName, profileName, endpointName, customDomainProperties, context)
             .block();
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list endpoints.
+     * @return result of the request to list endpoints along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AfdEndpointInner>> listByProfileNextSinglePageAsync(String nextLink) {
@@ -2297,18 +2341,20 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list endpoints.
+     * @return result of the request to list endpoints along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AfdEndpointInner>> listByProfileNextSinglePageAsync(String nextLink, Context context) {
@@ -2339,11 +2385,13 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listResourceUsageNextSinglePageAsync(String nextLink) {
@@ -2368,18 +2416,20 @@ public final class AfdEndpointsClientImpl implements AfdEndpointsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list usages operation response.
+     * @return the list usages operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UsageInner>> listResourceUsageNextSinglePageAsync(String nextLink, Context context) {

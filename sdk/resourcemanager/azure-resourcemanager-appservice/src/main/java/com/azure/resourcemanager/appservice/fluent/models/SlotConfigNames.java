@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
@@ -17,8 +15,6 @@ import java.util.List;
  */
 @Fluent
 public final class SlotConfigNames {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SlotConfigNames.class);
-
     /*
      * List of connection string names.
      */

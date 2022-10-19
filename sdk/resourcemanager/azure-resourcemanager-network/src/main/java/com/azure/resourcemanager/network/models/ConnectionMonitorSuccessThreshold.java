@@ -5,28 +5,26 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the threshold for declaring a test successful. */
 @Fluent
 public final class ConnectionMonitorSuccessThreshold {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorSuccessThreshold.class);
-
     /*
-     * The maximum percentage of failed checks permitted for a test to evaluate
-     * as successful.
+     * The maximum percentage of failed checks permitted for a test to evaluate as successful.
      */
     @JsonProperty(value = "checksFailedPercent")
     private Integer checksFailedPercent;
 
     /*
-     * The maximum round-trip time in milliseconds permitted for a test to
-     * evaluate as successful.
+     * The maximum round-trip time in milliseconds permitted for a test to evaluate as successful.
      */
     @JsonProperty(value = "roundTripTimeMs")
     private Float roundTripTimeMs;
+
+    /** Creates an instance of ConnectionMonitorSuccessThreshold class. */
+    public ConnectionMonitorSuccessThreshold() {
+    }
 
     /**
      * Get the checksFailedPercent property: The maximum percentage of failed checks permitted for a test to evaluate as

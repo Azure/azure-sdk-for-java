@@ -27,7 +27,11 @@ public final class PurgeState extends ExpandableStringEnum<PurgeState> {
         return fromString(name, PurgeState.class);
     }
 
-    /** @return known PurgeState values. */
+    /**
+     * Gets known PurgeState values.
+     *
+     * @return known PurgeState values.
+     */
     public static Collection<PurgeState> values() {
         return values(PurgeState.class);
     }

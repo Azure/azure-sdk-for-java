@@ -8,12 +8,11 @@ import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.search.documents.models.IndexAction;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
-import static com.azure.search.documents.implementation.util.Utility.MAP_STRING_OBJECT_TYPE_REFERENCE;
 import static com.azure.search.documents.implementation.util.Utility.getDefaultSerializerAdapter;
 
 /**
@@ -52,26 +51,42 @@ public final class IndexActionConverter {
         com.azure.search.documents.implementation.models.IndexAction indexAction =
             new com.azure.search.documents.implementation.models.IndexAction().setActionType(obj.getActionType());
 
-        Map<String, Object> mapProperties = IndexActionHelper.getProperties(obj);
-        if (mapProperties == null) {
-            T properties = obj.getDocument();
-            if (serializer == null) {
-                try {
-                    String serializedJson = getDefaultSerializerAdapter().serialize(properties,
-                        SerializerEncoding.JSON);
-                    mapProperties = getDefaultSerializerAdapter().deserialize(serializedJson,
-                        MAP_STRING_OBJECT_TYPE_REFERENCE.getJavaType(), SerializerEncoding.JSON);
-                } catch (IOException ex) {
-                    throw LOGGER.logExceptionAsError(
-                        new RuntimeException("Failed to serialize IndexAction.", ex));
-                }
+        // Attempt to get the document as the Map<String, Object> properties.
+        Object document = IndexActionHelper.getProperties(obj);
+        if (document == null) {
+            // If ths document wasn't a Map type, get the generic document type.
+            document = obj.getDocument();
+        }
+
+        // Convert the document to the JSON string representation.
+        String documentJson;
+        if (serializer == null) {
+            // A custom ObjectSerializer isn't being used, fallback to default JacksonAdapter.
+            try {
+                documentJson = getDefaultSerializerAdapter().serialize(document, SerializerEncoding.JSON);
+            } catch (IOException ex) {
+                throw LOGGER.logExceptionAsError(new UncheckedIOException(ex));
+            }
+        } else {
+            // A custom ObjectSerializer is being used, use it.
+            documentJson = new String(serializer.serializeToBytes(document), StandardCharsets.UTF_8);
+        }
+
+        if (documentJson != null) {
+            boolean startsWithCurlyBrace = documentJson.startsWith("{");
+            boolean endsWithCurlyBrace = documentJson.endsWith("}");
+
+            if (startsWithCurlyBrace && endsWithCurlyBrace) {
+                indexAction.setRawDocument(documentJson.substring(1, documentJson.length() - 1));
+            } else if (startsWithCurlyBrace) {
+                indexAction.setRawDocument(documentJson.substring(1));
+            } else if (endsWithCurlyBrace) {
+                indexAction.setRawDocument(documentJson.substring(0, documentJson.length() - 1));
             } else {
-                mapProperties = serializer.deserializeFromBytes(serializer.serializeToBytes(properties),
-                    MAP_STRING_OBJECT_TYPE_REFERENCE);
+                indexAction.setRawDocument(documentJson);
             }
         }
 
-        indexAction.setAdditionalProperties(mapProperties);
         return indexAction;
     }
 

@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Log Analytics Resources for Firewall Policy Insights. */
 @Fluent
 public final class FirewallPolicyLogAnalyticsResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyLogAnalyticsResources.class);
-
     /*
      * List of workspaces for Firewall Policy Insights.
      */
@@ -27,6 +23,10 @@ public final class FirewallPolicyLogAnalyticsResources {
      */
     @JsonProperty(value = "defaultWorkspaceId")
     private SubResource defaultWorkspaceId;
+
+    /** Creates an instance of FirewallPolicyLogAnalyticsResources class. */
+    public FirewallPolicyLogAnalyticsResources() {
+    }
 
     /**
      * Get the workspaces property: List of workspaces for Firewall Policy Insights.

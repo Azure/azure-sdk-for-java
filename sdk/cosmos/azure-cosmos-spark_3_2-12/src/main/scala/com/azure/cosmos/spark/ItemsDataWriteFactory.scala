@@ -3,7 +3,6 @@
 package com.azure.cosmos.spark
 
 
-import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
@@ -17,7 +16,7 @@ import java.util.concurrent.atomic.AtomicInteger
 // scalastyle:off multiple.string.literals
 private class ItemsDataWriteFactory(userConfig: Map[String, String],
                                     inputSchema: StructType,
-                                    cosmosClientStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot],
+                                    cosmosClientStateHandles: Broadcast[CosmosClientMetadataCachesSnapshots],
                                     diagnosticsConfig: DiagnosticsConfig)
   extends DataWriterFactory
     with StreamingDataWriterFactory {
@@ -71,28 +70,38 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
   private class CosmosWriter(inputSchema: StructType, partitionId: Int, taskId: Long, epochId: Option[Long]) extends DataWriter[InternalRow] {
     log.logInfo(s"Instantiated ${this.getClass.getSimpleName} - ($partitionId, $taskId, $epochId)")
     private val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
-    private val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig)
+    private val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig, inputSchema)
     private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(userConfig)
     private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
 
     private val cacheItemReleasedCount = new AtomicInteger(0)
     private val clientCacheItem = CosmosClientCache(
       CosmosClientConfiguration(userConfig, useEventualConsistency = true),
-      Some(cosmosClientStateHandle),
+      Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
       s"CosmosWriter($partitionId, $taskId, $epochId)"
     )
 
-    private val container = ThroughputControlHelper.getContainer(
-      userConfig, cosmosTargetContainerConfig, clientCacheItem.client)
+    private val throughputControlClientCacheItemOpt =
+      ThroughputControlHelper.getThroughputControlClientCacheItem(
+        userConfig,
+        clientCacheItem.context,
+        Some(cosmosClientStateHandles))
+
+    private val container =
+      ThroughputControlHelper.getContainer(
+        userConfig,
+        cosmosTargetContainerConfig,
+        clientCacheItem,
+        throughputControlClientCacheItemOpt)
     SparkUtils.safeOpenConnectionInitCaches(container, log)
 
     private val containerDefinition = container.read().block().getProperties
     private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition
 
     private val writer = if (cosmosWriteConfig.bulkEnabled) {
-      new BulkWriter(container, cosmosWriteConfig, diagnosticsConfig)
+      new BulkWriter(container, partitionKeyDefinition, cosmosWriteConfig, diagnosticsConfig)
     } else {
-      new PointWriter(container, cosmosWriteConfig, diagnosticsConfig, TaskContext.get())
+      new PointWriter(container, partitionKeyDefinition, cosmosWriteConfig, diagnosticsConfig, TaskContext.get())
     }
 
     override def write(internalRow: InternalRow): Unit = {
@@ -137,6 +146,9 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
       writer.flushAndClose()
       if (cacheItemReleasedCount.incrementAndGet() == 1) {
         clientCacheItem.close()
+        if (throughputControlClientCacheItemOpt.isDefined) {
+          throughputControlClientCacheItemOpt.get.close()
+        }
       }
     }
   }

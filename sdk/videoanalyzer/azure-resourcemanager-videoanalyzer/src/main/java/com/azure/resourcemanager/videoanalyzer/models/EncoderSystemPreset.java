@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.EncoderSystemPreset")
 @Fluent
 public final class EncoderSystemPreset extends EncoderPresetBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncoderSystemPreset.class);
-
     /*
      * Name of the built-in encoding preset.
      */
@@ -53,9 +50,11 @@ public final class EncoderSystemPreset extends EncoderPresetBase {
     public void validate() {
         super.validate();
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model EncoderSystemPreset"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EncoderSystemPreset.class);
 }

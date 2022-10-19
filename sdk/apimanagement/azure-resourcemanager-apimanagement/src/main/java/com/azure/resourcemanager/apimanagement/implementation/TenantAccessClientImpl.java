@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.TenantAccessClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.AccessInformationContractInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.AccessInformationSecretsContractInner;
@@ -47,8 +46,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in TenantAccessClient. */
 public final class TenantAccessClientImpl implements TenantAccessClient {
-    private final ClientLogger logger = new ClientLogger(TenantAccessClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final TenantAccessService service;
 
@@ -225,7 +222,8 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged AccessInformation list representation.
+     * @return paged AccessInformation list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessInformationContractInner>> listByServiceSinglePageAsync(
@@ -285,7 +283,8 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged AccessInformation list representation.
+     * @return paged AccessInformation list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessInformationContractInner>> listByServiceSinglePageAsync(
@@ -341,7 +340,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged AccessInformation list representation.
+     * @return paged AccessInformation list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessInformationContractInner> listByServiceAsync(
@@ -359,7 +358,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged AccessInformation list representation.
+     * @return paged AccessInformation list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessInformationContractInner> listByServiceAsync(String resourceGroupName, String serviceName) {
@@ -379,7 +378,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged AccessInformation list representation.
+     * @return paged AccessInformation list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AccessInformationContractInner> listByServiceAsync(
@@ -397,7 +396,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged AccessInformation list representation.
+     * @return paged AccessInformation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessInformationContractInner> listByService(String resourceGroupName, String serviceName) {
@@ -415,7 +414,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged AccessInformation list representation.
+     * @return paged AccessInformation list representation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AccessInformationContractInner> listByService(
@@ -432,7 +431,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantAccessGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -486,7 +485,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantAccessGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -536,7 +535,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, AccessIdName accessName) {
@@ -586,7 +585,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant access information details without secrets.
+     * @return tenant access information details without secrets on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantAccessGetResponse> getWithResponseAsync(
@@ -640,7 +639,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant access information details without secrets.
+     * @return tenant access information details without secrets on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantAccessGetResponse> getWithResponseAsync(
@@ -690,7 +689,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant access information details without secrets.
+     * @return tenant access information details without secrets on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessInformationContractInner> getAsync(
@@ -752,7 +751,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant Settings.
+     * @return tenant Settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantAccessCreateResponse> createWithResponseAsync(
@@ -823,7 +822,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant Settings.
+     * @return tenant Settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantAccessCreateResponse> createWithResponseAsync(
@@ -891,7 +890,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant Settings.
+     * @return tenant Settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessInformationContractInner> createAsync(
@@ -974,7 +973,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant Settings.
+     * @return tenant Settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantAccessUpdateResponse> updateWithResponseAsync(
@@ -1045,7 +1044,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant Settings.
+     * @return tenant Settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantAccessUpdateResponse> updateWithResponseAsync(
@@ -1113,7 +1112,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant Settings.
+     * @return tenant Settings on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessInformationContractInner> updateAsync(
@@ -1193,7 +1192,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> regeneratePrimaryKeyWithResponseAsync(
@@ -1247,7 +1246,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> regeneratePrimaryKeyWithResponseAsync(
@@ -1297,7 +1296,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> regeneratePrimaryKeyAsync(
@@ -1331,7 +1330,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> regeneratePrimaryKeyWithResponse(
@@ -1348,7 +1347,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> regenerateSecondaryKeyWithResponseAsync(
@@ -1402,7 +1401,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> regenerateSecondaryKeyWithResponseAsync(
@@ -1452,7 +1451,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> regenerateSecondaryKeyAsync(
@@ -1486,7 +1485,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> regenerateSecondaryKeyWithResponse(
@@ -1503,7 +1502,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant access information details.
+     * @return tenant access information details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantAccessListSecretsResponse> listSecretsWithResponseAsync(
@@ -1557,7 +1556,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant access information details.
+     * @return tenant access information details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<TenantAccessListSecretsResponse> listSecretsWithResponseAsync(
@@ -1607,7 +1606,7 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return tenant access information details.
+     * @return tenant access information details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AccessInformationSecretsContractInner> listSecretsAsync(
@@ -1665,7 +1664,8 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged AccessInformation list representation.
+     * @return paged AccessInformation list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessInformationContractInner>> listByServiceNextSinglePageAsync(String nextLink) {
@@ -1701,7 +1701,8 @@ public final class TenantAccessClientImpl implements TenantAccessClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged AccessInformation list representation.
+     * @return paged AccessInformation list representation along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AccessInformationContractInner>> listByServiceNextSinglePageAsync(

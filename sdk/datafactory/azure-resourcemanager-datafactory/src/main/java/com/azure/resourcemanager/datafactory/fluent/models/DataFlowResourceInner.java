@@ -8,14 +8,11 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DataFlow;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Data flow resource type. */
 @Fluent
 public final class DataFlowResourceInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataFlowResourceInner.class);
-
     /*
      * Data flow properties.
      */
@@ -39,6 +36,10 @@ public final class DataFlowResourceInner extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of DataFlowResourceInner class. */
+    public DataFlowResourceInner() {
+    }
 
     /**
      * Get the properties property: Data flow properties.
@@ -101,7 +102,7 @@ public final class DataFlowResourceInner extends SubResource {
      */
     public void validate() {
         if (properties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property properties in model DataFlowResourceInner"));
@@ -109,4 +110,6 @@ public final class DataFlowResourceInner extends SubResource {
             properties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataFlowResourceInner.class);
 }

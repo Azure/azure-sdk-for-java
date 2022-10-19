@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.HostingEnvironmentDeploymentInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of available locations (regions or App Service Environments) for deployment of App Service resources. */
 @Fluent
 public final class DeploymentLocationsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentLocationsInner.class);
-
     /*
      * Available regions.
      */
@@ -27,7 +23,7 @@ public final class DeploymentLocationsInner {
      * environments.
      */
     @JsonProperty(value = "hostingEnvironments")
-    private List<AppServiceEnvironment> hostingEnvironments;
+    private List<AppServiceEnvironmentInner> hostingEnvironments;
 
     /*
      * Available App Service Environments with basic information.
@@ -61,7 +57,7 @@ public final class DeploymentLocationsInner {
      *
      * @return the hostingEnvironments value.
      */
-    public List<AppServiceEnvironment> hostingEnvironments() {
+    public List<AppServiceEnvironmentInner> hostingEnvironments() {
         return this.hostingEnvironments;
     }
 
@@ -72,7 +68,7 @@ public final class DeploymentLocationsInner {
      * @param hostingEnvironments the hostingEnvironments value to set.
      * @return the DeploymentLocationsInner object itself.
      */
-    public DeploymentLocationsInner withHostingEnvironments(List<AppServiceEnvironment> hostingEnvironments) {
+    public DeploymentLocationsInner withHostingEnvironments(List<AppServiceEnvironmentInner> hostingEnvironments) {
         this.hostingEnvironments = hostingEnvironments;
         return this;
     }

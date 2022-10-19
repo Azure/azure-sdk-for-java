@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDataExplorerLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("AzureDataExplorer")
 @Fluent
 public final class AzureDataExplorerLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataExplorerLinkedService.class);
-
     /*
      * Azure Data Explorer (Kusto) linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private AzureDataExplorerLinkedServiceTypeProperties innerTypeProperties =
         new AzureDataExplorerLinkedServiceTypeProperties();
+
+    /** Creates an instance of AzureDataExplorerLinkedService class. */
+    public AzureDataExplorerLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Azure Data Explorer (Kusto) linked service properties.
@@ -220,7 +221,7 @@ public final class AzureDataExplorerLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzureDataExplorerLinkedService"));
@@ -228,4 +229,6 @@ public final class AzureDataExplorerLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDataExplorerLinkedService.class);
 }

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** All security rules associated with the network interface. */
 @Fluent
 public final class SecurityRuleAssociations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRuleAssociations.class);
-
     /*
      * Network interface and it's custom security rules.
      */
@@ -39,6 +35,10 @@ public final class SecurityRuleAssociations {
      */
     @JsonProperty(value = "effectiveSecurityRules")
     private List<EffectiveNetworkSecurityRule> effectiveSecurityRules;
+
+    /** Creates an instance of SecurityRuleAssociations class. */
+    public SecurityRuleAssociations() {
+    }
 
     /**
      * Get the networkInterfaceAssociation property: Network interface and it's custom security rules.

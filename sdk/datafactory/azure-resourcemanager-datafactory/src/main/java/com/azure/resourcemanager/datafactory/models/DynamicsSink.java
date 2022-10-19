@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DynamicsSink")
 @Fluent
 public final class DynamicsSink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DynamicsSink.class);
-
     /*
      * The write behavior for the operation.
      */
@@ -25,19 +22,22 @@ public final class DynamicsSink extends CopySink {
     private DynamicsSinkWriteBehavior writeBehavior;
 
     /*
-     * The flag indicating whether ignore null values from input dataset
-     * (except key fields) during write operation. Default is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * The flag indicating whether ignore null values from input dataset (except key fields) during write operation.
+     * Default is false. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
     /*
-     * The logical name of the alternate key which will be used when upserting
-     * records. Type: string (or Expression with resultType string).
+     * The logical name of the alternate key which will be used when upserting records. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
+
+    /** Creates an instance of DynamicsSink class. */
+    public DynamicsSink() {
+    }
 
     /**
      * Get the writeBehavior property: The write behavior for the operation.
@@ -154,9 +154,11 @@ public final class DynamicsSink extends CopySink {
     public void validate() {
         super.validate();
         if (writeBehavior() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property writeBehavior in model DynamicsSink"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DynamicsSink.class);
 }

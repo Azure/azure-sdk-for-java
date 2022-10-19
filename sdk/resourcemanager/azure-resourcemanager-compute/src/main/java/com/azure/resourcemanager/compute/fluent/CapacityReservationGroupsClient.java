@@ -333,7 +333,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(
@@ -347,7 +348,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(String resourceGroupName);
@@ -360,7 +362,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CapacityReservationGroupInner> listByResourceGroup(String resourceGroupName);
@@ -377,7 +380,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CapacityReservationGroupInner> listByResourceGroup(
@@ -393,7 +397,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CapacityReservationGroupInner> listAsync(ExpandTypesForGetCapacityReservationGroups expand);
@@ -404,7 +409,8 @@ public interface CapacityReservationGroupsClient
      *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<CapacityReservationGroupInner> listAsync();
@@ -415,7 +421,8 @@ public interface CapacityReservationGroupsClient
      *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CapacityReservationGroupInner> list();
@@ -431,7 +438,8 @@ public interface CapacityReservationGroupsClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<CapacityReservationGroupInner> list(

@@ -6,19 +6,15 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.LoadDistribution;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A load balancing rule for a load balancer. */
 @Fluent
 public final class LoadBalancingRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancingRuleInner.class);
-
     /*
      * Properties of load balancer load balancing rule.
      */
@@ -26,9 +22,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     private LoadBalancingRulePropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of load balancing
-     * rules used by the load balancer. This name can be used to access the
-     * resource.
+     * The name of the resource that is unique within the set of load balancing rules used by the load balancer. This
+     * name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -44,6 +39,10 @@ public final class LoadBalancingRuleInner extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of LoadBalancingRuleInner class. */
+    public LoadBalancingRuleInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of load balancer load balancing rule.

@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerBackendAddressPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Load balancer backend addresses. */
 @Fluent
 public final class LoadBalancerBackendAddress {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerBackendAddress.class);
-
     /*
      * Properties of load balancer backend address pool.
      */
@@ -28,6 +24,10 @@ public final class LoadBalancerBackendAddress {
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /** Creates an instance of LoadBalancerBackendAddress class. */
+    public LoadBalancerBackendAddress() {
+    }
 
     /**
      * Get the innerProperties property: Properties of load balancer backend address pool.
@@ -169,6 +169,33 @@ public final class LoadBalancerBackendAddress {
      */
     public List<NatRulePortMapping> inboundNatRulesPortMapping() {
         return this.innerProperties() == null ? null : this.innerProperties().inboundNatRulesPortMapping();
+    }
+
+    /**
+     * Get the adminState property: A list of administrative states which once set can override health probe so that
+     * Load Balancer will always forward new connections to backend, or deny new connections and reset existing
+     * connections.
+     *
+     * @return the adminState value.
+     */
+    public LoadBalancerBackendAddressAdminState adminState() {
+        return this.innerProperties() == null ? null : this.innerProperties().adminState();
+    }
+
+    /**
+     * Set the adminState property: A list of administrative states which once set can override health probe so that
+     * Load Balancer will always forward new connections to backend, or deny new connections and reset existing
+     * connections.
+     *
+     * @param adminState the adminState value to set.
+     * @return the LoadBalancerBackendAddress object itself.
+     */
+    public LoadBalancerBackendAddress withAdminState(LoadBalancerBackendAddressAdminState adminState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new LoadBalancerBackendAddressPropertiesFormat();
+        }
+        this.innerProperties().withAdminState(adminState);
+        return this;
     }
 
     /**

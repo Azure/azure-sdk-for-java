@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for QueueErrorCode. */
+/** Error codes returned by the service. */
 public final class QueueErrorCode extends ExpandableStringEnum<QueueErrorCode> {
     /** Static value AccountAlreadyExists for QueueErrorCode. */
     public static final QueueErrorCode ACCOUNT_ALREADY_EXISTS = fromString("AccountAlreadyExists");
@@ -195,7 +195,11 @@ public final class QueueErrorCode extends ExpandableStringEnum<QueueErrorCode> {
         return fromString(name, QueueErrorCode.class);
     }
 
-    /** @return known QueueErrorCode values. */
+    /**
+     * Gets known QueueErrorCode values.
+     *
+     * @return known QueueErrorCode values.
+     */
     public static Collection<QueueErrorCode> values() {
         return values(QueueErrorCode.class);
     }

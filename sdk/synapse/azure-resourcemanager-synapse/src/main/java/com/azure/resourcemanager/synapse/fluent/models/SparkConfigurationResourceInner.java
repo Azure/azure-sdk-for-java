@@ -7,7 +7,6 @@ package com.azure.resourcemanager.synapse.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.models.EntityResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** SparkConfiguration response details. */
 @Fluent
 public final class SparkConfigurationResourceInner extends EntityResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SparkConfigurationResourceInner.class);
-
     /*
      * Information about a SparkConfiguration created at the workspace level.
      * SparkConfiguration properties.
@@ -182,7 +179,7 @@ public final class SparkConfigurationResourceInner extends EntityResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model SparkConfigurationResourceInner"));
@@ -190,4 +187,6 @@ public final class SparkConfigurationResourceInner extends EntityResource {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SparkConfigurationResourceInner.class);
 }

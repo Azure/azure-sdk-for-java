@@ -30,7 +30,11 @@ public final class RestoreRequestType extends ExpandableStringEnum<RestoreReques
         return fromString(name, RestoreRequestType.class);
     }
 
-    /** @return known RestoreRequestType values. */
+    /**
+     * Gets known RestoreRequestType values.
+     *
+     * @return known RestoreRequestType values.
+     */
     public static Collection<RestoreRequestType> values() {
         return values(RestoreRequestType.class);
     }

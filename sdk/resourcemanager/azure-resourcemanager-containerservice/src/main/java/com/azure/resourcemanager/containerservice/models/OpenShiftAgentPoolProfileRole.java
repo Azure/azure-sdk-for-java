@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OpenShiftAgentPoolProfileRole. */
+/** OpenShiftAgentPoolProfileRole represents the role of the AgentPoolProfile. */
 public final class OpenShiftAgentPoolProfileRole extends ExpandableStringEnum<OpenShiftAgentPoolProfileRole> {
     /** Static value compute for OpenShiftAgentPoolProfileRole. */
     public static final OpenShiftAgentPoolProfileRole COMPUTE = fromString("compute");
@@ -27,7 +27,11 @@ public final class OpenShiftAgentPoolProfileRole extends ExpandableStringEnum<Op
         return fromString(name, OpenShiftAgentPoolProfileRole.class);
     }
 
-    /** @return known OpenShiftAgentPoolProfileRole values. */
+    /**
+     * Gets known OpenShiftAgentPoolProfileRole values.
+     *
+     * @return known OpenShiftAgentPoolProfileRole values.
+     */
     public static Collection<OpenShiftAgentPoolProfileRole> values() {
         return values(OpenShiftAgentPoolProfileRole.class);
     }

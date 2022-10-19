@@ -6,16 +6,12 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.RecipientsContractProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Notification details. */
 @Fluent
 public final class NotificationContractInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NotificationContractInner.class);
-
     /*
      * Notification entity contract properties.
      */

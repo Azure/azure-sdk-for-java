@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,13 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("BinaryReadSettings")
 @Fluent
 public final class BinaryReadSettings extends FormatReadSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BinaryReadSettings.class);
-
     /*
      * Compression settings.
      */
     @JsonProperty(value = "compressionProperties")
     private CompressionReadSettings compressionProperties;
+
+    /** Creates an instance of BinaryReadSettings class. */
+    public BinaryReadSettings() {
+    }
 
     /**
      * Get the compressionProperties property: Compression settings.

@@ -9,7 +9,9 @@ import com.azure.core.util.Context;
 /** Resource collection API of IotHubs. */
 public interface IotHubs {
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.
@@ -24,7 +26,9 @@ public interface IotHubs {
     void manualFailover(String iotHubName, String resourceGroupName, FailoverInput failoverInput);
 
     /**
-     * Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
+     * Manually initiate a failover for the IoT Hub to its secondary region
+     *
+     * <p>Manually initiate a failover for the IoT Hub to its secondary region. To learn more, see
      * https://aka.ms/manualfailover.
      *
      * @param iotHubName Name of the IoT hub to failover.

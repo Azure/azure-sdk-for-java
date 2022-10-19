@@ -11,10 +11,9 @@ import com.azure.resourcemanager.imagebuilder.fluent.OperationsClient;
 import com.azure.resourcemanager.imagebuilder.fluent.models.OperationInner;
 import com.azure.resourcemanager.imagebuilder.models.Operation;
 import com.azure.resourcemanager.imagebuilder.models.Operations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(OperationsImpl.class);
 
     private final OperationsClient innerClient;
 

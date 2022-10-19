@@ -10,7 +10,6 @@ import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.QueryMetrics;
-import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.query.aggregation.AggregateOperator;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -26,31 +25,31 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.function.BiFunction;
 
-public final class GroupByDocumentQueryExecutionContext<T extends Resource> implements
-    IDocumentQueryExecutionComponent<T> {
+public final class GroupByDocumentQueryExecutionContext implements
+    IDocumentQueryExecutionComponent<Document> {
 
     public static final String CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY = "Continuation token is not supported " +
                                                                                     "for queries with GROUP BY." +
                                                                                     "Do not use continuation token" +
                                                                                     " or remove the GROUP BY " +
                                                                                     "from the query.";
-    private final IDocumentQueryExecutionComponent<T> component;
+    private final IDocumentQueryExecutionComponent<Document> component;
     private final GroupingTable groupingTable;
 
     GroupByDocumentQueryExecutionContext(
-        IDocumentQueryExecutionComponent<T> component,
+        IDocumentQueryExecutionComponent<Document> component,
         GroupingTable groupingTable) {
         this.component = component;
         this.groupingTable = groupingTable;
     }
 
-    public static <T extends Resource> Flux<IDocumentQueryExecutionComponent<T>> createAsync(
-        BiFunction<String, PipelinedDocumentQueryParams<T>, Flux<IDocumentQueryExecutionComponent<T>>> createSourceComponentFunction,
+    public static Flux<IDocumentQueryExecutionComponent<Document>> createAsync(
+        BiFunction<String, PipelinedDocumentQueryParams<Document>, Flux<IDocumentQueryExecutionComponent<Document>>> createSourceComponentFunction,
         String continuationToken,
         Map<String, AggregateOperator> groupByAliasToAggregateType,
         List<String> orderedAliases,
         boolean hasSelectValue,
-        PipelinedDocumentQueryParams<T> documentQueryParams) {
+        PipelinedDocumentQueryParams<Document> documentQueryParams) {
         if (continuationToken != null) {
             CosmosException dce = new BadRequestException(CONTINUATION_TOKEN_NOT_SUPPORTED_WITH_GROUP_BY);
             return Flux.error(dce);
@@ -64,26 +63,23 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
         GroupingTable table = new GroupingTable(groupByAliasToAggregateType, orderedAliases, hasSelectValue);
         // Have to pass non-null continuation token once supported
         return createSourceComponentFunction.apply(null, documentQueryParams)
-                   .map(component -> new GroupByDocumentQueryExecutionContext<>(component,
-                                                                                table));
+                   .map(component -> new GroupByDocumentQueryExecutionContext(component, table));
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public Flux<FeedResponse<T>> drainAsync(int maxPageSize) {
+    public Flux<FeedResponse<Document>> drainAsync(int maxPageSize) {
         return this.component.drainAsync(maxPageSize)
             .collectList()
             .map(superList -> {
                 double requestCharge = 0;
-                HashMap<String, String> headers = new HashMap<>();
                 List<Document> documentList = new ArrayList<>();
                 /* Do groupBy stuff here */
                 // Stage 1:
                 // Drain the groupings fully from all continuation and all partitions
                 List<ClientSideRequestStatistics> diagnosticsList = new ArrayList<>();
                 ConcurrentMap<String, QueryMetrics> queryMetrics = new ConcurrentHashMap<>();
-                for (FeedResponse<T> page : superList) {
-                    List<Document> results = (List<Document>) page.getResults();
+                for (FeedResponse<Document> page : superList) {
+                    List<Document> results = page.getResults();
                     documentList.addAll(results);
                     requestCharge += page.getRequestCharge();
                     QueryMetrics.mergeQueryMetricsMap(queryMetrics, BridgeInternal.queryMetricsFromFeedResponse(page));
@@ -99,7 +95,7 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
                     groupByResults = this.groupingTable.drain(maxPageSize);
                 }
 
-                return createFeedResponseFromGroupingTable(maxPageSize, requestCharge, queryMetrics, groupByResults,
+                return createFeedResponseFromGroupingTable(requestCharge, queryMetrics, groupByResults,
                                                            diagnosticsList);
             }).expand(tFeedResponse -> {
                 // For groupBy query, we have already drained everything for the first page request
@@ -113,31 +109,30 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
                     return Mono.empty();
                 }
 
-                FeedResponse<T> response = createFeedResponseFromGroupingTable(maxPageSize, 0,
+                FeedResponse<Document> response = createFeedResponseFromGroupingTable(0,
                                                                                new ConcurrentHashMap<>(),
                                                                                groupByResults, new ArrayList<>());
                 return Mono.just(response);
             });
     }
 
-    @SuppressWarnings("unchecked") // safe to upcast
-    private FeedResponse<T> createFeedResponseFromGroupingTable(
-        int pageSize,
+    private FeedResponse<Document> createFeedResponseFromGroupingTable(
         double requestCharge,
         ConcurrentMap<String, QueryMetrics> queryMetrics,
         List<Document> groupByResults,
         List<ClientSideRequestStatistics> diagnosticsList) {
-        if (this.groupingTable != null) {
-            HashMap<String, String> headers = new HashMap<>();
-            headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
-            FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers,
-                                                                                           queryMetrics, null, false,
-                                                                                           false, null);
-            BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
-            return (FeedResponse<T>) frp;
+
+        if (this.groupingTable == null) {
+            throw new IllegalStateException("No grouping table defined.");
         }
 
-        return null;
+        HashMap<String, String> headers = new HashMap<>();
+        headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double.toString(requestCharge));
+        FeedResponse<Document> frp = BridgeInternal.createFeedResponseWithQueryMetrics(groupByResults, headers,
+            queryMetrics, null, false,
+            false, null);
+        BridgeInternal.addClientSideDiagnosticsToFeed(frp.getCosmosDiagnostics(), diagnosticsList);
+        return frp;
     }
 
     private void aggregateGroupings(List<Document> superList) {
@@ -146,10 +141,6 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
                 new RewrittenGroupByProjection(ModelBridgeInternal.getPropertyBagFromJsonSerializable(d));
             this.groupingTable.addPayLoad(rewrittenGroupByProjection);
         }
-    }
-
-    IDocumentQueryExecutionComponent<T> getComponent() {
-        return this.component;
     }
 
     /**
@@ -161,11 +152,9 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
      * <p>
      * This class just lets us easily access the "groupByItems" and "payload" property.
      */
-    public class RewrittenGroupByProjection extends JsonSerializable {
+    static final class RewrittenGroupByProjection extends JsonSerializable {
         private static final String GROUP_BY_ITEMS_PROPERTY_NAME = "groupByItems";
         private static final String PAYLOAD_PROPERTY_NAME = "payload";
-
-        private List<Document> groupByItems;
 
         public RewrittenGroupByProjection(ObjectNode objectNode) {
             super(objectNode);
@@ -180,7 +169,7 @@ public final class GroupByDocumentQueryExecutionContext<T extends Resource> impl
          * @return Value for property 'groupByItems'.
          */
         public List<Document> getGroupByItems() {
-            groupByItems = this.getList(GROUP_BY_ITEMS_PROPERTY_NAME, Document.class);
+            List<Document> groupByItems = this.getList(GROUP_BY_ITEMS_PROPERTY_NAME, Document.class);
             if (groupByItems == null) {
                 throw new IllegalStateException("Underlying object does not have an 'groupByItems' field.");
             }

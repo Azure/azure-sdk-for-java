@@ -8,7 +8,13 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DiskCreateOptionTypes. */
+/**
+ * Specifies how the virtual machine should be created.&lt;br&gt;&lt;br&gt; Possible values are:&lt;br&gt;&lt;br&gt;
+ * **Attach** \u2013 This value is used when you are using a specialized disk to create the virtual
+ * machine.&lt;br&gt;&lt;br&gt; **FromImage** \u2013 This value is used when you are using an image to create the
+ * virtual machine. If you are using a platform image, you also use the imageReference element described above. If you
+ * are using a marketplace image, you also use the plan element previously described.
+ */
 public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreateOptionTypes> {
     /** Static value FromImage for DiskCreateOptionTypes. */
     public static final DiskCreateOptionTypes FROM_IMAGE = fromString("FromImage");
@@ -30,7 +36,11 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
         return fromString(name, DiskCreateOptionTypes.class);
     }
 
-    /** @return known DiskCreateOptionTypes values. */
+    /**
+     * Gets known DiskCreateOptionTypes values.
+     *
+     * @return known DiskCreateOptionTypes values.
+     */
     public static Collection<DiskCreateOptionTypes> values() {
         return values(DiskCreateOptionTypes.class);
     }

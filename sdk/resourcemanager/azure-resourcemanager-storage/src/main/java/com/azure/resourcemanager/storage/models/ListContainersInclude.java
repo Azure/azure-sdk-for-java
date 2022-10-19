@@ -24,7 +24,11 @@ public final class ListContainersInclude extends ExpandableStringEnum<ListContai
         return fromString(name, ListContainersInclude.class);
     }
 
-    /** @return known ListContainersInclude values. */
+    /**
+     * Gets known ListContainersInclude values.
+     *
+     * @return known ListContainersInclude values.
+     */
     public static Collection<ListContainersInclude> values() {
         return values(ListContainersInclude.class);
     }

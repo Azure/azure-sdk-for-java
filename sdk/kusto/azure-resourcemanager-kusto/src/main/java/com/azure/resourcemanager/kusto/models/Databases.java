@@ -34,7 +34,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result returned from a check name availability request.
+     * @return the result returned from a check name availability request along with {@link Response}.
      */
     Response<CheckNameResult> checkNameAvailabilityWithResponse(
         String resourceGroupName, String clusterName, CheckNameRequest resourceName, Context context);
@@ -47,7 +47,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto databases operation response.
+     * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName);
 
@@ -60,7 +60,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto databases operation response.
+     * @return the list Kusto databases operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Database> listByCluster(String resourceGroupName, String clusterName, Context context);
 
@@ -87,10 +87,31 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Kusto database.
+     * @return class representing a Kusto database along with {@link Response}.
      */
     Response<Database> getWithResponse(
         String resourceGroupName, String clusterName, String databaseName, Context context);
+
+    /**
+     * Creates or updates a database.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
+     *     allows the caller to exclude the caller from Admins list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Kusto database.
+     */
+    Database createOrUpdate(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole);
 
     /**
      * Creates or updates a database.
@@ -114,6 +135,8 @@ public interface Databases {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the CreateOrUpdate operation.
+     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
+     *     allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -121,7 +144,33 @@ public interface Databases {
      * @return class representing a Kusto database.
      */
     Database createOrUpdate(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context);
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole,
+        Context context);
+
+    /**
+     * Updates a database.
+     *
+     * @param resourceGroupName The name of the resource group containing the Kusto cluster.
+     * @param clusterName The name of the Kusto cluster.
+     * @param databaseName The name of the database in the Kusto cluster.
+     * @param parameters The database parameters supplied to the Update operation.
+     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
+     *     allows the caller to exclude the caller from Admins list.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Kusto database.
+     */
+    Database update(
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole);
 
     /**
      * Updates a database.
@@ -144,6 +193,8 @@ public interface Databases {
      * @param clusterName The name of the Kusto cluster.
      * @param databaseName The name of the database in the Kusto cluster.
      * @param parameters The database parameters supplied to the Update operation.
+     * @param callerRole By default, any user who run operation on a database become an Admin on it. This property
+     *     allows the caller to exclude the caller from Admins list.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -151,7 +202,12 @@ public interface Databases {
      * @return class representing a Kusto database.
      */
     Database update(
-        String resourceGroupName, String clusterName, String databaseName, DatabaseInner parameters, Context context);
+        String resourceGroupName,
+        String clusterName,
+        String databaseName,
+        DatabaseInner parameters,
+        CallerRole callerRole,
+        Context context);
 
     /**
      * Deletes the database with the given name.
@@ -187,7 +243,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatabasePrincipal> listPrincipals(String resourceGroupName, String clusterName, String databaseName);
 
@@ -201,7 +257,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
+     * @return the list Kusto database principals operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DatabasePrincipal> listPrincipals(
         String resourceGroupName, String clusterName, String databaseName, Context context);
@@ -235,7 +291,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
+     * @return the list Kusto database principals operation response along with {@link Response}.
      */
     Response<DatabasePrincipalListResult> addPrincipalsWithResponse(
         String resourceGroupName,
@@ -273,7 +329,7 @@ public interface Databases {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Kusto database principals operation response.
+     * @return the list Kusto database principals operation response along with {@link Response}.
      */
     Response<DatabasePrincipalListResult> removePrincipalsWithResponse(
         String resourceGroupName,

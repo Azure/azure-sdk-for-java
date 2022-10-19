@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentAnalyticsItemProperties;
 import com.azure.resourcemanager.applicationinsights.models.ItemScope;
 import com.azure.resourcemanager.applicationinsights.models.ItemType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties that define an Analytics item that is associated to an Application Insights component. */
 @Fluent
 public final class ApplicationInsightsComponentAnalyticsItemInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationInsightsComponentAnalyticsItemInner.class);
-
     /*
      * Internally assigned unique id of the item definition.
      */

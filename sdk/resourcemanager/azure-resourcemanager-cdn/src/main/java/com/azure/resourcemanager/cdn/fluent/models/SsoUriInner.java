@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The URI required to login to the supplemental portal from the Azure portal. */
 @Immutable
 public final class SsoUriInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SsoUriInner.class);
-
     /*
      * The URI used to login to the supplemental portal.
      */

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ServiceAssociationLink;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ServiceAssociationLinks_List operation. */
 @Fluent
 public final class ServiceAssociationLinksListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceAssociationLinksListResultInner.class);
-
     /*
      * The service association links in a subnet.
      */
@@ -27,6 +23,10 @@ public final class ServiceAssociationLinksListResultInner {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ServiceAssociationLinksListResultInner class. */
+    public ServiceAssociationLinksListResultInner() {
+    }
 
     /**
      * Get the value property: The service association links in a subnet.

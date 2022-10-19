@@ -1,5 +1,75 @@
 # Release History
 
+## 1.2.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.1.7 (2022-10-17)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.33.0`.
+
+## 1.1.6 (2022-09-08)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.32.0`.
+
+## 1.1.5 (2022-08-16)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.31.0`.
+
+## 1.1.4 (2022-07-07)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.30.0`.
+
+## 1.1.3 (2022-06-10)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.29.1`.
+
+## 1.1.2 (2022-05-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` dependency to `1.28.0`.
+
+## 1.1.1 (2022-04-06)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+
+## 1.1.0 (2022-03-11)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `AttestationClientBuilder` and `AttestationAdministrationClientBuilder`.
+- Added `retryOptions()` to `AttestationClientBuilder` and `AttestationAdministrationClientBuilder`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.26.0`.
+
 ## 1.0.0 (2022-02-08)
 ### Breaking Changes
  * Removed `buildSigningCertificatesClient` and `buildSigningCertificatesAsyncClient` replaced

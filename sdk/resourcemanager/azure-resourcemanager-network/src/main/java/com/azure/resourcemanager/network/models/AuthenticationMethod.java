@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthenticationMethod. */
+/** VPN client authentication method. */
 public final class AuthenticationMethod extends ExpandableStringEnum<AuthenticationMethod> {
     /** Static value EAPTLS for AuthenticationMethod. */
     public static final AuthenticationMethod EAPTLS = fromString("EAPTLS");
@@ -27,7 +27,11 @@ public final class AuthenticationMethod extends ExpandableStringEnum<Authenticat
         return fromString(name, AuthenticationMethod.class);
     }
 
-    /** @return known AuthenticationMethod values. */
+    /**
+     * Gets known AuthenticationMethod values.
+     *
+     * @return known AuthenticationMethod values.
+     */
     public static Collection<AuthenticationMethod> values() {
         return values(AuthenticationMethod.class);
     }

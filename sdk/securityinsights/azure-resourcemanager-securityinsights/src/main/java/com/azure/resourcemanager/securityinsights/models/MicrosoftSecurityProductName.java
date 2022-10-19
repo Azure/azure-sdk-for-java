@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MicrosoftSecurityProductName. */
+/** The alerts' productName on which the cases will be generated. */
 public final class MicrosoftSecurityProductName extends ExpandableStringEnum<MicrosoftSecurityProductName> {
     /** Static value Microsoft Cloud App Security for MicrosoftSecurityProductName. */
     public static final MicrosoftSecurityProductName MICROSOFT_CLOUD_APP_SECURITY =
@@ -48,7 +48,11 @@ public final class MicrosoftSecurityProductName extends ExpandableStringEnum<Mic
         return fromString(name, MicrosoftSecurityProductName.class);
     }
 
-    /** @return known MicrosoftSecurityProductName values. */
+    /**
+     * Gets known MicrosoftSecurityProductName values.
+     *
+     * @return known MicrosoftSecurityProductName values.
+     */
     public static Collection<MicrosoftSecurityProductName> values() {
         return values(MicrosoftSecurityProductName.class);
     }

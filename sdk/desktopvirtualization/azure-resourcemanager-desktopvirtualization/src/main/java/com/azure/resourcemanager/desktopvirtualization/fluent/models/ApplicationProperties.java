@@ -9,14 +9,11 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.desktopvirtualization.models.CommandLineSetting;
 import com.azure.resourcemanager.desktopvirtualization.models.RemoteApplicationType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Schema for Application properties. */
 @Fluent
 public final class ApplicationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationProperties.class);
-
     /*
      * ObjectId of Application. (internal use)
      */
@@ -362,10 +359,12 @@ public final class ApplicationProperties {
      */
     public void validate() {
         if (commandLineSetting() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property commandLineSetting in model ApplicationProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApplicationProperties.class);
 }

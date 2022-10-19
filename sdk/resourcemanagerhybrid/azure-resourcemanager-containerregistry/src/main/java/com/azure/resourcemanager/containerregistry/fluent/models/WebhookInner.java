@@ -5,49 +5,45 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.ProvisioningState;
 import com.azure.resourcemanager.containerregistry.models.WebhookAction;
 import com.azure.resourcemanager.containerregistry.models.WebhookStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** An object that represents a webhook for a container registry. */
-@JsonFlatten
 @Fluent
-public class WebhookInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebhookInner.class);
-
+public final class WebhookInner extends Resource {
     /*
-     * The status of the webhook at the time the operation was called.
+     * The properties of the webhook.
      */
-    @JsonProperty(value = "properties.status")
-    private WebhookStatus status;
+    @JsonProperty(value = "properties")
+    private WebhookProperties innerProperties;
 
-    /*
-     * The scope of repositories where the event can be triggered. For example,
-     * 'foo:*' means events for all tags under repository 'foo'. 'foo:bar'
-     * means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'.
-     * Empty means all events.
+    /**
+     * Get the innerProperties property: The properties of the webhook.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.scope")
-    private String scope;
+    private WebhookProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The list of actions that trigger the webhook to post notifications.
-     */
-    @JsonProperty(value = "properties.actions")
-    private List<WebhookAction> actions;
+    /** {@inheritDoc} */
+    @Override
+    public WebhookInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
 
-    /*
-     * The provisioning state of the webhook at the time the operation was
-     * called.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    /** {@inheritDoc} */
+    @Override
+    public WebhookInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the status property: The status of the webhook at the time the operation was called.
@@ -55,7 +51,7 @@ public class WebhookInner extends Resource {
      * @return the status value.
      */
     public WebhookStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -65,7 +61,10 @@ public class WebhookInner extends Resource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withStatus(WebhookStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -77,7 +76,7 @@ public class WebhookInner extends Resource {
      * @return the scope value.
      */
     public String scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
     }
 
     /**
@@ -89,7 +88,10 @@ public class WebhookInner extends Resource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withScope(String scope) {
-        this.scope = scope;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withScope(scope);
         return this;
     }
 
@@ -99,7 +101,7 @@ public class WebhookInner extends Resource {
      * @return the actions value.
      */
     public List<WebhookAction> actions() {
-        return this.actions;
+        return this.innerProperties() == null ? null : this.innerProperties().actions();
     }
 
     /**
@@ -109,7 +111,10 @@ public class WebhookInner extends Resource {
      * @return the WebhookInner object itself.
      */
     public WebhookInner withActions(List<WebhookAction> actions) {
-        this.actions = actions;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WebhookProperties();
+        }
+        this.innerProperties().withActions(actions);
         return this;
     }
 
@@ -119,7 +124,7 @@ public class WebhookInner extends Resource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -128,5 +133,8 @@ public class WebhookInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

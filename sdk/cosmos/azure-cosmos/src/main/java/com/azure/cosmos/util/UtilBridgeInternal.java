@@ -31,4 +31,9 @@ public final class UtilBridgeInternal {
     public static <T> CosmosPagedIterable<T> createCosmosPagedIterable(CosmosPagedFlux<T> cosmosPagedFlux) {
         return new CosmosPagedIterable<>(cosmosPagedFlux);
     }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void  initializeAllAccessors() {
+        CosmosPagedFlux.initialize();
+    }
 }

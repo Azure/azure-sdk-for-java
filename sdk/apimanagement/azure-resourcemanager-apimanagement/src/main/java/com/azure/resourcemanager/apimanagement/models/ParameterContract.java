@@ -6,15 +6,14 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
+import java.util.Map;
 
 /** Operation parameters details. */
 @Fluent
 public final class ParameterContract {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParameterContract.class);
-
     /*
      * Parameter name.
      */
@@ -50,6 +49,25 @@ public final class ParameterContract {
      */
     @JsonProperty(value = "values")
     private List<String> values;
+
+    /*
+     * Schema identifier.
+     */
+    @JsonProperty(value = "schemaId")
+    private String schemaId;
+
+    /*
+     * Type name defined by the schema.
+     */
+    @JsonProperty(value = "typeName")
+    private String typeName;
+
+    /*
+     * Exampled defined for the parameter.
+     */
+    @JsonProperty(value = "examples")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
+    private Map<String, ParameterExampleContract> examples;
 
     /**
      * Get the name property: Parameter name.
@@ -172,20 +190,92 @@ public final class ParameterContract {
     }
 
     /**
+     * Get the schemaId property: Schema identifier.
+     *
+     * @return the schemaId value.
+     */
+    public String schemaId() {
+        return this.schemaId;
+    }
+
+    /**
+     * Set the schemaId property: Schema identifier.
+     *
+     * @param schemaId the schemaId value to set.
+     * @return the ParameterContract object itself.
+     */
+    public ParameterContract withSchemaId(String schemaId) {
+        this.schemaId = schemaId;
+        return this;
+    }
+
+    /**
+     * Get the typeName property: Type name defined by the schema.
+     *
+     * @return the typeName value.
+     */
+    public String typeName() {
+        return this.typeName;
+    }
+
+    /**
+     * Set the typeName property: Type name defined by the schema.
+     *
+     * @param typeName the typeName value to set.
+     * @return the ParameterContract object itself.
+     */
+    public ParameterContract withTypeName(String typeName) {
+        this.typeName = typeName;
+        return this;
+    }
+
+    /**
+     * Get the examples property: Exampled defined for the parameter.
+     *
+     * @return the examples value.
+     */
+    public Map<String, ParameterExampleContract> examples() {
+        return this.examples;
+    }
+
+    /**
+     * Set the examples property: Exampled defined for the parameter.
+     *
+     * @param examples the examples value to set.
+     * @return the ParameterContract object itself.
+     */
+    public ParameterContract withExamples(Map<String, ParameterExampleContract> examples) {
+        this.examples = examples;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model ParameterContract"));
         }
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property type in model ParameterContract"));
         }
+        if (examples() != null) {
+            examples()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ParameterContract.class);
 }

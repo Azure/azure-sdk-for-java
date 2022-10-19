@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains the IpTag associated with the object. */
 @Fluent
 public final class IpTag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpTag.class);
-
     /*
      * The IP tag type. Example: FirstPartyUsage.
      */
@@ -25,6 +21,10 @@ public final class IpTag {
      */
     @JsonProperty(value = "tag")
     private String tag;
+
+    /** Creates an instance of IpTag class. */
+    public IpTag() {
+    }
 
     /**
      * Get the ipTagType property: The IP tag type. Example: FirstPartyUsage.

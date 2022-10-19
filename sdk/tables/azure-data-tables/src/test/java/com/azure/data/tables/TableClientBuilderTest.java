@@ -7,7 +7,10 @@ import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
+import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.ClientOptions;
@@ -19,6 +22,7 @@ import reactor.test.StepVerifier;
 
 import java.net.MalformedURLException;
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -105,6 +109,7 @@ public class TableClientBuilderTest {
             .connectionString(connectionString)
             .tableName(tableName)
             .httpClient(new TestUtils.FreshDateTestClient())
+            .retryOptions(new RetryOptions(new FixedDelayOptions(3, Duration.ofSeconds(1))))
             .buildAsyncClient();
 
         StepVerifier.create(tableAsyncClient.getHttpPipeline().send(
@@ -258,6 +263,17 @@ public class TableClientBuilderTest {
             .credential(new AzureSasCredential("sasToken"))
             .tableName("myTable")
             .endpoint("https://myAccount.table.core.windows.net")
+            .buildAsyncClient());
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicyPresent() {
+        assertThrows(IllegalStateException.class, () -> new TableClientBuilder()
+            .connectionString(connectionString)
+            .tableName(tableName)
+            .serviceVersion(serviceVersion)
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
             .buildAsyncClient());
     }
 

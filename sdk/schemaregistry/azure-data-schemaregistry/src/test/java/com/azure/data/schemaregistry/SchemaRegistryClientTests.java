@@ -102,7 +102,7 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, schemaFormat);
 
         // Assert
-        assertSchemaProperties(response, null, schemaFormat);
+        assertSchemaProperties(response, null, schemaFormat, schemaGroup, schemaName);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
@@ -131,13 +131,13 @@ public class SchemaRegistryClientTests extends TestBase {
         // Act & Assert
         final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
             SchemaFormat.AVRO);
-        assertSchemaProperties(response, null, schemaFormat);
+        assertSchemaProperties(response, null, schemaFormat, schemaGroup, schemaName);
 
         // Expected that the second time we call this method, it will return a different schema because the contents
         // are different.
         final SchemaProperties response2 = client1.registerSchema(schemaGroup, schemaName, schemaContentModified,
             SchemaFormat.AVRO);
-        assertSchemaProperties(response2, null, schemaFormat);
+        assertSchemaProperties(response2, null, schemaFormat, schemaGroup, schemaName);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
@@ -162,7 +162,7 @@ public class SchemaRegistryClientTests extends TestBase {
         // Act & Assert
         final SchemaProperties response = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
             schemaFormat);
-        assertSchemaProperties(response, null, schemaFormat);
+        assertSchemaProperties(response, null, schemaFormat, schemaGroup, schemaName);
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
         // cached, so it won't make a network call when getting the schema. client2 will not have this information.
@@ -245,5 +245,32 @@ public class SchemaRegistryClientTests extends TestBase {
             () -> client1.getSchemaProperties(schemaGroup, "bar", SCHEMA_CONTENT, SchemaFormat.AVRO));
 
         assertEquals(404, error.getResponse().getStatusCode());
+    }
+
+    @Test
+    public void getSchemaByGroupNameVersion() {
+        // Arrange
+        final SchemaRegistryClient client1 = builder.buildClient();
+        final String schemaName = testResourceNamer.randomName("sch", RESOURCE_LENGTH);
+
+        // Register a schema first.
+        final SchemaProperties registeredSchema = client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT,
+            SchemaFormat.AVRO);
+
+        assertNotNull(registeredSchema);
+
+        // Act
+        final SchemaRegistrySchema actual = client1.getSchema(schemaGroup, schemaName, registeredSchema.getVersion());
+
+        // Assert
+        assertNotNull(schemaName);
+
+        final SchemaProperties properties = actual.getProperties();
+        assertNotNull(properties);
+
+        assertEquals(registeredSchema.getVersion(), properties.getVersion());
+        assertEquals(schemaGroup, registeredSchema.getGroupName());
+        assertEquals(schemaName, registeredSchema.getName());
+        assertEquals(registeredSchema.getId(), registeredSchema.getId());
     }
 }

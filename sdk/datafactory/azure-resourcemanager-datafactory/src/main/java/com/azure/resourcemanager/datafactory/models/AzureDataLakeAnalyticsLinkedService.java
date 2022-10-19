@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDataLakeAnalyticsLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("AzureDataLakeAnalytics")
 @Fluent
 public final class AzureDataLakeAnalyticsLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataLakeAnalyticsLinkedService.class);
-
     /*
      * Azure Data Lake Analytics linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private AzureDataLakeAnalyticsLinkedServiceTypeProperties innerTypeProperties =
         new AzureDataLakeAnalyticsLinkedServiceTypeProperties();
+
+    /** Creates an instance of AzureDataLakeAnalyticsLinkedService class. */
+    public AzureDataLakeAnalyticsLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Azure Data Lake Analytics linked service properties.
@@ -274,7 +275,7 @@ public final class AzureDataLakeAnalyticsLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzureDataLakeAnalyticsLinkedService"));
@@ -282,4 +283,6 @@ public final class AzureDataLakeAnalyticsLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureDataLakeAnalyticsLinkedService.class);
 }

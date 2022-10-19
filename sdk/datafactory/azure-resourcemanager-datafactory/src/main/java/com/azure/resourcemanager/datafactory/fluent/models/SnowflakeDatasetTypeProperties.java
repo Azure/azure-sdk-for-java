@@ -5,28 +5,26 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Snowflake dataset properties. */
 @Fluent
 public final class SnowflakeDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnowflakeDatasetTypeProperties.class);
-
     /*
-     * The schema name of the Snowflake database. Type: string (or Expression
-     * with resultType string).
+     * The schema name of the Snowflake database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "schema")
     private Object schema;
 
     /*
-     * The table name of the Snowflake database. Type: string (or Expression
-     * with resultType string).
+     * The table name of the Snowflake database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
+
+    /** Creates an instance of SnowflakeDatasetTypeProperties class. */
+    public SnowflakeDatasetTypeProperties() {
+    }
 
     /**
      * Get the schema property: The schema name of the Snowflake database. Type: string (or Expression with resultType

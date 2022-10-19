@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Class for envelope encryption scheme. */
 @Fluent
 public final class CommonEncryptionCenc {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CommonEncryptionCenc.class);
-
     /*
      * Representing supported protocols
      */
@@ -28,8 +24,7 @@ public final class CommonEncryptionCenc {
     private List<TrackSelection> clearTracks;
 
     /*
-     * Representing default content key for each encryption scheme and separate
-     * content keys for specific tracks
+     * Representing default content key for each encryption scheme and separate content keys for specific tracks
      */
     @JsonProperty(value = "contentKeys")
     private StreamingPolicyContentKeys contentKeys;
@@ -39,6 +34,12 @@ public final class CommonEncryptionCenc {
      */
     @JsonProperty(value = "drm")
     private CencDrmConfiguration drm;
+
+    /*
+     * Optional configuration supporting ClearKey in CommonEncryptionCenc encryption scheme.
+     */
+    @JsonProperty(value = "clearKeyEncryptionConfiguration")
+    private ClearKeyEncryptionConfiguration clearKeyEncryptionConfiguration;
 
     /**
      * Get the enabledProtocols property: Representing supported protocols.
@@ -123,6 +124,29 @@ public final class CommonEncryptionCenc {
     }
 
     /**
+     * Get the clearKeyEncryptionConfiguration property: Optional configuration supporting ClearKey in
+     * CommonEncryptionCenc encryption scheme.
+     *
+     * @return the clearKeyEncryptionConfiguration value.
+     */
+    public ClearKeyEncryptionConfiguration clearKeyEncryptionConfiguration() {
+        return this.clearKeyEncryptionConfiguration;
+    }
+
+    /**
+     * Set the clearKeyEncryptionConfiguration property: Optional configuration supporting ClearKey in
+     * CommonEncryptionCenc encryption scheme.
+     *
+     * @param clearKeyEncryptionConfiguration the clearKeyEncryptionConfiguration value to set.
+     * @return the CommonEncryptionCenc object itself.
+     */
+    public CommonEncryptionCenc withClearKeyEncryptionConfiguration(
+        ClearKeyEncryptionConfiguration clearKeyEncryptionConfiguration) {
+        this.clearKeyEncryptionConfiguration = clearKeyEncryptionConfiguration;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -139,6 +163,9 @@ public final class CommonEncryptionCenc {
         }
         if (drm() != null) {
             drm().validate();
+        }
+        if (clearKeyEncryptionConfiguration() != null) {
+            clearKeyEncryptionConfiguration().validate();
         }
     }
 }

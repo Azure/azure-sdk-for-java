@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of a NAT rule. */
 @Fluent
 public final class AzureFirewallNatRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallNatRule.class);
-
     /*
      * Name of the NAT rule.
      */
@@ -34,8 +30,7 @@ public final class AzureFirewallNatRule {
     private List<String> sourceAddresses;
 
     /*
-     * List of destination IP addresses for this rule. Supports IP ranges,
-     * prefixes, and service tags.
+     * List of destination IP addresses for this rule. Supports IP ranges, prefixes, and service tags.
      */
     @JsonProperty(value = "destinationAddresses")
     private List<String> destinationAddresses;
@@ -75,6 +70,10 @@ public final class AzureFirewallNatRule {
      */
     @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
+
+    /** Creates an instance of AzureFirewallNatRule class. */
+    public AzureFirewallNatRule() {
+    }
 
     /**
      * Get the name property: Name of the NAT rule.

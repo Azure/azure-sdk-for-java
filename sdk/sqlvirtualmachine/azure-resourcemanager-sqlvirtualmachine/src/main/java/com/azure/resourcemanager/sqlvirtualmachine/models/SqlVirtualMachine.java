@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineInner;
 import java.util.Map;
@@ -54,6 +55,13 @@ public interface SqlVirtualMachine {
     ResourceIdentity identity();
 
     /**
+     * Gets the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    SystemData systemData();
+
+    /**
      * Gets the virtualMachineResourceId property: ARM Resource id of underlying virtual machine created from SQL
      * marketplace image.
      *
@@ -90,6 +98,13 @@ public interface SqlVirtualMachine {
     SqlManagementMode sqlManagement();
 
     /**
+     * Gets the leastPrivilegeMode property: SQL IaaS Agent least privilege mode.
+     *
+     * @return the leastPrivilegeMode value.
+     */
+    LeastPrivilegeMode leastPrivilegeMode();
+
+    /**
      * Gets the sqlImageSku property: SQL Server edition type.
      *
      * @return the sqlImageSku value.
@@ -111,6 +126,14 @@ public interface SqlVirtualMachine {
      * @return the wsfcDomainCredentials value.
      */
     WsfcDomainCredentials wsfcDomainCredentials();
+
+    /**
+     * Gets the wsfcStaticIp property: Domain credentials for setting up Windows Server Failover Cluster for SQL
+     * availability group.
+     *
+     * @return the wsfcStaticIp value.
+     */
+    String wsfcStaticIp();
 
     /**
      * Gets the autoPatchingSettings property: Auto patching settings for applying critical security updates to SQL
@@ -149,6 +172,20 @@ public interface SqlVirtualMachine {
     StorageConfigurationSettings storageConfigurationSettings();
 
     /**
+     * Gets the assessmentSettings property: Assessment Settings.
+     *
+     * @return the assessmentSettings value.
+     */
+    AssessmentSettings assessmentSettings();
+
+    /**
+     * Gets the enableAutomaticUpgrade property: Enable automatic upgrade of Sql IaaS extension Agent.
+     *
+     * @return the enableAutomaticUpgrade value.
+     */
+    Boolean enableAutomaticUpgrade();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -161,6 +198,13 @@ public interface SqlVirtualMachine {
      * @return the name of the resource region.
      */
     String regionName();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineInner object.
@@ -221,14 +265,17 @@ public interface SqlVirtualMachine {
                 DefinitionStages.WithSqlImageOffer,
                 DefinitionStages.WithSqlServerLicenseType,
                 DefinitionStages.WithSqlManagement,
+                DefinitionStages.WithLeastPrivilegeMode,
                 DefinitionStages.WithSqlImageSku,
-                DefinitionStages.WithSqlVirtualMachineGroupResourceId,
                 DefinitionStages.WithWsfcDomainCredentials,
+                DefinitionStages.WithWsfcStaticIp,
                 DefinitionStages.WithAutoPatchingSettings,
                 DefinitionStages.WithAutoBackupSettings,
                 DefinitionStages.WithKeyVaultCredentialSettings,
                 DefinitionStages.WithServerConfigurationsManagementSettings,
-                DefinitionStages.WithStorageConfigurationSettings {
+                DefinitionStages.WithStorageConfigurationSettings,
+                DefinitionStages.WithAssessmentSettings,
+                DefinitionStages.WithEnableAutomaticUpgrade {
             /**
              * Executes the create request.
              *
@@ -306,6 +353,16 @@ public interface SqlVirtualMachine {
              */
             WithCreate withSqlManagement(SqlManagementMode sqlManagement);
         }
+        /** The stage of the SqlVirtualMachine definition allowing to specify leastPrivilegeMode. */
+        interface WithLeastPrivilegeMode {
+            /**
+             * Specifies the leastPrivilegeMode property: SQL IaaS Agent least privilege mode..
+             *
+             * @param leastPrivilegeMode SQL IaaS Agent least privilege mode.
+             * @return the next definition stage.
+             */
+            WithCreate withLeastPrivilegeMode(LeastPrivilegeMode leastPrivilegeMode);
+        }
         /** The stage of the SqlVirtualMachine definition allowing to specify sqlImageSku. */
         interface WithSqlImageSku {
             /**
@@ -315,18 +372,6 @@ public interface SqlVirtualMachine {
              * @return the next definition stage.
              */
             WithCreate withSqlImageSku(SqlImageSku sqlImageSku);
-        }
-        /** The stage of the SqlVirtualMachine definition allowing to specify sqlVirtualMachineGroupResourceId. */
-        interface WithSqlVirtualMachineGroupResourceId {
-            /**
-             * Specifies the sqlVirtualMachineGroupResourceId property: ARM resource id of the SQL virtual machine group
-             * this SQL virtual machine is or will be part of..
-             *
-             * @param sqlVirtualMachineGroupResourceId ARM resource id of the SQL virtual machine group this SQL virtual
-             *     machine is or will be part of.
-             * @return the next definition stage.
-             */
-            WithCreate withSqlVirtualMachineGroupResourceId(String sqlVirtualMachineGroupResourceId);
         }
         /** The stage of the SqlVirtualMachine definition allowing to specify wsfcDomainCredentials. */
         interface WithWsfcDomainCredentials {
@@ -339,6 +384,18 @@ public interface SqlVirtualMachine {
              * @return the next definition stage.
              */
             WithCreate withWsfcDomainCredentials(WsfcDomainCredentials wsfcDomainCredentials);
+        }
+        /** The stage of the SqlVirtualMachine definition allowing to specify wsfcStaticIp. */
+        interface WithWsfcStaticIp {
+            /**
+             * Specifies the wsfcStaticIp property: Domain credentials for setting up Windows Server Failover Cluster
+             * for SQL availability group..
+             *
+             * @param wsfcStaticIp Domain credentials for setting up Windows Server Failover Cluster for SQL
+             *     availability group.
+             * @return the next definition stage.
+             */
+            WithCreate withWsfcStaticIp(String wsfcStaticIp);
         }
         /** The stage of the SqlVirtualMachine definition allowing to specify autoPatchingSettings. */
         interface WithAutoPatchingSettings {
@@ -394,6 +451,26 @@ public interface SqlVirtualMachine {
              */
             WithCreate withStorageConfigurationSettings(StorageConfigurationSettings storageConfigurationSettings);
         }
+        /** The stage of the SqlVirtualMachine definition allowing to specify assessmentSettings. */
+        interface WithAssessmentSettings {
+            /**
+             * Specifies the assessmentSettings property: Assessment Settings..
+             *
+             * @param assessmentSettings Assessment Settings.
+             * @return the next definition stage.
+             */
+            WithCreate withAssessmentSettings(AssessmentSettings assessmentSettings);
+        }
+        /** The stage of the SqlVirtualMachine definition allowing to specify enableAutomaticUpgrade. */
+        interface WithEnableAutomaticUpgrade {
+            /**
+             * Specifies the enableAutomaticUpgrade property: Enable automatic upgrade of Sql IaaS extension Agent..
+             *
+             * @param enableAutomaticUpgrade Enable automatic upgrade of Sql IaaS extension Agent.
+             * @return the next definition stage.
+             */
+            WithCreate withEnableAutomaticUpgrade(Boolean enableAutomaticUpgrade);
+        }
     }
     /**
      * Begins update for the SqlVirtualMachine resource.
@@ -446,4 +523,40 @@ public interface SqlVirtualMachine {
      * @return the refreshed resource.
      */
     SqlVirtualMachine refresh(Context context);
+
+    /**
+     * Starts Assessment on SQL virtual machine.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startAssessment();
+
+    /**
+     * Starts Assessment on SQL virtual machine.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void startAssessment(Context context);
+
+    /**
+     * Uninstalls and reinstalls the SQL Iaas Extension.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void redeploy();
+
+    /**
+     * Uninstalls and reinstalls the SQL Iaas Extension.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void redeploy(Context context);
 }

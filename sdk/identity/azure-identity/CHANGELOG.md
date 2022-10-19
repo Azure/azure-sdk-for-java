@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.7.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,175 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.7.0-beta.2 (2022-10-13)
+
+### Features Added
+- `GetTokenSync` method implementation/support in Token Credentials.
+- Read `AZURE_REGIONAL_AUTHORITY_NAME` from the environment to specify region for client credential types.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `msal4j` from `1.13.1` to `1.13.2`
+
+## 1.6.1 (2022-10-11)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+
+## 1.7.0-beta.1 (2022-09-20)
+
+### Features Added
+
+- `EnvironmentCredential` will read the environment variable `AZURE_CLIENT_CERTIFICATE_PASSWORD` for a `pem`/`pfx` certificate specified by `AZURE_CLIENT_CERTIFICATE_PATH`.
+-  Added support for in-memory token caching in `ManagedIdentityCredential`.
+
+### Breaking Changes
+- Removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain. [Issue 27364](https://github.com/Azure/azure-sdk-for-java/issues/27364) tracks this.
+
+## 1.6.0 (2022-09-19)
+
+### Features Added
+- Added `additionallyAllowedTenants` to the following credential builders to force explicit opt-in behavior for multi-tenant authentication:
+    - `AuthorizationCodeCredentialBuilder`
+    - `AzureCliCredentialBuilder`
+    - `AzurePowerShellCredentialBuilder`
+    - `ClientAssertionCredentialBuilder`
+    - `ClientCertificateCredentialBuilder`
+    - `ClientSecretCredentialBuilder`
+    - `DefaultAzureCredentialBuilder`
+    - `OnBehalfOfCredentialBuilder`
+    - `UsernamePasswordCredentialBuilder`
+    - `VisualStudioCodeCredentialBuilder`
+    - `VisualStudioCredentialBuilder`
+
+### Breaking Changes
+- Credential types supporting multi-tenant authentication will now throw `ClientAuthenticationException` if the requested tenant ID doesn't match the credential's tenant ID, and is not included in the `additionallyAllowedTenants` option. Applications must now explicitly add additional tenants to the `additionallyAllowedTenants` list, or add '*' to list, to enable acquiring tokens from tenants other than the originally specified tenant ID. See [BREAKING_CHANGES.md](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/BREAKING_CHANGES.md#160).
+
+- These beta features in version `1.6.0-beta.1` have been removed from this release and will be added back in version `1.7.0-beta.1`:
+    - removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain
+    - `AZURE_CLIENT_CERTIFICATE_PASSWORD` support for `EnvironmentCredential`
+    - in-memory token caching support for `ManagedIdentityCredential`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `msal4j` from `1.13.0` to `1.13.1`.
+
+## 1.5.5 (2022-09-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+- Upgraded `msal4j` from `1.12.0` to `1.13.0`.
+
+## 1.6.0-beta.1 (2022-08-12)
+
+### Features Added
+
+- `EnvironmentCredential` will read the environment variable `AZURE_CLIENT_CERTIFICATE_PASSWORD` for a `pem`/`pfx` certificate specified by `AZURE_CLIENT_CERTIFICATE_PATH`. 
+-  Added support for in-memory token caching in `ManagedIdentityCredential`. 
+
+### Breaking Changes
+- Removed `VisualStudioCodeCredential` from `DefaultAzureCredential` token chain. [Issue 27364](https://github.com/Azure/azure-sdk-for-java/issues/27364) tracks this.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `msal4j` from `1.12.0` to version `1.13.0`.
+
+## 1.5.4 (2022-08-08)
+
+### Bugs Fixed
+
+- Fixes IntelliJCredential [21150](https://github.com/Azure/azure-sdk-for-java/issues/21150)
+- Fixes AzureCliCredential to properly respect tenant IDs.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.30.0` to version `1.31.0`.
+- Upgraded `azure-core-http-netty` from `1.12.3` to version `1.12.4`.
+
+## 1.5.3 (2022-06-30)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` dependency to 1.30.0
+
+## 1.5.2 (2022-06-07)
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.29.1
+
+## 1.5.1 (2022-05-06)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `msal4j` dependency to 1.12.0
+- Upgraded `azure-core` dependency to 1.28.0
+
+## 1.5.0 (2022-04-05)
+
+### Breaking Changes
+- Removed `disableAuthorityValidationSafetyCheck` for GA, will reintroduce in next beta. This is not a breaking change from last GA.
+- Replaced `identityLogOptions` setter with the `enableAccountIdentifierLogging` setter on the credential builders. This is not a breaking change from last GA.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.27.0
+
+### Bugs Fixed
+Correctly use an `AppServiceMsiCredential` in the case both `IDENTITY_ENDPOINT` and `IDENTITY_HEADER` are set.
+
+## 1.5.0-beta.2 (2022-03-21)
+
+### Features Added
+- Added ability to configure `IdentityLogOptions` on Credential Builders to make account Identifier logging configurable.
+- Added the option `disableAuthoriyValidaionSafetyCheck` on Credential Builders.
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.26.0
+
+## 1.4.6 (2022-03-08)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.26.0
+
+
+## 1.4.5 (2022-03-03)
+
+### Other Changes
+#### Behavioural Changes
+- Logging level of false positive `ERROR` logs is changed to `VERBOSE`/`DEBUG` under `DefaultAzureCredential`
+
+
+## 1.5.0-beta.1 (2022-02-17)
+
+### Features Added
+- Added `resourceId` to Managed Identity for Virtual Machines, App Service, and Service Bus.
+- Added `ClientAssertionCredential` for client assertion based authentication flows.
+
+### Other Changes
+- Upgraded App Service Managed Identity endpoint to `2019-08-01`.
+
+## 1.4.4 (2022-02-07)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.25.0
 
 ## 1.4.3 (2022-01-11)
 

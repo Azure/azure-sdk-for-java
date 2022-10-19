@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.PrivateLinkServiceConnectionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** PrivateLinkServiceConnection resource. */
 @Fluent
 public final class PrivateLinkServiceConnection extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkServiceConnection.class);
-
     /*
      * Properties of the private link service connection.
      */
@@ -24,8 +20,7 @@ public final class PrivateLinkServiceConnection extends SubResource {
     private PrivateLinkServiceConnectionProperties innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -41,6 +36,10 @@ public final class PrivateLinkServiceConnection extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of PrivateLinkServiceConnection class. */
+    public PrivateLinkServiceConnection() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the private link service connection.

@@ -30,7 +30,11 @@ public final class SyncAgentState extends ExpandableStringEnum<SyncAgentState> {
         return fromString(name, SyncAgentState.class);
     }
 
-    /** @return known SyncAgentState values. */
+    /**
+     * Gets known SyncAgentState values.
+     *
+     * @return known SyncAgentState values.
+     */
     public static Collection<SyncAgentState> values() {
         return values(SyncAgentState.class);
     }

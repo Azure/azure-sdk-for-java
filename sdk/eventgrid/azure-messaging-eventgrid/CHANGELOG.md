@@ -1,6 +1,6 @@
 # Release History
 
-## 4.9.0-beta.1 (Unreleased)
+## 4.13.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,114 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.12.3 (2022-10-13)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.33.0`.
+- Updated `azure-core-http-netty` to `1.12.6`.
+
+## 4.12.2 (2022-09-14)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.32.0`.
+- Updated `azure-core-http-netty` to `1.12.5`.
+
+## 4.12.1 (2022-08-15)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.31.0`.
+- Updated `azure-core-http-netty` to `1.12.4`.
+
+## 4.12.0 (2022-07-08)
+
+### Features Added
+- Added support to publish CloudEvents to partner topics by setting the channel name.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.30.0`.
+- Updated `azure-core-http-netty` to `1.12.3`.
+
+## 4.11.2 (2022-06-09)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.29.1`.
+- Updated `azure-core-http-netty` to `1.12.2`.
+
+## 4.12.0-beta.2 (2022-05-17)
+
+### Breaking Changes
+- Removed class `SendEventsOptions` and replaced it by the String `channelName`.
+
+## 4.11.1 (2022-05-16)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.28.0`.
+- Updated `azure-core-http-netty` to `1.12.0`.
+
+## 4.12.0-beta.1 (2022-04-13)
+
+### Features Added
+- Added support to publish CloudEvents to partner topics by setting the channel name in `SendEventsOptions`.
+
+## 4.11.0 (2022-04-12)
+
+### Features Added
+- Added system event classes for Azure Healthcare FHIR Services under package `com.azure.messaging.eventgrid.systemevents`,
+  `HealthcareFhirResourceCreatedEventData`, `HealthcareFhirResourceDeletedEventData` and `HealthcareFhirResourceUpdatedEventData`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.27.0`.
+- Updated `azure-core-http-netty` to `1.11.9`.
+
+## 4.10.0 (2022-03-10)
+
+### Breaking Changes
+- Added new enum values for `MediaJobErrorCategory` and `MediaJobErrorCode`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.26.0`.
+- Updated `azure-core-http-netty` to `1.11.8`.
+
+## 4.9.0 (2022-02-10)
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `EventGridPublisherClientBuilder`.
+- Added a new method `retryOptions` to `EventGridPublisherClientBuilder`.
+- Updated ARM events, `ResourceActionCancelEventData`, `ResourceActionFailureEventData`, 
+`ResourceActionSuccessEventData`, `ResourceDeleteCancelEventData`, `ResourceDeleteFailureEventData`, 
+`ResourceDeleteSuccessEventData`, `ResourceWriteCancelEventData`, `ResourceWriteFailureEventData`,
+`ResourceWriteSuccessEventData`. 
+    - Added new type `ResourceAuthorization` and `ResourceHttpRequest`.
+    - Deprecated 
+      `getHttpRequest()` and replaced it with `getResourceAuthorization()`,
+      `setHttpRequest(String httpRequest)` and replaced it with `setResourceAuthorization(ResourceAuthorization authorization)`,
+      `getClaims()` and replaced it with `getResourceClaims()`,
+      `setClaims(String claims)` and replaced it with `setResourceClaims(Map<String, String> claims)`,
+      `getAuthorization()` and replaced it with `getResourceHttpRequest()`,
+      `setAuthorization(String authorization)` and replaced it with `setResourceHttpRequest(ResourceHttpRequest httpRequest)`.
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
 
 ## 4.8.0 (2022-01-14)
 

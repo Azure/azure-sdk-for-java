@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the PrivateEndpointConnectProperties. */
 @Fluent
 public final class PrivateEndpointConnectionPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionPropertiesInner.class);
-
     /*
      * The resource of private end point.
      */
@@ -23,8 +19,7 @@ public final class PrivateEndpointConnectionPropertiesInner {
     private PrivateEndpointInner privateEndpoint;
 
     /*
-     * A collection of information about the state of the connection between
-     * service consumer and provider.
+     * A collection of information about the state of the connection between service consumer and provider.
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkServiceConnectionState privateLinkServiceConnectionState;
@@ -40,6 +35,10 @@ public final class PrivateEndpointConnectionPropertiesInner {
      */
     @JsonProperty(value = "linkIdentifier", access = JsonProperty.Access.WRITE_ONLY)
     private String linkIdentifier;
+
+    /** Creates an instance of PrivateEndpointConnectionPropertiesInner class. */
+    public PrivateEndpointConnectionPropertiesInner() {
+    }
 
     /**
      * Get the privateEndpoint property: The resource of private end point.

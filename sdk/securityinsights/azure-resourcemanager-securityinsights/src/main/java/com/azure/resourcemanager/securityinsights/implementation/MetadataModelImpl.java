@@ -97,6 +97,58 @@ public final class MetadataModelImpl implements MetadataModel, MetadataModel.Def
         return this.innerModel().lastPublishDate();
     }
 
+    public String customVersion() {
+        return this.innerModel().customVersion();
+    }
+
+    public String contentSchemaVersion() {
+        return this.innerModel().contentSchemaVersion();
+    }
+
+    public String icon() {
+        return this.innerModel().icon();
+    }
+
+    public List<String> threatAnalysisTactics() {
+        List<String> inner = this.innerModel().threatAnalysisTactics();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<String> threatAnalysisTechniques() {
+        List<String> inner = this.innerModel().threatAnalysisTechniques();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<String> previewImages() {
+        List<String> inner = this.innerModel().previewImages();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public List<String> previewImagesDark() {
+        List<String> inner = this.innerModel().previewImagesDark();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public MetadataModelInner innerModel() {
         return this.innerObject;
     }
@@ -326,6 +378,76 @@ public final class MetadataModelImpl implements MetadataModel, MetadataModel.Def
             return this;
         } else {
             this.updateMetadataPatch.withLastPublishDate(lastPublishDate);
+            return this;
+        }
+    }
+
+    public MetadataModelImpl withCustomVersion(String customVersion) {
+        if (isInCreateMode()) {
+            this.innerModel().withCustomVersion(customVersion);
+            return this;
+        } else {
+            this.updateMetadataPatch.withCustomVersion(customVersion);
+            return this;
+        }
+    }
+
+    public MetadataModelImpl withContentSchemaVersion(String contentSchemaVersion) {
+        if (isInCreateMode()) {
+            this.innerModel().withContentSchemaVersion(contentSchemaVersion);
+            return this;
+        } else {
+            this.updateMetadataPatch.withContentSchemaVersion(contentSchemaVersion);
+            return this;
+        }
+    }
+
+    public MetadataModelImpl withIcon(String icon) {
+        if (isInCreateMode()) {
+            this.innerModel().withIcon(icon);
+            return this;
+        } else {
+            this.updateMetadataPatch.withIcon(icon);
+            return this;
+        }
+    }
+
+    public MetadataModelImpl withThreatAnalysisTactics(List<String> threatAnalysisTactics) {
+        if (isInCreateMode()) {
+            this.innerModel().withThreatAnalysisTactics(threatAnalysisTactics);
+            return this;
+        } else {
+            this.updateMetadataPatch.withThreatAnalysisTactics(threatAnalysisTactics);
+            return this;
+        }
+    }
+
+    public MetadataModelImpl withThreatAnalysisTechniques(List<String> threatAnalysisTechniques) {
+        if (isInCreateMode()) {
+            this.innerModel().withThreatAnalysisTechniques(threatAnalysisTechniques);
+            return this;
+        } else {
+            this.updateMetadataPatch.withThreatAnalysisTechniques(threatAnalysisTechniques);
+            return this;
+        }
+    }
+
+    public MetadataModelImpl withPreviewImages(List<String> previewImages) {
+        if (isInCreateMode()) {
+            this.innerModel().withPreviewImages(previewImages);
+            return this;
+        } else {
+            this.updateMetadataPatch.withPreviewImages(previewImages);
+            return this;
+        }
+    }
+
+    public MetadataModelImpl withPreviewImagesDark(List<String> previewImagesDark) {
+        if (isInCreateMode()) {
+            this.innerModel().withPreviewImagesDark(previewImagesDark);
+            return this;
+        } else {
+            this.updateMetadataPatch.withPreviewImagesDark(previewImagesDark);
             return this;
         }
     }

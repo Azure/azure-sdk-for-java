@@ -6,19 +6,15 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Frontend IP address of the load balancer. */
 @Fluent
 public final class FrontendIpConfigurationInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FrontendIpConfigurationInner.class);
-
     /*
      * Properties of the load balancer probe.
      */
@@ -26,9 +22,8 @@ public final class FrontendIpConfigurationInner extends SubResource {
     private FrontendIpConfigurationPropertiesFormatInner innerProperties;
 
     /*
-     * The name of the resource that is unique within the set of frontend IP
-     * configurations used by the load balancer. This name can be used to
-     * access the resource.
+     * The name of the resource that is unique within the set of frontend IP configurations used by the load balancer.
+     * This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -46,11 +41,14 @@ public final class FrontendIpConfigurationInner extends SubResource {
     private String type;
 
     /*
-     * A list of availability zones denoting the IP allocated for the resource
-     * needs to come from.
+     * A list of availability zones denoting the IP allocated for the resource needs to come from.
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
+
+    /** Creates an instance of FrontendIpConfigurationInner class. */
+    public FrontendIpConfigurationInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the load balancer probe.

@@ -19,7 +19,7 @@ public interface ManagedPrivateEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed private endpoint resources.
+     * @return a list of managed private endpoint resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ManagedPrivateEndpointResource> listByFactory(
         String resourceGroupName, String factoryName, String managedVirtualNetworkName);
@@ -34,28 +34,10 @@ public interface ManagedPrivateEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed private endpoint resources.
+     * @return a list of managed private endpoint resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ManagedPrivateEndpointResource> listByFactory(
         String resourceGroupName, String factoryName, String managedVirtualNetworkName, Context context);
-
-    /**
-     * Gets a managed private endpoint.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param managedVirtualNetworkName Managed virtual network name.
-     * @param managedPrivateEndpointName Managed private endpoint name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed private endpoint.
-     */
-    ManagedPrivateEndpointResource get(
-        String resourceGroupName,
-        String factoryName,
-        String managedVirtualNetworkName,
-        String managedPrivateEndpointName);
 
     /**
      * Gets a managed private endpoint.
@@ -81,7 +63,7 @@ public interface ManagedPrivateEndpoints {
         Context context);
 
     /**
-     * Deletes a managed private endpoint.
+     * Gets a managed private endpoint.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
@@ -90,8 +72,9 @@ public interface ManagedPrivateEndpoints {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a managed private endpoint.
      */
-    void delete(
+    ManagedPrivateEndpointResource get(
         String resourceGroupName,
         String factoryName,
         String managedVirtualNetworkName,
@@ -116,6 +99,23 @@ public interface ManagedPrivateEndpoints {
         String managedVirtualNetworkName,
         String managedPrivateEndpointName,
         Context context);
+
+    /**
+     * Deletes a managed private endpoint.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param managedVirtualNetworkName Managed virtual network name.
+     * @param managedPrivateEndpointName Managed private endpoint name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(
+        String resourceGroupName,
+        String factoryName,
+        String managedVirtualNetworkName,
+        String managedPrivateEndpointName);
 
     /**
      * Gets a managed private endpoint.

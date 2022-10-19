@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -23,8 +21,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class AzureRecoveryServiceVaultProtectionIntent extends ProtectionIntent {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureRecoveryServiceVaultProtectionIntent.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureRecoveryServiceVaultProtectionIntent withBackupManagementType(

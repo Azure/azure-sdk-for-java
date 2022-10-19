@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.IncidentEntitiesResultsMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The incident related entities response. */
 @Fluent
 public final class IncidentEntitiesResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentEntitiesResponseInner.class);
-
     /*
      * Array of the incident related entities.
      */

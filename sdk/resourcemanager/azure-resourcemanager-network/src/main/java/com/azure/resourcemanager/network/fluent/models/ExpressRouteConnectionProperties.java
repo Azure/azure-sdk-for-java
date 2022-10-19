@@ -9,14 +9,11 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringId;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the ExpressRouteConnection subresource. */
 @Fluent
 public final class ExpressRouteConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionProperties.class);
-
     /*
      * The provisioning state of the express route connection resource.
      */
@@ -54,11 +51,21 @@ public final class ExpressRouteConnectionProperties {
     private Boolean expressRouteGatewayBypass;
 
     /*
-     * The Routing Configuration indicating the associated and propagated route
-     * tables on this connection.
+     * Bypass the ExpressRoute gateway when accessing private-links. ExpressRoute FastPath (expressRouteGatewayBypass)
+     * must be enabled.
+     */
+    @JsonProperty(value = "enablePrivateLinkFastPath")
+    private Boolean enablePrivateLinkFastPath;
+
+    /*
+     * The Routing Configuration indicating the associated and propagated route tables on this connection.
      */
     @JsonProperty(value = "routingConfiguration")
     private RoutingConfiguration routingConfiguration;
+
+    /** Creates an instance of ExpressRouteConnectionProperties class. */
+    public ExpressRouteConnectionProperties() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the express route connection resource.
@@ -171,6 +178,28 @@ public final class ExpressRouteConnectionProperties {
     }
 
     /**
+     * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @return the enablePrivateLinkFastPath value.
+     */
+    public Boolean enablePrivateLinkFastPath() {
+        return this.enablePrivateLinkFastPath;
+    }
+
+    /**
+     * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
+     * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
+     *
+     * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
+     * @return the ExpressRouteConnectionProperties object itself.
+     */
+    public ExpressRouteConnectionProperties withEnablePrivateLinkFastPath(Boolean enablePrivateLinkFastPath) {
+        this.enablePrivateLinkFastPath = enablePrivateLinkFastPath;
+        return this;
+    }
+
+    /**
      * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
      *
@@ -199,7 +228,7 @@ public final class ExpressRouteConnectionProperties {
      */
     public void validate() {
         if (expressRouteCircuitPeering() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property expressRouteCircuitPeering in model"
@@ -211,4 +240,6 @@ public final class ExpressRouteConnectionProperties {
             routingConfiguration().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExpressRouteConnectionProperties.class);
 }

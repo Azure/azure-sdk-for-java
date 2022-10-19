@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -29,8 +27,6 @@ import java.util.Map;
 })
 @Fluent
 public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureWorkloadSqlRecoveryPoint.class);
-
     /*
      * Extended Info that provides data directory details. Will be populated in
      * two cases:
@@ -82,7 +78,7 @@ public class AzureWorkloadSqlRecoveryPoint extends AzureWorkloadRecoveryPoint {
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadSqlRecoveryPoint withRecoveryPointTierDetails(
-        List<RecoveryPointTierInformation> recoveryPointTierDetails) {
+        List<RecoveryPointTierInformationV2> recoveryPointTierDetails) {
         super.withRecoveryPointTierDetails(recoveryPointTierDetails);
         return this;
     }

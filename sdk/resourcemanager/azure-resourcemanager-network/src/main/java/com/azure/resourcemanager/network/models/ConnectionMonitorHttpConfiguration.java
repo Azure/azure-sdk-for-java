@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the HTTP configuration. */
 @Fluent
 public final class ConnectionMonitorHttpConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorHttpConfiguration.class);
-
     /*
      * The port to connect to.
      */
@@ -40,18 +36,20 @@ public final class ConnectionMonitorHttpConfiguration {
     private List<HttpHeader> requestHeaders;
 
     /*
-     * HTTP status codes to consider successful. For instance,
-     * "2xx,301-304,418".
+     * HTTP status codes to consider successful. For instance, "2xx,301-304,418".
      */
     @JsonProperty(value = "validStatusCodeRanges")
     private List<String> validStatusCodeRanges;
 
     /*
-     * Value indicating whether HTTPS is preferred over HTTP in cases where the
-     * choice is not explicit.
+     * Value indicating whether HTTPS is preferred over HTTP in cases where the choice is not explicit.
      */
     @JsonProperty(value = "preferHTTPS")
     private Boolean preferHttps;
+
+    /** Creates an instance of ConnectionMonitorHttpConfiguration class. */
+    public ConnectionMonitorHttpConfiguration() {
+    }
 
     /**
      * Get the port property: The port to connect to.

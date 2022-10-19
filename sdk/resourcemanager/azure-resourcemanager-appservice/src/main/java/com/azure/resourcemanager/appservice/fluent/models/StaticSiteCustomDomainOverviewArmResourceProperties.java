@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.CustomDomainStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** StaticSiteCustomDomainOverviewARMResource resource specific properties. */
 @Immutable
 public final class StaticSiteCustomDomainOverviewArmResourceProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(StaticSiteCustomDomainOverviewArmResourceProperties.class);
-
     /*
      * The domain name for the static site custom domain.
      */

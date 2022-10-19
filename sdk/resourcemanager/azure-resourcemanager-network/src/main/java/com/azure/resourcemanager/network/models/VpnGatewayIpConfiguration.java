@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP Configuration of a VPN Gateway Resource. */
 @Fluent
 public final class VpnGatewayIpConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnGatewayIpConfiguration.class);
-
     /*
      * The identifier of the IP configuration for a VPN Gateway.
      */
@@ -31,6 +27,10 @@ public final class VpnGatewayIpConfiguration {
      */
     @JsonProperty(value = "privateIpAddress")
     private String privateIpAddress;
+
+    /** Creates an instance of VpnGatewayIpConfiguration class. */
+    public VpnGatewayIpConfiguration() {
+    }
 
     /**
      * Get the id property: The identifier of the IP configuration for a VPN Gateway.

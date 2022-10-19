@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,14 +14,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureMySqlSink")
 @Fluent
 public final class AzureMySqlSink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureMySqlSink.class);
-
     /*
-     * A query to execute before starting the copy. Type: string (or Expression
-     * with resultType string).
+     * A query to execute before starting the copy. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "preCopyScript")
     private Object preCopyScript;
+
+    /** Creates an instance of AzureMySqlSink class. */
+    public AzureMySqlSink() {
+    }
 
     /**
      * Get the preCopyScript property: A query to execute before starting the copy. Type: string (or Expression with

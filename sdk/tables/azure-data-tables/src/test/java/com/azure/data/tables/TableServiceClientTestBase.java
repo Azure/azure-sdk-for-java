@@ -3,12 +3,63 @@
 
 package com.azure.data.tables;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import org.junit.jupiter.api.Test;
 
 import java.net.URISyntaxException;
 
 public abstract class TableServiceClientTestBase extends TestBase {
+    protected static final HttpClient DEFAULT_HTTP_CLIENT = HttpClient.createDefault();
+
+    protected HttpPipelinePolicy recordPolicy;
+    protected HttpClient playbackClient;
+
+    protected TableServiceClientBuilder getClientBuilder(String connectionString) {
+        final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
+            .connectionString(connectionString);
+
+        return configureTestClientBuilder(tableServiceClientBuilder);
+    }
+
+    protected TableServiceClientBuilder getClientBuilder(String endpoint, TokenCredential tokenCredential,
+                                                         boolean enableTenantDiscovery) {
+        final TableServiceClientBuilder tableServiceClientBuilder = new TableServiceClientBuilder()
+            .credential(tokenCredential)
+            .endpoint(endpoint);
+
+        if (enableTenantDiscovery) {
+            tableServiceClientBuilder.enableTenantDiscovery();
+        }
+
+        return configureTestClientBuilder(tableServiceClientBuilder);
+    }
+
+    private TableServiceClientBuilder configureTestClientBuilder(TableServiceClientBuilder tableServiceClientBuilder) {
+        tableServiceClientBuilder
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS));
+
+        if (interceptorManager.isPlaybackMode()) {
+            playbackClient = interceptorManager.getPlaybackClient();
+
+            tableServiceClientBuilder.httpClient(playbackClient);
+        } else {
+            tableServiceClientBuilder.httpClient(DEFAULT_HTTP_CLIENT);
+
+            if (!interceptorManager.isLiveMode()) {
+                recordPolicy = interceptorManager.getRecordPolicy();
+
+                tableServiceClientBuilder.addPolicy(recordPolicy);
+            }
+        }
+
+        return tableServiceClientBuilder;
+    }
+
     @Test
     public abstract void serviceCreateTable();
 

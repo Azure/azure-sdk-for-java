@@ -6,24 +6,19 @@ package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Application specific parameters for the placement of volumes in the volume group. */
 @Fluent
 public final class PlacementKeyValuePairs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PlacementKeyValuePairs.class);
-
     /*
-     * Key for an application specific parameter for the placement of volumes
-     * in the volume group
+     * Key for an application specific parameter for the placement of volumes in the volume group
      */
     @JsonProperty(value = "key", required = true)
     private String key;
 
     /*
-     * Value for an application specific parameter for the placement of volumes
-     * in the volume group
+     * Value for an application specific parameter for the placement of volumes in the volume group
      */
     @JsonProperty(value = "value", required = true)
     private String value;
@@ -77,14 +72,16 @@ public final class PlacementKeyValuePairs {
      */
     public void validate() {
         if (key() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property key in model PlacementKeyValuePairs"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model PlacementKeyValuePairs"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(PlacementKeyValuePairs.class);
 }

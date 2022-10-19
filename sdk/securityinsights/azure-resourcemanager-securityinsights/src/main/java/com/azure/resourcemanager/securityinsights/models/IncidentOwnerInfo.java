@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.UUID;
 
 /** Information on the user an incident is assigned to. */
 @Fluent
 public final class IncidentOwnerInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentOwnerInfo.class);
-
     /*
      * The email of the user the incident is assigned to.
      */
@@ -42,7 +38,7 @@ public final class IncidentOwnerInfo {
     /*
      * The type of the owner the incident is assigned to.
      */
-    @JsonProperty(value = "ownerType", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "ownerType")
     private OwnerType ownerType;
 
     /**
@@ -132,6 +128,17 @@ public final class IncidentOwnerInfo {
      */
     public OwnerType ownerType() {
         return this.ownerType;
+    }
+
+    /**
+     * Set the ownerType property: The type of the owner the incident is assigned to.
+     *
+     * @param ownerType the ownerType value to set.
+     * @return the IncidentOwnerInfo object itself.
+     */
+    public IncidentOwnerInfo withOwnerType(OwnerType ownerType) {
+        this.ownerType = ownerType;
+        return this;
     }
 
     /**

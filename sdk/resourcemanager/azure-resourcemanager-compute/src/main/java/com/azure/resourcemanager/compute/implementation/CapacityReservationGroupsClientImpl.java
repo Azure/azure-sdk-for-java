@@ -28,7 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.CapacityReservationGroupsClient;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
@@ -47,8 +46,6 @@ public final class CapacityReservationGroupsClientImpl
         InnerSupportsListing<CapacityReservationGroupInner>,
         InnerSupportsDelete<Void>,
         CapacityReservationGroupsClient {
-    private final ClientLogger logger = new ClientLogger(CapacityReservationGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final CapacityReservationGroupsService service;
 
@@ -229,7 +226,7 @@ public final class CapacityReservationGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -294,7 +291,7 @@ public final class CapacityReservationGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -326,14 +323,7 @@ public final class CapacityReservationGroupsClientImpl
     public Mono<CapacityReservationGroupInner> createOrUpdateAsync(
         String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, capacityReservationGroupName, parameters)
-            .flatMap(
-                (Response<CapacityReservationGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -422,7 +412,7 @@ public final class CapacityReservationGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -487,7 +477,7 @@ public final class CapacityReservationGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -519,14 +509,7 @@ public final class CapacityReservationGroupsClientImpl
     public Mono<CapacityReservationGroupInner> updateAsync(
         String resourceGroupName, String capacityReservationGroupName, CapacityReservationGroupUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, capacityReservationGroupName, parameters)
-            .flatMap(
-                (Response<CapacityReservationGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -607,7 +590,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -662,7 +645,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -691,7 +674,7 @@ public final class CapacityReservationGroupsClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String capacityReservationGroupName) {
         return deleteWithResponseAsync(resourceGroupName, capacityReservationGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -771,7 +754,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -833,7 +816,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -869,14 +852,7 @@ public final class CapacityReservationGroupsClientImpl
         String capacityReservationGroupName,
         CapacityReservationGroupInstanceViewTypes expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, capacityReservationGroupName, expand)
-            .flatMap(
-                (Response<CapacityReservationGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -895,14 +871,7 @@ public final class CapacityReservationGroupsClientImpl
         String resourceGroupName, String capacityReservationGroupName) {
         final CapacityReservationGroupInstanceViewTypes expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, capacityReservationGroupName, expand)
-            .flatMap(
-                (Response<CapacityReservationGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -982,7 +951,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1042,7 +1011,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1076,7 +1045,8 @@ public final class CapacityReservationGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(
@@ -1094,7 +1064,8 @@ public final class CapacityReservationGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1116,7 +1087,8 @@ public final class CapacityReservationGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CapacityReservationGroupInner> listByResourceGroupAsync(
@@ -1134,7 +1106,8 @@ public final class CapacityReservationGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapacityReservationGroupInner> listByResourceGroup(String resourceGroupName) {
@@ -1154,7 +1127,8 @@ public final class CapacityReservationGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapacityReservationGroupInner> listByResourceGroup(
@@ -1190,7 +1164,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1244,7 +1218,7 @@ public final class CapacityReservationGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1270,7 +1244,8 @@ public final class CapacityReservationGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapacityReservationGroupInner> listAsync(ExpandTypesForGetCapacityReservationGroups expand) {
@@ -1284,7 +1259,8 @@ public final class CapacityReservationGroupsClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<CapacityReservationGroupInner> listAsync() {
@@ -1304,7 +1280,8 @@ public final class CapacityReservationGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<CapacityReservationGroupInner> listAsync(
@@ -1320,7 +1297,8 @@ public final class CapacityReservationGroupsClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapacityReservationGroupInner> list() {
@@ -1339,7 +1317,8 @@ public final class CapacityReservationGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List capacity reservation group with resource group response.
+     * @return the List capacity reservation group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CapacityReservationGroupInner> list(
@@ -1350,7 +1329,8 @@ public final class CapacityReservationGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1387,7 +1367,8 @@ public final class CapacityReservationGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1425,7 +1406,8 @@ public final class CapacityReservationGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1462,7 +1444,8 @@ public final class CapacityReservationGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

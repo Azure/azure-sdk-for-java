@@ -11,30 +11,36 @@ import com.azure.core.util.Context;
 /** Resource collection API of NetAppResourceQuotaLimits. */
 public interface NetAppResourceQuotaLimits {
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas.
+     * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SubscriptionQuotaItem> list(String location);
 
     /**
-     * Get the default and current limits for quotas.
+     * Get quota limits
+     *
+     * <p>Get the default and current limits for quotas.
      *
      * @param location The location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current limits for quotas.
+     * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SubscriptionQuotaItem> list(String location, Context context);
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
@@ -46,7 +52,9 @@ public interface NetAppResourceQuotaLimits {
     SubscriptionQuotaItem get(String location, String quotaLimitName);
 
     /**
-     * Get the default and current subscription quota limit.
+     * Get quota limits
+     *
+     * <p>Get the default and current subscription quota limit.
      *
      * @param location The location.
      * @param quotaLimitName The name of the Quota Limit.
@@ -54,7 +62,7 @@ public interface NetAppResourceQuotaLimits {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the default and current subscription quota limit.
+     * @return the default and current subscription quota limit along with {@link Response}.
      */
     Response<SubscriptionQuotaItem> getWithResponse(String location, String quotaLimitName, Context context);
 }

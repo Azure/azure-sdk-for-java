@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.videoanalyzer.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
@@ -20,8 +18,6 @@ import java.time.OffsetDateTime;
  */
 @Immutable
 public final class EdgeModuleProvisioningTokenInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EdgeModuleProvisioningTokenInner.class);
-
     /*
      * The expiration date of the registration token. The Azure Video Analyzer
      * IoT edge module must be initialized and connected to the Internet prior

@@ -8,7 +8,11 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ServiceLevel. */
+/**
+ * serviceLevel
+ *
+ * <p>The service level of the file system.
+ */
 public final class ServiceLevel extends ExpandableStringEnum<ServiceLevel> {
     /** Static value Standard for ServiceLevel. */
     public static final ServiceLevel STANDARD = fromString("Standard");
@@ -33,7 +37,11 @@ public final class ServiceLevel extends ExpandableStringEnum<ServiceLevel> {
         return fromString(name, ServiceLevel.class);
     }
 
-    /** @return known ServiceLevel values. */
+    /**
+     * Gets known ServiceLevel values.
+     *
+     * @return known ServiceLevel values.
+     */
     public static Collection<ServiceLevel> values() {
         return values(ServiceLevel.class);
     }

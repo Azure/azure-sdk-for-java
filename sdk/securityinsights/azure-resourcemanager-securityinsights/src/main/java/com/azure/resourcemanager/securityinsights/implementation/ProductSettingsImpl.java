@@ -14,10 +14,9 @@ import com.azure.resourcemanager.securityinsights.fluent.models.SettingsInner;
 import com.azure.resourcemanager.securityinsights.models.ProductSettings;
 import com.azure.resourcemanager.securityinsights.models.SettingList;
 import com.azure.resourcemanager.securityinsights.models.Settings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProductSettingsImpl implements ProductSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductSettingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProductSettingsImpl.class);
 
     private final ProductSettingsClient innerClient;
 

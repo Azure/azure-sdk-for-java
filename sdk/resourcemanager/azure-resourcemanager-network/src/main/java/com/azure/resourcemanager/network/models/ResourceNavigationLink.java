@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ResourceNavigationLinkFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ResourceNavigationLink resource. */
 @Fluent
 public final class ResourceNavigationLink extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceNavigationLink.class);
-
     /*
      * Resource navigation link properties format.
      */
@@ -23,8 +19,7 @@ public final class ResourceNavigationLink extends SubResource {
     private ResourceNavigationLinkFormat innerProperties;
 
     /*
-     * Name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -40,6 +35,10 @@ public final class ResourceNavigationLink extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of ResourceNavigationLink class. */
+    public ResourceNavigationLink() {
+    }
 
     /**
      * Get the innerProperties property: Resource navigation link properties format.

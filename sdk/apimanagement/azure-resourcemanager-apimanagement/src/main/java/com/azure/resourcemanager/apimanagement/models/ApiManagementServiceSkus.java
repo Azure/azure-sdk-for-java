@@ -17,7 +17,7 @@ public interface ApiManagementServiceSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available SKU for a given API Management service.
+     * @return all available SKU for a given API Management service as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourceSkuResult> listAvailableServiceSkus(String resourceGroupName, String serviceName);
 
@@ -30,7 +30,7 @@ public interface ApiManagementServiceSkus {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all available SKU for a given API Management service.
+     * @return all available SKU for a given API Management service as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ResourceSkuResult> listAvailableServiceSkus(
         String resourceGroupName, String serviceName, Context context);

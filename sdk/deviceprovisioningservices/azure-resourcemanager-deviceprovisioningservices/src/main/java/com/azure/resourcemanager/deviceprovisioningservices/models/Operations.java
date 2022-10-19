@@ -15,7 +15,8 @@ public interface Operations {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list provisioning service operations.
+     * @return result of the request to list provisioning service operations as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Operation> list();
 
@@ -27,7 +28,8 @@ public interface Operations {
      * @throws com.azure.resourcemanager.deviceprovisioningservices.models.ErrorDetailsException thrown if the request
      *     is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list provisioning service operations.
+     * @return result of the request to list provisioning service operations as paginated response with {@link
+     *     PagedIterable}.
      */
     PagedIterable<Operation> list(Context context);
 }

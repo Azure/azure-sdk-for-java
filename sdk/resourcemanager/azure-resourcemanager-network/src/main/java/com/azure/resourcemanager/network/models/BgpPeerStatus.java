@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** BGP peer status details. */
 @Immutable
 public final class BgpPeerStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpPeerStatus.class);
-
     /*
      * The virtual network gateway's local address.
      */
@@ -61,6 +57,10 @@ public final class BgpPeerStatus {
      */
     @JsonProperty(value = "messagesReceived", access = JsonProperty.Access.WRITE_ONLY)
     private Long messagesReceived;
+
+    /** Creates an instance of BgpPeerStatus class. */
+    public BgpPeerStatus() {
+    }
 
     /**
      * Get the localAddress property: The virtual network gateway's local address.

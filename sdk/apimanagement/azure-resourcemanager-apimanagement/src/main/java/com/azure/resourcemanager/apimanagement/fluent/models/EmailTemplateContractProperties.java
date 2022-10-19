@@ -7,15 +7,12 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateParametersContractProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Email Template Contract properties. */
 @Fluent
 public final class EmailTemplateContractProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EmailTemplateContractProperties.class);
-
     /*
      * Subject of the Template.
      */
@@ -41,7 +38,7 @@ public final class EmailTemplateContractProperties {
     private String description;
 
     /*
-     * Whether the template is the default template provided by Api Management
+     * Whether the template is the default template provided by API Management
      * or has been edited.
      */
     @JsonProperty(value = "isDefault", access = JsonProperty.Access.WRITE_ONLY)
@@ -134,7 +131,7 @@ public final class EmailTemplateContractProperties {
     }
 
     /**
-     * Get the isDefault property: Whether the template is the default template provided by Api Management or has been
+     * Get the isDefault property: Whether the template is the default template provided by API Management or has been
      * edited.
      *
      * @return the isDefault value.
@@ -170,13 +167,13 @@ public final class EmailTemplateContractProperties {
      */
     public void validate() {
         if (subject() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property subject in model EmailTemplateContractProperties"));
         }
         if (body() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property body in model EmailTemplateContractProperties"));
@@ -185,4 +182,6 @@ public final class EmailTemplateContractProperties {
             parameters().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(EmailTemplateContractProperties.class);
 }

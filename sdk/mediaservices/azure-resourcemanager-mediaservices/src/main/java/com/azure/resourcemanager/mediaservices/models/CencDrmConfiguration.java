@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class to specify DRM configurations of CommonEncryptionCenc scheme in Streaming Policy. */
 @Fluent
 public final class CencDrmConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CencDrmConfiguration.class);
-
     /*
      * PlayReady configurations
      */

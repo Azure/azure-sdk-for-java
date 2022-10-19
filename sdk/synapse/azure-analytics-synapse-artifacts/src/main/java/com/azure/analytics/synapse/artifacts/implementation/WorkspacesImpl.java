@@ -47,7 +47,7 @@ public final class WorkspacesImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientWorks")
-    private interface WorkspacesService {
+    public interface WorkspacesService {
         @Get("/workspace")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorContractException.class)
@@ -63,7 +63,7 @@ public final class WorkspacesImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Workspace>> getWithResponseAsync() {
@@ -79,7 +79,7 @@ public final class WorkspacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Workspace>> getWithResponseAsync(Context context) {
@@ -93,19 +93,11 @@ public final class WorkspacesImpl {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Workspace> getAsync() {
-        return getWithResponseAsync()
-                .flatMap(
-                        (Response<Workspace> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync().flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -115,19 +107,11 @@ public final class WorkspacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Workspace> getAsync(Context context) {
-        return getWithResponseAsync(context)
-                .flatMap(
-                        (Response<Workspace> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+        return getWithResponseAsync(context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -149,7 +133,7 @@ public final class WorkspacesImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return workspace.
+     * @return workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Workspace> getWithResponse(Context context) {

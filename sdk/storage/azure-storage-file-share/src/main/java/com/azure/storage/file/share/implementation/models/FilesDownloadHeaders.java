@@ -6,6 +6,8 @@ package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.CopyStatusType;
@@ -15,6 +17,8 @@ import com.azure.storage.file.share.models.LeaseStatusType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The FilesDownloadHeaders model. */
@@ -145,7 +149,7 @@ public final class FilesDownloadHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The Content-MD5 property.
@@ -218,6 +222,99 @@ public final class FilesDownloadHeaders {
      */
     @JsonProperty(value = "x-ms-file-last-write-time")
     private OffsetDateTime xMsFileLastWriteTime;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of FilesDownloadHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public FilesDownloadHeaders(HttpHeaders rawHeaders) {
+        this.xMsFileId = rawHeaders.getValue("x-ms-file-id");
+        String xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
+        if (xMsLeaseStatus != null) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
+        }
+        String xMsFileCreationTime = rawHeaders.getValue("x-ms-file-creation-time");
+        if (xMsFileCreationTime != null) {
+            this.xMsFileCreationTime = OffsetDateTime.parse(xMsFileCreationTime);
+        }
+        this.contentRange = rawHeaders.getValue("Content-Range");
+        String xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
+        if (xMsLeaseState != null) {
+            this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
+        }
+        String xMsContentMd5 = rawHeaders.getValue("x-ms-content-md5");
+        if (xMsContentMd5 != null) {
+            this.xMsContentMd5 = Base64.getDecoder().decode(xMsContentMd5);
+        }
+        String lastModified = rawHeaders.getValue("Last-Modified");
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        this.xMsFileAttributes = rawHeaders.getValue("x-ms-file-attributes");
+        this.contentEncoding = rawHeaders.getValue("Content-Encoding");
+        this.xMsCopyStatusDescription = rawHeaders.getValue("x-ms-copy-status-description");
+        String xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
+        if (xMsLeaseDuration != null) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
+        }
+        String contentLength = rawHeaders.getValue("Content-Length");
+        if (contentLength != null) {
+            this.contentLength = Long.parseLong(contentLength);
+        }
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.contentType = rawHeaders.getValue("Content-Type");
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsFilePermissionKey = rawHeaders.getValue("x-ms-file-permission-key");
+        this.xMsCopyId = rawHeaders.getValue("x-ms-copy-id");
+        this.xMsCopySource = rawHeaders.getValue("x-ms-copy-source");
+        this.xMsCopyProgress = rawHeaders.getValue("x-ms-copy-progress");
+        String date = rawHeaders.getValue("Date");
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        }
+        String contentMD5 = rawHeaders.getValue("Content-MD5");
+        if (contentMD5 != null) {
+            this.contentMD5 = Base64.getDecoder().decode(contentMD5);
+        }
+        this.acceptRanges = rawHeaders.getValue("Accept-Ranges");
+        String xMsCopyCompletionTime = rawHeaders.getValue("x-ms-copy-completion-time");
+        if (xMsCopyCompletionTime != null) {
+            this.xMsCopyCompletionTime = new DateTimeRfc1123(xMsCopyCompletionTime);
+        }
+        String xMsServerEncrypted = rawHeaders.getValue("x-ms-server-encrypted");
+        if (xMsServerEncrypted != null) {
+            this.xMsServerEncrypted = Boolean.parseBoolean(xMsServerEncrypted);
+        }
+        this.cacheControl = rawHeaders.getValue("Cache-Control");
+        this.eTag = rawHeaders.getValue("ETag");
+        this.contentDisposition = rawHeaders.getValue("Content-Disposition");
+        String xMsFileChangeTime = rawHeaders.getValue("x-ms-file-change-time");
+        if (xMsFileChangeTime != null) {
+            this.xMsFileChangeTime = OffsetDateTime.parse(xMsFileChangeTime);
+        }
+        this.xMsFileParentId = rawHeaders.getValue("x-ms-file-parent-id");
+        String xMsCopyStatus = rawHeaders.getValue("x-ms-copy-status");
+        if (xMsCopyStatus != null) {
+            this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
+        }
+        this.contentLanguage = rawHeaders.getValue("Content-Language");
+        String xMsFileLastWriteTime = rawHeaders.getValue("x-ms-file-last-write-time");
+        if (xMsFileLastWriteTime != null) {
+            this.xMsFileLastWriteTime = OffsetDateTime.parse(xMsFileLastWriteTime);
+        }
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
+
+        for (HttpHeader header : rawHeaders) {
+            String headerName = header.getName();
+            if (headerName.startsWith("x-ms-meta-")) {
+                xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
+            }
+        }
+
+        this.xMsMeta = xMsMetaHeaderCollection;
+    }
 
     /**
      * Get the xMsFileId property: The x-ms-file-id property.
@@ -627,28 +724,28 @@ public final class FilesDownloadHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the FilesDownloadHeaders object itself.
      */
-    public FilesDownloadHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public FilesDownloadHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

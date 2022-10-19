@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceSku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The RoleInstance model. */
+/** Describes the cloud service role instance. */
 @Fluent
 public final class RoleInstanceInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleInstanceInner.class);
-
     /*
      * Resource Id
      */
@@ -49,13 +45,13 @@ public final class RoleInstanceInner {
     private Map<String, String> tags;
 
     /*
-     * The sku property.
+     * The role instance SKU.
      */
     @JsonProperty(value = "sku")
     private InstanceSku sku;
 
     /*
-     * The properties property.
+     * Role instance properties.
      */
     @JsonProperty(value = "properties")
     private RoleInstancePropertiesInner properties;
@@ -106,7 +102,7 @@ public final class RoleInstanceInner {
     }
 
     /**
-     * Get the sku property: The sku property.
+     * Get the sku property: The role instance SKU.
      *
      * @return the sku value.
      */
@@ -115,7 +111,7 @@ public final class RoleInstanceInner {
     }
 
     /**
-     * Set the sku property: The sku property.
+     * Set the sku property: The role instance SKU.
      *
      * @param sku the sku value to set.
      * @return the RoleInstanceInner object itself.
@@ -126,7 +122,7 @@ public final class RoleInstanceInner {
     }
 
     /**
-     * Get the properties property: The properties property.
+     * Get the properties property: Role instance properties.
      *
      * @return the properties value.
      */
@@ -135,7 +131,7 @@ public final class RoleInstanceInner {
     }
 
     /**
-     * Set the properties property: The properties property.
+     * Set the properties property: Role instance properties.
      *
      * @param properties the properties value to set.
      * @return the RoleInstanceInner object itself.

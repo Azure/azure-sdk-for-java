@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The CassandraClusterPublicStatusDataCentersItem model. */
 @Fluent
 public final class CassandraClusterPublicStatusDataCentersItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CassandraClusterPublicStatusDataCentersItem.class);
-
     /*
      * The name of this Datacenter.
      */
@@ -31,8 +27,7 @@ public final class CassandraClusterPublicStatusDataCentersItem {
      * The nodes property.
      */
     @JsonProperty(value = "nodes")
-    private List<ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems>
-        nodes;
+    private List<CassandraClusterPublicStatusDataCentersItemNode> nodes;
 
     /**
      * Get the name property: The name of this Datacenter.
@@ -79,8 +74,7 @@ public final class CassandraClusterPublicStatusDataCentersItem {
      *
      * @return the nodes value.
      */
-    public List<ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems>
-        nodes() {
+    public List<CassandraClusterPublicStatusDataCentersItemNode> nodes() {
         return this.nodes;
     }
 
@@ -91,7 +85,7 @@ public final class CassandraClusterPublicStatusDataCentersItem {
      * @return the CassandraClusterPublicStatusDataCentersItem object itself.
      */
     public CassandraClusterPublicStatusDataCentersItem withNodes(
-        List<ComponentsM9L909SchemasCassandraclusterpublicstatusPropertiesDatacentersItemsPropertiesNodesItems> nodes) {
+        List<CassandraClusterPublicStatusDataCentersItemNode> nodes) {
         this.nodes = nodes;
         return this;
     }

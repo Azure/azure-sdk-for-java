@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Represents Codeless API Polling data connector. */
 @Fluent
 public final class DataConnectorConnectBody {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataConnectorConnectBody.class);
-
     /*
      * The authentication kind used to poll the data
      */
@@ -26,6 +22,26 @@ public final class DataConnectorConnectBody {
      */
     @JsonProperty(value = "apiKey")
     private String apiKey;
+
+    /*
+     * Used in v2 logs connector. Represents the data collection ingestion endpoint in log analytics.
+     */
+    @JsonProperty(value = "dataCollectionEndpoint")
+    private String dataCollectionEndpoint;
+
+    /*
+     * Used in v2 logs connector. The data collection rule immutable id, the rule defines the transformation and data
+     * destination.
+     */
+    @JsonProperty(value = "dataCollectionRuleImmutableId")
+    private String dataCollectionRuleImmutableId;
+
+    /*
+     * Used in v2 logs connector. The stream we are sending the data to, this is the name of the streamDeclarations
+     * defined in the DCR.
+     */
+    @JsonProperty(value = "outputStream")
+    private String outputStream;
 
     /*
      * The client secret of the OAuth 2.0 application.
@@ -100,6 +116,72 @@ public final class DataConnectorConnectBody {
      */
     public DataConnectorConnectBody withApiKey(String apiKey) {
         this.apiKey = apiKey;
+        return this;
+    }
+
+    /**
+     * Get the dataCollectionEndpoint property: Used in v2 logs connector. Represents the data collection ingestion
+     * endpoint in log analytics.
+     *
+     * @return the dataCollectionEndpoint value.
+     */
+    public String dataCollectionEndpoint() {
+        return this.dataCollectionEndpoint;
+    }
+
+    /**
+     * Set the dataCollectionEndpoint property: Used in v2 logs connector. Represents the data collection ingestion
+     * endpoint in log analytics.
+     *
+     * @param dataCollectionEndpoint the dataCollectionEndpoint value to set.
+     * @return the DataConnectorConnectBody object itself.
+     */
+    public DataConnectorConnectBody withDataCollectionEndpoint(String dataCollectionEndpoint) {
+        this.dataCollectionEndpoint = dataCollectionEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the dataCollectionRuleImmutableId property: Used in v2 logs connector. The data collection rule immutable id,
+     * the rule defines the transformation and data destination.
+     *
+     * @return the dataCollectionRuleImmutableId value.
+     */
+    public String dataCollectionRuleImmutableId() {
+        return this.dataCollectionRuleImmutableId;
+    }
+
+    /**
+     * Set the dataCollectionRuleImmutableId property: Used in v2 logs connector. The data collection rule immutable id,
+     * the rule defines the transformation and data destination.
+     *
+     * @param dataCollectionRuleImmutableId the dataCollectionRuleImmutableId value to set.
+     * @return the DataConnectorConnectBody object itself.
+     */
+    public DataConnectorConnectBody withDataCollectionRuleImmutableId(String dataCollectionRuleImmutableId) {
+        this.dataCollectionRuleImmutableId = dataCollectionRuleImmutableId;
+        return this;
+    }
+
+    /**
+     * Get the outputStream property: Used in v2 logs connector. The stream we are sending the data to, this is the name
+     * of the streamDeclarations defined in the DCR.
+     *
+     * @return the outputStream value.
+     */
+    public String outputStream() {
+        return this.outputStream;
+    }
+
+    /**
+     * Set the outputStream property: Used in v2 logs connector. The stream we are sending the data to, this is the name
+     * of the streamDeclarations defined in the DCR.
+     *
+     * @param outputStream the outputStream value to set.
+     * @return the DataConnectorConnectBody object itself.
+     */
+    public DataConnectorConnectBody withOutputStream(String outputStream) {
+        this.outputStream = outputStream;
         return this;
     }
 

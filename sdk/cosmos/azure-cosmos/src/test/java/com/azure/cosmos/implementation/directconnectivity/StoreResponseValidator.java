@@ -38,7 +38,7 @@ public interface StoreResponseValidator {
             validators.add(new StoreResponseValidator() {
                 @Override
                 public void validate(StoreResponse resp) {
-                    assertThat(Arrays.asList(resp.getResponseHeaderNames())).asList().contains(headerKey);
+                    assertThat(Arrays.asList(resp.getResponseHeaderNames()).contains(headerKey)).isTrue();
                 }
             });
             return this;

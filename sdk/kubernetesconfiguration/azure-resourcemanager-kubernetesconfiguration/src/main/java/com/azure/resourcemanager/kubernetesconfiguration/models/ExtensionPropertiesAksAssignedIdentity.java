@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity of the Extension resource in an AKS cluster. */
 @Fluent
 public class ExtensionPropertiesAksAssignedIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtensionPropertiesAksAssignedIdentity.class);
-
     /*
      * The principal ID of resource identity.
      */
@@ -30,7 +26,7 @@ public class ExtensionPropertiesAksAssignedIdentity {
      * The identity type.
      */
     @JsonProperty(value = "type")
-    private ResourceIdentityType type;
+    private AksIdentityType type;
 
     /**
      * Get the principalId property: The principal ID of resource identity.
@@ -55,7 +51,7 @@ public class ExtensionPropertiesAksAssignedIdentity {
      *
      * @return the type value.
      */
-    public ResourceIdentityType type() {
+    public AksIdentityType type() {
         return this.type;
     }
 
@@ -65,7 +61,7 @@ public class ExtensionPropertiesAksAssignedIdentity {
      * @param type the type value to set.
      * @return the ExtensionPropertiesAksAssignedIdentity object itself.
      */
-    public ExtensionPropertiesAksAssignedIdentity withType(ResourceIdentityType type) {
+    public ExtensionPropertiesAksAssignedIdentity withType(AksIdentityType type) {
         this.type = type;
         return this;
     }

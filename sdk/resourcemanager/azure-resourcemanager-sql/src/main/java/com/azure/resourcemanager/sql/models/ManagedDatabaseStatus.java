@@ -42,7 +42,11 @@ public final class ManagedDatabaseStatus extends ExpandableStringEnum<ManagedDat
         return fromString(name, ManagedDatabaseStatus.class);
     }
 
-    /** @return known ManagedDatabaseStatus values. */
+    /**
+     * Gets known ManagedDatabaseStatus values.
+     *
+     * @return known ManagedDatabaseStatus values.
+     */
     public static Collection<ManagedDatabaseStatus> values() {
         return values(ManagedDatabaseStatus.class);
     }

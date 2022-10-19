@@ -18,7 +18,7 @@ public interface Watchlists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlists, without watchlist items.
+     * @return all watchlists, without watchlist items as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Watchlist> list(String resourceGroupName, String workspaceName);
 
@@ -27,13 +27,16 @@ public interface Watchlists {
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param workspaceName The name of the workspace.
+     * @param skipToken Skiptoken is only used if a previous operation returned a partial result. If a previous response
+     *     contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that
+     *     specifies a starting point to use for subsequent calls. Optional.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all watchlists, without watchlist items.
+     * @return all watchlists, without watchlist items as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Watchlist> list(String resourceGroupName, String workspaceName, Context context);
+    PagedIterable<Watchlist> list(String resourceGroupName, String workspaceName, String skipToken, Context context);
 
     /**
      * Gets a watchlist, without its watchlist items.
@@ -85,9 +88,9 @@ public interface Watchlists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
-    Response<Void> deleteWithResponse(
+    WatchlistsDeleteResponse deleteWithResponse(
         String resourceGroupName, String workspaceName, String watchlistAlias, Context context);
 
     /**
@@ -131,9 +134,9 @@ public interface Watchlists {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the response.
      */
-    Response<Void> deleteByIdWithResponse(String id, Context context);
+    WatchlistsDeleteResponse deleteByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new Watchlist resource.

@@ -2,7 +2,7 @@
 
 Azure Resource Manager Batch client library for Java.
 
-This package contains Microsoft Azure SDK for Batch Management SDK.  Package tag package-2021-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+This package contains Microsoft Azure SDK for Batch Management SDK. Batch Client. Package tag package-2022-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ## We'd love to hear your feedback
 
@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-batch</artifactId>
-    <version>1.0.0-beta.2</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -74,6 +74,35 @@ See [API design][design] for general introduction on design and key concepts on 
 
 ## Examples
 
+```java
+// batch account
+account = batchManager
+    .batchAccounts()
+    .define(batchAccountName)
+    .withRegion(REGION)
+    .withExistingResourceGroup(resourceGroup)
+    .create();
+
+// batch pool create
+pool = batchManager.pools()
+    .define(poolName)
+    .withExistingBatchAccount(resourceGroup, batchAccountName)
+    .withDisplayName(poolDisplayName)
+    .withDeploymentConfiguration(
+        new DeploymentConfiguration()
+            .withCloudServiceConfiguration(
+                new CloudServiceConfiguration().withOsFamily("4")))
+    .withScaleSettings(
+        new ScaleSettings()
+            .withFixedScale(
+                new FixedScaleSettings()
+                    .withResizeTimeout(Duration.parse("PT8M"))
+                    .withTargetDedicatedNodes(1)
+                    .withTargetLowPriorityNodes(1)
+                    .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION)))
+    .withVmSize("Standard_D1")
+    .create();
+```
 [Code snippets and samples](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/azure-resourcemanager-batch/SAMPLE.md)
 
 

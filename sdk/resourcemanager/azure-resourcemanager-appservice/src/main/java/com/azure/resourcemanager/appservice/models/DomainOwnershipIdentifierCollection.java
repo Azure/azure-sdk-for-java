@@ -7,15 +7,12 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.DomainOwnershipIdentifierInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of domain ownership identifiers. */
 @Fluent
 public final class DomainOwnershipIdentifierCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainOwnershipIdentifierCollection.class);
-
     /*
      * Collection of resources.
      */
@@ -64,7 +61,7 @@ public final class DomainOwnershipIdentifierCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property value in model DomainOwnershipIdentifierCollection"));
@@ -72,4 +69,6 @@ public final class DomainOwnershipIdentifierCollection {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DomainOwnershipIdentifierCollection.class);
 }

@@ -5,17 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of Frontend port of an application gateway. */
 @Fluent
 public final class ApplicationGatewayFrontendPortPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayFrontendPortPropertiesFormat.class);
-
     /*
      * Frontend port.
      */
@@ -27,6 +22,10 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ApplicationGatewayFrontendPortPropertiesFormat class. */
+    public ApplicationGatewayFrontendPortPropertiesFormat() {
+    }
 
     /**
      * Get the port property: Frontend port.

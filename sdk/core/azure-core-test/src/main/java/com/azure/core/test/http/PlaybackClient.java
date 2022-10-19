@@ -31,7 +31,7 @@ public final class PlaybackClient implements HttpClient {
     private static final String X_MS_ENCRYPTION_KEY_SHA256 = "x-ms-encryption-key-sha256";
 
     // Pattern that matches all '//' in a URL that aren't prefixed by 'http:' or 'https:'.
-    private static final Pattern DOUBLE_SLASH_CLEANER = Pattern.compile("(?<!https?:)\\/\\/");
+    private static final Pattern DOUBLE_SLASH_CLEANER = Pattern.compile("(?<!https?:)//");
 
     private static final Pattern ARRAYS_TO_STRING_SPLIT = Pattern.compile(", ");
 
@@ -54,7 +54,7 @@ public final class PlaybackClient implements HttpClient {
         this.textReplacementRules = new HashMap<>();
         if (textReplacementRules != null) {
             // Compile the replacement rules into Patterns as they'll be used as String.replaceAll functionality which
-            // compiles the target pattern anyways.
+            // compiles the target pattern anyway.
             for (Map.Entry<String, String> kvp : textReplacementRules.entrySet()) {
                 this.textReplacementRules.put(Pattern.compile(kvp.getKey()), kvp.getValue());
             }
@@ -66,10 +66,10 @@ public final class PlaybackClient implements HttpClient {
      */
     @Override
     public Mono<HttpResponse> send(final HttpRequest request) {
-        return Mono.defer(() -> playbackHttpResponse(request));
+        return Mono.fromCallable(() -> playbackHttpResponse(request));
     }
 
-    private Mono<HttpResponse> playbackHttpResponse(final HttpRequest request) {
+    private HttpResponse playbackHttpResponse(final HttpRequest request) {
         final String incomingUrl = applyReplacementRules(request.getUrl().toString());
         final String incomingMethod = request.getHttpMethod().toString();
 
@@ -96,7 +96,8 @@ public final class PlaybackClient implements HttpClient {
             logger.warning("NOT FOUND - Method: {} URL: {}", incomingMethod, incomingUrl);
             logger.warning("Records requested: {}.", count);
 
-            return Mono.error(new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
+            throw logger.logExceptionAsError(
+                new IllegalStateException("==> Unexpected request: " + incomingMethod + " " + incomingUrl));
         }
 
         if (networkCallRecord.getException() != null) {
@@ -168,8 +169,7 @@ public final class PlaybackClient implements HttpClient {
             }
         }
 
-        HttpResponse response = new MockHttpResponse(request, recordStatusCode, headers, bytes);
-        return Mono.just(response);
+        return new MockHttpResponse(request, recordStatusCode, headers, bytes);
     }
 
     private String applyReplacementRules(String text) {

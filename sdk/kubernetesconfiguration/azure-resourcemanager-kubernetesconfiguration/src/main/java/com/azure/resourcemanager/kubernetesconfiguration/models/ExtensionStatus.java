@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Status from the extension. */
 @Fluent
 public final class ExtensionStatus {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExtensionStatus.class);
-
     /*
      * Status code provided by the Extension
      */

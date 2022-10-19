@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes a Virtual Machine Scale Set Extension. */
 @Fluent
 public final class VirtualMachineScaleSetExtensionUpdate extends SubResourceReadOnly {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetExtensionUpdate.class);
-
     /*
      * The name of the extension.
      */
@@ -322,7 +318,7 @@ public final class VirtualMachineScaleSetExtensionUpdate extends SubResourceRead
      *
      * @return the protectedSettingsFromKeyVault value.
      */
-    public Object protectedSettingsFromKeyVault() {
+    public KeyVaultSecretReference protectedSettingsFromKeyVault() {
         return this.innerProperties() == null ? null : this.innerProperties().protectedSettingsFromKeyVault();
     }
 
@@ -334,7 +330,7 @@ public final class VirtualMachineScaleSetExtensionUpdate extends SubResourceRead
      * @return the VirtualMachineScaleSetExtensionUpdate object itself.
      */
     public VirtualMachineScaleSetExtensionUpdate withProtectedSettingsFromKeyVault(
-        Object protectedSettingsFromKeyVault) {
+        KeyVaultSecretReference protectedSettingsFromKeyVault) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetExtensionProperties();
         }

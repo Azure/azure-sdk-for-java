@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** An individual contact associated with this domain. */
 @Fluent
 public final class EnrichmentDomainWhoisContact {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrichmentDomainWhoisContact.class);
-
     /*
      * The name of this contact
      */

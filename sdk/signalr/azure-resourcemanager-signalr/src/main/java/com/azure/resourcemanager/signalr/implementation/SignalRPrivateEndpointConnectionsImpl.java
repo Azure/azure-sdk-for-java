@@ -13,10 +13,9 @@ import com.azure.resourcemanager.signalr.fluent.SignalRPrivateEndpointConnection
 import com.azure.resourcemanager.signalr.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.signalr.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.signalr.models.SignalRPrivateEndpointConnections;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SignalRPrivateEndpointConnectionsImpl implements SignalRPrivateEndpointConnections {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignalRPrivateEndpointConnectionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SignalRPrivateEndpointConnectionsImpl.class);
 
     private final SignalRPrivateEndpointConnectionsClient innerClient;
 

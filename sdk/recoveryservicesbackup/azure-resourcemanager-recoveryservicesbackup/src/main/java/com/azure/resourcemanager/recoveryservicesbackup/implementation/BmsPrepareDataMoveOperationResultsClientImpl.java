@@ -21,7 +21,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.BmsPrepareDataMoveOperationResultsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.VaultStorageConfigOperationResultResponseInner;
 import reactor.core.publisher.Mono;
@@ -30,8 +29,6 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in BmsPrepareDataMoveOperationResultsClient.
  */
 public final class BmsPrepareDataMoveOperationResultsClientImpl implements BmsPrepareDataMoveOperationResultsClient {
-    private final ClientLogger logger = new ClientLogger(BmsPrepareDataMoveOperationResultsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final BmsPrepareDataMoveOperationResultsService service;
 
@@ -86,7 +83,8 @@ public final class BmsPrepareDataMoveOperationResultsClientImpl implements BmsPr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result response for Vault Storage Config.
+     * @return operation result response for Vault Storage Config along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultStorageConfigOperationResultResponseInner>> getWithResponseAsync(
@@ -140,7 +138,8 @@ public final class BmsPrepareDataMoveOperationResultsClientImpl implements BmsPr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result response for Vault Storage Config.
+     * @return operation result response for Vault Storage Config along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<VaultStorageConfigOperationResultResponseInner>> getWithResponseAsync(
@@ -190,20 +189,13 @@ public final class BmsPrepareDataMoveOperationResultsClientImpl implements BmsPr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result response for Vault Storage Config.
+     * @return operation result response for Vault Storage Config on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<VaultStorageConfigOperationResultResponseInner> getAsync(
         String vaultName, String resourceGroupName, String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, operationId)
-            .flatMap(
-                (Response<VaultStorageConfigOperationResultResponseInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -233,7 +225,7 @@ public final class BmsPrepareDataMoveOperationResultsClientImpl implements BmsPr
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation result response for Vault Storage Config.
+     * @return operation result response for Vault Storage Config along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<VaultStorageConfigOperationResultResponseInner> getWithResponse(

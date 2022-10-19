@@ -6,12 +6,10 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.ConsistencyModeTypes;
 import com.azure.resourcemanager.compute.models.RestorePointInstanceView;
 import com.azure.resourcemanager.compute.models.RestorePointSourceMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,8 +17,6 @@ import java.util.List;
 /** Restore Point details. */
 @Fluent
 public final class RestorePointInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorePointInner.class);
-
     /*
      * The restore point properties.
      */
@@ -80,13 +76,30 @@ public final class RestorePointInner extends ProxyResource {
     }
 
     /**
-     * Get the consistencyMode property: Gets the consistency mode for the restore point. Please refer to
+     * Get the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
+     * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
      * https://aka.ms/RestorePoints for more details.
      *
      * @return the consistencyMode value.
      */
     public ConsistencyModeTypes consistencyMode() {
         return this.innerProperties() == null ? null : this.innerProperties().consistencyMode();
+    }
+
+    /**
+     * Set the consistencyMode property: ConsistencyMode of the RestorePoint. Can be specified in the input while
+     * creating a restore point. For now, only CrashConsistent is accepted as a valid input. Please refer to
+     * https://aka.ms/RestorePoints for more details.
+     *
+     * @param consistencyMode the consistencyMode value to set.
+     * @return the RestorePointInner object itself.
+     */
+    public RestorePointInner withConsistencyMode(ConsistencyModeTypes consistencyMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestorePointProperties();
+        }
+        this.innerProperties().withConsistencyMode(consistencyMode);
+        return this;
     }
 
     /**

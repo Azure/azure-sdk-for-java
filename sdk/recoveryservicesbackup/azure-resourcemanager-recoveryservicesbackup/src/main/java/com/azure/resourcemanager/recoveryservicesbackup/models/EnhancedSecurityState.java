@@ -30,7 +30,11 @@ public final class EnhancedSecurityState extends ExpandableStringEnum<EnhancedSe
         return fromString(name, EnhancedSecurityState.class);
     }
 
-    /** @return known EnhancedSecurityState values. */
+    /**
+     * Gets known EnhancedSecurityState values.
+     *
+     * @return known EnhancedSecurityState values.
+     */
     public static Collection<EnhancedSecurityState> values() {
         return values(EnhancedSecurityState.class);
     }

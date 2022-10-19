@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Linked service for MongoDB data source. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,16 +19,14 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class MongoDbV2LinkedService extends LinkedService {
     /*
-     * The MongoDB connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The MongoDB connection string. Type: string, SecureString or AzureKeyVaultSecretReference. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString", required = true)
     private Object connectionString;
 
     /*
-     * The name of the MongoDB database that you want to access. Type: string
-     * (or Expression with resultType string).
+     * The name of the MongoDB database that you want to access. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
@@ -72,6 +72,34 @@ public class MongoDbV2LinkedService extends LinkedService {
      */
     public MongoDbV2LinkedService setDatabase(Object database) {
         this.database = database;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbV2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbV2LinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbV2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public MongoDbV2LinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

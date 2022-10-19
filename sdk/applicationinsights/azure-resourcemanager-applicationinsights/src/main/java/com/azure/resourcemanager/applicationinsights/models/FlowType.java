@@ -24,7 +24,11 @@ public final class FlowType extends ExpandableStringEnum<FlowType> {
         return fromString(name, FlowType.class);
     }
 
-    /** @return known FlowType values. */
+    /**
+     * Gets known FlowType values.
+     *
+     * @return known FlowType values.
+     */
     public static Collection<FlowType> values() {
         return values(FlowType.class);
     }

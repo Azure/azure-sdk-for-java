@@ -113,7 +113,9 @@ public final class TableServiceClient {
     }
 
     /**
-     * Gets a {@link TableClient} instance for the table in the account with the provided {@code tableName}.
+     * Gets a {@link TableClient} instance for the table in the account with the provided {@code tableName}. The
+     * resulting {@link TableClient} will use the same {@link HttpPipeline pipeline} and
+     * {@link TableServiceVersion service version} as this {@link TableServiceClient}.
      *
      * @param tableName The name of the table.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Operator. */
+/** Describes operator to be matched. */
 public final class Operator extends ExpandableStringEnum<Operator> {
     /** Static value Any for Operator. */
     public static final Operator ANY = fromString("Any");
@@ -57,7 +57,11 @@ public final class Operator extends ExpandableStringEnum<Operator> {
         return fromString(name, Operator.class);
     }
 
-    /** @return known Operator values. */
+    /**
+     * Gets known Operator values.
+     *
+     * @return known Operator values.
+     */
     public static Collection<Operator> values() {
         return values(Operator.class);
     }

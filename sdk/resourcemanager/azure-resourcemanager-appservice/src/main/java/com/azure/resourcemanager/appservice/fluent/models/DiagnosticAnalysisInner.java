@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.AbnormalTimePeriod;
 import com.azure.resourcemanager.appservice.models.AnalysisData;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.List;
 /** Class representing a diagnostic analysis done on an application. */
 @Fluent
 public final class DiagnosticAnalysisInner extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiagnosticAnalysisInner.class);
-
     /*
      * DiagnosticAnalysis resource specific properties
      */

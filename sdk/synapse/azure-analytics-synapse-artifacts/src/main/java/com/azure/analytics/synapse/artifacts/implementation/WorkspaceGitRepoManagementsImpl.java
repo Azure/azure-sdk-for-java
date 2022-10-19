@@ -52,7 +52,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "ArtifactsClientWorks")
-    private interface WorkspaceGitRepoManagementsService {
+    public interface WorkspaceGitRepoManagementsService {
         @Post("/getGitHubAccessToken")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
@@ -73,7 +73,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GitHub access token.
+     * @return the GitHub access token along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GitHubAccessTokenResponse>> getGitHubAccessTokenWithResponseAsync(
@@ -100,7 +100,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GitHub access token.
+     * @return the GitHub access token along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<GitHubAccessTokenResponse>> getGitHubAccessTokenWithResponseAsync(
@@ -119,20 +119,13 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GitHub access token.
+     * @return the GitHub access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(
             GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId) {
         return getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId)
-                .flatMap(
-                        (Response<GitHubAccessTokenResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -142,21 +135,14 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GitHub access token.
+     * @return the GitHub access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(
             GitHubAccessTokenRequest gitHubAccessTokenRequest) {
         final String clientRequestId = null;
         return getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId)
-                .flatMap(
-                        (Response<GitHubAccessTokenResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -168,20 +154,13 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GitHub access token.
+     * @return the GitHub access token on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<GitHubAccessTokenResponse> getGitHubAccessTokenAsync(
             GitHubAccessTokenRequest gitHubAccessTokenRequest, String clientRequestId, Context context) {
         return getGitHubAccessTokenWithResponseAsync(gitHubAccessTokenRequest, clientRequestId, context)
-                .flatMap(
-                        (Response<GitHubAccessTokenResponse> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -224,7 +203,7 @@ public final class WorkspaceGitRepoManagementsImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the GitHub access token.
+     * @return the GitHub access token along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<GitHubAccessTokenResponse> getGitHubAccessTokenWithResponse(

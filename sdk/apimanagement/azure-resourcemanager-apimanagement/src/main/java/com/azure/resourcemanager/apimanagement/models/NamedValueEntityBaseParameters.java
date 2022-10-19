@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NamedValue Entity Base Parameters set. */
 @Fluent
 public class NamedValueEntityBaseParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NamedValueEntityBaseParameters.class);
-
     /*
      * Optional tags that when provided can be used to filter the NamedValue
      * list.

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Usage strings container. */
 @Immutable
 public final class VirtualNetworkUsageName {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkUsageName.class);
-
     /*
      * Localized subnet size and usage string.
      */
@@ -25,6 +21,10 @@ public final class VirtualNetworkUsageName {
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
+
+    /** Creates an instance of VirtualNetworkUsageName class. */
+    public VirtualNetworkUsageName() {
+    }
 
     /**
      * Get the localizedValue property: Localized subnet size and usage string.

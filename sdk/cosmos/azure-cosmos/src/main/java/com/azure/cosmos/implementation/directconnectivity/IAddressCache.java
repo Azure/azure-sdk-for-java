@@ -3,21 +3,13 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.implementation.IOpenConnectionsHandler;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
-
 public interface IAddressCache {
-
-    /**
-     * Update the physical address of the {@link PartitionKeyRangeIdentity partition key range identity} associated to the serverKey.
-     *
-     *
-     */
-    void updateAddresses(URI serverKey);
 
     /**
      * Resolves physical addresses by either PartitionKeyRangeIdentity.
@@ -33,4 +25,11 @@ public interface IAddressCache {
             RxDocumentServiceRequest request,
             PartitionKeyRangeIdentity partitionKeyRangeIdentity,
             boolean forceRefreshPartitionAddresses);
+
+    /***
+     * Set open connection handler.
+     *
+     * @param openConnectionsHandler
+     */
+    void setOpenConnectionsHandler(IOpenConnectionsHandler openConnectionsHandler);
 }

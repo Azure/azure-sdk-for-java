@@ -6,11 +6,9 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteGatewayPropertiesAutoScaleConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualHubId;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -18,8 +16,6 @@ import java.util.Map;
 /** ExpressRoute gateway resource. */
 @Fluent
 public final class ExpressRouteGatewayInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteGatewayInner.class);
-
     /*
      * Properties of the express route gateway.
      */
@@ -37,6 +33,10 @@ public final class ExpressRouteGatewayInner extends Resource {
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of ExpressRouteGatewayInner class. */
+    public ExpressRouteGatewayInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the express route gateway.
@@ -124,6 +124,21 @@ public final class ExpressRouteGatewayInner extends Resource {
     }
 
     /**
+     * Set the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
+     *
+     * @param expressRouteConnections the expressRouteConnections value to set.
+     * @return the ExpressRouteGatewayInner object itself.
+     */
+    public ExpressRouteGatewayInner withExpressRouteConnections(
+        List<ExpressRouteConnectionInner> expressRouteConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteGatewayProperties();
+        }
+        this.innerProperties().withExpressRouteConnections(expressRouteConnections);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state of the express route gateway resource.
      *
      * @return the provisioningState value.
@@ -152,6 +167,31 @@ public final class ExpressRouteGatewayInner extends Resource {
             this.innerProperties = new ExpressRouteGatewayProperties();
         }
         this.innerProperties().withVirtualHub(virtualHub);
+        return this;
+    }
+
+    /**
+     * Get the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
+     * networks.
+     *
+     * @return the allowNonVirtualWanTraffic value.
+     */
+    public Boolean allowNonVirtualWanTraffic() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowNonVirtualWanTraffic();
+    }
+
+    /**
+     * Set the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
+     * networks.
+     *
+     * @param allowNonVirtualWanTraffic the allowNonVirtualWanTraffic value to set.
+     * @return the ExpressRouteGatewayInner object itself.
+     */
+    public ExpressRouteGatewayInner withAllowNonVirtualWanTraffic(Boolean allowNonVirtualWanTraffic) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteGatewayProperties();
+        }
+        this.innerProperties().withAllowNonVirtualWanTraffic(allowNonVirtualWanTraffic);
         return this;
     }
 

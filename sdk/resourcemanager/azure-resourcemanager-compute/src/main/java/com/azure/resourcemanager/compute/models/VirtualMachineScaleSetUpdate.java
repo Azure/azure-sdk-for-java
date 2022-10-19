@@ -6,17 +6,13 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes a Virtual Machine Scale Set. */
 @Fluent
 public final class VirtualMachineScaleSetUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdate.class);
-
     /*
      * The virtual machine scale set sku.
      */
@@ -24,8 +20,7 @@ public final class VirtualMachineScaleSetUpdate extends UpdateResource {
     private Sku sku;
 
     /*
-     * The purchase plan when deploying a virtual machine scale set from VM
-     * Marketplace images.
+     * The purchase plan when deploying a virtual machine scale set from VM Marketplace images.
      */
     @JsonProperty(value = "plan")
     private Plan plan;

@@ -20,6 +20,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.storage.StorageManager;
 
+import java.util.Objects;
+
 /** Entry point to Azure container registry management. */
 public final class ContainerRegistryManager
     extends Manager<ContainerRegistryManagementClient> {
@@ -46,6 +48,8 @@ public final class ContainerRegistryManager
      * @return the ContainerRegistryManager
      */
     public static ContainerRegistryManager authenticate(TokenCredential credential, AzureProfile profile) {
+        Objects.requireNonNull(credential, "'credential' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return authenticate(HttpPipelineProvider.buildHttpPipeline(credential, profile), profile);
     }
 
@@ -56,7 +60,9 @@ public final class ContainerRegistryManager
      * @param profile the profile to use
      * @return the ContainerRegistryManager
      */
-    private static ContainerRegistryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+    public static ContainerRegistryManager authenticate(HttpPipeline httpPipeline, AzureProfile profile) {
+        Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
+        Objects.requireNonNull(profile, "'profile' cannot be null.");
         return new ContainerRegistryManager(httpPipeline, profile);
     }
 
@@ -95,8 +101,7 @@ public final class ContainerRegistryManager
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
-        this.storageManager = AzureConfigurableImpl.configureHttpPipeline(httpPipeline, StorageManager.configure())
-            .authenticate(null, profile);
+        storageManager = StorageManager.authenticate(httpPipeline, profile);
     }
 
     /** @return the availability set resource management API entry point */

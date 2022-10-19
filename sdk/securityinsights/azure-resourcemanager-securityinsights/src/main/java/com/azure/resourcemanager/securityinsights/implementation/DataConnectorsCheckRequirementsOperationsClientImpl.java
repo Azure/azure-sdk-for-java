@@ -22,7 +22,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.DataConnectorsCheckRequirementsOperationsClient;
 import com.azure.resourcemanager.securityinsights.fluent.models.DataConnectorRequirementsStateInner;
 import com.azure.resourcemanager.securityinsights.models.DataConnectorsCheckRequirements;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
  */
 public final class DataConnectorsCheckRequirementsOperationsClientImpl
     implements DataConnectorsCheckRequirementsOperationsClient {
-    private final ClientLogger logger = new ClientLogger(DataConnectorsCheckRequirementsOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DataConnectorsCheckRequirementsOperationsService service;
 
@@ -219,14 +216,7 @@ public final class DataConnectorsCheckRequirementsOperationsClientImpl
         String workspaceName,
         DataConnectorsCheckRequirements dataConnectorsCheckRequirements) {
         return postWithResponseAsync(resourceGroupName, workspaceName, dataConnectorsCheckRequirements)
-            .flatMap(
-                (Response<DataConnectorRequirementsStateInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**

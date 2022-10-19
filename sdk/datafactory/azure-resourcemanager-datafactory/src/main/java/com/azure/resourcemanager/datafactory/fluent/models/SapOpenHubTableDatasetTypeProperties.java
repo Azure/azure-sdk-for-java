@@ -6,36 +6,35 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Sap Business Warehouse Open Hub Destination Table properties. */
 @Fluent
 public final class SapOpenHubTableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SapOpenHubTableDatasetTypeProperties.class);
-
     /*
-     * The name of the Open Hub Destination with destination type as Database
-     * Table. Type: string (or Expression with resultType string).
+     * The name of the Open Hub Destination with destination type as Database Table. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "openHubDestinationName", required = true)
     private Object openHubDestinationName;
 
     /*
-     * Whether to exclude the records of the last request. The default value is
-     * true. Type: boolean (or Expression with resultType boolean).
+     * Whether to exclude the records of the last request. The default value is true. Type: boolean (or Expression with
+     * resultType boolean).
      */
     @JsonProperty(value = "excludeLastRequest")
     private Object excludeLastRequest;
 
     /*
-     * The ID of request for delta loading. Once it is set, only data with
-     * requestId larger than the value of this property will be retrieved. The
-     * default value is 0. Type: integer (or Expression with resultType integer
-     * ).
+     * The ID of request for delta loading. Once it is set, only data with requestId larger than the value of this
+     * property will be retrieved. The default value is 0. Type: integer (or Expression with resultType integer ).
      */
     @JsonProperty(value = "baseRequestId")
     private Object baseRequestId;
+
+    /** Creates an instance of SapOpenHubTableDatasetTypeProperties class. */
+    public SapOpenHubTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the openHubDestinationName property: The name of the Open Hub Destination with destination type as Database
@@ -112,11 +111,13 @@ public final class SapOpenHubTableDatasetTypeProperties {
      */
     public void validate() {
         if (openHubDestinationName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property openHubDestinationName in model"
                             + " SapOpenHubTableDatasetTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SapOpenHubTableDatasetTypeProperties.class);
 }

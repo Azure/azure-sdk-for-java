@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.UserEntityBaseParameters;
 import com.azure.resourcemanager.apimanagement.models.UserState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters supplied to the Update User operation. */
 @Fluent
 public final class UserUpdateParametersProperties extends UserEntityBaseParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserUpdateParametersProperties.class);
-
     /*
      * Email address. Must not be empty and must be unique within the service
      * instance.

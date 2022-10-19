@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ProtectionContain
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ProtectionContainerResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainerOperationResults;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ProtectionContainerResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProtectionContainerOperationResultsImpl implements ProtectionContainerOperationResults {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtectionContainerOperationResultsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProtectionContainerOperationResultsImpl.class);
 
     private final ProtectionContainerOperationResultsClient innerClient;
 

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Get User Token response details. */
 @Fluent
 public final class UserTokenResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserTokenResultInner.class);
-
     /*
      * Shared Access Authorization token for the User.
      */

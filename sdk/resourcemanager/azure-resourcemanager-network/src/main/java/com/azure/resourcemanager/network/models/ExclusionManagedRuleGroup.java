@@ -6,15 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines a managed rule group to use for exclusion. */
 @Fluent
 public final class ExclusionManagedRuleGroup {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExclusionManagedRuleGroup.class);
-
     /*
      * The managed rule group for exclusion.
      */
@@ -22,11 +19,14 @@ public final class ExclusionManagedRuleGroup {
     private String ruleGroupName;
 
     /*
-     * List of rules that will be excluded. If none specified, all rules in the
-     * group will be excluded.
+     * List of rules that will be excluded. If none specified, all rules in the group will be excluded.
      */
     @JsonProperty(value = "rules")
     private List<ExclusionManagedRule> rules;
+
+    /** Creates an instance of ExclusionManagedRuleGroup class. */
+    public ExclusionManagedRuleGroup() {
+    }
 
     /**
      * Get the ruleGroupName property: The managed rule group for exclusion.
@@ -77,7 +77,7 @@ public final class ExclusionManagedRuleGroup {
      */
     public void validate() {
         if (ruleGroupName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ruleGroupName in model ExclusionManagedRuleGroup"));
@@ -86,4 +86,6 @@ public final class ExclusionManagedRuleGroup {
             rules().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExclusionManagedRuleGroup.class);
 }

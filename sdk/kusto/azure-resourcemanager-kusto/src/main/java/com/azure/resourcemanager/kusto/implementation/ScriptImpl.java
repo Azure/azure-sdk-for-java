@@ -39,6 +39,10 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
         return this.innerModel().scriptUrlSasToken();
     }
 
+    public String scriptContent() {
+        return this.innerModel().scriptContent();
+    }
+
     public String forceUpdateTag() {
         return this.innerModel().forceUpdateTag();
     }
@@ -49,6 +53,10 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
 
     public ProvisioningState provisioningState() {
         return this.innerModel().provisioningState();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ScriptInner innerModel() {
@@ -157,6 +165,11 @@ public final class ScriptImpl implements Script, Script.Definition, Script.Updat
 
     public ScriptImpl withScriptUrlSasToken(String scriptUrlSasToken) {
         this.innerModel().withScriptUrlSasToken(scriptUrlSasToken);
+        return this;
+    }
+
+    public ScriptImpl withScriptContent(String scriptContent) {
+        this.innerModel().withScriptContent(scriptContent);
         return this;
     }
 

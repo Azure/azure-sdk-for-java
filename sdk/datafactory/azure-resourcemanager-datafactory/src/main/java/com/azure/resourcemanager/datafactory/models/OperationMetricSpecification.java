@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Details about an operation related to metrics. */
 @Fluent
 public final class OperationMetricSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationMetricSpecification.class);
-
     /*
      * The name of the metric.
      */
@@ -74,6 +70,10 @@ public final class OperationMetricSpecification {
      */
     @JsonProperty(value = "dimensions")
     private List<OperationMetricDimension> dimensions;
+
+    /** Creates an instance of OperationMetricSpecification class. */
+    public OperationMetricSpecification() {
+    }
 
     /**
      * Get the name property: The name of the metric.

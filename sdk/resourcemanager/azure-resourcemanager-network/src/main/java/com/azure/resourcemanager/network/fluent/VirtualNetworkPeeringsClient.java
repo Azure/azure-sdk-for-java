@@ -30,7 +30,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -45,7 +45,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -60,7 +60,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -76,7 +76,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -91,7 +91,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName);
@@ -132,7 +132,8 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network peering.
+     * @return the specified virtual network peering along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<VirtualNetworkPeeringInner>> getWithResponseAsync(
@@ -147,11 +148,27 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network peering.
+     * @return the specified virtual network peering on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualNetworkPeeringInner> getAsync(
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName);
+
+    /**
+     * Gets the specified virtual network peering.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param virtualNetworkPeeringName The name of the virtual network peering.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified virtual network peering along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VirtualNetworkPeeringInner> getWithResponse(
+        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context);
 
     /**
      * Gets the specified virtual network peering.
@@ -169,22 +186,6 @@ public interface VirtualNetworkPeeringsClient {
         String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName);
 
     /**
-     * Gets the specified virtual network peering.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the virtual network peering.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified virtual network peering.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkPeeringInner> getWithResponse(
-        String resourceGroupName, String virtualNetworkName, String virtualNetworkPeeringName, Context context);
-
-    /**
      * Creates or updates a peering in the specified virtual network.
      *
      * @param resourceGroupName The name of the resource group.
@@ -197,7 +198,8 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource.
+     * @return peerings in a virtual network resource along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -220,7 +222,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource.
+     * @return the {@link PollerFlux} for polling of peerings in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
@@ -238,20 +240,37 @@ public interface VirtualNetworkPeeringsClient {
      * @param virtualNetworkPeeringName The name of the peering.
      * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
      *     operation.
-     * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     *     space on the remote vNet after it's updated.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource.
+     * @return the {@link PollerFlux} for polling of peerings in a virtual network resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String virtualNetworkName,
+        String virtualNetworkPeeringName,
+        VirtualNetworkPeeringInner virtualNetworkPeeringParameters);
+
+    /**
+     * Creates or updates a peering in the specified virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param virtualNetworkPeeringName The name of the peering.
+     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
+     *     operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of peerings in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualNetworkName,
         String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        SyncRemoteAddressSpace syncRemoteAddressSpace);
+        VirtualNetworkPeeringInner virtualNetworkPeeringParameters);
 
     /**
      * Creates or updates a peering in the specified virtual network.
@@ -267,7 +286,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource.
+     * @return the {@link SyncPoller} for polling of peerings in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualNetworkPeeringInner>, VirtualNetworkPeeringInner> beginCreateOrUpdate(
@@ -291,7 +310,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource.
+     * @return peerings in a virtual network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(
@@ -312,7 +331,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource.
+     * @return peerings in a virtual network resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<VirtualNetworkPeeringInner> createOrUpdateAsync(
@@ -320,29 +339,6 @@ public interface VirtualNetworkPeeringsClient {
         String virtualNetworkName,
         String virtualNetworkPeeringName,
         VirtualNetworkPeeringInner virtualNetworkPeeringParameters);
-
-    /**
-     * Creates or updates a peering in the specified virtual network.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param virtualNetworkPeeringName The name of the peering.
-     * @param virtualNetworkPeeringParameters Parameters supplied to the create or update virtual network peering
-     *     operation.
-     * @param syncRemoteAddressSpace Parameter indicates the intention to sync the peering with the current address
-     *     space on the remote vNet after it's updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return peerings in a virtual network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkPeeringInner createOrUpdate(
-        String resourceGroupName,
-        String virtualNetworkName,
-        String virtualNetworkPeeringName,
-        VirtualNetworkPeeringInner virtualNetworkPeeringParameters,
-        SyncRemoteAddressSpace syncRemoteAddressSpace);
 
     /**
      * Creates or updates a peering in the specified virtual network.
@@ -397,7 +393,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual network peerings in a virtual network.
+     * @return all virtual network peerings in a virtual network as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<VirtualNetworkPeeringInner> listAsync(String resourceGroupName, String virtualNetworkName);
@@ -410,7 +406,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual network peerings in a virtual network.
+     * @return all virtual network peerings in a virtual network as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkPeeringInner> list(String resourceGroupName, String virtualNetworkName);
@@ -424,7 +420,7 @@ public interface VirtualNetworkPeeringsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all virtual network peerings in a virtual network.
+     * @return all virtual network peerings in a virtual network as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<VirtualNetworkPeeringInner> list(

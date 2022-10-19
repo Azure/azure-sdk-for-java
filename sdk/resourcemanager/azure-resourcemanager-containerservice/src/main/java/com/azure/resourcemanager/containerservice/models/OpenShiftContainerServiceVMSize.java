@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OpenShiftContainerServiceVMSize. */
+/** Size of OpenShift VMs. */
 public final class OpenShiftContainerServiceVMSize extends ExpandableStringEnum<OpenShiftContainerServiceVMSize> {
     /** Static value Standard_D2s_v3 for OpenShiftContainerServiceVMSize. */
     public static final OpenShiftContainerServiceVMSize STANDARD_D2S_V3 = fromString("Standard_D2s_v3");
@@ -120,7 +120,11 @@ public final class OpenShiftContainerServiceVMSize extends ExpandableStringEnum<
         return fromString(name, OpenShiftContainerServiceVMSize.class);
     }
 
-    /** @return known OpenShiftContainerServiceVMSize values. */
+    /**
+     * Gets known OpenShiftContainerServiceVMSize values.
+     *
+     * @return known OpenShiftContainerServiceVMSize values.
+     */
     public static Collection<OpenShiftContainerServiceVMSize> values() {
         return values(OpenShiftContainerServiceVMSize.class);
     }

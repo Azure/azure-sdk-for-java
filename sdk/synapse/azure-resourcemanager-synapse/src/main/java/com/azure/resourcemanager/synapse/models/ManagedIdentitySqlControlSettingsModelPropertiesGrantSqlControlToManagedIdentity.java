@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.synapse.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Grant sql control to managed identity. */
 @Fluent
 public class ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(ManagedIdentitySqlControlSettingsModelPropertiesGrantSqlControlToManagedIdentity.class);
-
     /*
      * Desired state
      */

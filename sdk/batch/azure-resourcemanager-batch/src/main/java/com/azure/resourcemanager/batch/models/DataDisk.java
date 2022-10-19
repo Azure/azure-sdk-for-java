@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -15,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 @Fluent
 public final class DataDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataDisk.class);
-
     /*
      * The logical unit number. The lun is used to uniquely identify each data
      * disk. If attaching multiple disks, each should have a distinct lun. The

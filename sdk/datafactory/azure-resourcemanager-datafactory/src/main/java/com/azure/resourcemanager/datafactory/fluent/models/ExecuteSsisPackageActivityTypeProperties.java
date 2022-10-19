@@ -12,7 +12,6 @@ import com.azure.resourcemanager.datafactory.models.SsisExecutionParameter;
 import com.azure.resourcemanager.datafactory.models.SsisLogLocation;
 import com.azure.resourcemanager.datafactory.models.SsisPackageLocation;
 import com.azure.resourcemanager.datafactory.models.SsisPropertyOverride;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -20,8 +19,6 @@ import java.util.Map;
 /** Execute SSIS package activity properties. */
 @Fluent
 public final class ExecuteSsisPackageActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecuteSsisPackageActivityTypeProperties.class);
-
     /*
      * SSIS package location.
      */
@@ -29,22 +26,20 @@ public final class ExecuteSsisPackageActivityTypeProperties {
     private SsisPackageLocation packageLocation;
 
     /*
-     * Specifies the runtime to execute SSIS package. The value should be "x86"
-     * or "x64". Type: string (or Expression with resultType string).
+     * Specifies the runtime to execute SSIS package. The value should be "x86" or "x64". Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "runtime")
     private Object runtime;
 
     /*
-     * The logging level of SSIS package execution. Type: string (or Expression
-     * with resultType string).
+     * The logging level of SSIS package execution. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "loggingLevel")
     private Object loggingLevel;
 
     /*
-     * The environment path to execute the SSIS package. Type: string (or
-     * Expression with resultType string).
+     * The environment path to execute the SSIS package. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "environmentPath")
     private Object environmentPath;
@@ -101,6 +96,10 @@ public final class ExecuteSsisPackageActivityTypeProperties {
      */
     @JsonProperty(value = "logLocation")
     private SsisLogLocation logLocation;
+
+    /** Creates an instance of ExecuteSsisPackageActivityTypeProperties class. */
+    public ExecuteSsisPackageActivityTypeProperties() {
+    }
 
     /**
      * Get the packageLocation property: SSIS package location.
@@ -361,7 +360,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
      */
     public void validate() {
         if (packageLocation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property packageLocation in model ExecuteSsisPackageActivityTypeProperties"));
@@ -372,7 +371,7 @@ public final class ExecuteSsisPackageActivityTypeProperties {
             executionCredential().validate();
         }
         if (connectVia() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectVia in model ExecuteSsisPackageActivityTypeProperties"));
@@ -447,4 +446,6 @@ public final class ExecuteSsisPackageActivityTypeProperties {
             logLocation().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExecuteSsisPackageActivityTypeProperties.class);
 }

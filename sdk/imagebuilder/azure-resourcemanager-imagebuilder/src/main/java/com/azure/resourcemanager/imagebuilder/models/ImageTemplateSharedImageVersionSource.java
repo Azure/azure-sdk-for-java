@@ -6,7 +6,6 @@ package com.azure.resourcemanager.imagebuilder.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SharedImageVersion")
 @Fluent
 public final class ImageTemplateSharedImageVersionSource extends ImageTemplateSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageTemplateSharedImageVersionSource.class);
-
     /*
      * ARM resource id of the image version in the shared image gallery
      */
@@ -53,10 +50,12 @@ public final class ImageTemplateSharedImageVersionSource extends ImageTemplateSo
     public void validate() {
         super.validate();
         if (imageVersionId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property imageVersionId in model ImageTemplateSharedImageVersionSource"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImageTemplateSharedImageVersionSource.class);
 }

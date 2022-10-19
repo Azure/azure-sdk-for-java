@@ -14,10 +14,9 @@ import com.azure.resourcemanager.apimanagement.models.PortalSigninSettings;
 import com.azure.resourcemanager.apimanagement.models.SignInSettings;
 import com.azure.resourcemanager.apimanagement.models.SignInSettingsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.SignInSettingsGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SignInSettingsImpl implements SignInSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SignInSettingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SignInSettingsImpl.class);
 
     private final SignInSettingsClient innerClient;
 

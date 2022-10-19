@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Container App container definition. */
 @Fluent
 public final class Container {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Container.class);
-
     /*
      * Container image tag.
      */

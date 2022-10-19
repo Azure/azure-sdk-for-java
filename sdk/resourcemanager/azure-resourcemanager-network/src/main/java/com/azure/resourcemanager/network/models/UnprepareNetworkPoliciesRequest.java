@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of UnprepareNetworkPolicies for Subnet. */
 @Fluent
 public final class UnprepareNetworkPoliciesRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UnprepareNetworkPoliciesRequest.class);
-
     /*
      * The name of the service for which subnet is being unprepared for.
      */
     @JsonProperty(value = "serviceName")
     private String serviceName;
+
+    /** Creates an instance of UnprepareNetworkPoliciesRequest class. */
+    public UnprepareNetworkPoliciesRequest() {
+    }
 
     /**
      * Get the serviceName property: The name of the service for which subnet is being unprepared for.

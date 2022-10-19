@@ -32,7 +32,8 @@ public interface SavedSearch {
     String type();
 
     /**
-     * Gets the etag property: The ETag of the saved search.
+     * Gets the etag property: The ETag of the saved search. To override an existing saved search, use "*" or specify
+     * the current Etag.
      *
      * @return the etag value.
      */
@@ -89,6 +90,13 @@ public interface SavedSearch {
      * @return the tags value.
      */
     List<Tag> tags();
+
+    /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
 
     /**
      * Gets the inner com.azure.resourcemanager.loganalytics.fluent.models.SavedSearchInner object.
@@ -191,9 +199,11 @@ public interface SavedSearch {
         /** The stage of the SavedSearch definition allowing to specify etag. */
         interface WithEtag {
             /**
-             * Specifies the etag property: The ETag of the saved search..
+             * Specifies the etag property: The ETag of the saved search. To override an existing saved search, use "*"
+             * or specify the current Etag.
              *
-             * @param etag The ETag of the saved search.
+             * @param etag The ETag of the saved search. To override an existing saved search, use "*" or specify the
+             *     current Etag.
              * @return the next definition stage.
              */
             WithCreate withEtag(String etag);
@@ -283,9 +293,11 @@ public interface SavedSearch {
         /** The stage of the SavedSearch update allowing to specify etag. */
         interface WithEtag {
             /**
-             * Specifies the etag property: The ETag of the saved search..
+             * Specifies the etag property: The ETag of the saved search. To override an existing saved search, use "*"
+             * or specify the current Etag.
              *
-             * @param etag The ETag of the saved search.
+             * @param etag The ETag of the saved search. To override an existing saved search, use "*" or specify the
+             *     current Etag.
              * @return the next definition stage.
              */
             Update withEtag(String etag);

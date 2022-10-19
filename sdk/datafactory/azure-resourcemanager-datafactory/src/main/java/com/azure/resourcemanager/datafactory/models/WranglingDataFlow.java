@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.PowerQueryTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,13 +16,15 @@ import java.util.List;
 @JsonTypeName("WranglingDataFlow")
 @Fluent
 public final class WranglingDataFlow extends DataFlow {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WranglingDataFlow.class);
-
     /*
      * PowerQuery data flow type properties.
      */
     @JsonProperty(value = "typeProperties")
     private PowerQueryTypeProperties innerTypeProperties;
+
+    /** Creates an instance of WranglingDataFlow class. */
+    public WranglingDataFlow() {
+    }
 
     /**
      * Get the innerTypeProperties property: PowerQuery data flow type properties.

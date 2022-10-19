@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.CopyActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,8 +17,6 @@ import java.util.List;
 @JsonTypeName("Copy")
 @Fluent
 public final class CopyActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CopyActivity.class);
-
     /*
      * Copy activity properties.
      */
@@ -37,6 +34,10 @@ public final class CopyActivity extends ExecutionActivity {
      */
     @JsonProperty(value = "outputs")
     private List<DatasetReference> outputs;
+
+    /** Creates an instance of CopyActivity class. */
+    public CopyActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: Copy activity properties.
@@ -498,7 +499,7 @@ public final class CopyActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model CopyActivity"));
@@ -512,4 +513,6 @@ public final class CopyActivity extends ExecutionActivity {
             outputs().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CopyActivity.class);
 }

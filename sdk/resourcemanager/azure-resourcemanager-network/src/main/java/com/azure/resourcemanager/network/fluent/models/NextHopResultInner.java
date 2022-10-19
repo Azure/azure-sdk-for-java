@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.NextHopType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The information about next hop from the specified VM. */
 @Fluent
 public final class NextHopResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NextHopResultInner.class);
-
     /*
      * Next hop type.
      */
@@ -28,12 +24,15 @@ public final class NextHopResultInner {
     private String nextHopIpAddress;
 
     /*
-     * The resource identifier for the route table associated with the route
-     * being returned. If the route being returned does not correspond to any
-     * user created routes then this field will be the string 'System Route'.
+     * The resource identifier for the route table associated with the route being returned. If the route being
+     * returned does not correspond to any user created routes then this field will be the string 'System Route'.
      */
     @JsonProperty(value = "routeTableId")
     private String routeTableId;
+
+    /** Creates an instance of NextHopResultInner class. */
+    public NextHopResultInner() {
+    }
 
     /**
      * Get the nextHopType property: Next hop type.

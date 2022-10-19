@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details about an operation related to logs. */
 @Fluent
 public final class OperationLogSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationLogSpecification.class);
-
     /*
      * The name of the log category.
      */
@@ -31,6 +27,10 @@ public final class OperationLogSpecification {
      */
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
+
+    /** Creates an instance of OperationLogSpecification class. */
+    public OperationLogSpecification() {
+    }
 
     /**
      * Get the name property: The name of the log category.

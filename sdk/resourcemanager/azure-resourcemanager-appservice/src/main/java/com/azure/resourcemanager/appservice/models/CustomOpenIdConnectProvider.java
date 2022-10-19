@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The configuration settings of the custom Open ID Connect provider. */
 @Fluent
 public final class CustomOpenIdConnectProvider {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomOpenIdConnectProvider.class);
-
     /*
      * <code>false</code> if the custom Open ID provider provider should not be
      * enabled; otherwise, <code>true</code>.

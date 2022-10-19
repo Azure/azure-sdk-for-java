@@ -35,4 +35,11 @@ public final class IntegrationRuntimeDebugResource extends SubResourceDebugResou
         this.properties = properties;
         return this;
     }
+
+    /** {@inheritDoc} */
+    @Override
+    public IntegrationRuntimeDebugResource setName(String name) {
+        super.setName(name);
+        return this;
+    }
 }

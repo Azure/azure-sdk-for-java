@@ -14,10 +14,9 @@ import com.azure.resourcemanager.synapse.fluent.models.TransparentDataEncryption
 import com.azure.resourcemanager.synapse.models.SqlPoolTransparentDataEncryptions;
 import com.azure.resourcemanager.synapse.models.TransparentDataEncryption;
 import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionName;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTransparentDataEncryptions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolTransparentDataEncryptionsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolTransparentDataEncryptionsImpl.class);
 
     private final SqlPoolTransparentDataEncryptionsClient innerClient;
 
@@ -82,7 +81,7 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
     public TransparentDataEncryption getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -90,14 +89,14 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
@@ -105,7 +104,7 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
         TransparentDataEncryptionName transparentDataEncryptionName =
             TransparentDataEncryptionName.fromString(Utils.getValueFromIdByName(id, "transparentDataEncryption"));
         if (transparentDataEncryptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -121,7 +120,7 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
     public Response<TransparentDataEncryption> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -129,14 +128,14 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String sqlPoolName = Utils.getValueFromIdByName(id, "sqlPools");
         if (sqlPoolName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'sqlPools'.", id)));
@@ -144,7 +143,7 @@ public final class SqlPoolTransparentDataEncryptionsImpl implements SqlPoolTrans
         TransparentDataEncryptionName transparentDataEncryptionName =
             TransparentDataEncryptionName.fromString(Utils.getValueFromIdByName(id, "transparentDataEncryption"));
         if (transparentDataEncryptionName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

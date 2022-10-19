@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
@@ -15,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("ParquetFormat")
 @Fluent
 public final class ParquetFormat extends DatasetStorageFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ParquetFormat.class);
+    /** Creates an instance of ParquetFormat class. */
+    public ParquetFormat() {
+    }
 
     /** {@inheritDoc} */
     @Override

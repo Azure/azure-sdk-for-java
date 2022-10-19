@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** KPI Resource Health Details. */
 @Fluent
 public final class KpiResourceHealthDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(KpiResourceHealthDetails.class);
-
     /*
      * Resource Health Status
      */

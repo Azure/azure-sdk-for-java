@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the application rule protocol. */
 @Fluent
 public final class AzureFirewallApplicationRuleProtocol {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallApplicationRuleProtocol.class);
-
     /*
      * Protocol type.
      */
@@ -21,11 +17,14 @@ public final class AzureFirewallApplicationRuleProtocol {
     private AzureFirewallApplicationRuleProtocolType protocolType;
 
     /*
-     * Port number for the protocol, cannot be greater than 64000. This field
-     * is optional.
+     * Port number for the protocol, cannot be greater than 64000. This field is optional.
      */
     @JsonProperty(value = "port")
     private Integer port;
+
+    /** Creates an instance of AzureFirewallApplicationRuleProtocol class. */
+    public AzureFirewallApplicationRuleProtocol() {
+    }
 
     /**
      * Get the protocolType property: Protocol type.

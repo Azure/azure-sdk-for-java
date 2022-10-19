@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,35 +14,29 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SqlDWSource")
 @Fluent
 public final class SqlDWSource extends TabularSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlDWSource.class);
-
     /*
-     * SQL Data Warehouse reader query. Type: string (or Expression with
-     * resultType string).
+     * SQL Data Warehouse reader query. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlReaderQuery")
     private Object sqlReaderQuery;
 
     /*
-     * Name of the stored procedure for a SQL Data Warehouse source. This
-     * cannot be used at the same time as SqlReaderQuery. Type: string (or
-     * Expression with resultType string).
+     * Name of the stored procedure for a SQL Data Warehouse source. This cannot be used at the same time as
+     * SqlReaderQuery. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "sqlReaderStoredProcedureName")
     private Object sqlReaderStoredProcedureName;
 
     /*
-     * Value and type setting for stored procedure parameters. Example:
-     * "{Parameter1: {value: "1", type: "int"}}". Type: object (or Expression
-     * with resultType object), itemType: StoredProcedureParameter.
+     * Value and type setting for stored procedure parameters. Example: "{Parameter1: {value: "1", type: "int"}}".
+     * Type: object (or Expression with resultType object), itemType: StoredProcedureParameter.
      */
     @JsonProperty(value = "storedProcedureParameters")
     private Object storedProcedureParameters;
 
     /*
-     * The partition mechanism that will be used for Sql read in parallel.
-     * Possible values include: "None", "PhysicalPartitionsOfTable",
-     * "DynamicRange".
+     * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
+     * "PhysicalPartitionsOfTable", "DynamicRange".
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
@@ -54,6 +46,10 @@ public final class SqlDWSource extends TabularSource {
      */
     @JsonProperty(value = "partitionSettings")
     private SqlPartitionSettings partitionSettings;
+
+    /** Creates an instance of SqlDWSource class. */
+    public SqlDWSource() {
+    }
 
     /**
      * Get the sqlReaderQuery property: SQL Data Warehouse reader query. Type: string (or Expression with resultType

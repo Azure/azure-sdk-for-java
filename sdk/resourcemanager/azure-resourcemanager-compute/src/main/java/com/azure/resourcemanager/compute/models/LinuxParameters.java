@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Input for InstallPatches on a Linux VM, as directly received by the API. */
 @Fluent
 public final class LinuxParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinuxParameters.class);
-
     /*
      * The update classifications to select when installing patches for Linux.
      */
@@ -22,22 +18,19 @@ public final class LinuxParameters {
     private List<VMGuestPatchClassificationLinux> classificationsToInclude;
 
     /*
-     * packages to include in the patch operation. Format:
-     * packageName_packageVersion
+     * packages to include in the patch operation. Format: packageName_packageVersion
      */
     @JsonProperty(value = "packageNameMasksToInclude")
     private List<String> packageNameMasksToInclude;
 
     /*
-     * packages to exclude in the patch operation. Format:
-     * packageName_packageVersion
+     * packages to exclude in the patch operation. Format: packageName_packageVersion
      */
     @JsonProperty(value = "packageNameMasksToExclude")
     private List<String> packageNameMasksToExclude;
 
     /*
-     * This is used as a maintenance run identifier for Auto VM Guest Patching
-     * in Linux.
+     * This is used as a maintenance run identifier for Auto VM Guest Patching in Linux.
      */
     @JsonProperty(value = "maintenanceRunId")
     private String maintenanceRunId;

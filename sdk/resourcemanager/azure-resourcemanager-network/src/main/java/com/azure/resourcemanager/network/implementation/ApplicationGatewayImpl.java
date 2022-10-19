@@ -61,17 +61,22 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.stream.Collectors;
 
-/** Implementation of the ApplicationGateway interface. */
+/**
+ * Implementation of the ApplicationGateway interface.
+ */
 class ApplicationGatewayImpl
     extends GroupableParentResourceWithTagsImpl<
-        ApplicationGateway, ApplicationGatewayInner, ApplicationGatewayImpl, NetworkManager>
+    ApplicationGateway, ApplicationGatewayInner, ApplicationGatewayImpl, NetworkManager>
     implements ApplicationGateway, ApplicationGateway.Definition, ApplicationGateway.Update {
 
     private Map<String, ApplicationGatewayIpConfiguration> ipConfigs;
@@ -81,6 +86,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayBackendHttpConfiguration> backendConfigs;
     private Map<String, ApplicationGatewayListener> listeners;
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
+    private AddedRuleCollection addedRuleCollection;
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
     private Map<String, ApplicationGatewayAuthenticationCertificate> authCertificates;
     private Map<String, ApplicationGatewayRedirectConfiguration> redirectConfigs;
@@ -146,6 +152,7 @@ class ApplicationGatewayImpl
         this.defaultPrivateFrontend = null;
         this.defaultPublicFrontend = null;
         this.creatablePipsByFrontend = new HashMap<>();
+        this.addedRuleCollection = new AddedRuleCollection();
     }
 
     private void initializeAuthCertificatesFromInner() {
@@ -366,6 +373,9 @@ class ApplicationGatewayImpl
         }
 
         // Reset and update request routing rules
+        if (supportsRulePriority()) {
+            addedRuleCollection.autoAssignPriorities(requestRoutingRules().values(), name());
+        }
         this.innerModel().withRequestRoutingRules(innersFromWrappers(this.rules.values()));
         for (ApplicationGatewayRequestRoutingRule rule : this.rules.values()) {
             SubResource ref;
@@ -580,7 +590,7 @@ class ApplicationGatewayImpl
      *
      * @param byName object found by name
      * @param byPort object found by port
-     * @param name the desired name of the object
+     * @param name   the desired name of the object
      * @return CreationState
      */
     <T> CreationState needToCreate(T byName, T byPort, String name) {
@@ -804,6 +814,14 @@ class ApplicationGatewayImpl
             this.innerModel().withSku(new ApplicationGatewaySku().withCapacity(1));
         }
         this.innerModel().sku().withTier(skuTier);
+        if (skuTier == ApplicationGatewayTier.WAF_V2 && this.innerModel().webApplicationFirewallConfiguration() == null) {
+            this.innerModel().withWebApplicationFirewallConfiguration(
+                new ApplicationGatewayWebApplicationFirewallConfiguration()
+                    .withEnabled(true)
+                    .withFirewallMode(ApplicationGatewayFirewallMode.DETECTION)
+                    .withRuleSetType("OWASP")
+                    .withRuleSetVersion("3.0"));
+        }
         return this;
     }
 
@@ -886,11 +904,13 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl defineRequestRoutingRule(String name) {
-        return defineChild(
+        ApplicationGatewayRequestRoutingRuleImpl rule = defineChild(
             name,
             this.rules,
             ApplicationGatewayRequestRoutingRuleInner.class,
             ApplicationGatewayRequestRoutingRuleImpl.class);
+        addedRuleCollection.addRule(rule);
+        return rule;
     }
 
     @Override
@@ -966,11 +986,11 @@ class ApplicationGatewayImpl
                     .getDeclaredConstructor(innerClass, ApplicationGatewayImpl.class)
                     .newInstance(inner, this);
             } catch (InstantiationException
-                | IllegalAccessException
-                | IllegalArgumentException
-                | InvocationTargetException
-                | NoSuchMethodException
-                | SecurityException e1) {
+                     | IllegalAccessException
+                     | IllegalArgumentException
+                     | InvocationTargetException
+                     | NoSuchMethodException
+                     | SecurityException e1) {
                 return null;
             }
         } else {
@@ -1215,6 +1235,7 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withoutRequestRoutingRule(String name) {
         this.rules.remove(name);
+        this.addedRuleCollection.removeRule(name);
         return this;
     }
 
@@ -1694,5 +1715,74 @@ class ApplicationGatewayImpl
                     }
                     return Collections.unmodifiableMap(backendHealths);
                 });
+    }
+
+    /*
+     * Only V2 Gateway supports priority.
+     */
+    private boolean supportsRulePriority() {
+        ApplicationGatewayTier tier = tier();
+        ApplicationGatewaySkuName sku = size();
+        return tier != ApplicationGatewayTier.STANDARD
+            && sku != ApplicationGatewaySkuName.STANDARD_SMALL && sku != ApplicationGatewaySkuName.STANDARD_MEDIUM
+            && sku != ApplicationGatewaySkuName.STANDARD_LARGE && sku != ApplicationGatewaySkuName.WAF_MEDIUM
+            && sku != ApplicationGatewaySkuName.WAF_LARGE;
+    }
+
+    private static class AddedRuleCollection {
+        private static final int AUTO_ASSIGN_PRIORITY_START = 10010;
+        private static final int MAX_PRIORITY = 20000;
+        private static final int PRIORITY_INTERVAL = 10;
+        private final Map<String, ApplicationGatewayRequestRoutingRuleImpl> ruleMap = new LinkedHashMap<>();
+
+        /*
+         * Remove a rule from priority auto-assignment.
+         */
+        void removeRule(String name) {
+            ruleMap.remove(name);
+        }
+
+        /*
+         * Add a rule for priority auto-assignment while preserving the adding order.
+         */
+        void addRule(ApplicationGatewayRequestRoutingRuleImpl rule) {
+            ruleMap.put(rule.name(), rule);
+        }
+
+        /*
+         * Auto-assign priority values for rules without priority (ranging from 10010 to 20000).
+         * Rules defined later in the definition chain will have larger priority values over those defined earlier.
+         */
+        void autoAssignPriorities(Collection<ApplicationGatewayRequestRoutingRule> existingRules, String gatewayName) {
+            // list all existing rule priorities
+            Set<Integer> existingPriorities = existingRules
+                .stream()
+                .map(ApplicationGatewayRequestRoutingRule::priority)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+
+            // for all newly add rules without priority, assign priorities in the order they were added
+            int nextPriorityToAssign = AUTO_ASSIGN_PRIORITY_START;
+            for (ApplicationGatewayRequestRoutingRuleImpl rule : ruleMap.values()) {
+                if (rule.priority() != null) {
+                    continue;
+                }
+                boolean assigned = false;
+                for (int priority = nextPriorityToAssign; priority <= MAX_PRIORITY; priority += PRIORITY_INTERVAL) {
+                    if (existingPriorities.contains(priority)) {
+                        continue;
+                    }
+                    rule.withPriority(priority);
+                    assigned = true;
+                    existingPriorities.add(priority);
+                    nextPriorityToAssign = priority + PRIORITY_INTERVAL;
+                    break;
+                }
+                if (!assigned) {
+                    throw new IllegalStateException(
+                        String.format("Failed to auto assign priority for rule: %s, gateway: %s", rule.name(), gatewayName));
+                }
+            }
+        }
     }
 }

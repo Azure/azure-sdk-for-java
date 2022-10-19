@@ -11,6 +11,9 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.util.BinaryData;
+import com.azure.core.util.Contexts;
+import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.UrlBuilder;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
@@ -20,6 +23,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeoutException;
 
@@ -47,7 +52,7 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
             && (HttpMethod.GET.equals(context.getHttpRequest().getHttpMethod())
             || HttpMethod.HEAD.equals(context.getHttpRequest().getHttpMethod()));
 
-        return this.attemptAsync(context, next, context.getHttpRequest(), considerSecondary, 1, 1);
+        return this.attemptAsync(context, next, context.getHttpRequest(), considerSecondary, 1, 1, null);
     }
 
     /**
@@ -66,12 +71,14 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
      * @param considerSecondary Before each try, we'll select either the primary or secondary URL if appropriate.
      * @param primaryTry Number of attempts against the primary DC.
      * @param attempt This indicates the total number of attempts to send the request.
+     * @param suppressed The list of throwables that has been suppressed.
      * @return A single containing either the successful response or an error that was not retryable because either the
      * {@code maxTries} was exceeded or retries will not mitigate the issue.
      */
     private Mono<HttpResponse> attemptAsync(final HttpPipelineCallContext context, HttpPipelineNextPolicy next,
                                             final HttpRequest originalRequest, final boolean considerSecondary,
-                                            final int primaryTry, final int attempt) {
+                                            final int primaryTry, final int attempt,
+                                            final List<Throwable> suppressed) {
         // Determine which endpoint to try. It's primary if there is no secondary or if it is an odd number attempt.
         final boolean tryingPrimary = !considerSecondary || (attempt % 2 != 0);
 
@@ -94,10 +101,15 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
          duplicates the ByteBuffer object, not the underlying data.
          */
         context.setHttpRequest(originalRequest.copy());
-        Flux<ByteBuffer> bufferedBody = (context.getHttpRequest().getBody() == null)
-            ? null
-            : context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
-        context.getHttpRequest().setBody(bufferedBody);
+        BinaryData originalRequestBody = originalRequest.getBodyAsBinaryData();
+        if (originalRequestBody != null && !originalRequestBody.isReplayable()) {
+            // Replayable bodies don't require this transformation.
+            // TODO (kasobol-msft) Remove this transformation in favor of
+            // BinaryData.toReplayableBinaryData()
+            // But this should be done together with removal of buffering in chunked uploads.
+            Flux<ByteBuffer> bufferedBody = context.getHttpRequest().getBody().map(ByteBuffer::duplicate);
+            context.getHttpRequest().setBody(bufferedBody);
+        }
         if (!tryingPrimary) {
             UrlBuilder builder = UrlBuilder.parse(context.getHttpRequest().getUrl());
             builder.setHost(this.requestRetryOptions.getSecondaryHost());
@@ -111,6 +123,14 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
         Update the RETRY_COUNT_CONTEXT to log retries.
          */
         context.setData(HttpLoggingPolicy.RETRY_COUNT_CONTEXT, attempt);
+
+        /*
+        Reset progress if progress is tracked.
+         */
+        ProgressReporter progressReporter = Contexts.with(context.getContext()).getHttpRequestProgressReporter();
+        if (progressReporter != null) {
+            progressReporter.reset();
+        }
 
         /*
          We want to send the request with a given timeout, but we don't want to kickoff that timeout-bound operation
@@ -150,12 +170,12 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                     Flux<ByteBuffer> responseBody = response.getBody();
                     if (responseBody == null) {
                         return attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
-                            attempt + 1);
+                            attempt + 1, suppressed);
                     } else {
-                        return response.getBody()
+                        return responseBody
                             .ignoreElements()
                             .then(attemptAsync(context, next, originalRequest, newConsiderSecondary, newPrimaryTry,
-                                attempt + 1));
+                                attempt + 1, suppressed));
                     }
 
                 }
@@ -199,7 +219,13 @@ public final class RequestRetryPolicy implements HttpPipelinePolicy {
                         ensure primaryTry is correct when passed to calculate the delay.
                          */
                     int newPrimaryTry = (!tryingPrimary || !considerSecondary) ? primaryTry + 1 : primaryTry;
-                    return attemptAsync(context, next, originalRequest, considerSecondary, newPrimaryTry, attempt + 1);
+                    List<Throwable> suppressedLocal = suppressed == null ? new LinkedList<>() : suppressed;
+                    suppressedLocal.add(unwrappedThrowable);
+                    return attemptAsync(context, next, originalRequest,
+                        considerSecondary, newPrimaryTry, attempt + 1, suppressedLocal);
+                }
+                if (suppressed != null) {
+                    suppressed.forEach(throwable::addSuppressed);
                 }
                 return Mono.error(throwable);
             });

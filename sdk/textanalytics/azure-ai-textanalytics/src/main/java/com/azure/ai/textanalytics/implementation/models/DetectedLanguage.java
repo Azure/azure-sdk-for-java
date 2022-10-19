@@ -17,15 +17,14 @@ public final class DetectedLanguage {
     private String name;
 
     /*
-     * A two letter representation of the detected language according to the
-     * ISO 639-1 standard (e.g. en, fr).
+     * A two letter representation of the detected language according to the ISO 639-1 standard (e.g. en, fr).
      */
     @JsonProperty(value = "iso6391Name", required = true)
     private String iso6391Name;
 
     /*
-     * A confidence score between 0 and 1. Scores close to 1 indicate 100%
-     * certainty that the identified language is true.
+     * A confidence score between 0 and 1. Scores close to 1 indicate 100% certainty that the identified language is
+     * true.
      */
     @JsonProperty(value = "confidenceScore", required = true)
     private double confidenceScore;

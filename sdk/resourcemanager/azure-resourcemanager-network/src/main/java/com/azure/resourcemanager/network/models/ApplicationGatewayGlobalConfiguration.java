@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Application Gateway global configuration. */
 @Fluent
 public final class ApplicationGatewayGlobalConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayGlobalConfiguration.class);
-
     /*
      * Enable request buffering.
      */
@@ -25,6 +21,10 @@ public final class ApplicationGatewayGlobalConfiguration {
      */
     @JsonProperty(value = "enableResponseBuffering")
     private Boolean enableResponseBuffering;
+
+    /** Creates an instance of ApplicationGatewayGlobalConfiguration class. */
+    public ApplicationGatewayGlobalConfiguration() {
+    }
 
     /**
      * Get the enableRequestBuffering property: Enable request buffering.

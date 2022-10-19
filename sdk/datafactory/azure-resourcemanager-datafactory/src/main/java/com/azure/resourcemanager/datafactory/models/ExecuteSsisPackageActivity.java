@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ExecuteSsisPackageActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("ExecuteSSISPackage")
 @Fluent
 public final class ExecuteSsisPackageActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecuteSsisPackageActivity.class);
-
     /*
      * Execute SSIS package activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private ExecuteSsisPackageActivityTypeProperties innerTypeProperties =
         new ExecuteSsisPackageActivityTypeProperties();
+
+    /** Creates an instance of ExecuteSsisPackageActivity class. */
+    public ExecuteSsisPackageActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: Execute SSIS package activity properties.
@@ -372,7 +373,7 @@ public final class ExecuteSsisPackageActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ExecuteSsisPackageActivity"));
@@ -380,4 +381,6 @@ public final class ExecuteSsisPackageActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExecuteSsisPackageActivity.class);
 }

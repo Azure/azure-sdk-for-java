@@ -25,7 +25,7 @@ public class SkillsSupportedVersionsTests {
         assertThrows(IllegalArgumentException.class, executable);
     }
 
-    private static Stream<Executable> throwsAsExpectedSupplier() {
+    static Stream<Executable> throwsAsExpectedSupplier() {
         return Stream.of(
             // V1 doesn't support setting a model version.
             () -> new EntityRecognitionSkill(null, null).setModelVersion(""),
@@ -48,7 +48,7 @@ public class SkillsSupportedVersionsTests {
         assertDoesNotThrow(executable);
     }
 
-    private static Stream<Executable> doesNotThrowAsExpectedSupplier() {
+    static Stream<Executable> doesNotThrowAsExpectedSupplier() {
         // Setting null values are fine.
         return Stream.of(
             // V1 doesn't support setting a model version.

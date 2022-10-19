@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ExecutionState. */
+/** Script execution status. */
 public final class ExecutionState extends ExpandableStringEnum<ExecutionState> {
     /** Static value Unknown for ExecutionState. */
     public static final ExecutionState UNKNOWN = fromString("Unknown");
@@ -42,7 +42,11 @@ public final class ExecutionState extends ExpandableStringEnum<ExecutionState> {
         return fromString(name, ExecutionState.class);
     }
 
-    /** @return known ExecutionState values. */
+    /**
+     * Gets known ExecutionState values.
+     *
+     * @return known ExecutionState values.
+     */
     public static Collection<ExecutionState> values() {
         return values(ExecutionState.class);
     }

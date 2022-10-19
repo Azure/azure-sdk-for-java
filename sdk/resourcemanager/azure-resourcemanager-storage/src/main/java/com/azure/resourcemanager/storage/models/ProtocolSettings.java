@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Protocol settings for file service. */
 @Fluent
 public final class ProtocolSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProtocolSettings.class);
-
     /*
      * Setting for SMB protocol
      */

@@ -8,25 +8,20 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.FtpAuthenticationType;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties specific to this linked service type. */
 @Fluent
 public final class FtpServerLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FtpServerLinkedServiceTypeProperties.class);
-
     /*
-     * Host name of the FTP server. Type: string (or Expression with resultType
-     * string).
+     * Host name of the FTP server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "host", required = true)
     private Object host;
 
     /*
-     * The TCP port number that the FTP server uses to listen for client
-     * connections. Default value is 21. Type: integer (or Expression with
-     * resultType integer), minimum: 0.
+     * The TCP port number that the FTP server uses to listen for client connections. Default value is 21. Type:
+     * integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "port")
     private Object port;
@@ -38,8 +33,7 @@ public final class FtpServerLinkedServiceTypeProperties {
     private FtpAuthenticationType authenticationType;
 
     /*
-     * Username to logon the FTP server. Type: string (or Expression with
-     * resultType string).
+     * Username to logon the FTP server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -51,27 +45,29 @@ public final class FtpServerLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * If true, connect to the FTP server over SSL/TLS channel. Default value
-     * is true. Type: boolean (or Expression with resultType boolean).
+     * If true, connect to the FTP server over SSL/TLS channel. Default value is true. Type: boolean (or Expression
+     * with resultType boolean).
      */
     @JsonProperty(value = "enableSsl")
     private Object enableSsl;
 
     /*
-     * If true, validate the FTP server SSL certificate when connect over
-     * SSL/TLS channel. Default value is true. Type: boolean (or Expression
-     * with resultType boolean).
+     * If true, validate the FTP server SSL certificate when connect over SSL/TLS channel. Default value is true. Type:
+     * boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
+
+    /** Creates an instance of FtpServerLinkedServiceTypeProperties class. */
+    public FtpServerLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the host property: Host name of the FTP server. Type: string (or Expression with resultType string).
@@ -249,7 +245,7 @@ public final class FtpServerLinkedServiceTypeProperties {
      */
     public void validate() {
         if (host() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property host in model FtpServerLinkedServiceTypeProperties"));
@@ -258,4 +254,6 @@ public final class FtpServerLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(FtpServerLinkedServiceTypeProperties.class);
 }

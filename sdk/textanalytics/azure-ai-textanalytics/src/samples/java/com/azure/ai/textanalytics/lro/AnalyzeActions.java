@@ -61,8 +61,7 @@ public class AnalyzeActions {
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions().setDisplayName("{tasks_display_name}")
                     .setRecognizeEntitiesActions(new RecognizeEntitiesAction())
-                    .setExtractKeyPhrasesActions(
-                        new ExtractKeyPhrasesAction().setModelVersion("latest")),
+                    .setExtractKeyPhrasesActions(new ExtractKeyPhrasesAction()),
                 new AnalyzeActionsOptions(),
                 Context.NONE);
 

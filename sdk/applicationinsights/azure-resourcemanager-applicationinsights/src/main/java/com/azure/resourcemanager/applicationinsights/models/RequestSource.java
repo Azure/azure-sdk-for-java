@@ -24,7 +24,11 @@ public final class RequestSource extends ExpandableStringEnum<RequestSource> {
         return fromString(name, RequestSource.class);
     }
 
-    /** @return known RequestSource values. */
+    /**
+     * Gets known RequestSource values.
+     *
+     * @return known RequestSource values.
+     */
     public static Collection<RequestSource> values() {
         return values(RequestSource.class);
     }

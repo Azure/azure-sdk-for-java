@@ -8,15 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.BackupSchedule;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** BackupRequest resource specific properties. */
 @Fluent
 public final class BackupRequestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupRequestProperties.class);
-
     /*
      * Name of the backup.
      */
@@ -157,7 +154,7 @@ public final class BackupRequestProperties {
      */
     public void validate() {
         if (storageAccountUrl() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property storageAccountUrl in model BackupRequestProperties"));
@@ -169,4 +166,6 @@ public final class BackupRequestProperties {
             databases().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(BackupRequestProperties.class);
 }

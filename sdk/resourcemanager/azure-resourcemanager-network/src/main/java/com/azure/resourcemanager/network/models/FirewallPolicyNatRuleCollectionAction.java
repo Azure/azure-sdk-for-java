@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the FirewallPolicyNatRuleCollectionAction. */
 @Fluent
 public final class FirewallPolicyNatRuleCollectionAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FirewallPolicyNatRuleCollectionAction.class);
-
     /*
      * The type of action.
      */
     @JsonProperty(value = "type")
     private FirewallPolicyNatRuleCollectionActionType type;
+
+    /** Creates an instance of FirewallPolicyNatRuleCollectionAction class. */
+    public FirewallPolicyNatRuleCollectionAction() {
+    }
 
     /**
      * Get the type property: The type of action.

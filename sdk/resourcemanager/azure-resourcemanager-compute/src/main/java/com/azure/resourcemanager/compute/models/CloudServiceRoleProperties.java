@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CloudServiceRoleProperties model. */
+/** The cloud service role properties. */
 @Immutable
 public final class CloudServiceRoleProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CloudServiceRoleProperties.class);
-
     /*
      * Specifies the ID which uniquely identifies a cloud service role.
      */

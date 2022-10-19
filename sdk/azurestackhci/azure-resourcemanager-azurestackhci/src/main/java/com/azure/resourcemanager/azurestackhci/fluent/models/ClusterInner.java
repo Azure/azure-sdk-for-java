@@ -5,376 +5,47 @@
 package com.azure.resourcemanager.azurestackhci.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.azurestackhci.models.ClusterDesiredProperties;
 import com.azure.resourcemanager.azurestackhci.models.ClusterReportedProperties;
-import com.azure.resourcemanager.azurestackhci.models.CreatedByType;
 import com.azure.resourcemanager.azurestackhci.models.ProvisioningState;
 import com.azure.resourcemanager.azurestackhci.models.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
 /** Cluster details. */
-@JsonFlatten
 @Fluent
-public class ClusterInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
+public final class ClusterInner extends Resource {
+    /*
+     * System data of Cluster resource
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * Provisioning state.
+     * Cluster properties.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * Status of the cluster agent.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private Status status;
-
-    /*
-     * Unique, immutable resource id.
-     */
-    @JsonProperty(value = "properties.cloudId", access = JsonProperty.Access.WRITE_ONLY)
-    private String cloudId;
-
-    /*
-     * App id of cluster AAD identity.
-     */
-    @JsonProperty(value = "properties.aadClientId")
-    private String aadClientId;
-
-    /*
-     * Tenant id of cluster AAD identity.
-     */
-    @JsonProperty(value = "properties.aadTenantId")
-    private String aadTenantId;
-
-    /*
-     * Properties reported by cluster agent.
-     */
-    @JsonProperty(value = "properties.reportedProperties")
-    private ClusterReportedProperties reportedProperties;
-
-    /*
-     * Number of days remaining in the trial period.
-     */
-    @JsonProperty(value = "properties.trialDaysRemaining", access = JsonProperty.Access.WRITE_ONLY)
-    private Float trialDaysRemaining;
-
-    /*
-     * Type of billing applied to the resource.
-     */
-    @JsonProperty(value = "properties.billingModel", access = JsonProperty.Access.WRITE_ONLY)
-    private String billingModel;
-
-    /*
-     * First cluster sync timestamp.
-     */
-    @JsonProperty(value = "properties.registrationTimestamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime registrationTimestamp;
-
-    /*
-     * Most recent cluster sync timestamp.
-     */
-    @JsonProperty(value = "properties.lastSyncTimestamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastSyncTimestamp;
-
-    /*
-     * Most recent billing meter timestamp.
-     */
-    @JsonProperty(value = "properties.lastBillingTimestamp", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime lastBillingTimestamp;
-
-    /*
-     * The identity that created the resource.
-     */
-    @JsonProperty(value = "systemData.createdBy")
-    private String createdBy;
-
-    /*
-     * The type of identity that created the resource.
-     */
-    @JsonProperty(value = "systemData.createdByType")
-    private CreatedByType createdByType;
-
-    /*
-     * The timestamp of resource creation (UTC).
-     */
-    @JsonProperty(value = "systemData.createdAt")
-    private OffsetDateTime createdAt;
-
-    /*
-     * The identity that last modified the resource.
-     */
-    @JsonProperty(value = "systemData.lastModifiedBy")
-    private String lastModifiedBy;
-
-    /*
-     * The type of identity that last modified the resource.
-     */
-    @JsonProperty(value = "systemData.lastModifiedByType")
-    private CreatedByType lastModifiedByType;
-
-    /*
-     * The timestamp of resource last modification (UTC)
-     */
-    @JsonProperty(value = "systemData.lastModifiedAt")
-    private OffsetDateTime lastModifiedAt;
+    @JsonProperty(value = "properties")
+    private ClusterProperties innerProperties;
 
     /**
-     * Get the provisioningState property: Provisioning state.
+     * Get the systemData property: System data of Cluster resource.
      *
-     * @return the provisioningState value.
+     * @return the systemData value.
      */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
-     * Get the status property: Status of the cluster agent.
+     * Get the innerProperties property: Cluster properties.
      *
-     * @return the status value.
+     * @return the innerProperties value.
      */
-    public Status status() {
-        return this.status;
-    }
-
-    /**
-     * Get the cloudId property: Unique, immutable resource id.
-     *
-     * @return the cloudId value.
-     */
-    public String cloudId() {
-        return this.cloudId;
-    }
-
-    /**
-     * Get the aadClientId property: App id of cluster AAD identity.
-     *
-     * @return the aadClientId value.
-     */
-    public String aadClientId() {
-        return this.aadClientId;
-    }
-
-    /**
-     * Set the aadClientId property: App id of cluster AAD identity.
-     *
-     * @param aadClientId the aadClientId value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withAadClientId(String aadClientId) {
-        this.aadClientId = aadClientId;
-        return this;
-    }
-
-    /**
-     * Get the aadTenantId property: Tenant id of cluster AAD identity.
-     *
-     * @return the aadTenantId value.
-     */
-    public String aadTenantId() {
-        return this.aadTenantId;
-    }
-
-    /**
-     * Set the aadTenantId property: Tenant id of cluster AAD identity.
-     *
-     * @param aadTenantId the aadTenantId value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withAadTenantId(String aadTenantId) {
-        this.aadTenantId = aadTenantId;
-        return this;
-    }
-
-    /**
-     * Get the reportedProperties property: Properties reported by cluster agent.
-     *
-     * @return the reportedProperties value.
-     */
-    public ClusterReportedProperties reportedProperties() {
-        return this.reportedProperties;
-    }
-
-    /**
-     * Set the reportedProperties property: Properties reported by cluster agent.
-     *
-     * @param reportedProperties the reportedProperties value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withReportedProperties(ClusterReportedProperties reportedProperties) {
-        this.reportedProperties = reportedProperties;
-        return this;
-    }
-
-    /**
-     * Get the trialDaysRemaining property: Number of days remaining in the trial period.
-     *
-     * @return the trialDaysRemaining value.
-     */
-    public Float trialDaysRemaining() {
-        return this.trialDaysRemaining;
-    }
-
-    /**
-     * Get the billingModel property: Type of billing applied to the resource.
-     *
-     * @return the billingModel value.
-     */
-    public String billingModel() {
-        return this.billingModel;
-    }
-
-    /**
-     * Get the registrationTimestamp property: First cluster sync timestamp.
-     *
-     * @return the registrationTimestamp value.
-     */
-    public OffsetDateTime registrationTimestamp() {
-        return this.registrationTimestamp;
-    }
-
-    /**
-     * Get the lastSyncTimestamp property: Most recent cluster sync timestamp.
-     *
-     * @return the lastSyncTimestamp value.
-     */
-    public OffsetDateTime lastSyncTimestamp() {
-        return this.lastSyncTimestamp;
-    }
-
-    /**
-     * Get the lastBillingTimestamp property: Most recent billing meter timestamp.
-     *
-     * @return the lastBillingTimestamp value.
-     */
-    public OffsetDateTime lastBillingTimestamp() {
-        return this.lastBillingTimestamp;
-    }
-
-    /**
-     * Get the createdBy property: The identity that created the resource.
-     *
-     * @return the createdBy value.
-     */
-    public String createdBy() {
-        return this.createdBy;
-    }
-
-    /**
-     * Set the createdBy property: The identity that created the resource.
-     *
-     * @param createdBy the createdBy value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
-        return this;
-    }
-
-    /**
-     * Get the createdByType property: The type of identity that created the resource.
-     *
-     * @return the createdByType value.
-     */
-    public CreatedByType createdByType() {
-        return this.createdByType;
-    }
-
-    /**
-     * Set the createdByType property: The type of identity that created the resource.
-     *
-     * @param createdByType the createdByType value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withCreatedByType(CreatedByType createdByType) {
-        this.createdByType = createdByType;
-        return this;
-    }
-
-    /**
-     * Get the createdAt property: The timestamp of resource creation (UTC).
-     *
-     * @return the createdAt value.
-     */
-    public OffsetDateTime createdAt() {
-        return this.createdAt;
-    }
-
-    /**
-     * Set the createdAt property: The timestamp of resource creation (UTC).
-     *
-     * @param createdAt the createdAt value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withCreatedAt(OffsetDateTime createdAt) {
-        this.createdAt = createdAt;
-        return this;
-    }
-
-    /**
-     * Get the lastModifiedBy property: The identity that last modified the resource.
-     *
-     * @return the lastModifiedBy value.
-     */
-    public String lastModifiedBy() {
-        return this.lastModifiedBy;
-    }
-
-    /**
-     * Set the lastModifiedBy property: The identity that last modified the resource.
-     *
-     * @param lastModifiedBy the lastModifiedBy value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withLastModifiedBy(String lastModifiedBy) {
-        this.lastModifiedBy = lastModifiedBy;
-        return this;
-    }
-
-    /**
-     * Get the lastModifiedByType property: The type of identity that last modified the resource.
-     *
-     * @return the lastModifiedByType value.
-     */
-    public CreatedByType lastModifiedByType() {
-        return this.lastModifiedByType;
-    }
-
-    /**
-     * Set the lastModifiedByType property: The type of identity that last modified the resource.
-     *
-     * @param lastModifiedByType the lastModifiedByType value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withLastModifiedByType(CreatedByType lastModifiedByType) {
-        this.lastModifiedByType = lastModifiedByType;
-        return this;
-    }
-
-    /**
-     * Get the lastModifiedAt property: The timestamp of resource last modification (UTC).
-     *
-     * @return the lastModifiedAt value.
-     */
-    public OffsetDateTime lastModifiedAt() {
-        return this.lastModifiedAt;
-    }
-
-    /**
-     * Set the lastModifiedAt property: The timestamp of resource last modification (UTC).
-     *
-     * @param lastModifiedAt the lastModifiedAt value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withLastModifiedAt(OffsetDateTime lastModifiedAt) {
-        this.lastModifiedAt = lastModifiedAt;
-        return this;
+    private ClusterProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -392,13 +63,241 @@ public class ClusterInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: Provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the status property: Status of the cluster agent.
+     *
+     * @return the status value.
+     */
+    public Status status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the cloudId property: Unique, immutable resource id.
+     *
+     * @return the cloudId value.
+     */
+    public String cloudId() {
+        return this.innerProperties() == null ? null : this.innerProperties().cloudId();
+    }
+
+    /**
+     * Get the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
+     *
+     * @return the cloudManagementEndpoint value.
+     */
+    public String cloudManagementEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().cloudManagementEndpoint();
+    }
+
+    /**
+     * Set the cloudManagementEndpoint property: Endpoint configured for management from the Azure portal.
+     *
+     * @param cloudManagementEndpoint the cloudManagementEndpoint value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withCloudManagementEndpoint(String cloudManagementEndpoint) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withCloudManagementEndpoint(cloudManagementEndpoint);
+        return this;
+    }
+
+    /**
+     * Get the aadClientId property: App id of cluster AAD identity.
+     *
+     * @return the aadClientId value.
+     */
+    public String aadClientId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadClientId();
+    }
+
+    /**
+     * Set the aadClientId property: App id of cluster AAD identity.
+     *
+     * @param aadClientId the aadClientId value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withAadClientId(String aadClientId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAadClientId(aadClientId);
+        return this;
+    }
+
+    /**
+     * Get the aadTenantId property: Tenant id of cluster AAD identity.
+     *
+     * @return the aadTenantId value.
+     */
+    public String aadTenantId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadTenantId();
+    }
+
+    /**
+     * Set the aadTenantId property: Tenant id of cluster AAD identity.
+     *
+     * @param aadTenantId the aadTenantId value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withAadTenantId(String aadTenantId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAadTenantId(aadTenantId);
+        return this;
+    }
+
+    /**
+     * Get the aadApplicationObjectId property: Object id of cluster AAD identity.
+     *
+     * @return the aadApplicationObjectId value.
+     */
+    public String aadApplicationObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadApplicationObjectId();
+    }
+
+    /**
+     * Set the aadApplicationObjectId property: Object id of cluster AAD identity.
+     *
+     * @param aadApplicationObjectId the aadApplicationObjectId value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withAadApplicationObjectId(String aadApplicationObjectId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAadApplicationObjectId(aadApplicationObjectId);
+        return this;
+    }
+
+    /**
+     * Get the aadServicePrincipalObjectId property: Id of cluster identity service principal.
+     *
+     * @return the aadServicePrincipalObjectId value.
+     */
+    public String aadServicePrincipalObjectId() {
+        return this.innerProperties() == null ? null : this.innerProperties().aadServicePrincipalObjectId();
+    }
+
+    /**
+     * Set the aadServicePrincipalObjectId property: Id of cluster identity service principal.
+     *
+     * @param aadServicePrincipalObjectId the aadServicePrincipalObjectId value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withAadServicePrincipalObjectId(String aadServicePrincipalObjectId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withAadServicePrincipalObjectId(aadServicePrincipalObjectId);
+        return this;
+    }
+
+    /**
+     * Get the desiredProperties property: Desired properties of the cluster.
+     *
+     * @return the desiredProperties value.
+     */
+    public ClusterDesiredProperties desiredProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().desiredProperties();
+    }
+
+    /**
+     * Set the desiredProperties property: Desired properties of the cluster.
+     *
+     * @param desiredProperties the desiredProperties value to set.
+     * @return the ClusterInner object itself.
+     */
+    public ClusterInner withDesiredProperties(ClusterDesiredProperties desiredProperties) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ClusterProperties();
+        }
+        this.innerProperties().withDesiredProperties(desiredProperties);
+        return this;
+    }
+
+    /**
+     * Get the reportedProperties property: Properties reported by cluster agent.
+     *
+     * @return the reportedProperties value.
+     */
+    public ClusterReportedProperties reportedProperties() {
+        return this.innerProperties() == null ? null : this.innerProperties().reportedProperties();
+    }
+
+    /**
+     * Get the trialDaysRemaining property: Number of days remaining in the trial period.
+     *
+     * @return the trialDaysRemaining value.
+     */
+    public Float trialDaysRemaining() {
+        return this.innerProperties() == null ? null : this.innerProperties().trialDaysRemaining();
+    }
+
+    /**
+     * Get the billingModel property: Type of billing applied to the resource.
+     *
+     * @return the billingModel value.
+     */
+    public String billingModel() {
+        return this.innerProperties() == null ? null : this.innerProperties().billingModel();
+    }
+
+    /**
+     * Get the registrationTimestamp property: First cluster sync timestamp.
+     *
+     * @return the registrationTimestamp value.
+     */
+    public OffsetDateTime registrationTimestamp() {
+        return this.innerProperties() == null ? null : this.innerProperties().registrationTimestamp();
+    }
+
+    /**
+     * Get the lastSyncTimestamp property: Most recent cluster sync timestamp.
+     *
+     * @return the lastSyncTimestamp value.
+     */
+    public OffsetDateTime lastSyncTimestamp() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastSyncTimestamp();
+    }
+
+    /**
+     * Get the lastBillingTimestamp property: Most recent billing meter timestamp.
+     *
+     * @return the lastBillingTimestamp value.
+     */
+    public OffsetDateTime lastBillingTimestamp() {
+        return this.innerProperties() == null ? null : this.innerProperties().lastBillingTimestamp();
+    }
+
+    /**
+     * Get the serviceEndpoint property: Region specific DataPath Endpoint of the cluster.
+     *
+     * @return the serviceEndpoint value.
+     */
+    public String serviceEndpoint() {
+        return this.innerProperties() == null ? null : this.innerProperties().serviceEndpoint();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (reportedProperties() != null) {
-            reportedProperties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

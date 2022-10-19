@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.recoveryservices.implementation;
 
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.recoveryservices.RecoveryServicesManager;
 import com.azure.resourcemanager.recoveryservices.fluent.models.VaultCertificateResponseInner;
 import com.azure.resourcemanager.recoveryservices.models.CertificateRequest;
 import com.azure.resourcemanager.recoveryservices.models.RawCertificateData;
@@ -16,9 +15,11 @@ public final class VaultCertificateResponseImpl
     implements VaultCertificateResponse, VaultCertificateResponse.Definition {
     private VaultCertificateResponseInner innerObject;
 
-    private final RecoveryServicesManager serviceManager;
+    private final com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager;
 
-    VaultCertificateResponseImpl(VaultCertificateResponseInner innerObject, RecoveryServicesManager serviceManager) {
+    VaultCertificateResponseImpl(
+        VaultCertificateResponseInner innerObject,
+        com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }
@@ -43,7 +44,7 @@ public final class VaultCertificateResponseImpl
         return this.innerObject;
     }
 
-    private RecoveryServicesManager manager() {
+    private com.azure.resourcemanager.recoveryservices.RecoveryServicesManager manager() {
         return this.serviceManager;
     }
 
@@ -82,7 +83,8 @@ public final class VaultCertificateResponseImpl
         return this;
     }
 
-    VaultCertificateResponseImpl(String name, RecoveryServicesManager serviceManager) {
+    VaultCertificateResponseImpl(
+        String name, com.azure.resourcemanager.recoveryservices.RecoveryServicesManager serviceManager) {
         this.innerObject = new VaultCertificateResponseInner();
         this.serviceManager = serviceManager;
         this.certificateName = name;

@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiError;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetType;
 import com.azure.resourcemanager.compute.models.KeyForDiskEncryptionSet;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.List;
 /** The EncryptionSetProperties model. */
 @Fluent
 public final class EncryptionSetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSetProperties.class);
-
     /*
      * The type of key used to encrypt the data of the disk.
      */
@@ -32,9 +28,8 @@ public final class EncryptionSetProperties {
     private KeyForDiskEncryptionSet activeKey;
 
     /*
-     * A readonly collection of key vault keys previously used by this disk
-     * encryption set while a key rotation is in progress. It will be empty if
-     * there is no ongoing key rotation.
+     * A readonly collection of key vault keys previously used by this disk encryption set while a key rotation is in
+     * progress. It will be empty if there is no ongoing key rotation.
      */
     @JsonProperty(value = "previousKeys", access = JsonProperty.Access.WRITE_ONLY)
     private List<KeyForDiskEncryptionSet> previousKeys;
@@ -46,8 +41,7 @@ public final class EncryptionSetProperties {
     private String provisioningState;
 
     /*
-     * Set this flag to true to enable auto-updating of this disk encryption
-     * set to the latest key version.
+     * Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.
      */
     @JsonProperty(value = "rotationToLatestKeyVersionEnabled")
     private Boolean rotationToLatestKeyVersionEnabled;
@@ -59,12 +53,18 @@ public final class EncryptionSetProperties {
     private OffsetDateTime lastKeyRotationTimestamp;
 
     /*
-     * The error that was encountered during auto-key rotation. If an error is
-     * present, then auto-key rotation will not be attempted until the error on
-     * this disk encryption set is fixed.
+     * The error that was encountered during auto-key rotation. If an error is present, then auto-key rotation will not
+     * be attempted until the error on this disk encryption set is fixed.
      */
     @JsonProperty(value = "autoKeyRotationError", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError autoKeyRotationError;
+
+    /*
+     * Multi-tenant application client id to access key vault in a different tenant. Setting the value to 'None' will
+     * clear the property.
+     */
+    @JsonProperty(value = "federatedClientId")
+    private String federatedClientId;
 
     /**
      * Get the encryptionType property: The type of key used to encrypt the data of the disk.
@@ -164,6 +164,28 @@ public final class EncryptionSetProperties {
      */
     public ApiError autoKeyRotationError() {
         return this.autoKeyRotationError;
+    }
+
+    /**
+     * Get the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @return the federatedClientId value.
+     */
+    public String federatedClientId() {
+        return this.federatedClientId;
+    }
+
+    /**
+     * Set the federatedClientId property: Multi-tenant application client id to access key vault in a different tenant.
+     * Setting the value to 'None' will clear the property.
+     *
+     * @param federatedClientId the federatedClientId value to set.
+     * @return the EncryptionSetProperties object itself.
+     */
+    public EncryptionSetProperties withFederatedClientId(String federatedClientId) {
+        this.federatedClientId = federatedClientId;
+        return this;
     }
 
     /**

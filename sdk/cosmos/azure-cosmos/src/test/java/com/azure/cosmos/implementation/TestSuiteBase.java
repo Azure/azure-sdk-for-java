@@ -10,9 +10,11 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.TestNGLogListener;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient.Builder;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import com.azure.cosmos.implementation.guava25.base.CaseFormat;
 import com.azure.cosmos.implementation.guava25.collect.ImmutableList;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CompositePath;
 import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -176,7 +178,7 @@ public class TestSuiteBase extends DocumentClientTest {
 
             logger.info("Truncating collection {} documents ...", collection.getId());
 
-            houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", options)
+            houseKeepingClient.queryDocuments(collection.getSelfLink(), "SELECT * FROM root", options, Document.class)
                               .publishOn(Schedulers.parallel())
                     .flatMap(page -> Flux.fromIterable(page.getResults()))
                     .flatMap(doc -> {
@@ -502,7 +504,11 @@ public class TestSuiteBase extends DocumentClientTest {
         PartitionKey pk = new PartitionKey(docId);
         options.setPartitionKey(pk);
         List<Document> res = client
-                .queryDocuments(TestUtils.getCollectionNameLink(databaseId, collectionId), String.format("SELECT * FROM root r where r.id = '%s'", docId), options)
+                .queryDocuments(
+                    TestUtils.getCollectionNameLink(databaseId, collectionId),
+                    String.format("SELECT * FROM root r where r.id = '%s'", docId),
+                    options,
+                    Document.class)
                 .single().block().getResults();
         if (!res.isEmpty()) {
             deleteDocument(client, TestUtils.getDocumentNameLink(databaseId, collectionId, docId), pk);
@@ -900,10 +906,15 @@ public class TestSuiteBase extends DocumentClientTest {
         options.setMaxRetryWaitTime(Duration.ofSeconds(SUITE_SETUP_TIMEOUT));
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         connectionPolicy.setThrottlingRetryOptions(options);
-        return new Builder().withServiceEndpoint(TestConfigurations.HOST)
+        return new Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(connectionPolicy)
-                .withConsistencyLevel(ConsistencyLevel.SESSION).withContentResponseOnWriteEnabled(true);
+                .withConsistencyLevel(ConsistencyLevel.SESSION)
+                .withContentResponseOnWriteEnabled(true)
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
     }
 
     static protected Builder createGatewayRxDocumentClient(ConsistencyLevel consistencyLevel, boolean multiMasterEnabled, List<String> preferredLocations, boolean contentResponseOnWriteEnabled) {
@@ -911,11 +922,15 @@ public class TestSuiteBase extends DocumentClientTest {
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(gatewayConnectionConfig);
         connectionPolicy.setMultipleWriteRegionsEnabled(multiMasterEnabled);
         connectionPolicy.setPreferredRegions(preferredLocations);
-        return new Builder().withServiceEndpoint(TestConfigurations.HOST)
-                            .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
-                            .withConnectionPolicy(connectionPolicy)
-                            .withConsistencyLevel(consistencyLevel)
-                            .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
+        return new Builder()
+                .withServiceEndpoint(TestConfigurations.HOST)
+                .withMasterKeyOrResourceToken(TestConfigurations.MASTER_KEY)
+                .withConnectionPolicy(connectionPolicy)
+                .withConsistencyLevel(consistencyLevel)
+                .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
     }
 
     static protected Builder createGatewayRxDocumentClient() {
@@ -945,7 +960,11 @@ public class TestSuiteBase extends DocumentClientTest {
                             .withConnectionPolicy(connectionPolicy)
                             .withConsistencyLevel(consistencyLevel)
                             .withConfigs(configs)
-                            .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled);
+                            .withContentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                            .withClientTelemetryConfig(
+                            new CosmosClientTelemetryConfig()
+                                .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
+
     }
 
     protected int expectedNumberOfPages(int totalExpectedResult, int maxPageSize) {

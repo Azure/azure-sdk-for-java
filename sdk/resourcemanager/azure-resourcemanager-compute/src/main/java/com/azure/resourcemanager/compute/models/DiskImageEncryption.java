@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** This is the disk image encryption base class. */
 @Fluent
 public class DiskImageEncryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskImageEncryption.class);
-
     /*
      * A relative URI containing the resource ID of the disk encryption set.
      */

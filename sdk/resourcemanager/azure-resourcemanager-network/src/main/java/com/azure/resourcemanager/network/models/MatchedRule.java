@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Matched rule. */
 @Fluent
 public final class MatchedRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MatchedRule.class);
-
     /*
      * Name of the matched network security rule.
      */
@@ -21,11 +17,14 @@ public final class MatchedRule {
     private String ruleName;
 
     /*
-     * The network traffic is allowed or denied. Possible values are 'Allow'
-     * and 'Deny'.
+     * The network traffic is allowed or denied. Possible values are 'Allow' and 'Deny'.
      */
     @JsonProperty(value = "action")
     private String action;
+
+    /** Creates an instance of MatchedRule class. */
+    public MatchedRule() {
+    }
 
     /**
      * Get the ruleName property: Name of the matched network security rule.

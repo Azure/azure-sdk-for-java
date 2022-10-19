@@ -8,11 +8,14 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.models.CloudEvent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.TracerProxy;
 import com.azure.messaging.eventgrid.implementation.Constants;
@@ -36,6 +39,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -152,6 +156,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 @ServiceClient(builder = EventGridPublisherClientBuilder.class, isAsync = true)
 public final class EventGridPublisherAsyncClient<T> {
 
+    private static final String PARTNER_CHANNEL_HEADER_NAME = "aeg-channel-name";
     private final String hostname;
 
     private final EventGridPublisherClientImpl impl;
@@ -282,8 +287,47 @@ public final class EventGridPublisherAsyncClient<T> {
         return withContext(context -> this.sendEventsWithResponse(events, context));
     }
 
+    /**
+     * Publishes the given events to the set topic or domain and gives the response issued by EventGrid.
+     * @param events the events to publish.
+     * @param channelName the channel name to send to Event Grid service. This is only applicable for sending
+     *   Cloud Events to a partner topic in partner namespace. For more details, refer to
+     *   <a href=https://docs.microsoft.com/azure/event-grid/partner-events-overview>Partner Events Overview.</a>
+     * @return the response from the EventGrid service.
+     * @throws NullPointerException if events is {@code null}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, String channelName) {
+        return withContext(context -> this.sendEventsWithResponse(events, channelName, context));
+    }
+
     @SuppressWarnings("unchecked")
     Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, Context context) {
+        return sendEventsWithResponse(events, null, context);
+    }
+
+    @SuppressWarnings("unchecked")
+    Mono<Response<Void>> sendEventsWithResponse(Iterable<T> events, String channelName, Context context) {
+        if (context == null) {
+            context = Context.NONE;
+        }
+        if (!CoreUtils.isNullOrEmpty(channelName)) {
+            String requestHttpHeadersKey = AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
+            Map<Object, Object> keyValues = context.getValues();
+            if (keyValues != null && keyValues.containsKey(requestHttpHeadersKey)) {
+                // if the given Context instance already contains custom headers,
+                // add partner channel header to HttpHeaders
+                Object value = keyValues.get(requestHttpHeadersKey);
+                if (value instanceof HttpHeaders) {
+                    HttpHeaders headers = (HttpHeaders) value;
+                    headers.add(PARTNER_CHANNEL_HEADER_NAME, channelName);
+                }
+            } else {
+                context = context.addData(requestHttpHeadersKey,
+                        new HttpHeaders().add(PARTNER_CHANNEL_HEADER_NAME, channelName));
+            }
+        }
+
         if (this.eventClass == CloudEvent.class) {
             return this.sendCloudEventsWithResponse((Iterable<CloudEvent>) events, context);
         } else if (this.eventClass == EventGridEvent.class) {

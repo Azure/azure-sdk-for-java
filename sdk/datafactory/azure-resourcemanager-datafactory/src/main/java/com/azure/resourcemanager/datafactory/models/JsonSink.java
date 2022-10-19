@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +14,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("JsonSink")
 @Fluent
 public final class JsonSink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonSink.class);
-
     /*
      * Json store settings.
      */
@@ -29,6 +25,10 @@ public final class JsonSink extends CopySink {
      */
     @JsonProperty(value = "formatSettings")
     private JsonWriteSettings formatSettings;
+
+    /** Creates an instance of JsonSink class. */
+    public JsonSink() {
+    }
 
     /**
      * Get the storeSettings property: Json store settings.

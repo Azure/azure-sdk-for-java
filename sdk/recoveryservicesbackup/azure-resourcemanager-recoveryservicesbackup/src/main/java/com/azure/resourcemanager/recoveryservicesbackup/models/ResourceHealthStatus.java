@@ -39,7 +39,11 @@ public final class ResourceHealthStatus extends ExpandableStringEnum<ResourceHea
         return fromString(name, ResourceHealthStatus.class);
     }
 
-    /** @return known ResourceHealthStatus values. */
+    /**
+     * Gets known ResourceHealthStatus values.
+     *
+     * @return known ResourceHealthStatus values.
+     */
     public static Collection<ResourceHealthStatus> values() {
         return values(ResourceHealthStatus.class);
     }

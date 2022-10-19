@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class HmacAuthenticationPolicyTest extends PerfStressTest<PerfStressOptions> {
 
     private final static ConcurrentHashMap<String, String> dateToSignature = new ConcurrentHashMap<>();
+    // Do not change this otherwise CredScan will flag this.
     private final static String mockedKey = "JdppJP5eH1w/CQ0cx4RGYWoC7NmQ0nmDbYR2PYWSDTXojV9bI1ck0Eh0sUIg8xj4KYj7tv+ZPLICu3BgLt6mMz==";
     private final static HmacAuthenticationPolicy hmacAuthenticationPolicy = new HmacAuthenticationPolicy(new AzureKeyCredential(mockedKey));
 

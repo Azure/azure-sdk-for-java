@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Amazon Marketplace Web Service linked service properties. */
 @Fluent
 public final class AmazonMwsLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonMwsLinkedServiceTypeProperties.class);
-
     /*
      * The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com)
      */
@@ -22,9 +19,8 @@ public final class AmazonMwsLinkedServiceTypeProperties {
     private Object endpoint;
 
     /*
-     * The Amazon Marketplace ID you want to retrieve data from. To retrieve
-     * data from multiple Marketplace IDs, separate them with a comma (,).
-     * (i.e. A2EUQ1WTGCTBG2)
+     * The Amazon Marketplace ID you want to retrieve data from. To retrieve data from multiple Marketplace IDs,
+     * separate them with a comma (,). (i.e. A2EUQ1WTGCTBG2)
      */
     @JsonProperty(value = "marketplaceID", required = true)
     private Object marketplaceId;
@@ -54,34 +50,34 @@ public final class AmazonMwsLinkedServiceTypeProperties {
     private SecretBase secretKey;
 
     /*
-     * Specifies whether the data source endpoints are encrypted using HTTPS.
-     * The default value is true.
+     * Specifies whether the data source endpoints are encrypted using HTTPS. The default value is true.
      */
     @JsonProperty(value = "useEncryptedEndpoints")
     private Object useEncryptedEndpoints;
 
     /*
-     * Specifies whether to require the host name in the server's certificate
-     * to match the host name of the server when connecting over SSL. The
-     * default value is true.
+     * Specifies whether to require the host name in the server's certificate to match the host name of the server when
+     * connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "useHostVerification")
     private Object useHostVerification;
 
     /*
-     * Specifies whether to verify the identity of the server when connecting
-     * over SSL. The default value is true.
+     * Specifies whether to verify the identity of the server when connecting over SSL. The default value is true.
      */
     @JsonProperty(value = "usePeerVerification")
     private Object usePeerVerification;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of AmazonMwsLinkedServiceTypeProperties class. */
+    public AmazonMwsLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the endpoint property: The endpoint of the Amazon MWS server, (i.e. mws.amazonservices.com).
@@ -300,19 +296,19 @@ public final class AmazonMwsLinkedServiceTypeProperties {
      */
     public void validate() {
         if (endpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property endpoint in model AmazonMwsLinkedServiceTypeProperties"));
         }
         if (marketplaceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property marketplaceId in model AmazonMwsLinkedServiceTypeProperties"));
         }
         if (sellerId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sellerId in model AmazonMwsLinkedServiceTypeProperties"));
@@ -321,7 +317,7 @@ public final class AmazonMwsLinkedServiceTypeProperties {
             mwsAuthToken().validate();
         }
         if (accessKeyId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property accessKeyId in model AmazonMwsLinkedServiceTypeProperties"));
@@ -330,4 +326,6 @@ public final class AmazonMwsLinkedServiceTypeProperties {
             secretKey().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AmazonMwsLinkedServiceTypeProperties.class);
 }

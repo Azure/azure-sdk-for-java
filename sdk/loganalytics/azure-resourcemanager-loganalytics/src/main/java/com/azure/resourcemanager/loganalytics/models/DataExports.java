@@ -18,7 +18,7 @@ public interface DataExports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports.
+     * @return result of the request to list data exports as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataExport> listByWorkspace(String resourceGroupName, String workspaceName);
 
@@ -31,7 +31,7 @@ public interface DataExports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the request to list data exports.
+     * @return result of the request to list data exports as paginated response with {@link PagedIterable}.
      */
     PagedIterable<DataExport> listByWorkspace(String resourceGroupName, String workspaceName, Context context);
 
@@ -58,7 +58,7 @@ public interface DataExports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance.
+     * @return a data export instance along with {@link Response}.
      */
     Response<DataExport> getWithResponse(
         String resourceGroupName, String workspaceName, String dataExportName, Context context);
@@ -85,7 +85,7 @@ public interface DataExports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String dataExportName, Context context);
@@ -97,7 +97,7 @@ public interface DataExports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance.
+     * @return a data export instance along with {@link Response}.
      */
     DataExport getById(String id);
 
@@ -109,7 +109,7 @@ public interface DataExports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a data export instance.
+     * @return a data export instance along with {@link Response}.
      */
     Response<DataExport> getByIdWithResponse(String id, Context context);
 
@@ -131,7 +131,7 @@ public interface DataExports {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

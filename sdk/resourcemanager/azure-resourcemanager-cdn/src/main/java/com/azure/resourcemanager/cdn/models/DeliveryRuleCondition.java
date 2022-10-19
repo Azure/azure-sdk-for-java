@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -32,12 +30,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "UrlFileName", value = DeliveryRuleUrlFileNameCondition.class),
     @JsonSubTypes.Type(name = "HttpVersion", value = DeliveryRuleHttpVersionCondition.class),
     @JsonSubTypes.Type(name = "Cookies", value = DeliveryRuleCookiesCondition.class),
-    @JsonSubTypes.Type(name = "IsDevice", value = DeliveryRuleIsDeviceCondition.class)
+    @JsonSubTypes.Type(name = "IsDevice", value = DeliveryRuleIsDeviceCondition.class),
+    @JsonSubTypes.Type(name = "SocketAddr", value = DeliveryRuleSocketAddrCondition.class),
+    @JsonSubTypes.Type(name = "ClientPort", value = DeliveryRuleClientPortCondition.class),
+    @JsonSubTypes.Type(name = "ServerPort", value = DeliveryRuleServerPortCondition.class),
+    @JsonSubTypes.Type(name = "HostName", value = DeliveryRuleHostnameCondition.class),
+    @JsonSubTypes.Type(name = "SslProtocol", value = DeliveryRuleSslProtocolCondition.class)
 })
 @Immutable
 public class DeliveryRuleCondition {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeliveryRuleCondition.class);
-
     /**
      * Validates the instance.
      *

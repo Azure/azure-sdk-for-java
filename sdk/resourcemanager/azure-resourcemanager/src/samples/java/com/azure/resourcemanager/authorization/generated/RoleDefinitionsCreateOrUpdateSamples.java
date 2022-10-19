@@ -10,7 +10,7 @@ import com.azure.resourcemanager.authorization.fluent.models.RoleDefinitionInner
 /** Samples for RoleDefinitions CreateOrUpdate. */
 public final class RoleDefinitionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/preview/2018-01-01-preview/examples/PutRoleDefinition.json
+     * x-ms-original-file: specification/authorization/resource-manager/Microsoft.Authorization/stable/2015-07-01/examples/PutRoleDefinition.json
      */
     /**
      * Sample code: Create role definition.

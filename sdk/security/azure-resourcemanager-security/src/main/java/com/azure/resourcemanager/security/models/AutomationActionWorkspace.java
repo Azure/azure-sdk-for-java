@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -15,15 +13,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * The Log Analytics Workspace to which event data will be exported. Security alerts data will reside in the
  * 'SecurityAlert' table and the assessments data will reside in the 'SecurityRecommendation' table (under the
  * 'Security'/'SecurityCenterFree' solutions). Note that in order to view the data in the workspace, the Security Center
- * Log Analytics free/standard solution needs to be enabled on that workspace. To learn more about Security Center
- * continuous export capabilities, visit https://aka.ms/ASCExportLearnMore.
+ * Log Analytics free/standard solution needs to be enabled on that workspace. To learn more about Microsoft Defender
+ * for Cloud continuous export capabilities, visit https://aka.ms/ASCExportLearnMore.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "actionType")
 @JsonTypeName("Workspace")
 @Fluent
 public final class AutomationActionWorkspace extends AutomationAction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationActionWorkspace.class);
-
     /*
      * The fully qualified Log Analytics Workspace Azure Resource ID.
      */

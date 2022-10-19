@@ -30,7 +30,11 @@ public final class Origin extends ExpandableStringEnum<Origin> {
         return fromString(name, Origin.class);
     }
 
-    /** @return known Origin values. */
+    /**
+     * Gets known Origin values.
+     *
+     * @return known Origin values.
+     */
     public static Collection<Origin> values() {
         return values(Origin.class);
     }

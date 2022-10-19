@@ -6,31 +6,25 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
 import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the virtual network. */
 @Fluent
 public final class VirtualNetworkPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkPropertiesFormat.class);
-
     /*
-     * The AddressSpace that contains an array of IP address ranges that can be
-     * used by subnets.
+     * The AddressSpace that contains an array of IP address ranges that can be used by subnets.
      */
     @JsonProperty(value = "addressSpace")
     private AddressSpace addressSpace;
 
     /*
-     * The dhcpOptions that contains an array of DNS servers available to VMs
-     * deployed in the virtual network.
+     * The dhcpOptions that contains an array of DNS servers available to VMs deployed in the virtual network.
      */
     @JsonProperty(value = "dhcpOptions")
     private DhcpOptions dhcpOptions;
@@ -66,16 +60,14 @@ public final class VirtualNetworkPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /*
-     * Indicates if DDoS protection is enabled for all the protected resources
-     * in the virtual network. It requires a DDoS protection plan associated
-     * with the resource.
+     * Indicates if DDoS protection is enabled for all the protected resources in the virtual network. It requires a
+     * DDoS protection plan associated with the resource.
      */
     @JsonProperty(value = "enableDdosProtection")
     private Boolean enableDdosProtection;
 
     /*
-     * Indicates if VM protection is enabled for all the subnets in the virtual
-     * network.
+     * Indicates if VM protection is enabled for all the subnets in the virtual network.
      */
     @JsonProperty(value = "enableVmProtection")
     private Boolean enableVmProtection;
@@ -87,15 +79,13 @@ public final class VirtualNetworkPropertiesFormat {
     private SubResource ddosProtectionPlan;
 
     /*
-     * Bgp Communities sent over ExpressRoute with each route corresponding to
-     * a prefix in this VNET.
+     * Bgp Communities sent over ExpressRoute with each route corresponding to a prefix in this VNET.
      */
     @JsonProperty(value = "bgpCommunities")
     private VirtualNetworkBgpCommunities bgpCommunities;
 
     /*
-     * Indicates if encryption is enabled on virtual network and if VM without
-     * encryption is allowed in encrypted VNet.
+     * Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet.
      */
     @JsonProperty(value = "encryption")
     private VirtualNetworkEncryption encryption;
@@ -105,6 +95,10 @@ public final class VirtualNetworkPropertiesFormat {
      */
     @JsonProperty(value = "ipAllocations")
     private List<SubResource> ipAllocations;
+
+    /** Creates an instance of VirtualNetworkPropertiesFormat class. */
+    public VirtualNetworkPropertiesFormat() {
+    }
 
     /**
      * Get the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by

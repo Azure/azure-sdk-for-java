@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.DataLakeAnalyticsUsqlActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,14 +18,16 @@ import java.util.Map;
 @JsonTypeName("DataLakeAnalyticsU-SQL")
 @Fluent
 public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeAnalyticsUsqlActivity.class);
-
     /*
      * Data Lake Analytics U-SQL activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private DataLakeAnalyticsUsqlActivityTypeProperties innerTypeProperties =
         new DataLakeAnalyticsUsqlActivityTypeProperties();
+
+    /** Creates an instance of DataLakeAnalyticsUsqlActivity class. */
+    public DataLakeAnalyticsUsqlActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: Data Lake Analytics U-SQL activity properties.
@@ -261,7 +262,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model DataLakeAnalyticsUsqlActivity"));
@@ -269,4 +270,6 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeAnalyticsUsqlActivity.class);
 }

@@ -14,10 +14,9 @@ import com.azure.resourcemanager.synapse.fluent.models.RestorePointInner;
 import com.azure.resourcemanager.synapse.models.CreateSqlPoolRestorePointDefinition;
 import com.azure.resourcemanager.synapse.models.RestorePoint;
 import com.azure.resourcemanager.synapse.models.SqlPoolRestorePoints;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlPoolRestorePointsImpl implements SqlPoolRestorePoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlPoolRestorePointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlPoolRestorePointsImpl.class);
 
     private final SqlPoolRestorePointsClient innerClient;
 

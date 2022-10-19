@@ -6,7 +6,6 @@ package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -17,8 +16,6 @@ import java.time.OffsetDateTime;
 @JsonTypeName("AzureActiveDirectory")
 @Fluent
 public final class ResourceCertificateAndAadDetails extends ResourceCertificateDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceCertificateAndAadDetails.class);
-
     /*
      * AAD tenant authority.
      */
@@ -48,6 +45,18 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
      */
     @JsonProperty(value = "azureManagementEndpointAudience", required = true)
     private String azureManagementEndpointAudience;
+
+    /*
+     * Service Resource Id.
+     */
+    @JsonProperty(value = "serviceResourceId")
+    private String serviceResourceId;
+
+    /*
+     * AAD audience for the resource
+     */
+    @JsonProperty(value = "aadAudience")
+    private String aadAudience;
 
     /**
      * Get the aadAuthority property: AAD tenant authority.
@@ -150,6 +159,46 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
         return this;
     }
 
+    /**
+     * Get the serviceResourceId property: Service Resource Id.
+     *
+     * @return the serviceResourceId value.
+     */
+    public String serviceResourceId() {
+        return this.serviceResourceId;
+    }
+
+    /**
+     * Set the serviceResourceId property: Service Resource Id.
+     *
+     * @param serviceResourceId the serviceResourceId value to set.
+     * @return the ResourceCertificateAndAadDetails object itself.
+     */
+    public ResourceCertificateAndAadDetails withServiceResourceId(String serviceResourceId) {
+        this.serviceResourceId = serviceResourceId;
+        return this;
+    }
+
+    /**
+     * Get the aadAudience property: AAD audience for the resource.
+     *
+     * @return the aadAudience value.
+     */
+    public String aadAudience() {
+        return this.aadAudience;
+    }
+
+    /**
+     * Set the aadAudience property: AAD audience for the resource.
+     *
+     * @param aadAudience the aadAudience value to set.
+     * @return the ResourceCertificateAndAadDetails object itself.
+     */
+    public ResourceCertificateAndAadDetails withAadAudience(String aadAudience) {
+        this.aadAudience = aadAudience;
+        return this;
+    }
+
     /** {@inheritDoc} */
     @Override
     public ResourceCertificateAndAadDetails withCertificate(byte[] certificate) {
@@ -215,37 +264,39 @@ public final class ResourceCertificateAndAadDetails extends ResourceCertificateD
     public void validate() {
         super.validate();
         if (aadAuthority() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property aadAuthority in model ResourceCertificateAndAadDetails"));
         }
         if (aadTenantId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property aadTenantId in model ResourceCertificateAndAadDetails"));
         }
         if (servicePrincipalClientId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalClientId in model"
                             + " ResourceCertificateAndAadDetails"));
         }
         if (servicePrincipalObjectId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property servicePrincipalObjectId in model"
                             + " ResourceCertificateAndAadDetails"));
         }
         if (azureManagementEndpointAudience() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property azureManagementEndpointAudience in model"
                             + " ResourceCertificateAndAadDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ResourceCertificateAndAadDetails.class);
 }

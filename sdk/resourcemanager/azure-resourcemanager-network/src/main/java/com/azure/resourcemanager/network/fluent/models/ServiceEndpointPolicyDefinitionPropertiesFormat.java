@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Service Endpoint policy definition resource. */
 @Fluent
 public final class ServiceEndpointPolicyDefinitionPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyDefinitionPropertiesFormat.class);
-
     /*
      * A description for this rule. Restricted to 140 chars.
      */
@@ -36,11 +31,14 @@ public final class ServiceEndpointPolicyDefinitionPropertiesFormat {
     private List<String> serviceResources;
 
     /*
-     * The provisioning state of the service endpoint policy definition
-     * resource.
+     * The provisioning state of the service endpoint policy definition resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ServiceEndpointPolicyDefinitionPropertiesFormat class. */
+    public ServiceEndpointPolicyDefinitionPropertiesFormat() {
+    }
 
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.

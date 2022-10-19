@@ -86,6 +86,7 @@ import com.azure.resourcemanager.synapse.fluent.SynapseManagementClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceAadAdminsClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedIdentitySqlControlSettingsClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerBlobAuditingPoliciesClient;
+import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerEncryptionProtectorsClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient;
 import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerRecoverableSqlPoolsClient;
@@ -107,8 +108,6 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the SynapseManagementClientImpl type. */
 @ServiceClient(builder = SynapseManagementClientBuilder.class)
 public final class SynapseManagementClientImpl implements SynapseManagementClient {
-    private final ClientLogger logger = new ClientLogger(SynapseManagementClientImpl.class);
-
     /** The ID of the target subscription. */
     private final String subscriptionId;
 
@@ -713,6 +712,20 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         return this.workspaceManagedSqlServerRecoverableSqlPools;
     }
 
+    /** The WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object to access its operations. */
+    private final WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
+        workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
+
+    /**
+     * Gets the WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object to access its operations.
+     *
+     * @return the WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient object.
+     */
+    public WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClient
+        getWorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettings() {
+        return this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings;
+    }
+
     /** The WorkspacesClient object to access its operations. */
     private final WorkspacesClient workspaces;
 
@@ -1111,6 +1124,8 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
         this.workspaceManagedSqlServerUsages = new WorkspaceManagedSqlServerUsagesClientImpl(this);
         this.workspaceManagedSqlServerRecoverableSqlPools =
             new WorkspaceManagedSqlServerRecoverableSqlPoolsClientImpl(this);
+        this.workspaceManagedSqlServerDedicatedSqlMinimalTlsSettings =
+            new WorkspaceManagedSqlServerDedicatedSqlMinimalTlsSettingsClientImpl(this);
         this.workspaces = new WorkspacesClientImpl(this);
         this.workspaceAadAdmins = new WorkspaceAadAdminsClientImpl(this);
         this.workspaceSqlAadAdmins = new WorkspaceSqlAadAdminsClientImpl(this);
@@ -1224,7 +1239,7 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
                             managementError = null;
                         }
                     } catch (IOException | RuntimeException ioe) {
-                        logger.logThrowableAsWarning(ioe);
+                        LOGGER.logThrowableAsWarning(ioe);
                     }
                 }
             } else {
@@ -1283,4 +1298,6 @@ public final class SynapseManagementClientImpl implements SynapseManagementClien
             return Mono.just(new String(responseBody, charset));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SynapseManagementClientImpl.class);
 }

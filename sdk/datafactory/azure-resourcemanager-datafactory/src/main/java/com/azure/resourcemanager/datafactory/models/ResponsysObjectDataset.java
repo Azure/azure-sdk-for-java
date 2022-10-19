@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.GenericDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("ResponsysObject")
 @Fluent
 public final class ResponsysObjectDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResponsysObjectDataset.class);
-
     /*
      * Properties specific to this dataset type.
      */
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of ResponsysObjectDataset class. */
+    public ResponsysObjectDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.

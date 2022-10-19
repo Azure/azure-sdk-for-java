@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** A codec flag, which tells the encoder to copy the input audio bitstream. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.CopyAudio")
-@JsonFlatten
 @Fluent
-public class CopyAudio extends Codec {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CopyAudio.class);
-
+public final class CopyAudio extends Codec {
     /** {@inheritDoc} */
     @Override
     public CopyAudio withLabel(String label) {

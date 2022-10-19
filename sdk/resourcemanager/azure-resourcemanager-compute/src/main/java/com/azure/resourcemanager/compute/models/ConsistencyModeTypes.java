@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConsistencyModeTypes. */
+/**
+ * ConsistencyMode of the RestorePoint. Can be specified in the input while creating a restore point. For now, only
+ * CrashConsistent is accepted as a valid input. Please refer to https://aka.ms/RestorePoints for more details.
+ */
 public final class ConsistencyModeTypes extends ExpandableStringEnum<ConsistencyModeTypes> {
     /** Static value CrashConsistent for ConsistencyModeTypes. */
     public static final ConsistencyModeTypes CRASH_CONSISTENT = fromString("CrashConsistent");
@@ -30,7 +33,11 @@ public final class ConsistencyModeTypes extends ExpandableStringEnum<Consistency
         return fromString(name, ConsistencyModeTypes.class);
     }
 
-    /** @return known ConsistencyModeTypes values. */
+    /**
+     * Gets known ConsistencyModeTypes values.
+     *
+     * @return known ConsistencyModeTypes values.
+     */
     public static Collection<ConsistencyModeTypes> values() {
         return values(ConsistencyModeTypes.class);
     }

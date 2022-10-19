@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayPrivateLinkIpConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of private link configuration on an application gateway. */
 @Fluent
 public final class ApplicationGatewayPrivateLinkConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayPrivateLinkConfigurationProperties.class);
-
     /*
      * An array of application gateway private link ip configurations.
      */
@@ -25,11 +20,14 @@ public final class ApplicationGatewayPrivateLinkConfigurationProperties {
     private List<ApplicationGatewayPrivateLinkIpConfiguration> ipConfigurations;
 
     /*
-     * The provisioning state of the application gateway private link
-     * configuration.
+     * The provisioning state of the application gateway private link configuration.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ApplicationGatewayPrivateLinkConfigurationProperties class. */
+    public ApplicationGatewayPrivateLinkConfigurationProperties() {
+    }
 
     /**
      * Get the ipConfigurations property: An array of application gateway private link ip configurations.

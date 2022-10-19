@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -21,12 +19,13 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "UrlSigningKey", value = UrlSigningKeyParameters.class),
     @JsonSubTypes.Type(name = "ManagedCertificate", value = ManagedCertificateParameters.class),
-    @JsonSubTypes.Type(name = "CustomerCertificate", value = CustomerCertificateParameters.class)
+    @JsonSubTypes.Type(name = "CustomerCertificate", value = CustomerCertificateParameters.class),
+    @JsonSubTypes.Type(
+        name = "AzureFirstPartyManagedCertificate",
+        value = AzureFirstPartyManagedCertificateParameters.class)
 })
 @Immutable
 public class SecretParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecretParameters.class);
-
     /**
      * Validates the instance.
      *

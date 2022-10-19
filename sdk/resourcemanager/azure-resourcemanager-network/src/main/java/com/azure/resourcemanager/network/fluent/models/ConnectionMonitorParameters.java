@@ -5,22 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
 import com.azure.resourcemanager.network.models.ConnectionMonitorEndpoint;
 import com.azure.resourcemanager.network.models.ConnectionMonitorOutput;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestConfiguration;
 import com.azure.resourcemanager.network.models.ConnectionMonitorTestGroup;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters that define the operation to create a connection monitor. */
 @Fluent
 public class ConnectionMonitorParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorParameters.class);
-
     /*
      * Describes the source of connection monitor.
      */
@@ -34,8 +30,7 @@ public class ConnectionMonitorParameters {
     private ConnectionMonitorDestination destination;
 
     /*
-     * Determines if the connection monitor will start automatically once
-     * created.
+     * Determines if the connection monitor will start automatically once created.
      */
     @JsonProperty(value = "autoStart")
     private Boolean autoStart;
@@ -75,6 +70,10 @@ public class ConnectionMonitorParameters {
      */
     @JsonProperty(value = "notes")
     private String notes;
+
+    /** Creates an instance of ConnectionMonitorParameters class. */
+    public ConnectionMonitorParameters() {
+    }
 
     /**
      * Get the source property: Describes the source of connection monitor.

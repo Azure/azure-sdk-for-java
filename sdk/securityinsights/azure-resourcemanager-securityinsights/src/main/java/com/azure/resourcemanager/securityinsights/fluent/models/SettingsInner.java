@@ -5,13 +5,11 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.Anomalies;
 import com.azure.resourcemanager.securityinsights.models.EntityAnalytics;
 import com.azure.resourcemanager.securityinsights.models.EyesOn;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import com.azure.resourcemanager.securityinsights.models.Ueba;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -31,8 +29,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Fluent
 public class SettingsInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SettingsInner.class);
-
     /** {@inheritDoc} */
     @Override
     public SettingsInner withEtag(String etag) {

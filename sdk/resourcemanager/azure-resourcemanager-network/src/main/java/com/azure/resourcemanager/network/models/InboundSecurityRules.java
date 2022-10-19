@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the Inbound Security Rules resource. */
 @Fluent
 public final class InboundSecurityRules {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundSecurityRules.class);
-
     /*
      * Protocol. This should be either TCP or UDP.
      */
@@ -21,8 +17,7 @@ public final class InboundSecurityRules {
     private InboundSecurityRulesProtocol protocol;
 
     /*
-     * The CIDR or source IP range. Only /30, /31 and /32 Ip ranges are
-     * allowed.
+     * The CIDR or source IP range. Only /30, /31 and /32 Ip ranges are allowed.
      */
     @JsonProperty(value = "sourceAddressPrefix")
     private String sourceAddressPrefix;
@@ -32,6 +27,10 @@ public final class InboundSecurityRules {
      */
     @JsonProperty(value = "destinationPortRange")
     private Integer destinationPortRange;
+
+    /** Creates an instance of InboundSecurityRules class. */
+    public InboundSecurityRules() {
+    }
 
     /**
      * Get the protocol property: Protocol. This should be either TCP or UDP.

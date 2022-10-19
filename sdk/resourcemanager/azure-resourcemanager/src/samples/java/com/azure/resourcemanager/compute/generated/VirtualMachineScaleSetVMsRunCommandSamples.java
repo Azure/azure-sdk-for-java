@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for VirtualMachineScaleSetVMs RunCommand. */
 public final class VirtualMachineScaleSetVMsRunCommandSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/stable/2021-11-01/examples/runCommands/VMScaleSetRunCommand.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/runCommandExamples/VirtualMachineScaleSetVMRunCommand.json
      */
     /**
      * Sample code: VirtualMachineScaleSetVMs_RunCommand.

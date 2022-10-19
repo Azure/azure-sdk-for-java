@@ -5,21 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayLoadDistributionAlgorithm;
 import com.azure.resourcemanager.network.models.ApplicationGatewayLoadDistributionTarget;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of Load Distribution Policy of an application gateway. */
 @Fluent
 public final class ApplicationGatewayLoadDistributionPolicyPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(ApplicationGatewayLoadDistributionPolicyPropertiesFormat.class);
-
     /*
      * Load Distribution Targets resource of an application gateway.
      */
@@ -37,6 +31,10 @@ public final class ApplicationGatewayLoadDistributionPolicyPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ApplicationGatewayLoadDistributionPolicyPropertiesFormat class. */
+    public ApplicationGatewayLoadDistributionPolicyPropertiesFormat() {
+    }
 
     /**
      * Get the loadDistributionTargets property: Load Distribution Targets resource of an application gateway.

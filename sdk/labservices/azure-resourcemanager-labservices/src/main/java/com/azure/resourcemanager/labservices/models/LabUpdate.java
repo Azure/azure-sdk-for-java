@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.labservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.labservices.fluent.models.LabUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The lab resource for updates. */
 @Fluent
 public final class LabUpdate extends TrackedResourceUpdate {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LabUpdate.class);
-
     /*
      * Lab resource properties
      */

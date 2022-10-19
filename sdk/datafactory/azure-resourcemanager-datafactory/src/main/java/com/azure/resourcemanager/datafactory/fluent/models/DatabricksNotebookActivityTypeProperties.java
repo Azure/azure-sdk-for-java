@@ -6,7 +6,6 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,31 +14,30 @@ import java.util.Map;
 /** Databricks Notebook activity properties. */
 @Fluent
 public final class DatabricksNotebookActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DatabricksNotebookActivityTypeProperties.class);
-
     /*
-     * The absolute path of the notebook to be run in the Databricks Workspace.
-     * This path must begin with a slash. Type: string (or Expression with
-     * resultType string).
+     * The absolute path of the notebook to be run in the Databricks Workspace. This path must begin with a slash.
+     * Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "notebookPath", required = true)
     private Object notebookPath;
 
     /*
-     * Base parameters to be used for each run of this job.If the notebook
-     * takes a parameter that is not specified, the default value from the
-     * notebook will be used.
+     * Base parameters to be used for each run of this job.If the notebook takes a parameter that is not specified, the
+     * default value from the notebook will be used.
      */
     @JsonProperty(value = "baseParameters")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> baseParameters;
 
     /*
-     * A list of libraries to be installed on the cluster that will execute the
-     * job.
+     * A list of libraries to be installed on the cluster that will execute the job.
      */
     @JsonProperty(value = "libraries")
     private List<Map<String, Object>> libraries;
+
+    /** Creates an instance of DatabricksNotebookActivityTypeProperties class. */
+    public DatabricksNotebookActivityTypeProperties() {
+    }
 
     /**
      * Get the notebookPath property: The absolute path of the notebook to be run in the Databricks Workspace. This path
@@ -112,10 +110,12 @@ public final class DatabricksNotebookActivityTypeProperties {
      */
     public void validate() {
         if (notebookPath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property notebookPath in model DatabricksNotebookActivityTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DatabricksNotebookActivityTypeProperties.class);
 }

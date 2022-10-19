@@ -27,7 +27,11 @@ public final class ExemptionCategory extends ExpandableStringEnum<ExemptionCateg
         return fromString(name, ExemptionCategory.class);
     }
 
-    /** @return known ExemptionCategory values. */
+    /**
+     * Gets known ExemptionCategory values.
+     *
+     * @return known ExemptionCategory values.
+     */
     public static Collection<ExemptionCategory> values() {
         return values(ExemptionCategory.class);
     }

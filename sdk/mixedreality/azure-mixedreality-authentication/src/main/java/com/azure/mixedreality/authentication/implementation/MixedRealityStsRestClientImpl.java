@@ -135,7 +135,7 @@ public final class MixedRealityStsRestClientImpl {
      */
     @Host("{$host}")
     @ServiceInterface(name = "MixedRealityStsRestC")
-    private interface MixedRealityStsRestClientService {
+    public interface MixedRealityStsRestClientService {
         @Get("/Accounts/{accountId}/token")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(HttpResponseException.class)

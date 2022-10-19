@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Base certificate properties. */
 @Fluent
 public class CertificateBaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CertificateBaseProperties.class);
-
     /*
      * The algorithm of the certificate thumbprint. This must match the first
      * portion of the certificate name. Currently required to be 'SHA1'.

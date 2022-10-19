@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The settings that will be leveraged for AmazonRdsForOracle source partitioning. */
 @Fluent
 public final class AmazonRdsForOraclePartitionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AmazonRdsForOraclePartitionSettings.class);
-
     /*
      * Names of the physical partitions of AmazonRdsForOracle table.
      */
@@ -21,27 +17,29 @@ public final class AmazonRdsForOraclePartitionSettings {
     private Object partitionNames;
 
     /*
-     * The name of the column in integer type that will be used for proceeding
-     * range partitioning. Type: string (or Expression with resultType string).
+     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;
 
     /*
-     * The maximum value of column specified in partitionColumnName that will
-     * be used for proceeding range partitioning. Type: string (or Expression
-     * with resultType string).
+     * The maximum value of column specified in partitionColumnName that will be used for proceeding range
+     * partitioning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionUpperBound")
     private Object partitionUpperBound;
 
     /*
-     * The minimum value of column specified in partitionColumnName that will
-     * be used for proceeding range partitioning. Type: string (or Expression
-     * with resultType string).
+     * The minimum value of column specified in partitionColumnName that will be used for proceeding range
+     * partitioning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
+
+    /** Creates an instance of AmazonRdsForOraclePartitionSettings class. */
+    public AmazonRdsForOraclePartitionSettings() {
+    }
 
     /**
      * Get the partitionNames property: Names of the physical partitions of AmazonRdsForOracle table.

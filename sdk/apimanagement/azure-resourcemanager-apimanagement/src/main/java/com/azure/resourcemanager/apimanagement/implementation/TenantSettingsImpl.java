@@ -15,10 +15,9 @@ import com.azure.resourcemanager.apimanagement.models.SettingsTypeName;
 import com.azure.resourcemanager.apimanagement.models.TenantSettings;
 import com.azure.resourcemanager.apimanagement.models.TenantSettingsContract;
 import com.azure.resourcemanager.apimanagement.models.TenantSettingsGetResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TenantSettingsImpl implements TenantSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantSettingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TenantSettingsImpl.class);
 
     private final TenantSettingsClient innerClient;
 

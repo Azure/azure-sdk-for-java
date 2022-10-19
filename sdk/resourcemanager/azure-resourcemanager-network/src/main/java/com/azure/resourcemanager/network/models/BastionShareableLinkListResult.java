@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.BastionShareableLinkInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for all the Bastion Shareable Link endpoints. */
 @Fluent
 public final class BastionShareableLinkListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionShareableLinkListResult.class);
-
     /*
      * List of Bastion Shareable Links for the request.
      */
@@ -27,6 +23,10 @@ public final class BastionShareableLinkListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of BastionShareableLinkListResult class. */
+    public BastionShareableLinkListResult() {
+    }
 
     /**
      * Get the value property: List of Bastion Shareable Links for the request.

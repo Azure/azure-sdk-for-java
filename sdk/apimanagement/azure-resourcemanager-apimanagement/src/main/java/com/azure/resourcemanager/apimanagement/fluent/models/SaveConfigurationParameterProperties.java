@@ -6,14 +6,11 @@ package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters supplied to the Save Tenant Configuration operation. */
 @Fluent
 public final class SaveConfigurationParameterProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SaveConfigurationParameterProperties.class);
-
     /*
      * The name of the Git branch in which to commit the current configuration
      * snapshot.
@@ -78,10 +75,12 @@ public final class SaveConfigurationParameterProperties {
      */
     public void validate() {
         if (branch() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property branch in model SaveConfigurationParameterProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SaveConfigurationParameterProperties.class);
 }

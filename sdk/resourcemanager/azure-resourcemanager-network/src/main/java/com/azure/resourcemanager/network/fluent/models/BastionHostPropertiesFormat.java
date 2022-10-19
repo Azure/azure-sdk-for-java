@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.BastionHostIpConfiguration;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the Bastion Host. */
 @Fluent
 public final class BastionHostPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionHostPropertiesFormat.class);
-
     /*
      * IP configuration of the Bastion Host resource.
      */
@@ -70,6 +66,10 @@ public final class BastionHostPropertiesFormat {
      */
     @JsonProperty(value = "enableTunneling")
     private Boolean enableTunneling;
+
+    /** Creates an instance of BastionHostPropertiesFormat class. */
+    public BastionHostPropertiesFormat() {
+    }
 
     /**
      * Get the ipConfigurations property: IP configuration of the Bastion Host resource.

@@ -36,7 +36,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumber(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PurchasedPhoneNumber number = this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberSync").getPurchasedPhoneNumber(phoneNumber);
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
@@ -45,7 +45,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberWithAAD(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PurchasedPhoneNumber number = this.getClientWithManagedIdentity(httpClient, "getPurchasedPhoneNumberWithAADSync").getPurchasedPhoneNumber(phoneNumber);
         assertEquals(phoneNumber, number.getPhoneNumber());
         assertEquals(COUNTRY_CODE, number.getCountryCode());
@@ -54,7 +54,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getPurchasedPhoneNumberWithResponse(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         Response<PurchasedPhoneNumber> response = this.getClientWithConnectionString(httpClient, "getPurchasedPhoneNumberWithResponseSync")
             .getPurchasedPhoneNumberWithResponse(phoneNumber, Context.NONE);
         PurchasedPhoneNumber number = response.getValue();
@@ -108,7 +108,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
         if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
             PhoneNumberSearchResult searchResult = poller.getFinalResult();
-            String phoneNumber = getTestPhoneNumber(searchResult.getPhoneNumbers().get(0));
+            String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
             PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient, searchResult.getSearchId(), "beginPurchasePhoneNumbersWithoutContextSync", false).waitForCompletion();
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, purchaseOperationResponse.getStatus());
             PollResponse<PhoneNumberOperation> releaseOperationResponse = beginReleasePhoneNumberHelper(httpClient, phoneNumber, "beginReleasePhoneNumberWithoutContextSync", false).waitForCompletion();
@@ -128,7 +128,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
         if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
             PhoneNumberSearchResult searchResult = poller.getFinalResult();
-            String phoneNumber = getTestPhoneNumber(searchResult.getPhoneNumbers().get(0));
+            String phoneNumber = redactIfPlaybackMode(searchResult.getPhoneNumbers().get(0));
             PollResponse<PhoneNumberOperation> purchaseOperationResponse = beginPurchasePhoneNumbersHelper(httpClient, searchResult.getSearchId(), "beginPurchasePhoneNumbersSync", true).waitForCompletion();
             assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, purchaseOperationResponse.getStatus());
             PollResponse<PhoneNumberOperation> releaseOperationResponse = beginReleasePhoneNumberHelper(httpClient, phoneNumber, "beginReleasePhoneNumberSync", true).waitForCompletion();
@@ -144,7 +144,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST",
         matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilitiesWithoutContext(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilitiesWithoutContextSync", false).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
         assertEquals(PhoneNumberOperationStatus.SUCCEEDED, result.getValue().getStatus());
@@ -155,8 +155,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @DisabledIfEnvironmentVariable(
         named = "COMMUNICATION_SKIP_INT_PHONENUMBERS_TEST",
         matches = "(?i)(true)")
+    @DisabledIfEnvironmentVariable(
+        named = "SKIP_UPDATE_CAPABILITIES_LIVE_TESTS",
+        matches = "(?i)(true)")
     public void beginUpdatePhoneNumberCapabilities(HttpClient httpClient) {
-        String phoneNumber = getTestPhoneNumber(PHONE_NUMBER);
+        String phoneNumber = redactIfPlaybackMode(getTestPhoneNumber());
         PollResponse<PhoneNumberOperation> result = beginUpdatePhoneNumberCapabilitiesHelper(httpClient, phoneNumber, "beginUpdatePhoneNumberCapabilities", true).waitForCompletion();
         assertEquals(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, result.getStatus());
         assertEquals(PhoneNumberOperationStatus.SUCCEEDED, result.getValue().getStatus());
@@ -232,12 +235,5 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     private PhoneNumbersClient getClientWithManagedIdentity(HttpClient httpClient, String testName) {
         PhoneNumbersClientBuilder builder = super.getClientBuilderUsingManagedIdentity(httpClient);
         return addLoggingPolicy(builder, testName).buildClient();
-    }
-
-    private String getTestPhoneNumber(String phoneNumber) {
-        if (getTestMode() == TestMode.PLAYBACK) {
-            phoneNumber = "+REDACTED";
-        }
-        return phoneNumber;
     }
 }

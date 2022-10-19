@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.netapp.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** revert a volume to the snapshot. */
 @Fluent
 public final class VolumeRevert {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VolumeRevert.class);
-
     /*
      * Resource id of the snapshot
      */

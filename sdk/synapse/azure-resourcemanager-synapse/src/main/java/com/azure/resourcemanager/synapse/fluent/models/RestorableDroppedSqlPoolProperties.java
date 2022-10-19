@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The properties of a restorable dropped Sql pool. */
 @Immutable
 public final class RestorableDroppedSqlPoolProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDroppedSqlPoolProperties.class);
-
     /*
      * The name of the database
      */

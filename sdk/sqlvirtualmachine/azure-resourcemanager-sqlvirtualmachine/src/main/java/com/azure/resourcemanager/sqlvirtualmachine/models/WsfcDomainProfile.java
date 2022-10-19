@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sqlvirtualmachine.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Active Directory account details to operate Windows Server Failover Cluster. */
 @Fluent
 public final class WsfcDomainProfile {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WsfcDomainProfile.class);
-
     /*
      * Fully qualified name of the domain.
      */
@@ -27,23 +23,20 @@ public final class WsfcDomainProfile {
     private String ouPath;
 
     /*
-     * Account name used for creating cluster (at minimum needs permissions to
-     * 'Create Computer Objects' in domain).
+     * Account name used for creating cluster (at minimum needs permissions to 'Create Computer Objects' in domain).
      */
     @JsonProperty(value = "clusterBootstrapAccount")
     private String clusterBootstrapAccount;
 
     /*
-     * Account name used for operating cluster i.e. will be part of
-     * administrators group on all the participating virtual machines in the
-     * cluster.
+     * Account name used for operating cluster i.e. will be part of administrators group on all the participating
+     * virtual machines in the cluster.
      */
     @JsonProperty(value = "clusterOperatorAccount")
     private String clusterOperatorAccount;
 
     /*
-     * Account name under which SQL service will run on all participating SQL
-     * virtual machines in the cluster.
+     * Account name under which SQL service will run on all participating SQL virtual machines in the cluster.
      */
     @JsonProperty(value = "sqlServiceAccount")
     private String sqlServiceAccount;
@@ -65,6 +58,12 @@ public final class WsfcDomainProfile {
      */
     @JsonProperty(value = "storageAccountPrimaryKey")
     private String storageAccountPrimaryKey;
+
+    /*
+     * Cluster subnet type.
+     */
+    @JsonProperty(value = "clusterSubnetType")
+    private ClusterSubnetType clusterSubnetType;
 
     /**
      * Get the domainFqdn property: Fully qualified name of the domain.
@@ -229,6 +228,26 @@ public final class WsfcDomainProfile {
      */
     public WsfcDomainProfile withStorageAccountPrimaryKey(String storageAccountPrimaryKey) {
         this.storageAccountPrimaryKey = storageAccountPrimaryKey;
+        return this;
+    }
+
+    /**
+     * Get the clusterSubnetType property: Cluster subnet type.
+     *
+     * @return the clusterSubnetType value.
+     */
+    public ClusterSubnetType clusterSubnetType() {
+        return this.clusterSubnetType;
+    }
+
+    /**
+     * Set the clusterSubnetType property: Cluster subnet type.
+     *
+     * @param clusterSubnetType the clusterSubnetType value to set.
+     * @return the WsfcDomainProfile object itself.
+     */
+    public WsfcDomainProfile withClusterSubnetType(ClusterSubnetType clusterSubnetType) {
+        this.clusterSubnetType = clusterSubnetType;
         return this;
     }
 

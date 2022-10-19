@@ -6,14 +6,11 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the target region information. */
 @Fluent
 public final class TargetRegion {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetRegion.class);
-
     /*
      * The name of the region.
      */
@@ -21,22 +18,20 @@ public final class TargetRegion {
     private String name;
 
     /*
-     * The number of replicas of the Image Version to be created per region.
-     * This property is updatable.
+     * The number of replicas of the Image Version to be created per region. This property is updatable.
      */
     @JsonProperty(value = "regionalReplicaCount")
     private Integer regionalReplicaCount;
 
     /*
-     * Specifies the storage account type to be used to store the image. This
-     * property is not updatable.
+     * Specifies the storage account type to be used to store the image. This property is not updatable.
      */
     @JsonProperty(value = "storageAccountType")
     private StorageAccountType storageAccountType;
 
     /*
-     * Optional. Allows users to provide customer managed keys for encrypting
-     * the OS and data disks in the gallery artifact.
+     * Optional. Allows users to provide customer managed keys for encrypting the OS and data disks in the gallery
+     * artifact.
      */
     @JsonProperty(value = "encryption")
     private EncryptionImages encryption;
@@ -134,7 +129,7 @@ public final class TargetRegion {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property name in model TargetRegion"));
         }
@@ -142,4 +137,6 @@ public final class TargetRegion {
             encryption().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TargetRegion.class);
 }

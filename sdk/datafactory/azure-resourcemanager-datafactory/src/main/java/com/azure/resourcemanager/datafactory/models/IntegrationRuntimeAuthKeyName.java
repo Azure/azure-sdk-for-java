@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IntegrationRuntimeAuthKeyName. */
+/** The name of the authentication key to regenerate. */
 public final class IntegrationRuntimeAuthKeyName extends ExpandableStringEnum<IntegrationRuntimeAuthKeyName> {
     /** Static value authKey1 for IntegrationRuntimeAuthKeyName. */
     public static final IntegrationRuntimeAuthKeyName AUTH_KEY1 = fromString("authKey1");
@@ -27,7 +27,11 @@ public final class IntegrationRuntimeAuthKeyName extends ExpandableStringEnum<In
         return fromString(name, IntegrationRuntimeAuthKeyName.class);
     }
 
-    /** @return known IntegrationRuntimeAuthKeyName values. */
+    /**
+     * Gets known IntegrationRuntimeAuthKeyName values.
+     *
+     * @return known IntegrationRuntimeAuthKeyName values.
+     */
     public static Collection<IntegrationRuntimeAuthKeyName> values() {
         return values(IntegrationRuntimeAuthKeyName.class);
     }

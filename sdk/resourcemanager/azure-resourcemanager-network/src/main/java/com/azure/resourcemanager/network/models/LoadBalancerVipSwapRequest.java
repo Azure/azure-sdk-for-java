@@ -5,21 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The request for a VIP swap. */
 @Fluent
 public final class LoadBalancerVipSwapRequest {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerVipSwapRequest.class);
-
     /*
      * A list of frontend IP configuration resources that should swap VIPs.
      */
     @JsonProperty(value = "frontendIPConfigurations")
     private List<LoadBalancerVipSwapRequestFrontendIpConfiguration> frontendIpConfigurations;
+
+    /** Creates an instance of LoadBalancerVipSwapRequest class. */
+    public LoadBalancerVipSwapRequest() {
+    }
 
     /**
      * Get the frontendIpConfigurations property: A list of frontend IP configuration resources that should swap VIPs.

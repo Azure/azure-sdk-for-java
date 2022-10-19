@@ -8,13 +8,25 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Transform. */
+/** Describes what transforms are applied before matching. */
 public final class Transform extends ExpandableStringEnum<Transform> {
     /** Static value Lowercase for Transform. */
     public static final Transform LOWERCASE = fromString("Lowercase");
 
     /** Static value Uppercase for Transform. */
     public static final Transform UPPERCASE = fromString("Uppercase");
+
+    /** Static value Trim for Transform. */
+    public static final Transform TRIM = fromString("Trim");
+
+    /** Static value UrlDecode for Transform. */
+    public static final Transform URL_DECODE = fromString("UrlDecode");
+
+    /** Static value UrlEncode for Transform. */
+    public static final Transform URL_ENCODE = fromString("UrlEncode");
+
+    /** Static value RemoveNulls for Transform. */
+    public static final Transform REMOVE_NULLS = fromString("RemoveNulls");
 
     /**
      * Creates or finds a Transform from its string representation.
@@ -27,7 +39,11 @@ public final class Transform extends ExpandableStringEnum<Transform> {
         return fromString(name, Transform.class);
     }
 
-    /** @return known Transform values. */
+    /**
+     * Gets known Transform values.
+     *
+     * @return known Transform values.
+     */
     public static Collection<Transform> values() {
         return values(Transform.class);
     }

@@ -1,6 +1,6 @@
 # Release History
 
-## 5.2.0-beta.3 (Unreleased)
+## 5.3.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,119 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 5.2.1 (2022-10-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.33.0`.
+- Updated `azure-core-http-netty` to `1.12.6`.
+
+## 5.2.0 (2022-09-08)
+
+### Features Added
+- This version of the client library marks a stable release and defaults to the service API version `2022-05-01`.
+- Added overload methods to take only required input parameter for all existing long-running operations:
+  - `beginAnalyzeActions(Iterable<String> documents, TextAnalyticsActions actions)`
+  - `beginAnalyzeHealthcareEntities(Iterable<String> documents)`
+  - `beginMultiLabelClassify(Iterable<String> documents, String projectName, String deploymentName)`
+  - `beginRecognizeCustomEntities(Iterable<String> documents, String projectName, String deploymentName)`
+  - `beginSingleLabelClassify(Iterable<String> documents, String projectName, String deploymentName)`
+- Added `displayName` property which is the name of long-running operation, to the following classes to 
+  set the optional display name:
+    - `AnalyzeHealthcareEntitiesOptions`
+    - `MultiLabelClassifyOptions`
+    - `RecognizeCustomEntitiesOptions`
+    - `SingleLabelClassifyOptions`
+- Added `displayName` property to the following operations to read the optional display name set on options classes above:
+    - `AnalyzeHealthcareEntitiesOperationDetail` from `AnalyzeHealthcareEntitiesOptions`
+    - `ClassifyDocumentOperationDetail` from `MultiLabelClassifyOptions` and `SingleLabelClassifyOptions`
+    - `RecognizeCustomEntitiesOperationDetail` from `RecognizeCustomEntitiesOptions`
+
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.32.0`.
+- Updated `azure-core-http-netty` to `1.12.5`.
+
+## 5.2.0-beta.4 (2022-08-12)
+### Features Added
+- We are now targeting the service's `2022-05-01` API as the default.
+- Added bespoke methods for the custom entity recognition, and single-label and multi-label classification features,
+  such as, `beginRecognizeCustomEntities()`, `beginSingleLabelClassify()` and `beginMultiLabelClassify()`.
+
+### Breaking Changes
+- Removed support for `Healthcare FHIR`, and `Extractive Summarization` features.
+- Renamed
+  `SingleCategoryClassifyAction` to `SingleLabelClassifyAction`,
+  `MultiCategoryClassifyAction` to `MultiLabelClassifyAction`.
+- Merged
+  `SingleCategoryClassifyResultCollection` and `SingleCategoryClassifyResultCollection` to `ClassifyDocumentResultCollection`,
+  `MultiCategoryClassifyResult` and `SingleCategoryClassifyResult` to `ClassifyDocumentResult`.
+
+## 5.1.12 (2022-08-11)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.31.0`.
+- Updated `azure-core-http-netty` to `1.12.4`.
+
+## 5.1.11 (2022-07-07)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.30.0`.
+- Updated `azure-core-http-netty` to `1.12.3`.
+
+## 5.1.10 (2022-06-09)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.29.1`.
+- Updated `azure-core-http-netty` to `1.12.2`.
+
+## 5.2.0-beta.3 (2022-05-18)
+Note that this is the first version of the client library that targets the Azure Cognitive Service for Language APIs
+which includes the existing text analysis and natural language processing features found in the Text Analytics client
+library. In addition, the service API has changed from semantic to date-based versioning. This version of the client 
+library defaults to the latest supported API version, which currently is `2022-04-01-preview`. Support for 
+`v3.2-preview.2` is removed, however, all functionalities are included in the latest version.
+
+### Features Added
+- Added interfaces from `com.azure.core.client.traits` to `TextAnalyticsClientBuilder`. 
+- Added support for Healthcare Entities Analysis through the `beginAnalyzeActions` API with the `AnalyzeHealthcareEntitiesAction` type. 
+- Added property `fhirVersion` to `AnalyzeHealthcareEntitiesOptions` and `AnalyzeHealthcareEntitiesAction`. 
+  Use the keyword to indicate the version for the `fhirBundle` contained on the `AnalyzeHealthcareEntitiesResult`.
+- Added property `fhirBundle` to `AnalyzeHealthcareEntitiesResult`.
+
+## 5.1.9 (2022-05-11)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.28.0`.
+- Updated `azure-core-http-netty` to `1.12.0`.
+
+## 5.1.8 (2022-04-07)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.27.0`.
+- Updated `azure-core-http-netty` to `1.11.9`.
+
+## 5.1.7 (2022-03-09)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.26.0`.
+- Updated `azure-core-http-netty` to `1.11.8`.
+
+## 5.1.6 (2022-02-09)
+### Other Changes
+
+#### Dependency Updates
+- Updated `azure-core` to `1.25.0`.
+- Updated `azure-core-http-netty` to `1.11.7`.
 
 ## 5.1.5 (2022-01-14)
 ### Other Changes

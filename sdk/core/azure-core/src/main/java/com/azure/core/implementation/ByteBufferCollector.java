@@ -25,7 +25,8 @@ public final class ByteBufferCollector {
     private static final String INVALID_INITIAL_SIZE = "'initialSize' cannot be less than 0.";
     private static final String REQUESTED_BUFFER_INVALID = "Required capacity is greater than Integer.MAX_VALUE.";
 
-    private final ClientLogger logger = new ClientLogger(ByteBufferCollector.class);
+    // ByteBufferCollector is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(ByteBufferCollector.class);
 
     private byte[] buffer;
     private int position;
@@ -45,7 +46,7 @@ public final class ByteBufferCollector {
      */
     public ByteBufferCollector(int initialSize) {
         if (initialSize < 0) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(INVALID_INITIAL_SIZE));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(INVALID_INITIAL_SIZE));
         }
 
         this.buffer = new byte[initialSize];
@@ -59,7 +60,7 @@ public final class ByteBufferCollector {
      * @throws IllegalStateException If the size of the backing array would be larger than {@link Integer#MAX_VALUE}
      * when the passed buffer is written.
      */
-    public synchronized void write(ByteBuffer byteBuffer) {
+    public void write(ByteBuffer byteBuffer) {
         // Null buffer.
         if (byteBuffer == null) {
             return;
@@ -82,14 +83,22 @@ public final class ByteBufferCollector {
      *
      * @return A copy of the backing array.
      */
-    public synchronized byte[] toByteArray() {
+    public byte[] toByteArray() {
+        if (buffer.length == position) {
+            // Since this is only used internally for collection operations if the buffer size is equal to the position
+            // when requesting the byte array return the byte array without copying. At this point it's known that this
+            // buffer won't be modified any further, if an unexpected write happens later the internal buffer will need
+            // to be resized and copied, leaving the returned buffer unmodified.
+            return buffer;
+        }
+
         return Arrays.copyOf(buffer, position);
     }
 
     /*
      * This method ensures that the backing buffer has sufficient space to write the data from the passed ByteBuffer.
      */
-    private void ensureCapacity(int byteBufferRemaining) throws OutOfMemoryError {
+    private void ensureCapacity(int byteBufferRemaining) {
         int currentCapacity = buffer.length;
         int requiredCapacity = position + byteBufferRemaining;
 
@@ -98,7 +107,7 @@ public final class ByteBufferCollector {
          * overflow response by checking that the result uses the same sign as both of the addition arguments.
          */
         if (((position ^ requiredCapacity) & (byteBufferRemaining ^ requiredCapacity)) < 0) {
-            throw logger.logExceptionAsError(new IllegalStateException(REQUESTED_BUFFER_INVALID));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(REQUESTED_BUFFER_INVALID));
         }
 
         // Buffer is already large enough to accept the data being written.

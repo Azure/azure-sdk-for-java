@@ -33,7 +33,7 @@ public class GroupingTable {
         this.hasSelectValue = hasSelectValue;
     }
 
-    public void addPayLoad(GroupByDocumentQueryExecutionContext<?>.RewrittenGroupByProjection rewrittenGroupByProjection) {
+    public void addPayLoad(GroupByDocumentQueryExecutionContext.RewrittenGroupByProjection rewrittenGroupByProjection) {
         try {
             final UInt128 groupByKeysHash = DistinctHash.getHash(rewrittenGroupByProjection.getGroupByItems());
             SingleGroupAggregator singleGroupAggregator;

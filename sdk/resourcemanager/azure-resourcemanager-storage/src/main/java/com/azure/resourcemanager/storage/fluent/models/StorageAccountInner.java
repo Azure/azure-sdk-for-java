@@ -6,16 +6,18 @@ package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AccountStatus;
+import com.azure.resourcemanager.storage.models.AllowedCopyScope;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
+import com.azure.resourcemanager.storage.models.DnsEndpointType;
 import com.azure.resourcemanager.storage.models.Encryption;
 import com.azure.resourcemanager.storage.models.Endpoints;
 import com.azure.resourcemanager.storage.models.ExtendedLocation;
 import com.azure.resourcemanager.storage.models.GeoReplicationStats;
 import com.azure.resourcemanager.storage.models.Identity;
+import com.azure.resourcemanager.storage.models.ImmutableStorageAccount;
 import com.azure.resourcemanager.storage.models.KeyCreationTime;
 import com.azure.resourcemanager.storage.models.KeyPolicy;
 import com.azure.resourcemanager.storage.models.Kind;
@@ -23,10 +25,11 @@ import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.ProvisioningState;
+import com.azure.resourcemanager.storage.models.PublicNetworkAccess;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
 import com.azure.resourcemanager.storage.models.SasPolicy;
 import com.azure.resourcemanager.storage.models.Sku;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.storage.models.StorageAccountSkuConversionStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -35,8 +38,6 @@ import java.util.Map;
 /** The storage account. */
 @Fluent
 public final class StorageAccountInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountInner.class);
-
     /*
      * Gets the SKU.
      */
@@ -274,8 +275,7 @@ public final class StorageAccountInner extends Resource {
     }
 
     /**
-     * Get the encryption property: Gets the encryption settings on the account. If unspecified, the account is
-     * unencrypted.
+     * Get the encryption property: Encryption settings to be used for server-side encryption for the storage account.
      *
      * @return the encryption value.
      */
@@ -284,8 +284,9 @@ public final class StorageAccountInner extends Resource {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
-     * billing.
+     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier is used for
+     * billing. The 'Premium' access tier is the default value for premium block blobs storage account type and it
+     * cannot be changed for the premium block blobs storage account type.
      *
      * @return the accessTier value.
      */
@@ -349,6 +350,52 @@ public final class StorageAccountInner extends Resource {
      */
     public NetworkRuleSet networkRuleSet() {
         return this.innerProperties() == null ? null : this.innerProperties().networkRuleSet();
+    }
+
+    /**
+     * Get the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
+     *
+     * @return the isSftpEnabled value.
+     */
+    public Boolean isSftpEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isSftpEnabled();
+    }
+
+    /**
+     * Set the isSftpEnabled property: Enables Secure File Transfer Protocol, if set to true.
+     *
+     * @param isSftpEnabled the isSftpEnabled value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withIsSftpEnabled(Boolean isSftpEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withIsSftpEnabled(isSftpEnabled);
+        return this;
+    }
+
+    /**
+     * Get the isLocalUserEnabled property: Enables local users feature, if set to true.
+     *
+     * @return the isLocalUserEnabled value.
+     */
+    public Boolean isLocalUserEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().isLocalUserEnabled();
+    }
+
+    /**
+     * Set the isLocalUserEnabled property: Enables local users feature, if set to true.
+     *
+     * @param isLocalUserEnabled the isLocalUserEnabled value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withIsLocalUserEnabled(Boolean isLocalUserEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withIsLocalUserEnabled(isLocalUserEnabled);
+        return this;
     }
 
     /**
@@ -584,6 +631,162 @@ public final class StorageAccountInner extends Resource {
             this.innerProperties = new StorageAccountPropertiesInner();
         }
         this.innerProperties().withAllowCrossTenantReplication(allowCrossTenantReplication);
+        return this;
+    }
+
+    /**
+     * Get the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
+     * is OAuth or not. The default interpretation is false for this property.
+     *
+     * @return the defaultToOAuthAuthentication value.
+     */
+    public Boolean defaultToOAuthAuthentication() {
+        return this.innerProperties() == null ? null : this.innerProperties().defaultToOAuthAuthentication();
+    }
+
+    /**
+     * Set the defaultToOAuthAuthentication property: A boolean flag which indicates whether the default authentication
+     * is OAuth or not. The default interpretation is false for this property.
+     *
+     * @param defaultToOAuthAuthentication the defaultToOAuthAuthentication value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withDefaultToOAuthAuthentication(Boolean defaultToOAuthAuthentication) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withDefaultToOAuthAuthentication(defaultToOAuthAuthentication);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Allow or disallow public network access to Storage Account. Value is
+     * optional but if passed in, must be 'Enabled' or 'Disabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
+    }
+
+    /**
+     * Get the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
+     * account creation time. When set to true, it enables object level immutability for all the containers in the
+     * account by default.
+     *
+     * @return the immutableStorageWithVersioning value.
+     */
+    public ImmutableStorageAccount immutableStorageWithVersioning() {
+        return this.innerProperties() == null ? null : this.innerProperties().immutableStorageWithVersioning();
+    }
+
+    /**
+     * Set the immutableStorageWithVersioning property: The property is immutable and can only be set to true at the
+     * account creation time. When set to true, it enables object level immutability for all the containers in the
+     * account by default.
+     *
+     * @param immutableStorageWithVersioning the immutableStorageWithVersioning value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withImmutableStorageWithVersioning(
+        ImmutableStorageAccount immutableStorageWithVersioning) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withImmutableStorageWithVersioning(immutableStorageWithVersioning);
+        return this;
+    }
+
+    /**
+     * Get the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
+     * Private Links to the same VNet.
+     *
+     * @return the allowedCopyScope value.
+     */
+    public AllowedCopyScope allowedCopyScope() {
+        return this.innerProperties() == null ? null : this.innerProperties().allowedCopyScope();
+    }
+
+    /**
+     * Set the allowedCopyScope property: Restrict copy to and from Storage Accounts within an AAD tenant or with
+     * Private Links to the same VNet.
+     *
+     * @param allowedCopyScope the allowedCopyScope value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withAllowedCopyScope(AllowedCopyScope allowedCopyScope) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withAllowedCopyScope(allowedCopyScope);
+        return this;
+    }
+
+    /**
+     * Get the storageAccountSkuConversionStatus property: This property is readOnly and is set by server during
+     * asynchronous storage account sku conversion operations.
+     *
+     * @return the storageAccountSkuConversionStatus value.
+     */
+    public StorageAccountSkuConversionStatus storageAccountSkuConversionStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountSkuConversionStatus();
+    }
+
+    /**
+     * Set the storageAccountSkuConversionStatus property: This property is readOnly and is set by server during
+     * asynchronous storage account sku conversion operations.
+     *
+     * @param storageAccountSkuConversionStatus the storageAccountSkuConversionStatus value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withStorageAccountSkuConversionStatus(
+        StorageAccountSkuConversionStatus storageAccountSkuConversionStatus) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withStorageAccountSkuConversionStatus(storageAccountSkuConversionStatus);
+        return this;
+    }
+
+    /**
+     * Get the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @return the dnsEndpointType value.
+     */
+    public DnsEndpointType dnsEndpointType() {
+        return this.innerProperties() == null ? null : this.innerProperties().dnsEndpointType();
+    }
+
+    /**
+     * Set the dnsEndpointType property: Allows you to specify the type of endpoint. Set this to AzureDNSZone to create
+     * a large number of accounts in a single subscription, which creates accounts in an Azure DNS Zone and the endpoint
+     * URL will have an alphanumeric DNS Zone identifier.
+     *
+     * @param dnsEndpointType the dnsEndpointType value to set.
+     * @return the StorageAccountInner object itself.
+     */
+    public StorageAccountInner withDnsEndpointType(DnsEndpointType dnsEndpointType) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageAccountPropertiesInner();
+        }
+        this.innerProperties().withDnsEndpointType(dnsEndpointType);
         return this;
     }
 

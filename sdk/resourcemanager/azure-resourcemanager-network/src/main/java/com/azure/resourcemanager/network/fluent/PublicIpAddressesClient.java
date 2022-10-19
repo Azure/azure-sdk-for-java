@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.PublicIpAddressInner;
+import com.azure.resourcemanager.network.fluent.models.PublicIpDdosProtectionStatusResultInner;
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
@@ -35,7 +36,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a cloud service level.
+     * @return information about all public IP addresses on a cloud service level as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PublicIpAddressInner> listCloudServicePublicIpAddressesAsync(
@@ -49,7 +51,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a cloud service level.
+     * @return information about all public IP addresses on a cloud service level as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> listCloudServicePublicIpAddresses(
@@ -64,7 +67,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a cloud service level.
+     * @return information about all public IP addresses on a cloud service level as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> listCloudServicePublicIpAddresses(
@@ -81,7 +85,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses in a role instance IP configuration in a cloud service.
+     * @return information about all public IP addresses in a role instance IP configuration in a cloud service as
+     *     paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddressesAsync(
@@ -102,7 +107,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses in a role instance IP configuration in a cloud service.
+     * @return information about all public IP addresses in a role instance IP configuration in a cloud service as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddresses(
@@ -124,7 +130,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses in a role instance IP configuration in a cloud service.
+     * @return information about all public IP addresses in a role instance IP configuration in a cloud service as
+     *     paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> listCloudServiceRoleInstancePublicIpAddresses(
@@ -148,7 +155,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a cloud service.
+     * @return the specified public IP address in a cloud service along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PublicIpAddressInner>> getCloudServicePublicIpAddressWithResponseAsync(
@@ -169,11 +177,10 @@ public interface PublicIpAddressesClient
      * @param networkInterfaceName The name of the network interface.
      * @param ipConfigurationName The name of the IP configuration.
      * @param publicIpAddressName The name of the public IP Address.
-     * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a cloud service.
+     * @return the specified public IP address in a cloud service on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PublicIpAddressInner> getCloudServicePublicIpAddressAsync(
@@ -182,8 +189,7 @@ public interface PublicIpAddressesClient
         String roleInstanceName,
         String networkInterfaceName,
         String ipConfigurationName,
-        String publicIpAddressName,
-        String expand);
+        String publicIpAddressName);
 
     /**
      * Get the specified public IP address in a cloud service.
@@ -194,19 +200,23 @@ public interface PublicIpAddressesClient
      * @param networkInterfaceName The name of the network interface.
      * @param ipConfigurationName The name of the IP configuration.
      * @param publicIpAddressName The name of the public IP Address.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a cloud service.
+     * @return the specified public IP address in a cloud service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PublicIpAddressInner> getCloudServicePublicIpAddressAsync(
+    Response<PublicIpAddressInner> getCloudServicePublicIpAddressWithResponse(
         String resourceGroupName,
         String cloudServiceName,
         String roleInstanceName,
         String networkInterfaceName,
         String ipConfigurationName,
-        String publicIpAddressName);
+        String publicIpAddressName,
+        String expand,
+        Context context);
 
     /**
      * Get the specified public IP address in a cloud service.
@@ -232,33 +242,6 @@ public interface PublicIpAddressesClient
         String publicIpAddressName);
 
     /**
-     * Get the specified public IP address in a cloud service.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param cloudServiceName The name of the cloud service.
-     * @param roleInstanceName The role instance name.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the IP configuration.
-     * @param publicIpAddressName The name of the public IP Address.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a cloud service.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PublicIpAddressInner> getCloudServicePublicIpAddressWithResponse(
-        String resourceGroupName,
-        String cloudServiceName,
-        String roleInstanceName,
-        String networkInterfaceName,
-        String ipConfigurationName,
-        String publicIpAddressName,
-        String expand,
-        Context context);
-
-    /**
      * Deletes the specified public IP address.
      *
      * @param resourceGroupName The name of the resource group.
@@ -266,7 +249,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String publicIpAddressName);
@@ -279,7 +262,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String publicIpAddressName);
@@ -292,7 +275,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String publicIpAddressName);
@@ -306,7 +289,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -320,7 +303,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> deleteAsync(String resourceGroupName, String publicIpAddressName);
@@ -359,7 +342,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a specified resource group.
+     * @return the specified public IP address in a specified resource group along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PublicIpAddressInner>> getByResourceGroupWithResponseAsync(
@@ -370,28 +354,29 @@ public interface PublicIpAddressesClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
-     * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a specified resource group.
+     * @return the specified public IP address in a specified resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PublicIpAddressInner> getByResourceGroupAsync(
-        String resourceGroupName, String publicIpAddressName, String expand);
+    Mono<PublicIpAddressInner> getByResourceGroupAsync(String resourceGroupName, String publicIpAddressName);
 
     /**
      * Gets the specified public IP address in a specified resource group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param publicIpAddressName The name of the public IP address.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a specified resource group.
+     * @return the specified public IP address in a specified resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PublicIpAddressInner> getByResourceGroupAsync(String resourceGroupName, String publicIpAddressName);
+    Response<PublicIpAddressInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String publicIpAddressName, String expand, Context context);
 
     /**
      * Gets the specified public IP address in a specified resource group.
@@ -407,22 +392,6 @@ public interface PublicIpAddressesClient
     PublicIpAddressInner getByResourceGroup(String resourceGroupName, String publicIpAddressName);
 
     /**
-     * Gets the specified public IP address in a specified resource group.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a specified resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PublicIpAddressInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String publicIpAddressName, String expand, Context context);
-
-    /**
      * Creates or updates a static or dynamic public IP address.
      *
      * @param resourceGroupName The name of the resource group.
@@ -431,7 +400,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
+     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -446,7 +415,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
+     * @return the {@link PollerFlux} for polling of public IP address resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdateAsync(
@@ -461,7 +430,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
+     * @return the {@link SyncPoller} for polling of public IP address resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdate(
@@ -477,7 +446,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
+     * @return the {@link SyncPoller} for polling of public IP address resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<PublicIpAddressInner>, PublicIpAddressInner> beginCreateOrUpdate(
@@ -492,7 +461,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
+     * @return public IP address resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PublicIpAddressInner> createOrUpdateAsync(
@@ -538,7 +507,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
+     * @return public IP address resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PublicIpAddressInner>> updateTagsWithResponseAsync(
@@ -553,11 +522,27 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
+     * @return public IP address resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PublicIpAddressInner> updateTagsAsync(
         String resourceGroupName, String publicIpAddressName, TagsObject parameters);
+
+    /**
+     * Updates public IP address tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param parameters Parameters supplied to update public IP address tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return public IP address resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<PublicIpAddressInner> updateTagsWithResponse(
+        String resourceGroupName, String publicIpAddressName, TagsObject parameters, Context context);
 
     /**
      * Updates public IP address tags.
@@ -574,27 +559,11 @@ public interface PublicIpAddressesClient
     PublicIpAddressInner updateTags(String resourceGroupName, String publicIpAddressName, TagsObject parameters);
 
     /**
-     * Updates public IP address tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param publicIpAddressName The name of the public IP address.
-     * @param parameters Parameters supplied to update public IP address tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return public IP address resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PublicIpAddressInner> updateTagsWithResponse(
-        String resourceGroupName, String publicIpAddressName, TagsObject parameters, Context context);
-
-    /**
      * Gets all the public IP addresses in a subscription.
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the public IP addresses in a subscription.
+     * @return all the public IP addresses in a subscription as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PublicIpAddressInner> listAsync();
@@ -604,7 +573,7 @@ public interface PublicIpAddressesClient
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the public IP addresses in a subscription.
+     * @return all the public IP addresses in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> list();
@@ -616,7 +585,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the public IP addresses in a subscription.
+     * @return all the public IP addresses in a subscription as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> list(Context context);
@@ -628,7 +597,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all public IP addresses in a resource group.
+     * @return all public IP addresses in a resource group as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PublicIpAddressInner> listByResourceGroupAsync(String resourceGroupName);
@@ -640,7 +609,7 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all public IP addresses in a resource group.
+     * @return all public IP addresses in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> listByResourceGroup(String resourceGroupName);
@@ -653,10 +622,110 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all public IP addresses in a resource group.
+     * @return all public IP addresses in a resource group as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> listByResourceGroup(String resourceGroupName, Context context);
+
+    /**
+     * Gets the Ddos Protection Status of a Public IP Address.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Ddos Protection Status of a Public IP Address along with {@link Response} on successful completion of
+     *     {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> ddosProtectionStatusWithResponseAsync(
+        String resourceGroupName, String publicIpAddressName);
+
+    /**
+     * Gets the Ddos Protection Status of a Public IP Address.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of the Ddos Protection Status of a Public IP Address.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<PublicIpDdosProtectionStatusResultInner>, PublicIpDdosProtectionStatusResultInner>
+        beginDdosProtectionStatusAsync(String resourceGroupName, String publicIpAddressName);
+
+    /**
+     * Gets the Ddos Protection Status of a Public IP Address.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Ddos Protection Status of a Public IP Address.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PublicIpDdosProtectionStatusResultInner>, PublicIpDdosProtectionStatusResultInner>
+        beginDdosProtectionStatus(String resourceGroupName, String publicIpAddressName);
+
+    /**
+     * Gets the Ddos Protection Status of a Public IP Address.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of the Ddos Protection Status of a Public IP Address.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<PublicIpDdosProtectionStatusResultInner>, PublicIpDdosProtectionStatusResultInner>
+        beginDdosProtectionStatus(String resourceGroupName, String publicIpAddressName, Context context);
+
+    /**
+     * Gets the Ddos Protection Status of a Public IP Address.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Ddos Protection Status of a Public IP Address on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<PublicIpDdosProtectionStatusResultInner> ddosProtectionStatusAsync(
+        String resourceGroupName, String publicIpAddressName);
+
+    /**
+     * Gets the Ddos Protection Status of a Public IP Address.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Ddos Protection Status of a Public IP Address.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PublicIpDdosProtectionStatusResultInner ddosProtectionStatus(String resourceGroupName, String publicIpAddressName);
+
+    /**
+     * Gets the Ddos Protection Status of a Public IP Address.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param publicIpAddressName The name of the public IP address.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Ddos Protection Status of a Public IP Address.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    PublicIpDdosProtectionStatusResultInner ddosProtectionStatus(
+        String resourceGroupName, String publicIpAddressName, Context context);
 
     /**
      * Gets information about all public IP addresses on a virtual machine scale set level.
@@ -666,7 +735,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a virtual machine scale set level.
+     * @return information about all public IP addresses on a virtual machine scale set level as paginated response with
+     *     {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddressesAsync(
@@ -680,7 +750,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a virtual machine scale set level.
+     * @return information about all public IP addresses on a virtual machine scale set level as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddresses(
@@ -695,7 +766,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about all public IP addresses on a virtual machine scale set level.
+     * @return information about all public IP addresses on a virtual machine scale set level as paginated response with
+     *     {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetPublicIpAddresses(
@@ -714,7 +786,7 @@ public interface PublicIpAddressesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all public IP addresses in a virtual machine IP configuration in a virtual machine
-     *     scale set.
+     *     scale set as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddressesAsync(
@@ -737,7 +809,7 @@ public interface PublicIpAddressesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all public IP addresses in a virtual machine IP configuration in a virtual machine
-     *     scale set.
+     *     scale set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddresses(
@@ -761,7 +833,7 @@ public interface PublicIpAddressesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about all public IP addresses in a virtual machine IP configuration in a virtual machine
-     *     scale set.
+     *     scale set as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<PublicIpAddressInner> listVirtualMachineScaleSetVMPublicIpAddresses(
@@ -785,7 +857,8 @@ public interface PublicIpAddressesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a virtual machine scale set.
+     * @return the specified public IP address in a virtual machine scale set along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<PublicIpAddressInner>> getVirtualMachineScaleSetPublicIpAddressWithResponseAsync(
@@ -806,11 +879,10 @@ public interface PublicIpAddressesClient
      * @param networkInterfaceName The name of the network interface.
      * @param ipConfigurationName The name of the IP configuration.
      * @param publicIpAddressName The name of the public IP Address.
-     * @param expand Expands referenced resources.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a virtual machine scale set.
+     * @return the specified public IP address in a virtual machine scale set on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<PublicIpAddressInner> getVirtualMachineScaleSetPublicIpAddressAsync(
@@ -819,8 +891,7 @@ public interface PublicIpAddressesClient
         String virtualmachineIndex,
         String networkInterfaceName,
         String ipConfigurationName,
-        String publicIpAddressName,
-        String expand);
+        String publicIpAddressName);
 
     /**
      * Get the specified public IP address in a virtual machine scale set.
@@ -831,19 +902,23 @@ public interface PublicIpAddressesClient
      * @param networkInterfaceName The name of the network interface.
      * @param ipConfigurationName The name of the IP configuration.
      * @param publicIpAddressName The name of the public IP Address.
+     * @param expand Expands referenced resources.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a virtual machine scale set.
+     * @return the specified public IP address in a virtual machine scale set along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PublicIpAddressInner> getVirtualMachineScaleSetPublicIpAddressAsync(
+    Response<PublicIpAddressInner> getVirtualMachineScaleSetPublicIpAddressWithResponse(
         String resourceGroupName,
         String virtualMachineScaleSetName,
         String virtualmachineIndex,
         String networkInterfaceName,
         String ipConfigurationName,
-        String publicIpAddressName);
+        String publicIpAddressName,
+        String expand,
+        Context context);
 
     /**
      * Get the specified public IP address in a virtual machine scale set.
@@ -867,31 +942,4 @@ public interface PublicIpAddressesClient
         String networkInterfaceName,
         String ipConfigurationName,
         String publicIpAddressName);
-
-    /**
-     * Get the specified public IP address in a virtual machine scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
-     * @param virtualmachineIndex The virtual machine index.
-     * @param networkInterfaceName The name of the network interface.
-     * @param ipConfigurationName The name of the IP configuration.
-     * @param publicIpAddressName The name of the public IP Address.
-     * @param expand Expands referenced resources.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified public IP address in a virtual machine scale set.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PublicIpAddressInner> getVirtualMachineScaleSetPublicIpAddressWithResponse(
-        String resourceGroupName,
-        String virtualMachineScaleSetName,
-        String virtualmachineIndex,
-        String networkInterfaceName,
-        String ipConfigurationName,
-        String publicIpAddressName,
-        String expand,
-        Context context);
 }

@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.HubRoute;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters for RouteTable. */
 @Fluent
 public final class HubRouteTableProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HubRouteTableProperties.class);
-
     /*
      * List of all routes.
      */
@@ -46,6 +42,10 @@ public final class HubRouteTableProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of HubRouteTableProperties class. */
+    public HubRouteTableProperties() {
+    }
 
     /**
      * Get the routes property: List of all routes.

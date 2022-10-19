@@ -41,6 +41,10 @@ public final class AccessPolicyEntityImpl
         return this.innerModel().authentication();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public AccessPolicyEntityInner innerModel() {
         return this.innerObject;
     }

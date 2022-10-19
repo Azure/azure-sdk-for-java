@@ -22,8 +22,11 @@ import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+
+import java.time.OffsetDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SharedGalleryImageTests extends ComputeManagementTest {
     private String rgName = "";
@@ -155,6 +158,36 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
         Assertions.assertEquals(3200, galleryImage.recommendedVirtualMachineConfiguration().memory().max().intValue());
         Assertions.assertNotNull(galleryImage.recommendedVirtualMachineConfiguration().memory().min());
         Assertions.assertEquals(2200, galleryImage.recommendedVirtualMachineConfiguration().memory().min().intValue());
+
+        String description = "This is my gallery image";
+        String releaseURI = "http://www.example.com/compute/galleryimageuri";
+        OffsetDateTime offsetDateTime = OffsetDateTime.now().plusDays(10);
+        Map<String, String> tags = new HashMap<>();
+        tags.put("tag1", "myTag1");
+        galleryImage
+            .update()
+            .withDescription(description)
+            .withReleaseNoteUri(releaseURI)
+            .withEndOfLifeDate(offsetDateTime)
+            .withRecommendedCPUsCountForVirtualMachine(10, 20)
+            .withRecommendedMemoryForVirtualMachine(10, 20)
+            .withUnsupportedDiskType(DiskSkuTypes.PREMIUM_LRS)
+//            .withOsState(OperatingSystemStateTypes.SPECIALIZED) // changing of osState is not allowed
+            .withTags(tags)
+            .apply();
+
+        galleryImage.refresh();
+
+        Assertions.assertEquals(description, galleryImage.description());
+        Assertions.assertEquals(releaseURI, galleryImage.releaseNoteUri());
+        Assertions.assertEquals(tags, galleryImage.tags());
+        Assertions.assertEquals(10, galleryImage.recommendedVirtualMachineConfiguration().vCPUs().min());
+        Assertions.assertEquals(20, galleryImage.recommendedVirtualMachineConfiguration().vCPUs().max());
+        Assertions.assertEquals(10, galleryImage.recommendedVirtualMachineConfiguration().memory().min());
+        Assertions.assertEquals(20, galleryImage.recommendedVirtualMachineConfiguration().memory().max());
+        Assertions.assertTrue(galleryImage.disallowed().diskTypes().contains(DiskSkuTypes.PREMIUM_LRS.toString()));
+//        Assertions.assertEquals(galleryImage.osState(), OperatingSystemStateTypes.SPECIALIZED);
+
         //
         // List images in the gallery
         //
@@ -175,9 +208,6 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
     }
 
     @Test
-    @Disabled(
-        "Service consistently fail with error 'Replication job not completed at region:XXXXX', reported to service"
-            + " team, ")
     public void canCreateUpdateGetDeleteGalleryImageVersion() {
         //
         // Create {
@@ -340,7 +370,7 @@ public class SharedGalleryImageTests extends ComputeManagementTest {
                 .withNewVhd(60)
                 .withCaching(CachingTypes.READ_ONLY)
                 .attach()
-                .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+                .withSize(VirtualMachineSizeTypes.STANDARD_D2_V3)
                 .withNewStorageAccount(generateRandomResourceName("stg", 17))
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 .create();

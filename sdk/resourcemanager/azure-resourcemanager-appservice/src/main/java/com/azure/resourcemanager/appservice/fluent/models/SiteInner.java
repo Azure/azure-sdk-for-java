@@ -6,7 +6,6 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ClientCertMode;
 import com.azure.resourcemanager.appservice.models.CloningInfo;
 import com.azure.resourcemanager.appservice.models.ExtendedLocation;
@@ -17,7 +16,6 @@ import com.azure.resourcemanager.appservice.models.RedundancyMode;
 import com.azure.resourcemanager.appservice.models.SiteAvailabilityState;
 import com.azure.resourcemanager.appservice.models.SlotSwapStatus;
 import com.azure.resourcemanager.appservice.models.UsageState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -27,8 +25,6 @@ import java.util.UUID;
 /** A web app, a mobile app backend, or an API app. */
 @Fluent
 public final class SiteInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteInner.class);
-
     /*
      * Site resource specific properties
      */
@@ -342,6 +338,77 @@ public final class SiteInner extends Resource {
      */
     public OffsetDateTime lastModifiedTimeUtc() {
         return this.innerProperties() == null ? null : this.innerProperties().lastModifiedTimeUtc();
+    }
+
+    /**
+     * Get the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
+     *
+     * @return the vnetRouteAllEnabled value.
+     */
+    public Boolean vnetRouteAllEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetRouteAllEnabled();
+    }
+
+    /**
+     * Set the vnetRouteAllEnabled property: Virtual Network Route All enabled. This causes all outbound traffic to have
+     * Virtual Network Security Groups and User Defined Routes applied.
+     *
+     * @param vnetRouteAllEnabled the vnetRouteAllEnabled value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withVnetRouteAllEnabled(Boolean vnetRouteAllEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withVnetRouteAllEnabled(vnetRouteAllEnabled);
+        return this;
+    }
+
+    /**
+     * Get the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
+     *
+     * @return the vnetImagePullEnabled value.
+     */
+    public Boolean vnetImagePullEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetImagePullEnabled();
+    }
+
+    /**
+     * Set the vnetImagePullEnabled property: To enable pulling image over Virtual Network.
+     *
+     * @param vnetImagePullEnabled the vnetImagePullEnabled value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withVnetImagePullEnabled(Boolean vnetImagePullEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withVnetImagePullEnabled(vnetImagePullEnabled);
+        return this;
+    }
+
+    /**
+     * Get the vnetContentShareEnabled property: To enable accessing content over virtual network.
+     *
+     * @return the vnetContentShareEnabled value.
+     */
+    public Boolean vnetContentShareEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetContentShareEnabled();
+    }
+
+    /**
+     * Set the vnetContentShareEnabled property: To enable accessing content over virtual network.
+     *
+     * @param vnetContentShareEnabled the vnetContentShareEnabled value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withVnetContentShareEnabled(Boolean vnetContentShareEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withVnetContentShareEnabled(vnetContentShareEnabled);
+        return this;
     }
 
     /**
@@ -788,6 +855,31 @@ public final class SiteInner extends Resource {
      */
     public UUID inProgressOperationId() {
         return this.innerProperties() == null ? null : this.innerProperties().inProgressOperationId();
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public String publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Property to allow or block all public traffic. Allowed Values: 'Enabled',
+     * 'Disabled' or an empty string.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the SiteInner object itself.
+     */
+    public SiteInner withPublicNetworkAccess(String publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SitePropertiesInner();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
     }
 
     /**

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.resources.implementation;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.resourcemanager.resources.fluent.ResourceNamesClient;
 import com.azure.resourcemanager.resources.fluent.SubscriptionClient;
@@ -19,8 +18,6 @@ import java.time.Duration;
 /** Initializes a new instance of the SubscriptionClientImpl type. */
 @ServiceClient(builder = SubscriptionClientBuilder.class)
 public final class SubscriptionClientImpl extends AzureServiceClient implements SubscriptionClient {
-    private final ClientLogger logger = new ClientLogger(SubscriptionClientImpl.class);
-
     /** server parameter. */
     private final String endpoint;
 

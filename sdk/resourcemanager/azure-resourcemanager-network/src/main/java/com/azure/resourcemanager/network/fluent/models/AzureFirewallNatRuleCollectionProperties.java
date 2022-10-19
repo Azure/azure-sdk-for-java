@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRCAction;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRule;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of the NAT rule collection. */
 @Fluent
 public final class AzureFirewallNatRuleCollectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallNatRuleCollectionProperties.class);
-
     /*
      * Priority of the NAT rule collection resource.
      */
@@ -41,6 +37,10 @@ public final class AzureFirewallNatRuleCollectionProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of AzureFirewallNatRuleCollectionProperties class. */
+    public AzureFirewallNatRuleCollectionProperties() {
+    }
 
     /**
      * Get the priority property: Priority of the NAT rule collection resource.

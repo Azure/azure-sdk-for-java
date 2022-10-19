@@ -1,0 +1,13 @@
+trigger: none
+
+stages:
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      ServiceDirectory: confidentialledger
+      Artifacts:
+        - name: azure-security-confidentialledger
+          groupId: com.azure
+          safeName: azuresecurityconfidentialledger
+      EnvVars:
+        LEDGERURI: https://$(LEDGER_NAME).confidential-ledger.azure.com
+        IDENTITYSERVICEURI: https://identity.confidential-ledger.core.azure.com/ledgerIdentity/$(LEDGER_NAME)

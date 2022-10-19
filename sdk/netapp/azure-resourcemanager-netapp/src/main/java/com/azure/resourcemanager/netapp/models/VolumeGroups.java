@@ -11,19 +11,23 @@ import com.azure.core.util.Context;
 /** Resource collection API of VolumeGroups. */
 public interface VolumeGroups {
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume group resources.
+     * @return list of volume group resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VolumeGroup> listByNetAppAccount(String resourceGroupName, String accountName);
 
     /**
-     * List all volume groups for given account.
+     * Describe all volume groups
+     *
+     * <p>List all volume groups for given account.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -31,12 +35,14 @@ public interface VolumeGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of volume group resources.
+     * @return list of volume group resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<VolumeGroup> listByNetAppAccount(String resourceGroupName, String accountName, Context context);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -49,7 +55,9 @@ public interface VolumeGroups {
     VolumeGroupDetails get(String resourceGroupName, String accountName, String volumeGroupName);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -58,13 +66,15 @@ public interface VolumeGroups {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group.
+     * @return details of the specified volume group along with {@link Response}.
      */
     Response<VolumeGroupDetails> getWithResponse(
         String resourceGroupName, String accountName, String volumeGroupName, Context context);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -76,7 +86,9 @@ public interface VolumeGroups {
     void delete(String resourceGroupName, String accountName, String volumeGroupName);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param resourceGroupName The name of the resource group.
      * @param accountName The name of the NetApp account.
@@ -89,30 +101,36 @@ public interface VolumeGroups {
     void delete(String resourceGroupName, String accountName, String volumeGroupName, Context context);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group.
+     * @return details of the specified volume group along with {@link Response}.
      */
     VolumeGroupDetails getById(String id);
 
     /**
-     * Get details of the specified volume group.
+     * Describe a Volume Group
+     *
+     * <p>Get details of the specified volume group.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of the specified volume group.
+     * @return details of the specified volume group along with {@link Response}.
      */
     Response<VolumeGroupDetails> getByIdWithResponse(String id, Context context);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,7 +140,9 @@ public interface VolumeGroups {
     void deleteById(String id);
 
     /**
-     * Delete the specified volume group only if there are no volumes under volume group.
+     * Delete a volume group
+     *
+     * <p>Delete the specified volume group only if there are no volumes under volume group.
      *
      * @param id the resource ID.
      * @param context The context to associate with this operation.

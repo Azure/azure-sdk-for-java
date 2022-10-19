@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeComputeProperties;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeCustomerVirtualNetwork;
 import com.azure.resourcemanager.datafactory.models.IntegrationRuntimeSsisProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Managed integration runtime type properties. */
 @Fluent
 public final class ManagedIntegrationRuntimeTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedIntegrationRuntimeTypeProperties.class);
-
     /*
      * The compute resource for managed integration runtime.
      */
@@ -30,11 +26,14 @@ public final class ManagedIntegrationRuntimeTypeProperties {
     private IntegrationRuntimeSsisProperties ssisProperties;
 
     /*
-     * The name of virtual network to which Azure-SSIS integration runtime will
-     * join
+     * The name of virtual network to which Azure-SSIS integration runtime will join
      */
     @JsonProperty(value = "customerVirtualNetwork")
     private IntegrationRuntimeCustomerVirtualNetwork customerVirtualNetwork;
+
+    /** Creates an instance of ManagedIntegrationRuntimeTypeProperties class. */
+    public ManagedIntegrationRuntimeTypeProperties() {
+    }
 
     /**
      * Get the computeProperties property: The compute resource for managed integration runtime.

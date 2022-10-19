@@ -6,17 +6,13 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The instance view of a resource. */
 @Fluent
 public final class AvailabilitySetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilitySetProperties.class);
-
     /*
      * Update Domain count.
      */
@@ -36,9 +32,8 @@ public final class AvailabilitySetProperties {
     private List<SubResource> virtualMachines;
 
     /*
-     * Specifies information about the proximity placement group that the
-     * availability set should be assigned to. <br><br>Minimum api-version:
-     * 2018-04-01.
+     * Specifies information about the proximity placement group that the availability set should be assigned to.
+     * <br><br>Minimum api-version: 2018-04-01.
      */
     @JsonProperty(value = "proximityPlacementGroup")
     private SubResource proximityPlacementGroup;

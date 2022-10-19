@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -15,11 +14,9 @@ import java.util.Map;
 /** DataLakeAnalyticsU-SQL activity properties. */
 @Fluent
 public final class DataLakeAnalyticsUsqlActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataLakeAnalyticsUsqlActivityTypeProperties.class);
-
     /*
-     * Case-sensitive path to folder that contains the U-SQL script. Type:
-     * string (or Expression with resultType string).
+     * Case-sensitive path to folder that contains the U-SQL script. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "scriptPath", required = true)
     private Object scriptPath;
@@ -31,18 +28,15 @@ public final class DataLakeAnalyticsUsqlActivityTypeProperties {
     private LinkedServiceReference scriptLinkedService;
 
     /*
-     * The maximum number of nodes simultaneously used to run the job. Default
-     * value is 1. Type: integer (or Expression with resultType integer),
-     * minimum: 1.
+     * The maximum number of nodes simultaneously used to run the job. Default value is 1. Type: integer (or Expression
+     * with resultType integer), minimum: 1.
      */
     @JsonProperty(value = "degreeOfParallelism")
     private Object degreeOfParallelism;
 
     /*
-     * Determines which jobs out of all that are queued should be selected to
-     * run first. The lower the number, the higher the priority. Default value
-     * is 1000. Type: integer (or Expression with resultType integer), minimum:
-     * 1.
+     * Determines which jobs out of all that are queued should be selected to run first. The lower the number, the
+     * higher the priority. Default value is 1000. Type: integer (or Expression with resultType integer), minimum: 1.
      */
     @JsonProperty(value = "priority")
     private Object priority;
@@ -55,18 +49,21 @@ public final class DataLakeAnalyticsUsqlActivityTypeProperties {
     private Map<String, Object> parameters;
 
     /*
-     * Runtime version of the U-SQL engine to use. Type: string (or Expression
-     * with resultType string).
+     * Runtime version of the U-SQL engine to use. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "runtimeVersion")
     private Object runtimeVersion;
 
     /*
-     * Compilation mode of U-SQL. Must be one of these values : Semantic, Full
-     * and SingleBox. Type: string (or Expression with resultType string).
+     * Compilation mode of U-SQL. Must be one of these values : Semantic, Full and SingleBox. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "compilationMode")
     private Object compilationMode;
+
+    /** Creates an instance of DataLakeAnalyticsUsqlActivityTypeProperties class. */
+    public DataLakeAnalyticsUsqlActivityTypeProperties() {
+    }
 
     /**
      * Get the scriptPath property: Case-sensitive path to folder that contains the U-SQL script. Type: string (or
@@ -228,13 +225,13 @@ public final class DataLakeAnalyticsUsqlActivityTypeProperties {
      */
     public void validate() {
         if (scriptPath() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property scriptPath in model DataLakeAnalyticsUsqlActivityTypeProperties"));
         }
         if (scriptLinkedService() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property scriptLinkedService in model"
@@ -243,4 +240,6 @@ public final class DataLakeAnalyticsUsqlActivityTypeProperties {
             scriptLinkedService().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DataLakeAnalyticsUsqlActivityTypeProperties.class);
 }

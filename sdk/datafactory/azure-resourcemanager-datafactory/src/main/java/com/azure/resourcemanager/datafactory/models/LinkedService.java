@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -19,8 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The Azure Data Factory nested object which contains the information and credential which can be used to connect with
- * related store or compute resource.
+ * The nested object which contains the information and credential which can be used to connect with related store or
+ * compute resource.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -78,7 +77,17 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "SapCloudForCustomer", value = SapCloudForCustomerLinkedService.class),
     @JsonSubTypes.Type(name = "SapEcc", value = SapEccLinkedService.class),
     @JsonSubTypes.Type(name = "SapOpenHub", value = SapOpenHubLinkedService.class),
+    @JsonSubTypes.Type(name = "SapOdp", value = SapOdpLinkedService.class),
     @JsonSubTypes.Type(name = "RestService", value = RestServiceLinkedService.class),
+    @JsonSubTypes.Type(name = "TeamDesk", value = TeamDeskLinkedService.class),
+    @JsonSubTypes.Type(name = "Quickbase", value = QuickbaseLinkedService.class),
+    @JsonSubTypes.Type(name = "Smartsheet", value = SmartsheetLinkedService.class),
+    @JsonSubTypes.Type(name = "Zendesk", value = ZendeskLinkedService.class),
+    @JsonSubTypes.Type(name = "Dataworld", value = DataworldLinkedService.class),
+    @JsonSubTypes.Type(name = "AppFigures", value = AppFiguresLinkedService.class),
+    @JsonSubTypes.Type(name = "Asana", value = AsanaLinkedService.class),
+    @JsonSubTypes.Type(name = "Twilio", value = TwilioLinkedService.class),
+    @JsonSubTypes.Type(name = "GoogleSheets", value = GoogleSheetsLinkedService.class),
     @JsonSubTypes.Type(name = "AmazonS3", value = AmazonS3LinkedService.class),
     @JsonSubTypes.Type(name = "AmazonRedshift", value = AmazonRedshiftLinkedService.class),
     @JsonSubTypes.Type(name = "CustomDataSource", value = CustomDataSourceLinkedService.class),
@@ -130,12 +139,11 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerLinkedService.class),
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
     @JsonSubTypes.Type(name = "Snowflake", value = SnowflakeLinkedService.class),
-    @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class)
+    @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class),
+    @JsonSubTypes.Type(name = "AzureSynapseArtifacts", value = AzureSynapseArtifactsLinkedService.class)
 })
 @Fluent
 public class LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinkedService.class);
-
     /*
      * The integration runtime reference.
      */
@@ -162,11 +170,14 @@ public class LinkedService {
     private List<Object> annotations;
 
     /*
-     * The Azure Data Factory nested object which contains the information and
-     * credential which can be used to connect with related store or compute
-     * resource.
+     * The nested object which contains the information and credential which can be used to connect with related store
+     * or compute resource.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of LinkedService class. */
+    public LinkedService() {
+    }
 
     /**
      * Get the connectVia property: The integration runtime reference.
@@ -249,8 +260,8 @@ public class LinkedService {
     }
 
     /**
-     * Get the additionalProperties property: The Azure Data Factory nested object which contains the information and
-     * credential which can be used to connect with related store or compute resource.
+     * Get the additionalProperties property: The nested object which contains the information and credential which can
+     * be used to connect with related store or compute resource.
      *
      * @return the additionalProperties value.
      */
@@ -260,8 +271,8 @@ public class LinkedService {
     }
 
     /**
-     * Set the additionalProperties property: The Azure Data Factory nested object which contains the information and
-     * credential which can be used to connect with related store or compute resource.
+     * Set the additionalProperties property: The nested object which contains the information and credential which can
+     * be used to connect with related store or compute resource.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the LinkedService object itself.

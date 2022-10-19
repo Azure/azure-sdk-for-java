@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Origin. */
+/** The origin of the issue. */
 public final class Origin extends ExpandableStringEnum<Origin> {
     /** Static value Local for Origin. */
     public static final Origin LOCAL = fromString("Local");
@@ -30,7 +30,11 @@ public final class Origin extends ExpandableStringEnum<Origin> {
         return fromString(name, Origin.class);
     }
 
-    /** @return known Origin values. */
+    /**
+     * Gets known Origin values.
+     *
+     * @return known Origin values.
+     */
     public static Collection<Origin> values() {
         return values(Origin.class);
     }

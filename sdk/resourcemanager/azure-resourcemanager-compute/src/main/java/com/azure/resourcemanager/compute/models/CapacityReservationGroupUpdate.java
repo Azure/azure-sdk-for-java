@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.CapacityReservationGroupProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Specifies information about the capacity reservation group. Only tags can be updated. */
 @Fluent
 public final class CapacityReservationGroupUpdate extends UpdateResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapacityReservationGroupUpdate.class);
-
     /*
      * capacity reservation group Properties.
      */

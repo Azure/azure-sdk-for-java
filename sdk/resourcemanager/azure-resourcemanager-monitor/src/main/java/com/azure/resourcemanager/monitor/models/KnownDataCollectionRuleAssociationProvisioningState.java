@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for KnownDataCollectionRuleAssociationProvisioningState. */
+/** The resource provisioning state. */
 public final class KnownDataCollectionRuleAssociationProvisioningState
     extends ExpandableStringEnum<KnownDataCollectionRuleAssociationProvisioningState> {
     /** Static value Creating for KnownDataCollectionRuleAssociationProvisioningState. */
@@ -37,7 +37,11 @@ public final class KnownDataCollectionRuleAssociationProvisioningState
         return fromString(name, KnownDataCollectionRuleAssociationProvisioningState.class);
     }
 
-    /** @return known KnownDataCollectionRuleAssociationProvisioningState values. */
+    /**
+     * Gets known KnownDataCollectionRuleAssociationProvisioningState values.
+     *
+     * @return known KnownDataCollectionRuleAssociationProvisioningState values.
+     */
     public static Collection<KnownDataCollectionRuleAssociationProvisioningState> values() {
         return values(KnownDataCollectionRuleAssociationProvisioningState.class);
     }

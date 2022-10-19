@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ImmutabilityPolicyState. */
+/** The ImmutabilityPolicy state of a blob container, possible values include: Locked and Unlocked. */
 public final class ImmutabilityPolicyState extends ExpandableStringEnum<ImmutabilityPolicyState> {
     /** Static value Locked for ImmutabilityPolicyState. */
     public static final ImmutabilityPolicyState LOCKED = fromString("Locked");
@@ -27,7 +27,11 @@ public final class ImmutabilityPolicyState extends ExpandableStringEnum<Immutabi
         return fromString(name, ImmutabilityPolicyState.class);
     }
 
-    /** @return known ImmutabilityPolicyState values. */
+    /**
+     * Gets known ImmutabilityPolicyState values.
+     *
+     * @return known ImmutabilityPolicyState values.
+     */
     public static Collection<ImmutabilityPolicyState> values() {
         return values(ImmutabilityPolicyState.class);
     }

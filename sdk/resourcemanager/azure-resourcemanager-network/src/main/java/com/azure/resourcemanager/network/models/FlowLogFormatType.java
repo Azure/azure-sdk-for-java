@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FlowLogFormatType. */
+/** The file type of flow log. */
 public final class FlowLogFormatType extends ExpandableStringEnum<FlowLogFormatType> {
     /** Static value JSON for FlowLogFormatType. */
     public static final FlowLogFormatType JSON = fromString("JSON");
@@ -24,7 +24,11 @@ public final class FlowLogFormatType extends ExpandableStringEnum<FlowLogFormatT
         return fromString(name, FlowLogFormatType.class);
     }
 
-    /** @return known FlowLogFormatType values. */
+    /**
+     * Gets known FlowLogFormatType values.
+     *
+     * @return known FlowLogFormatType values.
+     */
     public static Collection<FlowLogFormatType> values() {
         return values(FlowLogFormatType.class);
     }

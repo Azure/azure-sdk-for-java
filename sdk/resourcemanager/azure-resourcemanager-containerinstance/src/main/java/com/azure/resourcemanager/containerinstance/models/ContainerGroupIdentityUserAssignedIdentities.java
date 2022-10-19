@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.containerinstance.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The ContainerGroupIdentityUserAssignedIdentities model. */
 @Immutable
 public final class ContainerGroupIdentityUserAssignedIdentities {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerGroupIdentityUserAssignedIdentities.class);
-
     /*
      * The principal id of user assigned identity.
      */

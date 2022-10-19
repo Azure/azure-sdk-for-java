@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.signalr.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifications of the Dimension of metrics. */
 @Fluent
 public final class Dimension {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Dimension.class);
-
     /*
      * The public facing name of the dimension.
      */

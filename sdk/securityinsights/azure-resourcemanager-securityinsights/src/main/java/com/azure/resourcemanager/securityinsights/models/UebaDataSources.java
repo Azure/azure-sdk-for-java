@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for UebaDataSources. */
+/** The data source that enriched by ueba. */
 public final class UebaDataSources extends ExpandableStringEnum<UebaDataSources> {
     /** Static value AuditLogs for UebaDataSources. */
     public static final UebaDataSources AUDIT_LOGS = fromString("AuditLogs");
@@ -33,7 +33,11 @@ public final class UebaDataSources extends ExpandableStringEnum<UebaDataSources>
         return fromString(name, UebaDataSources.class);
     }
 
-    /** @return known UebaDataSources values. */
+    /**
+     * Gets known UebaDataSources values.
+     *
+     * @return known UebaDataSources values.
+     */
     public static Collection<UebaDataSources> values() {
         return values(UebaDataSources.class);
     }

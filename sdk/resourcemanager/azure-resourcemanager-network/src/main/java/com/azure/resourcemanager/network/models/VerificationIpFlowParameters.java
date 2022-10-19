@@ -6,14 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters that define the IP flow to be verified. */
 @Fluent
 public final class VerificationIpFlowParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VerificationIpFlowParameters.class);
-
     /*
      * The ID of the target resource to perform next-hop on.
      */
@@ -33,17 +30,15 @@ public final class VerificationIpFlowParameters {
     private IpFlowProtocol protocol;
 
     /*
-     * The local port. Acceptable values are a single integer in the range
-     * (0-65535). Support for * for the source port, which depends on the
-     * direction.
+     * The local port. Acceptable values are a single integer in the range (0-65535). Support for * for the source
+     * port, which depends on the direction.
      */
     @JsonProperty(value = "localPort", required = true)
     private String localPort;
 
     /*
-     * The remote port. Acceptable values are a single integer in the range
-     * (0-65535). Support for * for the source port, which depends on the
-     * direction.
+     * The remote port. Acceptable values are a single integer in the range (0-65535). Support for * for the source
+     * port, which depends on the direction.
      */
     @JsonProperty(value = "remotePort", required = true)
     private String remotePort;
@@ -61,11 +56,15 @@ public final class VerificationIpFlowParameters {
     private String remoteIpAddress;
 
     /*
-     * The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any
-     * of them, then this parameter must be specified. Otherwise optional).
+     * The NIC ID. (If VM has multiple NICs and IP forwarding is enabled on any of them, then this parameter must be
+     * specified. Otherwise optional).
      */
     @JsonProperty(value = "targetNicResourceId")
     private String targetNicResourceId;
+
+    /** Creates an instance of VerificationIpFlowParameters class. */
+    public VerificationIpFlowParameters() {
+    }
 
     /**
      * Get the targetResourceId property: The ID of the target resource to perform next-hop on.
@@ -240,46 +239,48 @@ public final class VerificationIpFlowParameters {
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property targetResourceId in model VerificationIpFlowParameters"));
         }
         if (direction() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property direction in model VerificationIpFlowParameters"));
         }
         if (protocol() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocol in model VerificationIpFlowParameters"));
         }
         if (localPort() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property localPort in model VerificationIpFlowParameters"));
         }
         if (remotePort() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property remotePort in model VerificationIpFlowParameters"));
         }
         if (localIpAddress() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property localIpAddress in model VerificationIpFlowParameters"));
         }
         if (remoteIpAddress() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property remoteIpAddress in model VerificationIpFlowParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(VerificationIpFlowParameters.class);
 }

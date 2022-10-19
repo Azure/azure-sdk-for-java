@@ -15,7 +15,7 @@ public interface Factories {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Factory> list();
 
@@ -26,21 +26,9 @@ public interface Factories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Factory> list(Context context);
-
-    /**
-     * Updates a factory's repo information.
-     *
-     * @param locationId The location identifier.
-     * @param factoryRepoUpdate Update factory repo request definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return factory resource type.
-     */
-    Factory configureFactoryRepo(String locationId, FactoryRepoUpdate factoryRepoUpdate);
 
     /**
      * Updates a factory's repo information.
@@ -57,13 +45,25 @@ public interface Factories {
         String locationId, FactoryRepoUpdate factoryRepoUpdate, Context context);
 
     /**
+     * Updates a factory's repo information.
+     *
+     * @param locationId The location identifier.
+     * @param factoryRepoUpdate Update factory repo request definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return factory resource type.
+     */
+    Factory configureFactoryRepo(String locationId, FactoryRepoUpdate factoryRepoUpdate);
+
+    /**
      * Lists factories.
      *
      * @param resourceGroupName The resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Factory> listByResourceGroup(String resourceGroupName);
 
@@ -75,21 +75,9 @@ public interface Factories {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of factory resources.
+     * @return a list of factory resources as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Factory> listByResourceGroup(String resourceGroupName, Context context);
-
-    /**
-     * Gets a factory.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a factory.
-     */
-    Factory getByResourceGroup(String resourceGroupName, String factoryName);
 
     /**
      * Gets a factory.
@@ -108,15 +96,16 @@ public interface Factories {
         String resourceGroupName, String factoryName, String ifNoneMatch, Context context);
 
     /**
-     * Deletes a factory.
+     * Gets a factory.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a factory.
      */
-    void deleteByResourceGroup(String resourceGroupName, String factoryName);
+    Factory getByResourceGroup(String resourceGroupName, String factoryName);
 
     /**
      * Deletes a factory.
@@ -129,21 +118,18 @@ public interface Factories {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, Context context);
+    Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String factoryName, Context context);
 
     /**
-     * Get GitHub Access Token.
+     * Deletes a factory.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param gitHubAccessTokenRequest Get GitHub access token request definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gitHub Access Token.
      */
-    GitHubAccessTokenResponse getGitHubAccessToken(
-        String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest);
+    void deleteByResourceGroup(String resourceGroupName, String factoryName);
 
     /**
      * Get GitHub Access Token.
@@ -164,17 +150,18 @@ public interface Factories {
         Context context);
 
     /**
-     * Get Data Plane access.
+     * Get GitHub Access Token.
      *
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
-     * @param policy Data Plane user access policy definition.
+     * @param gitHubAccessTokenRequest Get GitHub access token request definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return data Plane access.
+     * @return gitHub Access Token.
      */
-    AccessPolicyResponse getDataPlaneAccess(String resourceGroupName, String factoryName, UserAccessPolicy policy);
+    GitHubAccessTokenResponse getGitHubAccessToken(
+        String resourceGroupName, String factoryName, GitHubAccessTokenRequest gitHubAccessTokenRequest);
 
     /**
      * Get Data Plane access.
@@ -190,6 +177,19 @@ public interface Factories {
      */
     Response<AccessPolicyResponse> getDataPlaneAccessWithResponse(
         String resourceGroupName, String factoryName, UserAccessPolicy policy, Context context);
+
+    /**
+     * Get Data Plane access.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param policy Data Plane user access policy definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return data Plane access.
+     */
+    AccessPolicyResponse getDataPlaneAccess(String resourceGroupName, String factoryName, UserAccessPolicy policy);
 
     /**
      * Gets a factory.

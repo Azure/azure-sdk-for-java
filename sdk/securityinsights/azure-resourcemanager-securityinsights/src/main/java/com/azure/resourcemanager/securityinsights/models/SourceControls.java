@@ -18,7 +18,7 @@ public interface SourceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of repositories metadata.
+     * @return a list of repositories metadata as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Repo> listRepositories(String resourceGroupName, String workspaceName, RepoType repoType);
 
@@ -32,7 +32,7 @@ public interface SourceControls {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of repositories metadata.
+     * @return a list of repositories metadata as paginated response with {@link PagedIterable}.
      */
     PagedIterable<Repo> listRepositories(
         String resourceGroupName, String workspaceName, RepoType repoType, Context context);

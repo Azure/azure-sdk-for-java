@@ -5,37 +5,35 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The settings that will be leveraged for teradata source partitioning. */
 @Fluent
 public final class TeradataPartitionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TeradataPartitionSettings.class);
-
     /*
-     * The name of the column that will be used for proceeding range or hash
-     * partitioning. Type: string (or Expression with resultType string).
+     * The name of the column that will be used for proceeding range or hash partitioning. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;
 
     /*
-     * The maximum value of column specified in partitionColumnName that will
-     * be used for proceeding range partitioning. Type: string (or Expression
-     * with resultType string).
+     * The maximum value of column specified in partitionColumnName that will be used for proceeding range
+     * partitioning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionUpperBound")
     private Object partitionUpperBound;
 
     /*
-     * The minimum value of column specified in partitionColumnName that will
-     * be used for proceeding range partitioning. Type: string (or Expression
-     * with resultType string).
+     * The minimum value of column specified in partitionColumnName that will be used for proceeding range
+     * partitioning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
+
+    /** Creates an instance of TeradataPartitionSettings class. */
+    public TeradataPartitionSettings() {
+    }
 
     /**
      * Get the partitionColumnName property: The name of the column that will be used for proceeding range or hash

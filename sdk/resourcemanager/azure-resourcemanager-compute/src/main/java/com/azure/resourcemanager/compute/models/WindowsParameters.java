@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -14,11 +12,8 @@ import java.util.List;
 /** Input for InstallPatches on a Windows VM, as directly received by the API. */
 @Fluent
 public final class WindowsParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WindowsParameters.class);
-
     /*
-     * The update classifications to select when installing patches for
-     * Windows.
+     * The update classifications to select when installing patches for Windows.
      */
     @JsonProperty(value = "classificationsToInclude")
     private List<VMGuestPatchClassificationWindows> classificationsToInclude;
@@ -36,15 +31,13 @@ public final class WindowsParameters {
     private List<String> kbNumbersToExclude;
 
     /*
-     * Filters out Kbs that don't have an InstallationRebootBehavior of
-     * 'NeverReboots' when this is set to true.
+     * Filters out Kbs that don't have an InstallationRebootBehavior of 'NeverReboots' when this is set to true.
      */
     @JsonProperty(value = "excludeKbsRequiringReboot")
     private Boolean excludeKbsRequiringReboot;
 
     /*
-     * This is used to install patches that were published on or before this
-     * given max published date.
+     * This is used to install patches that were published on or before this given max published date.
      */
     @JsonProperty(value = "maxPatchPublishDate")
     private OffsetDateTime maxPatchPublishDate;

@@ -6,20 +6,20 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SAP Table Resource properties. */
 @Fluent
 public final class SapTableResourceDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SapTableResourceDatasetTypeProperties.class);
-
     /*
-     * The name of the SAP Table. Type: string (or Expression with resultType
-     * string).
+     * The name of the SAP Table. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName", required = true)
     private Object tableName;
+
+    /** Creates an instance of SapTableResourceDatasetTypeProperties class. */
+    public SapTableResourceDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: The name of the SAP Table. Type: string (or Expression with resultType string).
@@ -48,10 +48,12 @@ public final class SapTableResourceDatasetTypeProperties {
      */
     public void validate() {
         if (tableName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property tableName in model SapTableResourceDatasetTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SapTableResourceDatasetTypeProperties.class);
 }

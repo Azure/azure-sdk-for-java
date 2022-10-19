@@ -39,15 +39,19 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
     final boolean isDev;
 
     final boolean isKeyVaultConfigured;
+    
+    final int replicaCount;
 
     /**
-     * App Configuraiton Http Pipeline Policy
+     * App Configuration Http Pipeline Policy
      * @param isDev is using dev profile
      * @param isKeyVaultConfigured is key vault configured
+     * @param replicaCount number of replicas being used. Should equal the number of endpoints minus one.
      */
-    public BaseAppConfigurationPolicy(Boolean isDev, Boolean isKeyVaultConfigured) {
+    public BaseAppConfigurationPolicy(Boolean isDev, Boolean isKeyVaultConfigured, Integer replicaCount) {
         this.isDev = isDev;
         this.isKeyVaultConfigured = isKeyVaultConfigured;
+        this.replicaCount = replicaCount;
     }
 
     /**
@@ -59,13 +63,13 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
      */
     private String getTracingInfo(HttpRequest request) {
         String track = System.getenv(RequestTracingConstants.REQUEST_TRACING_DISABLED_ENVIRONMENT_VARIABLE.toString());
-        if (track != null && "false".equalsIgnoreCase(track)) {
+        if ("false".equalsIgnoreCase(track)) {
             return "";
         }
 
         RequestType requestTypeValue = watchRequests ? RequestType.WATCH : RequestType.STARTUP;
 
-        String tracingInfo = RequestTracingConstants.REQUEST_TYPE_KEY.toString() + "=" + requestTypeValue;
+        String tracingInfo = RequestTracingConstants.REQUEST_TYPE_KEY + "=" + requestTypeValue;
         String hostType = getHostType();
 
         if (!hostType.isEmpty()) {
@@ -74,6 +78,10 @@ public final class BaseAppConfigurationPolicy implements HttpPipelinePolicy {
 
         if (isDev || isKeyVaultConfigured) {
             tracingInfo += ",Env=" + getEnvInfo();
+        }
+        
+        if (replicaCount > 0) {
+            tracingInfo += "," + RequestTracingConstants.REPLICA_COUNT + "=" + replicaCount;
         }
 
         return tracingInfo;

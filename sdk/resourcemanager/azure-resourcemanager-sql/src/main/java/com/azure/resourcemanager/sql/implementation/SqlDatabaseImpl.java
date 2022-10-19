@@ -20,6 +20,7 @@ import com.azure.resourcemanager.sql.models.DatabaseStatus;
 import com.azure.resourcemanager.sql.models.DatabaseUpdate;
 import com.azure.resourcemanager.sql.models.ImportRequest;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
+import com.azure.resourcemanager.sql.models.ResourceMoveDefinition;
 import com.azure.resourcemanager.sql.models.RestorePoint;
 import com.azure.resourcemanager.sql.models.SampleName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
@@ -425,7 +426,8 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             .sqlServerManager
             .serviceClient()
             .getDatabases()
-            .rename(this.resourceGroupName, this.sqlServerName, this.name(), newId);
+            .rename(this.resourceGroupName, this.sqlServerName, this.name(),
+                new ResourceMoveDefinition().withId(newId));
         return this
             .sqlServerManager
             .sqlServers()
@@ -442,7 +444,8 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
             .sqlServerManager
             .serviceClient()
             .getDatabases()
-            .renameAsync(this.resourceGroupName, this.sqlServerName, self.name(), newId)
+            .renameAsync(this.resourceGroupName, this.sqlServerName, self.name(),
+                new ResourceMoveDefinition().withId(newId))
             .flatMap(
                 aVoid ->
                     self

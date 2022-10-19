@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.videoanalyzer.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.models.AccessPolicyRole;
 import com.azure.resourcemanager.videoanalyzer.models.AuthenticationBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Application level properties for the access policy resource. */
 @Fluent
 public final class AccessPolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AccessPolicyProperties.class);
-
     /*
      * Defines the access level granted by this policy.
      */

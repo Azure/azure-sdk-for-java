@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Recommended actions based on discovered issues. */
 @Fluent
 public final class TroubleshootingRecommendedActions {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingRecommendedActions.class);
-
     /*
      * ID of the recommended action.
      */
@@ -27,18 +23,20 @@ public final class TroubleshootingRecommendedActions {
     private String actionText;
 
     /*
-     * The uri linking to a documentation for the recommended troubleshooting
-     * actions.
+     * The uri linking to a documentation for the recommended troubleshooting actions.
      */
     @JsonProperty(value = "actionUri")
     private String actionUri;
 
     /*
-     * The information from the URI for the recommended troubleshooting
-     * actions.
+     * The information from the URI for the recommended troubleshooting actions.
      */
     @JsonProperty(value = "actionUriText")
     private String actionUriText;
+
+    /** Creates an instance of TroubleshootingRecommendedActions class. */
+    public TroubleshootingRecommendedActions() {
+    }
 
     /**
      * Get the actionId property: ID of the recommended action.

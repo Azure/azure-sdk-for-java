@@ -5,29 +5,27 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Application gateway probe health response match. */
 @Fluent
 public final class ApplicationGatewayProbeHealthResponseMatch {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayProbeHealthResponseMatch.class);
-
     /*
-     * Body that must be contained in the health response. Default value is
-     * empty.
+     * Body that must be contained in the health response. Default value is empty.
      */
     @JsonProperty(value = "body")
     private String body;
 
     /*
-     * Allowed ranges of healthy status codes. Default range of healthy status
-     * codes is 200-399.
+     * Allowed ranges of healthy status codes. Default range of healthy status codes is 200-399.
      */
     @JsonProperty(value = "statusCodes")
     private List<String> statusCodes;
+
+    /** Creates an instance of ApplicationGatewayProbeHealthResponseMatch class. */
+    public ApplicationGatewayProbeHealthResponseMatch() {
+    }
 
     /**
      * Get the body property: Body that must be contained in the health response. Default value is empty.

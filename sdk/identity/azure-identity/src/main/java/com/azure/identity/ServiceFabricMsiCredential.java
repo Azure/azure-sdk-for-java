@@ -16,11 +16,12 @@ import reactor.core.publisher.Mono;
  */
 @Immutable
 class ServiceFabricMsiCredential extends ManagedIdentityServiceCredential {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceFabricMsiCredential.class);
+
     private final String identityEndpoint;
     private final String identityHeader;
     private final String identityServerThumbprint;
     private final IdentityClient identityClient;
-    private final ClientLogger logger = new ClientLogger(ServiceFabricMsiCredential.class);
 
     /**
      * Creates an instance of {@link ServiceFabricMsiCredential}.
@@ -37,7 +38,7 @@ class ServiceFabricMsiCredential extends ManagedIdentityServiceCredential {
                                             .get(ManagedIdentityCredential.PROPERTY_IDENTITY_SERVER_THUMBPRINT);
         this.identityClient = identityClient;
         if (identityEndpoint != null) {
-            validateEndpointProtocol(this.identityEndpoint, "Identity", logger);
+            validateEndpointProtocol(this.identityEndpoint, "Identity", LOGGER);
         }
     }
 
@@ -48,7 +49,6 @@ class ServiceFabricMsiCredential extends ManagedIdentityServiceCredential {
      * @return A publisher that emits an {@link AccessToken}.
      */
     public Mono<AccessToken> authenticate(TokenRequestContext request) {
-        return identityClient.authenticateToServiceFabricManagedIdentityEndpoint(identityEndpoint, identityHeader,
-            identityServerThumbprint, request);
+        return identityClient.authenticateWithManagedIdentityConfidentialClient(request);
     }
 }

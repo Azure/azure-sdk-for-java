@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureSqlMILinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("AzureSqlMI")
 @Fluent
 public final class AzureSqlMILinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureSqlMILinkedService.class);
-
     /*
      * Azure SQL Managed Instance linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private AzureSqlMILinkedServiceTypeProperties innerTypeProperties = new AzureSqlMILinkedServiceTypeProperties();
+
+    /** Creates an instance of AzureSqlMILinkedService class. */
+    public AzureSqlMILinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Azure SQL Managed Instance linked service properties.
@@ -294,7 +295,7 @@ public final class AzureSqlMILinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzureSqlMILinkedService"));
@@ -302,4 +303,6 @@ public final class AzureSqlMILinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureSqlMILinkedService.class);
 }

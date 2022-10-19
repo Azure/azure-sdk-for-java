@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Country details. */
 @Fluent
 public final class AvailableProvidersListCountry {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListCountry.class);
-
     /*
      * The country name.
      */
@@ -32,6 +28,10 @@ public final class AvailableProvidersListCountry {
      */
     @JsonProperty(value = "states")
     private List<AvailableProvidersListState> states;
+
+    /** Creates an instance of AvailableProvidersListCountry class. */
+    public AvailableProvidersListCountry() {
+    }
 
     /**
      * Get the countryName property: The country name.

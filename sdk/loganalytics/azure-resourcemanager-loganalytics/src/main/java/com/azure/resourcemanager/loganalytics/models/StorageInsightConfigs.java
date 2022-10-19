@@ -33,7 +33,7 @@ public interface StorageInsightConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance.
+     * @return a storage insight instance along with {@link Response}.
      */
     Response<StorageInsight> getWithResponse(
         String resourceGroupName, String workspaceName, String storageInsightName, Context context);
@@ -60,7 +60,7 @@ public interface StorageInsightConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String workspaceName, String storageInsightName, Context context);
@@ -73,7 +73,7 @@ public interface StorageInsightConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response.
+     * @return the list storage insights operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StorageInsight> listByWorkspace(String resourceGroupName, String workspaceName);
 
@@ -86,7 +86,7 @@ public interface StorageInsightConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list storage insights operation response.
+     * @return the list storage insights operation response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<StorageInsight> listByWorkspace(String resourceGroupName, String workspaceName, Context context);
 
@@ -97,7 +97,7 @@ public interface StorageInsightConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance.
+     * @return a storage insight instance along with {@link Response}.
      */
     StorageInsight getById(String id);
 
@@ -109,7 +109,7 @@ public interface StorageInsightConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a storage insight instance.
+     * @return a storage insight instance along with {@link Response}.
      */
     Response<StorageInsight> getByIdWithResponse(String id, Context context);
 
@@ -131,7 +131,7 @@ public interface StorageInsightConfigs {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

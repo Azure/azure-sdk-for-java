@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
@@ -18,8 +16,6 @@ import java.util.Map;
 @JsonTypeName("Microsoft.Compute/virtualMachines")
 @Fluent
 public final class AzureIaaSComputeVMProtectedItem extends AzureIaaSvmProtectedItem {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureIaaSComputeVMProtectedItem.class);
-
     /** {@inheritDoc} */
     @Override
     public AzureIaaSComputeVMProtectedItem withFriendlyName(String friendlyName) {
@@ -201,6 +197,20 @@ public final class AzureIaaSComputeVMProtectedItem extends AzureIaaSvmProtectedI
     public AzureIaaSComputeVMProtectedItem withResourceGuardOperationRequests(
         List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSComputeVMProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureIaaSComputeVMProtectedItem withPolicyName(String policyName) {
+        super.withPolicyName(policyName);
         return this;
     }
 

@@ -6,14 +6,11 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Instruction step details. */
 @Fluent
 public class ConnectorInstructionModelBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectorInstructionModelBase.class);
-
     /*
      * The parameters for the setting
      */
@@ -73,10 +70,12 @@ public class ConnectorInstructionModelBase {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property type in model ConnectorInstructionModelBase"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ConnectorInstructionModelBase.class);
 }

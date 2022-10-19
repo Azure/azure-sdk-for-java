@@ -13,10 +13,9 @@ import com.azure.resourcemanager.desktopvirtualization.fluent.ScalingPlansClient
 import com.azure.resourcemanager.desktopvirtualization.fluent.models.ScalingPlanInner;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlan;
 import com.azure.resourcemanager.desktopvirtualization.models.ScalingPlans;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ScalingPlansImpl implements ScalingPlans {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScalingPlansImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ScalingPlansImpl.class);
 
     private final ScalingPlansClient innerClient;
 
@@ -95,7 +94,7 @@ public final class ScalingPlansImpl implements ScalingPlans {
     public ScalingPlan getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -103,7 +102,7 @@ public final class ScalingPlansImpl implements ScalingPlans {
         }
         String scalingPlanName = Utils.getValueFromIdByName(id, "scalingPlans");
         if (scalingPlanName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scalingPlans'.", id)));
@@ -114,7 +113,7 @@ public final class ScalingPlansImpl implements ScalingPlans {
     public Response<ScalingPlan> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -122,7 +121,7 @@ public final class ScalingPlansImpl implements ScalingPlans {
         }
         String scalingPlanName = Utils.getValueFromIdByName(id, "scalingPlans");
         if (scalingPlanName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scalingPlans'.", id)));
@@ -133,7 +132,7 @@ public final class ScalingPlansImpl implements ScalingPlans {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -141,7 +140,7 @@ public final class ScalingPlansImpl implements ScalingPlans {
         }
         String scalingPlanName = Utils.getValueFromIdByName(id, "scalingPlans");
         if (scalingPlanName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scalingPlans'.", id)));
@@ -152,7 +151,7 @@ public final class ScalingPlansImpl implements ScalingPlans {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -160,7 +159,7 @@ public final class ScalingPlansImpl implements ScalingPlans {
         }
         String scalingPlanName = Utils.getValueFromIdByName(id, "scalingPlans");
         if (scalingPlanName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'scalingPlans'.", id)));

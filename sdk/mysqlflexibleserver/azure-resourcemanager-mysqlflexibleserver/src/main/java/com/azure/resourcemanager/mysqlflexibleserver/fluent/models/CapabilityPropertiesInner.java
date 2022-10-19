@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.mysqlflexibleserver.models.ServerEditionCapability;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Location capabilities. */
 @Immutable
 public final class CapabilityPropertiesInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CapabilityPropertiesInner.class);
-
     /*
      * zone name
      */

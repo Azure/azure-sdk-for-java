@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Customer Managed Identity. */
 @Immutable
 public final class MyWorkbookUserAssignedIdentities {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MyWorkbookUserAssignedIdentities.class);
-
     /*
      * The principal ID of resource identity.
      */

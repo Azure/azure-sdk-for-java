@@ -42,7 +42,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
         final String pipName = Utils.randomResourceName(azureResourceManager, "pip1", 15);
         final String userName = "tirekicker";
         final String sshPublicKey = Utils.sshPublicKey();
-        final Region region = Region.US_WEST_CENTRAL;
+        final Region region = Region.US_EAST;
 
         final String installScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/resourcemanager/azure-resourcemanager-samples/src/main/resources/create_resources_with_msi.sh";
         String installCommand = "bash create_resources_with_msi.sh {stgName} {rgName} {location}";
@@ -74,7 +74,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
             System.out.println("Created virtual machine with MSI enabled");
             Utils.print(virtualMachine);
 
-            // Prepare custom script t install az cli that uses MSI to create a storage account
+            // Prepare custom script to install az cli that uses MSI to create a storage account
             //
             final String stgName = Utils.randomResourceName(azureResourceManager, "st44", 15);
             installCommand = installCommand.replace("{stgName}", stgName)
@@ -88,10 +88,10 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
 
             virtualMachine
                     .update()
-                        .defineNewExtension("CustomScriptForLinux")
-                            .withPublisher("Microsoft.OSTCExtensions")
-                            .withType("CustomScriptForLinux")
-                            .withVersion("1.4")
+                        .defineNewExtension("az-create-storage-account")
+                            .withPublisher("Microsoft.Azure.Extensions")
+                            .withType("CustomScript")
+                            .withVersion("2.1")
                             .withMinorVersionAutoUpgrade()
                             .withPublicSetting("fileUris", fileUris)
                             .withPublicSetting("commandToExecute", installCommand)

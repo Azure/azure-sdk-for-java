@@ -52,6 +52,20 @@ public interface IotCentralClient {
     AppsClient getApps();
 
     /**
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
+     *
+     * @return the PrivateEndpointConnectionsClient object.
+     */
+    PrivateEndpointConnectionsClient getPrivateEndpointConnections();
+
+    /**
+     * Gets the PrivateLinksClient object to access its operations.
+     *
+     * @return the PrivateLinksClient object.
+     */
+    PrivateLinksClient getPrivateLinks();
+
+    /**
      * Gets the OperationsClient object to access its operations.
      *
      * @return the OperationsClient object.

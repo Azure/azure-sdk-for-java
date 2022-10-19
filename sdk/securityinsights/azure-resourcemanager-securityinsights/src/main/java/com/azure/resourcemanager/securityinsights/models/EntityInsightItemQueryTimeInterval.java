@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The Time interval that the query actually executed on. */
 @Fluent
 public final class EntityInsightItemQueryTimeInterval {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityInsightItemQueryTimeInterval.class);
-
     /*
      * Insight query start time
      */

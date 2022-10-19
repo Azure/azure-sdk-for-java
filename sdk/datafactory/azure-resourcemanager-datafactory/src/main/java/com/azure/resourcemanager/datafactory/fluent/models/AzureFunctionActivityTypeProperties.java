@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureFunctionActivityMethod;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Function activity type properties. */
 @Fluent
 public final class AzureFunctionActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFunctionActivityTypeProperties.class);
-
     /*
      * Rest API method for target endpoint.
      */
@@ -22,28 +19,30 @@ public final class AzureFunctionActivityTypeProperties {
     private AzureFunctionActivityMethod method;
 
     /*
-     * Name of the Function that the Azure Function Activity will call. Type:
-     * string (or Expression with resultType string)
+     * Name of the Function that the Azure Function Activity will call. Type: string (or Expression with resultType
+     * string)
      */
     @JsonProperty(value = "functionName", required = true)
     private Object functionName;
 
     /*
-     * Represents the headers that will be sent to the request. For example, to
-     * set the language and type on a request: "headers" : { "Accept-Language":
-     * "en-us", "Content-Type": "application/json" }. Type: string (or
-     * Expression with resultType string).
+     * Represents the headers that will be sent to the request. For example, to set the language and type on a request:
+     * "headers" : { "Accept-Language": "en-us", "Content-Type": "application/json" }. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "headers")
     private Object headers;
 
     /*
-     * Represents the payload that will be sent to the endpoint. Required for
-     * POST/PUT method, not allowed for GET method Type: string (or Expression
-     * with resultType string).
+     * Represents the payload that will be sent to the endpoint. Required for POST/PUT method, not allowed for GET
+     * method Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "body")
     private Object body;
+
+    /** Creates an instance of AzureFunctionActivityTypeProperties class. */
+    public AzureFunctionActivityTypeProperties() {
+    }
 
     /**
      * Get the method property: Rest API method for target endpoint.
@@ -140,16 +139,18 @@ public final class AzureFunctionActivityTypeProperties {
      */
     public void validate() {
         if (method() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property method in model AzureFunctionActivityTypeProperties"));
         }
         if (functionName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property functionName in model AzureFunctionActivityTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureFunctionActivityTypeProperties.class);
 }

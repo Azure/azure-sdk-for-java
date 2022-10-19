@@ -35,7 +35,8 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's long term retention policy.
+     * @return a managed database's long term retention policy along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedInstanceLongTermRetentionPolicyInner>> getWithResponseAsync(
@@ -55,7 +56,7 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's long term retention policy.
+     * @return a managed database's long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedInstanceLongTermRetentionPolicyInner> getAsync(
@@ -96,7 +97,7 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed database's long term retention policy.
+     * @return a managed database's long term retention policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedInstanceLongTermRetentionPolicyInner> getWithResponse(
@@ -114,11 +115,11 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return a long term retention policy along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -136,13 +137,13 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return the {@link PollerFlux} for polling of a long term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -159,13 +160,13 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -182,14 +183,14 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return the {@link SyncPoller} for polling of a long term retention policy.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceLongTermRetentionPolicyInner>, ManagedInstanceLongTermRetentionPolicyInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -207,11 +208,11 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a long term retention policy.
+     * @return a long term retention policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedInstanceLongTermRetentionPolicyInner> createOrUpdateAsync(
@@ -229,7 +230,7 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -251,7 +252,7 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @param managedInstanceName The name of the managed instance.
      * @param databaseName The name of the database.
      * @param policyName The policy name. Should always be Default.
-     * @param parameters A long term retention policy.
+     * @param parameters The long term retention policy info.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -277,7 +278,7 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceLongTermRetentionPolicyInner> listByDatabaseAsync(
@@ -293,7 +294,7 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceLongTermRetentionPolicyInner> listByDatabase(
@@ -310,7 +311,7 @@ public interface ManagedInstanceLongTermRetentionPoliciesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a database's long term retention policy.
+     * @return a database's long term retention policy as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceLongTermRetentionPolicyInner> listByDatabase(

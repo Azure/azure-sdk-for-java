@@ -7,15 +7,12 @@ package com.azure.resourcemanager.securityinsights.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.fluent.models.RelationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of relations. */
 @Fluent
 public final class RelationList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationList.class);
-
     /*
      * URL to fetch the next set of relations.
      */
@@ -64,11 +61,13 @@ public final class RelationList {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model RelationList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RelationList.class);
 }

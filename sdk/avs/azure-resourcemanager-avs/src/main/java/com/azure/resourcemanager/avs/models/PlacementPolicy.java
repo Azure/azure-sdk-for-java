@@ -39,6 +39,13 @@ public interface PlacementPolicy {
     PlacementPolicyProperties properties();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.PlacementPolicyInner object.
      *
      * @return the inner object.
@@ -105,7 +112,12 @@ public interface PlacementPolicy {
     PlacementPolicy.Update update();
 
     /** The template for PlacementPolicy update. */
-    interface Update extends UpdateStages.WithState, UpdateStages.WithVmMembers, UpdateStages.WithHostMembers {
+    interface Update
+        extends UpdateStages.WithState,
+            UpdateStages.WithVmMembers,
+            UpdateStages.WithHostMembers,
+            UpdateStages.WithAffinityStrength,
+            UpdateStages.WithAzureHybridBenefitType {
         /**
          * Executes the update request.
          *
@@ -152,6 +164,26 @@ public interface PlacementPolicy {
              * @return the next definition stage.
              */
             Update withHostMembers(List<String> hostMembers);
+        }
+        /** The stage of the PlacementPolicy update allowing to specify affinityStrength. */
+        interface WithAffinityStrength {
+            /**
+             * Specifies the affinityStrength property: vm-host placement policy affinity strength (should/must).
+             *
+             * @param affinityStrength vm-host placement policy affinity strength (should/must).
+             * @return the next definition stage.
+             */
+            Update withAffinityStrength(AffinityStrength affinityStrength);
+        }
+        /** The stage of the PlacementPolicy update allowing to specify azureHybridBenefitType. */
+        interface WithAzureHybridBenefitType {
+            /**
+             * Specifies the azureHybridBenefitType property: placement policy azure hybrid benefit opt-in type.
+             *
+             * @param azureHybridBenefitType placement policy azure hybrid benefit opt-in type.
+             * @return the next definition stage.
+             */
+            Update withAzureHybridBenefitType(AzureHybridBenefitType azureHybridBenefitType);
         }
     }
     /**

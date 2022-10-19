@@ -33,7 +33,7 @@ public interface NotificationRecipientUsers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of the Notification Recipient User subscribed to the notification.
+     * @return the list of the Notification Recipient User subscribed to the notification along with {@link Response}.
      */
     Response<RecipientUserCollection> listByNotificationWithResponse(
         String resourceGroupName, String serviceName, NotificationName notificationName, Context context);
@@ -64,7 +64,7 @@ public interface NotificationRecipientUsers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return whether resource exists along with {@link Response}.
      */
     Response<Boolean> checkEntityExistsWithResponse(
         String resourceGroupName,
@@ -99,7 +99,7 @@ public interface NotificationRecipientUsers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return recipient User details.
+     * @return recipient User details along with {@link Response}.
      */
     Response<RecipientUserContract> createOrUpdateWithResponse(
         String resourceGroupName,
@@ -132,7 +132,7 @@ public interface NotificationRecipientUsers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName,

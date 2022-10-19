@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Virtual Wan Vpn profile parameters Vpn profile generation. */
 @Fluent
 public final class VirtualWanVpnProfileParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualWanVpnProfileParameters.class);
-
     /*
-     * VpnServerConfiguration partial resource uri with which VirtualWan is
-     * associated to.
+     * VpnServerConfiguration partial resource uri with which VirtualWan is associated to.
      */
     @JsonProperty(value = "vpnServerConfigurationResourceId")
     private String vpnServerConfigurationResourceId;
@@ -26,6 +21,10 @@ public final class VirtualWanVpnProfileParameters {
      */
     @JsonProperty(value = "authenticationMethod")
     private AuthenticationMethod authenticationMethod;
+
+    /** Creates an instance of VirtualWanVpnProfileParameters class. */
+    public VirtualWanVpnProfileParameters() {
+    }
 
     /**
      * Get the vpnServerConfigurationResourceId property: VpnServerConfiguration partial resource uri with which

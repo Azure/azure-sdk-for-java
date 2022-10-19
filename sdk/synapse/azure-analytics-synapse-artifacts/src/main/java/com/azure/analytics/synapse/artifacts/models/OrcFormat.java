@@ -12,4 +12,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("OrcFormat")
 @Fluent
-public final class OrcFormat extends DatasetStorageFormat {}
+public final class OrcFormat extends DatasetStorageFormat {
+    /** {@inheritDoc} */
+    @Override
+    public OrcFormat setSerializer(Object serializer) {
+        super.setSerializer(serializer);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public OrcFormat setDeserializer(Object deserializer) {
+        super.setDeserializer(deserializer);
+        return this;
+    }
+}

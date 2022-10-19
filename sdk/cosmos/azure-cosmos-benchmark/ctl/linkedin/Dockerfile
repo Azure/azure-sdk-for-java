@@ -2,7 +2,7 @@
 #   docker build -t linkedin-ctl-workload -f ctl/linkedin/Dockerfile .
 #
 
-FROM centos:7
+FROM mcr.microsoft.com/mirror/docker/library/centos:7
 #
 # UTF-8 by default
 #

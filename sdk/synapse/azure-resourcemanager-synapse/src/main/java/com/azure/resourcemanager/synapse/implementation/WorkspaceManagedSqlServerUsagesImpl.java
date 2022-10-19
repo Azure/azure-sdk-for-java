@@ -11,10 +11,9 @@ import com.azure.resourcemanager.synapse.fluent.WorkspaceManagedSqlServerUsagesC
 import com.azure.resourcemanager.synapse.fluent.models.ServerUsageInner;
 import com.azure.resourcemanager.synapse.models.ServerUsage;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerUsages;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceManagedSqlServerUsagesImpl implements WorkspaceManagedSqlServerUsages {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceManagedSqlServerUsagesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WorkspaceManagedSqlServerUsagesImpl.class);
 
     private final WorkspaceManagedSqlServerUsagesClient innerClient;
 

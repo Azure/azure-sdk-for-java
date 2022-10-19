@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** PolyBase settings. */
 @Fluent
 public final class PolybaseSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolybaseSettings.class);
-
     /*
      * Reject type.
      */
@@ -25,25 +22,22 @@ public final class PolybaseSettings {
     private PolybaseSettingsRejectType rejectType;
 
     /*
-     * Specifies the value or the percentage of rows that can be rejected
-     * before the query fails. Type: number (or Expression with resultType
-     * number), minimum: 0.
+     * Specifies the value or the percentage of rows that can be rejected before the query fails. Type: number (or
+     * Expression with resultType number), minimum: 0.
      */
     @JsonProperty(value = "rejectValue")
     private Object rejectValue;
 
     /*
-     * Determines the number of rows to attempt to retrieve before the PolyBase
-     * recalculates the percentage of rejected rows. Type: integer (or
-     * Expression with resultType integer), minimum: 0.
+     * Determines the number of rows to attempt to retrieve before the PolyBase recalculates the percentage of rejected
+     * rows. Type: integer (or Expression with resultType integer), minimum: 0.
      */
     @JsonProperty(value = "rejectSampleValue")
     private Object rejectSampleValue;
 
     /*
-     * Specifies how to handle missing values in delimited text files when
-     * PolyBase retrieves data from the text file. Type: boolean (or Expression
-     * with resultType boolean).
+     * Specifies how to handle missing values in delimited text files when PolyBase retrieves data from the text file.
+     * Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "useTypeDefault")
     private Object useTypeDefault;
@@ -52,6 +46,10 @@ public final class PolybaseSettings {
      * PolyBase settings.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of PolybaseSettings class. */
+    public PolybaseSettings() {
+    }
 
     /**
      * Get the rejectType property: Reject type.

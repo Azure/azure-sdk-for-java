@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallFqdnTagInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListAzureFirewallFqdnTags API service call. */
 @Fluent
 public final class AzureFirewallFqdnTagListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallFqdnTagListResult.class);
-
     /*
      * List of Azure Firewall FQDN Tags in a resource group.
      */
@@ -27,6 +23,10 @@ public final class AzureFirewallFqdnTagListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of AzureFirewallFqdnTagListResult class. */
+    public AzureFirewallFqdnTagListResult() {
+    }
 
     /**
      * Get the value property: List of Azure Firewall FQDN Tags in a resource group.

@@ -49,6 +49,13 @@ public interface Server {
     Map<String, String> tags();
 
     /**
+     * Gets the identity property: The cmk identity for the server.
+     *
+     * @return the identity value.
+     */
+    Identity identity();
+
+    /**
      * Gets the sku property: The SKU (pricing tier) of the server.
      *
      * @return the sku value.
@@ -127,6 +134,13 @@ public interface Server {
      * @return the replicaCapacity value.
      */
     Integer replicaCapacity();
+
+    /**
+     * Gets the dataEncryption property: The Data Encryption for CMK.
+     *
+     * @return the dataEncryption value.
+     */
+    DataEncryption dataEncryption();
 
     /**
      * Gets the state property: The state of a server.
@@ -244,6 +258,7 @@ public interface Server {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithIdentity,
                 DefinitionStages.WithSku,
                 DefinitionStages.WithAdministratorLogin,
                 DefinitionStages.WithAdministratorLoginPassword,
@@ -253,6 +268,7 @@ public interface Server {
                 DefinitionStages.WithSourceServerResourceId,
                 DefinitionStages.WithRestorePointInTime,
                 DefinitionStages.WithReplicationRole,
+                DefinitionStages.WithDataEncryption,
                 DefinitionStages.WithStorage,
                 DefinitionStages.WithBackup,
                 DefinitionStages.WithHighAvailability,
@@ -281,6 +297,16 @@ public interface Server {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the Server definition allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The cmk identity for the server..
+             *
+             * @param identity The cmk identity for the server.
+             * @return the next definition stage.
+             */
+            WithCreate withIdentity(Identity identity);
         }
         /** The stage of the Server definition allowing to specify sku. */
         interface WithSku {
@@ -377,6 +403,16 @@ public interface Server {
              */
             WithCreate withReplicationRole(ReplicationRole replicationRole);
         }
+        /** The stage of the Server definition allowing to specify dataEncryption. */
+        interface WithDataEncryption {
+            /**
+             * Specifies the dataEncryption property: The Data Encryption for CMK..
+             *
+             * @param dataEncryption The Data Encryption for CMK.
+             * @return the next definition stage.
+             */
+            WithCreate withDataEncryption(DataEncryption dataEncryption);
+        }
         /** The stage of the Server definition allowing to specify storage. */
         interface WithStorage {
             /**
@@ -428,13 +464,15 @@ public interface Server {
     /** The template for Server update. */
     interface Update
         extends UpdateStages.WithTags,
+            UpdateStages.WithIdentity,
             UpdateStages.WithSku,
             UpdateStages.WithAdministratorLoginPassword,
             UpdateStages.WithStorage,
             UpdateStages.WithBackup,
             UpdateStages.WithHighAvailability,
             UpdateStages.WithMaintenanceWindow,
-            UpdateStages.WithReplicationRole {
+            UpdateStages.WithReplicationRole,
+            UpdateStages.WithDataEncryption {
         /**
          * Executes the update request.
          *
@@ -461,6 +499,16 @@ public interface Server {
              * @return the next definition stage.
              */
             Update withTags(Map<String, String> tags);
+        }
+        /** The stage of the Server update allowing to specify identity. */
+        interface WithIdentity {
+            /**
+             * Specifies the identity property: The cmk identity for the server..
+             *
+             * @param identity The cmk identity for the server.
+             * @return the next definition stage.
+             */
+            Update withIdentity(Identity identity);
         }
         /** The stage of the Server update allowing to specify sku. */
         interface WithSku {
@@ -531,6 +579,16 @@ public interface Server {
              * @return the next definition stage.
              */
             Update withReplicationRole(ReplicationRole replicationRole);
+        }
+        /** The stage of the Server update allowing to specify dataEncryption. */
+        interface WithDataEncryption {
+            /**
+             * Specifies the dataEncryption property: The Data Encryption for CMK..
+             *
+             * @param dataEncryption The Data Encryption for CMK.
+             * @return the next definition stage.
+             */
+            Update withDataEncryption(DataEncryption dataEncryption);
         }
     }
     /**

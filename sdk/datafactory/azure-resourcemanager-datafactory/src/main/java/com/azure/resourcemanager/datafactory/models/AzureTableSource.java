@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,21 +14,21 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureTableSource")
 @Fluent
 public final class AzureTableSource extends TabularSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureTableSource.class);
-
     /*
-     * Azure Table source query. Type: string (or Expression with resultType
-     * string).
+     * Azure Table source query. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableSourceQuery")
     private Object azureTableSourceQuery;
 
     /*
-     * Azure Table source ignore table not found. Type: boolean (or Expression
-     * with resultType boolean).
+     * Azure Table source ignore table not found. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "azureTableSourceIgnoreTableNotFound")
     private Object azureTableSourceIgnoreTableNotFound;
+
+    /** Creates an instance of AzureTableSource class. */
+    public AzureTableSource() {
+    }
 
     /**
      * Get the azureTableSourceQuery property: Azure Table source query. Type: string (or Expression with resultType

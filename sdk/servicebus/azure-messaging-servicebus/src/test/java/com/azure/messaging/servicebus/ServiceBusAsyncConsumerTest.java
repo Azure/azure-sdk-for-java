@@ -46,14 +46,14 @@ import static org.mockito.Mockito.when;
  */
 class ServiceBusAsyncConsumerTest {
     private static final String LINK_NAME = "some-link";
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAsyncConsumer.class);
+
     private final TestPublisher<ServiceBusReceiveLink> linkPublisher = TestPublisher.create();
     private final Flux<ServiceBusReceiveLink> linkFlux = linkPublisher.flux();
     private final TestPublisher<Message> messagePublisher = TestPublisher.create();
     private final Flux<Message> messageFlux = messagePublisher.flux();
     private final TestPublisher<AmqpEndpointState> endpointPublisher = TestPublisher.create();
     private final Flux<AmqpEndpointState> endpointStateFlux = endpointPublisher.flux();
-
-    private final ClientLogger logger = new ClientLogger(ServiceBusAsyncConsumer.class);
 
     private ServiceBusReceiveLinkProcessor linkProcessor;
     private Function<String, Mono<OffsetDateTime>> onRenewLock;
@@ -81,7 +81,7 @@ class ServiceBusAsyncConsumerTest {
 
     @BeforeEach
     void setup(TestInfo testInfo) {
-        logger.info("[{}]: Setting up.", testInfo.getDisplayName());
+        LOGGER.info("[{}]: Setting up.", testInfo.getDisplayName());
 
         MockitoAnnotations.initMocks(this);
 
@@ -98,7 +98,7 @@ class ServiceBusAsyncConsumerTest {
 
     @AfterEach
     void teardown(TestInfo testInfo) {
-        logger.info("[{}]: Tearing down.", testInfo.getDisplayName());
+        LOGGER.info("[{}]: Tearing down.", testInfo.getDisplayName());
 
         Mockito.framework().clearInlineMock(this);
 

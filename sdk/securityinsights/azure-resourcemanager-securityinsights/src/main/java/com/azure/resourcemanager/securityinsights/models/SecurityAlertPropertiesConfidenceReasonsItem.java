@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** confidence reason item. */
 @Immutable
 public final class SecurityAlertPropertiesConfidenceReasonsItem {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SecurityAlertPropertiesConfidenceReasonsItem.class);
-
     /*
      * The reason's description
      */

@@ -8,24 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** HDInsight linked service properties. */
 @Fluent
 public final class HDInsightLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightLinkedServiceTypeProperties.class);
-
     /*
-     * HDInsight cluster URI. Type: string (or Expression with resultType
-     * string).
+     * HDInsight cluster URI. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "clusterUri", required = true)
     private Object clusterUri;
 
     /*
-     * HDInsight cluster user name. Type: string (or Expression with resultType
-     * string).
+     * HDInsight cluster user name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -43,33 +38,34 @@ public final class HDInsightLinkedServiceTypeProperties {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * A reference to the Azure SQL linked service that points to the HCatalog
-     * database.
+     * A reference to the Azure SQL linked service that points to the HCatalog database.
      */
     @JsonProperty(value = "hcatalogLinkedServiceName")
     private LinkedServiceReference hcatalogLinkedServiceName;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
     /*
-     * Specify if the HDInsight is created with ESP (Enterprise Security
-     * Package). Type: Boolean.
+     * Specify if the HDInsight is created with ESP (Enterprise Security Package). Type: Boolean.
      */
     @JsonProperty(value = "isEspEnabled")
     private Object isEspEnabled;
 
     /*
-     * Specify the FileSystem if the main storage for the HDInsight is ADLS
-     * Gen2. Type: string (or Expression with resultType string).
+     * Specify the FileSystem if the main storage for the HDInsight is ADLS Gen2. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "fileSystem")
     private Object fileSystem;
+
+    /** Creates an instance of HDInsightLinkedServiceTypeProperties class. */
+    public HDInsightLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the clusterUri property: HDInsight cluster URI. Type: string (or Expression with resultType string).
@@ -247,7 +243,7 @@ public final class HDInsightLinkedServiceTypeProperties {
      */
     public void validate() {
         if (clusterUri() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property clusterUri in model HDInsightLinkedServiceTypeProperties"));
@@ -262,4 +258,6 @@ public final class HDInsightLinkedServiceTypeProperties {
             hcatalogLinkedServiceName().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HDInsightLinkedServiceTypeProperties.class);
 }

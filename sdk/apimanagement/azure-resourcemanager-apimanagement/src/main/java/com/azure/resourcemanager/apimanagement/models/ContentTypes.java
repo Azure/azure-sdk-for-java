@@ -19,7 +19,7 @@ public interface ContentTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of content types.
+     * @return paged list of content types as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ContentTypeContract> listByService(String resourceGroupName, String serviceName);
 
@@ -33,7 +33,7 @@ public interface ContentTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of content types.
+     * @return paged list of content types as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ContentTypeContract> listByService(String resourceGroupName, String serviceName, Context context);
 
@@ -130,7 +130,7 @@ public interface ContentTypes {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String contentTypeId, String ifMatch, Context context);

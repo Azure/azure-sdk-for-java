@@ -5,21 +5,20 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Data Explorer (Kusto) dataset properties. */
 @Fluent
 public final class AzureDataExplorerDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataExplorerDatasetTypeProperties.class);
-
     /*
-     * The table name of the Azure Data Explorer database. Type: string (or
-     * Expression with resultType string).
+     * The table name of the Azure Data Explorer database. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
+
+    /** Creates an instance of AzureDataExplorerDatasetTypeProperties class. */
+    public AzureDataExplorerDatasetTypeProperties() {
+    }
 
     /**
      * Get the table property: The table name of the Azure Data Explorer database. Type: string (or Expression with

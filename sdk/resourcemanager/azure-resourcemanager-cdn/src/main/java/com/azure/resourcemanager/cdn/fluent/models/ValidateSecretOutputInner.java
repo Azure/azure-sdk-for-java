@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cdn.models.Status;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Output of the validated secret. */
 @Fluent
 public final class ValidateSecretOutputInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateSecretOutputInner.class);
-
     /*
      * The validation status.
      */

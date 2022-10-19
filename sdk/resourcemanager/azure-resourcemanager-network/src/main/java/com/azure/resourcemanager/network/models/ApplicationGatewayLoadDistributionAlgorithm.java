@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewayLoadDistributionAlgorithm. */
+/** Load Distribution Algorithm enums. */
 public final class ApplicationGatewayLoadDistributionAlgorithm
     extends ExpandableStringEnum<ApplicationGatewayLoadDistributionAlgorithm> {
     /** Static value RoundRobin for ApplicationGatewayLoadDistributionAlgorithm. */
@@ -31,7 +31,11 @@ public final class ApplicationGatewayLoadDistributionAlgorithm
         return fromString(name, ApplicationGatewayLoadDistributionAlgorithm.class);
     }
 
-    /** @return known ApplicationGatewayLoadDistributionAlgorithm values. */
+    /**
+     * Gets known ApplicationGatewayLoadDistributionAlgorithm values.
+     *
+     * @return known ApplicationGatewayLoadDistributionAlgorithm values.
+     */
     public static Collection<ApplicationGatewayLoadDistributionAlgorithm> values() {
         return values(ApplicationGatewayLoadDistributionAlgorithm.class);
     }

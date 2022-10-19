@@ -1,0 +1,22 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "GET",
+    "Uri" : "https://REDACTED.api.adu.microsoft.com/deviceUpdate/sdkinstance/management/groups?api-version=2022-10-01",
+    "Headers" : {
+      "User-Agent" : "azsdk-java-azure-iot-deviceupdate/1.0.0-beta.4 (1.8.0_342; Windows 11; 10.0)",
+      "x-ms-client-request-id" : "d7f7d38c-9cdb-4458-812f-74ec9093ae28"
+    },
+    "Response" : {
+      "content-length" : "1091",
+      "traceparent" : "00-205ae2c2356fb9429cbd1f70b1f3ba7b-fa5f5c08ef758f40-00",
+      "mise-correlation-id" : "47f1bd25-d8cc-463a-80d0-efaccdf544c6",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "Body" : "{\r\n  \"value\": [\r\n    {\r\n      \"groupId\": \"$default\",\r\n      \"groupType\": \"DefaultNoTag\",\r\n      \"createdDateTime\": \"2022-06-08T23:58:17.7255595+00:00\",\r\n      \"deviceCount\": 0,\r\n      \"subgroupsWithNewUpdatesAvailableCount\": 0,\r\n      \"subgroupsWithUpdatesInProgressCount\": 0,\r\n      \"subgroupsWithOnLatestUpdateCount\": 0,\r\n      \"deployments\": []\r\n    },\r\n    {\r\n      \"groupId\": \"dpokluda-test\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"createdDateTime\": \"2022-06-09T00:08:48.4487+00:00\",\r\n      \"deviceCount\": 1,\r\n      \"subgroupsWithNewUpdatesAvailableCount\": 1,\r\n      \"subgroupsWithUpdatesInProgressCount\": 0,\r\n      \"subgroupsWithOnLatestUpdateCount\": 0,\r\n      \"deployments\": [\r\n        \"3706728501f54ef4b4d6574eaef7fb6c\"\r\n      ]\r\n    },\r\n    {\r\n      \"groupId\": \"testgroup\",\r\n      \"groupType\": \"IoTHubTag\",\r\n      \"createdDateTime\": \"2022-08-09T19:17:24.9549445+00:00\",\r\n      \"deviceCount\": 1,\r\n      \"subgroupsWithNewUpdatesAvailableCount\": 1,\r\n      \"subgroupsWithUpdatesInProgressCount\": 0,\r\n      \"subgroupsWithOnLatestUpdateCount\": 0,\r\n      \"deployments\": []\r\n    }\r\n  ]\r\n}",
+      "Date" : "Wed, 31 Aug 2022 20:16:45 GMT",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ ]
+}

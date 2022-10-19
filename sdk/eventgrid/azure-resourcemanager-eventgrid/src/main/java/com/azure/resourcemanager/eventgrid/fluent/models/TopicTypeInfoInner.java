@@ -6,19 +6,15 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
-import com.azure.resourcemanager.eventgrid.models.TopicTypePropertiesSupportedScopesForSourceItem;
 import com.azure.resourcemanager.eventgrid.models.TopicTypeProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.eventgrid.models.TopicTypeSourceScope;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of a topic type info. */
 @Fluent
 public final class TopicTypeInfoInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopicTypeInfoInner.class);
-
     /*
      * Properties of the topic type info
      */
@@ -200,7 +196,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
      *
      * @return the supportedScopesForSource value.
      */
-    public List<TopicTypePropertiesSupportedScopesForSourceItem> supportedScopesForSource() {
+    public List<TopicTypeSourceScope> supportedScopesForSource() {
         return this.innerProperties() == null ? null : this.innerProperties().supportedScopesForSource();
     }
 
@@ -210,8 +206,7 @@ public final class TopicTypeInfoInner extends ProxyResource {
      * @param supportedScopesForSource the supportedScopesForSource value to set.
      * @return the TopicTypeInfoInner object itself.
      */
-    public TopicTypeInfoInner withSupportedScopesForSource(
-        List<TopicTypePropertiesSupportedScopesForSourceItem> supportedScopesForSource) {
+    public TopicTypeInfoInner withSupportedScopesForSource(List<TopicTypeSourceScope> supportedScopesForSource) {
         if (this.innerProperties() == null) {
             this.innerProperties = new TopicTypeProperties();
         }

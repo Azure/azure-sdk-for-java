@@ -5,18 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Details of NetworkIntentPolicyConfiguration for PrepareNetworkPoliciesRequest. */
 @Fluent
 public final class NetworkIntentPolicyConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkIntentPolicyConfiguration.class);
-
     /*
-     * The name of the Network Intent Policy for storing in target
-     * subscription.
+     * The name of the Network Intent Policy for storing in target subscription.
      */
     @JsonProperty(value = "networkIntentPolicyName")
     private String networkIntentPolicyName;
@@ -26,6 +21,10 @@ public final class NetworkIntentPolicyConfiguration {
      */
     @JsonProperty(value = "sourceNetworkIntentPolicy")
     private NetworkIntentPolicy sourceNetworkIntentPolicy;
+
+    /** Creates an instance of NetworkIntentPolicyConfiguration class. */
+    public NetworkIntentPolicyConfiguration() {
+    }
 
     /**
      * Get the networkIntentPolicyName property: The name of the Network Intent Policy for storing in target

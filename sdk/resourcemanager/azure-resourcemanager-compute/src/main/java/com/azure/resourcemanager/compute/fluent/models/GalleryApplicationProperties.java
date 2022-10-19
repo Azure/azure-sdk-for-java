@@ -7,18 +7,14 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Describes the properties of a gallery Application Definition. */
 @Fluent
 public final class GalleryApplicationProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryApplicationProperties.class);
-
     /*
-     * The description of this gallery Application Definition resource. This
-     * property is updatable.
+     * The description of this gallery Application Definition resource. This property is updatable.
      */
     @JsonProperty(value = "description")
     private String description;
@@ -42,17 +38,15 @@ public final class GalleryApplicationProperties {
     private String releaseNoteUri;
 
     /*
-     * The end of life date of the gallery Application Definition. This
-     * property can be used for decommissioning purposes. This property is
-     * updatable.
+     * The end of life date of the gallery Application Definition. This property can be used for decommissioning
+     * purposes. This property is updatable.
      */
     @JsonProperty(value = "endOfLifeDate")
     private OffsetDateTime endOfLifeDate;
 
     /*
-     * This property allows you to specify the supported type of the OS that
-     * application is built for. <br><br> Possible values are: <br><br>
-     * **Windows** <br><br> **Linux**
+     * This property allows you to specify the supported type of the OS that application is built for. <br><br>
+     * Possible values are: <br><br> **Windows** <br><br> **Linux**
      */
     @JsonProperty(value = "supportedOSType", required = true)
     private OperatingSystemTypes supportedOSType;
@@ -192,10 +186,12 @@ public final class GalleryApplicationProperties {
      */
     public void validate() {
         if (supportedOSType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property supportedOSType in model GalleryApplicationProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GalleryApplicationProperties.class);
 }

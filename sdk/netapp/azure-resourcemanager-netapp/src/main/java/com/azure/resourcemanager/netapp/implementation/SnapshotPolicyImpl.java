@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.netapp.implementation;
 
 import com.azure.core.management.Region;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotPolicyInner;
 import com.azure.resourcemanager.netapp.models.DailySchedule;
@@ -50,6 +51,10 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
         return this.innerModel().etag();
     }
 
+    public SystemData systemData() {
+        return this.innerModel().systemData();
+    }
+
     public HourlySchedule hourlySchedule() {
         return this.innerModel().hourlySchedule();
     }
@@ -80,6 +85,10 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public SnapshotPolicyInner innerModel() {

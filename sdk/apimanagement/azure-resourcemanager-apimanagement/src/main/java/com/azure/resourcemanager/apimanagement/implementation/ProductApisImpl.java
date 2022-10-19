@@ -13,10 +13,9 @@ import com.azure.resourcemanager.apimanagement.fluent.ProductApisClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.ApiContractInner;
 import com.azure.resourcemanager.apimanagement.models.ApiContract;
 import com.azure.resourcemanager.apimanagement.models.ProductApis;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ProductApisImpl implements ProductApis {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProductApisImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProductApisImpl.class);
 
     private final ProductApisClient innerClient;
 

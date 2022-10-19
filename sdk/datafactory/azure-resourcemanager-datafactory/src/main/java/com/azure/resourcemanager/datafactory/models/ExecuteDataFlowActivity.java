@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ExecuteDataFlowActivityTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -18,13 +17,15 @@ import java.util.List;
 @JsonTypeName("ExecuteDataFlow")
 @Fluent
 public final class ExecuteDataFlowActivity extends ExecutionActivity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExecuteDataFlowActivity.class);
-
     /*
      * Execute data flow activity properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private ExecuteDataFlowActivityTypeProperties innerTypeProperties = new ExecuteDataFlowActivityTypeProperties();
+
+    /** Creates an instance of ExecuteDataFlowActivity class. */
+    public ExecuteDataFlowActivity() {
+    }
 
     /**
      * Get the innerTypeProperties property: Execute data flow activity properties.
@@ -245,6 +246,31 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     }
 
     /**
+     * Get the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @return the sourceStagingConcurrency value.
+     */
+    public Object sourceStagingConcurrency() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sourceStagingConcurrency();
+    }
+
+    /**
+     * Set the sourceStagingConcurrency property: Specify number of parallel staging for sources applicable to the sink.
+     * Type: integer (or Expression with resultType integer).
+     *
+     * @param sourceStagingConcurrency the sourceStagingConcurrency value to set.
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    public ExecuteDataFlowActivity withSourceStagingConcurrency(Object sourceStagingConcurrency) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new ExecuteDataFlowActivityTypeProperties();
+        }
+        this.innerTypeProperties().withSourceStagingConcurrency(sourceStagingConcurrency);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -253,7 +279,7 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ExecuteDataFlowActivity"));
@@ -261,4 +287,6 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ExecuteDataFlowActivity.class);
 }

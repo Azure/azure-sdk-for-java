@@ -19,7 +19,7 @@ public interface ProductApis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Api list representation.
+     * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ApiContract> listByProduct(String resourceGroupName, String serviceName, String productId);
 
@@ -42,7 +42,7 @@ public interface ProductApis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Api list representation.
+     * @return paged API list representation as paginated response with {@link PagedIterable}.
      */
     PagedIterable<ApiContract> listByProduct(
         String resourceGroupName,
@@ -79,7 +79,7 @@ public interface ProductApis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> checkEntityExistsWithResponse(
         String resourceGroupName, String serviceName, String productId, String apiId, Context context);
@@ -95,7 +95,7 @@ public interface ProductApis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api details.
+     * @return aPI details.
      */
     ApiContract createOrUpdate(String resourceGroupName, String serviceName, String productId, String apiId);
 
@@ -111,7 +111,7 @@ public interface ProductApis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return api details.
+     * @return aPI details along with {@link Response}.
      */
     Response<ApiContract> createOrUpdateWithResponse(
         String resourceGroupName, String serviceName, String productId, String apiId, Context context);
@@ -142,7 +142,7 @@ public interface ProductApis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(
         String resourceGroupName, String serviceName, String productId, String apiId, Context context);

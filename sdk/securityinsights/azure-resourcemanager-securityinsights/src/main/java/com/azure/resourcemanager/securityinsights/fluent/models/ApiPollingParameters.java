@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.CodelessConnectorPollingConfigProperties;
 import com.azure.resourcemanager.securityinsights.models.CodelessUiConnectorConfigProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents Codeless API Polling data connector. */
 @Fluent
 public final class ApiPollingParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiPollingParameters.class);
-
     /*
      * Config to describe the instructions blade
      */

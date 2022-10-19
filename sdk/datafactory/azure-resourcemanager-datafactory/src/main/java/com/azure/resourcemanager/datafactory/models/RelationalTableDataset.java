@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.RelationalTableDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("RelationalTable")
 @Fluent
 public final class RelationalTableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RelationalTableDataset.class);
-
     /*
      * Relational table dataset properties.
      */
     @JsonProperty(value = "typeProperties")
     private RelationalTableDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of RelationalTableDataset class. */
+    public RelationalTableDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Relational table dataset properties.

@@ -33,7 +33,11 @@ public final class HealthCheckResult extends ExpandableStringEnum<HealthCheckRes
         return fromString(name, HealthCheckResult.class);
     }
 
-    /** @return known HealthCheckResult values. */
+    /**
+     * Gets known HealthCheckResult values.
+     *
+     * @return known HealthCheckResult values.
+     */
     public static Collection<HealthCheckResult> values() {
         return values(HealthCheckResult.class);
     }

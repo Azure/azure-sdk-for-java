@@ -12,13 +12,12 @@ import com.azure.resourcemanager.applicationinsights.fluent.ProactiveDetectionCo
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentProactiveDetectionConfigurationInner;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentProactiveDetectionConfiguration;
 import com.azure.resourcemanager.applicationinsights.models.ProactiveDetectionConfigurations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public final class ProactiveDetectionConfigurationsImpl implements ProactiveDetectionConfigurations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProactiveDetectionConfigurationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ProactiveDetectionConfigurationsImpl.class);
 
     private final ProactiveDetectionConfigurationsClient innerClient;
 

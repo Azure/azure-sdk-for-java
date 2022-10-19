@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains information about the video and audio content. */
 @Fluent
 public final class VideoMediaInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoMediaInfo.class);
-
     /*
      * Video segment length indicates the length of individual video files
      * (segments) which are persisted to storage. Smaller segments provide

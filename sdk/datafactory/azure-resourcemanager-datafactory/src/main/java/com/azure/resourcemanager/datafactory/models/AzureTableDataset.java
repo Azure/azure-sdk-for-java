@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureTableDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("AzureTable")
 @Fluent
 public final class AzureTableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureTableDataset.class);
-
     /*
      * Azure Table dataset properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private AzureTableDatasetTypeProperties innerTypeProperties = new AzureTableDatasetTypeProperties();
+
+    /** Creates an instance of AzureTableDataset class. */
+    public AzureTableDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Azure Table dataset properties.
@@ -119,7 +120,7 @@ public final class AzureTableDataset extends Dataset {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model AzureTableDataset"));
@@ -127,4 +128,6 @@ public final class AzureTableDataset extends Dataset {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureTableDataset.class);
 }

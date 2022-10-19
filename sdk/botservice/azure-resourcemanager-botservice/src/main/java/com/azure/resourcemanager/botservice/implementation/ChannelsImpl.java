@@ -16,10 +16,9 @@ import com.azure.resourcemanager.botservice.models.BotChannel;
 import com.azure.resourcemanager.botservice.models.ChannelName;
 import com.azure.resourcemanager.botservice.models.Channels;
 import com.azure.resourcemanager.botservice.models.ListChannelWithKeysResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class ChannelsImpl implements Channels {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ChannelsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(ChannelsImpl.class);
 
     private final ChannelsClient innerClient;
 

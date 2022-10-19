@@ -16,7 +16,10 @@ import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.RetryOptions;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 
 import org.junit.jupiter.api.Test;
@@ -186,20 +189,46 @@ public class CommunicationIdentityBuilderTests {
     }
 
     @Test
-    public void builderWithRetryPolicyOptionsThrows() {
-        assertThrows(NullPointerException.class, () -> {
-            builder
-                .connectionString(MOCK_CONNECTION_STRING)
-                .httpClient(new NoOpHttpClient())
-                .retryPolicy(null);
-        });
-    }
-
-    @Test
     public void nullTokenTest() {
         assertThrows(NullPointerException.class, () -> {
             builder.buildAsyncClient();
         });
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySetSync() {
+        assertThrows(IllegalStateException.class, () -> builder
+            .endpoint(MOCK_URL)
+            .credential(new AzureKeyCredential(MOCK_ACCESS_KEY))
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    Map<String, String> headers = request.getHeaders().toMap();
+                    assertHMACHeadersExist(headers);
+                    return Mono.just(CommunicationIdentityResponseMocker.createUserResult(request));
+                }
+            })
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildClient());
+    }
+
+    @Test
+    public void bothRetryOptionsAndRetryPolicySetAsync() {
+        assertThrows(IllegalStateException.class, () -> builder
+            .endpoint(MOCK_URL)
+            .credential(new AzureKeyCredential(MOCK_ACCESS_KEY))
+            .httpClient(new NoOpHttpClient() {
+                @Override
+                public Mono<HttpResponse> send(HttpRequest request) {
+                    Map<String, String> headers = request.getHeaders().toMap();
+                    assertHMACHeadersExist(headers);
+                    return Mono.just(CommunicationIdentityResponseMocker.createUserResult(request));
+                }
+            })
+            .retryOptions(new RetryOptions(new ExponentialBackoffOptions()))
+            .retryPolicy(new RetryPolicy())
+            .buildAsyncClient());
     }
 
     private void assertHMACHeadersExist(Map<String, String> headers) {

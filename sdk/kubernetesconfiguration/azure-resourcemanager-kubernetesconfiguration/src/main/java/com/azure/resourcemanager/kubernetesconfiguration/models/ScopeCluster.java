@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.kubernetesconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies that the scope of the extension is Cluster. */
 @Fluent
 public final class ScopeCluster {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScopeCluster.class);
-
     /*
      * Namespace where the extension Release must be placed, for a Cluster
      * scoped extension.  If this namespace does not exist, it will be created

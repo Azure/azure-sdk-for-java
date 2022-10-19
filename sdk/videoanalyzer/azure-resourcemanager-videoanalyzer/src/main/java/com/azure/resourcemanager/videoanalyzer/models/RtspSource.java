@@ -6,7 +6,6 @@ package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("#Microsoft.VideoAnalyzer.RtspSource")
 @Fluent
 public final class RtspSource extends SourceNodeBase {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RtspSource.class);
-
     /*
      * Network transport utilized by the RTSP and RTP exchange: TCP or HTTP.
      * When using TCP, the RTP packets are interleaved on the TCP RTSP
@@ -100,11 +97,13 @@ public final class RtspSource extends SourceNodeBase {
     public void validate() {
         super.validate();
         if (endpoint() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property endpoint in model RtspSource"));
         } else {
             endpoint().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RtspSource.class);
 }

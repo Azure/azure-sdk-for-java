@@ -6,20 +6,16 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Network security rule. */
 @Fluent
 public final class SecurityRuleInner extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRuleInner.class);
-
     /*
      * Properties of the security rule.
      */
@@ -27,8 +23,7 @@ public final class SecurityRuleInner extends SubResource {
     private SecurityRulePropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within a resource group. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -44,6 +39,10 @@ public final class SecurityRuleInner extends SubResource {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of SecurityRuleInner class. */
+    public SecurityRuleInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the security rule.

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.ComponentLinkedStorageAccountsOperationsClient;
 import com.azure.resourcemanager.applicationinsights.fluent.models.ComponentLinkedStorageAccountsInner;
 import com.azure.resourcemanager.applicationinsights.models.ComponentLinkedStorageAccountsPatch;
@@ -38,8 +37,6 @@ import reactor.core.publisher.Mono;
  */
 public final class ComponentLinkedStorageAccountsOperationsClientImpl
     implements ComponentLinkedStorageAccountsOperationsClient {
-    private final ClientLogger logger = new ClientLogger(ComponentLinkedStorageAccountsOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ComponentLinkedStorageAccountsOperationsService service;
 
@@ -259,14 +256,7 @@ public final class ComponentLinkedStorageAccountsOperationsClientImpl
     private Mono<ComponentLinkedStorageAccountsInner> getAsync(
         String resourceGroupName, String resourceName, StorageType storageType) {
         return getWithResponseAsync(resourceGroupName, resourceName, storageType)
-            .flatMap(
-                (Response<ComponentLinkedStorageAccountsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -462,14 +452,7 @@ public final class ComponentLinkedStorageAccountsOperationsClientImpl
         ComponentLinkedStorageAccountsInner linkedStorageAccountsProperties) {
         return createAndUpdateWithResponseAsync(
                 resourceGroupName, resourceName, storageType, linkedStorageAccountsProperties)
-            .flatMap(
-                (Response<ComponentLinkedStorageAccountsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -678,14 +661,7 @@ public final class ComponentLinkedStorageAccountsOperationsClientImpl
         StorageType storageType,
         ComponentLinkedStorageAccountsPatch linkedStorageAccountsProperties) {
         return updateWithResponseAsync(resourceGroupName, resourceName, storageType, linkedStorageAccountsProperties)
-            .flatMap(
-                (Response<ComponentLinkedStorageAccountsInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -855,8 +831,7 @@ public final class ComponentLinkedStorageAccountsOperationsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, StorageType storageType) {
-        return deleteWithResponseAsync(resourceGroupName, resourceName, storageType)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, resourceName, storageType).flatMap(ignored -> Mono.empty());
     }
 
     /**

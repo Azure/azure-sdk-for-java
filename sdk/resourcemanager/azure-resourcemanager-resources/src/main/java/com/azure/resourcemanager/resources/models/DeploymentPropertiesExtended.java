@@ -6,9 +6,7 @@ package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -16,8 +14,6 @@ import java.util.List;
 /** Deployment properties with additional details. */
 @Immutable
 public final class DeploymentPropertiesExtended {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentPropertiesExtended.class);
-
     /*
      * Denotes the state of provisioning.
      */

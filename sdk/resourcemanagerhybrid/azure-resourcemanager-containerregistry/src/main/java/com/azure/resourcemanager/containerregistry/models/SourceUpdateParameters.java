@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerregistry.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties for updating the source code repository. */
 @Fluent
 public final class SourceUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SourceUpdateParameters.class);
-
     /*
      * The type of source control service.
      */

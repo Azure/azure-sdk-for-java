@@ -4,8 +4,10 @@
 
 package com.azure.ai.textanalytics.implementation.models;
 
+import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 
 /** The AnalyzeJobState model. */
@@ -15,7 +17,7 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      * The tasks property.
      */
     @JsonProperty(value = "tasks", required = true)
-    private TasksStateTasks tasks;
+    private TasksStateTasksOld tasks;
 
     /*
      * The errors property.
@@ -41,7 +43,7 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      *
      * @return the tasks value.
      */
-    public TasksStateTasks getTasks() {
+    public TasksStateTasksOld getTasks() {
         return this.tasks;
     }
 
@@ -51,7 +53,7 @@ public final class AnalyzeJobState extends AnalyzeJobMetadata {
      * @param tasks the tasks value to set.
      * @return the AnalyzeJobState object itself.
      */
-    public AnalyzeJobState setTasks(TasksStateTasks tasks) {
+    public AnalyzeJobState setTasks(TasksStateTasksOld tasks) {
         this.tasks = tasks;
         return this;
     }

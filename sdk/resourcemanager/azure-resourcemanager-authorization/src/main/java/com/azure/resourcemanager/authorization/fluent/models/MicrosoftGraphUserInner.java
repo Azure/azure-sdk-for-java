@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -15,11 +14,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Represents an Azure Active Directory user object. */
+/** user Represents an Azure Active Directory user object. */
 @Fluent
 public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObjectInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftGraphUserInner.class);
-
     /*
      * true if the account is enabled; otherwise, false. This property is
      * required when a user is created. Supports $filter.
@@ -143,12 +140,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     private String employeeType;
 
     /*
-     * For an external user invited to the tenant using the invitation API,
-     * this property represents the invited user's invitation status. For
-     * invited users, the state can be PendingAcceptance or Accepted, or null
-     * for all other users. Returned only on $select. Supports $filter with the
-     * supported values. For example: $filter=externalUserState eq
-     * 'PendingAcceptance'.
+     * The externalUserState property.
      */
     @JsonProperty(value = "externalUserState")
     private String externalUserState;
@@ -290,11 +282,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     private String onPremisesImmutableId;
 
     /*
-     * Indicates the last time at which the object was synced with the
-     * on-premises directory; for example: '2013-02-16T03:04:54Z'. The
-     * Timestamp type represents date and time information using ISO 8601
-     * format and is always in UTC time. For example, midnight UTC on Jan 1,
-     * 2014 would look like this: '2014-01-01T00:00:00Z'. Read-only.
+     * The onPremisesLastSyncDateTime property.
      */
     @JsonProperty(value = "onPremisesLastSyncDateTime")
     private OffsetDateTime onPremisesLastSyncDateTime;
@@ -340,19 +328,13 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     private String onPremisesUserPrincipalName;
 
     /*
-     * A list of additional email addresses for the user; for example:
-     * ['bob@contoso.com', 'Robert@fabrikam.com']. Supports $filter.
+     * The otherMails property.
      */
     @JsonProperty(value = "otherMails")
     private List<String> otherMails;
 
     /*
-     * Specifies password policies for the user. This value is an enumeration
-     * with one possible value being 'DisableStrongPassword', which allows
-     * weaker passwords than the default policy to be specified.
-     * 'DisablePasswordExpiration' can also be specified. The two may be
-     * specified together; for example: 'DisablePasswordExpiration,
-     * DisableStrongPassword'.
+     * The passwordPolicies property.
      */
     @JsonProperty(value = "passwordPolicies")
     private String passwordPolicies;
@@ -385,9 +367,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     private List<MicrosoftGraphProvisionedPlan> provisionedPlans;
 
     /*
-     * For example: ['SMTP: bob@contoso.com', 'smtp: bob@sales.contoso.com']
-     * The any operator is required for filter expressions on multi-valued
-     * properties. Read-only, Not nullable. Supports $filter.
+     * The proxyAddresses property.
      */
     @JsonProperty(value = "proxyAddresses")
     private List<String> proxyAddresses;
@@ -544,7 +524,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * The appRoleAssignments property.
      */
     @JsonProperty(value = "appRoleAssignments")
-    private List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignments;
+    private List<MicrosoftGraphAppRoleAssignment> appRoleAssignments;
 
     /*
      * Directory objects that were created by the user. Read-only. Nullable.
@@ -563,11 +543,12 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * A collection of this user's license details. Read-only.
      */
     @JsonProperty(value = "licenseDetails")
-    private List<MicrosoftGraphLicenseDetailsInner> licenseDetails;
+    private List<MicrosoftGraphLicenseDetails> licenseDetails;
 
     /*
-     * Represents an Azure Active Directory object. The directoryObject type is
-     * the base type for many other directory entity types.
+     * directoryObject Represents an Azure Active Directory object. The
+     * directoryObject type is the base type for many other directory entity
+     * types.
      */
     @JsonProperty(value = "manager")
     private MicrosoftGraphDirectoryObjectInner manager;
@@ -583,7 +564,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * The oauth2PermissionGrants property.
      */
     @JsonProperty(value = "oauth2PermissionGrants")
-    private List<MicrosoftGraphOAuth2PermissionGrantInner> oauth2PermissionGrants;
+    private List<MicrosoftGraphOAuth2PermissionGrant> oauth2PermissionGrants;
 
     /*
      * Devices that are owned by the user. Read-only. Nullable.
@@ -607,7 +588,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * The scopedRoleMemberOf property.
      */
     @JsonProperty(value = "scopedRoleMemberOf")
-    private List<MicrosoftGraphScopedRoleMembershipInner> scopedRoleMemberOf;
+    private List<MicrosoftGraphScopedRoleMembership> scopedRoleMemberOf;
 
     /*
      * The transitiveMemberOf property.
@@ -649,7 +630,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * The user's contacts. Read-only. Nullable.
      */
     @JsonProperty(value = "contacts")
-    private List<MicrosoftGraphContactInner> contacts;
+    private List<MicrosoftGraphContact> contacts;
 
     /*
      * The user's events. Default is to show Events under the Default Calendar.
@@ -680,7 +661,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * outlookUser
      */
     @JsonProperty(value = "outlook")
-    private MicrosoftGraphOutlookUserInner outlook;
+    private MicrosoftGraphOutlookUser outlook;
 
     /*
      * People that are relevant to the user. Read-only. Nullable.
@@ -692,13 +673,13 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * profilePhoto
      */
     @JsonProperty(value = "photo")
-    private MicrosoftGraphProfilePhotoInner photo;
+    private MicrosoftGraphProfilePhoto photo;
 
     /*
      * The photos property.
      */
     @JsonProperty(value = "photos")
-    private List<MicrosoftGraphProfilePhotoInner> photos;
+    private List<MicrosoftGraphProfilePhoto> photos;
 
     /*
      * drive
@@ -723,7 +704,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * Nullable.
      */
     @JsonProperty(value = "extensions")
-    private List<MicrosoftGraphExtensionInner> extensions;
+    private List<MicrosoftGraphExtension> extensions;
 
     /*
      * The managed devices associated with the user.
@@ -759,7 +740,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * userSettings
      */
     @JsonProperty(value = "settings")
-    private MicrosoftGraphUserSettingsInner settings;
+    private MicrosoftGraphUserSettings settings;
 
     /*
      * onenote
@@ -801,7 +782,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * todo
      */
     @JsonProperty(value = "todo")
-    private MicrosoftGraphTodoInner todo;
+    private MicrosoftGraphTodo todo;
 
     /*
      * Represents an Azure Active Directory user object.
@@ -1177,10 +1158,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Get the externalUserState property: For an external user invited to the tenant using the invitation API, this
-     * property represents the invited user's invitation status. For invited users, the state can be PendingAcceptance
-     * or Accepted, or null for all other users. Returned only on $select. Supports $filter with the supported values.
-     * For example: $filter=externalUserState eq 'PendingAcceptance'.
+     * Get the externalUserState property: The externalUserState property.
      *
      * @return the externalUserState value.
      */
@@ -1189,10 +1167,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Set the externalUserState property: For an external user invited to the tenant using the invitation API, this
-     * property represents the invited user's invitation status. For invited users, the state can be PendingAcceptance
-     * or Accepted, or null for all other users. Returned only on $select. Supports $filter with the supported values.
-     * For example: $filter=externalUserState eq 'PendingAcceptance'.
+     * Set the externalUserState property: The externalUserState property.
      *
      * @param externalUserState the externalUserState value to set.
      * @return the MicrosoftGraphUserInner object itself.
@@ -1605,10 +1580,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Get the onPremisesLastSyncDateTime property: Indicates the last time at which the object was synced with the
-     * on-premises directory; for example: '2013-02-16T03:04:54Z'. The Timestamp type represents date and time
-     * information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look
-     * like this: '2014-01-01T00:00:00Z'. Read-only.
+     * Get the onPremisesLastSyncDateTime property: The onPremisesLastSyncDateTime property.
      *
      * @return the onPremisesLastSyncDateTime value.
      */
@@ -1617,10 +1589,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Set the onPremisesLastSyncDateTime property: Indicates the last time at which the object was synced with the
-     * on-premises directory; for example: '2013-02-16T03:04:54Z'. The Timestamp type represents date and time
-     * information using ISO 8601 format and is always in UTC time. For example, midnight UTC on Jan 1, 2014 would look
-     * like this: '2014-01-01T00:00:00Z'. Read-only.
+     * Set the onPremisesLastSyncDateTime property: The onPremisesLastSyncDateTime property.
      *
      * @param onPremisesLastSyncDateTime the onPremisesLastSyncDateTime value to set.
      * @return the MicrosoftGraphUserInner object itself.
@@ -1748,8 +1717,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Get the otherMails property: A list of additional email addresses for the user; for example: ['bob@contoso.com',
-     * 'Robert@fabrikam.com']. Supports $filter.
+     * Get the otherMails property: The otherMails property.
      *
      * @return the otherMails value.
      */
@@ -1758,8 +1726,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Set the otherMails property: A list of additional email addresses for the user; for example: ['bob@contoso.com',
-     * 'Robert@fabrikam.com']. Supports $filter.
+     * Set the otherMails property: The otherMails property.
      *
      * @param otherMails the otherMails value to set.
      * @return the MicrosoftGraphUserInner object itself.
@@ -1770,10 +1737,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Get the passwordPolicies property: Specifies password policies for the user. This value is an enumeration with
-     * one possible value being 'DisableStrongPassword', which allows weaker passwords than the default policy to be
-     * specified. 'DisablePasswordExpiration' can also be specified. The two may be specified together; for example:
-     * 'DisablePasswordExpiration, DisableStrongPassword'.
+     * Get the passwordPolicies property: The passwordPolicies property.
      *
      * @return the passwordPolicies value.
      */
@@ -1782,10 +1746,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Set the passwordPolicies property: Specifies password policies for the user. This value is an enumeration with
-     * one possible value being 'DisableStrongPassword', which allows weaker passwords than the default policy to be
-     * specified. 'DisablePasswordExpiration' can also be specified. The two may be specified together; for example:
-     * 'DisablePasswordExpiration, DisableStrongPassword'.
+     * Set the passwordPolicies property: The passwordPolicies property.
      *
      * @param passwordPolicies the passwordPolicies value to set.
      * @return the MicrosoftGraphUserInner object itself.
@@ -1880,9 +1841,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Get the proxyAddresses property: For example: ['SMTP: bob@contoso.com', 'smtp: bob@sales.contoso.com'] The any
-     * operator is required for filter expressions on multi-valued properties. Read-only, Not nullable. Supports
-     * $filter.
+     * Get the proxyAddresses property: The proxyAddresses property.
      *
      * @return the proxyAddresses value.
      */
@@ -1891,9 +1850,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Set the proxyAddresses property: For example: ['SMTP: bob@contoso.com', 'smtp: bob@sales.contoso.com'] The any
-     * operator is required for filter expressions on multi-valued properties. Read-only, Not nullable. Supports
-     * $filter.
+     * Set the proxyAddresses property: The proxyAddresses property.
      *
      * @param proxyAddresses the proxyAddresses value to set.
      * @return the MicrosoftGraphUserInner object itself.
@@ -2348,7 +2305,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the appRoleAssignments value.
      */
-    public List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignments() {
+    public List<MicrosoftGraphAppRoleAssignment> appRoleAssignments() {
         return this.appRoleAssignments;
     }
 
@@ -2358,8 +2315,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param appRoleAssignments the appRoleAssignments value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withAppRoleAssignments(
-        List<MicrosoftGraphAppRoleAssignmentInner> appRoleAssignments) {
+    public MicrosoftGraphUserInner withAppRoleAssignments(List<MicrosoftGraphAppRoleAssignment> appRoleAssignments) {
         this.appRoleAssignments = appRoleAssignments;
         return this;
     }
@@ -2411,7 +2367,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the licenseDetails value.
      */
-    public List<MicrosoftGraphLicenseDetailsInner> licenseDetails() {
+    public List<MicrosoftGraphLicenseDetails> licenseDetails() {
         return this.licenseDetails;
     }
 
@@ -2421,14 +2377,14 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param licenseDetails the licenseDetails value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withLicenseDetails(List<MicrosoftGraphLicenseDetailsInner> licenseDetails) {
+    public MicrosoftGraphUserInner withLicenseDetails(List<MicrosoftGraphLicenseDetails> licenseDetails) {
         this.licenseDetails = licenseDetails;
         return this;
     }
 
     /**
-     * Get the manager property: Represents an Azure Active Directory object. The directoryObject type is the base type
-     * for many other directory entity types.
+     * Get the manager property: directoryObject Represents an Azure Active Directory object. The directoryObject type
+     * is the base type for many other directory entity types.
      *
      * @return the manager value.
      */
@@ -2437,8 +2393,8 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
     }
 
     /**
-     * Set the manager property: Represents an Azure Active Directory object. The directoryObject type is the base type
-     * for many other directory entity types.
+     * Set the manager property: directoryObject Represents an Azure Active Directory object. The directoryObject type
+     * is the base type for many other directory entity types.
      *
      * @param manager the manager value to set.
      * @return the MicrosoftGraphUserInner object itself.
@@ -2473,7 +2429,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the oauth2PermissionGrants value.
      */
-    public List<MicrosoftGraphOAuth2PermissionGrantInner> oauth2PermissionGrants() {
+    public List<MicrosoftGraphOAuth2PermissionGrant> oauth2PermissionGrants() {
         return this.oauth2PermissionGrants;
     }
 
@@ -2484,7 +2440,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @return the MicrosoftGraphUserInner object itself.
      */
     public MicrosoftGraphUserInner withOauth2PermissionGrants(
-        List<MicrosoftGraphOAuth2PermissionGrantInner> oauth2PermissionGrants) {
+        List<MicrosoftGraphOAuth2PermissionGrant> oauth2PermissionGrants) {
         this.oauth2PermissionGrants = oauth2PermissionGrants;
         return this;
     }
@@ -2554,7 +2510,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the scopedRoleMemberOf value.
      */
-    public List<MicrosoftGraphScopedRoleMembershipInner> scopedRoleMemberOf() {
+    public List<MicrosoftGraphScopedRoleMembership> scopedRoleMemberOf() {
         return this.scopedRoleMemberOf;
     }
 
@@ -2564,8 +2520,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param scopedRoleMemberOf the scopedRoleMemberOf value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withScopedRoleMemberOf(
-        List<MicrosoftGraphScopedRoleMembershipInner> scopedRoleMemberOf) {
+    public MicrosoftGraphUserInner withScopedRoleMemberOf(List<MicrosoftGraphScopedRoleMembership> scopedRoleMemberOf) {
         this.scopedRoleMemberOf = scopedRoleMemberOf;
         return this;
     }
@@ -2695,7 +2650,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the contacts value.
      */
-    public List<MicrosoftGraphContactInner> contacts() {
+    public List<MicrosoftGraphContact> contacts() {
         return this.contacts;
     }
 
@@ -2705,7 +2660,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param contacts the contacts value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withContacts(List<MicrosoftGraphContactInner> contacts) {
+    public MicrosoftGraphUserInner withContacts(List<MicrosoftGraphContact> contacts) {
         this.contacts = contacts;
         return this;
     }
@@ -2798,7 +2753,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the outlook value.
      */
-    public MicrosoftGraphOutlookUserInner outlook() {
+    public MicrosoftGraphOutlookUser outlook() {
         return this.outlook;
     }
 
@@ -2808,7 +2763,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param outlook the outlook value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withOutlook(MicrosoftGraphOutlookUserInner outlook) {
+    public MicrosoftGraphUserInner withOutlook(MicrosoftGraphOutlookUser outlook) {
         this.outlook = outlook;
         return this;
     }
@@ -2838,7 +2793,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the photo value.
      */
-    public MicrosoftGraphProfilePhotoInner photo() {
+    public MicrosoftGraphProfilePhoto photo() {
         return this.photo;
     }
 
@@ -2848,7 +2803,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param photo the photo value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withPhoto(MicrosoftGraphProfilePhotoInner photo) {
+    public MicrosoftGraphUserInner withPhoto(MicrosoftGraphProfilePhoto photo) {
         this.photo = photo;
         return this;
     }
@@ -2858,7 +2813,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the photos value.
      */
-    public List<MicrosoftGraphProfilePhotoInner> photos() {
+    public List<MicrosoftGraphProfilePhoto> photos() {
         return this.photos;
     }
 
@@ -2868,7 +2823,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param photos the photos value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withPhotos(List<MicrosoftGraphProfilePhotoInner> photos) {
+    public MicrosoftGraphUserInner withPhotos(List<MicrosoftGraphProfilePhoto> photos) {
         this.photos = photos;
         return this;
     }
@@ -2938,7 +2893,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the extensions value.
      */
-    public List<MicrosoftGraphExtensionInner> extensions() {
+    public List<MicrosoftGraphExtension> extensions() {
         return this.extensions;
     }
 
@@ -2948,7 +2903,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param extensions the extensions value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withExtensions(List<MicrosoftGraphExtensionInner> extensions) {
+    public MicrosoftGraphUserInner withExtensions(List<MicrosoftGraphExtension> extensions) {
         this.extensions = extensions;
         return this;
     }
@@ -3060,7 +3015,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the settings value.
      */
-    public MicrosoftGraphUserSettingsInner settings() {
+    public MicrosoftGraphUserSettings settings() {
         return this.settings;
     }
 
@@ -3070,7 +3025,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param settings the settings value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withSettings(MicrosoftGraphUserSettingsInner settings) {
+    public MicrosoftGraphUserInner withSettings(MicrosoftGraphUserSettings settings) {
         this.settings = settings;
         return this;
     }
@@ -3200,7 +3155,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      *
      * @return the todo value.
      */
-    public MicrosoftGraphTodoInner todo() {
+    public MicrosoftGraphTodo todo() {
         return this.todo;
     }
 
@@ -3210,7 +3165,7 @@ public final class MicrosoftGraphUserInner extends MicrosoftGraphDirectoryObject
      * @param todo the todo value to set.
      * @return the MicrosoftGraphUserInner object itself.
      */
-    public MicrosoftGraphUserInner withTodo(MicrosoftGraphTodoInner todo) {
+    public MicrosoftGraphUserInner withTodo(MicrosoftGraphTodo todo) {
         this.todo = todo;
         return this;
     }

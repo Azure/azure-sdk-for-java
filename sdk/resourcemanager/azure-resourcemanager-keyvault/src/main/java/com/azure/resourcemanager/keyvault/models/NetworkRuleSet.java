@@ -5,27 +5,22 @@
 package com.azure.resourcemanager.keyvault.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A set of rules governing the network accessibility of a vault. */
 @Fluent
 public final class NetworkRuleSet {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSet.class);
-
     /*
-     * Tells what traffic can bypass network rules. This can be 'AzureServices'
-     * or 'None'.  If not specified the default is 'AzureServices'.
+     * Tells what traffic can bypass network rules. This can be 'AzureServices' or 'None'.  If not specified the
+     * default is 'AzureServices'.
      */
     @JsonProperty(value = "bypass")
     private NetworkRuleBypassOptions bypass;
 
     /*
-     * The default action when no rule from ipRules and from
-     * virtualNetworkRules match. This is only used after the bypass property
-     * has been evaluated.
+     * The default action when no rule from ipRules and from virtualNetworkRules match. This is only used after the
+     * bypass property has been evaluated.
      */
     @JsonProperty(value = "defaultAction")
     private NetworkRuleAction defaultAction;

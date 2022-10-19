@@ -7,15 +7,24 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
+import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobDownloadContentResponse;
+import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobProperties;
+import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlockBlobItem;
 import com.azure.storage.blob.models.CustomerProvidedKey;
+import com.azure.storage.blob.models.DownloadRetryOptions;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
 import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRequestConditions;
@@ -24,6 +33,7 @@ import com.azure.storage.blob.options.BlobUploadFromFileOptions;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.specialized.AppendBlobClient;
+import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobClient;
@@ -34,8 +44,14 @@ import reactor.core.publisher.Mono;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
+import java.nio.file.OpenOption;
+import java.nio.file.StandardOpenOption;
 import java.time.Duration;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
+
+import static com.azure.storage.blob.specialized.cryptography.CryptographyConstants.ENCRYPTION_DATA_KEY;
 
 /**
  * This class provides a client side encryption client that contains generic blob operations for Azure Storage Blobs.
@@ -51,7 +67,7 @@ import java.util.Map;
  * This client is instantiated through {@link EncryptedBlobClientBuilder}
  *
  * <p>
- * For operations on a specific blob type (i.e append, block, or page) use
+ * For operations on a specific blob type (i.e. append, block, or page) use
  * {@link #getAppendBlobClient() getAppendBlobClient}, {@link #getBlockBlobClient()
  * getBlockBlobClient}, or {@link #getPageBlobClient() getPageBlobAsyncClient} to construct a client that
  * allows blob specific operations. Note, these types do not support client-side encryption, though decryption is
@@ -63,7 +79,7 @@ import java.util.Map;
  */
 @ServiceClient(builder = EncryptedBlobClientBuilder.class)
 public class EncryptedBlobClient extends BlobClient {
-    private final ClientLogger logger = new ClientLogger(EncryptedBlobClient.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EncryptedBlobClient.class);
     private final EncryptedBlobAsyncClient encryptedBlobAsyncClient;
 
     /**
@@ -117,14 +133,14 @@ public class EncryptedBlobClient extends BlobClient {
      * obtained below with a {@link java.io.BufferedOutputStream}.
      *
      * @return A {@link BlobOutputStream} object used to write data to the blob.
-     * @param overwrite Whether or not to overwrite, should data exist on the blob.
+     * @param overwrite Whether to overwrite, should data exist on the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobOutputStream getBlobOutputStream(boolean overwrite) {
         BlobRequestConditions requestConditions = null;
         if (!overwrite) {
             if (exists()) {
-                throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+                throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
             }
             requestConditions = new BlobRequestConditions().setIfNoneMatch(Constants.HeaderConstants.ETAG_WILDCARD);
         }
@@ -219,13 +235,13 @@ public class EncryptedBlobClient extends BlobClient {
      * <!-- end com.azure.storage.blob.specialized.cryptography.EncryptedBlobClient.uploadFromFile#String-boolean -->
      *
      * @param filePath Path of the file to upload
-     * @param overwrite Whether or not to overwrite should data already exist on the blob
+     * @param overwrite Whether to overwrite should data already exist on the blob
      */
     @Override
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void uploadFromFile(String filePath, boolean overwrite) {
         if (!overwrite && exists()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(Constants.BLOB_ALREADY_EXISTS));
         }
         uploadFromFile(filePath, null, null, null, null, null, null);
     }
@@ -326,13 +342,167 @@ public class EncryptedBlobClient extends BlobClient {
         throws UncheckedIOException {
         Mono<Response<BlockBlobItem>> upload =
             this.encryptedBlobAsyncClient.uploadFromFileWithResponse(options)
-                .subscriberContext(FluxUtil.toReactorContext(context));
+                .contextWrite(FluxUtil.toReactorContext(context));
 
         try {
             return StorageImplUtils.blockWithOptionalTimeout(upload, timeout);
         } catch (UncheckedIOException e) {
-            throw logger.logExceptionAsError(e);
+            throw LOGGER.logExceptionAsError(e);
         }
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public BlobProperties downloadToFile(String filePath) {
+        return this.downloadToFile(filePath, false);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public BlobProperties downloadToFile(String filePath, boolean overwrite) {
+        Set<OpenOption> openOptions = null;
+        if (overwrite) {
+            openOptions = new HashSet<>();
+            openOptions.add(StandardOpenOption.CREATE);
+            openOptions.add(StandardOpenOption.TRUNCATE_EXISTING); // If the file already exists and it is opened
+            // for WRITE access, then its length is truncated to 0.
+            openOptions.add(StandardOpenOption.READ);
+            openOptions.add(StandardOpenOption.WRITE);
+        }
+        return this.downloadToFileWithResponse(filePath, null, null, null, null, false, openOptions, null, Context.NONE)
+            .getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Duration timeout, Context context) {
+        return this.downloadToFileWithResponse(filePath, range, parallelTransferOptions, downloadRetryOptions,
+            requestConditions, rangeGetContentMd5, null, timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Response<BlobProperties> downloadToFileWithResponse(String filePath, BlobRange range,
+        ParallelTransferOptions parallelTransferOptions, DownloadRetryOptions downloadRetryOptions,
+        BlobRequestConditions requestConditions, boolean rangeGetContentMd5, Set<OpenOption> openOptions,
+        Duration timeout, Context context) {
+        final com.azure.storage.common.ParallelTransferOptions finalParallelTransferOptions =
+            ModelHelper.wrapBlobOptions(ModelHelper.populateAndApplyDefaults(parallelTransferOptions));
+        return this.downloadToFileWithResponse(new BlobDownloadToFileOptions(filePath).setRange(range)
+            .setParallelTransferOptions(finalParallelTransferOptions)
+            .setDownloadRetryOptions(downloadRetryOptions).setRequestConditions(requestConditions)
+            .setRetrieveContentRangeMd5(rangeGetContentMd5).setOpenOptions(openOptions), timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public Response<BlobProperties> downloadToFileWithResponse(BlobDownloadToFileOptions options, Duration timeout,
+        Context context) {
+        context = context == null ? Context.NONE : context;
+        options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions());
+        context = populateRequestConditionsAndContext(options.getRequestConditions(), timeout, context);
+        return super.downloadToFileWithResponse(options, timeout, context);
+    }
+
+    @Override
+    public BlobInputStream openInputStream() {
+        return openInputStream((BlobRange) null, null);
+    }
+
+    @Override
+    public BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
+        return openInputStream(new BlobInputStreamOptions().setRange(range).setRequestConditions(requestConditions));
+    }
+
+    @Override
+    public BlobInputStream openInputStream(BlobInputStreamOptions options) {
+        return openInputStream(options, null);
+    }
+
+    @Override
+    public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
+        context = context == null ? Context.NONE : context;
+        options.setRequestConditions(options.getRequestConditions() == null ? new BlobRequestConditions()
+            : options.getRequestConditions());
+        context = populateRequestConditionsAndContext(options.getRequestConditions(), null, context);
+        return super.openInputStream(options, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
+    @Override
+    public void download(OutputStream stream) {
+        downloadStream(stream);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public void downloadStream(OutputStream stream) {
+        downloadStreamWithResponse(stream, null, null, null, false, null, Context.NONE);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public BinaryData downloadContent() {
+        return this.downloadContentWithResponse(null, null, null, null).getValue();
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
+    @Override
+    public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
+        Duration timeout, Context context) {
+        return downloadStreamWithResponse(stream, range,
+            options, requestConditions, getRangeContentMd5, timeout, context);
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public BlobDownloadResponse downloadStreamWithResponse(OutputStream stream, BlobRange range,
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
+        Duration timeout, Context context) {
+
+        if (isRangeRequest(range)) {
+            context = context == null ? Context.NONE : context;
+            requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+            context = populateRequestConditionsAndContext(requestConditions, timeout, context);
+        }
+
+        return super.downloadStreamWithResponse(stream, range, options, requestConditions, getRangeContentMd5,
+            timeout, context);
+    }
+
+    static boolean isRangeRequest(BlobRange range) {
+        return range != null && (range.getOffset() != 0 || range.getCount() != null);
+    }
+
+    private Context populateRequestConditionsAndContext(BlobRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        BlobProperties initialProperties =
+            this.getPropertiesWithResponse(requestConditions, timeout, context).getValue();
+
+        requestConditions.setIfMatch(initialProperties.getETag());
+        if (initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY) != null) {
+            context = context.addData(ENCRYPTION_DATA_KEY, EncryptionData.getAndValidateEncryptionData(
+                initialProperties.getMetadata().get(ENCRYPTION_DATA_KEY),
+                encryptedBlobAsyncClient.isEncryptionRequired()));
+        }
+
+        return context;
+    }
+
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    @Override
+    public BlobDownloadContentResponse downloadContentWithResponse(
+        DownloadRetryOptions options, BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        context = context == null ? Context.NONE : context;
+        requestConditions = requestConditions == null ? new BlobRequestConditions() : requestConditions;
+        context = populateRequestConditionsAndContext(requestConditions, timeout, context);
+        return super.downloadContentWithResponse(options, requestConditions, timeout, context);
     }
 
     /**
@@ -340,7 +510,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public AppendBlobClient getAppendBlobClient() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an append"
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an append"
             + " blob client"));
     }
 
@@ -349,7 +519,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public BlockBlobClient getBlockBlobClient() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as a block"
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as a block"
             + " blob client"));
     }
 
@@ -358,7 +528,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public PageBlobClient getPageBlobClient() {
-        throw logger.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an page"
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Cannot get an encrypted client as an page"
             + " blob client"));
     }
 
@@ -367,7 +537,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public InputStream openQueryInputStream(String expression) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 
@@ -376,7 +546,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public Response<InputStream> openQueryInputStreamWithResponse(BlobQueryOptions queryOptions) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 
@@ -385,7 +555,7 @@ public class EncryptedBlobClient extends BlobClient {
      */
     @Override
     public void query(OutputStream stream, String expression) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 
@@ -395,7 +565,7 @@ public class EncryptedBlobClient extends BlobClient {
     @Override
     public BlobQueryResponse queryWithResponse(BlobQueryOptions queryOptions,
         Duration timeout, Context context) {
-        throw logger.logExceptionAsError(new UnsupportedOperationException(
+        throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
             "Cannot query data encrypted on client side."));
     }
 

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.redis.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.redis.fluent.models.RedisCreateProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Parameters supplied to the Create Redis operation. */
 @Fluent
 public final class RedisCreateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisCreateParameters.class);
-
     /*
      * Redis cache properties.
      */
@@ -43,6 +40,12 @@ public final class RedisCreateParameters {
     @JsonProperty(value = "tags")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
+
+    /*
+     * The identity of the resource.
+     */
+    @JsonProperty(value = "identity")
+    private ManagedServiceIdentity identity;
 
     /**
      * Get the innerProperties property: Redis cache properties.
@@ -114,6 +117,26 @@ public final class RedisCreateParameters {
     }
 
     /**
+     * Get the identity property: The identity of the resource.
+     *
+     * @return the identity value.
+     */
+    public ManagedServiceIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the resource.
+     *
+     * @param identity the identity value to set.
+     * @return the RedisCreateParameters object itself.
+     */
+    public RedisCreateParameters withIdentity(ManagedServiceIdentity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
      * Get the sku property: The SKU of the Redis cache to deploy.
      *
      * @return the sku value.
@@ -164,8 +187,8 @@ public final class RedisCreateParameters {
     }
 
     /**
-     * Get the staticIp property: Static IP address. Required when deploying a Redis cache inside an existing Azure
-     * Virtual Network.
+     * Get the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside an
+     * existing Azure Virtual Network; auto assigned by default.
      *
      * @return the staticIp value.
      */
@@ -174,8 +197,8 @@ public final class RedisCreateParameters {
     }
 
     /**
-     * Set the staticIp property: Static IP address. Required when deploying a Redis cache inside an existing Azure
-     * Virtual Network.
+     * Set the staticIp property: Static IP address. Optionally, may be specified when deploying a Redis cache inside an
+     * existing Azure Virtual Network; auto assigned by default.
      *
      * @param staticIp the staticIp value to set.
      * @return the RedisCreateParameters object itself.
@@ -195,7 +218,7 @@ public final class RedisCreateParameters {
      *
      * @return the redisConfiguration value.
      */
-    public Map<String, String> redisConfiguration() {
+    public RedisConfiguration redisConfiguration() {
         return this.innerProperties() == null ? null : this.innerProperties().redisConfiguration();
     }
 
@@ -207,7 +230,7 @@ public final class RedisCreateParameters {
      * @param redisConfiguration the redisConfiguration value to set.
      * @return the RedisCreateParameters object itself.
      */
-    public RedisCreateParameters withRedisConfiguration(Map<String, String> redisConfiguration) {
+    public RedisCreateParameters withRedisConfiguration(RedisConfiguration redisConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new RedisCreateProperties();
         }
@@ -414,7 +437,7 @@ public final class RedisCreateParameters {
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model RedisCreateParameters"));
@@ -422,9 +445,14 @@ public final class RedisCreateParameters {
             innerProperties().validate();
         }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property location in model RedisCreateParameters"));
         }
+        if (identity() != null) {
+            identity().validate();
+        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RedisCreateParameters.class);
 }

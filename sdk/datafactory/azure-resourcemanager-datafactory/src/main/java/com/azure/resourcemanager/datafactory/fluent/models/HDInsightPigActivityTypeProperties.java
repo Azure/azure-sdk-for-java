@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.HDInsightActivityDebugInfoOption;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** HDInsight Pig activity properties. */
 @Fluent
 public final class HDInsightPigActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightPigActivityTypeProperties.class);
-
     /*
      * Storage linked service references.
      */
@@ -26,8 +22,7 @@ public final class HDInsightPigActivityTypeProperties {
     private List<LinkedServiceReference> storageLinkedServices;
 
     /*
-     * User specified arguments to HDInsightActivity. Type: array (or
-     * Expression with resultType array).
+     * User specified arguments to HDInsightActivity. Type: array (or Expression with resultType array).
      */
     @JsonProperty(value = "arguments")
     private Object arguments;
@@ -56,6 +51,10 @@ public final class HDInsightPigActivityTypeProperties {
     @JsonProperty(value = "defines")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> defines;
+
+    /** Creates an instance of HDInsightPigActivityTypeProperties class. */
+    public HDInsightPigActivityTypeProperties() {
+    }
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.

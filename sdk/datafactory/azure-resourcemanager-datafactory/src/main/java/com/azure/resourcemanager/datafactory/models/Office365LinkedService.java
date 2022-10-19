@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.Office365LinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("Office365")
 @Fluent
 public final class Office365LinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Office365LinkedService.class);
-
     /*
      * Office365 linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private Office365LinkedServiceTypeProperties innerTypeProperties = new Office365LinkedServiceTypeProperties();
+
+    /** Creates an instance of Office365LinkedService class. */
+    public Office365LinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Office365 linked service properties.
@@ -196,7 +197,7 @@ public final class Office365LinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model Office365LinkedService"));
@@ -204,4 +205,6 @@ public final class Office365LinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Office365LinkedService.class);
 }

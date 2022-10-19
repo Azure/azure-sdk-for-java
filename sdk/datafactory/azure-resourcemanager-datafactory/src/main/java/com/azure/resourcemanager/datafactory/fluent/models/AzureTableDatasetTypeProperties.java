@@ -6,20 +6,20 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Table dataset properties. */
 @Fluent
 public final class AzureTableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureTableDatasetTypeProperties.class);
-
     /*
-     * The table name of the Azure Table storage. Type: string (or Expression
-     * with resultType string).
+     * The table name of the Azure Table storage. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "tableName", required = true)
     private Object tableName;
+
+    /** Creates an instance of AzureTableDatasetTypeProperties class. */
+    public AzureTableDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
@@ -50,10 +50,12 @@ public final class AzureTableDatasetTypeProperties {
      */
     public void validate() {
         if (tableName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property tableName in model AzureTableDatasetTypeProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AzureTableDatasetTypeProperties.class);
 }

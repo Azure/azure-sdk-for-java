@@ -17,39 +17,39 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.implementation.util.ChunkedDownloadUtils;
 import com.azure.storage.blob.implementation.util.ModelHelper;
+import com.azure.storage.blob.models.AccessTier;
+import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentResponse;
-import com.azure.storage.blob.models.BlobImmutabilityPolicy;
-import com.azure.storage.blob.models.BlobLegalHoldResult;
-import com.azure.storage.blob.models.ConsistentReadControl;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.options.BlobBeginCopyOptions;
-import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
-import com.azure.storage.blob.models.BlobProperties;
-import com.azure.storage.blob.BlobServiceVersion;
-import com.azure.storage.blob.models.AccessTier;
-import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadResponse;
 import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobImmutabilityPolicy;
+import com.azure.storage.blob.models.BlobLegalHoldResult;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobQueryAsyncResponse;
-import com.azure.storage.blob.options.BlobDownloadToFileOptions;
-import com.azure.storage.blob.options.BlobGetTagsOptions;
-import com.azure.storage.blob.options.BlobInputStreamOptions;
-import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.models.BlobQueryResponse;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.models.ConsistentReadControl;
 import com.azure.storage.blob.models.CpkInfo;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
 import com.azure.storage.blob.models.StorageAccountInfo;
 import com.azure.storage.blob.models.UserDelegationKey;
+import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
+import com.azure.storage.blob.options.BlobDownloadToFileOptions;
+import com.azure.storage.blob.options.BlobGetTagsOptions;
+import com.azure.storage.blob.options.BlobInputStreamOptions;
+import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
@@ -57,10 +57,8 @@ import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.UncheckedIOException;
@@ -86,7 +84,7 @@ import static com.azure.storage.common.implementation.StorageImplUtils.blockWith
  * refer to the {@link BlockBlobClient}, {@link PageBlobClient}, or {@link AppendBlobClient} for upload options.
  */
 public class BlobClientBase {
-    private final ClientLogger logger = new ClientLogger(BlobClientBase.class);
+    private static final ClientLogger LOGGER = new ClientLogger(BlobClientBase.class);
 
     private final BlobAsyncClientBase client;
 
@@ -291,8 +289,8 @@ public class BlobClientBase {
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public final BlobInputStream openInputStream() {
-        return openInputStream(null, null);
+    public BlobInputStream openInputStream() {
+        return openInputStream((BlobRange) null, null);
     }
 
     /**
@@ -304,7 +302,7 @@ public class BlobClientBase {
      * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
      * @throws BlobStorageException If a storage service error occurred.
      */
-    public final BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
+    public BlobInputStream openInputStream(BlobRange range, BlobRequestConditions requestConditions) {
         return openInputStream(new BlobInputStreamOptions().setRange(range).setRequestConditions(requestConditions));
     }
 
@@ -316,6 +314,19 @@ public class BlobClientBase {
      * @throws BlobStorageException If a storage service error occurred.
      */
     public BlobInputStream openInputStream(BlobInputStreamOptions options) {
+        return openInputStream(options, null);
+    }
+
+    /**
+     * Opens a blob input stream to download the specified range of the blob.
+     *
+     * @param options {@link BlobInputStreamOptions}
+     * @param context {@link Context}
+     * @return An <code>InputStream</code> object that represents the stream to use for reading from the blob.
+     * @throws BlobStorageException If a storage service error occurred.
+     */
+    public BlobInputStream openInputStream(BlobInputStreamOptions options, Context context) {
+        Context contextFinal = context == null ? Context.NONE : context;
         options = options == null ? new BlobInputStreamOptions() : options;
         ConsistentReadControl consistentReadControl = options.getConsistentReadControl() == null
             ? ConsistentReadControl.ETAG : options.getConsistentReadControl();
@@ -328,7 +339,7 @@ public class BlobClientBase {
         com.azure.storage.common.ParallelTransferOptions parallelTransferOptions =
             new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
-            (chunkRange, conditions) -> client.downloadWithResponse(chunkRange, null, conditions, false);
+            (chunkRange, conditions) -> client.downloadStreamWithResponse(chunkRange, null, conditions, false, contextFinal);
         return ChunkedDownloadUtils.downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
             .flatMap(tuple3 -> {
                 BlobDownloadAsyncResponse downloadResponse = tuple3.getT3();
@@ -357,7 +368,7 @@ public class BlobClientBase {
                         break;
                     case VERSION_ID:
                         if (versionId == null) {
-                            return FluxUtil.monoError(logger,
+                            return FluxUtil.monoError(LOGGER,
                                 new UnsupportedOperationException("Versioning is not supported on this account."));
                         } else {
                             // Target the user specified version by default. If not provided, target the latest version.
@@ -367,12 +378,12 @@ public class BlobClientBase {
                         }
                         break;
                     default:
-                        return FluxUtil.monoError(logger, new IllegalArgumentException("Concurrency control type not "
+                        return FluxUtil.monoError(LOGGER, new IllegalArgumentException("Concurrency control type not "
                             + "supported."));
                 }
 
                 return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
-                    requestConditions, properties));
+                    requestConditions, properties, contextFinal));
             }).block();
     }
 
@@ -730,8 +741,10 @@ public class BlobClientBase {
      * @param stream A non-null {@link OutputStream} instance where the downloaded data will be written.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
+     * @deprecated use {@link #downloadStream(OutputStream)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public void download(OutputStream stream) {
         downloadStream(stream);
     }
@@ -822,8 +835,10 @@ public class BlobClientBase {
      * @return A response containing status code and HTTP headers.
      * @throws UncheckedIOException If an I/O error occurs.
      * @throws NullPointerException if {@code stream} is null
+     * @deprecated use {@link #downloadStreamWithResponse(OutputStream, BlobRange, DownloadRetryOptions, BlobRequestConditions, boolean, Duration, Context)} instead.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
+    @Deprecated
     public BlobDownloadResponse downloadWithResponse(OutputStream stream, BlobRange range,
         DownloadRetryOptions options, BlobRequestConditions requestConditions, boolean getRangeContentMd5,
         Duration timeout, Context context) {
@@ -869,14 +884,8 @@ public class BlobClientBase {
         StorageImplUtils.assertNotNull("stream", stream);
         Mono<BlobDownloadResponse> download = client
             .downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context)
-            .flatMap(response -> response.getValue().reduce(stream, (outputStream, buffer) -> {
-                try {
-                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
-                    return outputStream;
-                } catch (IOException ex) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-                }
-            }).thenReturn(new BlobDownloadResponse(response)));
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), stream)
+                .thenReturn(new BlobDownloadResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
     }
@@ -977,7 +986,7 @@ public class BlobClientBase {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob">Azure Docs</a></p>
      *
      * @param filePath A {@link String} representing the filePath where the downloaded data will be written.
-     * @param overwrite Whether or not to overwrite the file, should the file exist.
+     * @param overwrite Whether to overwrite the file, should the file exist.
      * @return The blob properties and metadata.
      * @throws UncheckedIOException If an I/O error occurs
      */
@@ -1180,6 +1189,67 @@ public class BlobClientBase {
             .deleteWithResponse(deleteBlobSnapshotOptions, requestConditions, context);
 
         return blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Deletes the specified blob or snapshot if it exists. To delete a blob with its snapshots use
+     * {@link #deleteIfExistsWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions, Duration, Context)} and set
+     * {@code DeleteSnapshotsOptionType} to INCLUDE.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.deleteIfExists -->
+     * <pre>
+     * boolean result = client.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Delete completed: &quot; + result&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.deleteIfExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a></p>
+     * @return {@code true} if delete succeeds, or {@code false} if blob does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean deleteIfExists() {
+        return deleteIfExistsWithResponse(null, null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the specified blob or snapshot if it exists. To delete a blob with its snapshots use
+     * {@link #deleteIfExistsWithResponse(DeleteSnapshotsOptionType, BlobRequestConditions, Duration, Context)} and set
+     * {@code DeleteSnapshotsOptionType} to INCLUDE.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context -->
+     * <pre>
+     * Response&lt;Boolean&gt; response = client.deleteIfExistsWithResponse&#40;DeleteSnapshotsOptionType.INCLUDE, null, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlobClientBase.deleteIfExistsWithResponse#DeleteSnapshotsOptionType-BlobRequestConditions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-blob">Azure Docs</a></p>
+     *
+     * @param deleteBlobSnapshotOptions Specifies the behavior for deleting the snapshots on this blob. {@code Include}
+     * will delete the base blob and all snapshots. {@code Only} will delete only the snapshots. If a snapshot is being
+     * deleted, you must pass null.
+     * @param requestConditions {@link BlobRequestConditions}
+     * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the base
+     * blob was successfully deleted. If status code is 404, the base blob does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> deleteIfExistsWithResponse(DeleteSnapshotsOptionType deleteBlobSnapshotOptions,
+        BlobRequestConditions requestConditions, Duration timeout, Context context) {
+        return blockWithOptionalTimeout(client.deleteIfExistsWithResponse(deleteBlobSnapshotOptions,
+            requestConditions, context), timeout);
     }
 
     /**
@@ -1892,7 +1962,7 @@ public class BlobClientBase {
 
         // Create input stream from the data.
         if (response == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
+            throw LOGGER.logExceptionAsError(new IllegalStateException("Query response cannot be null"));
         }
         return new ResponseBase<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
             new FluxInputStream(response.getValue()), response.getDeserializedHeaders());
@@ -1974,14 +2044,8 @@ public class BlobClientBase {
         StorageImplUtils.assertNotNull("outputStream", queryOptions.getOutputStream());
         Mono<BlobQueryResponse> download = client
             .queryWithResponse(queryOptions, context)
-            .flatMap(response -> response.getValue().reduce(queryOptions.getOutputStream(), (outputStream, buffer) -> {
-                try {
-                    outputStream.write(FluxUtil.byteBufferToArray(buffer));
-                    return outputStream;
-                } catch (IOException ex) {
-                    throw logger.logExceptionAsError(Exceptions.propagate(new UncheckedIOException(ex)));
-                }
-            }).thenReturn(new BlobQueryResponse(response)));
+            .flatMap(response -> FluxUtil.writeToOutputStream(response.getValue(), queryOptions.getOutputStream())
+                .thenReturn(new BlobQueryResponse(response)));
 
         return blockWithOptionalTimeout(download, timeout);
     }
@@ -2104,7 +2168,7 @@ public class BlobClientBase {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobClientBase.setLegalHold#boolean -->
      *
-     * @param legalHold Whether or not you want a legal hold on the blob.
+     * @param legalHold Whether you want a legal hold on the blob.
      * @return The legal hold result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2126,7 +2190,7 @@ public class BlobClientBase {
      * </pre>
      * <!-- end com.azure.storage.blob.specialized.BlobClientBase.setLegalHoldWithResponse#boolean-Duration-Context -->
      *
-     * @param legalHold Whether or not you want a legal hold on the blob.
+     * @param legalHold Whether you want a legal hold on the blob.
      * @param timeout An optional timeout value beyond which a {@link RuntimeException} will be raised.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the legal hold result.

@@ -11,10 +11,9 @@ import com.azure.resourcemanager.applicationinsights.fluent.WebTestLocationsClie
 import com.azure.resourcemanager.applicationinsights.fluent.models.ApplicationInsightsComponentWebTestLocationInner;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentWebTestLocation;
 import com.azure.resourcemanager.applicationinsights.models.WebTestLocations;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WebTestLocationsImpl implements WebTestLocations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WebTestLocationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(WebTestLocationsImpl.class);
 
     private final WebTestLocationsClient innerClient;
 

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,18 +32,16 @@ import java.util.Map;
 })
 @Fluent
 public class StoreWriteSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StoreWriteSettings.class);
-
     /*
-     * The maximum concurrent connection count for the source data store. Type:
-     * integer (or Expression with resultType integer).
+     * The maximum concurrent connection count for the source data store. Type: integer (or Expression with resultType
+     * integer).
      */
     @JsonProperty(value = "maxConcurrentConnections")
     private Object maxConcurrentConnections;
 
     /*
-     * If true, disable data store metrics collection. Default is false. Type:
-     * boolean (or Expression with resultType boolean).
+     * If true, disable data store metrics collection. Default is false. Type: boolean (or Expression with resultType
+     * boolean).
      */
     @JsonProperty(value = "disableMetricsCollection")
     private Object disableMetricsCollection;
@@ -59,6 +56,10 @@ public class StoreWriteSettings {
      * Connector write settings.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of StoreWriteSettings class. */
+    public StoreWriteSettings() {
+    }
 
     /**
      * Get the maxConcurrentConnections property: The maximum concurrent connection count for the source data store.

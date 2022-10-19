@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.applicationinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties that contain a workbook for PATCH operation. */
 @Fluent
 public final class WorkbookPropertiesUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkbookPropertiesUpdateParameters.class);
-
     /*
      * The user-defined name (display name) of the workbook.
      */

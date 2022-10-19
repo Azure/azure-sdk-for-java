@@ -6,28 +6,53 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Input of the secret to be validated. */
 @Fluent
 public final class ValidateSecretInput {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ValidateSecretInput.class);
+    /*
+     * The secret type.
+     */
+    @JsonProperty(value = "secretType", required = true)
+    private SecretType secretType;
 
     /*
-     * The secret source.
+     * Resource reference to the Azure Key Vault secret. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​
      */
     @JsonProperty(value = "secretSource", required = true)
     private ResourceReference secretSource;
 
     /*
-     * The secret type.
+     * Secret version, if customer is using a specific version.
      */
-    @JsonProperty(value = "secretType", required = true)
-    private ValidateSecretType secretType;
+    @JsonProperty(value = "secretVersion")
+    private String secretVersion;
 
     /**
-     * Get the secretSource property: The secret source.
+     * Get the secretType property: The secret type.
+     *
+     * @return the secretType value.
+     */
+    public SecretType secretType() {
+        return this.secretType;
+    }
+
+    /**
+     * Set the secretType property: The secret type.
+     *
+     * @param secretType the secretType value to set.
+     * @return the ValidateSecretInput object itself.
+     */
+    public ValidateSecretInput withSecretType(SecretType secretType) {
+        this.secretType = secretType;
+        return this;
+    }
+
+    /**
+     * Get the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
      *
      * @return the secretSource value.
      */
@@ -36,7 +61,8 @@ public final class ValidateSecretInput {
     }
 
     /**
-     * Set the secretSource property: The secret source.
+     * Set the secretSource property: Resource reference to the Azure Key Vault secret. Expected to be in format of
+     * /subscriptions/{​​​​​​​​​subscriptionId}​​​​​​​​​/resourceGroups/{​​​​​​​​​resourceGroupName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/providers/Microsoft.KeyVault/vaults/{vaultName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​/secrets/{secretName}​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​.
      *
      * @param secretSource the secretSource value to set.
      * @return the ValidateSecretInput object itself.
@@ -47,22 +73,22 @@ public final class ValidateSecretInput {
     }
 
     /**
-     * Get the secretType property: The secret type.
+     * Get the secretVersion property: Secret version, if customer is using a specific version.
      *
-     * @return the secretType value.
+     * @return the secretVersion value.
      */
-    public ValidateSecretType secretType() {
-        return this.secretType;
+    public String secretVersion() {
+        return this.secretVersion;
     }
 
     /**
-     * Set the secretType property: The secret type.
+     * Set the secretVersion property: Secret version, if customer is using a specific version.
      *
-     * @param secretType the secretType value to set.
+     * @param secretVersion the secretVersion value to set.
      * @return the ValidateSecretInput object itself.
      */
-    public ValidateSecretInput withSecretType(ValidateSecretType secretType) {
-        this.secretType = secretType;
+    public ValidateSecretInput withSecretVersion(String secretVersion) {
+        this.secretVersion = secretVersion;
         return this;
     }
 
@@ -72,18 +98,20 @@ public final class ValidateSecretInput {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (secretType() == null) {
+            throw LOGGER
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property secretType in model ValidateSecretInput"));
+        }
         if (secretSource() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property secretSource in model ValidateSecretInput"));
         } else {
             secretSource().validate();
         }
-        if (secretType() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property secretType in model ValidateSecretInput"));
-        }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ValidateSecretInput.class);
 }

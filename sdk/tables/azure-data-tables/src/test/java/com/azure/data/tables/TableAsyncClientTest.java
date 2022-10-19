@@ -9,6 +9,7 @@ import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.utils.TestResourceNamer;
+import com.azure.core.util.Configuration;
 import com.azure.data.tables.models.ListEntitiesOptions;
 import com.azure.data.tables.models.TableAccessPolicy;
 import com.azure.data.tables.models.TableEntity;
@@ -24,10 +25,13 @@ import com.azure.data.tables.sas.TableSasIpRange;
 import com.azure.data.tables.sas.TableSasPermission;
 import com.azure.data.tables.sas.TableSasProtocol;
 import com.azure.data.tables.sas.TableSasSignatureValues;
+import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
@@ -82,6 +86,48 @@ public class TableAsyncClientTest extends TableClientTestBase {
         // Act & Assert
         StepVerifier.create(tableClient2.createTable())
             .assertNext(Assertions::assertNotNull)
+            .expectComplete()
+            .verify();
+    }
+
+    /**
+     * Tests that a table and entity can be created while having a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
+    @Test
+    public void createTableWithMultipleTenants() {
+        // This feature works only in Storage endpoints with service version 2020_12_06.
+        Assumptions.assumeTrue(tableClient.getTableEndpoint().contains("core.windows.net")
+            && tableClient.getServiceVersion() == TableServiceVersion.V2020_12_06);
+
+        // Arrange
+        final String tableName2 = testResourceNamer.randomName("tableName", 20);
+
+        // The tenant ID does not matter as the correct on will be extracted from the authentication challenge in
+        // contained in the response the server provides to a first "naive" unauthenticated request.
+        final ClientSecretCredential credential = new ClientSecretCredentialBuilder()
+            .clientId(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_ID", "clientId"))
+            .clientSecret(Configuration.getGlobalConfiguration().get("TABLES_CLIENT_SECRET", "clientSecret"))
+            .tenantId(testResourceNamer.randomUuid())
+            .build();
+
+        final TableAsyncClient tableClient2 =
+            getClientBuilder(tableName2, Configuration.getGlobalConfiguration().get("TABLES_ENDPOINT",
+                "https://tablestests.table.core.windows.com"), credential, true).buildAsyncClient();
+
+        // Act & Assert
+        // This request will use the tenant ID extracted from the previous request.
+        StepVerifier.create(tableClient2.createTable())
+            .assertNext(Assertions::assertNotNull)
+            .expectComplete()
+            .verify();
+
+        final String partitionKeyValue = testResourceNamer.randomName("partitionKey", 20);
+        final String rowKeyValue = testResourceNamer.randomName("rowKey", 20);
+        final TableEntity tableEntity = new TableEntity(partitionKeyValue, rowKeyValue);
+
+        // All other requests will also use the tenant ID obtained from the auth challenge.
+        StepVerifier.create(tableClient2.createEntity(tableEntity))
             .expectComplete()
             .verify();
     }
@@ -1001,9 +1047,12 @@ public class TableAsyncClientTest extends TableClientTestBase {
     }
 
     @Test
+    @Disabled
+    // Disabling as this currently fails and prevents merging https://github.com/Azure/azure-sdk-for-java/pull/28522.
+    // TODO: Will fix in a separate PR. -vicolina
     public void canUseSasTokenToCreateValidTableClient() {
-        // SAS tokens at the table level have not been working with Cosmos endpoints. Will re-enable once this is fixed.
-        // - vicolina
+        // SAS tokens at the table level have not been working with Cosmos endpoints.
+        // TODO: Will re-enable once the above is fixed. -vicolina
         Assumptions.assumeFalse(IS_COSMOS_TEST, "Skipping Cosmos test.");
 
         final OffsetDateTime expiryTime = OffsetDateTime.of(2021, 12, 12, 0, 0, 0, 0, ZoneOffset.UTC);

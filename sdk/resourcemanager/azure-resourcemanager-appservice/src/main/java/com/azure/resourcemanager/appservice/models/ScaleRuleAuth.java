@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Auth Secrets for Container App Scale Rule. */
 @Fluent
 public final class ScaleRuleAuth {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScaleRuleAuth.class);
-
     /*
      * Name of the Container App secret from which to pull the auth params.
      */

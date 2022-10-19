@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
@@ -12,8 +13,8 @@ import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryMetrics;
 import com.azure.cosmos.implementation.clienttelemetry.ReportPayload;
-import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
 import com.azure.cosmos.models.CosmosBatchResponse;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosResponse;
@@ -46,6 +47,8 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 public class TracerProvider {
     private Tracer tracer;
     private static final Logger LOGGER = LoggerFactory.getLogger(TracerProvider.class);
+    private static final ImplementationBridgeHelpers.CosmosAsyncClientHelper.CosmosAsyncClientAccessor clientAccessor =
+        ImplementationBridgeHelpers.CosmosAsyncClientHelper.getCosmosAsyncClientAccessor();
     private static final ObjectMapper mapper = new ObjectMapper();
     private final static String JSON_STRING = "JSON";
     public final static String DB_TYPE_VALUE = "Cosmos";
@@ -64,14 +67,31 @@ public class TracerProvider {
     private static final Object DUMMY_VALUE = new Object();
     private final Mono<Object> propagatingMono;
     private final Flux<Object> propagatingFlux;
-    public TracerProvider(Tracer tracer) {
-        this.tracer = tracer;
+
+    public TracerProvider(
+        Tracer tracer,
+        boolean isSendClientTelemetryToServiceEnabled,
+        boolean isClientMetricsEnabled) {
+
+        if (tracer == null &&
+            isSendClientTelemetryToServiceEnabled || isClientMetricsEnabled) {
+
+            this.tracer = NoOpTracer.INSTANCE;
+
+        } else {
+            this.tracer = tracer;
+        }
+
         this.propagatingMono = new PropagatingMono();
         this.propagatingFlux = new PropagatingFlux();
     }
 
     public boolean isEnabled() {
         return tracer != null;
+    }
+
+    public boolean isNoOpTracer() {
+        return tracer == NoOpTracer.INSTANCE;
     }
 
     /**
@@ -322,14 +342,17 @@ public class TracerProvider {
         Mono<T> tracerMono = traceEnabledPublisher(resultPublisher, context, spanName, databaseId, endpoint, statusCodeFunc, diagnosticFunc, thresholdForDiagnosticsOnTracer);
         return tracerMono
             .doOnSuccess(response -> {
-                if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof CosmosItemResponse) {
+                boolean clientTelemetryEnabled = clientAccessor.isSendClientTelemetryToServiceEnabled(client);
+
+                if (clientTelemetryEnabled && response instanceof CosmosItemResponse) {
+
                     @SuppressWarnings("unchecked")
                     CosmosItemResponse<T> itemResponse = (CosmosItemResponse<T>) response;
                     fillClientTelemetry(client, itemResponse.getDiagnostics(), itemResponse.getStatusCode(),
                         ModelBridgeInternal.getPayloadLength(itemResponse), containerId,
                         databaseId, operationType, resourceType, consistencyLevel,
                         (float) itemResponse.getRequestCharge());
-                } else if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && response instanceof CosmosBatchResponse) {
+                } else if (clientTelemetryEnabled && response instanceof CosmosBatchResponse) {
                     @SuppressWarnings("unchecked")
                     CosmosBatchResponse cosmosBatchResponse = (CosmosBatchResponse) response;
                     fillClientTelemetry(client, cosmosBatchResponse.getDiagnostics(), cosmosBatchResponse.getStatusCode(),
@@ -337,8 +360,54 @@ public class TracerProvider {
                         databaseId, operationType, resourceType, consistencyLevel,
                         (float) cosmosBatchResponse.getRequestCharge());
                 }
+
+                if (clientAccessor.isClientTelemetryMetricsEnabled(client) && response instanceof CosmosItemResponse) {
+                    @SuppressWarnings("unchecked")
+                    CosmosItemResponse<T> itemResponse = (CosmosItemResponse<T>) response;
+                    CosmosDiagnostics diagnostics = itemResponse.getDiagnostics();
+                    ClientTelemetryMetrics.recordOperation(
+                        client,
+                        diagnostics,
+                        itemResponse.getStatusCode(),
+                        //ModelBridgeInternal.getPayloadLength(itemResponse),
+                        -1,
+                        -1,
+                        containerId,
+                        databaseId,
+                        operationType,
+                        resourceType,
+                        consistencyLevel,
+                        null,
+                        (float) itemResponse.getRequestCharge(),
+                        diagnostics.getDuration());
+                } else if (clientAccessor.isClientTelemetryMetricsEnabled(client) &&
+                    response instanceof CosmosBatchResponse) {
+
+                    @SuppressWarnings("unchecked")
+                    CosmosBatchResponse cosmosBatchResponse = (CosmosBatchResponse) response;
+                    int itemCount = cosmosBatchResponse.getResults().size();
+                    CosmosDiagnostics diagnostics = cosmosBatchResponse.getDiagnostics();
+                    ClientTelemetryMetrics.recordOperation(
+                        client,
+                        diagnostics,
+                        cosmosBatchResponse.getStatusCode(),
+                        //ModelBridgeInternal.getPayloadLength(cosmosBatchResponse),
+                        itemCount,
+                        itemCount,
+                        containerId,
+                        databaseId,
+                        operationType,
+                        resourceType,
+                        consistencyLevel,
+                        null,
+                        (float) cosmosBatchResponse.getRequestCharge(),
+                        diagnostics.getDuration());
+                }
+
             }).doOnError(throwable -> {
-                if (Configs.isClientTelemetryEnabled(BridgeInternal.isClientTelemetryEnabled(client)) && throwable instanceof CosmosException) {
+                if (clientAccessor.isSendClientTelemetryToServiceEnabled(client) &&
+                    throwable instanceof CosmosException) {
+
                     CosmosException cosmosException = (CosmosException) throwable;
                     fillClientTelemetry(client, cosmosException.getDiagnostics(), cosmosException.getStatusCode(),
                         null, containerId,
@@ -452,8 +521,7 @@ public class TracerProvider {
             Iterator<RequestTimeline.Event> eventIterator = null;
             try {
                 if (storeResponseStatistics.getStoreResult() != null) {
-                    eventIterator =
-                        DirectBridgeInternal.getRequestTimeline(storeResponseStatistics.getStoreResult().toResponse()).iterator();
+                    eventIterator = storeResponseStatistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline().iterator();
                 }
             } catch (CosmosException ex) {
                 eventIterator = BridgeInternal.getRequestTimeline(ex).iterator();
@@ -483,8 +551,7 @@ public class TracerProvider {
             OffsetDateTime requestStartTime = OffsetDateTime.ofInstant(statistics.getRequestResponseTimeUTC(),
                 ZoneOffset.UTC);
             if (statistics.getStoreResult() != null) {
-                Iterator<RequestTimeline.Event> eventIterator =
-                    DirectBridgeInternal.getRequestTimeline(statistics.getStoreResult().toResponse()).iterator();
+                Iterator<RequestTimeline.Event> eventIterator = statistics.getStoreResult().getStoreResponseDiagnostics().getRequestTimeline().iterator();
                 while (eventIterator.hasNext()) {
                     RequestTimeline.Event event = eventIterator.next();
                     if (event.getName().equals("created")) {
@@ -566,7 +633,7 @@ public class TracerProvider {
         //adding clientCfgs
         attributes = new HashMap<>();
         attributes.put(JSON_STRING,
-            mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientContext()));
+            mapper.writeValueAsString(clientSideRequestStatistics.getDiagnosticsClientConfig()));
         this.addEvent("ClientCfgs", attributes,
             OffsetDateTime.ofInstant(clientSideRequestStatistics.getRequestStartTimeUTC(), ZoneOffset.UTC), context);
     }
@@ -616,6 +683,55 @@ public class TracerProvider {
         @Override
         public void subscribe(CoreSubscriber<? super Object> actual) {
             TracerProvider.subscribe(tracer, actual);
+        }
+    }
+
+    //Noop Tracer
+    private static final class NoOpTracer implements Tracer {
+        public static final Tracer INSTANCE = new NoOpTracer();
+
+        private NoOpTracer() {
+        }
+
+        @Override
+        public Context start(String methodName, Context context) {
+            return Context.NONE;
+        }
+
+        @Override
+        public Context start(String methodName, Context context, ProcessKind processKind) {
+            return Context.NONE;
+        }
+
+        @Override
+        public void end(int responseCode, Throwable error, Context context) {
+        }
+
+        @Override
+        public void end(String errorCondition, Throwable error, Context context) {
+        }
+
+        @Override
+        public void setAttribute(String key, String value, Context context) {
+        }
+
+        @Override
+        public Context setSpanName(String spanName, Context context) {
+            return Context.NONE;
+        }
+
+        @Override
+        public void addLink(Context context) {
+        }
+
+        @Override
+        public Context extractContext(String diagnosticId, Context context) {
+            return Context.NONE;
+        }
+
+        @Override
+        public Context getSharedSpanBuilder(String spanName, Context context) {
+            return Context.NONE;
         }
     }
 }

@@ -2,9 +2,11 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.common;
 
+import com.azure.spring.data.cosmos.core.convert.ObjectMapperFactory;
 import com.azure.spring.data.cosmos.core.query.CosmosPageRequest;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -12,6 +14,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertTrue;
 
 public class PageTestUtils {
+
+    private static final ObjectMapper objectMapper = ObjectMapperFactory.getObjectMapper();
+
     public static void validateLastPage(Page<?> page, int pageSize) {
         final Pageable pageable = page.getPageable();
 
@@ -36,15 +41,12 @@ public class PageTestUtils {
         if (tokenJson == null) {
             return true;
         }
-
-        final JSONObject jsonObject;
         try {
-            jsonObject = new JSONObject(tokenJson);
-            return jsonObject.isNull("compositeToken");
-        } catch (JSONException e) {
+            JsonNode jsonNode = objectMapper.readTree(tokenJson);
+            return jsonNode.get("compositeToken") == null;
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             return false;
         }
-
     }
 }

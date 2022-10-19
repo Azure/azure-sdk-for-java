@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ExpressRoute circuit peering identifier. */
 @Fluent
 public final class ExpressRouteCircuitPeeringId {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitPeeringId.class);
-
     /*
      * The ID of the ExpressRoute circuit peering.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /** Creates an instance of ExpressRouteCircuitPeeringId class. */
+    public ExpressRouteCircuitPeeringId() {
+    }
 
     /**
      * Get the id property: The ID of the ExpressRoute circuit peering.

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.RouteTableInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for the ListRouteTable API service call. */
 @Fluent
 public final class RouteTableListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteTableListResult.class);
-
     /*
      * A list of route tables in a resource group.
      */
@@ -27,6 +23,10 @@ public final class RouteTableListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of RouteTableListResult class. */
+    public RouteTableListResult() {
+    }
 
     /**
      * Get the value property: A list of route tables in a resource group.

@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.AzureFirewallApplicationRuleCollectionPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Application rule collection resource. */
 @Fluent
 public final class AzureFirewallApplicationRuleCollection extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallApplicationRuleCollection.class);
-
     /*
      * Properties of the azure firewall application rule collection.
      */
@@ -24,8 +20,7 @@ public final class AzureFirewallApplicationRuleCollection extends SubResource {
     private AzureFirewallApplicationRuleCollectionPropertiesFormat innerProperties;
 
     /*
-     * The name of the resource that is unique within the Azure firewall. This
-     * name can be used to access the resource.
+     * The name of the resource that is unique within the Azure firewall. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -35,6 +30,10 @@ public final class AzureFirewallApplicationRuleCollection extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of AzureFirewallApplicationRuleCollection class. */
+    public AzureFirewallApplicationRuleCollection() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the azure firewall application rule collection.

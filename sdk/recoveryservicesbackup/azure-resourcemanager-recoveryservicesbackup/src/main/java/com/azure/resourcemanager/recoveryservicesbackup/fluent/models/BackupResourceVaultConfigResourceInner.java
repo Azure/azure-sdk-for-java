@@ -6,17 +6,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceVaultConfig;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Backup resource vault config details. */
 @Fluent
 public final class BackupResourceVaultConfigResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupResourceVaultConfigResourceInner.class);
-
     /*
      * BackupResourceVaultConfigResource properties
      */

@@ -9,6 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Represents the correlation rule filter expression. It holds a set of conditions that are matched against one or more
@@ -41,6 +42,8 @@ import java.util.Map;
  */
 @Fluent
 public class CorrelationRuleFilter extends RuleFilter {
+    private static final ClientLogger LOGGER = new ClientLogger(CorrelationRuleFilter.class);
+
     private final Map<String, Object> properties = new HashMap<>();
     private String correlationId;
     private String contentType;
@@ -68,11 +71,10 @@ public class CorrelationRuleFilter extends RuleFilter {
      * @throws NullPointerException If {@code correlationId} is null.
      */
     public CorrelationRuleFilter(String correlationId) {
-        final ClientLogger logger = new ClientLogger(CorrelationRuleFilter.class);
         if (correlationId == null) {
-            throw logger.logExceptionAsError(new NullPointerException("'correlationId' cannot be null"));
+            throw LOGGER.logExceptionAsError(new NullPointerException("'correlationId' cannot be null"));
         } else if (correlationId.isEmpty()) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("'correlationId' cannot be empty."));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'correlationId' cannot be empty."));
         }
 
         this.correlationId = correlationId;
@@ -285,8 +287,45 @@ public class CorrelationRuleFilter extends RuleFilter {
         return builder.toString();
     }
 
+    /**
+     *  Compares this RuleFilter to the specified object. The result is true if and only if the argument is not null
+     *  and is a CorrelationRuleFilter object that with the same parameters as this object.
+     *
+     * @param other - the object to which the current CorrelationRuleFilter should be compared.
+     * @return True, if the passed object is a CorrelationRuleFilter with the same parameter values, False otherwise.
+     */
+    @Override
+    public boolean equals(Object other) {
+        if (this == other) {
+            return true;
+        }
+        if (!(other instanceof CorrelationRuleFilter)) {
+            return false;
+        }
+        CorrelationRuleFilter that = (CorrelationRuleFilter) other;
+        return Objects.equals(properties, that.properties)
+            && Objects.equals(correlationId, that.correlationId)
+            && Objects.equals(contentType, that.contentType)
+            && Objects.equals(label, that.label)
+            && Objects.equals(messageId, that.messageId)
+            && Objects.equals(replyTo, that.replyTo)
+            && Objects.equals(replyToSessionId, that.replyToSessionId)
+            && Objects.equals(sessionId, that.sessionId)
+            && Objects.equals(to, that.to);
+    }
+
+    /**
+     * Returns a hash code for this CorrelationRuleFilter.
+     *
+     * @return a hash code value for this object.
+     */
+    @Override
+    public int hashCode() {
+        return Objects.hash(correlationId, messageId, sessionId);
+    }
+
     private static boolean appendPropertyExpression(boolean isFirstExpression, StringBuilder builder, String display,
-        String value) {
+                                                    String value) {
 
         if (value == null) {
             return true;

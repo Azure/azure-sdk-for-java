@@ -6,14 +6,11 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** StorageMigrationOptions resource specific properties. */
 @Fluent
 public final class StorageMigrationOptionsProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageMigrationOptionsProperties.class);
-
     /*
      * AzureFiles connection string.
      */
@@ -131,17 +128,19 @@ public final class StorageMigrationOptionsProperties {
      */
     public void validate() {
         if (azurefilesConnectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property azurefilesConnectionString in model"
                             + " StorageMigrationOptionsProperties"));
         }
         if (azurefilesShare() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property azurefilesShare in model StorageMigrationOptionsProperties"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StorageMigrationOptionsProperties.class);
 }

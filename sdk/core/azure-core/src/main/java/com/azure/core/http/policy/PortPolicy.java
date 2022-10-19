@@ -5,6 +5,7 @@ package com.azure.core.http.policy;
 
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
+import com.azure.core.http.HttpPipelineNextSyncPolicy;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.util.UrlBuilder;
@@ -18,9 +19,27 @@ import java.net.MalformedURLException;
  * The pipeline policy that adds a given port to each {@link HttpRequest}.
  */
 public class PortPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(PortPolicy.class);
+
     private final int port;
     private final boolean overwrite;
-    private final ClientLogger logger = new ClientLogger(PortPolicy.class);
+
+    private final HttpPipelineSyncPolicy inner = new HttpPipelineSyncPolicy() {
+        @Override
+        protected void beforeSendingRequest(HttpPipelineCallContext context) {
+            final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
+            if (overwrite || urlBuilder.getPort() == null) {
+                LOGGER.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
+
+                try {
+                    context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
+                } catch (MalformedURLException e) {
+                    throw LOGGER.logExceptionAsError(new
+                        RuntimeException("Failed to set the HTTP request port to " + port + ".", e));
+                }
+            }
+        }
+    };
 
     /**
      * Creates a new PortPolicy object.
@@ -35,17 +54,11 @@ public class PortPolicy implements HttpPipelinePolicy {
 
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
-        final UrlBuilder urlBuilder = UrlBuilder.parse(context.getHttpRequest().getUrl());
-        if (overwrite || urlBuilder.getPort() == null) {
-            logger.log(LogLevel.VERBOSE, () -> "Changing port to " + port);
+        return inner.process(context, next);
+    }
 
-            try {
-                context.getHttpRequest().setUrl(urlBuilder.setPort(port).toUrl());
-            } catch (MalformedURLException e) {
-                return Mono.error(new RuntimeException(
-                    String.format("Failed to set the HTTP request port to %d.", port), e));
-            }
-        }
-        return next.process();
+    @Override
+    public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
+        return inner.processSync(context, next);
     }
 }

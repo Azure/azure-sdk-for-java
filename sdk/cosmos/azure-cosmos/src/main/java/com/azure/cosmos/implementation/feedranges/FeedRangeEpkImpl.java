@@ -27,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static com.azure.cosmos.BridgeInternal.setProperty;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -175,10 +176,19 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         }
 
                         final List<PartitionKeyRange> pkRanges = pkRangeHolder.v;
-                        if (pkRanges == null || pkRanges.size() == 0) {
+                        if (pkRanges == null) {
                             return Mono.error(new NotFoundException(
-                                String.format("Stale cache for collection rid '%s'.",
-                                    containerRid)));
+                                String.format(
+                                        "Stale cache for collection rid '%s', EpkRange '%s': pkRanges are null",
+                                        containerRid,
+                                        this.range)));
+                        }
+                        if (pkRanges.size() == 0) {
+                            return Mono.error(new NotFoundException(
+                                    String.format(
+                                            "Stale cache for collection rid '%s', EpkRange '%s': pkRanges are empty",
+                                            containerRid,
+                                            this.range)));
                         }
 
                         // For epk range filtering we can end up in one of 3 cases:
@@ -189,7 +199,12 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                             // we need to bubble that up to the higher layers to update their
                             // datastructures
                             GoneException goneException = new GoneException(
-                                String.format("Epk Range '%s' is gone.", this.range));
+                                    String.format(
+                                            "EpkRange %s spans %s physical partitions: %s",
+                                            this.range,
+                                            pkRanges.size(),
+                                            pkRanges.stream().map(pkRange -> pkRange.getId()).collect(Collectors.toList()),
+                                    this.range));
                             BridgeInternal.setSubStatusCode(
                                 goneException,
                                 HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);

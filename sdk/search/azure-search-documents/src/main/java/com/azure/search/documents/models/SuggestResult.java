@@ -25,7 +25,7 @@ import static com.azure.core.util.serializer.TypeReference.createInstance;
  */
 @Fluent
 public final class SuggestResult {
-    private final ClientLogger logger = new ClientLogger(SuggestResult.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SuggestResult.class);
     /*
      * Unmatched properties from the message are deserialized this collection
      */
@@ -75,7 +75,7 @@ public final class SuggestResult {
             try {
                 return Utility.convertValue(additionalProperties, modelClass);
             } catch (IOException ex) {
-                throw logger.logExceptionAsError(new RuntimeException("Failed to deserialize suggestion result.", ex));
+                throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize suggestion result.", ex));
             }
         }
         ByteArrayOutputStream sourceStream = new ByteArrayOutputStream();

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.ImpalaLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("Impala")
 @Fluent
 public final class ImpalaLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImpalaLinkedService.class);
-
     /*
      * Impala server linked service properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private ImpalaLinkedServiceTypeProperties innerTypeProperties = new ImpalaLinkedServiceTypeProperties();
+
+    /** Creates an instance of ImpalaLinkedService class. */
+    public ImpalaLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Impala server linked service properties.
@@ -344,7 +345,7 @@ public final class ImpalaLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model ImpalaLinkedService"));
@@ -352,4 +353,6 @@ public final class ImpalaLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ImpalaLinkedService.class);
 }

@@ -33,7 +33,7 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> revalidateWithResponseAsync(
@@ -49,9 +49,9 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginRevalidateAsync(
         String resourceGroupName, String managedInstanceName, EncryptionProtectorName encryptionProtectorName);
 
@@ -65,9 +65,9 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevalidate(
         String resourceGroupName, String managedInstanceName, EncryptionProtectorName encryptionProtectorName);
 
@@ -82,9 +82,9 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginRevalidate(
         String resourceGroupName,
         String managedInstanceName,
@@ -101,7 +101,7 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Void> revalidateAsync(
@@ -150,7 +150,7 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance encryption protectors.
+     * @return a list of managed instance encryption protectors as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ManagedInstanceEncryptionProtectorInner> listByInstanceAsync(
@@ -165,7 +165,7 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance encryption protectors.
+     * @return a list of managed instance encryption protectors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceEncryptionProtectorInner> listByInstance(
@@ -181,7 +181,7 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of managed instance encryption protectors.
+     * @return a list of managed instance encryption protectors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ManagedInstanceEncryptionProtectorInner> listByInstance(
@@ -197,7 +197,8 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance encryption protector.
+     * @return a managed instance encryption protector along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<ManagedInstanceEncryptionProtectorInner>> getWithResponseAsync(
@@ -213,7 +214,7 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance encryption protector.
+     * @return a managed instance encryption protector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedInstanceEncryptionProtectorInner> getAsync(
@@ -246,7 +247,7 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a managed instance encryption protector.
+     * @return a managed instance encryption protector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ManagedInstanceEncryptionProtectorInner> getWithResponse(
@@ -262,11 +263,12 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param parameters The managed instance encryption protector.
+     * @param parameters The requested encryption protector resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance encryption protector.
+     * @return the managed instance encryption protector along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -282,13 +284,13 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param parameters The managed instance encryption protector.
+     * @param parameters The requested encryption protector resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance encryption protector.
+     * @return the {@link PollerFlux} for polling of the managed instance encryption protector.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -303,13 +305,13 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param parameters The managed instance encryption protector.
+     * @param parameters The requested encryption protector resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance encryption protector.
+     * @return the {@link SyncPoller} for polling of the managed instance encryption protector.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -324,14 +326,14 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param parameters The managed instance encryption protector.
+     * @param parameters The requested encryption protector resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance encryption protector.
+     * @return the {@link SyncPoller} for polling of the managed instance encryption protector.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ManagedInstanceEncryptionProtectorInner>, ManagedInstanceEncryptionProtectorInner>
         beginCreateOrUpdate(
             String resourceGroupName,
@@ -347,11 +349,11 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param parameters The managed instance encryption protector.
+     * @param parameters The requested encryption protector resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the managed instance encryption protector.
+     * @return the managed instance encryption protector on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<ManagedInstanceEncryptionProtectorInner> createOrUpdateAsync(
@@ -367,7 +369,7 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param parameters The managed instance encryption protector.
+     * @param parameters The requested encryption protector resource state.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -387,7 +389,7 @@ public interface ManagedInstanceEncryptionProtectorsClient {
      *     from the Azure Resource Manager API or the portal.
      * @param managedInstanceName The name of the managed instance.
      * @param encryptionProtectorName The name of the encryption protector to be updated.
-     * @param parameters The managed instance encryption protector.
+     * @param parameters The requested encryption protector resource state.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

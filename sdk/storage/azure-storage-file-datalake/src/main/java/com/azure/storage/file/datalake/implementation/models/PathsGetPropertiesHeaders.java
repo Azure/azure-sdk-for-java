@@ -5,6 +5,7 @@
 package com.azure.storage.file.datalake.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -66,7 +67,7 @@ public final class PathsGetPropertiesHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-resource-type property.
@@ -151,6 +152,47 @@ public final class PathsGetPropertiesHeaders {
      */
     @JsonProperty(value = "Content-Type")
     private String contentType;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of PathsGetPropertiesHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public PathsGetPropertiesHeaders(HttpHeaders rawHeaders) {
+        this.xMsGroup = rawHeaders.getValue("x-ms-group");
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        this.xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
+        this.contentRange = rawHeaders.getValue("Content-Range");
+        this.xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
+        this.xMsAcl = rawHeaders.getValue("x-ms-acl");
+        String lastModified = rawHeaders.getValue("Last-Modified");
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        this.xMsProperties = rawHeaders.getValue("x-ms-properties");
+        String date = rawHeaders.getValue("Date");
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        }
+        this.xMsResourceType = rawHeaders.getValue("x-ms-resource-type");
+        this.contentMD5 = rawHeaders.getValue("Content-MD5");
+        this.acceptRanges = rawHeaders.getValue("Accept-Ranges");
+        this.cacheControl = rawHeaders.getValue("Cache-Control");
+        this.eTag = rawHeaders.getValue("ETag");
+        this.contentDisposition = rawHeaders.getValue("Content-Disposition");
+        this.contentEncoding = rawHeaders.getValue("Content-Encoding");
+        this.xMsPermissions = rawHeaders.getValue("x-ms-permissions");
+        this.xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
+        String contentLength = rawHeaders.getValue("Content-Length");
+        if (contentLength != null) {
+            this.contentLength = Long.parseLong(contentLength);
+        }
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.contentLanguage = rawHeaders.getValue("Content-Language");
+        this.xMsOwner = rawHeaders.getValue("x-ms-owner");
+        this.contentType = rawHeaders.getValue("Content-Type");
+    }
 
     /**
      * Get the xMsGroup property: The x-ms-group property.
@@ -320,28 +362,28 @@ public final class PathsGetPropertiesHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the PathsGetPropertiesHeaders object itself.
      */
-    public PathsGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public PathsGetPropertiesHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines a rate limiting rule that can be included in a waf policy. */
 @Fluent
 public final class RateLimitRule extends CustomRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RateLimitRule.class);
-
     /*
      * Defines rate limit threshold.
      */

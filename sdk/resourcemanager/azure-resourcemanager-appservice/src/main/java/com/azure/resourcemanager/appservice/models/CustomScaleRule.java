@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** Container App container Custom scaling rule. */
 @Fluent
 public final class CustomScaleRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomScaleRule.class);
-
     /*
      * Type of the custom scale rule
      * eg: azure-servicebus, redis etc.

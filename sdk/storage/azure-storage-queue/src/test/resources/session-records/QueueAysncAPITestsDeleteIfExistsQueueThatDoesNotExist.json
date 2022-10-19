@@ -1,0 +1,26 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "DELETE",
+    "Uri" : "http://REDACTED.queue.core.windows.net/aafddfa6aafddfa6594023110b6f21b195384bdf9d",
+    "Headers" : {
+      "x-ms-version" : "2021-04-10",
+      "User-Agent" : "azsdk-java-azure-storage-queue/12.13.0-beta.1 (11.0.14; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "82baeb20-e6e8-4b22-9179-a8befeeec5fa"
+    },
+    "Response" : {
+      "content-length" : "217",
+      "x-ms-version" : "2021-04-10",
+      "Server" : "Windows-Azure-Queue/1.0 Microsoft-HTTPAPI/2.0",
+      "x-ms-error-code" : "QueueNotFound",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "x-ms-request-id" : "99367890-6003-0001-3e72-514d24000000",
+      "Body" : "<?xml version=\"1.0\" encoding=\"utf-8\"?><Error><Code>QueueNotFound</Code><Message>The specified queue does not exist.\nRequestId:99367890-6003-0001-3e72-514d24000000\nTime:2022-04-16T09:16:50.3006121Z</Message></Error>",
+      "x-ms-client-request-id" : "82baeb20-e6e8-4b22-9179-a8befeeec5fa",
+      "Date" : "Sat, 16 Apr 2022 09:16:49 GMT",
+      "Content-Type" : "application/xml"
+    },
+    "Exception" : null
+  } ],
+  "variables" : [ "aafddfa6aafddfa6594023110b6f21b195384bdf9d" ]
+}

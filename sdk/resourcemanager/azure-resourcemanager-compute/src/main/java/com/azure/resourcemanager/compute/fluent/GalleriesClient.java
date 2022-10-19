@@ -14,6 +14,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.models.GalleryInner;
+import com.azure.resourcemanager.compute.models.GalleryExpandParams;
 import com.azure.resourcemanager.compute.models.GalleryUpdate;
 import com.azure.resourcemanager.compute.models.SelectPermissions;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
@@ -53,8 +54,8 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of specifies information about the Shared Image Gallery that you want
+     *     to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdateAsync(
@@ -70,8 +71,8 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
+     *     to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
@@ -88,8 +89,8 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
+     *     to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GalleryInner>, GalleryInner> beginCreateOrUpdate(
@@ -169,8 +170,8 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of specifies information about the Shared Image Gallery that you want
+     *     to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<GalleryInner>, GalleryInner> beginUpdateAsync(
@@ -186,8 +187,8 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
+     *     to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(
@@ -204,8 +205,8 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the Shared Image Gallery that you want to create or update along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of specifies information about the Shared Image Gallery that you want
+     *     to create or update.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<GalleryInner>, GalleryInner> beginUpdate(
@@ -264,6 +265,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param select The select expression to apply on the operation.
+     * @param expand The expand query option to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -272,7 +274,7 @@ public interface GalleriesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<GalleryInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String galleryName, SelectPermissions select);
+        String resourceGroupName, String galleryName, SelectPermissions select, GalleryExpandParams expand);
 
     /**
      * Retrieves information about a Shared Image Gallery.
@@ -280,6 +282,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param select The select expression to apply on the operation.
+     * @param expand The expand query option to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -287,7 +290,8 @@ public interface GalleriesClient
      *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<GalleryInner> getByResourceGroupAsync(String resourceGroupName, String galleryName, SelectPermissions select);
+    Mono<GalleryInner> getByResourceGroupAsync(
+        String resourceGroupName, String galleryName, SelectPermissions select, GalleryExpandParams expand);
 
     /**
      * Retrieves information about a Shared Image Gallery.
@@ -322,6 +326,7 @@ public interface GalleriesClient
      * @param resourceGroupName The name of the resource group.
      * @param galleryName The name of the Shared Image Gallery.
      * @param select The select expression to apply on the operation.
+     * @param expand The expand query option to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -331,7 +336,11 @@ public interface GalleriesClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<GalleryInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String galleryName, SelectPermissions select, Context context);
+        String resourceGroupName,
+        String galleryName,
+        SelectPermissions select,
+        GalleryExpandParams expand,
+        Context context);
 
     /**
      * Delete a Shared Image Gallery.
@@ -354,7 +363,7 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String galleryName);
@@ -367,7 +376,7 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName);
@@ -381,7 +390,7 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String galleryName, Context context);
@@ -431,7 +440,7 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response.
+     * @return the List Galleries operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<GalleryInner> listByResourceGroupAsync(String resourceGroupName);
@@ -443,7 +452,7 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response.
+     * @return the List Galleries operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GalleryInner> listByResourceGroup(String resourceGroupName);
@@ -456,7 +465,7 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response.
+     * @return the List Galleries operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GalleryInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -466,7 +475,7 @@ public interface GalleriesClient
      *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response.
+     * @return the List Galleries operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<GalleryInner> listAsync();
@@ -476,7 +485,7 @@ public interface GalleriesClient
      *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response.
+     * @return the List Galleries operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GalleryInner> list();
@@ -488,7 +497,7 @@ public interface GalleriesClient
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Galleries operation response.
+     * @return the List Galleries operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<GalleryInner> list(Context context);

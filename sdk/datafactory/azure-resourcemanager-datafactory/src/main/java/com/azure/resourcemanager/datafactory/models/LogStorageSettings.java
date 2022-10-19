@@ -16,8 +16,6 @@ import java.util.Map;
 /** (Deprecated. Please use LogSettings) Log storage settings. */
 @Fluent
 public final class LogStorageSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogStorageSettings.class);
-
     /*
      * Log storage linked service reference.
      */
@@ -25,22 +23,20 @@ public final class LogStorageSettings {
     private LinkedServiceReference linkedServiceName;
 
     /*
-     * The path to storage for storing detailed logs of activity execution.
-     * Type: string (or Expression with resultType string).
+     * The path to storage for storing detailed logs of activity execution. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "path")
     private Object path;
 
     /*
-     * Gets or sets the log level, support: Info, Warning. Type: string (or
-     * Expression with resultType string).
+     * Gets or sets the log level, support: Info, Warning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "logLevel")
     private Object logLevel;
 
     /*
-     * Specifies whether to enable reliable logging. Type: boolean (or
-     * Expression with resultType boolean).
+     * Specifies whether to enable reliable logging. Type: boolean (or Expression with resultType boolean).
      */
     @JsonProperty(value = "enableReliableLogging")
     private Object enableReliableLogging;
@@ -49,6 +45,10 @@ public final class LogStorageSettings {
      * (Deprecated. Please use LogSettings) Log storage settings.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of LogStorageSettings class. */
+    public LogStorageSettings() {
+    }
 
     /**
      * Get the linkedServiceName property: Log storage linked service reference.
@@ -172,7 +172,7 @@ public final class LogStorageSettings {
      */
     public void validate() {
         if (linkedServiceName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property linkedServiceName in model LogStorageSettings"));
@@ -180,4 +180,6 @@ public final class LogStorageSettings {
             linkedServiceName().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(LogStorageSettings.class);
 }

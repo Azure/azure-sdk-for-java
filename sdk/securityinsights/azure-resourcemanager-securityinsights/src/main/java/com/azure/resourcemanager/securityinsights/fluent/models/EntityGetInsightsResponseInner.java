@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityInsightItem;
 import com.azure.resourcemanager.securityinsights.models.GetInsightsResultsMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The Get Insights result operation response. */
 @Fluent
 public final class EntityGetInsightsResponseInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityGetInsightsResponseInner.class);
-
     /*
      * The metadata from the get insights operation results.
      */

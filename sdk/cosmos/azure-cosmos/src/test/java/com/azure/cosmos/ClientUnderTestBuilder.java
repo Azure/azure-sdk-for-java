@@ -2,10 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.RxDocumentClientUnderTest;
 import com.azure.cosmos.implementation.Strings;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 
 import java.net.URI;
@@ -56,7 +56,9 @@ public class ClientUnderTestBuilder extends CosmosClientBuilder {
                 this.configs(),
                 this.getCredential(),
                 this.isContentResponseOnWriteEnabled(),
-                this.apiType());
+                this.apiType(),
+                this.getClientTelemetryConfig()
+                    .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED));
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException(e.getMessage());
         }

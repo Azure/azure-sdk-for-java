@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.labservices.fluent.SchedulesClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SchedulesClient. */
 public final class SchedulesClientImpl implements SchedulesClient {
-    private final ClientLogger logger = new ClientLogger(SchedulesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SchedulesService service;
 
@@ -163,11 +160,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Returns a list of all schedules for a lab.
+     * Get all schedules for a lab.
+     *
+     * <p>Returns a list of all schedules for a lab.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -223,11 +221,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Returns a list of all schedules for a lab.
+     * Get all schedules for a lab.
+     *
+     * <p>Returns a list of all schedules for a lab.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -281,16 +280,17 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Returns a list of all schedules for a lab.
+     * Get all schedules for a lab.
+     *
+     * <p>Returns a list of all schedules for a lab.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of schedules.
+     * @return paged list of schedules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listByLabAsync(String resourceGroupName, String labName, String filter) {
@@ -300,15 +300,16 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Returns a list of all schedules for a lab.
+     * Get all schedules for a lab.
+     *
+     * <p>Returns a list of all schedules for a lab.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of schedules.
+     * @return paged list of schedules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listByLabAsync(String resourceGroupName, String labName) {
@@ -319,17 +320,18 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Returns a list of all schedules for a lab.
+     * Get all schedules for a lab.
+     *
+     * <p>Returns a list of all schedules for a lab.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of schedules.
+     * @return paged list of schedules as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ScheduleInner> listByLabAsync(
@@ -340,15 +342,16 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Returns a list of all schedules for a lab.
+     * Get all schedules for a lab.
+     *
+     * <p>Returns a list of all schedules for a lab.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of schedules.
+     * @return paged list of schedules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> listByLab(String resourceGroupName, String labName) {
@@ -357,17 +360,18 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Returns a list of all schedules for a lab.
+     * Get all schedules for a lab.
+     *
+     * <p>Returns a list of all schedules for a lab.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged list of schedules.
+     * @return paged list of schedules as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ScheduleInner> listByLab(
@@ -376,11 +380,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Returns the properties of a lab Schedule.
+     * Get a lab Schedule.
+     *
+     * <p>Returns the properties of a lab Schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -432,11 +437,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Returns the properties of a lab Schedule.
+     * Get a lab Schedule.
+     *
+     * <p>Returns the properties of a lab Schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param context The context to associate with this operation.
@@ -486,11 +492,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Returns the properties of a lab Schedule.
+     * Get a lab Schedule.
+     *
+     * <p>Returns the properties of a lab Schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -502,22 +509,16 @@ public final class SchedulesClientImpl implements SchedulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<ScheduleInner> getAsync(String resourceGroupName, String labName, String scheduleName) {
         return getWithResponseAsync(resourceGroupName, labName, scheduleName)
-            .flatMap(
-                (Response<ScheduleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Returns the properties of a lab Schedule.
+     * Get a lab Schedule.
+     *
+     * <p>Returns the properties of a lab Schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -531,11 +532,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Returns the properties of a lab Schedule.
+     * Get a lab Schedule.
+     *
+     * <p>Returns the properties of a lab Schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param context The context to associate with this operation.
@@ -552,11 +554,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to create or update a lab schedule.
+     * Create or update a lab schedule.
+     *
+     * <p>Operation to create or update a lab schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param body The request body.
@@ -615,11 +618,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to create or update a lab schedule.
+     * Create or update a lab schedule.
+     *
+     * <p>Operation to create or update a lab schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param body The request body.
@@ -676,11 +680,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to create or update a lab schedule.
+     * Create or update a lab schedule.
+     *
+     * <p>Operation to create or update a lab schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param body The request body.
@@ -694,22 +699,16 @@ public final class SchedulesClientImpl implements SchedulesClient {
     private Mono<ScheduleInner> createOrUpdateAsync(
         String resourceGroupName, String labName, String scheduleName, ScheduleInner body) {
         return createOrUpdateWithResponseAsync(resourceGroupName, labName, scheduleName, body)
-            .flatMap(
-                (Response<ScheduleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Operation to create or update a lab schedule.
+     * Create or update a lab schedule.
+     *
+     * <p>Operation to create or update a lab schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param body The request body.
@@ -725,11 +724,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to create or update a lab schedule.
+     * Create or update a lab schedule.
+     *
+     * <p>Operation to create or update a lab schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param body The request body.
@@ -747,11 +747,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to update a lab schedule.
+     * Update a lab schedule.
+     *
+     * <p>Operation to update a lab schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param body The request body.
@@ -810,11 +811,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to update a lab schedule.
+     * Update a lab schedule.
+     *
+     * <p>Operation to update a lab schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param body The request body.
@@ -871,11 +873,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to update a lab schedule.
+     * Update a lab schedule.
+     *
+     * <p>Operation to update a lab schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param body The request body.
@@ -889,22 +892,16 @@ public final class SchedulesClientImpl implements SchedulesClient {
     private Mono<ScheduleInner> updateAsync(
         String resourceGroupName, String labName, String scheduleName, ScheduleUpdate body) {
         return updateWithResponseAsync(resourceGroupName, labName, scheduleName, body)
-            .flatMap(
-                (Response<ScheduleInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Operation to update a lab schedule.
+     * Update a lab schedule.
+     *
+     * <p>Operation to update a lab schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param body The request body.
@@ -919,11 +916,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to update a lab schedule.
+     * Update a lab schedule.
+     *
+     * <p>Operation to update a lab schedule.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param body The request body.
@@ -941,11 +939,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to delete a schedule resource.
+     * Deletes a schedule resource.
+     *
+     * <p>Operation to delete a schedule resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -996,11 +995,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to delete a schedule resource.
+     * Deletes a schedule resource.
+     *
+     * <p>Operation to delete a schedule resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param context The context to associate with this operation.
@@ -1049,17 +1049,18 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to delete a schedule resource.
+     * Deletes a schedule resource.
+     *
+     * <p>Operation to delete a schedule resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1072,18 +1073,19 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to delete a schedule resource.
+     * Deletes a schedule resource.
+     *
+     * <p>Operation to delete a schedule resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1097,17 +1099,18 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to delete a schedule resource.
+     * Deletes a schedule resource.
+     *
+     * <p>Operation to delete a schedule resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1116,18 +1119,19 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to delete a schedule resource.
+     * Deletes a schedule resource.
+     *
+     * <p>Operation to delete a schedule resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1136,11 +1140,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to delete a schedule resource.
+     * Deletes a schedule resource.
+     *
+     * <p>Operation to delete a schedule resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1156,11 +1161,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to delete a schedule resource.
+     * Deletes a schedule resource.
+     *
+     * <p>Operation to delete a schedule resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param context The context to associate with this operation.
@@ -1177,11 +1183,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to delete a schedule resource.
+     * Deletes a schedule resource.
+     *
+     * <p>Operation to delete a schedule resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1194,11 +1201,12 @@ public final class SchedulesClientImpl implements SchedulesClient {
     }
 
     /**
-     * Operation to delete a schedule resource.
+     * Deletes a schedule resource.
+     *
+     * <p>Operation to delete a schedule resource.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param labName The name of the lab that uniquely identifies it within containing lab account. Used in resource
-     *     URIs.
+     * @param labName The name of the lab that uniquely identifies it within containing lab plan. Used in resource URIs.
      * @param scheduleName The name of the schedule that uniquely identifies it within containing lab. Used in resource
      *     URIs.
      * @param context The context to associate with this operation.
@@ -1214,7 +1222,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1249,7 +1258,8 @@ public final class SchedulesClientImpl implements SchedulesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

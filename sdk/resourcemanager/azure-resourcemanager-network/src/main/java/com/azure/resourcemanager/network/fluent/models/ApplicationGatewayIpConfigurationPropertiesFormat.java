@@ -6,30 +6,27 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of IP configuration of an application gateway. */
 @Fluent
 public final class ApplicationGatewayIpConfigurationPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayIpConfigurationPropertiesFormat.class);
-
     /*
-     * Reference to the subnet resource. A subnet from where application
-     * gateway gets its private address.
+     * Reference to the subnet resource. A subnet from where application gateway gets its private address.
      */
     @JsonProperty(value = "subnet")
     private SubResource subnet;
 
     /*
-     * The provisioning state of the application gateway IP configuration
-     * resource.
+     * The provisioning state of the application gateway IP configuration resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of ApplicationGatewayIpConfigurationPropertiesFormat class. */
+    public ApplicationGatewayIpConfigurationPropertiesFormat() {
+    }
 
     /**
      * Get the subnet property: Reference to the subnet resource. A subnet from where application gateway gets its

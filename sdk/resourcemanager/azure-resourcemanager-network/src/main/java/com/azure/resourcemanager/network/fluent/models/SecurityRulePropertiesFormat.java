@@ -10,15 +10,12 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.SecurityRuleAccess;
 import com.azure.resourcemanager.network.models.SecurityRuleDirection;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Security rule resource. */
 @Fluent
 public final class SecurityRulePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecurityRulePropertiesFormat.class);
-
     /*
      * A description for this rule. Restricted to 140 chars.
      */
@@ -32,23 +29,22 @@ public final class SecurityRulePropertiesFormat {
     private SecurityRuleProtocol protocol;
 
     /*
-     * The source port or range. Integer or range between 0 and 65535. Asterisk
-     * '*' can also be used to match all ports.
+     * The source port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all
+     * ports.
      */
     @JsonProperty(value = "sourcePortRange")
     private String sourcePortRange;
 
     /*
-     * The destination port or range. Integer or range between 0 and 65535.
-     * Asterisk '*' can also be used to match all ports.
+     * The destination port or range. Integer or range between 0 and 65535. Asterisk '*' can also be used to match all
+     * ports.
      */
     @JsonProperty(value = "destinationPortRange")
     private String destinationPortRange;
 
     /*
-     * The CIDR or source IP range. Asterisk '*' can also be used to match all
-     * source IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer'
-     * and 'Internet' can also be used. If this is an ingress rule, specifies
+     * The CIDR or source IP range. Asterisk '*' can also be used to match all source IPs. Default tags such as
+     * 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used. If this is an ingress rule, specifies
      * where network traffic originates from.
      */
     @JsonProperty(value = "sourceAddressPrefix")
@@ -67,9 +63,8 @@ public final class SecurityRulePropertiesFormat {
     private List<ApplicationSecurityGroupInner> sourceApplicationSecurityGroups;
 
     /*
-     * The destination address prefix. CIDR or destination IP range. Asterisk
-     * '*' can also be used to match all source IPs. Default tags such as
-     * 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
+     * The destination address prefix. CIDR or destination IP range. Asterisk '*' can also be used to match all source
+     * IPs. Default tags such as 'VirtualNetwork', 'AzureLoadBalancer' and 'Internet' can also be used.
      */
     @JsonProperty(value = "destinationAddressPrefix")
     private String destinationAddressPrefix;
@@ -105,16 +100,14 @@ public final class SecurityRulePropertiesFormat {
     private SecurityRuleAccess access;
 
     /*
-     * The priority of the rule. The value can be between 100 and 4096. The
-     * priority number must be unique for each rule in the collection. The
-     * lower the priority number, the higher the priority of the rule.
+     * The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each
+     * rule in the collection. The lower the priority number, the higher the priority of the rule.
      */
     @JsonProperty(value = "priority")
     private Integer priority;
 
     /*
-     * The direction of the rule. The direction specifies if rule will be
-     * evaluated on incoming or outgoing traffic.
+     * The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic.
      */
     @JsonProperty(value = "direction", required = true)
     private SecurityRuleDirection direction;
@@ -124,6 +117,10 @@ public final class SecurityRulePropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of SecurityRulePropertiesFormat class. */
+    public SecurityRulePropertiesFormat() {
+    }
 
     /**
      * Get the description property: A description for this rule. Restricted to 140 chars.
@@ -461,7 +458,7 @@ public final class SecurityRulePropertiesFormat {
      */
     public void validate() {
         if (protocol() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property protocol in model SecurityRulePropertiesFormat"));
@@ -473,16 +470,18 @@ public final class SecurityRulePropertiesFormat {
             destinationApplicationSecurityGroups().forEach(e -> e.validate());
         }
         if (access() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property access in model SecurityRulePropertiesFormat"));
         }
         if (direction() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property direction in model SecurityRulePropertiesFormat"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SecurityRulePropertiesFormat.class);
 }

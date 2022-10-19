@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ApplicationGatewayBackendHealthServerHealth. */
+/** Health of backend server. */
 public final class ApplicationGatewayBackendHealthServerHealth
     extends ExpandableStringEnum<ApplicationGatewayBackendHealthServerHealth> {
     /** Static value Unknown for ApplicationGatewayBackendHealthServerHealth. */
@@ -37,7 +37,11 @@ public final class ApplicationGatewayBackendHealthServerHealth
         return fromString(name, ApplicationGatewayBackendHealthServerHealth.class);
     }
 
-    /** @return known ApplicationGatewayBackendHealthServerHealth values. */
+    /**
+     * Gets known ApplicationGatewayBackendHealthServerHealth values.
+     *
+     * @return known ApplicationGatewayBackendHealthServerHealth values.
+     */
     public static Collection<ApplicationGatewayBackendHealthServerHealth> values() {
         return values(ApplicationGatewayBackendHealthServerHealth.class);
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** TopLevelDomain resource specific properties. */
 @Fluent
 public final class TopLevelDomainProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopLevelDomainProperties.class);
-
     /*
      * If <code>true</code>, then the top level domain supports domain privacy;
      * otherwise, <code>false</code>.

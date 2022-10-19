@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.AzureKeyVaultSecretReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Azure Storage linked service properties. */
 @Fluent
 public final class AzureStorageLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureStorageLinkedServiceTypeProperties.class);
-
     /*
-     * The connection string. It is mutually exclusive with sasUri property.
-     * Type: string, SecureString or AzureKeyVaultSecretReference.
+     * The connection string. It is mutually exclusive with sasUri property. Type: string, SecureString or
+     * AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString")
     private Object connectionString;
@@ -29,9 +25,8 @@ public final class AzureStorageLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference accountKey;
 
     /*
-     * SAS URI of the Azure Storage resource. It is mutually exclusive with
-     * connectionString property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * SAS URI of the Azure Storage resource. It is mutually exclusive with connectionString property. Type: string,
+     * SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "sasUri")
     private Object sasUri;
@@ -43,12 +38,15 @@ public final class AzureStorageLinkedServiceTypeProperties {
     private AzureKeyVaultSecretReference sasToken;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
+
+    /** Creates an instance of AzureStorageLinkedServiceTypeProperties class. */
+    public AzureStorageLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with sasUri property. Type:

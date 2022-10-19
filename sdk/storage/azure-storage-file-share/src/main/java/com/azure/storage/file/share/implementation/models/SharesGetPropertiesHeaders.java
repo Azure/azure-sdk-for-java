@@ -6,6 +6,8 @@ package com.azure.storage.file.share.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.HeaderCollection;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.file.share.models.LeaseDurationType;
 import com.azure.storage.file.share.models.LeaseStateType;
@@ -14,6 +16,7 @@ import com.azure.storage.file.share.models.ShareRootSquash;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import java.time.OffsetDateTime;
+import java.util.HashMap;
 import java.util.Map;
 
 /** The SharesGetPropertiesHeaders model. */
@@ -72,7 +75,7 @@ public final class SharesGetPropertiesHeaders {
      * The Date property.
      */
     @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
+    private DateTimeRfc1123 date;
 
     /*
      * The x-ms-share-provisioned-ingress-mbps property.
@@ -139,6 +142,84 @@ public final class SharesGetPropertiesHeaders {
      */
     @JsonProperty(value = "x-ms-share-next-allowed-quota-downgrade-time")
     private DateTimeRfc1123 xMsShareNextAllowedQuotaDowngradeTime;
+
+    // HttpHeaders containing the raw property values.
+    /**
+     * Creates an instance of SharesGetPropertiesHeaders class.
+     *
+     * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
+     */
+    public SharesGetPropertiesHeaders(HttpHeaders rawHeaders) {
+        String xMsShareProvisionedIops = rawHeaders.getValue("x-ms-share-provisioned-iops");
+        if (xMsShareProvisionedIops != null) {
+            this.xMsShareProvisionedIops = Integer.parseInt(xMsShareProvisionedIops);
+        }
+        this.xMsVersion = rawHeaders.getValue("x-ms-version");
+        String xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
+        if (xMsLeaseStatus != null) {
+            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
+        }
+        String xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
+        if (xMsLeaseState != null) {
+            this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
+        }
+        String xMsRootSquash = rawHeaders.getValue("x-ms-root-squash");
+        if (xMsRootSquash != null) {
+            this.xMsRootSquash = ShareRootSquash.fromString(xMsRootSquash);
+        }
+        String lastModified = rawHeaders.getValue("Last-Modified");
+        if (lastModified != null) {
+            this.lastModified = new DateTimeRfc1123(lastModified);
+        }
+        String xMsAccessTierChangeTime = rawHeaders.getValue("x-ms-access-tier-change-time");
+        if (xMsAccessTierChangeTime != null) {
+            this.xMsAccessTierChangeTime = new DateTimeRfc1123(xMsAccessTierChangeTime);
+        }
+        String date = rawHeaders.getValue("Date");
+        if (date != null) {
+            this.date = new DateTimeRfc1123(date);
+        }
+        String xMsShareProvisionedIngressMbps = rawHeaders.getValue("x-ms-share-provisioned-ingress-mbps");
+        if (xMsShareProvisionedIngressMbps != null) {
+            this.xMsShareProvisionedIngressMbps = Integer.parseInt(xMsShareProvisionedIngressMbps);
+        }
+        String xMsShareProvisionedBandwidthMibps = rawHeaders.getValue("x-ms-share-provisioned-bandwidth-mibps");
+        if (xMsShareProvisionedBandwidthMibps != null) {
+            this.xMsShareProvisionedBandwidthMibps = Integer.parseInt(xMsShareProvisionedBandwidthMibps);
+        }
+        String xMsShareQuota = rawHeaders.getValue("x-ms-share-quota");
+        if (xMsShareQuota != null) {
+            this.xMsShareQuota = Integer.parseInt(xMsShareQuota);
+        }
+        this.xMsAccessTier = rawHeaders.getValue("x-ms-access-tier");
+        this.eTag = rawHeaders.getValue("ETag");
+        this.xMsEnabledProtocols = rawHeaders.getValue("x-ms-enabled-protocols");
+        String xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
+        if (xMsLeaseDuration != null) {
+            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
+        }
+        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
+        this.xMsAccessTierTransitionState = rawHeaders.getValue("x-ms-access-tier-transition-state");
+        String xMsShareProvisionedEgressMbps = rawHeaders.getValue("x-ms-share-provisioned-egress-mbps");
+        if (xMsShareProvisionedEgressMbps != null) {
+            this.xMsShareProvisionedEgressMbps = Integer.parseInt(xMsShareProvisionedEgressMbps);
+        }
+        String xMsShareNextAllowedQuotaDowngradeTime =
+                rawHeaders.getValue("x-ms-share-next-allowed-quota-downgrade-time");
+        if (xMsShareNextAllowedQuotaDowngradeTime != null) {
+            this.xMsShareNextAllowedQuotaDowngradeTime = new DateTimeRfc1123(xMsShareNextAllowedQuotaDowngradeTime);
+        }
+        Map<String, String> xMsMetaHeaderCollection = new HashMap<>();
+
+        for (HttpHeader header : rawHeaders) {
+            String headerName = header.getName();
+            if (headerName.startsWith("x-ms-meta-")) {
+                xMsMetaHeaderCollection.put(headerName.substring(10), header.getValue());
+            }
+        }
+
+        this.xMsMeta = xMsMetaHeaderCollection;
+    }
 
     /**
      * Get the xMsShareProvisionedIops property: The x-ms-share-provisioned-iops property.
@@ -315,28 +396,28 @@ public final class SharesGetPropertiesHeaders {
     }
 
     /**
-     * Get the dateProperty property: The Date property.
+     * Get the date property: The Date property.
      *
-     * @return the dateProperty value.
+     * @return the date value.
      */
-    public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
+    public OffsetDateTime getDate() {
+        if (this.date == null) {
             return null;
         }
-        return this.dateProperty.getDateTime();
+        return this.date.getDateTime();
     }
 
     /**
-     * Set the dateProperty property: The Date property.
+     * Set the date property: The Date property.
      *
-     * @param dateProperty the dateProperty value to set.
+     * @param date the date value to set.
      * @return the SharesGetPropertiesHeaders object itself.
      */
-    public SharesGetPropertiesHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
+    public SharesGetPropertiesHeaders setDate(OffsetDateTime date) {
+        if (date == null) {
+            this.date = null;
         } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
+            this.date = new DateTimeRfc1123(date);
         }
         return this;
     }

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.batch.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Specifies the parameters for the auto user that runs a task on the Batch service. */
 @Fluent
 public final class AutoUserSpecification {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutoUserSpecification.class);
-
     /*
      * The scope for the auto user The default value is Pool. If the pool is
      * running Windows a value of Task should be specified if stricter

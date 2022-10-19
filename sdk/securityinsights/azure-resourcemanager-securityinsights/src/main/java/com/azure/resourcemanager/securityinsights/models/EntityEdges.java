@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,8 +12,6 @@ import java.util.Map;
 /** The edge that connects the entity to the other entity. */
 @Fluent
 public final class EntityEdges {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EntityEdges.class);
-
     /*
      * The target entity Id.
      */
@@ -23,8 +19,7 @@ public final class EntityEdges {
     private String targetEntityId;
 
     /*
-     * A bag of custom fields that should be part of the entity and will be
-     * presented to the user.
+     * A bag of custom fields that should be part of the entity and will be presented to the user.
      */
     @JsonProperty(value = "additionalData")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)

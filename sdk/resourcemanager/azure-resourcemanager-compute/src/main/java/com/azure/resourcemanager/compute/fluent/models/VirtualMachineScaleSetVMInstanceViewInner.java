@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.BootDiagnosticsInstanceView;
 import com.azure.resourcemanager.compute.models.DiskInstanceView;
 import com.azure.resourcemanager.compute.models.InstanceViewStatus;
@@ -13,15 +12,12 @@ import com.azure.resourcemanager.compute.models.MaintenanceRedeployStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachineAgentInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineExtensionInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineHealthStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The instance view of a virtual machine scale set VM. */
 @Fluent
 public final class VirtualMachineScaleSetVMInstanceViewInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetVMInstanceViewInner.class);
-
     /*
      * The Update Domain count.
      */
@@ -71,10 +67,9 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
     private VirtualMachineHealthStatus vmHealth;
 
     /*
-     * Boot Diagnostics is a debugging feature which allows you to view Console
-     * Output and Screenshot to diagnose VM status. <br><br> You can easily
-     * view the output of your console log. <br><br> Azure also enables you to
-     * see a screenshot of the VM from the hypervisor.
+     * Boot Diagnostics is a debugging feature which allows you to view Console Output and Screenshot to diagnose VM
+     * status. <br><br> You can easily view the output of your console log. <br><br> Azure also enables you to see a
+     * screenshot of the VM from the hypervisor.
      */
     @JsonProperty(value = "bootDiagnostics")
     private BootDiagnosticsInstanceView bootDiagnostics;
@@ -86,17 +81,15 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
     private List<InstanceViewStatus> statuses;
 
     /*
-     * Resource id of the dedicated host, on which the virtual machine is
-     * allocated through automatic placement, when the virtual machine is
-     * associated with a dedicated host group that has automatic placement
-     * enabled. <br><br>Minimum api-version: 2020-06-01.
+     * Resource id of the dedicated host, on which the virtual machine is allocated through automatic placement, when
+     * the virtual machine is associated with a dedicated host group that has automatic placement enabled.
+     * <br><br>Minimum api-version: 2020-06-01.
      */
     @JsonProperty(value = "assignedHost", access = JsonProperty.Access.WRITE_ONLY)
     private String assignedHost;
 
     /*
-     * The placement group in which the VM is running. If the VM is deallocated
-     * it will not have a placementGroupId.
+     * The placement group in which the VM is running. If the VM is deallocated it will not have a placementGroupId.
      */
     @JsonProperty(value = "placementGroupId")
     private String placementGroupId;

@@ -46,7 +46,10 @@ public enum ChannelName {
     LINE_CHANNEL("LineChannel"),
 
     /** Enum value DirectLineSpeechChannel. */
-    DIRECT_LINE_SPEECH_CHANNEL("DirectLineSpeechChannel");
+    DIRECT_LINE_SPEECH_CHANNEL("DirectLineSpeechChannel"),
+
+    /** Enum value OutlookChannel. */
+    OUTLOOK_CHANNEL("OutlookChannel");
 
     /** The actual serialized value for a ChannelName instance. */
     private final String value;

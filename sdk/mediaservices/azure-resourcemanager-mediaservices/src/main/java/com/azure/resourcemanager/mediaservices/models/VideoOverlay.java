@@ -5,22 +5,16 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
 
 /** Describes the properties of a video overlay. */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata\\.type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@odata.type")
 @JsonTypeName("#Microsoft.Media.VideoOverlay")
-@JsonFlatten
 @Fluent
-public class VideoOverlay extends Overlay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoOverlay.class);
-
+public final class VideoOverlay extends Overlay {
     /*
      * The location in the input video where the overlay is applied.
      */
@@ -28,8 +22,8 @@ public class VideoOverlay extends Overlay {
     private Rectangle position;
 
     /*
-     * The opacity of the overlay. This is a value in the range [0 - 1.0].
-     * Default is 1.0 which mean the overlay is opaque.
+     * The opacity of the overlay. This is a value in the range [0 - 1.0]. Default is 1.0 which mean the overlay is
+     * opaque.
      */
     @JsonProperty(value = "opacity")
     private Double opacity;

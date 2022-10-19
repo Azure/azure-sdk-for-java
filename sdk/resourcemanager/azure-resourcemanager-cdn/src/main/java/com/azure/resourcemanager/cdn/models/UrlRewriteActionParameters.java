@@ -6,30 +6,26 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Defines the parameters for the url rewrite action. */
 @Fluent
 public final class UrlRewriteActionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UrlRewriteActionParameters.class);
-
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleUrlRewriteActionParameters";
 
     /*
-     * define a request URI pattern that identifies the type of requests that
-     * may be rewritten. If value is blank, all strings are matched.
+     * define a request URI pattern that identifies the type of requests that may be rewritten. If value is blank, all
+     * strings are matched.
      */
     @JsonProperty(value = "sourcePattern", required = true)
     private String sourcePattern;
 
     /*
-     * Define the relative URL to which the above requests will be rewritten
-     * by.
+     * Define the relative URL to which the above requests will be rewritten by.
      */
     @JsonProperty(value = "destination", required = true)
     private String destination;
@@ -42,26 +38,26 @@ public final class UrlRewriteActionParameters {
 
     /** Creates an instance of UrlRewriteActionParameters class. */
     public UrlRewriteActionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleUrlRewriteActionParameters";
+        typeName = "DeliveryRuleUrlRewriteActionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the UrlRewriteActionParameters object itself.
      */
-    public UrlRewriteActionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public UrlRewriteActionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
@@ -134,16 +130,18 @@ public final class UrlRewriteActionParameters {
      */
     public void validate() {
         if (sourcePattern() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sourcePattern in model UrlRewriteActionParameters"));
         }
         if (destination() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property destination in model UrlRewriteActionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(UrlRewriteActionParameters.class);
 }

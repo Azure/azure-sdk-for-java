@@ -6,17 +6,13 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayRewriteRuleSetPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Rewrite rule set of an application gateway. */
 @Fluent
 public final class ApplicationGatewayRewriteRuleSet extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRuleSet.class);
-
     /*
      * Properties of the application gateway rewrite rule set.
      */
@@ -24,8 +20,7 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
     private ApplicationGatewayRewriteRuleSetPropertiesFormat innerProperties;
 
     /*
-     * Name of the rewrite rule set that is unique within an Application
-     * Gateway.
+     * Name of the rewrite rule set that is unique within an Application Gateway.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -35,6 +30,10 @@ public final class ApplicationGatewayRewriteRuleSet extends SubResource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of ApplicationGatewayRewriteRuleSet class. */
+    public ApplicationGatewayRewriteRuleSet() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the application gateway rewrite rule set.

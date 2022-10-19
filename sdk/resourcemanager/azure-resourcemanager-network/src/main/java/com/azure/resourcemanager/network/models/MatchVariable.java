@@ -6,14 +6,11 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Define match variables. */
 @Fluent
 public final class MatchVariable {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MatchVariable.class);
-
     /*
      * Match Variable.
      */
@@ -25,6 +22,10 @@ public final class MatchVariable {
      */
     @JsonProperty(value = "selector")
     private String selector;
+
+    /** Creates an instance of MatchVariable class. */
+    public MatchVariable() {
+    }
 
     /**
      * Get the variableName property: Match Variable.
@@ -73,9 +74,11 @@ public final class MatchVariable {
      */
     public void validate() {
         if (variableName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property variableName in model MatchVariable"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MatchVariable.class);
 }

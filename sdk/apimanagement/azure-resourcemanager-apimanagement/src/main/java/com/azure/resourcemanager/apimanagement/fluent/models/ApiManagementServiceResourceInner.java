@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.apimanagement.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.models.AdditionalLocation;
 import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceIdentity;
@@ -13,9 +14,11 @@ import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.ApimResource;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
+import com.azure.resourcemanager.apimanagement.models.PlatformVersion;
+import com.azure.resourcemanager.apimanagement.models.PublicNetworkAccess;
+import com.azure.resourcemanager.apimanagement.models.RemotePrivateEndpointConnectionWrapper;
 import com.azure.resourcemanager.apimanagement.models.VirtualNetworkConfiguration;
 import com.azure.resourcemanager.apimanagement.models.VirtualNetworkType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -24,8 +27,6 @@ import java.util.Map;
 /** A single API Management service resource in List or Get response. */
 @Fluent
 public final class ApiManagementServiceResourceInner extends ApimResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiManagementServiceResourceInner.class);
-
     /*
      * Properties of the API Management service.
      */
@@ -43,6 +44,12 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      */
     @JsonProperty(value = "identity")
     private ApiManagementServiceIdentity identity;
+
+    /*
+     * Metadata pertaining to creation and last modification of the resource.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
      * Resource location.
@@ -110,6 +117,15 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     public ApiManagementServiceResourceInner withIdentity(ApiManagementServiceIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -364,6 +380,60 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
      */
     public List<String> privateIpAddresses() {
         return this.innerProperties() == null ? null : this.innerProperties().privateIpAddresses();
+    }
+
+    /**
+     * Get the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
+     * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
+     * Network.
+     *
+     * @return the publicIpAddressId value.
+     */
+    public String publicIpAddressId() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddressId();
+    }
+
+    /**
+     * Set the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
+     * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
+     * Network.
+     *
+     * @param publicIpAddressId the publicIpAddressId value to set.
+     * @return the ApiManagementServiceResourceInner object itself.
+     */
+    public ApiManagementServiceResourceInner withPublicIpAddressId(String publicIpAddressId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceProperties();
+        }
+        this.innerProperties().withPublicIpAddressId(publicIpAddressId);
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
+     * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
+     * are the exclusive access method. Default value is 'Enabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicNetworkAccess();
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
+     * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
+     * are the exclusive access method. Default value is 'Enabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ApiManagementServiceResourceInner object itself.
+     */
+    public ApiManagementServiceResourceInner withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceProperties();
+        }
+        this.innerProperties().withPublicNetworkAccess(publicNetworkAccess);
+        return this;
     }
 
     /**
@@ -635,6 +705,39 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     }
 
     /**
+     * Get the privateEndpointConnections property: List of Private Endpoint Connections of this service.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Set the privateEndpointConnections property: List of Private Endpoint Connections of this service.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set.
+     * @return the ApiManagementServiceResourceInner object itself.
+     */
+    public ApiManagementServiceResourceInner withPrivateEndpointConnections(
+        List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiManagementServiceProperties();
+        }
+        this.innerProperties().withPrivateEndpointConnections(privateEndpointConnections);
+        return this;
+    }
+
+    /**
+     * Get the platformVersion property: Compute Platform Version running the service in this location.
+     *
+     * @return the platformVersion value.
+     */
+    public PlatformVersion platformVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().platformVersion();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -643,7 +746,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerProperties in model ApiManagementServiceResourceInner"));
@@ -651,7 +754,7 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
             innerProperties().validate();
         }
         if (sku() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sku in model ApiManagementServiceResourceInner"));
@@ -662,10 +765,12 @@ public final class ApiManagementServiceResourceInner extends ApimResource {
             identity().validate();
         }
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model ApiManagementServiceResourceInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ApiManagementServiceResourceInner.class);
 }

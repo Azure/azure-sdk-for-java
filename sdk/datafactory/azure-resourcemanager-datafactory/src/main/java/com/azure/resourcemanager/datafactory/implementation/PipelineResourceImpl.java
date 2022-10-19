@@ -110,6 +110,10 @@ public final class PipelineResourceImpl
         return this.innerModel().policy();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public PipelineResourceInner innerModel() {
         return this.innerObject;
     }
@@ -221,10 +225,6 @@ public final class PipelineResourceImpl
         return this;
     }
 
-    public CreateRunResponse createRun() {
-        return serviceManager.pipelines().createRun(resourceGroupName, factoryName, pipelineName);
-    }
-
     public Response<CreateRunResponse> createRunWithResponse(
         String referencePipelineRunId,
         Boolean isRecovery,
@@ -244,6 +244,10 @@ public final class PipelineResourceImpl
                 startFromFailure,
                 parameters,
                 context);
+    }
+
+    public CreateRunResponse createRun() {
+        return serviceManager.pipelines().createRun(resourceGroupName, factoryName, pipelineName);
     }
 
     public PipelineResourceImpl withAdditionalProperties(Map<String, Object> additionalProperties) {

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.fluent.models.LivePipelineInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A collection of LivePipeline items. */
 @Fluent
 public final class LivePipelineCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LivePipelineCollection.class);
-
     /*
      * A collection of LivePipeline items.
      */

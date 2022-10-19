@@ -7,7 +7,7 @@ namespace: com.azure.verticals.agrifood.farming
 generate-client-interfaces: false
 sync-methods: none
 license-header: MICROSOFT_MIT_SMALL
-low-level-client: true
+data-plane: true
 credential-types: tokencredential
 credential-scopes: https://farmbeats.azure.net/.default
 title: FarmBeatsClient

@@ -8,8 +8,6 @@ import com.azure.core.http.HttpResponse
 import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.test.shared.TestEnvironment
-import com.azure.storage.common.test.shared.TestHttpClientType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.file.datalake.models.DataLakeStorageException
@@ -26,7 +24,7 @@ import java.util.concurrent.atomic.AtomicLong
 @LiveOnly
 @ResourceLock("LargeFileTest")
 @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-@IgnoreIf({ TestEnvironment.getInstance().httpClientType == TestHttpClientType.OK_HTTP || SystemUtils.IS_OS_MAC }) // https://github.com/Azure/azure-sdk-for-java/issues/23221
+@IgnoreIf({ SystemUtils.IS_OS_MAC }) // Mac agents are not capable enough to run this test.
 class LargeFileTest extends APISpec{
     static long defaultSingleUploadThreshold = 100L * Constants.MB
     long largeBlockSize =  2500L * Constants.MB

@@ -18,6 +18,16 @@ import java.util.List;
 public class SerializationDiagnosticsContext {
     public volatile List<SerializationDiagnosticsContext.SerializationDiagnostics> serializationDiagnosticsList;
 
+    public SerializationDiagnosticsContext() {
+    }
+
+    public SerializationDiagnosticsContext(SerializationDiagnosticsContext toBeCloned) {
+        if (toBeCloned.serializationDiagnosticsList != null) {
+            this.serializationDiagnosticsList = Collections.synchronizedList(
+                new ArrayList<>(toBeCloned.serializationDiagnosticsList));
+        }
+    }
+
     public void addSerializationDiagnostics(SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics) {
         if (serializationDiagnosticsList == null) {
             serializationDiagnosticsList = Collections.synchronizedList(new ArrayList<>());
@@ -49,15 +59,15 @@ public class SerializationDiagnosticsContext {
 
         @Override
         public void serialize(SerializationDiagnosticsContext.SerializationDiagnostics serializationDiagnostics, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
-            Duration durationinMS = serializationDiagnostics.startTimeUTC == null ?
+            Duration duration = serializationDiagnostics.startTimeUTC == null ?
                 null : serializationDiagnostics.endTimeUTC == null ?
                 Duration.ZERO : Duration.between(serializationDiagnostics.startTimeUTC, serializationDiagnostics.endTimeUTC);
             jsonGenerator.writeStartObject();
             jsonGenerator.writeObjectField("serializationType", serializationDiagnostics.serializationType);
             jsonGenerator.writeStringField("startTimeUTC", DiagnosticsInstantSerializer.fromInstant(serializationDiagnostics.startTimeUTC));
             jsonGenerator.writeStringField("endTimeUTC", DiagnosticsInstantSerializer.fromInstant(serializationDiagnostics.endTimeUTC));
-            if (durationinMS != null) {
-                jsonGenerator.writeNumberField("durationInMicroSec", durationinMS.toNanos() / 1000);
+            if (duration != null) {
+                jsonGenerator.writeNumberField("durationInMilliSecs", (double)duration.toNanos() / (1000d * 1000d));
             }
 
             jsonGenerator.writeEndObject();

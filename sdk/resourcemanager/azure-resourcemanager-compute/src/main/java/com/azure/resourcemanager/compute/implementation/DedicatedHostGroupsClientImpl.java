@@ -28,7 +28,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.DedicatedHostGroupsClient;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostGroupInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
@@ -46,8 +45,6 @@ public final class DedicatedHostGroupsClientImpl
         InnerSupportsListing<DedicatedHostGroupInner>,
         InnerSupportsDelete<Void>,
         DedicatedHostGroupsClient {
-    private final ClientLogger logger = new ClientLogger(DedicatedHostGroupsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final DedicatedHostGroupsService service;
 
@@ -220,7 +217,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -279,7 +276,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -311,14 +308,7 @@ public final class DedicatedHostGroupsClientImpl
     public Mono<DedicatedHostGroupInner> createOrUpdateAsync(
         String resourceGroupName, String hostGroupName, DedicatedHostGroupInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, parameters)
-            .flatMap(
-                (Response<DedicatedHostGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -398,7 +388,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -456,7 +446,7 @@ public final class DedicatedHostGroupsClientImpl
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -487,14 +477,7 @@ public final class DedicatedHostGroupsClientImpl
     public Mono<DedicatedHostGroupInner> updateAsync(
         String resourceGroupName, String hostGroupName, DedicatedHostGroupUpdate parameters) {
         return updateWithResponseAsync(resourceGroupName, hostGroupName, parameters)
-            .flatMap(
-                (Response<DedicatedHostGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -564,7 +547,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -614,7 +597,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -640,7 +623,7 @@ public final class DedicatedHostGroupsClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String hostGroupName) {
-        return deleteWithResponseAsync(resourceGroupName, hostGroupName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, hostGroupName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -709,7 +692,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -764,7 +747,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -797,14 +780,7 @@ public final class DedicatedHostGroupsClientImpl
     public Mono<DedicatedHostGroupInner> getByResourceGroupAsync(
         String resourceGroupName, String hostGroupName, InstanceViewTypes expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, hostGroupName, expand)
-            .flatMap(
-                (Response<DedicatedHostGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -822,14 +798,7 @@ public final class DedicatedHostGroupsClientImpl
     public Mono<DedicatedHostGroupInner> getByResourceGroupAsync(String resourceGroupName, String hostGroupName) {
         final InstanceViewTypes expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, hostGroupName, expand)
-            .flatMap(
-                (Response<DedicatedHostGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -898,7 +867,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -954,7 +923,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -984,7 +953,7 @@ public final class DedicatedHostGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response.
+     * @return the List Dedicated Host Group with resource group response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DedicatedHostGroupInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -1002,7 +971,7 @@ public final class DedicatedHostGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response.
+     * @return the List Dedicated Host Group with resource group response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedHostGroupInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -1019,7 +988,8 @@ public final class DedicatedHostGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response.
+     * @return the List Dedicated Host Group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedHostGroupInner> listByResourceGroup(String resourceGroupName) {
@@ -1035,7 +1005,8 @@ public final class DedicatedHostGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response.
+     * @return the List Dedicated Host Group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedHostGroupInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -1065,7 +1036,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1109,7 +1080,7 @@ public final class DedicatedHostGroupsClientImpl
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-11-01";
+        final String apiVersion = "2022-08-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1131,7 +1102,7 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response.
+     * @return the List Dedicated Host Group with resource group response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DedicatedHostGroupInner> listAsync() {
@@ -1147,7 +1118,7 @@ public final class DedicatedHostGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response.
+     * @return the List Dedicated Host Group with resource group response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedHostGroupInner> listAsync(Context context) {
@@ -1161,7 +1132,8 @@ public final class DedicatedHostGroupsClientImpl
      *
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response.
+     * @return the List Dedicated Host Group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedHostGroupInner> list() {
@@ -1176,7 +1148,8 @@ public final class DedicatedHostGroupsClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response.
+     * @return the List Dedicated Host Group with resource group response as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DedicatedHostGroupInner> list(Context context) {
@@ -1186,7 +1159,8 @@ public final class DedicatedHostGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1223,7 +1197,8 @@ public final class DedicatedHostGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
@@ -1261,7 +1236,8 @@ public final class DedicatedHostGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1298,7 +1274,8 @@ public final class DedicatedHostGroupsClientImpl
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

@@ -3,6 +3,7 @@
 
 package com.azure.messaging.servicebus;
 
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,8 @@ class ServiceBusSessionReceiverClientTest {
     @BeforeEach
     void beforeEach(TestInfo testInfo) {
         MockitoAnnotations.initMocks(this);
+        when(asyncClient.getInstrumentation()).thenReturn(new ServiceBusReceiverInstrumentation(null, null,
+            "fqdn", "entity", null, false));
     }
 
     @AfterEach
@@ -42,6 +45,7 @@ class ServiceBusSessionReceiverClientTest {
     void acceptSession() {
         when(sessionAsyncClient.acceptSession(anyString())).thenReturn(Mono.just(asyncClient));
         ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
+            false,
             Duration.ofMillis(100));
 
         assertNotNull(sessionClient.acceptSession("sessionId"));
@@ -52,6 +56,7 @@ class ServiceBusSessionReceiverClientTest {
         when(sessionAsyncClient.acceptSession(anyString())).thenReturn(Mono.just(asyncClient)
             .delayElement(Duration.ofMillis(500)));
         ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
+            false,
             Duration.ofMillis(50));
 
         assertThrows(IllegalStateException.class,
@@ -62,6 +67,7 @@ class ServiceBusSessionReceiverClientTest {
     void acceptNextSession() {
         when(sessionAsyncClient.acceptNextSession()).thenReturn(Mono.just(asyncClient));
         ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
+            false,
             Duration.ofMillis(100));
 
         assertNotNull(sessionClient.acceptNextSession());
@@ -72,6 +78,7 @@ class ServiceBusSessionReceiverClientTest {
         when(sessionAsyncClient.acceptNextSession()).thenReturn(Mono.just(asyncClient)
             .delayElement(Duration.ofMillis(500)));
         ServiceBusSessionReceiverClient sessionClient = new ServiceBusSessionReceiverClient(sessionAsyncClient,
+            false,
             Duration.ofMillis(50));
 
         assertThrows(IllegalStateException.class,

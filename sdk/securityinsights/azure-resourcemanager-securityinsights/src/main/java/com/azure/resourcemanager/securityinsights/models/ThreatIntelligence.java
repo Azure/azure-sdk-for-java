@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ThreatIntelligence property bag. */
 @Immutable
 public final class ThreatIntelligence {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ThreatIntelligence.class);
-
     /*
      * Confidence (must be between 0 and 1)
      */
@@ -21,8 +17,7 @@ public final class ThreatIntelligence {
     private Double confidence;
 
     /*
-     * Name of the provider from whom this Threat Intelligence information was
-     * received
+     * Name of the provider from whom this Threat Intelligence information was received
      */
     @JsonProperty(value = "providerName", access = JsonProperty.Access.WRITE_ONLY)
     private String providerName;

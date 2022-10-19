@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.IpAllocationInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for the ListIpAllocations API service call. */
 @Fluent
 public final class IpAllocationListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpAllocationListResult.class);
-
     /*
      * A list of IpAllocation resources.
      */
@@ -27,6 +23,10 @@ public final class IpAllocationListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of IpAllocationListResult class. */
+    public IpAllocationListResult() {
+    }
 
     /**
      * Get the value property: A list of IpAllocation resources.

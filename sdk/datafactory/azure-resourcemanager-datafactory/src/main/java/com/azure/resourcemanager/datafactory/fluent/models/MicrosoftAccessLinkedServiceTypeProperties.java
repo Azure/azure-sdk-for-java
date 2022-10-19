@@ -7,40 +7,33 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Microsoft Access linked service properties. */
 @Fluent
 public final class MicrosoftAccessLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MicrosoftAccessLinkedServiceTypeProperties.class);
-
     /*
-     * The non-access credential portion of the connection string as well as an
-     * optional encrypted credential. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The non-access credential portion of the connection string as well as an optional encrypted credential. Type:
+     * string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "connectionString", required = true)
     private Object connectionString;
 
     /*
-     * Type of authentication used to connect to the Microsoft Access as ODBC
-     * data store. Possible values are: Anonymous and Basic. Type: string (or
-     * Expression with resultType string).
+     * Type of authentication used to connect to the Microsoft Access as ODBC data store. Possible values are:
+     * Anonymous and Basic. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "authenticationType")
     private Object authenticationType;
 
     /*
-     * The access credential portion of the connection string specified in
-     * driver-specific property-value format.
+     * The access credential portion of the connection string specified in driver-specific property-value format.
      */
     @JsonProperty(value = "credential")
     private SecretBase credential;
 
     /*
-     * User name for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * User name for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "userName")
     private Object username;
@@ -52,12 +45,15 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
+
+    /** Creates an instance of MicrosoftAccessLinkedServiceTypeProperties class. */
+    public MicrosoftAccessLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the connectionString property: The non-access credential portion of the connection string as well as an
@@ -196,7 +192,7 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
      */
     public void validate() {
         if (connectionString() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property connectionString in model"
@@ -209,4 +205,6 @@ public final class MicrosoftAccessLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(MicrosoftAccessLinkedServiceTypeProperties.class);
 }

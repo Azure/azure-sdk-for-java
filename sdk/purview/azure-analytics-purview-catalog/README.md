@@ -49,7 +49,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.6</version>
+    <version>1.5.4</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -58,10 +58,10 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 
 ##### Example
 ```java readme-sample-createGlossaryClient
-GlossaryClient client = new PurviewCatalogClientBuilder()
+GlossaryClient client = new GlossaryClientBuilder()
     .endpoint(System.getenv("<account-name>.purview.azure.com"))
     .credential(new DefaultAzureCredentialBuilder().build())
-    .buildGlossaryClient();
+    .buildClient();
 ```
 
 ## Key concepts

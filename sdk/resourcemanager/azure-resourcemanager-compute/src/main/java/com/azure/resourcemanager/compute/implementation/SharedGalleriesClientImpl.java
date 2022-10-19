@@ -24,7 +24,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.SharedGalleriesClient;
 import com.azure.resourcemanager.compute.fluent.models.SharedGalleryInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SharedGalleriesClient. */
 public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
-    private final ClientLogger logger = new ClientLogger(SharedGalleriesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SharedGalleriesService service;
 
@@ -127,7 +124,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -183,7 +180,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -214,7 +211,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedGalleryInner> listAsync(String location, SharedToValues sharedTo) {
@@ -229,7 +226,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SharedGalleryInner> listAsync(String location) {
@@ -247,7 +244,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SharedGalleryInner> listAsync(String location, SharedToValues sharedTo, Context context) {
@@ -263,7 +260,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedGalleryInner> list(String location) {
@@ -280,7 +277,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Shared Galleries operation response.
+     * @return the List Shared Galleries operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SharedGalleryInner> list(String location, SharedToValues sharedTo, Context context) {
@@ -319,7 +316,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -370,7 +367,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter galleryUniqueName is required and cannot be null."));
         }
-        final String apiVersion = "2021-07-01";
+        final String apiVersion = "2022-01-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -396,15 +393,7 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SharedGalleryInner> getAsync(String location, String galleryUniqueName) {
-        return getWithResponseAsync(location, galleryUniqueName)
-            .flatMap(
-                (Response<SharedGalleryInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(location, galleryUniqueName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -441,7 +430,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -477,7 +467,8 @@ public final class SharedGalleriesClientImpl implements SharedGalleriesClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.

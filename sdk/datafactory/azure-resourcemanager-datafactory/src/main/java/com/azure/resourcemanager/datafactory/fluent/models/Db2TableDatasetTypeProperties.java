@@ -5,25 +5,19 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Db2 table dataset properties. */
 @Fluent
 public final class Db2TableDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Db2TableDatasetTypeProperties.class);
-
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
-     * The Db2 schema name. Type: string (or Expression with resultType
-     * string).
+     * The Db2 schema name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "schema")
     private Object schema;
@@ -33,6 +27,10 @@ public final class Db2TableDatasetTypeProperties {
      */
     @JsonProperty(value = "table")
     private Object table;
+
+    /** Creates an instance of Db2TableDatasetTypeProperties class. */
+    public Db2TableDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties

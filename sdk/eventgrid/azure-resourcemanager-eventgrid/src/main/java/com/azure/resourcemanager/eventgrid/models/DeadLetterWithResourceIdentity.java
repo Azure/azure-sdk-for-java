@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.eventgrid.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Information about the deadletter destination with resource identity. */
 @Fluent
 public class DeadLetterWithResourceIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeadLetterWithResourceIdentity.class);
-
     /*
      * The identity to use when dead-lettering events.
      */

@@ -13,10 +13,9 @@ import com.azure.resourcemanager.securityinsights.fluent.IncidentRelationsClient
 import com.azure.resourcemanager.securityinsights.fluent.models.RelationInner;
 import com.azure.resourcemanager.securityinsights.models.IncidentRelations;
 import com.azure.resourcemanager.securityinsights.models.Relation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IncidentRelationsImpl implements IncidentRelations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IncidentRelationsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IncidentRelationsImpl.class);
 
     private final IncidentRelationsClient innerClient;
 

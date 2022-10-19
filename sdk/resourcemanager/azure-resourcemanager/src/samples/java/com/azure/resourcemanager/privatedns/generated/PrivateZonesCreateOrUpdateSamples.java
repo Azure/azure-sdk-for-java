@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for PrivateZones CreateOrUpdate. */
 public final class PrivateZonesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2018-09-01/examples/PrivateZonePut.json
+     * x-ms-original-file: specification/privatedns/resource-manager/Microsoft.Network/stable/2020-06-01/examples/PrivateZonePut.json
      */
     /**
      * Sample code: PUT Private DNS Zone.

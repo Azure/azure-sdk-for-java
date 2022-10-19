@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SftpServerLinkedServiceTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +18,15 @@ import java.util.Map;
 @JsonTypeName("Sftp")
 @Fluent
 public final class SftpServerLinkedService extends LinkedService {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SftpServerLinkedService.class);
-
     /*
      * Properties specific to this linked service type.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private SftpServerLinkedServiceTypeProperties innerTypeProperties = new SftpServerLinkedServiceTypeProperties();
+
+    /** Creates an instance of SftpServerLinkedService class. */
+    public SftpServerLinkedService() {
+    }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
@@ -346,7 +347,7 @@ public final class SftpServerLinkedService extends LinkedService {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model SftpServerLinkedService"));
@@ -354,4 +355,6 @@ public final class SftpServerLinkedService extends LinkedService {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SftpServerLinkedService.class);
 }

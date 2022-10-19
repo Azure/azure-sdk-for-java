@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.resources.implementation;
 
+import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
@@ -11,6 +12,7 @@ import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
@@ -25,18 +27,17 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.SubscriptionsClient;
+import com.azure.resourcemanager.resources.fluent.models.CheckZonePeersResultInner;
 import com.azure.resourcemanager.resources.fluent.models.LocationInner;
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
+import com.azure.resourcemanager.resources.models.CheckZonePeersRequest;
 import com.azure.resourcemanager.resources.models.LocationListResult;
 import com.azure.resourcemanager.resources.models.SubscriptionListResult;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SubscriptionsClient. */
 public final class SubscriptionsClientImpl implements SubscriptionsClient {
-    private final ClientLogger logger = new ClientLogger(SubscriptionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SubscriptionsService service;
 
@@ -95,6 +96,18 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
             Context context);
 
         @Headers({"Content-Type: application/json"})
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Resources/checkZonePeers/")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<CheckZonePeersResultInner>> checkZonePeers(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") CheckZonePeersRequest parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -114,7 +127,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(
@@ -157,7 +171,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<LocationInner>> listLocationsSinglePageAsync(
@@ -196,7 +211,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LocationInner> listLocationsAsync(String subscriptionId, Boolean includeExtendedLocations) {
@@ -211,7 +226,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<LocationInner> listLocationsAsync(String subscriptionId) {
@@ -229,7 +244,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<LocationInner> listLocationsAsync(
@@ -245,7 +260,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationInner> listLocations(String subscriptionId) {
@@ -263,7 +278,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return location list operation response.
+     * @return location list operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<LocationInner> listLocations(
@@ -278,7 +293,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
+     * @return details about a specified subscription along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SubscriptionInner>> getWithResponseAsync(String subscriptionId) {
@@ -308,7 +324,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
+     * @return details about a specified subscription along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SubscriptionInner>> getWithResponseAsync(String subscriptionId, Context context) {
@@ -333,19 +350,11 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
+     * @return details about a specified subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SubscriptionInner> getAsync(String subscriptionId) {
-        return getWithResponseAsync(subscriptionId)
-            .flatMap(
-                (Response<SubscriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(subscriptionId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -370,7 +379,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details about a specified subscription.
+     * @return details about a specified subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionInner> getWithResponse(String subscriptionId, Context context) {
@@ -382,7 +391,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant.
+     * @return all subscriptions for a tenant along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionInner>> listSinglePageAsync() {
@@ -415,7 +424,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant.
+     * @return all subscriptions for a tenant along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionInner>> listSinglePageAsync(Context context) {
@@ -445,7 +454,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant.
+     * @return all subscriptions for a tenant as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<SubscriptionInner> listAsync() {
@@ -459,7 +468,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant.
+     * @return all subscriptions for a tenant as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SubscriptionInner> listAsync(Context context) {
@@ -472,7 +481,7 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant.
+     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionInner> list() {
@@ -486,11 +495,139 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all subscriptions for a tenant.
+     * @return all subscriptions for a tenant as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SubscriptionInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Compares a subscriptions logical zone mapping.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param parameters Parameters for checking zone peers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the Check zone peers operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CheckZonePeersResultInner>> checkZonePeersWithResponseAsync(
+        String subscriptionId, CheckZonePeersRequest parameters) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .checkZonePeers(
+                            this.client.getEndpoint(),
+                            subscriptionId,
+                            this.client.getApiVersion(),
+                            parameters,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Compares a subscriptions logical zone mapping.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param parameters Parameters for checking zone peers.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the Check zone peers operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<CheckZonePeersResultInner>> checkZonePeersWithResponseAsync(
+        String subscriptionId, CheckZonePeersRequest parameters, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (subscriptionId == null) {
+            return Mono.error(new IllegalArgumentException("Parameter subscriptionId is required and cannot be null."));
+        }
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .checkZonePeers(
+                this.client.getEndpoint(), subscriptionId, this.client.getApiVersion(), parameters, accept, context);
+    }
+
+    /**
+     * Compares a subscriptions logical zone mapping.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param parameters Parameters for checking zone peers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the Check zone peers operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CheckZonePeersResultInner> checkZonePeersAsync(
+        String subscriptionId, CheckZonePeersRequest parameters) {
+        return checkZonePeersWithResponseAsync(subscriptionId, parameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Compares a subscriptions logical zone mapping.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param parameters Parameters for checking zone peers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the Check zone peers operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CheckZonePeersResultInner checkZonePeers(String subscriptionId, CheckZonePeersRequest parameters) {
+        return checkZonePeersAsync(subscriptionId, parameters).block();
+    }
+
+    /**
+     * Compares a subscriptions logical zone mapping.
+     *
+     * @param subscriptionId The ID of the target subscription.
+     * @param parameters Parameters for checking zone peers.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the Check zone peers operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CheckZonePeersResultInner> checkZonePeersWithResponse(
+        String subscriptionId, CheckZonePeersRequest parameters, Context context) {
+        return checkZonePeersWithResponseAsync(subscriptionId, parameters, context).block();
     }
 
     /**
@@ -500,7 +637,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription list operation response.
+     * @return subscription list operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink) {
@@ -536,7 +674,8 @@ public final class SubscriptionsClientImpl implements SubscriptionsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subscription list operation response.
+     * @return subscription list operation response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SubscriptionInner>> listNextSinglePageAsync(String nextLink, Context context) {

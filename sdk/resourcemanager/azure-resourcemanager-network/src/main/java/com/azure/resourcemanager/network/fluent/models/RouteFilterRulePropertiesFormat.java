@@ -9,15 +9,12 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RouteFilterRuleType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Route Filter Rule Resource. */
 @Fluent
 public final class RouteFilterRulePropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterRulePropertiesFormat.class);
-
     /*
      * The access type of the rule.
      */
@@ -31,8 +28,7 @@ public final class RouteFilterRulePropertiesFormat {
     private RouteFilterRuleType routeFilterRuleType;
 
     /*
-     * The collection for bgp community values to filter on. e.g.
-     * ['12076:5010','12076:5020'].
+     * The collection for bgp community values to filter on. e.g. ['12076:5010','12076:5020'].
      */
     @JsonProperty(value = "communities", required = true)
     private List<String> communities;
@@ -42,6 +38,10 @@ public final class RouteFilterRulePropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of RouteFilterRulePropertiesFormat class. */
+    public RouteFilterRulePropertiesFormat() {
+    }
 
     /**
      * Get the access property: The access type of the rule.
@@ -121,22 +121,24 @@ public final class RouteFilterRulePropertiesFormat {
      */
     public void validate() {
         if (access() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property access in model RouteFilterRulePropertiesFormat"));
         }
         if (routeFilterRuleType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property routeFilterRuleType in model RouteFilterRulePropertiesFormat"));
         }
         if (communities() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property communities in model RouteFilterRulePropertiesFormat"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RouteFilterRulePropertiesFormat.class);
 }

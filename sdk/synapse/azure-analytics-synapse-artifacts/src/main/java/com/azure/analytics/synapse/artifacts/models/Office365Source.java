@@ -15,8 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public final class Office365Source extends CopySource {
     /*
-     * The groups containing all the users. Type: array of strings (or
-     * Expression with resultType array of strings).
+     * The groups containing all the users. Type: array of strings (or Expression with resultType array of strings).
      */
     @JsonProperty(value = "allowedGroups")
     private Object allowedGroups;
@@ -28,30 +27,27 @@ public final class Office365Source extends CopySource {
     private Object userScopeFilterUri;
 
     /*
-     * The Column to apply the <paramref name="StartTime"/> and <paramref
-     * name="EndTime"/>. Type: string (or Expression with resultType string).
+     * The Column to apply the <paramref name="StartTime"/> and <paramref name="EndTime"/>. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "dateFilterColumn")
     private Object dateFilterColumn;
 
     /*
-     * Start time of the requested range for this dataset. Type: string (or
-     * Expression with resultType string).
+     * Start time of the requested range for this dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "startTime")
     private Object startTime;
 
     /*
-     * End time of the requested range for this dataset. Type: string (or
-     * Expression with resultType string).
+     * End time of the requested range for this dataset. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "endTime")
     private Object endTime;
 
     /*
-     * The columns to be read out from the Office 365 table. Type: array of
-     * objects (or Expression with resultType array of objects). Example: [ {
-     * "name": "Id" }, { "name": "CreatedDateTime" } ]
+     * The columns to be read out from the Office 365 table. Type: array of objects (or Expression with resultType
+     * array of objects). Example: [ { "name": "Id" }, { "name": "CreatedDateTime" } ]
      */
     @JsonProperty(value = "outputColumns")
     private Object outputColumns;
@@ -183,6 +179,27 @@ public final class Office365Source extends CopySource {
      */
     public Office365Source setOutputColumns(Object outputColumns) {
         this.outputColumns = outputColumns;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Office365Source setSourceRetryCount(Object sourceRetryCount) {
+        super.setSourceRetryCount(sourceRetryCount);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Office365Source setSourceRetryWait(Object sourceRetryWait) {
+        super.setSourceRetryWait(sourceRetryWait);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public Office365Source setMaxConcurrentConnections(Object maxConcurrentConnections) {
+        super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 }

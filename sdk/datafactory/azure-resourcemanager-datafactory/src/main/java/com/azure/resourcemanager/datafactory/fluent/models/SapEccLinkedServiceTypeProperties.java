@@ -7,25 +7,20 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** SAP ECC linked service properties. */
 @Fluent
 public final class SapEccLinkedServiceTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SapEccLinkedServiceTypeProperties.class);
-
     /*
-     * The URL of SAP ECC OData API. For example,
-     * '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type: string
-     * (or Expression with resultType string).
+     * The URL of SAP ECC OData API. For example, '[https://hostname:port/sap/opu/odata/sap/servicename/]'. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "url", required = true)
     private String url;
 
     /*
-     * The username for Basic authentication. Type: string (or Expression with
-     * resultType string).
+     * The username for Basic authentication. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "username")
     private String username;
@@ -37,13 +32,16 @@ public final class SapEccLinkedServiceTypeProperties {
     private SecretBase password;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Either
-     * encryptedCredential or username/password must be provided. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Either encryptedCredential or username/password must be provided. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
+
+    /** Creates an instance of SapEccLinkedServiceTypeProperties class. */
+    public SapEccLinkedServiceTypeProperties() {
+    }
 
     /**
      * Get the url property: The URL of SAP ECC OData API. For example,
@@ -140,7 +138,7 @@ public final class SapEccLinkedServiceTypeProperties {
      */
     public void validate() {
         if (url() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property url in model SapEccLinkedServiceTypeProperties"));
@@ -149,4 +147,6 @@ public final class SapEccLinkedServiceTypeProperties {
             password().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(SapEccLinkedServiceTypeProperties.class);
 }

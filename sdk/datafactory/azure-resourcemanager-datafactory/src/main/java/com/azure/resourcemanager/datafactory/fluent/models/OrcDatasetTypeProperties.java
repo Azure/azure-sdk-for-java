@@ -7,14 +7,11 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ORC dataset properties. */
 @Fluent
 public final class OrcDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrcDatasetTypeProperties.class);
-
     /*
      * The location of the ORC data storage.
      */
@@ -22,11 +19,14 @@ public final class OrcDatasetTypeProperties {
     private DatasetLocation location;
 
     /*
-     * The data orcCompressionCodec. Type: string (or Expression with
-     * resultType string).
+     * The data orcCompressionCodec. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "orcCompressionCodec")
     private Object orcCompressionCodec;
+
+    /** Creates an instance of OrcDatasetTypeProperties class. */
+    public OrcDatasetTypeProperties() {
+    }
 
     /**
      * Get the location property: The location of the ORC data storage.
@@ -77,7 +77,7 @@ public final class OrcDatasetTypeProperties {
      */
     public void validate() {
         if (location() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property location in model OrcDatasetTypeProperties"));
@@ -85,4 +85,6 @@ public final class OrcDatasetTypeProperties {
             location().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrcDatasetTypeProperties.class);
 }

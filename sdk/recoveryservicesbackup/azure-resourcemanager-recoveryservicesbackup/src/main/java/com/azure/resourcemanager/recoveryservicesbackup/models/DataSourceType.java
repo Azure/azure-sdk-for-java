@@ -66,7 +66,11 @@ public final class DataSourceType extends ExpandableStringEnum<DataSourceType> {
         return fromString(name, DataSourceType.class);
     }
 
-    /** @return known DataSourceType values. */
+    /**
+     * Gets known DataSourceType values.
+     *
+     * @return known DataSourceType values.
+     */
     public static Collection<DataSourceType> values() {
         return values(DataSourceType.class);
     }

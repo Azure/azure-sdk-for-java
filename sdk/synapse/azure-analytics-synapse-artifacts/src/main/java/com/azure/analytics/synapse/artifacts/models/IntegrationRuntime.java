@@ -35,8 +35,7 @@ public class IntegrationRuntime {
     private String description;
 
     /*
-     * Azure Synapse nested object which serves as a compute resource for
-     * activities.
+     * Azure Synapse nested object which serves as a compute resource for activities.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 

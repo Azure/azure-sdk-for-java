@@ -16,6 +16,9 @@ public final class EndpointProvisioningState extends ExpandableStringEnum<Endpoi
     /** Static value Deleting for EndpointProvisioningState. */
     public static final EndpointProvisioningState DELETING = fromString("Deleting");
 
+    /** Static value Updating for EndpointProvisioningState. */
+    public static final EndpointProvisioningState UPDATING = fromString("Updating");
+
     /** Static value Succeeded for EndpointProvisioningState. */
     public static final EndpointProvisioningState SUCCEEDED = fromString("Succeeded");
 
@@ -54,7 +57,11 @@ public final class EndpointProvisioningState extends ExpandableStringEnum<Endpoi
         return fromString(name, EndpointProvisioningState.class);
     }
 
-    /** @return known EndpointProvisioningState values. */
+    /**
+     * Gets known EndpointProvisioningState values.
+     *
+     * @return known EndpointProvisioningState values.
+     */
     public static Collection<EndpointProvisioningState> values() {
         return values(EndpointProvisioningState.class);
     }

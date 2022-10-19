@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Indicates if encryption is enabled on virtual network and if VM without encryption is allowed in encrypted VNet. */
 @Fluent
 public final class VirtualNetworkEncryption {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkEncryption.class);
-
     /*
      * Indicates if encryption is enabled on the virtual network.
      */
@@ -25,6 +21,10 @@ public final class VirtualNetworkEncryption {
      */
     @JsonProperty(value = "enforcement")
     private VirtualNetworkEncryptionEnforcement enforcement;
+
+    /** Creates an instance of VirtualNetworkEncryption class. */
+    public VirtualNetworkEncryption() {
+    }
 
     /**
      * Get the enabled property: Indicates if encryption is enabled on the virtual network.

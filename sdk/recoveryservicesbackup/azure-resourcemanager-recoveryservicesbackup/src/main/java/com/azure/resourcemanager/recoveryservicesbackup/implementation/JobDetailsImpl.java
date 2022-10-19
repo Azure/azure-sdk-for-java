@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.JobDetailsClient;
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.JobResourceInner;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobDetails;
 import com.azure.resourcemanager.recoveryservicesbackup.models.JobResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class JobDetailsImpl implements JobDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JobDetailsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(JobDetailsImpl.class);
 
     private final JobDetailsClient innerClient;
 

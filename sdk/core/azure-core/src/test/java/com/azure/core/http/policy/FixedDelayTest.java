@@ -26,6 +26,11 @@ public class FixedDelayTest {
     }
 
     @Test
+    public void testNullOptions() {
+        assertThrows(NullPointerException.class, () -> new FixedDelay(null));
+    }
+
+    @Test
     public void testZeroDelay() {
         FixedDelay fixedDelay = new FixedDelay(3, Duration.ofSeconds(0));
         assertEquals(fixedDelay.getMaxRetries(), 3);
@@ -35,6 +40,14 @@ public class FixedDelayTest {
     @Test
     public void testFixedDelay() {
         FixedDelay fixedDelay = new FixedDelay(3, Duration.ofSeconds(1));
+        assertEquals(fixedDelay.getMaxRetries(), 3);
+        assertEquals(fixedDelay.calculateRetryDelay(2).toMillis(), 1000);
+    }
+
+    @Test
+    public void testFixedDelayOptions() {
+        FixedDelayOptions fixedDelayOptions = new FixedDelayOptions(3, Duration.ofSeconds(1));
+        FixedDelay fixedDelay = new FixedDelay(fixedDelayOptions);
         assertEquals(fixedDelay.getMaxRetries(), 3);
         assertEquals(fixedDelay.calculateRetryDelay(2).toMillis(), 1000);
     }

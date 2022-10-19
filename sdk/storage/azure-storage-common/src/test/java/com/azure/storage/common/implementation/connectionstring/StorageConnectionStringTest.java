@@ -61,6 +61,41 @@ public class StorageConnectionStringTest {
         Assertions.assertNull(storageConnectionString.getAccountName());
     }
 
+    @Test
+    public void sasTokenWithQuestionMark() {
+        final String blobEndpointStr = "https://storagesample.blob.core.windows.net";
+        final String fileEndpointStr = "https://storagesample.file.core.windows.net";
+
+        final String connectionString = String.format("BlobEndpoint=%s;FileEndpoint=%s;SharedAccessSignature=%s;",
+            blobEndpointStr,
+            fileEndpointStr,
+            "?" + SAS_TOKEN);
+
+        StorageConnectionString storageConnectionString = StorageConnectionString.create(connectionString, logger);
+        Assertions.assertNotNull(storageConnectionString);
+        StorageEndpoint blobEndpoint = storageConnectionString.getBlobEndpoint();
+        Assertions.assertNotNull(blobEndpoint);
+        Assertions.assertNotNull(blobEndpoint.getPrimaryUri());
+        Assertions.assertTrue(blobEndpoint.getPrimaryUri().equalsIgnoreCase(blobEndpointStr));
+
+        StorageEndpoint fileEndpoint = storageConnectionString.getFileEndpoint();
+        Assertions.assertNotNull(fileEndpoint);
+        Assertions.assertNotNull(fileEndpoint.getPrimaryUri());
+        Assertions.assertTrue(fileEndpoint.getPrimaryUri().equalsIgnoreCase(fileEndpointStr));
+
+        Assertions.assertNull(storageConnectionString.getQueueEndpoint());
+        Assertions.assertNull(storageConnectionString.getTableEndpoint());
+
+        StorageAuthenticationSettings authSettings
+            = storageConnectionString.getStorageAuthSettings();
+        Assertions.assertNotNull(authSettings);
+        Assertions.assertEquals(StorageAuthenticationSettings.Type.SAS_TOKEN,
+            authSettings.getType());
+        Assertions.assertNotNull(authSettings.getSasToken());
+        assertSasTokensEqual(authSettings.getSasToken(), SAS_TOKEN);
+        Assertions.assertNull(storageConnectionString.getAccountName());
+    }
+
     private static void assertSasTokensEqual(String left, String right) {
         Map<String, String[]> leftMap = SasImplUtils.parseQueryString(left);
         Map<String, String[]> rightMap = SasImplUtils.parseQueryString(right);

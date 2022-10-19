@@ -1,6 +1,6 @@
 # Release History
 
-## 12.8.0-beta.3 (Unreleased)
+## 12.14.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,128 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.13.0 (2022-10-11)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+- Added support for flush parameter to `DataLakeFileClient.appendWithResponse()`
+- Added support for encryption scopes.
+- Added support for encryption scope SAS.
+- Added new method `DataLakeFileSystemClient.exists()` to determine whether file system exists.
+- Added `DataLakeServiceClientBuilder.connectionString()` to allow connection string to be set on the client builder.
+- Added `DataLakeFileClient.uploadFromFileWithResponse()` which returns a response of `PathItem` upon completion.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-storage-blob` from `12.19.1` to version `12.20.0`.
+
+## 12.12.1 (2022-09-12)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
+- Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
+- Upgraded `azure-storage-blob` from `12.19.0` to version `12.19.1`.
+
+## 12.13.0-beta.1 (2022-09-06)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+- Added support for flush parameter to `DataLakeFileClient.appendWithResponse()`
+- Added support for encryption scopes.
+- Added support for encryption scope SAS.
+- Added new method `DataLakeFileSystemClient.exists()` to determine whether file system exists.
+- Added `DataLakeServiceClientBuilder.connectionString()` to allow connection string to be set on the client builder.
+- Added `DataLakeFileClient.uploadFromFileWithResponse()` which returns a response of `PathItem` upon completion.
+
+## 12.12.0 (2022-08-12)
+
+### Features Added
+- Added upload and append methods on DataLakeFileClient and DataLakeFileAsyncClient that support BinaryData.
+
+## 12.11.0 (2022-07-07)
+
+### Features Added
+- GA release for 2021-08-06 service version.
+
+## 12.11.0-beta.1 (2022-06-15)
+
+### Features Added
+- Added support for 2021-08-06 service version.
+- Added ability to set permission, umask, owner, group, ACL, lease, and expiry time to the following:
+  DataLakePathClient.createWithResponse, DataLakeDirectoryClient.createFileWithResponse,
+  DataLakeDirectoryClient.createSubdirectoryWithResponse DataLakeFile.createWithResponse,
+  DataLakeFileSystemClient.createFileWithResponse, and DataLakeFileSystemClient.createDirectoryWithResponse.
+
+## 12.10.1 (2022-06-08)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.28.0` to version `1.29.1`.
+- Upgraded `azure-core-http-netty` from `1.12.0` to version `1.12.2`.
+- Upgraded `azure-storage-blob` from `12.17.0` to version `12.17.1`.
+
+## 12.10.0 (2022-05-25)
+
+### Other Changes
+- GA release for STG 82
+
+## 12.9.1 (2022-05-12)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.27.0` to version `1.28.0`.
+- Upgraded `azure-core-http-netty` from `1.11.9` to version `1.12.0`.
+- Upgraded `azure-storage-blob` from `12.16.0` to version `12.16.1`.
+
+## 12.10.0-beta.1 (2022-05-06)
+
+### Features Added
+- Added support for 2021-06-08 service version.
+- Added support for Customer Provided Keys.
+- Added creationTime and expiryTime fields to `PathItem`.
+
+## 12.9.0 (2022-04-07)
+
+### Bugs Fixed
+- Fixed a bug that would cause auth failures when trying to rename a path object while authenticating with a sas.
+- Fixed a bug where `uploadFromFile(String, boolean)` used a different size to determine whether file existence should
+  be checked before using chunked upload than the size used to triggered chunked upload.
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.26.0` to version `1.27.0`.
+- Upgraded `azure-core-http-netty` from `1.11.8` to version `1.11.9`.
+- Upgraded `azure-storage-blob` from `12.15.0` to version `12.16.0`.
+
+## 12.8.0 (2022-03-09)
+
+### Other Changes
+- GA release for STG 79, 80, 81
+
+## 12.7.4 (2022-02-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.24.1` to version `1.25.0`.
+- Upgraded `azure-core-http-netty` from `1.11.6` to version `1.11.7`.
+- Upgraded `azure-storage-blob` from `12.14.3` to version `12.14.4`.
+
+## 12.8.0-beta.3 (2022-02-09)
+
+### Features Added
+- Added support for 2021-04-10 service version.
+
+### Bugs Fixed
+- Fixed a bug in builders that would cause fileSystem or path name to be erased if specified before the connection string.
 
 ## 12.7.3 (2022-01-14)
 

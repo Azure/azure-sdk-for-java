@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Enabled configuration. */
 @Fluent
 public final class EnabledConfig {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EnabledConfig.class);
-
     /*
      * True if configuration is enabled, false if it is disabled and null if
      * configuration is not set.

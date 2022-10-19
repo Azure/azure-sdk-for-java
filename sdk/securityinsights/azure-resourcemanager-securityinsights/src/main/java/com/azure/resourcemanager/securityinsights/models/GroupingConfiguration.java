@@ -6,7 +6,6 @@ package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.util.List;
@@ -14,8 +13,6 @@ import java.util.List;
 /** Grouping configuration property bag. */
 @Fluent
 public final class GroupingConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GroupingConfiguration.class);
-
     /*
      * Grouping enabled
      */
@@ -29,23 +26,21 @@ public final class GroupingConfiguration {
     private boolean reopenClosedIncident;
 
     /*
-     * Limit the group to alerts created within the lookback duration (in ISO
-     * 8601 duration format)
+     * Limit the group to alerts created within the lookback duration (in ISO 8601 duration format)
      */
     @JsonProperty(value = "lookbackDuration", required = true)
     private Duration lookbackDuration;
 
     /*
-     * Grouping matching method. When method is Selected at least one of
-     * groupByEntities, groupByAlertDetails, groupByCustomDetails must be
-     * provided and not empty.
+     * Grouping matching method. When method is Selected at least one of groupByEntities, groupByAlertDetails,
+     * groupByCustomDetails must be provided and not empty.
      */
     @JsonProperty(value = "matchingMethod", required = true)
     private MatchingMethod matchingMethod;
 
     /*
-     * A list of entity types to group by (when matchingMethod is Selected).
-     * Only entities defined in the current alert rule may be used.
+     * A list of entity types to group by (when matchingMethod is Selected). Only entities defined in the current alert
+     * rule may be used.
      */
     @JsonProperty(value = "groupByEntities")
     private List<EntityMappingType> groupByEntities;
@@ -57,8 +52,8 @@ public final class GroupingConfiguration {
     private List<AlertDetail> groupByAlertDetails;
 
     /*
-     * A list of custom details keys to group by (when matchingMethod is
-     * Selected). Only keys defined in the current alert rule may be used.
+     * A list of custom details keys to group by (when matchingMethod is Selected). Only keys defined in the current
+     * alert rule may be used.
      */
     @JsonProperty(value = "groupByCustomDetails")
     private List<String> groupByCustomDetails;
@@ -218,16 +213,18 @@ public final class GroupingConfiguration {
      */
     public void validate() {
         if (lookbackDuration() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property lookbackDuration in model GroupingConfiguration"));
         }
         if (matchingMethod() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property matchingMethod in model GroupingConfiguration"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(GroupingConfiguration.class);
 }

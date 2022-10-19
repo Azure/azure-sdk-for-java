@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A remote private endpoint connection. */
 @Fluent
 public final class RemotePrivateEndpointConnection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RemotePrivateEndpointConnection.class);
-
     /*
      * The provisioningState property.
      */
@@ -31,6 +27,10 @@ public final class RemotePrivateEndpointConnection {
      */
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkConnectionState privateLinkServiceConnectionState;
+
+    /** Creates an instance of RemotePrivateEndpointConnection class. */
+    public RemotePrivateEndpointConnection() {
+    }
 
     /**
      * Get the provisioningState property: The provisioningState property.

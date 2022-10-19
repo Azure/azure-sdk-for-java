@@ -7,9 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** A DDoS protection plan in a resource group. */
 @Fluent
 public final class DdosProtectionPlanInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosProtectionPlanInner.class);
-
     /*
      * Properties of the DDoS protection plan.
      */
@@ -30,6 +26,10 @@ public final class DdosProtectionPlanInner extends Resource {
      */
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
+
+    /** Creates an instance of DdosProtectionPlanInner class. */
+    public DdosProtectionPlanInner() {
+    }
 
     /**
      * Get the innerProperties property: Properties of the DDoS protection plan.
@@ -81,6 +81,16 @@ public final class DdosProtectionPlanInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the publicIpAddresses property: The list of public IPs associated with the DDoS protection plan resource.
+     * This list is read-only.
+     *
+     * @return the publicIpAddresses value.
+     */
+    public List<SubResource> publicIpAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().publicIpAddresses();
     }
 
     /**

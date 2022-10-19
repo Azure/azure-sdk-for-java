@@ -5,35 +5,32 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Drill Dataset Properties. */
 @Fluent
 public final class DrillDatasetTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DrillDatasetTypeProperties.class);
-
     /*
-     * This property will be retired. Please consider using schema + table
-     * properties instead.
+     * This property will be retired. Please consider using schema + table properties instead.
      */
     @JsonProperty(value = "tableName")
     private Object tableName;
 
     /*
-     * The table name of the Drill. Type: string (or Expression with resultType
-     * string).
+     * The table name of the Drill. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "table")
     private Object table;
 
     /*
-     * The schema name of the Drill. Type: string (or Expression with
-     * resultType string).
+     * The schema name of the Drill. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "schema")
     private Object schema;
+
+    /** Creates an instance of DrillDatasetTypeProperties class. */
+    public DrillDatasetTypeProperties() {
+    }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties

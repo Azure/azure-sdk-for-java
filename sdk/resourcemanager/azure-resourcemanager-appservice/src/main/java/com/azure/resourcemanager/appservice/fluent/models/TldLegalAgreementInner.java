@@ -6,14 +6,11 @@ package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Legal agreement for a top level domain. */
 @Fluent
 public final class TldLegalAgreementInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TldLegalAgreementInner.class);
-
     /*
      * Unique identifier for the agreement.
      */
@@ -125,20 +122,22 @@ public final class TldLegalAgreementInner {
      */
     public void validate() {
         if (agreementKey() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property agreementKey in model TldLegalAgreementInner"));
         }
         if (title() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property title in model TldLegalAgreementInner"));
         }
         if (content() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property content in model TldLegalAgreementInner"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(TldLegalAgreementInner.class);
 }

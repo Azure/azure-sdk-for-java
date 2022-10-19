@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Identity Provider Base Parameter Properties. */
 @Fluent
 public class IdentityProviderBaseParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProviderBaseParameters.class);
-
     /*
      * Identity Provider Type identifier.
      */

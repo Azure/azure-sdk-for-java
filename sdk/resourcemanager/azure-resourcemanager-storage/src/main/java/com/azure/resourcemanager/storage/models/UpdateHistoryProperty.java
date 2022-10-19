@@ -4,27 +4,21 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** An update history of the ImmutabilityPolicy of a blob container. */
-@Immutable
+@Fluent
 public final class UpdateHistoryProperty {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateHistoryProperty.class);
-
     /*
-     * The ImmutabilityPolicy update type of a blob container, possible values
-     * include: put, lock and extend.
+     * The ImmutabilityPolicy update type of a blob container, possible values include: put, lock and extend.
      */
     @JsonProperty(value = "update", access = JsonProperty.Access.WRITE_ONLY)
     private ImmutabilityPolicyUpdateType update;
 
     /*
-     * The immutability period for the blobs in the container since the policy
-     * creation, in days.
+     * The immutability period for the blobs in the container since the policy creation, in days.
      */
     @JsonProperty(value = "immutabilityPeriodSinceCreationInDays", access = JsonProperty.Access.WRITE_ONLY)
     private Integer immutabilityPeriodSinceCreationInDays;
@@ -42,18 +36,35 @@ public final class UpdateHistoryProperty {
     private String objectIdentifier;
 
     /*
-     * Returns the Tenant ID that issued the token for the user who updated the
-     * ImmutabilityPolicy.
+     * Returns the Tenant ID that issued the token for the user who updated the ImmutabilityPolicy.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * Returns the User Principal Name of the user who updated the
-     * ImmutabilityPolicy.
+     * Returns the User Principal Name of the user who updated the ImmutabilityPolicy.
      */
     @JsonProperty(value = "upn", access = JsonProperty.Access.WRITE_ONLY)
     private String upn;
+
+    /*
+     * This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be
+     * written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added
+     * and any existing blocks cannot be modified or deleted. This property cannot be changed with
+     * ExtendImmutabilityPolicy API.
+     */
+    @JsonProperty(value = "allowProtectedAppendWrites")
+    private Boolean allowProtectedAppendWrites;
+
+    /*
+     * This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be
+     * written to both 'Append and Bock Blobs' while maintaining immutability protection and compliance. Only new
+     * blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with
+     * ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites' and 'allowProtectedAppendWritesAll' properties
+     * are mutually exclusive.
+     */
+    @JsonProperty(value = "allowProtectedAppendWritesAll")
+    private Boolean allowProtectedAppendWritesAll;
 
     /**
      * Get the update property: The ImmutabilityPolicy update type of a blob container, possible values include: put,
@@ -110,6 +121,60 @@ public final class UpdateHistoryProperty {
      */
     public String upn() {
         return this.upn;
+    }
+
+    /**
+     * Get the allowProtectedAppendWrites property: This property can only be changed for unlocked time-based retention
+     * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
+     * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
+     * cannot be changed with ExtendImmutabilityPolicy API.
+     *
+     * @return the allowProtectedAppendWrites value.
+     */
+    public Boolean allowProtectedAppendWrites() {
+        return this.allowProtectedAppendWrites;
+    }
+
+    /**
+     * Set the allowProtectedAppendWrites property: This property can only be changed for unlocked time-based retention
+     * policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and
+     * compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property
+     * cannot be changed with ExtendImmutabilityPolicy API.
+     *
+     * @param allowProtectedAppendWrites the allowProtectedAppendWrites value to set.
+     * @return the UpdateHistoryProperty object itself.
+     */
+    public UpdateHistoryProperty withAllowProtectedAppendWrites(Boolean allowProtectedAppendWrites) {
+        this.allowProtectedAppendWrites = allowProtectedAppendWrites;
+        return this;
+    }
+
+    /**
+     * Get the allowProtectedAppendWritesAll property: This property can only be changed for unlocked time-based
+     * retention policies. When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining
+     * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
+     * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
+     * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
+     *
+     * @return the allowProtectedAppendWritesAll value.
+     */
+    public Boolean allowProtectedAppendWritesAll() {
+        return this.allowProtectedAppendWritesAll;
+    }
+
+    /**
+     * Set the allowProtectedAppendWritesAll property: This property can only be changed for unlocked time-based
+     * retention policies. When enabled, new blocks can be written to both 'Append and Bock Blobs' while maintaining
+     * immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified
+     * or deleted. This property cannot be changed with ExtendImmutabilityPolicy API. The 'allowProtectedAppendWrites'
+     * and 'allowProtectedAppendWritesAll' properties are mutually exclusive.
+     *
+     * @param allowProtectedAppendWritesAll the allowProtectedAppendWritesAll value to set.
+     * @return the UpdateHistoryProperty object itself.
+     */
+    public UpdateHistoryProperty withAllowProtectedAppendWritesAll(Boolean allowProtectedAppendWritesAll) {
+        this.allowProtectedAppendWritesAll = allowProtectedAppendWritesAll;
+        return this;
     }
 
     /**

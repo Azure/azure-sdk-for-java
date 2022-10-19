@@ -61,20 +61,24 @@ public final class AutomationRuleImpl implements AutomationRule, AutomationRule.
         }
     }
 
+    public OffsetDateTime lastModifiedTimeUtc() {
+        return this.innerModel().lastModifiedTimeUtc();
+    }
+
     public OffsetDateTime createdTimeUtc() {
         return this.innerModel().createdTimeUtc();
     }
 
-    public OffsetDateTime lastModifiedTimeUtc() {
-        return this.innerModel().lastModifiedTimeUtc();
+    public ClientInfo lastModifiedBy() {
+        return this.innerModel().lastModifiedBy();
     }
 
     public ClientInfo createdBy() {
         return this.innerModel().createdBy();
     }
 
-    public ClientInfo lastModifiedBy() {
-        return this.innerModel().lastModifiedBy();
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public AutomationRuleInner innerModel() {
@@ -181,11 +185,6 @@ public final class AutomationRuleImpl implements AutomationRule, AutomationRule.
         return this;
     }
 
-    public AutomationRuleImpl withEtag(String etag) {
-        this.innerModel().withEtag(etag);
-        return this;
-    }
-
     public AutomationRuleImpl withDisplayName(String displayName) {
         this.innerModel().withDisplayName(displayName);
         return this;
@@ -203,6 +202,11 @@ public final class AutomationRuleImpl implements AutomationRule, AutomationRule.
 
     public AutomationRuleImpl withActions(List<AutomationRuleAction> actions) {
         this.innerModel().withActions(actions);
+        return this;
+    }
+
+    public AutomationRuleImpl withEtag(String etag) {
+        this.innerModel().withEtag(etag);
         return this;
     }
 }

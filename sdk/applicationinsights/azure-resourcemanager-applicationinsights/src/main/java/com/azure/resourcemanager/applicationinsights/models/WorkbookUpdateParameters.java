@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.applicationinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.applicationinsights.fluent.models.WorkbookPropertiesUpdateParameters;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -16,13 +14,11 @@ import java.util.Map;
 /** The parameters that can be provided when updating workbook properties properties. */
 @Fluent
 public final class WorkbookUpdateParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkbookUpdateParameters.class);
-
     /*
-     * The kind of workbook. Choices are user and shared.
+     * The kind of workbook. Only valid value is shared.
      */
     @JsonProperty(value = "kind")
-    private SharedTypeKind kind;
+    private WorkbookUpdateSharedTypeKind kind;
 
     /*
      * Resource tags.
@@ -38,21 +34,21 @@ public final class WorkbookUpdateParameters {
     private WorkbookPropertiesUpdateParameters innerProperties;
 
     /**
-     * Get the kind property: The kind of workbook. Choices are user and shared.
+     * Get the kind property: The kind of workbook. Only valid value is shared.
      *
      * @return the kind value.
      */
-    public SharedTypeKind kind() {
+    public WorkbookUpdateSharedTypeKind kind() {
         return this.kind;
     }
 
     /**
-     * Set the kind property: The kind of workbook. Choices are user and shared.
+     * Set the kind property: The kind of workbook. Only valid value is shared.
      *
      * @param kind the kind value to set.
      * @return the WorkbookUpdateParameters object itself.
      */
-    public WorkbookUpdateParameters withKind(SharedTypeKind kind) {
+    public WorkbookUpdateParameters withKind(WorkbookUpdateSharedTypeKind kind) {
         this.kind = kind;
         return this;
     }

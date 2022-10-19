@@ -5,18 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** LocalNetworkGateway properties. */
 @Fluent
 public final class LocalNetworkGatewayPropertiesFormat {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalNetworkGatewayPropertiesFormat.class);
-
     /*
      * Local network site address space.
      */
@@ -52,6 +48,10 @@ public final class LocalNetworkGatewayPropertiesFormat {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of LocalNetworkGatewayPropertiesFormat class. */
+    public LocalNetworkGatewayPropertiesFormat() {
+    }
 
     /**
      * Get the localNetworkAddressSpace property: Local network site address space.

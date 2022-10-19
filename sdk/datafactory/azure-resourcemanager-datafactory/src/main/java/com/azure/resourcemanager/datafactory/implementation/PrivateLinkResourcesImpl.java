@@ -12,10 +12,9 @@ import com.azure.resourcemanager.datafactory.fluent.PrivateLinkResourcesClient;
 import com.azure.resourcemanager.datafactory.fluent.models.PrivateLinkResourcesWrapperInner;
 import com.azure.resourcemanager.datafactory.models.PrivateLinkResources;
 import com.azure.resourcemanager.datafactory.models.PrivateLinkResourcesWrapper;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateLinkResourcesImpl.class);
 
     private final PrivateLinkResourcesClient innerClient;
 
@@ -28,15 +27,6 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
         this.serviceManager = serviceManager;
     }
 
-    public PrivateLinkResourcesWrapper get(String resourceGroupName, String factoryName) {
-        PrivateLinkResourcesWrapperInner inner = this.serviceClient().get(resourceGroupName, factoryName);
-        if (inner != null) {
-            return new PrivateLinkResourcesWrapperImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PrivateLinkResourcesWrapper> getWithResponse(
         String resourceGroupName, String factoryName, Context context) {
         Response<PrivateLinkResourcesWrapperInner> inner =
@@ -47,6 +37,15 @@ public final class PrivateLinkResourcesImpl implements PrivateLinkResources {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PrivateLinkResourcesWrapperImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateLinkResourcesWrapper get(String resourceGroupName, String factoryName) {
+        PrivateLinkResourcesWrapperInner inner = this.serviceClient().get(resourceGroupName, factoryName);
+        if (inner != null) {
+            return new PrivateLinkResourcesWrapperImpl(inner, this.manager());
         } else {
             return null;
         }

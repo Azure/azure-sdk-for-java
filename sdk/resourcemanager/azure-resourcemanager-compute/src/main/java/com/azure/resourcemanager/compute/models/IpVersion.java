@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IpVersion. */
+/**
+ * Available from Api-Version 2017-03-30 onwards, it represents whether the specific ipconfiguration is IPv4 or IPv6.
+ * Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+ */
 public final class IpVersion extends ExpandableStringEnum<IpVersion> {
     /** Static value IPv4 for IpVersion. */
     public static final IpVersion IPV4 = fromString("IPv4");
@@ -27,7 +30,11 @@ public final class IpVersion extends ExpandableStringEnum<IpVersion> {
         return fromString(name, IpVersion.class);
     }
 
-    /** @return known IpVersion values. */
+    /**
+     * Gets known IpVersion values.
+     *
+     * @return known IpVersion values.
+     */
     public static Collection<IpVersion> values() {
         return values(IpVersion.class);
     }

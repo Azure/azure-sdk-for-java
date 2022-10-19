@@ -217,7 +217,7 @@ public class Context {
         }
         for (Context c = this; c != null; c = c.parent) {
             if (key.equals(c.key)) {
-                return Optional.of(c.value);
+                return Optional.ofNullable(c.value);
             }
         }
         return Optional.empty();
@@ -277,7 +277,7 @@ public class Context {
 
         Context pointer = this;
         int chainPosition = contextCount - 1;
-        while (pointer != null) {
+        while (pointer != null && chainPosition >= 0) {
             chain[chainPosition--] = pointer;
             pointer = pointer.parent;
         }

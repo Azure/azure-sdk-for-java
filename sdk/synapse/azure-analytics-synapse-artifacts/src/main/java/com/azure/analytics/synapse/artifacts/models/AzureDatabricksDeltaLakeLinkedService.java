@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Azure Databricks Delta Lake linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,31 +19,29 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     /*
-     * <REGION>.azuredatabricks.net, domain name of your Databricks deployment.
-     * Type: string (or Expression with resultType string).
+     * <REGION>.azuredatabricks.net, domain name of your Databricks deployment. Type: string (or Expression with
+     * resultType string).
      */
     @JsonProperty(value = "typeProperties.domain", required = true)
     private Object domain;
 
     /*
-     * Access token for databricks REST API. Refer to
-     * https://docs.azuredatabricks.net/api/latest/authentication.html. Type:
-     * string, SecureString or AzureKeyVaultSecretReference.
+     * Access token for databricks REST API. Refer to https://docs.azuredatabricks.net/api/latest/authentication.html.
+     * Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.accessToken", required = true)
     private SecretBase accessToken;
 
     /*
-     * The id of an existing interactive cluster that will be used for all runs
-     * of this job. Type: string (or Expression with resultType string).
+     * The id of an existing interactive cluster that will be used for all runs of this job. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.clusterId")
     private Object clusterId;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
@@ -133,6 +133,34 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      */
     public AzureDatabricksDeltaLakeLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDatabricksDeltaLakeLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDatabricksDeltaLakeLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDatabricksDeltaLakeLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDatabricksDeltaLakeLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

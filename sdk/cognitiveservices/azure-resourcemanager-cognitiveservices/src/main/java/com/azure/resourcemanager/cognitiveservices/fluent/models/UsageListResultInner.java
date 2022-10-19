@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.cognitiveservices.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cognitiveservices.models.Usage;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The response to a list usage request. */
 @Fluent
 public final class UsageListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageListResultInner.class);
-
     /*
      * The list of usages for Cognitive Service account.
      */

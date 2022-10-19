@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.GatewayHostnameConfigurationsClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.GatewayHostnameConfigurationContractInner;
 import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurationCollection;
@@ -40,8 +39,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in GatewayHostnameConfigurationsClient. */
 public final class GatewayHostnameConfigurationsClientImpl implements GatewayHostnameConfigurationsClient {
-    private final ClientLogger logger = new ClientLogger(GatewayHostnameConfigurationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final GatewayHostnameConfigurationsService service;
 
@@ -187,7 +184,8 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Gateway hostname configuration list representation.
+     * @return paged Gateway hostname configuration list representation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GatewayHostnameConfigurationContractInner>> listByServiceSinglePageAsync(
@@ -260,7 +258,8 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Gateway hostname configuration list representation.
+     * @return paged Gateway hostname configuration list representation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GatewayHostnameConfigurationContractInner>> listByServiceSinglePageAsync(
@@ -335,7 +334,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Gateway hostname configuration list representation.
+     * @return paged Gateway hostname configuration list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GatewayHostnameConfigurationContractInner> listByServiceAsync(
@@ -355,7 +354,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Gateway hostname configuration list representation.
+     * @return paged Gateway hostname configuration list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GatewayHostnameConfigurationContractInner> listByServiceAsync(
@@ -385,7 +384,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Gateway hostname configuration list representation.
+     * @return paged Gateway hostname configuration list representation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<GatewayHostnameConfigurationContractInner> listByServiceAsync(
@@ -411,7 +410,8 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Gateway hostname configuration list representation.
+     * @return paged Gateway hostname configuration list representation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GatewayHostnameConfigurationContractInner> listByService(
@@ -439,7 +439,8 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Gateway hostname configuration list representation.
+     * @return paged Gateway hostname configuration list representation as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<GatewayHostnameConfigurationContractInner> listByService(
@@ -465,7 +466,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GatewayHostnameConfigurationsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -525,7 +526,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GatewayHostnameConfigurationsGetEntityTagResponse> getEntityTagWithResponseAsync(
@@ -581,7 +582,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> getEntityTagAsync(String resourceGroupName, String serviceName, String gatewayId, String hcId) {
@@ -637,7 +638,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a hostname configuration.
+     * @return details of a hostname configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GatewayHostnameConfigurationsGetResponse> getWithResponseAsync(
@@ -697,7 +698,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a hostname configuration.
+     * @return details of a hostname configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GatewayHostnameConfigurationsGetResponse> getWithResponseAsync(
@@ -753,7 +754,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return details of a hostname configuration.
+     * @return details of a hostname configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GatewayHostnameConfigurationContractInner> getAsync(
@@ -821,7 +822,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gateway hostname configuration details.
+     * @return gateway hostname configuration details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GatewayHostnameConfigurationsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -895,7 +896,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gateway hostname configuration details.
+     * @return gateway hostname configuration details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GatewayHostnameConfigurationsCreateOrUpdateResponse> createOrUpdateWithResponseAsync(
@@ -966,7 +967,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gateway hostname configuration details.
+     * @return gateway hostname configuration details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GatewayHostnameConfigurationContractInner> createOrUpdateAsync(
@@ -999,7 +1000,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return gateway hostname configuration details.
+     * @return gateway hostname configuration details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<GatewayHostnameConfigurationContractInner> createOrUpdateAsync(
@@ -1088,7 +1089,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1154,7 +1155,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -1216,7 +1217,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1258,7 +1259,7 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(
@@ -1273,7 +1274,8 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Gateway hostname configuration list representation.
+     * @return paged Gateway hostname configuration list representation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GatewayHostnameConfigurationContractInner>> listByServiceNextSinglePageAsync(
@@ -1310,7 +1312,8 @@ public final class GatewayHostnameConfigurationsClientImpl implements GatewayHos
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged Gateway hostname configuration list representation.
+     * @return paged Gateway hostname configuration list representation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<GatewayHostnameConfigurationContractInner>> listByServiceNextSinglePageAsync(

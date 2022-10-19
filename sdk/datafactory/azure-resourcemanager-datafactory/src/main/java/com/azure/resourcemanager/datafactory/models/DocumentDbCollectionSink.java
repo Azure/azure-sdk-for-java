@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,21 +14,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("DocumentDbCollectionSink")
 @Fluent
 public final class DocumentDbCollectionSink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DocumentDbCollectionSink.class);
-
     /*
-     * Nested properties separator. Default is . (dot). Type: string (or
-     * Expression with resultType string).
+     * Nested properties separator. Default is . (dot). Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "nestingSeparator")
     private Object nestingSeparator;
 
     /*
-     * Describes how to write data to Azure Cosmos DB. Type: string (or
-     * Expression with resultType string). Allowed values: insert and upsert.
+     * Describes how to write data to Azure Cosmos DB. Type: string (or Expression with resultType string). Allowed
+     * values: insert and upsert.
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
+
+    /** Creates an instance of DocumentDbCollectionSink class. */
+    public DocumentDbCollectionSink() {
+    }
 
     /**
      * Get the nestingSeparator property: Nested properties separator. Default is . (dot). Type: string (or Expression

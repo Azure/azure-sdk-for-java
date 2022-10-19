@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -14,35 +12,31 @@ import java.util.Map;
 /** Identity for the virtual machine. */
 @Fluent
 public class VirtualMachineIdentity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineIdentity.class);
-
     /*
-     * The principal id of virtual machine identity. This property will only be
-     * provided for a system assigned identity.
+     * The principal id of virtual machine identity. This property will only be provided for a system assigned
+     * identity.
      */
     @JsonProperty(value = "principalId", access = JsonProperty.Access.WRITE_ONLY)
     private String principalId;
 
     /*
-     * The tenant id associated with the virtual machine. This property will
-     * only be provided for a system assigned identity.
+     * The tenant id associated with the virtual machine. This property will only be provided for a system assigned
+     * identity.
      */
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
     /*
-     * The type of identity used for the virtual machine. The type
-     * 'SystemAssigned, UserAssigned' includes both an implicitly created
-     * identity and a set of user assigned identities. The type 'None' will
-     * remove any identities from the virtual machine.
+     * The type of identity used for the virtual machine. The type 'SystemAssigned, UserAssigned' includes both an
+     * implicitly created identity and a set of user assigned identities. The type 'None' will remove any identities
+     * from the virtual machine.
      */
     @JsonProperty(value = "type")
     private ResourceIdentityType type;
 
     /*
-     * The list of user identities associated with the Virtual Machine. The
-     * user identity dictionary key references will be ARM resource ids in the
-     * form:
+     * The list of user identities associated with the Virtual Machine. The user identity dictionary key references
+     * will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
      */
     @JsonProperty(value = "userAssignedIdentities")

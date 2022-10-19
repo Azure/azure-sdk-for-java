@@ -6,93 +6,66 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Contains the DDoS protection settings of the public IP. */
 @Fluent
 public final class DdosSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosSettings.class);
+    /*
+     * The DDoS protection mode of the public IP
+     */
+    @JsonProperty(value = "protectionMode")
+    private DdosSettingsProtectionMode protectionMode;
 
     /*
-     * The DDoS custom policy associated with the public IP.
+     * The DDoS protection plan associated with the public IP. Can only be set if ProtectionMode is Enabled
      */
-    @JsonProperty(value = "ddosCustomPolicy")
-    private SubResource ddosCustomPolicy;
+    @JsonProperty(value = "ddosProtectionPlan")
+    private SubResource ddosProtectionPlan;
 
-    /*
-     * The DDoS protection policy customizability of the public IP. Only
-     * standard coverage will have the ability to be customized.
-     */
-    @JsonProperty(value = "protectionCoverage")
-    private DdosSettingsProtectionCoverage protectionCoverage;
-
-    /*
-     * Enables DDoS protection on the public IP.
-     */
-    @JsonProperty(value = "protectedIP")
-    private Boolean protectedIp;
-
-    /**
-     * Get the ddosCustomPolicy property: The DDoS custom policy associated with the public IP.
-     *
-     * @return the ddosCustomPolicy value.
-     */
-    public SubResource ddosCustomPolicy() {
-        return this.ddosCustomPolicy;
+    /** Creates an instance of DdosSettings class. */
+    public DdosSettings() {
     }
 
     /**
-     * Set the ddosCustomPolicy property: The DDoS custom policy associated with the public IP.
+     * Get the protectionMode property: The DDoS protection mode of the public IP.
      *
-     * @param ddosCustomPolicy the ddosCustomPolicy value to set.
+     * @return the protectionMode value.
+     */
+    public DdosSettingsProtectionMode protectionMode() {
+        return this.protectionMode;
+    }
+
+    /**
+     * Set the protectionMode property: The DDoS protection mode of the public IP.
+     *
+     * @param protectionMode the protectionMode value to set.
      * @return the DdosSettings object itself.
      */
-    public DdosSettings withDdosCustomPolicy(SubResource ddosCustomPolicy) {
-        this.ddosCustomPolicy = ddosCustomPolicy;
+    public DdosSettings withProtectionMode(DdosSettingsProtectionMode protectionMode) {
+        this.protectionMode = protectionMode;
         return this;
     }
 
     /**
-     * Get the protectionCoverage property: The DDoS protection policy customizability of the public IP. Only standard
-     * coverage will have the ability to be customized.
+     * Get the ddosProtectionPlan property: The DDoS protection plan associated with the public IP. Can only be set if
+     * ProtectionMode is Enabled.
      *
-     * @return the protectionCoverage value.
+     * @return the ddosProtectionPlan value.
      */
-    public DdosSettingsProtectionCoverage protectionCoverage() {
-        return this.protectionCoverage;
+    public SubResource ddosProtectionPlan() {
+        return this.ddosProtectionPlan;
     }
 
     /**
-     * Set the protectionCoverage property: The DDoS protection policy customizability of the public IP. Only standard
-     * coverage will have the ability to be customized.
+     * Set the ddosProtectionPlan property: The DDoS protection plan associated with the public IP. Can only be set if
+     * ProtectionMode is Enabled.
      *
-     * @param protectionCoverage the protectionCoverage value to set.
+     * @param ddosProtectionPlan the ddosProtectionPlan value to set.
      * @return the DdosSettings object itself.
      */
-    public DdosSettings withProtectionCoverage(DdosSettingsProtectionCoverage protectionCoverage) {
-        this.protectionCoverage = protectionCoverage;
-        return this;
-    }
-
-    /**
-     * Get the protectedIp property: Enables DDoS protection on the public IP.
-     *
-     * @return the protectedIp value.
-     */
-    public Boolean protectedIp() {
-        return this.protectedIp;
-    }
-
-    /**
-     * Set the protectedIp property: Enables DDoS protection on the public IP.
-     *
-     * @param protectedIp the protectedIp value to set.
-     * @return the DdosSettings object itself.
-     */
-    public DdosSettings withProtectedIp(Boolean protectedIp) {
-        this.protectedIp = protectedIp;
+    public DdosSettings withDdosProtectionPlan(SubResource ddosProtectionPlan) {
+        this.ddosProtectionPlan = ddosProtectionPlan;
         return this;
     }
 

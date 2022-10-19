@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,35 +14,33 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("AzureTableSink")
 @Fluent
 public final class AzureTableSink extends CopySink {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureTableSink.class);
-
     /*
-     * Azure Table default partition key value. Type: string (or Expression
-     * with resultType string).
+     * Azure Table default partition key value. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableDefaultPartitionKeyValue")
     private Object azureTableDefaultPartitionKeyValue;
 
     /*
-     * Azure Table partition key name. Type: string (or Expression with
-     * resultType string).
+     * Azure Table partition key name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTablePartitionKeyName")
     private Object azureTablePartitionKeyName;
 
     /*
-     * Azure Table row key name. Type: string (or Expression with resultType
-     * string).
+     * Azure Table row key name. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableRowKeyName")
     private Object azureTableRowKeyName;
 
     /*
-     * Azure Table insert type. Type: string (or Expression with resultType
-     * string).
+     * Azure Table insert type. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "azureTableInsertType")
     private Object azureTableInsertType;
+
+    /** Creates an instance of AzureTableSink class. */
+    public AzureTableSink() {
+    }
 
     /**
      * Get the azureTableDefaultPartitionKeyValue property: Azure Table default partition key value. Type: string (or

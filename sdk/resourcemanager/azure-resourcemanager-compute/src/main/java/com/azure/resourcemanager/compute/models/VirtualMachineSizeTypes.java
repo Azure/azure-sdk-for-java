@@ -8,7 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualMachineSizeTypes. */
+/**
+ * Specifies the size of the virtual machine. &lt;br&gt;&lt;br&gt; The enum data type is currently deprecated and will
+ * be removed by December 23rd 2023. &lt;br&gt;&lt;br&gt; Recommended way to get the list of available sizes is using
+ * these APIs: &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes in an availability
+ * set](https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes) &lt;br&gt;&lt;br&gt; [List all
+ * available virtual machine sizes in a region]( https://docs.microsoft.com/rest/api/compute/resourceskus/list)
+ * &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes for
+ * resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes). For more information about
+ * virtual machine sizes, see [Sizes for virtual machines](https://docs.microsoft.com/azure/virtual-machines/sizes).
+ * &lt;br&gt;&lt;br&gt; The available VM sizes depend on region and availability set.
+ */
 public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualMachineSizeTypes> {
     /** Static value Basic_A0 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes BASIC_A0 = fromString("Basic_A0");
@@ -519,7 +529,11 @@ public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualM
         return fromString(name, VirtualMachineSizeTypes.class);
     }
 
-    /** @return known VirtualMachineSizeTypes values. */
+    /**
+     * Gets known VirtualMachineSizeTypes values.
+     *
+     * @return known VirtualMachineSizeTypes values.
+     */
     public static Collection<VirtualMachineSizeTypes> values() {
         return values(VirtualMachineSizeTypes.class);
     }

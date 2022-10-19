@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Microsoft Azure Cosmos Database (CosmosDB) linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,37 +19,32 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class CosmosDbLinkedService extends LinkedService {
     /*
-     * The connection string. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
+     * The connection string. Type: string, SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.connectionString")
     private Object connectionString;
 
     /*
-     * The endpoint of the Azure CosmosDB account. Type: string (or Expression
-     * with resultType string)
+     * The endpoint of the Azure CosmosDB account. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "typeProperties.accountEndpoint")
     private Object accountEndpoint;
 
     /*
-     * The name of the database. Type: string (or Expression with resultType
-     * string)
+     * The name of the database. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "typeProperties.database")
     private Object database;
 
     /*
-     * The account key of the Azure CosmosDB account. Type: SecureString or
-     * AzureKeyVaultSecretReference.
+     * The account key of the Azure CosmosDB account. Type: SecureString or AzureKeyVaultSecretReference.
      */
     @JsonProperty(value = "typeProperties.accountKey")
     private SecretBase accountKey;
 
     /*
-     * The encrypted credential used for authentication. Credentials are
-     * encrypted using the integration runtime credential manager. Type: string
-     * (or Expression with resultType string).
+     * The encrypted credential used for authentication. Credentials are encrypted using the integration runtime
+     * credential manager. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
@@ -157,6 +154,34 @@ public class CosmosDbLinkedService extends LinkedService {
      */
     public CosmosDbLinkedService setEncryptedCredential(Object encryptedCredential) {
         this.encryptedCredential = encryptedCredential;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public CosmosDbLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

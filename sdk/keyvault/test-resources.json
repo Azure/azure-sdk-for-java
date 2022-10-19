@@ -126,11 +126,11 @@
       "type": "string",
       "defaultValue": "[utcNow()]"
     },
-    "attestationUrl": {
+    "attestationImage": {
       "type": "string",
-      "defaultValue": "https://skrattestation.azurewebsites.net/",
+      "defaultValue": "keyvault-mock-attestation:latest",
       "metadata": {
-        "description": "Test attestation service for Secure Key Release"
+        "description": "The attestation image to use. The default is 'keyvault-mock-attestation:latest'."
       }
     },
     "storageEndpointSuffix": {
@@ -143,6 +143,9 @@
   },
   "variables": {
     "kvApiVersion": "2019-09-01",
+    "attestationFarm": "[concat(parameters('baseName'), 'farm')]",
+    "attestationSite": "[concat(parameters('baseName'), 'site')]",
+    "attestationImageUri": "[concat('DOCKER|azsdkengsys.azurecr.io/', parameters('attestationImage'))]",
     "kvName": "[parameters('baseName')]",
     "hsmApiVersion": "2021-04-01-preview",
     "hsmName": "[concat(parameters('baseName'), 'hsm')]",
@@ -159,10 +162,8 @@
     },
     "networkAcls": {
       "bypass": "AzureServices",
-      "virtualNetworkRules": [
-      ],
-      "ipRules": [
-      ],
+      "virtualNetworkRules": [],
+      "ipRules": [],
       "defaultAction": "Allow"
     },
     "bootstrapRoleAssignmentId": "[guid(concat(resourceGroup().id, 'contributor'))]",
@@ -390,6 +391,43 @@
       }
     },
     {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2020-12-01",
+      "name": "[variables('attestationFarm')]",
+      "location": "[parameters('location')]",
+      "kind": "linux",
+      "sku": {
+        "name": "B1"
+      },
+      "properties": {
+        "reserved": true
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-12-01",
+      "name": "[variables('attestationSite')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('attestationFarm'))]"
+      ],
+      "location": "[parameters('location')]",
+      "properties": {
+        "httpsOnly": true,
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('attestationFarm'))]",
+        "siteConfig": {
+          "name": "[variables('attestationSite')]",
+          "alwaysOn": true,
+          "linuxFxVersion": "[variables('attestationImageUri')]",
+          "appSettings": [
+            {
+              "name": "WEBSITES_ENABLE_APP_SERVICE_STORAGE",
+              "value": "false"
+            }
+          ]
+        }
+      }
+    },
+    {
       "type": "Microsoft.Resources/deploymentScripts",
       "apiVersion": "2020-10-01",
       "name": "createAddCertificate",
@@ -507,7 +545,7 @@
     },
     "AZURE_KEYVAULT_ATTESTATION_URL": {
       "type": "string",
-      "value": "[parameters('attestationUrl')]"
+      "value": "[format('https://{0}/', reference(variables('attestationSite')).defaultHostName)]"
     },
     "KEY_VAULT_ENDPOINT_SUFFIX": {
       "type": "string",

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The instance view of a disk restore point. */
 @Fluent
 public final class DiskRestorePointInstanceView {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskRestorePointInstanceView.class);
-
     /*
      * Disk restore point Id.
      */
@@ -24,7 +20,7 @@ public final class DiskRestorePointInstanceView {
      * The disk restore point replication status information.
      */
     @JsonProperty(value = "replicationStatus")
-    private Object replicationStatus;
+    private DiskRestorePointReplicationStatus replicationStatus;
 
     /**
      * Get the id property: Disk restore point Id.
@@ -51,7 +47,7 @@ public final class DiskRestorePointInstanceView {
      *
      * @return the replicationStatus value.
      */
-    public Object replicationStatus() {
+    public DiskRestorePointReplicationStatus replicationStatus() {
         return this.replicationStatus;
     }
 
@@ -61,7 +57,7 @@ public final class DiskRestorePointInstanceView {
      * @param replicationStatus the replicationStatus value to set.
      * @return the DiskRestorePointInstanceView object itself.
      */
-    public DiskRestorePointInstanceView withReplicationStatus(Object replicationStatus) {
+    public DiskRestorePointInstanceView withReplicationStatus(DiskRestorePointReplicationStatus replicationStatus) {
         this.replicationStatus = replicationStatus;
         return this;
     }
@@ -72,5 +68,8 @@ public final class DiskRestorePointInstanceView {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (replicationStatus() != null) {
+            replicationStatus().validate();
+        }
     }
 }

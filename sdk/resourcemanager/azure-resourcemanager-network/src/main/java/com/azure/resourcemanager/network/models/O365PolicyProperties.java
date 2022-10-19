@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Office365 breakout policy. */
 @Fluent
 public final class O365PolicyProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(O365PolicyProperties.class);
-
     /*
      * Office365 breakout categories.
      */
     @JsonProperty(value = "breakOutCategories")
     private O365BreakOutCategoryPolicies breakOutCategories;
+
+    /** Creates an instance of O365PolicyProperties class. */
+    public O365PolicyProperties() {
+    }
 
     /**
      * Get the breakOutCategories property: Office365 breakout categories.

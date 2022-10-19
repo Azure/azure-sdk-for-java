@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** ReissueCertificateOrderRequest resource specific properties. */
 @Fluent
 public final class ReissueCertificateOrderRequestProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ReissueCertificateOrderRequestProperties.class);
-
     /*
      * Certificate Key Size.
      */

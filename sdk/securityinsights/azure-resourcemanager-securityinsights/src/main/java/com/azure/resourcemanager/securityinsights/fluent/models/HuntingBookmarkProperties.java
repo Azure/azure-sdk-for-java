@@ -9,7 +9,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.EntityCommonProperties;
 import com.azure.resourcemanager.securityinsights.models.IncidentInfo;
 import com.azure.resourcemanager.securityinsights.models.UserInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -17,8 +16,6 @@ import java.util.List;
 /** Describes bookmark properties. */
 @Fluent
 public final class HuntingBookmarkProperties extends EntityCommonProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HuntingBookmarkProperties.class);
-
     /*
      * The time the bookmark was created
      */
@@ -317,13 +314,13 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
             createdBy().validate();
         }
         if (displayName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property displayName in model HuntingBookmarkProperties"));
         }
         if (query() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property query in model HuntingBookmarkProperties"));
         }
@@ -334,4 +331,6 @@ public final class HuntingBookmarkProperties extends EntityCommonProperties {
             incidentInfo().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HuntingBookmarkProperties.class);
 }

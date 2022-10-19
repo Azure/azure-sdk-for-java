@@ -7,7 +7,7 @@ package com.azure.resourcemanager.automation.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for OperatingSystemType. */
+/** Target operating system for the software update configuration. */
 public enum OperatingSystemType {
     /** Enum value Windows. */
     WINDOWS("Windows"),
@@ -30,6 +30,9 @@ public enum OperatingSystemType {
      */
     @JsonCreator
     public static OperatingSystemType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         OperatingSystemType[] items = OperatingSystemType.values();
         for (OperatingSystemType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum OperatingSystemType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

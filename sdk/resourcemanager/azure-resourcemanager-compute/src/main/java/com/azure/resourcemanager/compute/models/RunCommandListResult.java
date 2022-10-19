@@ -7,15 +7,12 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.RunCommandDocumentBaseInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The List Virtual Machine operation response. */
 @Fluent
 public final class RunCommandListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RunCommandListResult.class);
-
     /*
      * The list of virtual machine run commands.
      */
@@ -23,8 +20,8 @@ public final class RunCommandListResult {
     private List<RunCommandDocumentBaseInner> value;
 
     /*
-     * The uri to fetch the next page of run commands. Call ListNext() with
-     * this to fetch the next page of run commands.
+     * The uri to fetch the next page of run commands. Call ListNext() with this to fetch the next page of run
+     * commands.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
@@ -78,11 +75,13 @@ public final class RunCommandListResult {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model RunCommandListResult"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RunCommandListResult.class);
 }

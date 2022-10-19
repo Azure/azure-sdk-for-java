@@ -7,15 +7,12 @@ package com.azure.resourcemanager.securityinsights.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AwsS3DataConnectorDataTypes;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Amazon Web Services S3 data connector properties. */
 @Fluent
 public final class AwsS3DataConnectorProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AwsS3DataConnectorProperties.class);
-
     /*
      * The logs destination table name in LogAnalytics.
      */
@@ -127,25 +124,25 @@ public final class AwsS3DataConnectorProperties {
      */
     public void validate() {
         if (destinationTable() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property destinationTable in model AwsS3DataConnectorProperties"));
         }
         if (sqsUrls() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property sqsUrls in model AwsS3DataConnectorProperties"));
         }
         if (roleArn() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property roleArn in model AwsS3DataConnectorProperties"));
         }
         if (dataTypes() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property dataTypes in model AwsS3DataConnectorProperties"));
@@ -153,4 +150,6 @@ public final class AwsS3DataConnectorProperties {
             dataTypes().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AwsS3DataConnectorProperties.class);
 }

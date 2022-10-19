@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.RestorableMongodbDatabasesClient;
 import com.azure.resourcemanager.cosmos.fluent.models.RestorableMongodbDatabaseGetResultInner;
 import com.azure.resourcemanager.cosmos.models.RestorableMongodbDatabasesListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in RestorableMongodbDatabasesClient. */
 public final class RestorableMongodbDatabasesClientImpl implements RestorableMongodbDatabasesClient {
-    private final ClientLogger logger = new ClientLogger(RestorableMongodbDatabasesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final RestorableMongodbDatabasesService service;
 
@@ -87,7 +84,8 @@ public final class RestorableMongodbDatabasesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB database events and their properties.
+     * @return the List operation response, that contains the MongoDB database events and their properties along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableMongodbDatabaseGetResultInner>> listSinglePageAsync(
@@ -141,7 +139,8 @@ public final class RestorableMongodbDatabasesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB database events and their properties.
+     * @return the List operation response, that contains the MongoDB database events and their properties along with
+     *     {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RestorableMongodbDatabaseGetResultInner>> listSinglePageAsync(
@@ -191,7 +190,8 @@ public final class RestorableMongodbDatabasesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB database events and their properties.
+     * @return the List operation response, that contains the MongoDB database events and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableMongodbDatabaseGetResultInner> listAsync(String location, String instanceId) {
@@ -209,7 +209,8 @@ public final class RestorableMongodbDatabasesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB database events and their properties.
+     * @return the List operation response, that contains the MongoDB database events and their properties as paginated
+     *     response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<RestorableMongodbDatabaseGetResultInner> listAsync(
@@ -227,7 +228,8 @@ public final class RestorableMongodbDatabasesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB database events and their properties.
+     * @return the List operation response, that contains the MongoDB database events and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableMongodbDatabaseGetResultInner> list(String location, String instanceId) {
@@ -245,7 +247,8 @@ public final class RestorableMongodbDatabasesClientImpl implements RestorableMon
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List operation response, that contains the MongoDB database events and their properties.
+     * @return the List operation response, that contains the MongoDB database events and their properties as paginated
+     *     response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableMongodbDatabaseGetResultInner> list(

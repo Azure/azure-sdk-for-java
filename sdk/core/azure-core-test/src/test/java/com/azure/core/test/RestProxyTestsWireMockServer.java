@@ -6,6 +6,7 @@ package com.azure.core.test;
 import com.azure.core.http.ContentType;
 import com.azure.core.test.implementation.entities.HttpBinFormDataJSON;
 import com.azure.core.test.implementation.entities.HttpBinJSON;
+import com.azure.core.test.utils.MessageDigestUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -23,13 +24,13 @@ import com.github.tomakehurst.wiremock.http.ResponseDefinition;
 
 import java.io.IOException;
 import java.net.URL;
-import java.security.SecureRandom;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.delete;
@@ -42,6 +43,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlPathMatching;
 
 public final class RestProxyTestsWireMockServer {
     private static final JacksonAdapter JACKSON_ADAPTER = new JacksonAdapter();
+    private static final Random RANDOM = new Random();
 
     public static WireMockServer getRestProxyTestsServer() {
         WireMockServer server = new WireMockServer(WireMockConfiguration.options()
@@ -106,7 +108,9 @@ public final class RestProxyTestsWireMockServer {
             rawHeaders.put("Content-Length", String.valueOf(bodySize));
 
             byte[] body = new byte[bodySize];
-            new SecureRandom().nextBytes(body);
+            RANDOM.nextBytes(body);
+
+            rawHeaders.put("ETag", MessageDigestUtils.md5(body));
 
             return new ResponseDefinitionBuilder().withStatus(200)
                 .withHeaders(toWireMockHeaders(rawHeaders))

@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.TeradataTableDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("TeradataTable")
 @Fluent
 public final class TeradataTableDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TeradataTableDataset.class);
-
     /*
      * Teradata dataset properties.
      */
     @JsonProperty(value = "typeProperties")
     private TeradataTableDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of TeradataTableDataset class. */
+    public TeradataTableDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Teradata dataset properties.

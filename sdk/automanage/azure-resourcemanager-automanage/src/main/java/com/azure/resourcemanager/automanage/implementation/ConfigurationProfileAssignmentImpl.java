@@ -34,8 +34,16 @@ public final class ConfigurationProfileAssignmentImpl
         return this.innerModel().properties();
     }
 
+    public String managedBy() {
+        return this.innerModel().managedBy();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public ConfigurationProfileAssignmentInner innerModel() {

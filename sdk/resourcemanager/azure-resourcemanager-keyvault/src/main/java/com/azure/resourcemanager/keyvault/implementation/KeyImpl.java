@@ -12,6 +12,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.implementation.Creat
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClientBuilder;
+import com.azure.security.keyvault.keys.cryptography.CryptographyServiceVersion;
 import com.azure.security.keyvault.keys.cryptography.models.DecryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptResult;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
@@ -84,6 +85,7 @@ class KeyImpl extends CreatableUpdatableImpl<Key, KeyProperties, KeyImpl>
                     new CryptographyClientBuilder()
                         .keyIdentifier(innerModel().getId())
                         .pipeline(vault.vaultHttpPipeline())
+                        .serviceVersion(CryptographyServiceVersion.V7_2)
                         .buildAsyncClient();
             }
         }

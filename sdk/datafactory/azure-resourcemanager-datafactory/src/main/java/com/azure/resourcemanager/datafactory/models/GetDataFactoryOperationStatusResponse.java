@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** Response body structure for get data factory operation status. */
 @Fluent
 public final class GetDataFactoryOperationStatusResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GetDataFactoryOperationStatusResponse.class);
-
     /*
      * Status of the operation.
      */
@@ -28,6 +25,10 @@ public final class GetDataFactoryOperationStatusResponse {
      * Response body structure for get data factory operation status.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of GetDataFactoryOperationStatusResponse class. */
+    public GetDataFactoryOperationStatusResponse() {
+    }
 
     /**
      * Get the status property: Status of the operation.

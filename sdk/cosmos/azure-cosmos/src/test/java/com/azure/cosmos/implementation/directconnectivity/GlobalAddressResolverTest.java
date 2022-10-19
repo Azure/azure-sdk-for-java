@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
+import com.azure.cosmos.implementation.OpenConnectionResponse;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ResourceType;
@@ -19,7 +20,6 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.http.HttpClient;
-import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -27,16 +27,16 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.Mockito;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -127,50 +127,90 @@ public class GlobalAddressResolverTest {
     }
 
     @Test(groups = "unit")
-    public void openAsync() throws Exception {
-        GlobalAddressResolver globalAddressResolver = new GlobalAddressResolver(mockDiagnosticsClientContext(), httpClient, endpointManager, Protocol.HTTPS, authorizationTokenProvider, collectionCache, routingMapProvider,
-                userAgentContainer,
-                serviceConfigReader, connectionPolicy, null);
-        Map<URI, GlobalAddressResolver.EndpointCache> addressCacheByEndpoint = Mockito.spy(globalAddressResolver.addressCacheByEndpoint);
+    public void openConnectionAndInitCaches() {
+        GlobalAddressResolver globalAddressResolver =
+                new GlobalAddressResolver(
+                        mockDiagnosticsClientContext(),
+                        httpClient,
+                        endpointManager,
+                        Protocol.HTTPS,
+                        authorizationTokenProvider,
+                        collectionCache,
+                        routingMapProvider,
+                        userAgentContainer,
+                        serviceConfigReader,
+                        connectionPolicy,
+                        null);
         GlobalAddressResolver.EndpointCache endpointCache = new GlobalAddressResolver.EndpointCache();
         GatewayAddressCache gatewayAddressCache = Mockito.mock(GatewayAddressCache.class);
-        AtomicInteger numberOfTaskCompleted = new AtomicInteger(0);
         endpointCache.addressCache = gatewayAddressCache;
         globalAddressResolver.addressCacheByEndpoint.clear();
         globalAddressResolver.addressCacheByEndpoint.put(urlforRead1, endpointCache);
         globalAddressResolver.addressCacheByEndpoint.put(urlforRead2, endpointCache);
 
+        Mockito
+                .when(endpointManager.getReadEndpoints())
+                .thenReturn(new UnmodifiableList<URI>(Arrays.asList(urlforRead1, urlforRead2)));
 
         DocumentCollection documentCollection = new DocumentCollection();
         documentCollection.setId("TestColl");
         ModelBridgeInternal.setResourceId(documentCollection, "IXYFAOHEBPM=");
-        CollectionRoutingMap collectionRoutingMap = Mockito.mock(CollectionRoutingMap.class);
-        PartitionKeyRange range = new PartitionKeyRange("0", PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
+        documentCollection.setSelfLink("dbs/testDb/colls/TestColl");
+
+        PartitionKeyRange range = new PartitionKeyRange(
+                "0",
+                PartitionKeyInternalHelper.MinimumInclusiveEffectivePartitionKey,
                 PartitionKeyInternalHelper.MaximumExclusiveEffectivePartitionKey);
         List<PartitionKeyRange> partitionKeyRanges = new ArrayList<>();
         partitionKeyRanges.add(range);
-        Mockito.when(collectionRoutingMap.getOrderedPartitionKeyRanges()).thenReturn(partitionKeyRanges);
-        Mono<Utils.ValueHolder<CollectionRoutingMap>> collectionRoutingMapSingle = Mono.just(new Utils.ValueHolder<>(collectionRoutingMap));
-        Mockito.when(routingMapProvider.tryLookupAsync(Mockito.any(),
-            Mockito.any(), Mockito.any(), Mockito.any()))
-               .thenReturn(collectionRoutingMapSingle);
 
+        Mockito
+                .when(collectionCache.resolveByNameAsync(null, documentCollection.getSelfLink(), null))
+                .thenReturn(Mono.just(documentCollection));
+
+        Mockito
+                .when(routingMapProvider.tryGetOverlappingRangesAsync(
+                        null,
+                        documentCollection.getResourceId(),
+                        PartitionKeyInternalHelper.FullRange,
+                        true,
+                        null))
+                .thenReturn(Mono.just(new Utils.ValueHolder<>(partitionKeyRanges)));
+
+        // Set up GatewayAddressCache.openConnectionAndInitCaches behavior
         List<PartitionKeyRangeIdentity> ranges = new ArrayList<>();
-        for (PartitionKeyRange partitionKeyRange : collectionRoutingMap.getOrderedPartitionKeyRanges()) {
-            PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity(documentCollection.getResourceId(), partitionKeyRange.getId());
-            ranges.add(partitionKeyRangeIdentity);
+        for (PartitionKeyRange partitionKeyRange : partitionKeyRanges) {
+            ranges.add(new PartitionKeyRangeIdentity(documentCollection.getResourceId(), partitionKeyRange.getId()));
         }
 
-        Mono<Void> completable = Mono.fromCallable(new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                numberOfTaskCompleted.getAndIncrement();
-                return null;
-            }
-        });
-        Mockito.when(gatewayAddressCache.openAsync(documentCollection, ranges)).thenReturn(completable);
+        List<OpenConnectionResponse> openConnectionResponses = new ArrayList<>();
+        OpenConnectionResponse response1 = new OpenConnectionResponse(new Uri("http://localhost:8081"), true);
+        OpenConnectionResponse response2 = new OpenConnectionResponse(new Uri("http://localhost:8082"), false, new IllegalStateException("Test"));
 
-        globalAddressResolver.openAsync(documentCollection).block();
-        assertThat(numberOfTaskCompleted.get()).isEqualTo(2);
+        openConnectionResponses.add(response1);
+        openConnectionResponses.add(response2);
+
+        Mockito
+                .when(gatewayAddressCache.openConnectionsAndInitCaches(documentCollection, ranges))
+                .thenReturn(Flux.fromIterable(openConnectionResponses));
+
+        StepVerifier.create(globalAddressResolver.openConnectionsAndInitCaches(documentCollection.getSelfLink()))
+                        .expectNext(response1)
+                        .expectNext(response2)
+                        .verifyComplete();
+        Mockito
+                .verify(collectionCache, Mockito.times(1))
+                .resolveByNameAsync(null, documentCollection.getSelfLink(), null);
+        Mockito
+                .verify(routingMapProvider, Mockito.times(1))
+                .tryGetOverlappingRangesAsync(
+                        null,
+                        documentCollection.getResourceId(),
+                        PartitionKeyInternalHelper.FullRange,
+                        true,
+                        null);
+        Mockito
+                .verify(gatewayAddressCache, Mockito.times(1))
+                .openConnectionsAndInitCaches(documentCollection, ranges);
     }
 }

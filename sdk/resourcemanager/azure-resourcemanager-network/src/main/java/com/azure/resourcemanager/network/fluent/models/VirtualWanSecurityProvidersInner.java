@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.VirtualWanSecurityProvider;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of SecurityProviders. */
 @Fluent
 public final class VirtualWanSecurityProvidersInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualWanSecurityProvidersInner.class);
-
     /*
      * List of VirtualWAN security providers.
      */
     @JsonProperty(value = "supportedProviders")
     private List<VirtualWanSecurityProvider> supportedProviders;
+
+    /** Creates an instance of VirtualWanSecurityProvidersInner class. */
+    public VirtualWanSecurityProvidersInner() {
+    }
 
     /**
      * Get the supportedProviders property: List of VirtualWAN security providers.

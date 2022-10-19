@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionGetPropertiesResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of an Azure Cosmos DB userDefinedFunction. */
 @Fluent
 public final class SqlUserDefinedFunctionGetProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlUserDefinedFunctionGetProperties.class);
-
     /*
      * The resource property.
      */

@@ -7,7 +7,6 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.RerunTumblingWindowTriggerTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -22,14 +21,16 @@ import java.util.List;
 @JsonTypeName("RerunTumblingWindowTrigger")
 @Fluent
 public final class RerunTumblingWindowTrigger extends Trigger {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RerunTumblingWindowTrigger.class);
-
     /*
      * Rerun Trigger properties.
      */
     @JsonProperty(value = "typeProperties", required = true)
     private RerunTumblingWindowTriggerTypeProperties innerTypeProperties =
         new RerunTumblingWindowTriggerTypeProperties();
+
+    /** Creates an instance of RerunTumblingWindowTrigger class. */
+    public RerunTumblingWindowTrigger() {
+    }
 
     /**
      * Get the innerTypeProperties property: Rerun Trigger properties.
@@ -161,7 +162,7 @@ public final class RerunTumblingWindowTrigger extends Trigger {
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property innerTypeProperties in model RerunTumblingWindowTrigger"));
@@ -169,4 +170,6 @@ public final class RerunTumblingWindowTrigger extends Trigger {
             innerTypeProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RerunTumblingWindowTrigger.class);
 }

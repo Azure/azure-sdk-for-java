@@ -24,7 +24,7 @@ import static com.azure.core.amqp.implementation.ClientConstants.MAX_AMQP_HEADER
  */
 final class TransactionCoordinator implements AmqpTransactionCoordinator {
 
-    private final ClientLogger logger = new ClientLogger(TransactionCoordinator.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TransactionCoordinator.class);
 
     private final AmqpSendLink sendLink;
     private final MessageSerializer messageSerializer;
@@ -48,7 +48,7 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
         final Message message = Proton.message();
         Discharge discharge = new Discharge();
         discharge.setFail(!isCommit);
-        discharge.setTxnId(new Binary(transaction.getTransactionId().array()));
+        discharge.setTxnId(Binary.create(transaction.getTransactionId()));
         message.setBody(new AmqpValue(discharge));
 
         final int payloadSize = messageSerializer.getSize(message);
@@ -66,7 +66,7 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
                         break;
                     default:
                         sink.error(new IllegalArgumentException("Expected a Accepted, received: " + outcome));
-                        logger.warning("Unknown DeliveryState type: {}", stateType);
+                        LOGGER.warning("Unknown DeliveryState type: {}", stateType);
                 }
             });
     }
@@ -100,7 +100,7 @@ final class TransactionCoordinator implements AmqpTransactionCoordinator {
                         break;
                     default:
                         sink.error(new IllegalArgumentException("Expected a Declared, received: " + outcome));
-                        logger.warning("Unknown DeliveryState type: {}", stateType);
+                        LOGGER.warning("Unknown DeliveryState type: {}", stateType);
                 }
             });
     }

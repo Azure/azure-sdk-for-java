@@ -6,18 +6,14 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Specifies a list of role instances from the cloud service. */
 @Fluent
 public final class RoleInstances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleInstances.class);
-
     /*
-     * List of cloud service role instance names. Value of '*' will signify all
-     * role instances of the cloud service.
+     * List of cloud service role instance names. Value of '*' will signify all role instances of the cloud service.
      */
     @JsonProperty(value = "roleInstances", required = true)
     private List<String> roleInstances;
@@ -51,9 +47,11 @@ public final class RoleInstances {
      */
     public void validate() {
         if (roleInstances() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property roleInstances in model RoleInstances"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RoleInstances.class);
 }

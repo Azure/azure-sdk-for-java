@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Application Gateway Ssl policy. */
 @Fluent
 public final class ApplicationGatewaySslPolicy {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslPolicy.class);
-
     /*
      * Ssl protocols to be disabled on application gateway.
      */
@@ -34,8 +30,7 @@ public final class ApplicationGatewaySslPolicy {
     private ApplicationGatewaySslPolicyName policyName;
 
     /*
-     * Ssl cipher suites to be enabled in the specified order to application
-     * gateway.
+     * Ssl cipher suites to be enabled in the specified order to application gateway.
      */
     @JsonProperty(value = "cipherSuites")
     private List<ApplicationGatewaySslCipherSuite> cipherSuites;
@@ -45,6 +40,10 @@ public final class ApplicationGatewaySslPolicy {
      */
     @JsonProperty(value = "minProtocolVersion")
     private ApplicationGatewaySslProtocol minProtocolVersion;
+
+    /** Creates an instance of ApplicationGatewaySslPolicy class. */
+    public ApplicationGatewaySslPolicy() {
+    }
 
     /**
      * Get the disabledSslProtocols property: Ssl protocols to be disabled on application gateway.

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteUserProvidedFunctionAppProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** A static site user provided function. */
 @Fluent
 public final class StaticSiteUserProvidedFunctionApp extends ProxyOnlyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSiteUserProvidedFunctionApp.class);
-
     /*
      * StaticSiteUserProvidedFunctionApp resource specific properties
      */

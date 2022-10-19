@@ -446,6 +446,16 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
+    public void redeploy() {
+        this.redeployAsync().block();
+    }
+
+    @Override
+    public Mono<Void> redeployAsync() {
+        return client.redeployAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId());
+    }
+
+    @Override
     public void reimage() {
         this.reimageAsync().block();
     }
@@ -477,6 +487,17 @@ class VirtualMachineScaleSetVMImpl
         return this
             .client
             .powerOffAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), null);
+    }
+
+    @Override
+    public void powerOff(boolean skipShutdown) {
+        this.powerOffAsync(skipShutdown).block();
+    }
+
+    @Override
+    public Mono<Void> powerOffAsync(boolean skipShutdown) {
+        return this.client
+            .powerOffAsync(this.parent().resourceGroupName(), this.parent().name(), this.instanceId(), skipShutdown);
     }
 
     @Override

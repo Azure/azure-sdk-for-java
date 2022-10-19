@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ResourceHealthMetadata GetBySiteSlot. */
 public final class ResourceHealthMetadataGetBySiteSlotSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2021-03-01/examples/GetResourceHealthMetadataBySite.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-03-01/examples/GetResourceHealthMetadataBySite.json
      */
     /**
      * Sample code: Get ResourceHealthMetadata.

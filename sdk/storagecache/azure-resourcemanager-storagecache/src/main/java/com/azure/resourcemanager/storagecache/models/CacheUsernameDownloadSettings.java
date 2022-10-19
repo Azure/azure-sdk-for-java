@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Settings for Extended Groups username and group download. */
 @Fluent
 public final class CacheUsernameDownloadSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CacheUsernameDownloadSettings.class);
-
     /*
      * Whether or not Extended Groups is enabled.
      */

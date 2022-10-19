@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.securityinsights.models.AadDataConnector;
 import com.azure.resourcemanager.securityinsights.models.AatpDataConnector;
 import com.azure.resourcemanager.securityinsights.models.AscDataConnector;
@@ -14,17 +13,19 @@ import com.azure.resourcemanager.securityinsights.models.AwsS3DataConnector;
 import com.azure.resourcemanager.securityinsights.models.CodelessApiPollingDataConnector;
 import com.azure.resourcemanager.securityinsights.models.CodelessUiDataConnector;
 import com.azure.resourcemanager.securityinsights.models.Dynamics365DataConnector;
+import com.azure.resourcemanager.securityinsights.models.IoTDataConnector;
 import com.azure.resourcemanager.securityinsights.models.McasDataConnector;
 import com.azure.resourcemanager.securityinsights.models.MdatpDataConnector;
 import com.azure.resourcemanager.securityinsights.models.MstiDataConnector;
 import com.azure.resourcemanager.securityinsights.models.MtpDataConnector;
+import com.azure.resourcemanager.securityinsights.models.Office365ProjectDataConnector;
 import com.azure.resourcemanager.securityinsights.models.OfficeAtpDataConnector;
 import com.azure.resourcemanager.securityinsights.models.OfficeDataConnector;
 import com.azure.resourcemanager.securityinsights.models.OfficeIrmDataConnector;
+import com.azure.resourcemanager.securityinsights.models.OfficePowerBIDataConnector;
 import com.azure.resourcemanager.securityinsights.models.ResourceWithEtag;
 import com.azure.resourcemanager.securityinsights.models.TIDataConnector;
 import com.azure.resourcemanager.securityinsights.models.TiTaxiiDataConnector;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -47,18 +48,19 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "MicrosoftCloudAppSecurity", value = McasDataConnector.class),
     @JsonSubTypes.Type(name = "Dynamics365", value = Dynamics365DataConnector.class),
     @JsonSubTypes.Type(name = "OfficeATP", value = OfficeAtpDataConnector.class),
+    @JsonSubTypes.Type(name = "Office365Project", value = Office365ProjectDataConnector.class),
+    @JsonSubTypes.Type(name = "OfficePowerBI", value = OfficePowerBIDataConnector.class),
     @JsonSubTypes.Type(name = "OfficeIRM", value = OfficeIrmDataConnector.class),
     @JsonSubTypes.Type(name = "MicrosoftDefenderAdvancedThreatProtection", value = MdatpDataConnector.class),
     @JsonSubTypes.Type(name = "Office365", value = OfficeDataConnector.class),
     @JsonSubTypes.Type(name = "ThreatIntelligence", value = TIDataConnector.class),
     @JsonSubTypes.Type(name = "ThreatIntelligenceTaxii", value = TiTaxiiDataConnector.class),
+    @JsonSubTypes.Type(name = "IOT", value = IoTDataConnector.class),
     @JsonSubTypes.Type(name = "GenericUI", value = CodelessUiDataConnector.class),
     @JsonSubTypes.Type(name = "APIPolling", value = CodelessApiPollingDataConnector.class)
 })
 @Fluent
 public class DataConnectorInner extends ResourceWithEtag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(DataConnectorInner.class);
-
     /** {@inheritDoc} */
     @Override
     public DataConnectorInner withEtag(String etag) {

@@ -45,7 +45,7 @@ public class TestUtils {
     public static DiagnosticsClientContext mockDiagnosticsClientContext() {
         DiagnosticsClientContext clientContext = Mockito.mock(DiagnosticsClientContext.class);
         Mockito.doReturn(new DiagnosticsClientContext.DiagnosticsClientConfig()).when(clientContext).getConfig();
-        Mockito.doReturn(BridgeInternal.createCosmosDiagnostics(clientContext, Mockito.mock(GlobalEndpointManager.class))).when(clientContext).createDiagnostics();
+        Mockito.doReturn(BridgeInternal.createCosmosDiagnostics(clientContext)).when(clientContext).createDiagnostics();
 
         return clientContext;
     }

@@ -8,6 +8,10 @@ import com.azure.resourcemanager.cdn.CdnManager;
 import com.azure.resourcemanager.cdn.fluent.ProfilesClient;
 import com.azure.resourcemanager.cdn.fluent.models.ProfileInner;
 import com.azure.resourcemanager.cdn.fluent.models.SsoUriInner;
+import com.azure.resourcemanager.cdn.models.CheckNameAvailabilityInput;
+import com.azure.resourcemanager.cdn.models.LoadParameters;
+import com.azure.resourcemanager.cdn.models.PurgeParameters;
+import com.azure.resourcemanager.cdn.models.ResourceType;
 import com.azure.resourcemanager.cdn.models.ResourceUsage;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.TopLevelModifiableResourcesImpl;
 import com.azure.resourcemanager.cdn.models.CdnProfile;
@@ -71,7 +75,10 @@ public final class CdnProfilesImpl
 
     @Override
     public Mono<CheckNameAvailabilityResult> checkEndpointNameAvailabilityAsync(String name) {
-        return this.manager().serviceClient().checkNameAvailabilityAsync(name)
+        return this.manager().serviceClient()
+            .checkNameAvailabilityAsync(new CheckNameAvailabilityInput()
+                .withName(name)
+                .withType(ResourceType.MICROSOFT_CDN_PROFILES_ENDPOINTS))
             .map(CheckNameAvailabilityResult::new);
     }
 
@@ -107,13 +114,15 @@ public final class CdnProfilesImpl
     public void purgeEndpointContent(
         String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
         this.manager().serviceClient().getEndpoints()
-            .purgeContent(resourceGroupName, profileName, endpointName, contentPaths);
+            .purgeContent(resourceGroupName, profileName, endpointName,
+                new PurgeParameters().withContentPaths(contentPaths));
     }
 
     @Override
     public void loadEndpointContent(
         String resourceGroupName, String profileName, String endpointName, List<String> contentPaths) {
         this.manager().serviceClient().getEndpoints()
-            .loadContent(resourceGroupName, profileName, endpointName, contentPaths);
+            .loadContent(resourceGroupName, profileName, endpointName,
+                new LoadParameters().withContentPaths(contentPaths));
     }
 }

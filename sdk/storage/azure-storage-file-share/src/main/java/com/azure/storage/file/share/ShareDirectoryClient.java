@@ -23,6 +23,8 @@ import com.azure.storage.file.share.models.HandleItem;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 import com.azure.storage.file.share.models.ShareStorageException;
 import com.azure.storage.file.share.models.ShareFileItem;
+import com.azure.storage.file.share.options.ShareDirectoryCreateOptions;
+import com.azure.storage.file.share.options.ShareFileRenameOptions;
 import com.azure.storage.file.share.options.ShareListFilesAndDirectoriesOptions;
 import com.azure.storage.file.share.sas.ShareServiceSasSignatureValues;
 import reactor.core.publisher.Mono;
@@ -219,6 +221,75 @@ public class ShareDirectoryClient {
     }
 
     /**
+     * Creates a directory in the file share if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the directory</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createIfNotExists -->
+     * <pre>
+     * ShareDirectoryClient shareDirectoryClient = createClientWithSASToken&#40;&#41;;
+     * ShareDirectoryInfo shareDirectoryInfo = shareDirectoryClient.createIfNotExists&#40;&#41;;
+     * System.out.printf&#40;&quot;Last Modified Time:%s&quot;, shareDirectoryInfo.getLastModified&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createIfNotExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
+     * @return A {@link ShareDirectoryInfo} that contains information about the created directory.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareDirectoryInfo createIfNotExists() {
+        return createIfNotExistsWithResponse(new ShareDirectoryCreateOptions(), null, null).getValue();
+    }
+
+    /**
+     * Creates a directory in the file share if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the directory</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions-Duration-Context -->
+     * <pre>
+     * ShareDirectoryClient directoryClient = createClientWithSASToken&#40;&#41;;
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
+     * String filePermission = &quot;filePermission&quot;;
+     * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
+     *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
+     *
+     * Response&lt;ShareDirectoryInfo&gt; response = directoryClient.createIfNotExistsWithResponse&#40;options,
+     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     *
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createIfNotExistsWithResponse#ShareDirectoryCreateOptions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
+     * @param options {@link ShareDirectoryCreateOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A reactive {@link Response} signaling completion, whose {@link Response#getValue() value} contains a
+     * {@link ShareDirectoryInfo} containing information about the directory. If {@link Response}'s status code is 201,
+     * a new directory was successfully created. If status code is 409, a directory already existed at this location.
+     * */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareDirectoryInfo> createIfNotExistsWithResponse(ShareDirectoryCreateOptions options,
+        Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient.createIfNotExistsWithResponse(options, context),
+            timeout);
+    }
+
+    /**
      * Deletes the directory in the file share. The directory must be empty before it can be deleted.
      *
      * <p><strong>Code Samples</strong></p>
@@ -272,6 +343,63 @@ public class ShareDirectoryClient {
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
+    /**
+     * Deletes the directory in the file share if it exists. The directory must be empty before it can be deleted.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the directory</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteIfExists -->
+     * <pre>
+     * ShareDirectoryClient shareDirectoryClient = createClientWithSASToken&#40;&#41;;
+     * boolean result = shareDirectoryClient.deleteIfExists&#40;&#41;;
+     * System.out.println&#40;&quot;Directory deleted: &quot; + result&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteIfExists -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     * @return {@code true} if the directory is successfully deleted, {@code false} if the directory does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean deleteIfExists() {
+        return deleteIfExistsWithResponse(null, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the directory in the file share if it exists. The directory must be empty before it can be deleted.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the directory</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context -->
+     * <pre>
+     * Response&lt;Boolean&gt; response = shareDirectoryClient.deleteIfExistsWithResponse&#40;Duration.ofSeconds&#40;1&#41;,
+     *     new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteIfExistsWithResponse#duration-context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the directory
+     * was successfully deleted. If status code is 404, the directory does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> deleteIfExistsWithResponse(Duration timeout, Context context) {
+        return StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient.deleteIfExistsWithResponse(context),
+            timeout);
+    }
     /**
      * Retrieves the properties of this directory. The properties includes directory metadata, last modified date, is
      * server encrypted, and eTag.
@@ -714,6 +842,73 @@ public class ShareDirectoryClient {
     }
 
     /**
+     * Moves the directory to another location within the share.
+     * For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-directory">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.rename#String -->
+     * <pre>
+     * ShareDirectoryClient renamedClient = client.rename&#40;destinationPath&#41;;
+     * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.rename#String -->
+     *
+     * @param destinationPath Relative path from the share to rename the directory to.
+     * @return A {@link ShareDirectoryClient} used to interact with the new file created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareDirectoryClient rename(String destinationPath) {
+        return renameWithResponse(new ShareFileRenameOptions(destinationPath), null, Context.NONE).getValue();
+    }
+
+    /**
+     * Moves the directory to another location within the share.
+     * For more information see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/rename-directory">Azure
+     * Docs</a>.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.renameWithResponse#ShareFileRenameOptions-Duration-Context -->
+     * <pre>
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;
+     *     .setNtfsFileAttributes&#40;EnumSet.of&#40;NtfsFileAttributes.READ_ONLY&#41;&#41;
+     *     .setFileCreationTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFileLastWriteTime&#40;OffsetDateTime.now&#40;&#41;&#41;
+     *     .setFilePermissionKey&#40;&quot;filePermissionKey&quot;&#41;;
+     * ShareFileRenameOptions options = new ShareFileRenameOptions&#40;destinationPath&#41;
+     *     .setDestinationRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setSourceRequestConditions&#40;new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;
+     *     .setIgnoreReadOnly&#40;false&#41;
+     *     .setReplaceIfExists&#40;false&#41;
+     *     .setFilePermission&#40;&quot;filePermission&quot;&#41;
+     *     .setSmbProperties&#40;smbProperties&#41;;
+     *
+     * ShareDirectoryClient newRenamedClient = client.renameWithResponse&#40;options, timeout,
+     *     new Context&#40;key1, value1&#41;&#41;.getValue&#40;&#41;;
+     * System.out.println&#40;&quot;Directory Client has been renamed&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.renameWithResponse#ShareFileRenameOptions-Duration-Context -->
+     *
+     * @param options {@link ShareFileRenameOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A  {@link Response} whose {@link Response#getValue() value} contains a {@link ShareDirectoryClient} used
+     * to interact with the file created.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareDirectoryClient> renameWithResponse(ShareFileRenameOptions options, Duration timeout,
+        Context context) {
+        Mono<Response<ShareDirectoryAsyncClient>> mono = shareDirectoryAsyncClient.renameWithResponse(options, context);
+        Response<ShareDirectoryAsyncClient> response = StorageImplUtils.blockWithOptionalTimeout(mono, timeout);
+        return new SimpleResponse<>(response, new ShareDirectoryClient(response.getValue()));
+    }
+
+    /**
      * Creates a subdirectory under current directory with specific name and returns a response of ShareDirectoryClient
      * to interact with it.
      *
@@ -786,6 +981,77 @@ public class ShareDirectoryClient {
     }
 
     /**
+     * Creates a subdirectory under current directory with specified name if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the sub directory "subdir" </p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExists#string -->
+     * <pre>
+     * ShareDirectoryClient subdirectoryClient = shareDirectoryClient.createSubdirectoryIfNotExists&#40;&quot;subdir&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExists#string -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
+     * @param subdirectoryName Name of the subdirectory
+     * @return A {@link ShareDirectoryClient} used to interact with the subdirectory created.
+     * */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ShareDirectoryClient createSubdirectoryIfNotExists(String subdirectoryName) {
+        return createSubdirectoryIfNotExistsWithResponse(subdirectoryName, new ShareDirectoryCreateOptions(), null,
+            Context.NONE).getValue();
+    }
+
+    /**
+     * Creates a subdirectory under current directory with specific name and metadata if it does not exist.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Create the subdirectory named "subdir", with metadata</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions-Duration-Context -->
+     * <pre>
+     * FileSmbProperties smbProperties = new FileSmbProperties&#40;&#41;;
+     * String filePermission = &quot;filePermission&quot;;
+     * ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions&#40;&#41;.setSmbProperties&#40;smbProperties&#41;
+     *     .setFilePermission&#40;filePermission&#41;.setMetadata&#40;Collections.singletonMap&#40;&quot;directory&quot;, &quot;metadata&quot;&#41;&#41;;
+     *
+     * Response&lt;ShareDirectoryClient&gt; response = shareDirectoryClient
+     *     .createSubdirectoryIfNotExistsWithResponse&#40;&quot;subdir&quot;, options, Duration.ofSeconds&#40;1&#41;,
+     *         new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 409&#41; &#123;
+     *     System.out.println&#40;&quot;Already existed.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Create completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.createSubdirectoryIfNotExistsWithResponse#String-ShareDirectoryCreateOptions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/create-directory">Azure Docs</a>.</p>
+     *
+     * @param subdirectoryName Name of the subdirectory
+     * @param options {@link ShareDirectoryCreateOptions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the {@link ShareDirectoryClient} used
+     * to interact with the subdirectory created. If {@link Response}'s status code is 201, a new subdirectory was
+     * successfully created. If status code is 409, a subdirectory with the same name already existed at this location.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ShareDirectoryClient> createSubdirectoryIfNotExistsWithResponse(String subdirectoryName,
+        ShareDirectoryCreateOptions options, Duration timeout, Context context) {
+        ShareDirectoryClient shareDirectoryClient = getSubdirectoryClient(subdirectoryName);
+        Response<ShareDirectoryInfo> response = shareDirectoryClient.createIfNotExistsWithResponse(options,
+            timeout, context);
+        return new SimpleResponse<>(response, shareDirectoryClient);
+    }
+
+    /**
      * Deletes the subdirectory with specific name in this directory. The directory must be empty before it can be
      * deleted.
      *
@@ -848,6 +1114,70 @@ public class ShareDirectoryClient {
     }
 
     /**
+     * Deletes the subdirectory with specific name in this directory if it exists. The directory must be empty before
+     * it can be deleted.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the subdirectory named "subdir"</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExists#string -->
+     * <pre>
+     * boolean result = shareDirectoryClient.deleteSubdirectoryIfExists&#40;&quot;mysubdirectory&quot;&#41;;
+     * System.out.println&#40;&quot;Subdirectory deleted: &quot; + result&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExists#string -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
+     * @param subdirectoryName Name of the subdirectory
+     * @return {@code true} if subdirectory is successfully deleted, {@code false} if subdirectory does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean deleteSubdirectoryIfExists(String subdirectoryName) {
+        return deleteSubdirectoryIfExistsWithResponse(subdirectoryName, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the subdirectory with specific name in this directory if it exists. The directory must be empty
+     * before it can be deleted.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the subdirectory named "mysubdirectory"</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExistsWithResponse#string-duration-context -->
+     * <pre>
+     * Response&lt;Boolean&gt; response = shareDirectoryClient.deleteSubdirectoryIfExistsWithResponse&#40;&quot;mysubdirectory&quot;,
+     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteSubdirectoryIfExistsWithResponse#string-duration-context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-directory">Azure Docs</a>.</p>
+     *
+     * @param subdirectoryName Name of the subdirectory
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the
+     * subdirectory was successfully deleted. If status code is 404, the subdirectory does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> deleteSubdirectoryIfExistsWithResponse(String subdirectoryName, Duration timeout,
+        Context context) {
+        Mono<Response<Boolean>> response = shareDirectoryAsyncClient
+            .deleteSubdirectoryIfExistsWithResponse(subdirectoryName, context);
+        return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
      * Creates a file in this directory with specific name, max number of results and returns a response of
      * ShareDirectoryInfo to interact with it.
      *
@@ -868,8 +1198,7 @@ public class ShareDirectoryClient {
      * @param fileName Name of the file
      * @param maxSize Size of the file
      * @return The ShareFileClient
-     * @throws ShareStorageException If the file has already existed, the parent directory does not exist or file name
-     * is an invalid resource name.
+     * @throws ShareStorageException If the parent directory does not exist or file name is an invalid resource name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ShareFileClient createFile(String fileName, long maxSize) {
@@ -920,8 +1249,7 @@ public class ShareDirectoryClient {
      * concludes a {@link RuntimeException} will be thrown.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return A response containing the directory info and the status of creating the directory.
-     * @throws ShareStorageException If the directory has already existed, the parent directory does not exist or file
-     * name is an invalid resource name.
+     * @throws ShareStorageException If the parent directory does not exist or file name is an invalid resource name.
      * @throws RuntimeException if the operation doesn't complete before the timeout concludes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1086,6 +1414,104 @@ public class ShareDirectoryClient {
         Mono<Response<Void>> response = shareDirectoryAsyncClient.deleteFileWithResponse(fileName, requestConditions,
             context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
+    }
+
+    /**
+     * Deletes the file with specific name in this directory if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "filetest"</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExists#string -->
+     * <pre>
+     * boolean result = shareDirectoryClient.deleteFileIfExists&#40;&quot;myfile&quot;&#41;;
+     * System.out.println&#40;&quot;File deleted: &quot; + result&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExists#string -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @return {@code true} if the file is successfully deleted, {@code false} if the file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public boolean deleteFileIfExists(String fileName) {
+        return deleteFileIfExistsWithResponse(fileName, null, null, Context.NONE).getValue();
+    }
+
+    /**
+     * Deletes the file with specific name in this directory if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "filetest"</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-Duration-Context -->
+     * <pre>
+     * Response&lt;Boolean&gt; response = shareDirectoryClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;,
+     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;response.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the file
+     * was successfully deleted. If status code is 404, the file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> deleteFileIfExistsWithResponse(String fileName, Duration timeout, Context context) {
+        return this.deleteFileIfExistsWithResponse(fileName, null, timeout, context);
+    }
+
+    /**
+     * Deletes the file with specific name in this directory if it exists.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Delete the file "filetest"</p>
+     *
+     * <!-- src_embed com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareRequestConditions-Duration-Context -->
+     * <pre>
+     * ShareRequestConditions requestConditions = new ShareRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;;
+     *
+     * Response&lt;Boolean&gt; fileResponse = shareDirectoryClient.deleteFileIfExistsWithResponse&#40;&quot;myfile&quot;, requestConditions,
+     *     Duration.ofSeconds&#40;1&#41;, new Context&#40;key1, value1&#41;&#41;;
+     * if &#40;fileResponse.getStatusCode&#40;&#41; == 404&#41; &#123;
+     *     System.out.println&#40;&quot;Does not exist.&quot;&#41;;
+     * &#125; else &#123;
+     *     System.out.printf&#40;&quot;Delete completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.file.share.ShareDirectoryClient.deleteFileIfExistsWithResponse#String-ShareRequestConditions-Duration-Context -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/delete-file2">Azure Docs</a>.</p>
+     *
+     * @param fileName Name of the file
+     * @param requestConditions {@link ShareRequestConditions}
+     * @param timeout An optional timeout applied to the operation. If a response is not returned before the timeout
+     * concludes a {@link RuntimeException} will be thrown.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A response containing status code and HTTP headers. If {@link Response}'s status code is 202, the file
+     * was successfully deleted. If status code is 404, the file does not exist.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Boolean> deleteFileIfExistsWithResponse(String fileName, ShareRequestConditions requestConditions,
+        Duration timeout, Context context) {
+        return  StorageImplUtils.blockWithOptionalTimeout(shareDirectoryAsyncClient
+            .deleteFileIfExistsWithResponse(fileName, requestConditions, context), timeout);
     }
 
     /**

@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for ListNetworkVirtualAppliances API service call. */
 @Fluent
 public final class NetworkVirtualApplianceListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkVirtualApplianceListResult.class);
-
     /*
      * List of Network Virtual Appliances.
      */
@@ -27,6 +23,10 @@ public final class NetworkVirtualApplianceListResult {
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
+
+    /** Creates an instance of NetworkVirtualApplianceListResult class. */
+    public NetworkVirtualApplianceListResult() {
+    }
 
     /**
      * Get the value property: List of Network Virtual Appliances.

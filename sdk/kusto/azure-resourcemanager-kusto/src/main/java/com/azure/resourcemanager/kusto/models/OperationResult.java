@@ -59,6 +59,13 @@ public interface OperationResult {
     String operationKind();
 
     /**
+     * Gets the provisioningState property: The provisioned state of the resource.
+     *
+     * @return the provisioningState value.
+     */
+    ProvisioningState provisioningState();
+
+    /**
      * Gets the operationState property: The state of the operation.
      *
      * @return the operationState value.

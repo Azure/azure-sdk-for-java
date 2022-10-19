@@ -5,22 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslCipherSuite;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of ApplicationGatewaySslPredefinedPolicy. */
 @Fluent
 public final class ApplicationGatewaySslPredefinedPolicyPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewaySslPredefinedPolicyPropertiesFormat.class);
-
     /*
-     * Ssl cipher suites to be enabled in the specified order for application
-     * gateway.
+     * Ssl cipher suites to be enabled in the specified order for application gateway.
      */
     @JsonProperty(value = "cipherSuites")
     private List<ApplicationGatewaySslCipherSuite> cipherSuites;
@@ -30,6 +24,10 @@ public final class ApplicationGatewaySslPredefinedPolicyPropertiesFormat {
      */
     @JsonProperty(value = "minProtocolVersion")
     private ApplicationGatewaySslProtocol minProtocolVersion;
+
+    /** Creates an instance of ApplicationGatewaySslPredefinedPolicyPropertiesFormat class. */
+    public ApplicationGatewaySslPredefinedPolicyPropertiesFormat() {
+    }
 
     /**
      * Get the cipherSuites property: Ssl cipher suites to be enabled in the specified order for application gateway.

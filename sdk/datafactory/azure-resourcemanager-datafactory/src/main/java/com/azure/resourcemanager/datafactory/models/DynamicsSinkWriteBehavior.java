@@ -24,7 +24,11 @@ public final class DynamicsSinkWriteBehavior extends ExpandableStringEnum<Dynami
         return fromString(name, DynamicsSinkWriteBehavior.class);
     }
 
-    /** @return known DynamicsSinkWriteBehavior values. */
+    /**
+     * Gets known DynamicsSinkWriteBehavior values.
+     *
+     * @return known DynamicsSinkWriteBehavior values.
+     */
     public static Collection<DynamicsSinkWriteBehavior> values() {
         return values(DynamicsSinkWriteBehavior.class);
     }

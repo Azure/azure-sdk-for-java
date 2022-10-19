@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.synapse.fluent.SqlPoolOperationsClient;
 import com.azure.resourcemanager.synapse.fluent.models.SqlPoolOperationInner;
 import com.azure.resourcemanager.synapse.models.SqlPoolBlobAuditingPolicySqlPoolOperationListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SqlPoolOperationsClient. */
 public final class SqlPoolOperationsClientImpl implements SqlPoolOperationsClient {
-    private final ClientLogger logger = new ClientLogger(SqlPoolOperationsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SqlPoolOperationsService service;
 
@@ -221,7 +218,7 @@ public final class SqlPoolOperationsClientImpl implements SqlPoolOperationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the SQL pool.
+     * @return a list of operations performed on the SQL pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlPoolOperationInner> listAsync(
@@ -241,7 +238,7 @@ public final class SqlPoolOperationsClientImpl implements SqlPoolOperationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the SQL pool.
+     * @return a list of operations performed on the SQL pool as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SqlPoolOperationInner> listAsync(
@@ -260,7 +257,7 @@ public final class SqlPoolOperationsClientImpl implements SqlPoolOperationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the SQL pool.
+     * @return a list of operations performed on the SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlPoolOperationInner> list(
@@ -278,7 +275,7 @@ public final class SqlPoolOperationsClientImpl implements SqlPoolOperationsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of operations performed on the SQL pool.
+     * @return a list of operations performed on the SQL pool as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SqlPoolOperationInner> list(

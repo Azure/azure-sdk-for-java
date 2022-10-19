@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The activity query definitions. */
 @Fluent
 public final class InsightQueryItemPropertiesAdditionalQuery {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(InsightQueryItemPropertiesAdditionalQuery.class);
-
     /*
      * The insight query.
      */

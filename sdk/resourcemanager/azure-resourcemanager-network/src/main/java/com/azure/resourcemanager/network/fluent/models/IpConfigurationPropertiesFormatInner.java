@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of IP configuration. */
 @Fluent
 public final class IpConfigurationPropertiesFormatInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationPropertiesFormatInner.class);
-
     /*
      * The private IP address of the IP configuration.
      */
@@ -45,6 +41,10 @@ public final class IpConfigurationPropertiesFormatInner {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of IpConfigurationPropertiesFormatInner class. */
+    public IpConfigurationPropertiesFormatInner() {
+    }
 
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.

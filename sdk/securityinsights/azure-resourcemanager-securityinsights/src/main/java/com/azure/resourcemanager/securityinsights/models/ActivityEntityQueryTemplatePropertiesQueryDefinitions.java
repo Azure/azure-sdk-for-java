@@ -5,16 +5,11 @@
 package com.azure.resourcemanager.securityinsights.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The Activity query definitions. */
 @Fluent
 public final class ActivityEntityQueryTemplatePropertiesQueryDefinitions {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ActivityEntityQueryTemplatePropertiesQueryDefinitions.class);
-
     /*
      * The Activity query to run on a given entity
      */
@@ -22,8 +17,7 @@ public final class ActivityEntityQueryTemplatePropertiesQueryDefinitions {
     private String query;
 
     /*
-     * The dimensions we want to summarize the timeline results on, this is
-     * comma separated list
+     * The dimensions we want to summarize the timeline results on, this is comma separated list
      */
     @JsonProperty(value = "summarizeBy")
     private String summarizeBy;

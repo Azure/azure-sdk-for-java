@@ -36,7 +36,11 @@ public final class ProviderOsTypeSelected extends ExpandableStringEnum<ProviderO
         return fromString(name, ProviderOsTypeSelected.class);
     }
 
-    /** @return known ProviderOsTypeSelected values. */
+    /**
+     * Gets known ProviderOsTypeSelected values.
+     *
+     * @return known ProviderOsTypeSelected values.
+     */
     public static Collection<ProviderOsTypeSelected> values() {
         return values(ProviderOsTypeSelected.class);
     }

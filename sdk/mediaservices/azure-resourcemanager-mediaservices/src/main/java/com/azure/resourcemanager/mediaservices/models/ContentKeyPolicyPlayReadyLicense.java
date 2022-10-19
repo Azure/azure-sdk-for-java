@@ -6,7 +6,6 @@ package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -14,13 +13,17 @@ import java.time.OffsetDateTime;
 /** The PlayReady license. */
 @Fluent
 public final class ContentKeyPolicyPlayReadyLicense {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContentKeyPolicyPlayReadyLicense.class);
-
     /*
      * A flag indicating whether test devices can use the license.
      */
     @JsonProperty(value = "allowTestDevices", required = true)
     private boolean allowTestDevices;
+
+    /*
+     * The security level.
+     */
+    @JsonProperty(value = "securityLevel")
+    private SecurityLevel securityLevel;
 
     /*
      * The begin date of license
@@ -93,6 +96,26 @@ public final class ContentKeyPolicyPlayReadyLicense {
      */
     public ContentKeyPolicyPlayReadyLicense withAllowTestDevices(boolean allowTestDevices) {
         this.allowTestDevices = allowTestDevices;
+        return this;
+    }
+
+    /**
+     * Get the securityLevel property: The security level.
+     *
+     * @return the securityLevel value.
+     */
+    public SecurityLevel securityLevel() {
+        return this.securityLevel;
+    }
+
+    /**
+     * Set the securityLevel property: The security level.
+     *
+     * @param securityLevel the securityLevel value to set.
+     * @return the ContentKeyPolicyPlayReadyLicense object itself.
+     */
+    public ContentKeyPolicyPlayReadyLicense withSecurityLevel(SecurityLevel securityLevel) {
+        this.securityLevel = securityLevel;
         return this;
     }
 
@@ -287,13 +310,13 @@ public final class ContentKeyPolicyPlayReadyLicense {
             playRight().validate();
         }
         if (licenseType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property licenseType in model ContentKeyPolicyPlayReadyLicense"));
         }
         if (contentKeyLocation() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property contentKeyLocation in model ContentKeyPolicyPlayReadyLicense"));
@@ -301,10 +324,12 @@ public final class ContentKeyPolicyPlayReadyLicense {
             contentKeyLocation().validate();
         }
         if (contentType() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property contentType in model ContentKeyPolicyPlayReadyLicense"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(ContentKeyPolicyPlayReadyLicense.class);
 }

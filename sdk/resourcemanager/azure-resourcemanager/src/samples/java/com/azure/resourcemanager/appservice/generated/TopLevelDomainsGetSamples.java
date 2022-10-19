@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for TopLevelDomains Get. */
 public final class TopLevelDomainsGetSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2021-03-01/examples/GetTopLevelDomain.json
+     * x-ms-original-file: specification/web/resource-manager/Microsoft.DomainRegistration/stable/2022-03-01/examples/GetTopLevelDomain.json
      */
     /**
      * Sample code: Get Top Level Domain.

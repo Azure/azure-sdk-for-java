@@ -6,16 +6,12 @@ package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.BastionHostIpConfigurationPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** IP configuration of an Bastion Host. */
 @Fluent
 public final class BastionHostIpConfiguration extends SubResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BastionHostIpConfiguration.class);
-
     /*
      * Represents the ip configuration associated with the resource.
      */
@@ -23,8 +19,7 @@ public final class BastionHostIpConfiguration extends SubResource {
     private BastionHostIpConfigurationPropertiesFormat innerProperties;
 
     /*
-     * Name of the resource that is unique within a resource group. This name
-     * can be used to access the resource.
+     * Name of the resource that is unique within a resource group. This name can be used to access the resource.
      */
     @JsonProperty(value = "name")
     private String name;
@@ -40,6 +35,10 @@ public final class BastionHostIpConfiguration extends SubResource {
      */
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
+
+    /** Creates an instance of BastionHostIpConfiguration class. */
+    public BastionHostIpConfiguration() {
+    }
 
     /**
      * Get the innerProperties property: Represents the ip configuration associated with the resource.

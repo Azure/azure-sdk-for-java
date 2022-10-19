@@ -5,22 +5,22 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.BgpPeerStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Response for list BGP peer status API service call. */
 @Fluent
 public final class BgpPeerStatusListResultInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpPeerStatusListResultInner.class);
-
     /*
      * List of BGP peers.
      */
     @JsonProperty(value = "value")
     private List<BgpPeerStatus> value;
+
+    /** Creates an instance of BgpPeerStatusListResultInner class. */
+    public BgpPeerStatusListResultInner() {
+    }
 
     /**
      * Get the value property: List of BGP peers.

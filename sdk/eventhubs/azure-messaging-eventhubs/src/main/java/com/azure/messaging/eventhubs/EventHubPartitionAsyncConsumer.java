@@ -19,12 +19,15 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.CONSUMER_GROUP_KEY;
+import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
+
 /**
  * A package-private consumer responsible for reading {@link EventData} from a specific Event Hub partition in the
  * context of a specific consumer group.
  */
 class EventHubPartitionAsyncConsumer implements AutoCloseable {
-    private final ClientLogger logger = new ClientLogger(EventHubPartitionAsyncConsumer.class);
+    private static final ClientLogger LOGGER = new ClientLogger(EventHubPartitionAsyncConsumer.class);
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final AtomicReference<LastEnqueuedEventProperties> lastEnqueuedEventProperties = new AtomicReference<>();
     private final AmqpReceiveLinkProcessor amqpReceiveLinkProcessor;
@@ -72,10 +75,11 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                 if (offset != null) {
                     currentOffset = offset;
                 } else {
-                    logger.warning(
-                        "Offset for received event should not be null. Partition Id: {}. Consumer group: {}. Data: {}",
-                        event.getPartitionContext().getPartitionId(), event.getPartitionContext().getConsumerGroup(),
-                        event.getData().getBodyAsString());
+                    LOGGER.atWarning()
+                        .addKeyValue(PARTITION_ID_KEY,  event.getPartitionContext().getPartitionId())
+                        .addKeyValue(CONSUMER_GROUP_KEY, event.getPartitionContext().getConsumerGroup())
+                        .addKeyValue("data", () -> event.getData().getBodyAsString())
+                        .log("Offset for received event should not be null.");
                 }
             });
     }
@@ -90,7 +94,9 @@ class EventHubPartitionAsyncConsumer implements AutoCloseable {
                 // cancel only if the processor is not already terminated.
                 amqpReceiveLinkProcessor.cancel();
             }
-            logger.info("Closed consumer for partition {}", this.partitionId);
+            LOGGER.atInfo()
+                .addKeyValue(PARTITION_ID_KEY, this.partitionId)
+                .log("Closed consumer.");
         }
     }
 

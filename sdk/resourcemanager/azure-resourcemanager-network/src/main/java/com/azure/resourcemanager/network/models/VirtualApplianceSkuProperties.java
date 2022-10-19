@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Network Virtual Appliance Sku Properties. */
 @Fluent
 public final class VirtualApplianceSkuProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualApplianceSkuProperties.class);
-
     /*
      * Virtual Appliance Vendor.
      */
@@ -31,6 +27,10 @@ public final class VirtualApplianceSkuProperties {
      */
     @JsonProperty(value = "marketPlaceVersion")
     private String marketPlaceVersion;
+
+    /** Creates an instance of VirtualApplianceSkuProperties class. */
+    public VirtualApplianceSkuProperties() {
+    }
 
     /**
      * Get the vendor property: Virtual Appliance Vendor.

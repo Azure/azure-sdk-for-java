@@ -134,7 +134,8 @@ import java.util.function.Supplier;
  */
 public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C, T>>
     extends ContinuablePagedFlux<C, T, P> {
-    private final ClientLogger logger = new ClientLogger(ContinuablePagedFluxCore.class);
+    // ContinuablePagedFluxCore is a commonly used class, use a static logger.
+    private static final ClientLogger LOGGER = new ClientLogger(ContinuablePagedFluxCore.class);
 
     final Supplier<PageRetriever<C, P>> pageRetrieverProvider;
     final Integer defaultPageSize;
@@ -176,7 +177,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
         this.pageRetrieverProvider = Objects.requireNonNull(pageRetrieverProvider,
             "'pageRetrieverProvider' function cannot be null.");
         if (pageSize != null && pageSize <= 0) {
-            throw logger.logExceptionAsError(
+            throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("'pageSize' must be greater than 0 required but provided: " + pageSize));
         }
         this.defaultPageSize = pageSize;
@@ -288,10 +289,7 @@ public abstract class ContinuablePagedFluxCore<C, T, P extends ContinuablePage<C
             return Flux.empty();
         } else {
             return pageRetriever.get(state.getLastContinuationToken(), pageSize)
-                .switchIfEmpty(Flux.defer(() -> {
-                    state.setLastContinuationToken(null);
-                    return Mono.empty();
-                }));
+                .switchIfEmpty(Mono.fromRunnable(() -> state.setLastContinuationToken(null)));
         }
     }
 }

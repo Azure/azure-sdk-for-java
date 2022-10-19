@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,8 +16,6 @@ import java.util.Map;
 /** The workflow trigger recurrence. */
 @Fluent
 public final class ScheduleTriggerRecurrence {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScheduleTriggerRecurrence.class);
-
     /*
      * The frequency.
      */
@@ -59,6 +56,10 @@ public final class ScheduleTriggerRecurrence {
      * The workflow trigger recurrence.
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
+
+    /** Creates an instance of ScheduleTriggerRecurrence class. */
+    public ScheduleTriggerRecurrence() {
+    }
 
     /**
      * Get the frequency property: The frequency.

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.loganalytics.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.loganalytics.models.SkuNameEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Service Tier details. */
 @Immutable
 public final class AvailableServiceTierInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableServiceTierInner.class);
-
     /*
      * The name of the Service Tier.
      */

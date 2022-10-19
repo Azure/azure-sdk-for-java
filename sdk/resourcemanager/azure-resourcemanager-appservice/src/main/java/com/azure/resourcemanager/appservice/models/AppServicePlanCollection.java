@@ -7,15 +7,12 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.models.AppServicePlanInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Collection of App Service plans. */
 @Fluent
 public final class AppServicePlanCollection {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppServicePlanCollection.class);
-
     /*
      * Collection of resources.
      */
@@ -64,11 +61,13 @@ public final class AppServicePlanCollection {
      */
     public void validate() {
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException("Missing required property value in model AppServicePlanCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(AppServicePlanCollection.class);
 }

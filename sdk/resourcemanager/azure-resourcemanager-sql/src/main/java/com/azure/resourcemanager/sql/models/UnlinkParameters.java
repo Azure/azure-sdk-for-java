@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents the parameters for Unlink Replication Link request. */
 @Fluent
 public final class UnlinkParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UnlinkParameters.class);
-
     /*
      * Determines whether link will be terminated in a forced or a friendly
      * way.

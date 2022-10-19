@@ -9,6 +9,8 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
+import java.util.Map;
 
 /** Azure Data Explorer (Kusto) linked service. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
@@ -17,16 +19,15 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @Fluent
 public class AzureDataExplorerLinkedService extends LinkedService {
     /*
-     * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be
-     * in the format https://<clusterName>.<regionName>.kusto.windows.net.
-     * Type: string (or Expression with resultType string)
+     * The endpoint of Azure Data Explorer (the engine's endpoint). URL will be in the format
+     * https://<clusterName>.<regionName>.kusto.windows.net. Type: string (or Expression with resultType string)
      */
     @JsonProperty(value = "typeProperties.endpoint", required = true)
     private Object endpoint;
 
     /*
-     * The ID of the service principal used to authenticate against Azure Data
-     * Explorer. Type: string (or Expression with resultType string).
+     * The ID of the service principal used to authenticate against Azure Data Explorer. Type: string (or Expression
+     * with resultType string).
      */
     @JsonProperty(value = "typeProperties.servicePrincipalId")
     private Object servicePrincipalId;
@@ -38,15 +39,14 @@ public class AzureDataExplorerLinkedService extends LinkedService {
     private SecretBase servicePrincipalKey;
 
     /*
-     * Database name for connection. Type: string (or Expression with
-     * resultType string).
+     * Database name for connection. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
     /*
-     * The name or ID of the tenant to which the service principal belongs.
-     * Type: string (or Expression with resultType string).
+     * The name or ID of the tenant to which the service principal belongs. Type: string (or Expression with resultType
+     * string).
      */
     @JsonProperty(value = "typeProperties.tenant")
     private Object tenant;
@@ -156,6 +156,34 @@ public class AzureDataExplorerLinkedService extends LinkedService {
      */
     public AzureDataExplorerLinkedService setTenant(Object tenant) {
         this.tenant = tenant;
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
+        super.setConnectVia(connectVia);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerLinkedService setDescription(String description) {
+        super.setDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
+        super.setParameters(parameters);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureDataExplorerLinkedService setAnnotations(List<Object> annotations) {
+        super.setAnnotations(annotations);
         return this;
     }
 }

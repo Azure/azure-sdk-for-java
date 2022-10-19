@@ -9,21 +9,21 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.SqlVirtualMachinesClient;
 import com.azure.resourcemanager.sqlvirtualmachine.fluent.models.SqlVirtualMachineInner;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachine;
 import com.azure.resourcemanager.sqlvirtualmachine.models.SqlVirtualMachines;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlVirtualMachinesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SqlVirtualMachinesImpl.class);
 
     private final SqlVirtualMachinesClient innerClient;
 
-    private final SqlVirtualMachineManager serviceManager;
+    private final com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager;
 
-    public SqlVirtualMachinesImpl(SqlVirtualMachinesClient innerClient, SqlVirtualMachineManager serviceManager) {
+    public SqlVirtualMachinesImpl(
+        SqlVirtualMachinesClient innerClient,
+        com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -32,24 +32,40 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
         String resourceGroupName, String sqlVirtualMachineGroupName) {
         PagedIterable<SqlVirtualMachineInner> inner =
             this.serviceClient().listBySqlVmGroup(resourceGroupName, sqlVirtualMachineGroupName);
-        return inner.mapPage(inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlVirtualMachine> listBySqlVmGroup(
         String resourceGroupName, String sqlVirtualMachineGroupName, Context context) {
         PagedIterable<SqlVirtualMachineInner> inner =
             this.serviceClient().listBySqlVmGroup(resourceGroupName, sqlVirtualMachineGroupName, context);
-        return inner.mapPage(inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlVirtualMachine> list() {
         PagedIterable<SqlVirtualMachineInner> inner = this.serviceClient().list();
-        return inner.mapPage(inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlVirtualMachine> list(Context context) {
         PagedIterable<SqlVirtualMachineInner> inner = this.serviceClient().list(context);
-        return inner.mapPage(inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
+    }
+
+    public void startAssessment(String resourceGroupName, String sqlVirtualMachineName) {
+        this.serviceClient().startAssessment(resourceGroupName, sqlVirtualMachineName);
+    }
+
+    public void startAssessment(String resourceGroupName, String sqlVirtualMachineName, Context context) {
+        this.serviceClient().startAssessment(resourceGroupName, sqlVirtualMachineName, context);
+    }
+
+    public void redeploy(String resourceGroupName, String sqlVirtualMachineName) {
+        this.serviceClient().redeploy(resourceGroupName, sqlVirtualMachineName);
+    }
+
+    public void redeploy(String resourceGroupName, String sqlVirtualMachineName, Context context) {
+        this.serviceClient().redeploy(resourceGroupName, sqlVirtualMachineName, context);
     }
 
     public SqlVirtualMachine getByResourceGroup(String resourceGroupName, String sqlVirtualMachineName) {
@@ -89,19 +105,19 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
 
     public PagedIterable<SqlVirtualMachine> listByResourceGroup(String resourceGroupName) {
         PagedIterable<SqlVirtualMachineInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return inner.mapPage(inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
     }
 
     public PagedIterable<SqlVirtualMachine> listByResourceGroup(String resourceGroupName, Context context) {
         PagedIterable<SqlVirtualMachineInner> inner =
             this.serviceClient().listByResourceGroup(resourceGroupName, context);
-        return inner.mapPage(inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
+        return Utils.mapPage(inner, inner1 -> new SqlVirtualMachineImpl(inner1, this.manager()));
     }
 
     public SqlVirtualMachine getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +125,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
         }
         String sqlVirtualMachineName = Utils.getValueFromIdByName(id, "sqlVirtualMachines");
         if (sqlVirtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -125,7 +141,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
     public Response<SqlVirtualMachine> getByIdWithResponse(String id, String expand, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -133,7 +149,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
         }
         String sqlVirtualMachineName = Utils.getValueFromIdByName(id, "sqlVirtualMachines");
         if (sqlVirtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -146,7 +162,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -154,7 +170,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
         }
         String sqlVirtualMachineName = Utils.getValueFromIdByName(id, "sqlVirtualMachines");
         if (sqlVirtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -167,7 +183,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -175,7 +191,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
         }
         String sqlVirtualMachineName = Utils.getValueFromIdByName(id, "sqlVirtualMachines");
         if (sqlVirtualMachineName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -189,7 +205,7 @@ public final class SqlVirtualMachinesImpl implements SqlVirtualMachines {
         return this.innerClient;
     }
 
-    private SqlVirtualMachineManager manager() {
+    private com.azure.resourcemanager.sqlvirtualmachine.SqlVirtualMachineManager manager() {
         return this.serviceManager;
     }
 

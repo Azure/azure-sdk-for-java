@@ -11,10 +11,10 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
-import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServerFactory;
-import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServer;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.RequestResponseType;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.SslContextUtils;
+import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServer;
+import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServerFactory;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
 import io.netty.handler.ssl.SslContext;
 import org.mockito.Mockito;
@@ -27,12 +27,15 @@ import java.util.HashMap;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.TestUtils.mockDiagnosticsClientContext;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConnectionStateListenerTest {
     private static final Logger logger = LoggerFactory.getLogger(ConnectionStateListenerTest.class);
 
+    private static final AtomicInteger randomPort = new AtomicInteger(1000);
     private static int port = 8082;
     private static String serverAddressPrefix = "rntbd://localhost:";
     private static Random random = new Random();
@@ -40,11 +43,13 @@ public class ConnectionStateListenerTest {
     @DataProvider(name = "connectionStateListenerConfigProvider")
     public Object[][] connectionStateListenerConfigProvider() {
         return new Object[][]{
-            // isTcpConnectionEndpointRediscoveryEnabled, serverResponseType, GlobalAddressResolver.updateAddresses() called times
-            {true, RequestResponseType.CHANNEL_FIN, 1},
-            {false, RequestResponseType.CHANNEL_FIN, 0},
-            {true, RequestResponseType.CHANNEL_RST, 0},
-            {false, RequestResponseType.CHANNEL_RST, 0},
+            // isTcpConnectionEndpointRediscoveryEnabled, serverResponseType, replicaStatusUpdated, replicaStatusUpdated when server shutdown
+            {true, RequestResponseType.CHANNEL_FIN, true, false},
+            {false, RequestResponseType.CHANNEL_FIN, false, false},
+            {true, RequestResponseType.CHANNEL_RST, false, false},
+            {false, RequestResponseType.CHANNEL_RST, false, false},
+            {true, RequestResponseType.NONE, false, true}, // the request will be timed out, but the connection will be active. When tcp server shutdown, the connection will be closed gracefully
+            {false, RequestResponseType.NONE, false, false},
         };
     }
 
@@ -52,10 +57,11 @@ public class ConnectionStateListenerTest {
     public void connectionStateListener_OnConnectionEvent(
         boolean isTcpConnectionEndpointRediscoveryEnabled,
         RequestResponseType responseType,
-        int times) throws ExecutionException, InterruptedException {
+        boolean markUnhealthy,
+        boolean markUnhealthyWhenServerShutdown) throws ExecutionException, InterruptedException {
 
         // using a random generated server port
-        int serverPort = port + random.nextInt(1000);
+        int serverPort = port + randomPort.getAndIncrement();
         TcpServer server = TcpServerFactory.startNewRntbdServer(serverPort);
         // Inject fake response
         server.injectServerResponse(responseType);
@@ -74,7 +80,9 @@ public class ConnectionStateListenerTest {
             config,
             connectionPolicy,
             new UserAgentContainer(),
-            addressResolver);
+            addressResolver,
+            null,
+            null);
 
         RxDocumentServiceRequest req =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
@@ -88,11 +96,22 @@ public class ConnectionStateListenerTest {
         } catch (Exception e) {
             logger.info("expected failed request with reason {}", e);
         }
-        finally {
-            TcpServerFactory.shutdownRntbdServer(server);
-        }
 
-        Mockito.verify(addressResolver, Mockito.times(times)).updateAddresses(Mockito.any(), Mockito.any());
+        if (markUnhealthy) {
+            assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+            TcpServerFactory.shutdownRntbdServer(server);
+            assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+
+        } else {
+            assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
+
+            TcpServerFactory.shutdownRntbdServer(server);
+            if (markUnhealthyWhenServerShutdown) {
+                assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Unhealthy);
+            } else {
+                assertThat(targetUri.getHealthStatus()).isEqualTo(Uri.HealthStatus.Connected);
+            }
+        }
     }
 
     private Document getDocumentDefinition() {

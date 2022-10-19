@@ -7,9 +7,9 @@ import com.azure.core.amqp.AmqpRetryPolicy;
 import com.azure.core.amqp.AmqpTransaction;
 import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.amqp.implementation.MessageSerializer;
+import com.azure.core.amqp.implementation.RequestResponseChannelClosedException;
 import com.azure.core.amqp.implementation.RetryUtil;
 import com.azure.core.amqp.implementation.StringUtil;
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
@@ -22,6 +22,8 @@ import com.azure.messaging.servicebus.implementation.MessagingEntityType;
 import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLinkProcessor;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusReceiverInstrumentation;
+import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
@@ -42,10 +44,16 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.azure.core.amqp.implementation.RetryUtil.withRetry;
+import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
+import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 import static com.azure.core.util.FluxUtil.fluxError;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPERATION_DISPOSED_RECEIVER;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.DISPOSITION_STATUS_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.ENTITY_TYPE_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.LOCK_TOKEN_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SEQUENCE_NUMBER_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SESSION_ID_KEY;
 
 /**
  * An <b>asynchronous</b> receiver responsible for receiving {@link ServiceBusReceivedMessage messages} from a specific
@@ -213,25 +221,28 @@ import static com.azure.messaging.servicebus.implementation.Messages.INVALID_OPE
 public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     private static final DeadLetterOptions DEFAULT_DEAD_LETTER_OPTIONS = new DeadLetterOptions();
     private static final String TRANSACTION_LINK_NAME = "coordinator";
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusReceiverAsyncClient.class);
 
     private final LockContainer<LockRenewalOperation> renewalContainer;
     private final AtomicBoolean isDisposed = new AtomicBoolean();
     private final LockContainer<OffsetDateTime> managementNodeLocks;
-    private final ClientLogger logger = new ClientLogger(ServiceBusReceiverAsyncClient.class);
     private final String fullyQualifiedNamespace;
     private final String entityPath;
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
     private final ServiceBusConnectionProcessor connectionProcessor;
-    private final TracerProvider tracerProvider;
+    private final ServiceBusReceiverInstrumentation instrumentation;
+    private final ServiceBusTracer tracer;
     private final MessageSerializer messageSerializer;
     private final Runnable onClientClose;
     private final ServiceBusSessionManager sessionManager;
     private final Semaphore completionLock = new Semaphore(1);
+    private final String identifier;
 
     // Starting at -1 because that is before the beginning of the stream.
     private final AtomicLong lastPeekedSequenceNumber = new AtomicLong(-1);
     private final AtomicReference<ServiceBusAsyncConsumer> consumer = new AtomicReference<>();
+    private final AutoCloseable trackSettlementSequenceNumber;
 
     /**
      * Creates a receiver that listens to a Service Bus resource.
@@ -241,54 +252,65 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param entityType The type of the Service Bus resource.
      * @param receiverOptions Options when receiving messages.
      * @param connectionProcessor The AMQP connection to the Service Bus resource.
-     * @param tracerProvider Tracer for telemetry.
+     * @param instrumentation ServiceBus tracing and metrics helper
      * @param messageSerializer Serializes and deserializes Service Bus messages.
      * @param onClientClose Operation to run when the client completes.
      */
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
         ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
-        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose) {
+        ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose, String identifier) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
-        this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
+        this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
-            logger.verbose("Closing expired renewal operation. lockToken[{}]. status[{}]. throwable[{}].",
-                renewal.getLockToken(), renewal.getStatus(), renewal.getThrowable());
+            LOGGER.atVerbose()
+                .addKeyValue(LOCK_TOKEN_KEY, renewal.getLockToken())
+                .addKeyValue("status", renewal.getStatus())
+                .log("Closing expired renewal operation.", renewal.getThrowable());
             renewal.close();
         });
 
         this.sessionManager = null;
+        this.identifier = identifier;
+        this.tracer = instrumentation.getTracer();
+        this.trackSettlementSequenceNumber = instrumentation.startTrackingSettlementSequenceNumber();
     }
 
     ServiceBusReceiverAsyncClient(String fullyQualifiedNamespace, String entityPath, MessagingEntityType entityType,
-        ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
-        TracerProvider tracerProvider, MessageSerializer messageSerializer, Runnable onClientClose,
-        ServiceBusSessionManager sessionManager) {
+                                  ReceiverOptions receiverOptions, ServiceBusConnectionProcessor connectionProcessor, Duration cleanupInterval,
+                                  ServiceBusReceiverInstrumentation instrumentation, MessageSerializer messageSerializer, Runnable onClientClose,
+                                  ServiceBusSessionManager sessionManager) {
         this.fullyQualifiedNamespace = Objects.requireNonNull(fullyQualifiedNamespace,
             "'fullyQualifiedNamespace' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
         this.entityType = Objects.requireNonNull(entityType, "'entityType' cannot be null.");
         this.receiverOptions = Objects.requireNonNull(receiverOptions, "'receiveOptions cannot be null.'");
         this.connectionProcessor = Objects.requireNonNull(connectionProcessor, "'connectionProcessor' cannot be null.");
-        this.tracerProvider = Objects.requireNonNull(tracerProvider, "'tracerProvider' cannot be null.");
+        this.instrumentation = Objects.requireNonNull(instrumentation, "'tracer' cannot be null");
         this.messageSerializer = Objects.requireNonNull(messageSerializer, "'messageSerializer' cannot be null.");
         this.onClientClose = Objects.requireNonNull(onClientClose, "'onClientClose' cannot be null.");
         this.sessionManager = Objects.requireNonNull(sessionManager, "'sessionManager' cannot be null.");
 
         this.managementNodeLocks = new LockContainer<>(cleanupInterval);
         this.renewalContainer = new LockContainer<>(Duration.ofMinutes(2), renewal -> {
-            logger.info("Closing expired renewal operation. sessionId[{}]. status[{}]. throwable[{}]",
-                renewal.getSessionId(), renewal.getStatus(), renewal.getThrowable());
+            LOGGER.atInfo()
+                .addKeyValue(SESSION_ID_KEY, renewal.getSessionId())
+                .addKeyValue("status", renewal.getStatus())
+                .log("Closing expired renewal operation.", renewal.getThrowable());
             renewal.close();
         });
+
+        this.identifier = sessionManager.getIdentifier();
+        this.tracer = instrumentation.getTracer();
+        this.trackSettlementSequenceNumber = instrumentation.startTrackingSettlementSequenceNumber();
     }
 
     /**
@@ -311,6 +333,24 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
     }
 
     /**
+     * Gets the SessionId of the session if this receiver is a session receiver.
+     *
+     * @return The SessionId or null if this is not a session receiver.
+     */
+    public String getSessionId() {
+        return receiverOptions.getSessionId();
+    }
+
+    /**
+     * Gets the identifier of the instance of {@link ServiceBusReceiverAsyncClient}.
+     *
+     * @return The identifier that can identify the instance of {@link ServiceBusReceiverAsyncClient}.
+     */
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    /**
      * Abandons a {@link ServiceBusReceivedMessage message}. This will make the message available again for processing.
      * Abandoning a message will increase the delivery count on the message.
      *
@@ -321,8 +361,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws NullPointerException if {@code message} is null.
      * @throws UnsupportedOperationException if the receiver was opened in
      *     {@link ServiceBusReceiveMode#RECEIVE_AND_DELETE} mode or if the message was received from
+     *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be abandoned.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.ABANDONED, null, null,
@@ -337,6 +379,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @param options The options to set while abandoning the message.
      *
      * @return A {@link Mono} that completes when the Service Bus operation finishes.
+     *
      * @throws NullPointerException if {@code message} or {@code options} is null. Also if
      *     {@code transactionContext.transactionId} is null when {@code options.transactionContext} is specified.
      * @throws UnsupportedOperationException if the receiver was opened in
@@ -344,13 +387,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be abandoned.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      */
     public Mono<Void> abandon(ServiceBusReceivedMessage message, AbandonOptions options) {
         if (Objects.isNull(options)) {
-            return monoError(logger, new NullPointerException("'settlementOptions' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'settlementOptions' cannot be null."));
         } else if (!Objects.isNull(options.getTransactionContext())
             && Objects.isNull(options.getTransactionContext().getTransactionId())) {
-            return monoError(logger, new NullPointerException(
+            return monoError(LOGGER, new NullPointerException(
                 "'options.transactionContext.transactionId' cannot be null."));
         }
 
@@ -371,6 +415,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be completed.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message) {
         return updateDisposition(message, DispositionStatus.COMPLETED, null, null,
@@ -393,13 +438,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be completed.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      */
     public Mono<Void> complete(ServiceBusReceivedMessage message, CompleteOptions options) {
         if (Objects.isNull(options)) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         } else if (!Objects.isNull(options.getTransactionContext())
             && Objects.isNull(options.getTransactionContext().getTransactionId())) {
-            return monoError(logger, new NullPointerException(
+            return monoError(LOGGER, new NullPointerException(
                 "'options.transactionContext.transactionId' cannot be null."));
         }
 
@@ -420,6 +466,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be deferred.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message) {
@@ -443,14 +490,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be deferred.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-deferral">Message deferral</a>
      */
     public Mono<Void> defer(ServiceBusReceivedMessage message, DeferOptions options) {
         if (Objects.isNull(options)) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         } else if (!Objects.isNull(options.getTransactionContext())
             && Objects.isNull(options.getTransactionContext().getTransactionId())) {
-            return monoError(logger, new NullPointerException(
+            return monoError(LOGGER, new NullPointerException(
                 "'options.transactionContext.transactionId' cannot be null."));
         }
 
@@ -471,6 +519,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be dead-lettered.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
@@ -493,15 +543,17 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *     {@link ServiceBusReceiverAsyncClient#peekMessage() peekMessage}.
      * @throws IllegalStateException if receiver is already disposed.
      * @throws ServiceBusException if the message could not be dead-lettered.
+     * @throws IllegalArgumentException if the message has either been deleted or already settled.
+     *
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-dead-letter-queues">Dead letter
      *     queues</a>
      */
     public Mono<Void> deadLetter(ServiceBusReceivedMessage message, DeadLetterOptions options) {
         if (Objects.isNull(options)) {
-            return monoError(logger, new NullPointerException("'options' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'options' cannot be null."));
         } else if (!Objects.isNull(options.getTransactionContext())
             && Objects.isNull(options.getTransactionContext().getTransactionId())) {
-            return monoError(logger, new NullPointerException(
+            return monoError(LOGGER, new NullPointerException(
                 "'options.transactionContext.transactionId' cannot be null."));
         }
         return updateDisposition(message, DispositionStatus.SUSPENDED, options.getDeadLetterReason(),
@@ -543,29 +595,39 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @throws IllegalStateException if the receiver is disposed.
+     * @throws ServiceBusException if an error occurs while peeking at the message.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     Mono<ServiceBusReceivedMessage> peekMessage(String sessionId) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peek")));
         }
 
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> {
-                final long sequence = lastPeekedSequenceNumber.get() + 1;
+        Mono<ServiceBusReceivedMessage> result = connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                .flatMap(channel -> {
+                    final long sequence = lastPeekedSequenceNumber.get() + 1;
 
-                logger.verbose("Peek message from sequence number: {}", sequence);
-                return channel.peek(sequence, sessionId, getLinkName(sessionId));
-            })
+                    LOGGER.atVerbose()
+                        .addKeyValue(SEQUENCE_NUMBER_KEY, sequence)
+                        .log("Peek message.");
+
+                    return channel.peek(sequence, sessionId, getLinkName(sessionId));
+                })
+                .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE))
             .handle((message, sink) -> {
                 final long current = lastPeekedSequenceNumber
                     .updateAndGet(value -> Math.max(value, message.getSequenceNumber()));
 
-                logger.verbose("Updating last peeked sequence number: {}", current);
+                LOGGER.atVerbose()
+                    .addKeyValue(SEQUENCE_NUMBER_KEY, current)
+                    .log("Updating last peeked sequence number.");
+
                 sink.next(message);
             });
+
+        return tracer.traceManagementReceive("ServiceBus.peekMessage", result, ServiceBusReceivedMessage::getContext);
     }
 
     /**
@@ -593,16 +655,21 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A peeked {@link ServiceBusReceivedMessage}.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at the message.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     Mono<ServiceBusReceivedMessage> peekMessage(long sequenceNumber, String sessionId) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekAt")));
         }
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId)));
+
+        return tracer.traceManagementReceive("ServiceBus.peekMessage",
+            connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                .flatMap(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId)))
+                .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE)),
+            ServiceBusReceivedMessage::getContext);
     }
 
     /**
@@ -618,7 +685,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     public Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages) {
-        return peekMessages(maxMessages, receiverOptions.getSessionId());
+        return tracer.traceSyncReceive("ServiceBus.peekMessages",
+            peekMessages(maxMessages, receiverOptions.getSessionId()));
     }
 
     /**
@@ -630,19 +698,25 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage messages} that are peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at messages.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, String sessionId) {
         if (isDisposed.get()) {
-            return fluxError(logger, new IllegalStateException(
+            return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatch")));
         }
 
-        return connectionProcessor
+        if (maxMessages <= 0) {
+            return fluxError(LOGGER, new IllegalArgumentException("'maxMessages' is not positive."));
+        }
+
+        return
+            connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
             .flatMapMany(node -> {
                 final long nextSequenceNumber = lastPeekedSequenceNumber.get() + 1;
-                logger.verbose("Peek batch from sequence number: {}", nextSequenceNumber);
+                LOGGER.atVerbose().addKeyValue(SEQUENCE_NUMBER_KEY, nextSequenceNumber).log("Peek batch.");
 
                 final Flux<ServiceBusReceivedMessage> messages =
                     node.peek(nextSequenceNumber, sessionId, getLinkName(sessionId), maxMessages);
@@ -661,12 +735,13 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         final long current = lastPeekedSequenceNumber
                             .updateAndGet(value -> Math.max(value, last.getSequenceNumber()));
 
-                        logger.verbose("Last peeked sequence number in batch: {}", current);
+                        LOGGER.atVerbose().addKeyValue(SEQUENCE_NUMBER_KEY, current).log("Last peeked sequence number in batch.");
                         sink.complete();
                     });
 
                 return Flux.merge(messages, handle);
-            });
+            })
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
     /**
@@ -698,17 +773,23 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @return An {@link IterableStream} of {@link ServiceBusReceivedMessage} peeked.
      * @throws IllegalArgumentException if {@code maxMessages} is not a positive integer.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if an error occurs while peeking at messages.
      * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-browsing">Message browsing</a>
      */
     Flux<ServiceBusReceivedMessage> peekMessages(int maxMessages, long sequenceNumber, String sessionId) {
         if (isDisposed.get()) {
-            return fluxError(logger, new IllegalStateException(
+            return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "peekBatchAt")));
         }
+        if (maxMessages <= 0) {
+            return fluxError(LOGGER, new IllegalArgumentException("'maxMessages' is not positive."));
+        }
 
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMapMany(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId), maxMessages));
+        return tracer.traceSyncReceive("ServiceBus.peekMessages",
+            connectionProcessor
+                .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                .flatMapMany(node -> node.peek(sequenceNumber, sessionId, getLinkName(sessionId), maxMessages))
+                .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE)));
     }
 
     /**
@@ -729,7 +810,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Flux<ServiceBusReceivedMessage> receiveMessages() {
         if (isDisposed.get()) {
-            return fluxError(logger, new IllegalStateException(
+            return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveMessages")));
         }
         // Without limitRate(), if the user calls receiveMessages().subscribe(), it will call
@@ -776,12 +857,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             ? sessionManager.receive()
             : getOrCreateConsumer().receive().map(ServiceBusMessageContext::new);
 
+        final Flux<ServiceBusMessageContext> messageFluxWithTracing = new FluxTrace(messageFlux, instrumentation);
         final Flux<ServiceBusMessageContext> withAutoLockRenewal;
+
         if (!receiverOptions.isSessionReceiver() && receiverOptions.isAutoLockRenewEnabled()) {
-            withAutoLockRenewal = new FluxAutoLockRenew(messageFlux, receiverOptions,
+            withAutoLockRenewal = new FluxAutoLockRenew(messageFluxWithTracing, receiverOptions,
                 renewalContainer, this::renewMessageLock);
         } else {
-            withAutoLockRenewal = messageFlux;
+            withAutoLockRenewal = messageFluxWithTracing;
         }
 
         Flux<ServiceBusMessageContext> result;
@@ -796,6 +879,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         if (highTide > 0) {
             result = result.limitRate(highTide, 0);
         }
+
         return result
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
@@ -813,10 +897,6 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws ServiceBusException if deferred message cannot be received.
      */
     public Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber) {
-        if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
-                String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessage")));
-        }
         return receiveDeferredMessage(sequenceNumber, receiverOptions.getSessionId());
     }
 
@@ -830,28 +910,34 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A deferred message with the matching {@code sequenceNumber}.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws ServiceBusException if deferred message cannot be received.
      */
     Mono<ServiceBusReceivedMessage> receiveDeferredMessage(long sequenceNumber, String sessionId) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessage")));
         }
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(node -> node.receiveDeferredMessages(receiverOptions.getReceiveMode(),
-                sessionId, getLinkName(sessionId), Collections.singleton(sequenceNumber)).last())
-            .map(receivedMessage -> {
-                if (CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
-                    return receivedMessage;
-                }
-                if (receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK) {
-                    receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
-                        receivedMessage.getLockedUntil(),
-                        receivedMessage.getLockedUntil()));
-                }
 
-                return receivedMessage;
-            });
+        return
+            tracer.traceManagementReceive("ServiceBus.receiveDeferredMessage",
+                connectionProcessor
+                    .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                    .flatMap(node -> node.receiveDeferredMessages(receiverOptions.getReceiveMode(),
+                        sessionId, getLinkName(sessionId), Collections.singleton(sequenceNumber)).last())
+                    .map(receivedMessage -> {
+                        if (CoreUtils.isNullOrEmpty(receivedMessage.getLockToken())) {
+                            return receivedMessage;
+                        }
+                        if (receiverOptions.getReceiveMode() == ServiceBusReceiveMode.PEEK_LOCK) {
+                            receivedMessage.setLockedUntil(managementNodeLocks.addOrUpdate(receivedMessage.getLockToken(),
+                                receivedMessage.getLockedUntil(),
+                                receivedMessage.getLockedUntil()));
+                        }
+
+                        return receivedMessage;
+                    })
+                    .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE)),
+                ServiceBusReceivedMessage::getContext);
     }
 
     /**
@@ -867,7 +953,8 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      * @throws ServiceBusException if deferred messages cannot be received.
      */
     public Flux<ServiceBusReceivedMessage> receiveDeferredMessages(Iterable<Long> sequenceNumbers) {
-        return receiveDeferredMessages(sequenceNumbers, receiverOptions.getSessionId());
+        return tracer.traceSyncReceive("ServiceBus.receiveDeferredMessages",
+            receiveDeferredMessages(sequenceNumbers, receiverOptions.getSessionId()));
     }
 
     /**
@@ -879,11 +966,16 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return An {@link IterableStream} of deferred {@link ServiceBusReceivedMessage messages}.
      * @throws IllegalStateException if receiver is already disposed.
+     * @throws NullPointerException if {@code sequenceNumbers} is null.
+     * @throws ServiceBusException if deferred message cannot be received.
      */
     Flux<ServiceBusReceivedMessage> receiveDeferredMessages(Iterable<Long> sequenceNumbers, String sessionId) {
         if (isDisposed.get()) {
-            return fluxError(logger, new IllegalStateException(
+            return fluxError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "receiveDeferredMessageBatch")));
+        }
+        if (sequenceNumbers == null) {
+            return fluxError(LOGGER, new NullPointerException("'sequenceNumbers' cannot be null"));
         }
         return connectionProcessor
             .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
@@ -900,7 +992,18 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 }
 
                 return receivedMessage;
-            });
+            })
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
+    }
+
+    /**
+     * Package-private method that releases a message.
+     *
+     * @param message Message to release.
+     * @return Mono that completes when message is successfully released.
+     */
+    Mono<Void> release(ServiceBusReceivedMessage message) {
+        return updateDisposition(message, DispositionStatus.RELEASED, null, null, null, null);
     }
 
     /**
@@ -922,20 +1025,20 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<OffsetDateTime> renewMessageLock(ServiceBusReceivedMessage message) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewMessageLock")));
         } else if (Objects.isNull(message)) {
-            return monoError(logger, new NullPointerException("'message' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'message' cannot be null."));
         } else if (Objects.isNull(message.getLockToken())) {
-            return monoError(logger, new NullPointerException("'message.getLockToken()' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'message.getLockToken()' cannot be null."));
         } else if (message.getLockToken().isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
         } else if (receiverOptions.isSessionReceiver()) {
             final String errorMessage = "Renewing message lock is an invalid operation when working with sessions.";
-            return monoError(logger, new IllegalStateException(errorMessage));
+            return monoError(LOGGER, new IllegalStateException(errorMessage));
         }
 
-        return renewMessageLock(message.getLockToken())
+        return tracer.traceMonoWithLink("ServiceBus.renewMessageLock", renewMessageLock(message.getLockToken()), message, message.getContext())
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
@@ -950,7 +1053,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     Mono<OffsetDateTime> renewMessageLock(String lockToken) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewMessageLock")));
         }
         return connectionProcessor
@@ -978,21 +1081,21 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> renewMessageLock(ServiceBusReceivedMessage message, Duration maxLockRenewalDuration) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getAutoRenewMessageLock")));
         } else if (Objects.isNull(message)) {
-            return monoError(logger, new NullPointerException("'message' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'message' cannot be null."));
         } else if (Objects.isNull(message.getLockToken())) {
-            return monoError(logger, new NullPointerException("'message.getLockToken()' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'message.getLockToken()' cannot be null."));
         } else if (message.getLockToken().isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'message.getLockToken()' cannot be empty."));
         } else if (receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format("Cannot renew message lock [%s] for a session receiver.", message.getLockToken())));
         } else if (maxLockRenewalDuration == null) {
-            return monoError(logger, new NullPointerException("'maxLockRenewalDuration' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'maxLockRenewalDuration' cannot be null."));
         } else if (maxLockRenewalDuration.isNegative()) {
-            return monoError(logger, new IllegalArgumentException("'maxLockRenewalDuration' cannot be negative."));
+            return monoError(LOGGER, new IllegalArgumentException("'maxLockRenewalDuration' cannot be negative."));
         }
 
         final LockRenewalOperation operation = new LockRenewalOperation(message.getLockToken(),
@@ -1000,7 +1103,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         renewalContainer.addOrUpdate(message.getLockToken(), OffsetDateTime.now().plus(maxLockRenewalDuration),
             operation);
 
-        return operation.getCompletionOperation()
+        return tracer.traceMonoWithLink("ServiceBus.renewMessageLock", operation.getCompletionOperation(), message, message.getContext())
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
@@ -1022,9 +1125,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      *
      * @return A lock renewal operation for the message.
      *
-     * @throws NullPointerException if {@code maxLockRenewalDuration} is null.
+     * @throws NullPointerException if {@code sessionId} or {@code maxLockRenewalDuration} is null.
      * @throws IllegalStateException if the receiver is a non-session receiver or the receiver is disposed.
      * @throws ServiceBusException if the session lock renewal operation cannot be started.
+     * @throws IllegalArgumentException if {@code sessionId} is an empty string or {@code maxLockRenewalDuration} is negative.
      */
     public Mono<Void> renewSessionLock(Duration maxLockRenewalDuration) {
         return this.renewSessionLock(receiverOptions.getSessionId(), maxLockRenewalDuration);
@@ -1077,14 +1181,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<ServiceBusTransactionContext> createTransaction() {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "createTransaction")));
         }
 
-        return connectionProcessor
-            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
-            .flatMap(transactionSession -> transactionSession.createTransaction())
-            .map(transaction -> new ServiceBusTransactionContext(transaction.getTransactionId()));
+        return tracer.traceMono("ServiceBus.commitTransaction", connectionProcessor
+                    .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
+                    .flatMap(transactionSession -> transactionSession.createTransaction())
+                    .map(transaction -> new ServiceBusTransactionContext(transaction.getTransactionId())))
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
     /**
@@ -1124,19 +1229,20 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> commitTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "commitTransaction")));
         }
         if (Objects.isNull(transactionContext)) {
-            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext' cannot be null."));
         } else if (Objects.isNull(transactionContext.getTransactionId())) {
-            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
-        return connectionProcessor
-            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
-            .flatMap(transactionSession -> transactionSession.commitTransaction(new AmqpTransaction(
-                transactionContext.getTransactionId())));
+        return tracer.traceMono("ServiceBus.commitTransaction", connectionProcessor
+                    .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
+                    .flatMap(transactionSession -> transactionSession.commitTransaction(new AmqpTransaction(
+                        transactionContext.getTransactionId()))))
+            .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
     }
 
     /**
@@ -1175,19 +1281,21 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
      */
     public Mono<Void> rollbackTransaction(ServiceBusTransactionContext transactionContext) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "rollbackTransaction")));
         }
         if (Objects.isNull(transactionContext)) {
-            return monoError(logger, new NullPointerException("'transactionContext' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext' cannot be null."));
         } else if (Objects.isNull(transactionContext.getTransactionId())) {
-            return monoError(logger, new NullPointerException("'transactionContext.transactionId' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'transactionContext.transactionId' cannot be null."));
         }
 
-        return connectionProcessor
-            .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
-            .flatMap(transactionSession -> transactionSession.rollbackTransaction(new AmqpTransaction(
-                transactionContext.getTransactionId())));
+        return tracer.traceMono("ServiceBus.rollbackTransaction", connectionProcessor
+                    .flatMap(connection -> connection.createSession(TRANSACTION_LINK_NAME))
+                    .flatMap(transactionSession -> transactionSession.rollbackTransaction(new AmqpTransaction(
+                        transactionContext.getTransactionId()))))
+                .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RECEIVE));
+
     }
 
     /**
@@ -1204,10 +1312,10 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             // The cause is completionLock's acquire stucks. So we add a timeout for acquiring lock here to avoid the stuck.
             boolean acquired = completionLock.tryAcquire(5, TimeUnit.SECONDS);
             if (!acquired) {
-                logger.info("Unable to obtain completion lock.");
+                LOGGER.info("Unable to obtain completion lock.");
             }
         } catch (InterruptedException e) {
-            logger.info("Unable to obtain completion lock.", e);
+            LOGGER.info("Unable to obtain completion lock.", e);
         }
 
         if (isDisposed.getAndSet(true)) {
@@ -1215,7 +1323,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         // Blocking until the last message has been completed.
-        logger.info("Removing receiver links.");
+        LOGGER.info("Removing receiver links.");
         final ServiceBusAsyncConsumer disposed = consumer.getAndSet(null);
         if (disposed != null) {
             disposed.close();
@@ -1227,6 +1335,14 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         managementNodeLocks.close();
         renewalContainer.close();
+
+        if (trackSettlementSequenceNumber != null) {
+            try {
+                trackSettlementSequenceNumber.close();
+            } catch (Exception e) {
+                LOGGER.info("Unable to close settlement sequence number subscription.", e);
+            }
+        }
 
         onClientClose.run();
     }
@@ -1256,27 +1372,27 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         ServiceBusTransactionContext transactionContext) {
 
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, dispositionStatus.getValue())));
         } else if (Objects.isNull(message)) {
-            return monoError(logger, new NullPointerException("'message' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'message' cannot be null."));
         }
 
         final String lockToken = message.getLockToken();
         final String sessionId = message.getSessionId();
 
         if (receiverOptions.getReceiveMode() != ServiceBusReceiveMode.PEEK_LOCK) {
-            return Mono.error(logger.logExceptionAsError(new UnsupportedOperationException(String.format(
+            return Mono.error(LOGGER.logExceptionAsError(new UnsupportedOperationException(String.format(
                 "'%s' is not supported on a receiver opened in ReceiveMode.RECEIVE_AND_DELETE.", dispositionStatus))));
         } else if (message.isSettled()) {
-            return Mono.error(logger.logExceptionAsError(
+            return Mono.error(LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The message has either been deleted or already settled.")));
         } else if (message.getLockToken() == null) {
             // message must be a peeked message (or somehow they created a message w/o a lock token)
             final String errorMessage = "This operation is not supported for peeked messages. "
                 + "Only messages received using receiveMessages() in PEEK_LOCK mode can be settled.";
             return Mono.error(
-                logger.logExceptionAsError(new UnsupportedOperationException(errorMessage))
+                LOGGER.logExceptionAsError(new UnsupportedOperationException(errorMessage))
             );
         }
 
@@ -1287,8 +1403,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             sessionIdToUse = sessionId;
         }
 
-        logger.verbose("{}: Update started. Disposition: {}. Lock: {}. SessionId: {}.", entityPath, dispositionStatus,
-            lockToken, sessionIdToUse);
+        LOGGER.atVerbose()
+            .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            .addKeyValue(SESSION_ID_KEY, sessionIdToUse)
+            .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+            .log("Update started.");
 
         // This operation is not kicked off until it is subscribed to.
         final Mono<Void> performOnManagement = connectionProcessor
@@ -1296,8 +1416,11 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             .flatMap(node -> node.updateDisposition(lockToken, dispositionStatus, deadLetterReason,
                 deadLetterErrorDescription, propertiesToModify, sessionId, getLinkName(sessionId), transactionContext))
             .then(Mono.fromRunnable(() -> {
-                logger.info("{}: Management node Update completed. Disposition: {}. Lock: {}.",
-                    entityPath, dispositionStatus, lockToken);
+                LOGGER.atInfo()
+                    .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                    .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                    .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                    .log("Management node Update completed.");
 
                 message.setIsSettled();
                 managementNodeLocks.remove(lockToken);
@@ -1315,7 +1438,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                         return Mono.empty();
                     }
 
-                    logger.info("Could not perform on session manger. Performing on management node.");
+                    LOGGER.info("Could not perform on session manger. Performing on management node.");
                     return performOnManagement;
                 });
         } else {
@@ -1323,11 +1446,15 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             if (isManagementToken(lockToken) || existingConsumer == null) {
                 updateDispositionOperation = performOnManagement;
             } else {
+
                 updateDispositionOperation = existingConsumer.updateDisposition(lockToken, dispositionStatus,
                     deadLetterReason, deadLetterErrorDescription, propertiesToModify, transactionContext)
                     .then(Mono.fromRunnable(() -> {
-                        logger.verbose("{}: Update completed. Disposition: {}. Lock: {}.",
-                            entityPath, dispositionStatus, lockToken);
+                        LOGGER.atVerbose()
+                            .addKeyValue(LOCK_TOKEN_KEY, lockToken)
+                            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+                            .addKeyValue(DISPOSITION_STATUS_KEY, dispositionStatus)
+                            .log("Update completed.");
 
                         message.setIsSettled();
                         renewalContainer.remove(lockToken);
@@ -1335,7 +1462,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
             }
         }
 
-        return updateDispositionOperation
+        return instrumentation.instrumentSettlement(updateDispositionOperation, message, message.getContext(), dispositionStatus)
             .onErrorMap(throwable -> {
                 if (throwable instanceof ServiceBusException) {
                     return throwable;
@@ -1359,29 +1486,61 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
         }
 
         final String linkName = StringUtil.getRandomString(entityPath);
-        logger.info("{}: Creating consumer for link '{}'", entityPath, linkName);
+        LOGGER.atInfo()
+            .addKeyValue(LINK_NAME_KEY, linkName)
+            .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            .log("Creating consumer.");
 
-        // Use withRetry below to retry transient errors like connection lost.
-        final Flux<ServiceBusReceiveLink> receiveLink = withRetry(connectionProcessor.flatMap(connection -> {
+        // The Mono, when subscribed, creates a ServiceBusReceiveLink in the ServiceBusAmqpConnection emitted by the connectionProcessor
+        //
+        final Mono<ServiceBusReceiveLink> receiveLinkMono = connectionProcessor.flatMap(connection -> {
             if (receiverOptions.isSessionReceiver()) {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                    null, entityType, receiverOptions.getSessionId());
+                        null, entityType, identifier, receiverOptions.getSessionId());
             } else {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
-                    null, entityType);
+                    null, entityType, identifier);
             }
-        })
-            .doOnNext(next -> {
-                final String format = "Created consumer for Service Bus resource: [{}] mode: [{}]"
-                    + " sessionEnabled? {} transferEntityPath: [{}], entityType: [{}]";
-                logger.verbose(format, next.getEntityPath(), receiverOptions.getReceiveMode(),
-                    CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()), "N/A", entityType);
-            }),
-            connectionProcessor.getRetryOptions(), "Failed to create receive link " + linkName, true)
-            .repeat();
+        }).doOnNext(next -> {
+            LOGGER.atVerbose()
+                .addKeyValue(LINK_NAME_KEY, linkName)
+                .addKeyValue(ENTITY_PATH_KEY, next.getEntityPath())
+                .addKeyValue("mode", receiverOptions.getReceiveMode())
+                .addKeyValue("isSessionEnabled", CoreUtils.isNullOrEmpty(receiverOptions.getSessionId()))
+                .addKeyValue(ENTITY_TYPE_KEY, entityType)
+                .log("Created consumer for Service Bus resource.");
+        });
+
+        // A Mono that resubscribes to 'receiveLinkMono' to retry the creation of ServiceBusReceiveLink.
+        //
+        // The scenarios where this retry helps are -
+        // [1]. When we try to create a link on a session being disposed but connection is healthy, the retry can
+        //      eventually create a new session then the link.
+        // [2]. When we try to create a new session (to host the new link) but on a connection being disposed,
+        //      the retry can eventually receive a new connection and then proceed with creating session and link.
+        //
+        final Mono<ServiceBusReceiveLink> retryableReceiveLinkMono = RetryUtil.withRetry(receiveLinkMono.onErrorMap(
+                RequestResponseChannelClosedException.class,
+                e -> {
+                    // When the current connection is being disposed, the connectionProcessor can produce
+                    // a new connection if downstream request.
+                    // In this context, treat RequestResponseChannelClosedException from the RequestResponseChannel scoped
+                    // to the current connection being disposed as retry-able so that retry can obtain new connection.
+                    return new AmqpException(true, e.getMessage(), e, null);
+                }),
+            connectionProcessor.getRetryOptions(),
+            "Failed to create receive link " + linkName,
+            true);
+
+        // A Flux that produces a new AmqpReceiveLink each time it receives a request from the below
+        // 'AmqpReceiveLinkProcessor'. Obviously, the processor requests a link when there is a downstream subscriber.
+        // It also requests a new link (i.e. retry) when the current link it holds gets terminated
+        // (e.g., when the service decides to close that link).
+        //
+        final Flux<ServiceBusReceiveLink> receiveLinkFlux = retryableReceiveLinkMono.repeat();
 
         final AmqpRetryPolicy retryPolicy = RetryUtil.getRetryPolicy(connectionProcessor.getRetryOptions());
-        final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLink.subscribeWith(
+        final ServiceBusReceiveLinkProcessor linkMessageProcessor = receiveLinkFlux.subscribeWith(
             new ServiceBusReceiveLinkProcessor(receiverOptions.getPrefetchCount(), retryPolicy));
 
         final ServiceBusAsyncConsumer newConsumer = new ServiceBusAsyncConsumer(linkName, linkMessageProcessor,
@@ -1416,69 +1575,69 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
     Mono<OffsetDateTime> renewSessionLock(String sessionId) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
         } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
+            return monoError(LOGGER, new IllegalStateException("Cannot renew session lock on a non-session receiver."));
         }
         final String linkName = sessionManager != null
             ? sessionManager.getLinkName(sessionId)
             : null;
 
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.renewSessionLock(sessionId, linkName))
+        return tracer.traceMono("ServiceBus.renewSessionLock", connectionProcessor
+                    .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                    .flatMap(channel -> channel.renewSessionLock(sessionId, linkName)))
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     Mono<Void> renewSessionLock(String sessionId, Duration maxLockRenewalDuration) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "renewSessionLock")));
         } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 "Cannot renew session lock on a non-session receiver."));
         } else if (maxLockRenewalDuration == null) {
-            return monoError(logger, new NullPointerException("'maxLockRenewalDuration' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'maxLockRenewalDuration' cannot be null."));
         } else if (maxLockRenewalDuration.isNegative()) {
-            return monoError(logger, new IllegalArgumentException(
+            return monoError(LOGGER, new IllegalArgumentException(
                 "'maxLockRenewalDuration' cannot be negative."));
         } else if (Objects.isNull(sessionId)) {
-            return monoError(logger, new NullPointerException("'sessionId' cannot be null."));
+            return monoError(LOGGER, new NullPointerException("'sessionId' cannot be null."));
         } else if (sessionId.isEmpty()) {
-            return monoError(logger, new IllegalArgumentException("'sessionId' cannot be empty."));
+            return monoError(LOGGER, new IllegalArgumentException("'sessionId' cannot be empty."));
         }
         final LockRenewalOperation operation = new LockRenewalOperation(sessionId,
             maxLockRenewalDuration, true, this::renewSessionLock);
 
         renewalContainer.addOrUpdate(sessionId, OffsetDateTime.now().plus(maxLockRenewalDuration), operation);
-        return operation.getCompletionOperation()
+        return tracer.traceMono("ServiceBus.renewSessionLock", operation.getCompletionOperation())
             .onErrorMap(throwable -> mapError(throwable, ServiceBusErrorSource.RENEW_LOCK));
     }
 
     Mono<Void> setSessionState(String sessionId, byte[] sessionState) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "setSessionState")));
         } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException("Cannot set session state on a non-session receiver."));
+            return monoError(LOGGER, new IllegalStateException("Cannot set session state on a non-session receiver."));
         }
         final String linkName = sessionManager != null
             ? sessionManager.getLinkName(sessionId)
             : null;
 
-        return connectionProcessor
-            .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
-            .flatMap(channel -> channel.setSessionState(sessionId, sessionState, linkName))
+        return tracer.traceMono("ServiceBus.setSessionState", connectionProcessor
+                    .flatMap(connection -> connection.getManagementNode(entityPath, entityType))
+                    .flatMap(channel -> channel.setSessionState(sessionId, sessionState, linkName)))
             .onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));
     }
 
     Mono<byte[]> getSessionState(String sessionId) {
         if (isDisposed.get()) {
-            return monoError(logger, new IllegalStateException(
+            return monoError(LOGGER, new IllegalStateException(
                 String.format(INVALID_OPERATION_DISPOSED_RECEIVER, "getSessionState")));
         } else if (!receiverOptions.isSessionReceiver()) {
-            return monoError(logger, new IllegalStateException("Cannot get session state on a non-session receiver."));
+            return monoError(LOGGER, new IllegalStateException("Cannot get session state on a non-session receiver."));
         }
 
         Mono<byte[]> result;
@@ -1491,7 +1650,12 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
                 .flatMap(channel -> channel.getSessionState(sessionId, getLinkName(sessionId)));
         }
 
-        return result.onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));
+        return tracer.traceMono("ServiceBus.setSessionState", result)
+            .onErrorMap((err) -> mapError(err, ServiceBusErrorSource.RECEIVE));
+    }
+
+    ServiceBusReceiverInstrumentation getInstrumentation() {
+        return instrumentation;
     }
 
     /**

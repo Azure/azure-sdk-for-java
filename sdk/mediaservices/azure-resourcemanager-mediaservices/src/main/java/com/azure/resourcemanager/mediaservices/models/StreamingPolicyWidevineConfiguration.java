@@ -5,24 +5,17 @@
 package com.azure.resourcemanager.mediaservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class to specify configurations of Widevine in Streaming Policy. */
 @Fluent
 public final class StreamingPolicyWidevineConfiguration {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingPolicyWidevineConfiguration.class);
-
     /*
-     * Template for the URL of the custom service delivering licenses to end
-     * user players.  Not required when using Azure Media Services for issuing
-     * licenses.  The template supports replaceable tokens that the service
-     * will update at runtime with the value specific to the request.  The
-     * currently supported token values are {AlternativeMediaId}, which is
-     * replaced with the value of StreamingLocatorId.AlternativeMediaId, and
-     * {ContentKeyId}, which is replaced with the value of identifier of the
-     * key being requested.
+     * Template for the URL of the custom service delivering licenses to end user players.  Not required when using
+     * Azure Media Services for issuing licenses.  The template supports replaceable tokens that the service will
+     * update at runtime with the value specific to the request.  The currently supported token values are
+     * {AlternativeMediaId}, which is replaced with the value of StreamingLocatorId.AlternativeMediaId, and
+     * {ContentKeyId}, which is replaced with the value of identifier of the key being requested.
      */
     @JsonProperty(value = "customLicenseAcquisitionUrlTemplate")
     private String customLicenseAcquisitionUrlTemplate;

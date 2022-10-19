@@ -6,20 +6,17 @@ package com.azure.resourcemanager.cdn.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Defines the parameters for HttpVersion match conditions. */
 @Fluent
 public final class HttpVersionMatchConditionParameters {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpVersionMatchConditionParameters.class);
-
     /*
-     * The @odata.type property.
+     * The typeName property.
      */
-    @JsonProperty(value = "@odata.type", required = true)
-    private String odataType;
+    @JsonProperty(value = "typeName", required = true)
+    private String typeName = "DeliveryRuleHttpVersionConditionParameters";
 
     /*
      * Describes operator to be matched
@@ -39,28 +36,34 @@ public final class HttpVersionMatchConditionParameters {
     @JsonProperty(value = "matchValues")
     private List<String> matchValues;
 
+    /*
+     * List of transforms
+     */
+    @JsonProperty(value = "transforms")
+    private List<Transform> transforms;
+
     /** Creates an instance of HttpVersionMatchConditionParameters class. */
     public HttpVersionMatchConditionParameters() {
-        odataType = "#Microsoft.Azure.Cdn.Models.DeliveryRuleHttpVersionConditionParameters";
+        typeName = "DeliveryRuleHttpVersionConditionParameters";
     }
 
     /**
-     * Get the odataType property: The @odata.type property.
+     * Get the typeName property: The typeName property.
      *
-     * @return the odataType value.
+     * @return the typeName value.
      */
-    public String odataType() {
-        return this.odataType;
+    public String typeName() {
+        return this.typeName;
     }
 
     /**
-     * Set the odataType property: The @odata.type property.
+     * Set the typeName property: The typeName property.
      *
-     * @param odataType the odataType value to set.
+     * @param typeName the typeName value to set.
      * @return the HttpVersionMatchConditionParameters object itself.
      */
-    public HttpVersionMatchConditionParameters withOdataType(String odataType) {
-        this.odataType = odataType;
+    public HttpVersionMatchConditionParameters withTypeName(String typeName) {
+        this.typeName = typeName;
         return this;
     }
 
@@ -125,16 +128,38 @@ public final class HttpVersionMatchConditionParameters {
     }
 
     /**
+     * Get the transforms property: List of transforms.
+     *
+     * @return the transforms value.
+     */
+    public List<Transform> transforms() {
+        return this.transforms;
+    }
+
+    /**
+     * Set the transforms property: List of transforms.
+     *
+     * @param transforms the transforms value to set.
+     * @return the HttpVersionMatchConditionParameters object itself.
+     */
+    public HttpVersionMatchConditionParameters withTransforms(List<Transform> transforms) {
+        this.transforms = transforms;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (operator() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property operator in model HttpVersionMatchConditionParameters"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(HttpVersionMatchConditionParameters.class);
 }

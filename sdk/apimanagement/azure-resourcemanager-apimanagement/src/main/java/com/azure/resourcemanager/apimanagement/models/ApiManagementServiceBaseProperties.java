@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -16,8 +14,6 @@ import java.util.Map;
 /** Base Properties of an API Management service resource description. */
 @Fluent
 public class ApiManagementServiceBaseProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiManagementServiceBaseProperties.class);
-
     /*
      * Email address from which the notification will be sent.
      */
@@ -104,6 +100,23 @@ public class ApiManagementServiceBaseProperties {
      */
     @JsonProperty(value = "privateIPAddresses", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> privateIpAddresses;
+
+    /*
+     * Public Standard SKU IP V4 based IP address to be associated with Virtual
+     * Network deployed service in the region. Supported only for Developer and
+     * Premium SKU being deployed in Virtual Network.
+     */
+    @JsonProperty(value = "publicIpAddressId")
+    private String publicIpAddressId;
+
+    /*
+     * Whether or not public endpoint access is allowed for this API Management
+     * service.  Value is optional but if passed in, must be 'Enabled' or
+     * 'Disabled'. If 'Disabled', private endpoints are the exclusive access
+     * method. Default value is 'Enabled'
+     */
+    @JsonProperty(value = "publicNetworkAccess")
+    private PublicNetworkAccess publicNetworkAccess;
 
     /*
      * Virtual network configuration of the API Management service.
@@ -204,6 +217,18 @@ public class ApiManagementServiceBaseProperties {
      */
     @JsonProperty(value = "restore")
     private Boolean restore;
+
+    /*
+     * List of Private Endpoint Connections of this service.
+     */
+    @JsonProperty(value = "privateEndpointConnections")
+    private List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections;
+
+    /*
+     * Compute Platform Version running the service in this location.
+     */
+    @JsonProperty(value = "platformVersion", access = JsonProperty.Access.WRITE_ONLY)
+    private PlatformVersion platformVersion;
 
     /**
      * Get the notificationSenderEmail property: Email address from which the notification will be sent.
@@ -349,6 +374,54 @@ public class ApiManagementServiceBaseProperties {
      */
     public List<String> privateIpAddresses() {
         return this.privateIpAddresses;
+    }
+
+    /**
+     * Get the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
+     * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
+     * Network.
+     *
+     * @return the publicIpAddressId value.
+     */
+    public String publicIpAddressId() {
+        return this.publicIpAddressId;
+    }
+
+    /**
+     * Set the publicIpAddressId property: Public Standard SKU IP V4 based IP address to be associated with Virtual
+     * Network deployed service in the region. Supported only for Developer and Premium SKU being deployed in Virtual
+     * Network.
+     *
+     * @param publicIpAddressId the publicIpAddressId value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    public ApiManagementServiceBaseProperties withPublicIpAddressId(String publicIpAddressId) {
+        this.publicIpAddressId = publicIpAddressId;
+        return this;
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
+     * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
+     * are the exclusive access method. Default value is 'Enabled'.
+     *
+     * @return the publicNetworkAccess value.
+     */
+    public PublicNetworkAccess publicNetworkAccess() {
+        return this.publicNetworkAccess;
+    }
+
+    /**
+     * Set the publicNetworkAccess property: Whether or not public endpoint access is allowed for this API Management
+     * service. Value is optional but if passed in, must be 'Enabled' or 'Disabled'. If 'Disabled', private endpoints
+     * are the exclusive access method. Default value is 'Enabled'.
+     *
+     * @param publicNetworkAccess the publicNetworkAccess value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    public ApiManagementServiceBaseProperties withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess) {
+        this.publicNetworkAccess = publicNetworkAccess;
+        return this;
     }
 
     /**
@@ -593,6 +666,36 @@ public class ApiManagementServiceBaseProperties {
     }
 
     /**
+     * Get the privateEndpointConnections property: List of Private Endpoint Connections of this service.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections() {
+        return this.privateEndpointConnections;
+    }
+
+    /**
+     * Set the privateEndpointConnections property: List of Private Endpoint Connections of this service.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set.
+     * @return the ApiManagementServiceBaseProperties object itself.
+     */
+    public ApiManagementServiceBaseProperties withPrivateEndpointConnections(
+        List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections) {
+        this.privateEndpointConnections = privateEndpointConnections;
+        return this;
+    }
+
+    /**
+     * Get the platformVersion property: Compute Platform Version running the service in this location.
+     *
+     * @return the platformVersion value.
+     */
+    public PlatformVersion platformVersion() {
+        return this.platformVersion;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -612,6 +715,9 @@ public class ApiManagementServiceBaseProperties {
         }
         if (apiVersionConstraint() != null) {
             apiVersionConstraint().validate();
+        }
+        if (privateEndpointConnections() != null) {
+            privateEndpointConnections().forEach(e -> e.validate());
         }
     }
 }

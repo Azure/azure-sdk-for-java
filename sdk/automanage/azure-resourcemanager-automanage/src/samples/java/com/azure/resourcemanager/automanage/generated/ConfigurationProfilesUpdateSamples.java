@@ -16,7 +16,7 @@ import java.util.Map;
 /** Samples for ConfigurationProfiles Update. */
 public final class ConfigurationProfilesUpdateSamples {
     /*
-     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/preview/2021-04-30-preview/examples/updateConfigurationProfile.json
+     * x-ms-original-file: specification/automanage/resource-manager/Microsoft.Automanage/stable/2022-05-04/examples/updateConfigurationProfile.json
      */
     /**
      * Sample code: Update configuration profile.

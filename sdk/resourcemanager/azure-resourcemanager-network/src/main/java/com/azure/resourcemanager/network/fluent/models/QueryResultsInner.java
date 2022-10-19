@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.SingleQueryResult;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Query result. */
 @Fluent
 public final class QueryResultsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(QueryResultsInner.class);
-
     /*
      * Number of total records matching the query.
      */
@@ -27,6 +23,10 @@ public final class QueryResultsInner {
      */
     @JsonProperty(value = "signatures")
     private List<SingleQueryResult> signatures;
+
+    /** Creates an instance of QueryResultsInner class. */
+    public QueryResultsInner() {
+    }
 
     /**
      * Get the matchingRecordsCount property: Number of total records matching the query.

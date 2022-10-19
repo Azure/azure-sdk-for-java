@@ -5,37 +5,35 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The settings that will be leveraged for Netezza source partitioning. */
 @Fluent
 public final class NetezzaPartitionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetezzaPartitionSettings.class);
-
     /*
-     * The name of the column in integer type that will be used for proceeding
-     * range partitioning. Type: string (or Expression with resultType string).
+     * The name of the column in integer type that will be used for proceeding range partitioning. Type: string (or
+     * Expression with resultType string).
      */
     @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;
 
     /*
-     * The maximum value of column specified in partitionColumnName that will
-     * be used for proceeding range partitioning. Type: string (or Expression
-     * with resultType string).
+     * The maximum value of column specified in partitionColumnName that will be used for proceeding range
+     * partitioning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionUpperBound")
     private Object partitionUpperBound;
 
     /*
-     * The minimum value of column specified in partitionColumnName that will
-     * be used for proceeding range partitioning. Type: string (or Expression
-     * with resultType string).
+     * The minimum value of column specified in partitionColumnName that will be used for proceeding range
+     * partitioning. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
+
+    /** Creates an instance of NetezzaPartitionSettings class. */
+    public NetezzaPartitionSettings() {
+    }
 
     /**
      * Get the partitionColumnName property: The name of the column in integer type that will be used for proceeding

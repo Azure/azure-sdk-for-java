@@ -6,14 +6,11 @@ package com.azure.resourcemanager.loganalytics.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A tag of a saved search. */
 @Fluent
 public final class Tag {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Tag.class);
-
     /*
      * The tag name.
      */
@@ -73,12 +70,14 @@ public final class Tag {
      */
     public void validate() {
         if (name() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property name in model Tag"));
         }
         if (value() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property value in model Tag"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Tag.class);
 }

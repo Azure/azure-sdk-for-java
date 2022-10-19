@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.PercentilesClient;
 import com.azure.resourcemanager.cosmos.fluent.models.PercentileMetricInner;
 import com.azure.resourcemanager.cosmos.models.PercentileMetricListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PercentilesClient. */
 public final class PercentilesClientImpl implements PercentilesClient {
-    private final ClientLogger logger = new ClientLogger(PercentilesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PercentilesService service;
 
@@ -88,7 +85,8 @@ public final class PercentilesClientImpl implements PercentilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request.
+     * @return the response to a list percentile metrics request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PercentileMetricInner>> listMetricsSinglePageAsync(
@@ -149,7 +147,8 @@ public final class PercentilesClientImpl implements PercentilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request.
+     * @return the response to a list percentile metrics request along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PercentileMetricInner>> listMetricsSinglePageAsync(
@@ -206,7 +205,7 @@ public final class PercentilesClientImpl implements PercentilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request.
+     * @return the response to a list percentile metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PercentileMetricInner> listMetricsAsync(
@@ -227,7 +226,7 @@ public final class PercentilesClientImpl implements PercentilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request.
+     * @return the response to a list percentile metrics request as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PercentileMetricInner> listMetricsAsync(
@@ -247,7 +246,7 @@ public final class PercentilesClientImpl implements PercentilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request.
+     * @return the response to a list percentile metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PercentileMetricInner> listMetrics(
@@ -268,7 +267,7 @@ public final class PercentilesClientImpl implements PercentilesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to a list percentile metrics request.
+     * @return the response to a list percentile metrics request as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PercentileMetricInner> listMetrics(

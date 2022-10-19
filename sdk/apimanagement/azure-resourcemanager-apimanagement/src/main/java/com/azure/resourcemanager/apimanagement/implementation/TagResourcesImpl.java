@@ -11,10 +11,9 @@ import com.azure.resourcemanager.apimanagement.fluent.TagResourcesClient;
 import com.azure.resourcemanager.apimanagement.fluent.models.TagResourceContractInner;
 import com.azure.resourcemanager.apimanagement.models.TagResourceContract;
 import com.azure.resourcemanager.apimanagement.models.TagResources;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class TagResourcesImpl implements TagResources {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagResourcesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(TagResourcesImpl.class);
 
     private final TagResourcesClient innerClient;
 

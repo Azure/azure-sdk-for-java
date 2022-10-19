@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.recoveryservices.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The name of usage. */
 @Fluent
 public final class NameInfo {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NameInfo.class);
-
     /*
      * Value of usage.
      */

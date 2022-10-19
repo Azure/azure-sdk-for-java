@@ -27,7 +27,11 @@ public final class WarningCodeValue extends ExpandableStringEnum<WarningCodeValu
         return fromString(name, WarningCodeValue.class);
     }
 
-    /** @return known WarningCodeValue values. */
+    /**
+     * Gets known WarningCodeValue values.
+     *
+     * @return known WarningCodeValue values.
+     */
     public static Collection<WarningCodeValue> values() {
         return values(WarningCodeValue.class);
     }

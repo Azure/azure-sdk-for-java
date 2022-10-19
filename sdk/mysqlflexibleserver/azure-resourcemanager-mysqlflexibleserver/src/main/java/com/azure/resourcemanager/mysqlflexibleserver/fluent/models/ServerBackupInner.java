@@ -7,16 +7,12 @@ package com.azure.resourcemanager.mysqlflexibleserver.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Server backup properties. */
 @Fluent
 public final class ServerBackupInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServerBackupInner.class);
-
     /*
      * The properties of a server backup.
      */

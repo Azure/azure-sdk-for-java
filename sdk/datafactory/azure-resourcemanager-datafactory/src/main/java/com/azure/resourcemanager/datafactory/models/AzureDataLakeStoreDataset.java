@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.datafactory.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.AzureDataLakeStoreDatasetTypeProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,13 +17,15 @@ import java.util.Map;
 @JsonTypeName("AzureDataLakeStoreFile")
 @Fluent
 public final class AzureDataLakeStoreDataset extends Dataset {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureDataLakeStoreDataset.class);
-
     /*
      * Azure Data Lake Store dataset properties.
      */
     @JsonProperty(value = "typeProperties")
     private AzureDataLakeStoreDatasetTypeProperties innerTypeProperties;
+
+    /** Creates an instance of AzureDataLakeStoreDataset class. */
+    public AzureDataLakeStoreDataset() {
+    }
 
     /**
      * Get the innerTypeProperties property: Azure Data Lake Store dataset properties.

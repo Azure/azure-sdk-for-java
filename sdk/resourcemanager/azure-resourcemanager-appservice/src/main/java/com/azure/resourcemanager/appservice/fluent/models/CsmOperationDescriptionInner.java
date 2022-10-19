@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.CsmOperationDescriptionProperties;
 import com.azure.resourcemanager.appservice.models.CsmOperationDisplay;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of an operation available for Microsoft.Web resource provider. */
 @Fluent
 public final class CsmOperationDescriptionInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CsmOperationDescriptionInner.class);
-
     /*
      * The name property.
      */

@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitReference;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Properties of ExpressRouteCrossConnection. */
 @Fluent
 public final class ExpressRouteCrossConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionProperties.class);
-
     /*
      * The name of the primary port.
      */
@@ -55,8 +51,7 @@ public final class ExpressRouteCrossConnectionProperties {
     private ExpressRouteCircuitReference expressRouteCircuit;
 
     /*
-     * The provisioning state of the circuit in the connectivity provider
-     * system.
+     * The provisioning state of the circuit in the connectivity provider system.
      */
     @JsonProperty(value = "serviceProviderProvisioningState")
     private ServiceProviderProvisioningState serviceProviderProvisioningState;
@@ -78,6 +73,10 @@ public final class ExpressRouteCrossConnectionProperties {
      */
     @JsonProperty(value = "peerings")
     private List<ExpressRouteCrossConnectionPeeringInner> peerings;
+
+    /** Creates an instance of ExpressRouteCrossConnectionProperties class. */
+    public ExpressRouteCrossConnectionProperties() {
+    }
 
     /**
      * Get the primaryAzurePort property: The name of the primary port.

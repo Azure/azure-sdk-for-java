@@ -13,10 +13,9 @@ import com.azure.resourcemanager.synapse.fluent.RestorableDroppedSqlPoolsClient;
 import com.azure.resourcemanager.synapse.fluent.models.RestorableDroppedSqlPoolInner;
 import com.azure.resourcemanager.synapse.models.RestorableDroppedSqlPool;
 import com.azure.resourcemanager.synapse.models.RestorableDroppedSqlPools;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RestorableDroppedSqlPoolsImpl implements RestorableDroppedSqlPools {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RestorableDroppedSqlPoolsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RestorableDroppedSqlPoolsImpl.class);
 
     private final RestorableDroppedSqlPoolsClient innerClient;
 

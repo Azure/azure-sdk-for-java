@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.videoanalyzer.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Set of URLs to the video content. */
 @Fluent
 public final class VideoContentUrls {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VideoContentUrls.class);
-
     /*
      * Video file download URL. This URL can be used in conjunction with the
      * video content authorization token to download the video MP4 file. The

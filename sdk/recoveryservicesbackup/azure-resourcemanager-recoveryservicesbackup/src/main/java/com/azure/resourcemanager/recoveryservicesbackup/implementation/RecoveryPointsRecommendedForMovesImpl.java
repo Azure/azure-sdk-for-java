@@ -12,10 +12,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.RecoveryPo
 import com.azure.resourcemanager.recoveryservicesbackup.models.ListRecoveryPointsRecommendedForMoveRequest;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointResource;
 import com.azure.resourcemanager.recoveryservicesbackup.models.RecoveryPointsRecommendedForMoves;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class RecoveryPointsRecommendedForMovesImpl implements RecoveryPointsRecommendedForMoves {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryPointsRecommendedForMovesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(RecoveryPointsRecommendedForMovesImpl.class);
 
     private final RecoveryPointsRecommendedForMovesClient innerClient;
 

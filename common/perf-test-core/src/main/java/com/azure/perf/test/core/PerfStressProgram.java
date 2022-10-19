@@ -278,8 +278,11 @@ public class PerfStressProgram {
         double secondsPerOperation = 1 / operationsPerSecond;
         double weightedAverageSeconds = totalOperations / operationsPerSecond;
 
-        System.out.printf("Completed %,d operations in a weighted-average of %,.2fs (%,.2f ops/s, %,.3f s/op)%n",
-            totalOperations, weightedAverageSeconds, operationsPerSecond, secondsPerOperation);
+        System.out.printf("Completed %,d operations in a weighted-average of %ss (%s ops/s, %s s/op)%n",
+            totalOperations,
+            NumberFormatter.Format(weightedAverageSeconds, 4),
+            NumberFormatter.Format(operationsPerSecond, 4),
+            NumberFormatter.Format(secondsPerOperation, 4));
         System.out.println();
     }
 

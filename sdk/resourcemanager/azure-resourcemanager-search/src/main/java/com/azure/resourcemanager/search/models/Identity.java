@@ -6,14 +6,11 @@ package com.azure.resourcemanager.search.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Identity for the resource. */
 @Fluent
 public class Identity {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
-
     /*
      * The principal ID of resource identity.
      */
@@ -77,8 +74,10 @@ public class Identity {
      */
     public void validate() {
         if (type() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(new IllegalArgumentException("Missing required property type in model Identity"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(Identity.class);
 }

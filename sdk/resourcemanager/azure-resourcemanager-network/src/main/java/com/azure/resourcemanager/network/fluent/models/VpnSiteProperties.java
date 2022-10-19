@@ -6,21 +6,17 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.DeviceProperties;
 import com.azure.resourcemanager.network.models.O365PolicyProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Parameters for VpnSite. */
 @Fluent
 public final class VpnSiteProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnSiteProperties.class);
-
     /*
      * The VirtualWAN to which the vpnSite belongs.
      */
@@ -80,6 +76,10 @@ public final class VpnSiteProperties {
      */
     @JsonProperty(value = "o365Policy")
     private O365PolicyProperties o365Policy;
+
+    /** Creates an instance of VpnSiteProperties class. */
+    public VpnSiteProperties() {
+    }
 
     /**
      * Get the virtualWan property: The VirtualWAN to which the vpnSite belongs.

@@ -3,20 +3,21 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
-import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.BadRequestException;
 import com.azure.cosmos.implementation.GoneException;
-import com.azure.cosmos.implementation.InternalServerErrorException;
-import com.azure.cosmos.implementation.PartitionIsMigratingException;
-import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
-import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ISessionContainer;
 import com.azure.cosmos.implementation.ISessionToken;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Integers;
+import com.azure.cosmos.implementation.InternalServerErrorException;
 import com.azure.cosmos.implementation.MutableVolatile;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.PartitionIsMigratingException;
+import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
+import com.azure.cosmos.implementation.PartitionKeyRangeIsSplittingException;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.SessionTokenHelper;
@@ -24,6 +25,7 @@ import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
+import com.azure.cosmos.implementation.directconnectivity.addressEnumerator.AddressEnumerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.Exceptions;
@@ -32,10 +34,11 @@ import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import static com.azure.cosmos.implementation.Exceptions.isSubStatusCode;
@@ -136,10 +139,12 @@ public class StoreReader {
         }
     }
 
-    private Flux<StoreResult> toStoreResult(RxDocumentServiceRequest request,
-                                                  Pair<Flux<StoreResponse>, Uri> storeRespAndURI,
-                                                  ReadMode readMode,
-                                                  boolean requiresValidLsn) {
+    private Flux<StoreResult> toStoreResult(
+        RxDocumentServiceRequest request,
+        Pair<Flux<StoreResponse>, Uri> storeRespAndURI,
+        ReadMode readMode,
+        boolean requiresValidLsn,
+        List<String> replicaStatusList) {
 
         return storeRespAndURI.getLeft()
                 .flatMap(storeResponse -> {
@@ -147,9 +152,11 @@ public class StoreReader {
                                 StoreResult storeResult = this.createAndRecordStoreResult(
                                         request,
                                         storeResponse,
-                                        null, requiresValidLsn,
+                                        null,
+                                        requiresValidLsn,
                                         readMode != ReadMode.Strong,
-                                        storeRespAndURI.getRight());
+                                        storeRespAndURI.getRight(),
+                                        replicaStatusList);
 
                                 BridgeInternal.getContactedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                                 return Flux.just(storeResult);
@@ -165,15 +172,19 @@ public class StoreReader {
                         Exception storeException = Utils.as(unwrappedException, Exception.class);
                         if (storeException == null) {
                             return Flux.error(unwrappedException);
+                        } else {
+                            request.requestContext.addToFailedEndpoints(storeException, storeRespAndURI.getRight());
                         }
 
 //                    Exception storeException = readTask.Exception != null ? readTask.Exception.InnerException : null;
                         StoreResult storeResult = this.createAndRecordStoreResult(
                                 request,
                                 null,
-                                storeException, requiresValidLsn,
+                                storeException,
+                                requiresValidLsn,
                                 readMode != ReadMode.Strong,
-                                storeRespAndURI.getRight());
+                                storeRespAndURI.getRight(),
+                                replicaStatusList);
                         if (storeException instanceof TransportException) {
                             BridgeInternal.getFailedReplicas(request.requestContext.cosmosDiagnostics).add(storeRespAndURI.getRight().getURI());
                         }
@@ -204,23 +215,32 @@ public class StoreReader {
             return Flux.error(new GoneException());
         }
         List<Pair<Flux<StoreResponse>, Uri>> readStoreTasks = new ArrayList<>();
-        int uriIndex = StoreReader.generateNextRandom(resolveApiResults.size());
 
-        while (resolveApiResults.size() > 0) {
-            uriIndex = uriIndex % resolveApiResults.size();
-            Uri uri = resolveApiResults.get(uriIndex);
+        List<Uri> addressRandomPermutation = AddressEnumerator.getTransportAddresses(entity, resolveApiResults);
+
+        // The health status of the Uri will change as the time goes by
+        // what we really want to track is the health status snapshot at this moment
+        List<String> replicaStatusList =
+                addressRandomPermutation
+                        .stream()
+                        .map(uri -> uri.getHealthStatusDiagnosticString())
+                        .collect(Collectors.toList());
+
+        int startIndex = 0;
+
+        while(startIndex < addressRandomPermutation.size()) {
+            Uri addressUri = addressRandomPermutation.get(startIndex);
             Pair<Mono<StoreResponse>, Uri> res;
             try {
-                res = this.readFromStoreAsync(resolveApiResults.get(uriIndex),
-                                              entity);
+                res = this.readFromStoreAsync(addressUri, entity);
 
             } catch (Exception e) {
-                res = Pair.of(Mono.error(e), uri);
+                res = Pair.of(Mono.error(e), addressUri);
             }
 
             readStoreTasks.add(Pair.of(res.getLeft().flux(), res.getRight()));
-            resolveApiResults.remove(uriIndex);
-
+            startIndex++;
+            resolveApiResults.remove(addressUri);
 
             if (!forceReadAll && readStoreTasks.size() == replicasToRead.get()) {
                 break;
@@ -232,7 +252,7 @@ public class StoreReader {
 
         List<Flux<StoreResult>> storeResult = readStoreTasks
                 .stream()
-                .map(item -> toStoreResult(entity, item, readMode, requiresValidLsn))
+                .map(item -> toStoreResult(entity, item, readMode, requiresValidLsn, replicaStatusList))
                 .collect(Collectors.toList());
         Flux<StoreResult> allStoreResults = Flux.merge(storeResult);
 
@@ -258,7 +278,7 @@ public class StoreReader {
                         }
 
                     } catch (Exception e) {
-                        // TODO: what to do on exception?
+                        logger.error("Error occurred while adding store results to resultCollector", e);
                     }
                 }
 
@@ -485,6 +505,9 @@ public class StoreReader {
                             SessionTokenHelper.setOriginalSessionToken(entity, originalSessionToken);
                         } catch (Throwable throwable) {
                             logger.error("Unexpected failure in handling orig [{}]: new [{}]", arg, throwable.getMessage(), throwable);
+                            if (throwable instanceof Error) {
+                                throw (Error) throwable;
+                            }
                         }
                     }
         );
@@ -502,20 +525,25 @@ public class StoreReader {
                 entity,
                 entity.requestContext.forceRefreshAddressCache);
 
+        AtomicReference<List<String>> replicaStatusList = new AtomicReference<>();
+
+        AtomicReference<Uri> primaryUriReference = new AtomicReference<>(null);
+
         Mono<StoreResult> storeResultObs = primaryUriObs.flatMap(
                 primaryUri -> {
                     try {
+                        primaryUriReference.set(primaryUri);
                         if (useSessionToken) {
                             SessionTokenHelper.setPartitionLocalSessionToken(entity, this.sessionContainer);
                         } else {
                             // Remove whatever session token can be there in headers.
-                            // We don't need it. If it is global - backend will not undersand it.
-                            // But there's no point in producing partition local sesison token.
+                            // We don't need it. If it is global - backend will not understand it.
+                            // But there's no point in producing partition local session token.
                             entity.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
                         }
 
-
                         Pair<Mono<StoreResponse>, Uri> storeResponseObsAndUri = this.readFromStoreAsync(primaryUri, entity);
+                        replicaStatusList.set(Arrays.asList(primaryUri.getHealthStatusDiagnosticString()));
 
                         return storeResponseObsAndUri.getLeft().flatMap(
                                 storeResponse -> {
@@ -527,7 +555,8 @@ public class StoreReader {
                                             null,
                                             requiresValidLsn,
                                             true,
-                                            storeResponse != null ? storeResponseObsAndUri.getRight() : null);
+                                            storeResponse != null ? storeResponseObsAndUri.getRight() : null,
+                                            replicaStatusList.get());
 
                                         return Mono.just(storeResult);
                                     } catch (CosmosException e) {
@@ -559,7 +588,8 @@ public class StoreReader {
                         storeTaskException,
                         requiresValidLsn,
                         true,
-                        null);
+                        primaryUriReference.get(),
+                        replicaStatusList.get());
                 return Mono.just(storeResult);
             } catch (CosmosException e) {
                 // RxJava1 doesn't allow throwing checked exception from Observable operators
@@ -586,9 +616,9 @@ public class StoreReader {
 
         //QueryRequestPerformanceActivity activity = null;
         // TODO: ifNoneMatch and maxPageSize are not used in the .Net code. check with Ji
-        String ifNoneMatch = request.getHeaders().get(HttpConstants.HttpHeaders.IF_NONE_MATCH);
+        // String ifNoneMatch = request.getHeaders().get(HttpConstants.HttpHeaders.IF_NONE_MATCH);
+        // String maxPageSize = null;
         String continuation = null;
-        String maxPageSize = null;
 
         // TODO: is this needed
         this.lastReadAddress = physicalAddress.toString();
@@ -596,7 +626,7 @@ public class StoreReader {
         if (request.getOperationType() == OperationType.ReadFeed ||
                 request.getOperationType() == OperationType.Query) {
             continuation = request.getHeaders().get(HttpConstants.HttpHeaders.CONTINUATION);
-            maxPageSize = request.getHeaders().get(HttpConstants.HttpHeaders.PAGE_SIZE);
+            // maxPageSize = request.getHeaders().get(HttpConstants.HttpHeaders.PAGE_SIZE);
 
             if (continuation != null && continuation.contains(";")) {
                 String[] parts = StringUtils.split(continuation, ';');
@@ -659,12 +689,20 @@ public class StoreReader {
         Exception responseException,
         boolean requiresValidLsn,
         boolean useLocalLSNBasedHeaders,
-        Uri storePhysicalAddress) {
+        Uri storePhysicalAddress,
+        List<String> replicaStatusList) {
 
-        StoreResult storeResult = this.createStoreResult(storeResponse, responseException, requiresValidLsn, useLocalLSNBasedHeaders, storePhysicalAddress);
+        StoreResult storeResult =
+                this.createStoreResult(
+                        storeResponse,
+                        responseException,
+                        requiresValidLsn,
+                        useLocalLSNBasedHeaders,
+                        storePhysicalAddress,
+                        replicaStatusList);
 
         try {
-            BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request, storeResult);
+            BridgeInternal.recordResponse(request.requestContext.cosmosDiagnostics, request, storeResult, transportClient.getGlobalEndpointManager());
             if (request.requestContext.requestChargeTracker != null) {
                 request.requestContext.requestChargeTracker.addCharge(storeResult.requestCharge);
             }
@@ -683,7 +721,8 @@ public class StoreReader {
                                   Exception responseException,
                                   boolean requiresValidLsn,
                                   boolean useLocalLSNBasedHeaders,
-                                  Uri storePhysicalAddress) {
+                                  Uri storePhysicalAddress,
+                                  List<String> replicaStatusList) {
 
         if (responseException == null) {
             String headerValue = null;
@@ -694,6 +733,11 @@ public class StoreReader {
             int numberOfReadRegions = -1;
             Double backendLatencyInMs = null;
             long itemLSN = -1;
+
+            if (replicaStatusList != null) {
+                storeResponse.getReplicaStatusList().addAll(replicaStatusList);
+            }
+
             if ((headerValue = storeResponse.getHeaderValue(
                     useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN)) != null) {
                     quorumAckedLSN = Long.parseLong(headerValue);
@@ -715,6 +759,13 @@ public class StoreReader {
             String activityId = "";
             if ((headerValue = storeResponse.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID)) != null) {
                 activityId = headerValue;
+            }
+
+            String correlatedActivityId = "";
+            if ((headerValue =
+                storeResponse.getHeaderValue(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID)) != null) {
+
+                correlatedActivityId = headerValue;
             }
 
             if ((headerValue = storeResponse.getHeaderValue(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS)) != null) {
@@ -759,6 +810,7 @@ public class StoreReader {
                     /* quorumAckedLsn: */ quorumAckedLSN,
                     /* getRequestCharge: */ requestCharge,
                                             activityId,
+                                            correlatedActivityId,
                     /* currentReplicaSetSize: */ currentReplicaSetSize,
                     /* currentWriteQuorum: */ currentWriteQuorum,
                     /* isValid: */true,
@@ -772,6 +824,7 @@ public class StoreReader {
             Throwable unwrappedResponseExceptions = Exceptions.unwrap(responseException);
             CosmosException cosmosException = Utils.as(unwrappedResponseExceptions, CosmosException.class);
             String activityId = "";
+            String correlatedActivityId = "";
             if (cosmosException != null) {
                 long quorumAckedLSN = -1;
                 int currentReplicaSetSize = -1;
@@ -779,6 +832,14 @@ public class StoreReader {
                 long globalCommittedLSN = -1;
                 int numberOfReadRegions = -1;
                 Double backendLatencyInMs = null;
+
+                if (replicaStatusList != null) {
+                    ImplementationBridgeHelpers
+                            .CosmosExceptionHelper
+                            .getCosmosExceptionAccessor()
+                            .getReplicaStatusList(cosmosException)
+                            .addAll(replicaStatusList);
+                }
 
                 String headerValue = cosmosException.getResponseHeaders().get(useLocalLSNBasedHeaders ? WFConstants.BackendHeaders.QUORUM_ACKED_LOCAL_LSN : WFConstants.BackendHeaders.QUORUM_ACKED_LSN);
                 if (!Strings.isNullOrEmpty(headerValue)) {
@@ -804,6 +865,13 @@ public class StoreReader {
                 headerValue = cosmosException.getResponseHeaders().get(HttpConstants.HttpHeaders.ACTIVITY_ID);
                 if (!Strings.isNullOrEmpty(headerValue)) {
                     activityId = headerValue;
+                }
+
+                headerValue = cosmosException
+                    .getResponseHeaders()
+                    .get(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID);
+                if (!Strings.isNullOrEmpty(headerValue)) {
+                    correlatedActivityId = headerValue;
                 }
 
                 headerValue = cosmosException.getResponseHeaders().get(WFConstants.BackendHeaders.NUMBER_OF_READ_REGIONS);
@@ -848,6 +916,7 @@ public class StoreReader {
                         /* quorumAckedLsn: */ quorumAckedLSN,
                         /* getRequestCharge: */ requestCharge,
                                                 activityId,
+                                                correlatedActivityId,
                         /* currentReplicaSetSize: */ currentReplicaSetSize,
                         /* currentWriteQuorum: */ currentWriteQuorum,
                         /* isValid: */!requiresValidLsn
@@ -870,6 +939,7 @@ public class StoreReader {
                         /* quorumAckedLsn: */ -1,
                         /* getRequestCharge: */ 0,
                          activityId,
+                         correlatedActivityId,
                         /* currentReplicaSetSize: */ 0,
                         /* currentWriteQuorum: */ 0,
                         /* isValid: */ false,
@@ -892,12 +962,6 @@ public class StoreReader {
                         e -> logger.warn(
                                 "Background refresh of the addresses failed with {}", e.getMessage(), e)
                 );
-    }
-
-    private static int generateNextRandom(int maxValue) {
-        // The benefit of using ThreadLocalRandom.current() over Random is
-        // avoiding the synchronization contention due to multi-threading.
-        return ThreadLocalRandom.current().nextInt(maxValue);
     }
 
     static void verifyCanContinueOnException(CosmosException ex) {

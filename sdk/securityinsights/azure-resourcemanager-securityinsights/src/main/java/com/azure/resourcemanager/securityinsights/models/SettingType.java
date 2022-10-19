@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SettingType. */
+/** The kind of the setting. */
 public final class SettingType extends ExpandableStringEnum<SettingType> {
     /** Static value CopyableLabel for SettingType. */
     public static final SettingType COPYABLE_LABEL = fromString("CopyableLabel");
@@ -30,7 +30,11 @@ public final class SettingType extends ExpandableStringEnum<SettingType> {
         return fromString(name, SettingType.class);
     }
 
-    /** @return known SettingType values. */
+    /**
+     * Gets known SettingType values.
+     *
+     * @return known SettingType values.
+     */
     public static Collection<SettingType> values() {
         return values(SettingType.class);
     }

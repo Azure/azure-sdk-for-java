@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.datafactory.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.HDInsightActivityDebugInfoOption;
 import com.azure.resourcemanager.datafactory.models.LinkedServiceReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -17,8 +15,6 @@ import java.util.Map;
 /** HDInsight Hive activity properties. */
 @Fluent
 public final class HDInsightHiveActivityTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(HDInsightHiveActivityTypeProperties.class);
-
     /*
      * Storage linked service references.
      */
@@ -63,11 +59,15 @@ public final class HDInsightHiveActivityTypeProperties {
     private List<Object> variables;
 
     /*
-     * Query timeout value (in minutes).  Effective when the HDInsight cluster
-     * is with ESP (Enterprise Security Package)
+     * Query timeout value (in minutes).  Effective when the HDInsight cluster is with ESP (Enterprise Security
+     * Package)
      */
     @JsonProperty(value = "queryTimeout")
     private Integer queryTimeout;
+
+    /** Creates an instance of HDInsightHiveActivityTypeProperties class. */
+    public HDInsightHiveActivityTypeProperties() {
+    }
 
     /**
      * Get the storageLinkedServices property: Storage linked service references.

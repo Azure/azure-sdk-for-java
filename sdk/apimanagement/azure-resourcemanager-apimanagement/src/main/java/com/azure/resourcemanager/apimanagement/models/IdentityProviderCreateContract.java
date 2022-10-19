@@ -6,17 +6,13 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apimanagement.fluent.models.IdentityProviderCreateContractProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Identity Provider details. */
 @Fluent
 public final class IdentityProviderCreateContract extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IdentityProviderCreateContract.class);
-
     /*
      * Identity Provider contract properties.
      */

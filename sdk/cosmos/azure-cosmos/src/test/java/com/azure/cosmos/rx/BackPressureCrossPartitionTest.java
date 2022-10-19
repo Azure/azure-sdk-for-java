@@ -113,7 +113,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
         log.info("instantiating subscriber ...");
         TestSubscriber<FeedResponse<InternalObjectNode>> subscriber = new TestSubscriber<>(1);
-        queryObservable.byPage(maxItemCount).publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        queryObservable.byPage(maxItemCount).publishOn(Schedulers.boundedElastic(), 1).subscribe(subscriber);
         int sleepTimeInMillis = 10000;
         int i = 0;
 
@@ -157,7 +157,7 @@ public class BackPressureCrossPartitionTest extends TestSuiteBase {
 
         log.info("instantiating subscriber ...");
         TestSubscriber<InternalObjectNode> subscriber = new TestSubscriber<>(1);
-        queryObservable.publishOn(Schedulers.elastic(), 1).subscribe(subscriber);
+        queryObservable.publishOn(Schedulers.boundedElastic(), 1).subscribe(subscriber);
         int sleepTimeInMillis = 10000;
         int i = 0;
 

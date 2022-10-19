@@ -29,7 +29,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.automation.fluent.AutomationAccountsClient;
 import com.azure.resourcemanager.automation.fluent.models.AutomationAccountInner;
 import com.azure.resourcemanager.automation.models.AutomationAccountCreateOrUpdateParameters;
@@ -39,8 +38,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AutomationAccountsClient. */
 public final class AutomationAccountsClientImpl implements AutomationAccountsClient {
-    private final ClientLogger logger = new ClientLogger(AutomationAccountsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AutomationAccountsService service;
 
@@ -182,7 +179,8 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type.
+     * @return definition of the automation account type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationAccountInner>> updateWithResponseAsync(
@@ -212,7 +210,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -240,7 +238,8 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type.
+     * @return definition of the automation account type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationAccountInner>> updateWithResponseAsync(
@@ -273,7 +272,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -297,20 +296,13 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type.
+     * @return definition of the automation account type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutomationAccountInner> updateAsync(
         String resourceGroupName, String automationAccountName, AutomationAccountUpdateParameters parameters) {
         return updateWithResponseAsync(resourceGroupName, automationAccountName, parameters)
-            .flatMap(
-                (Response<AutomationAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -340,7 +332,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type.
+     * @return definition of the automation account type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutomationAccountInner> updateWithResponse(
@@ -360,7 +352,8 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type.
+     * @return definition of the automation account type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationAccountInner>> createOrUpdateWithResponseAsync(
@@ -390,7 +383,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -418,7 +411,8 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type.
+     * @return definition of the automation account type along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationAccountInner>> createOrUpdateWithResponseAsync(
@@ -451,7 +445,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
         } else {
             parameters.validate();
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -475,20 +469,13 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type.
+     * @return definition of the automation account type on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutomationAccountInner> createOrUpdateAsync(
         String resourceGroupName, String automationAccountName, AutomationAccountCreateOrUpdateParameters parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, automationAccountName, parameters)
-            .flatMap(
-                (Response<AutomationAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -518,7 +505,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of the automation account type.
+     * @return definition of the automation account type along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutomationAccountInner> createOrUpdateWithResponse(
@@ -537,7 +524,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String automationAccountName) {
@@ -561,7 +548,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -587,7 +574,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(
@@ -612,7 +599,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -634,12 +621,11 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String automationAccountName) {
-        return deleteWithResponseAsync(resourceGroupName, automationAccountName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(resourceGroupName, automationAccountName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -665,7 +651,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String resourceGroupName, String automationAccountName, Context context) {
@@ -680,7 +666,8 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an Automation Account.
+     * @return information about an Automation Account along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationAccountInner>> getByResourceGroupWithResponseAsync(
@@ -705,7 +692,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -731,7 +718,8 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an Automation Account.
+     * @return information about an Automation Account along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AutomationAccountInner>> getByResourceGroupWithResponseAsync(
@@ -756,7 +744,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -778,20 +766,13 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an Automation Account.
+     * @return information about an Automation Account on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AutomationAccountInner> getByResourceGroupAsync(
         String resourceGroupName, String automationAccountName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, automationAccountName)
-            .flatMap(
-                (Response<AutomationAccountInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -818,7 +799,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about an Automation Account.
+     * @return information about an Automation Account along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AutomationAccountInner> getByResourceGroupWithResponse(
@@ -833,7 +814,8 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationAccountInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -853,7 +835,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -886,7 +868,8 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationAccountInner>> listByResourceGroupSinglePageAsync(
@@ -907,7 +890,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -936,7 +919,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutomationAccountInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -953,7 +936,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutomationAccountInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -969,7 +952,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationAccountInner> listByResourceGroup(String resourceGroupName) {
@@ -984,7 +967,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationAccountInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -992,11 +975,14 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     }
 
     /**
-     * Retrieve a list of accounts within a given subscription.
+     * Lists the Automation Accounts within an Azure subscription.
+     *
+     * <p>Retrieve a list of accounts within a given subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationAccountInner>> listSinglePageAsync() {
@@ -1012,7 +998,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1032,13 +1018,16 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     }
 
     /**
-     * Retrieve a list of accounts within a given subscription.
+     * Lists the Automation Accounts within an Azure subscription.
+     *
+     * <p>Retrieve a list of accounts within a given subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationAccountInner>> listSinglePageAsync(Context context) {
@@ -1054,7 +1043,7 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01";
+        final String apiVersion = "2021-06-22";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1071,11 +1060,13 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     }
 
     /**
-     * Retrieve a list of accounts within a given subscription.
+     * Lists the Automation Accounts within an Azure subscription.
+     *
+     * <p>Retrieve a list of accounts within a given subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutomationAccountInner> listAsync() {
@@ -1083,13 +1074,15 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     }
 
     /**
-     * Retrieve a list of accounts within a given subscription.
+     * Lists the Automation Accounts within an Azure subscription.
+     *
+     * <p>Retrieve a list of accounts within a given subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AutomationAccountInner> listAsync(Context context) {
@@ -1098,11 +1091,13 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     }
 
     /**
-     * Retrieve a list of accounts within a given subscription.
+     * Lists the Automation Accounts within an Azure subscription.
+     *
+     * <p>Retrieve a list of accounts within a given subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationAccountInner> list() {
@@ -1110,13 +1105,15 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     }
 
     /**
-     * Retrieve a list of accounts within a given subscription.
+     * Lists the Automation Accounts within an Azure subscription.
+     *
+     * <p>Retrieve a list of accounts within a given subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AutomationAccountInner> list(Context context) {
@@ -1126,11 +1123,13 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationAccountInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -1162,12 +1161,14 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationAccountInner>> listByResourceGroupNextSinglePageAsync(
@@ -1199,11 +1200,13 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationAccountInner>> listNextSinglePageAsync(String nextLink) {
@@ -1234,12 +1237,14 @@ public final class AutomationAccountsClientImpl implements AutomationAccountsCli
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response model for the list account operation.
+     * @return the response model for the list account operation along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AutomationAccountInner>> listNextSinglePageAsync(String nextLink, Context context) {

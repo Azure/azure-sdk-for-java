@@ -14,12 +14,10 @@ import com.azure.resourcemanager.synapse.fluent.models.ExtendedServerBlobAuditin
 import com.azure.resourcemanager.synapse.models.BlobAuditingPolicyName;
 import com.azure.resourcemanager.synapse.models.ExtendedServerBlobAuditingPolicy;
 import com.azure.resourcemanager.synapse.models.WorkspaceManagedSqlServerExtendedBlobAuditingPolicies;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
     implements WorkspaceManagedSqlServerExtendedBlobAuditingPolicies {
-    @JsonIgnore
-    private final ClientLogger logger =
+    private static final ClientLogger LOGGER =
         new ClientLogger(WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl.class);
 
     private final WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesClient innerClient;
@@ -79,7 +77,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
     public ExtendedServerBlobAuditingPolicy getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -87,7 +85,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -95,7 +93,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
         BlobAuditingPolicyName blobAuditingPolicyName =
             BlobAuditingPolicyName.fromString(Utils.getValueFromIdByName(id, "extendedAuditingSettings"));
         if (blobAuditingPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -109,7 +107,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
     public Response<ExtendedServerBlobAuditingPolicy> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -117,7 +115,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
@@ -125,7 +123,7 @@ public final class WorkspaceManagedSqlServerExtendedBlobAuditingPoliciesImpl
         BlobAuditingPolicyName blobAuditingPolicyName =
             BlobAuditingPolicyName.fromString(Utils.getValueFromIdByName(id, "extendedAuditingSettings"));
         if (blobAuditingPolicyName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

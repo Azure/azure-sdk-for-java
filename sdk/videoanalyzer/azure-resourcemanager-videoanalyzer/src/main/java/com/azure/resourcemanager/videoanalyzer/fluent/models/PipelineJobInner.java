@@ -7,11 +7,9 @@ package com.azure.resourcemanager.videoanalyzer.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.videoanalyzer.models.ParameterDefinition;
 import com.azure.resourcemanager.videoanalyzer.models.PipelineJobError;
 import com.azure.resourcemanager.videoanalyzer.models.PipelineJobState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -22,8 +20,6 @@ import java.util.List;
  */
 @Fluent
 public final class PipelineJobInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PipelineJobInner.class);
-
     /*
      * The resource properties.
      */

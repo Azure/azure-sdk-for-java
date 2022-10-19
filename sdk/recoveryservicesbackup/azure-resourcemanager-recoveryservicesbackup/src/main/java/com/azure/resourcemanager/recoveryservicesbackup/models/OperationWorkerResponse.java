@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.recoveryservicesbackup.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -15,8 +13,6 @@ import java.util.Map;
 /** This is the base class for operation result responses. */
 @Fluent
 public class OperationWorkerResponse {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationWorkerResponse.class);
-
     /*
      * HTTP Status Code of the operation.
      */

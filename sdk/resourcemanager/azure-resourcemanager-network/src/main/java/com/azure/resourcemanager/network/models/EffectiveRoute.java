@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Effective Route. */
 @Fluent
 public final class EffectiveRoute {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EffectiveRoute.class);
-
     /*
      * The name of the user defined route. This is optional.
      */
@@ -22,8 +18,7 @@ public final class EffectiveRoute {
     private String name;
 
     /*
-     * If true, on-premises routes are not propagated to the network interfaces
-     * in the subnet.
+     * If true, on-premises routes are not propagated to the network interfaces in the subnet.
      */
     @JsonProperty(value = "disableBgpRoutePropagation")
     private Boolean disableBgpRoutePropagation;
@@ -57,6 +52,10 @@ public final class EffectiveRoute {
      */
     @JsonProperty(value = "nextHopType")
     private RouteNextHopType nextHopType;
+
+    /** Creates an instance of EffectiveRoute class. */
+    public EffectiveRoute() {
+    }
 
     /**
      * Get the name property: The name of the user defined route. This is optional.

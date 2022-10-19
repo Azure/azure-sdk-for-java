@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Properties of the rule group. */
 @Fluent
 public final class VirtualRouterPeeringProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualRouterPeeringProperties.class);
-
     /*
      * Peer ASN.
      */
@@ -32,6 +28,10 @@ public final class VirtualRouterPeeringProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
+
+    /** Creates an instance of VirtualRouterPeeringProperties class. */
+    public VirtualRouterPeeringProperties() {
+    }
 
     /**
      * Get the peerAsn property: Peer ASN.
