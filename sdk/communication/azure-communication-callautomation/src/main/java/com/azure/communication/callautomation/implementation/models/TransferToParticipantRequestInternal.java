@@ -7,7 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The transfer call to participant request. */
+/** The request payload for transferring call to a participant. */
 @Fluent
 public final class TransferToParticipantRequestInternal {
     /*
@@ -29,7 +29,8 @@ public final class TransferToParticipantRequestInternal {
     private String userToUserInformation;
 
     /*
-     * The operation context.
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
@@ -95,7 +96,8 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
-     * Get the operationContext property: The operation context.
+     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
      *
      * @return the operationContext value.
      */
@@ -104,7 +106,8 @@ public final class TransferToParticipantRequestInternal {
     }
 
     /**
-     * Set the operationContext property: The operation context.
+     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
      *
      * @param operationContext the operationContext value to set.
      * @return the TransferToParticipantRequestInternal object itself.

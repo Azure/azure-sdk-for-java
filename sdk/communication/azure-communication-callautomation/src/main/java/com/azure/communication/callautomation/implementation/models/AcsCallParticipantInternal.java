@@ -7,7 +7,7 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AcsCallParticipantInternal model. */
+/** Contract model of an ACS call participant. */
 @Fluent
 public final class AcsCallParticipantInternal {
     /*
