@@ -27,15 +27,6 @@ public final class DataFlowsImpl implements DataFlows {
         this.serviceManager = serviceManager;
     }
 
-    public DataFlowResource get(String resourceGroupName, String factoryName, String dataFlowName) {
-        DataFlowResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, dataFlowName);
-        if (inner != null) {
-            return new DataFlowResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<DataFlowResource> getWithResponse(
         String resourceGroupName, String factoryName, String dataFlowName, String ifNoneMatch, Context context) {
         Response<DataFlowResourceInner> inner =
@@ -51,13 +42,22 @@ public final class DataFlowsImpl implements DataFlows {
         }
     }
 
-    public void delete(String resourceGroupName, String factoryName, String dataFlowName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, dataFlowName);
+    public DataFlowResource get(String resourceGroupName, String factoryName, String dataFlowName) {
+        DataFlowResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, dataFlowName);
+        if (inner != null) {
+            return new DataFlowResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String dataFlowName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, dataFlowName, context);
+    }
+
+    public void delete(String resourceGroupName, String factoryName, String dataFlowName) {
+        this.serviceClient().delete(resourceGroupName, factoryName, dataFlowName);
     }
 
     public PagedIterable<DataFlowResource> listByFactory(String resourceGroupName, String factoryName) {

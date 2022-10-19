@@ -65,6 +65,10 @@ public final class VpnClientIPsecParametersInner {
     @JsonProperty(value = "pfsGroup", required = true)
     private PfsGroup pfsGroup;
 
+    /** Creates an instance of VpnClientIPsecParametersInner class. */
+    public VpnClientIPsecParametersInner() {
+    }
+
     /**
      * Get the saLifeTimeSeconds property: The IPSec Security Association (also called Quick Mode or Phase 2 SA)
      * lifetime in seconds for P2S client.

@@ -40,6 +40,10 @@ public final class DocumentDbCollectionSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of DocumentDbCollectionSource class. */
+    public DocumentDbCollectionSource() {
+    }
+
     /**
      * Get the query property: Documents query. Type: string (or Expression with resultType string).
      *

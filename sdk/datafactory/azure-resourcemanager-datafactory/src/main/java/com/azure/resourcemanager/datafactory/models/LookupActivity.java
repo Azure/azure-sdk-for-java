@@ -23,6 +23,10 @@ public final class LookupActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private LookupActivityTypeProperties innerTypeProperties = new LookupActivityTypeProperties();
 
+    /** Creates an instance of LookupActivity class. */
+    public LookupActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Lookup activity properties.
      *

@@ -31,6 +31,9 @@ public final class QueueAccessPolicy {
     @JsonProperty(value = "Permission")
     private String permissions;
 
+    /** Creates an instance of QueueAccessPolicy class. */
+    public QueueAccessPolicy() {}
+
     /**
      * Get the startsOn property: the date-time the policy is active.
      *

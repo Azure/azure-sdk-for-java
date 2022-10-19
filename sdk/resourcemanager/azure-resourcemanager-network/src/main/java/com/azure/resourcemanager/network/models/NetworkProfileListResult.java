@@ -24,6 +24,10 @@ public final class NetworkProfileListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of NetworkProfileListResult class. */
+    public NetworkProfileListResult() {
+    }
+
     /**
      * Get the value property: A list of network profiles that exist in a resource group.
      *

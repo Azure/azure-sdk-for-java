@@ -75,6 +75,10 @@ public final class SapTableSource extends TabularSource {
     @JsonProperty(value = "partitionSettings")
     private SapTablePartitionSettings partitionSettings;
 
+    /** Creates an instance of SapTableSource class. */
+    public SapTableSource() {
+    }
+
     /**
      * Get the rowCount property: The number of rows to be retrieved. Type: integer(or Expression with resultType
      * integer).

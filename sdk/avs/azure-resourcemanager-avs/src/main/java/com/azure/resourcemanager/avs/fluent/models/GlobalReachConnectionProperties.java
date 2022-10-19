@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.GlobalReachConnectionProvisioningState;
 import com.azure.resourcemanager.avs.models.GlobalReachConnectionStatus;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties of a global reach connection. */
 @Fluent
 public final class GlobalReachConnectionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(GlobalReachConnectionProperties.class);
-
     /*
      * The state of the  ExpressRoute Circuit Authorization provisioning
      */
@@ -23,15 +19,13 @@ public final class GlobalReachConnectionProperties {
     private GlobalReachConnectionProvisioningState provisioningState;
 
     /*
-     * The network used for global reach carved out from the original network
-     * block provided for the private cloud
+     * The network used for global reach carved out from the original network block provided for the private cloud
      */
     @JsonProperty(value = "addressPrefix", access = JsonProperty.Access.WRITE_ONLY)
     private String addressPrefix;
 
     /*
-     * Authorization key from the peer express route used for the global reach
-     * connection
+     * Authorization key from the peer express route used for the global reach connection
      */
     @JsonProperty(value = "authorizationKey")
     private String authorizationKey;
@@ -43,18 +37,20 @@ public final class GlobalReachConnectionProperties {
     private GlobalReachConnectionStatus circuitConnectionStatus;
 
     /*
-     * Identifier of the ExpressRoute Circuit to peer with in the global reach
-     * connection
+     * Identifier of the ExpressRoute Circuit to peer with in the global reach connection
      */
     @JsonProperty(value = "peerExpressRouteCircuit")
     private String peerExpressRouteCircuit;
 
     /*
-     * The ID of the Private Cloud's ExpressRoute Circuit that is participating
-     * in the global reach connection
+     * The ID of the Private Cloud's ExpressRoute Circuit that is participating in the global reach connection
      */
     @JsonProperty(value = "expressRouteId")
     private String expressRouteId;
+
+    /** Creates an instance of GlobalReachConnectionProperties class. */
+    public GlobalReachConnectionProperties() {
+    }
 
     /**
      * Get the provisioningState property: The state of the ExpressRoute Circuit Authorization provisioning.

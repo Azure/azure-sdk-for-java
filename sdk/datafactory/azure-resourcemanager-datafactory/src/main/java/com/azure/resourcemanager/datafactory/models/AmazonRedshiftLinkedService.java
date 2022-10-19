@@ -25,6 +25,10 @@ public final class AmazonRedshiftLinkedService extends LinkedService {
     private AmazonRedshiftLinkedServiceTypeProperties innerTypeProperties =
         new AmazonRedshiftLinkedServiceTypeProperties();
 
+    /** Creates an instance of AmazonRedshiftLinkedService class. */
+    public AmazonRedshiftLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Amazon Redshift linked service properties.
      *

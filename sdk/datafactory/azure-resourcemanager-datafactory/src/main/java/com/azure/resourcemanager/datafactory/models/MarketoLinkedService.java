@@ -24,6 +24,10 @@ public final class MarketoLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private MarketoLinkedServiceTypeProperties innerTypeProperties = new MarketoLinkedServiceTypeProperties();
 
+    /** Creates an instance of MarketoLinkedService class. */
+    public MarketoLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Marketo server linked service properties.
      *

@@ -39,7 +39,21 @@ These are the global settings for Timezone Client.
 
 ``` yaml
 directive:
-
+  - rename-model:
+        from: TimezoneIanaVersionResult
+        to: TimeZoneIanaVersionResult  
+  - rename-model:
+        from: TimezoneId
+        to: TimeZoneId
+  - rename-model:
+        from: TimezoneNames
+        to: TimeZoneNames
+  - rename-model:
+        from: TimezoneResult
+        to: TimeZoneResult
+  - rename-model:
+        from: TimezoneWindows
+        to: TimeZoneWindows
   - from: swagger-document
     where: "$"
     transform: >
@@ -65,7 +79,7 @@ generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: CountryRecord,IanaId,TimezoneWindows,TimezoneResult,TimezoneOptions,TimezoneNames,TimezoneId,TimezoneIanaVersionResult,ReferenceTime,TimeTransition
+custom-types: CountryRecord,IanaId,TimeZoneWindows,TimeZoneResult,TimezoneOptions,TimeZoneNames,TimeZoneId,TimeZoneIanaVersionResult,ReferenceTime,TimeTransition
 customization-jar-path: target/azure-maps-timezone-customization-1.0.0-beta.1.jar
 customization-class: TimezoneCustomization
 ```

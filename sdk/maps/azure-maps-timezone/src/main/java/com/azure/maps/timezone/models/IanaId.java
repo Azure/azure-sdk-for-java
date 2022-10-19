@@ -29,8 +29,7 @@ public final class IanaId {
     private String aliasOf;
 
     /*
-     * This attribute returns `True` if the IanaId has any country/zone
-     * associated with it.
+     * This attribute returns `True` if the IanaId has any country/zone associated with it.
      */
     @JsonProperty(value = "HasZone1970Location", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean hasZone1970Location;

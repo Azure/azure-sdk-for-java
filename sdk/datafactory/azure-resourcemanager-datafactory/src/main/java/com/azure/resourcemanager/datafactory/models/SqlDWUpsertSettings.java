@@ -23,6 +23,10 @@ public final class SqlDWUpsertSettings {
     @JsonProperty(value = "keys")
     private Object keys;
 
+    /** Creates an instance of SqlDWUpsertSettings class. */
+    public SqlDWUpsertSettings() {
+    }
+
     /**
      * Get the interimSchemaName property: Schema name for interim table. Type: string (or Expression with resultType
      * string).
