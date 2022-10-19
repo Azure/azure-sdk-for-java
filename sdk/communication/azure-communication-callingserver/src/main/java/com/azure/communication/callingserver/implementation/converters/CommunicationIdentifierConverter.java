@@ -45,9 +45,9 @@ public class CommunicationIdentifierConverter {
 
             if (kind == CommunicationIdentifierModelKind.PHONE_NUMBER
                 && identifier.getPhoneNumber() != null) {
-                PhoneNumberIdentifierModel phoneNumberModel = identifier.getPhoneNumber();
-                Objects.requireNonNull(phoneNumberModel.getValue());
-                return new PhoneNumberIdentifier(phoneNumberModel.getValue()).setRawId(rawId);
+                String phoneNumber = identifier.getPhoneNumber().getValue();
+                Objects.requireNonNull(phoneNumber);
+                return new PhoneNumberIdentifier(phoneNumber).setRawId(rawId);
             }
 
             if (kind == CommunicationIdentifierModelKind.MICROSOFT_TEAMS_USER
@@ -73,9 +73,9 @@ public class CommunicationIdentifierConverter {
         }
 
         if (identifier.getPhoneNumber() != null) {
-            PhoneNumberIdentifierModel phoneNumberModel = identifier.getPhoneNumber();
-            Objects.requireNonNull(phoneNumberModel.getValue());
-            return new PhoneNumberIdentifier(phoneNumberModel.getValue()).setRawId(rawId);
+            String phoneNumber = identifier.getPhoneNumber().getValue();
+            Objects.requireNonNull(phoneNumber);
+            return new PhoneNumberIdentifier(phoneNumber).setRawId(rawId);
         }
 
         if (identifier.getMicrosoftTeamsUser() != null) {
