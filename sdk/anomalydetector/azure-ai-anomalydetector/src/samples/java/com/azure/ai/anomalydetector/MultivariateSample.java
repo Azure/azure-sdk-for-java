@@ -181,7 +181,6 @@ public class MultivariateSample {
 
         // Synchronized anomaly detection
         InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\sample_data\\sync_infer_body.json");
-//        InputStream fileInputStream = new FileInputStream("azure-ai-anomalydetector\\src\\samples\\java\\com\\azure\\ai\\anomalydetector\\sync_infer_body.json");
         JsonReader reader = Json.createReader(fileInputStream);
         BinaryData detectBody = BinaryData.fromString(reader.readObject().toString());
         Response<BinaryData> lastDetectResponse = GetLastDetectResult(client, detectBody, modelId);
