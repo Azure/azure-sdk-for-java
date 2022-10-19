@@ -12,7 +12,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-resourcemanager-traffic-generated</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager-traffic-generated;current} -->
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-resourcemanager-traffic-generated;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for azure-maps-traffic service</name>
