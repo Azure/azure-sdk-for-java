@@ -278,7 +278,8 @@
     "sdk/maps/azure-maps-timezone/**",
     "sdk/search/.idea/**",
     "sdk/spring/spring-cloud-azure-starter-jdbc-postgresql/**",
-    "sdk/spring/spring-cloud-azure-starter-jdbc-mysql/**"
+    "sdk/spring/spring-cloud-azure-starter-jdbc-mysql/**",
+    "sdk/devcenter/azure-developer-devcenter/**"
   ],
   "words": [
     "adal",
