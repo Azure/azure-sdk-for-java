@@ -4,6 +4,7 @@
 package com.azure.identity.providers.jdbc.implementation.token;
 
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 
@@ -14,6 +15,7 @@ import java.util.Properties;
  * Contains details of a request to get a token.
  */
 public class AccessTokenResolverOptions {
+    private static final ClientLogger LOGGER = new ClientLogger(AccessTokenResolverOptions.class);
 
     private String claims;
     private String tenantId;
@@ -36,14 +38,20 @@ public class AccessTokenResolverOptions {
 
     private String getDefaultScopes(Properties properties) {
         if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            // todo zhihaoguo update log
+            LOGGER.info("AZURE_PUBLIC_CLOUD ossrdbms scopes set");
             return "https://ossrdbms-aad.database.windows.net/.default";
         } else if (AzureAuthorityHosts.AZURE_CHINA.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            LOGGER.info("AZURE_CHINA ossrdbms scopes set");
             return "https://ossrdbms-aad.database.chinacloudapi.cn/.default";
         } else if (AzureAuthorityHosts.AZURE_GERMANY.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            LOGGER.info("AZURE_GERMANY ossrdbms scopes set");
             return "https://ossrdbms-aad.database.cloudapi.de/.default";
         } else if (AzureAuthorityHosts.AZURE_GOVERNMENT.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            LOGGER.info("AZURE_GOVERNMENT ossrdbms scopes set");
             return "https://ossrdbms-aad.database.usgovcloudapi.net/.default";
         }
+        LOGGER.info("default ossrdbms scopes set");
         return "https://ossrdbms-aad.database.windows.net/.default";
     }
 
