@@ -18,6 +18,7 @@ import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.EventPosition;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.PrintWriter;
@@ -45,6 +46,18 @@ import java.util.function.Consumer;
 public class EventProcessorWithOptions extends EventHubsScenario {
     private static final ClientLogger LOGGER = new ClientLogger(EventProcessorWithOptions.class);
 
+    @Value("${UPDATE_CHECKPOINT:false}")
+    private boolean updateCheckpoint;
+
+    @Value("${NEED_SEND_EVENT_HUB:false}")
+    private boolean needSendEventHub;
+
+    @Value("${RECEIVE_BATCH_SIZE:0}")
+    private int batchSize;
+
+    @Value("${RECEIVE_BATCH_TIMEOUT:0}")
+    private int batchTimeoutMs;
+
     private static final int PARTITION_NUMBER = 64;
     private static final int EVENT_COUNT_THRESHOLD = 40;
     private static final int ONE_SECOND_IN_NANO = 1000000000;
@@ -55,19 +68,12 @@ public class EventProcessorWithOptions extends EventHubsScenario {
         final String containerName = options.getStorageContainerName();
         final String eventHubConnStr = options.getEventhubsConnectionString();
         final String eventHub = options.getEventhubsEventHubName();
-
         final String consumerGroup = options.getEventHubsConsumerGroup();
-
-        final boolean updateCheckpoint = options.isUpdateCheckpoint();
-        final boolean needSendEventHub = options.isNeedSendEventHub();
         final String writeEventHub = options.getSecondEventhubsEventHubName();
 
         EventHubProducerClient producerClient = new EventHubClientBuilder()
             .connectionString(eventHubConnStr, writeEventHub)
             .buildProducerClient();
-
-        final int batchSize = options.getReceiveBatchSize();
-        final int batchTimeoutMs = options.getReceiveBatchTimeout();
 
         final int[] eventCounter = new int[PARTITION_NUMBER];
         final List<ArrayList<EventData>> eventsFromPartitions = new ArrayList<>(PARTITION_NUMBER);

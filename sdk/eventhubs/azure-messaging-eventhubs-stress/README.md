@@ -84,7 +84,7 @@ We have configured Application Insights on cluster. The telemetry data can be mo
 For local test, you can follow the [steps][enable_application_insights] to enable application insights. Make sure you have added below JVM parameters when you start the test.
 
 ```yaml
-java -javaagent:<path to the downloaded jar>/applicationinsights-agent-3.2.11.jar 
+java -javaagent:<path to the downloaded jar>/applicationinsights-agent-3.4.1.jar 
 ```
 
 ## Key concepts
@@ -144,7 +144,7 @@ Scenario 1: receiver does not checkpoint and not write to another new event hub.
           - |
               set -a &&
               source $ENV_FILE &&
-              java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+              java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
               "org.springframework.boot.loader.JarLauncher" \
               --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=false --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
@@ -160,7 +160,7 @@ Scenario 2: receiver does checkpoint and not write to another new event hub.
         - |
           set -a &&
           source $ENV_FILE &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
@@ -177,7 +177,7 @@ Scenario 3: receiver does checkpoint and write to another event hub.
         - |
           set -a &&
           source $ENV_FILE &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=true
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
@@ -194,7 +194,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
         - |
           set -a &&
           source $ENV_FILE &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
@@ -206,7 +206,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
         - |
           set -a &&
           source $ENV_FILE &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
@@ -218,7 +218,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
         - |
           set -a &&
           source $ENV_FILE &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
@@ -230,7 +230,7 @@ Scenario 4: Four receiver does checkpoint and not write to another new event hub
         - |
           set -a &&
           source $ENV_FILE &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.2.11.jar \
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
           "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=EventProcessorWithOptions --UPDATE_CHECKPOINT=true --NEED_SEND_EVENT_HUB=false
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
