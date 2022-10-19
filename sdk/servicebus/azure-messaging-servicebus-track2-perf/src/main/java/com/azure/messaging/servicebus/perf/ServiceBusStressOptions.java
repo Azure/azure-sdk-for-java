@@ -22,6 +22,12 @@ public class ServiceBusStressOptions extends PerfStressOptions {
     @Parameter(names = { "-msb", "--messageSizeBytes" }, description = "Size(in bytes) of one Message")
     private int messagesSizeBytesToSend = 10;
 
+    @Parameter(names = { "-idm", "--isDeleteMode" }, description = "Receiver client is receive_and_delete mode or peek_lock mode")
+    private boolean isDeleteMode = true;
+
+    @Parameter(names = { "-mcc", "--maxConcurrentCalls" }, description = "Processor client max concurrent calls")
+    private int maxConcurrentCalls = 1;
+
     /**
      * Get the configured messagesToSend option for performance test.
      * @return The size.
@@ -44,5 +50,21 @@ public class ServiceBusStressOptions extends PerfStressOptions {
      */
     public int getMessagesSizeBytesToSend() {
         return messagesSizeBytesToSend;
+    }
+
+    /**
+     * Get the configured isDeleteMode option for performance test.
+     * @return Receive mod is receive_and_delete mode or not.
+     */
+    public boolean getIsDeleteMode() {
+        return isDeleteMode;
+    }
+
+    /**
+     * Get the configured maxConcurrentCalls option for performance test.
+     * @return The max concurrent size.
+     */
+    public int getMaxConcurrentCalls() {
+        return maxConcurrentCalls;
     }
 }
