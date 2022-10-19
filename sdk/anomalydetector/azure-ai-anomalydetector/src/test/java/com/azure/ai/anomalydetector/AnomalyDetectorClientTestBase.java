@@ -3,9 +3,6 @@
 
 package com.azure.ai.anomalydetector;
 
-import com.azure.ai.anomalydetector.models.DetectRequest;
-import com.azure.ai.anomalydetector.models.TimeGranularity;
-import com.azure.ai.anomalydetector.models.TimeSeriesPoint;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ContentType;
 import com.azure.core.http.HttpClient;
@@ -17,11 +14,10 @@ import com.azure.core.http.policy.AzureKeyCredentialPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.TestBase;
 import com.azure.core.test.TestMode;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
+
 
 /**
  * Base class for Anomaly Detector clients test.
@@ -30,7 +26,7 @@ public class AnomalyDetectorClientTestBase extends TestBase {
     private static final String FAKE_API_KEY = "fakeKeyPlaceholder";
     private static final String OCP_APIM_SUBSCRIPTION_KEY = "Ocp-Apim-Subscription-Key";
 
-    void testDetectEntireSeriesWithResponse(Consumer<DetectRequest> testRunner) {
+    void testDetectEntireSeriesWithResponse(Consumer<BinaryData> testRunner) {
         testRunner.accept(getDetectRequest());
     }
 
@@ -57,6 +53,7 @@ public class AnomalyDetectorClientTestBase extends TestBase {
 
         return new AnomalyDetectorClientBuilder()
             .pipeline(httpPipeline)
+            .apiVersion("v1.1")
             .endpoint(endpoint);
     }
 
@@ -74,26 +71,8 @@ public class AnomalyDetectorClientTestBase extends TestBase {
                : Configuration.getGlobalConfiguration().get("AZURE_ANOMALY_DETECTOR_ENDPOINT");
     }
 
-    private DetectRequest getDetectRequest() {
-        List<TimeSeriesPoint> series = new ArrayList<>();
-        int year = 2018;
-        int month = 0;
-
-        for (int i = 0; i < 24; i++) {
-            if (month == 12) {
-                month = 0;
-                year++;
-            }
-            month++;
-            TimeSeriesPoint timeSeriesPoint = new TimeSeriesPoint().setValue(855)
-                .setTimestamp(OffsetDateTime.now().withMonth(month).withYear(year));
-            series.add(timeSeriesPoint);
-        }
-
-        return new DetectRequest()
-            .setGranularity(TimeGranularity.MONTHLY)
-            .setMaxAnomalyRatio(0.25f)
-            .setSensitivity(95)
-            .setSeries(series);
+    private BinaryData getDetectRequest() {
+        BinaryData requestBody = BinaryData.fromString("{\"series\":[{\"timestamp\":\"2018-01-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2018-02-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2018-03-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2018-04-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2018-05-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2018-06-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2018-07-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2018-08-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2018-09-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2018-10-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2018-11-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2018-12-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-01-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-02-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-03-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-04-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-05-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-06-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-07-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-08-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-09-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-10-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-11-19T00:00:00Z\",\"value\":855},{\"timestamp\":\"2019-12-19T00:00:00Z\",\"value\":855}],\"granularity\":\"monthly\",\"maxAnomalyRatio\":0.25,\"sensitivity\":95}");
+        return requestBody;
     }
 }
