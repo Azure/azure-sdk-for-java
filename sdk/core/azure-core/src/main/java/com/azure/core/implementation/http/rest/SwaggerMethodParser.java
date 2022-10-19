@@ -265,9 +265,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         this.isReactive = isReactiveMethod;
         if (isReactiveMethod) {
-            this.isStreamResponse = isStreamResponseType(TypeUtil.getTypeArgument(returnType));
+            Type reactiveTypeArgument = TypeUtil.getTypeArgument(returnType);
+            this.isStreamResponse = isStreamResponseType(reactiveTypeArgument);
+            this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, reactiveTypeArgument);
         } else {
             this.isStreamResponse = isStreamResponseType(returnType);
+            this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, returnType);
         }
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
@@ -275,7 +278,6 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         Type unwrappedReturnType = unwrapReturnType(returnType);
         this.returnTypeDecodeable = isReturnTypeDecodeable(unwrappedReturnType);
         this.responseEagerlyRead = isResponseEagerlyRead(unwrappedReturnType);
-        this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(returnType, ResponseBase.class);
         this.spanName = interfaceParser.getServiceName() + "." + swaggerMethod.getName();
     }
 
