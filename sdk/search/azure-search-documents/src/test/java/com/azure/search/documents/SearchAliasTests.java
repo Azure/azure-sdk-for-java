@@ -205,7 +205,9 @@ public class SearchAliasTests extends SearchTestBase {
         // Alias changes take up to 10 seconds to propagate.
         TestHelpers.sleepIfRunningAgainstService(10000);
 
-        assertThrows(HttpResponseException.class, () -> indexClient.getIndex(aliasName));
+        assertThrows(HttpResponseException.class, () -> indexClient.getIndex(aliasName), () -> String.format(
+            "Still able to access index '%s' using alias '%s' even after deleting the alias and waiting 10 seconds",
+            searchClient.getIndexName(), aliasName));
     }
 
     // @Test
