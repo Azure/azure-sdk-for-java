@@ -31,38 +31,41 @@ class CosmosDataDiagnosticsConfigurationTests {
             AzureGlobalPropertiesAutoConfiguration.class,
             AzureCosmosAutoConfiguration.class,
             CosmosDataAutoConfiguration.class));
-    MockedStatic<CosmosFactory> mockedStatic = mockStatic(CosmosFactory.class, RETURNS_MOCKS);
     CosmosClientBuilder cosmosClientBuilder = mock(CosmosClientBuilder.class);
     CosmosAsyncClient cosmosAsyncClient = mock(CosmosAsyncClient.class);
 
     @Test
     void configureWithPopulateQueryMetricsEnabled() {
-        when(cosmosClientBuilder.buildAsyncClient()).thenReturn(cosmosAsyncClient);
-        mockedStatic.when(() -> CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder))
-            .thenReturn(cosmosAsyncClient);
-        this.contextRunner
-            .withBean(CosmosClientBuilder.class, () -> cosmosClientBuilder)
-            .withBean(CosmosClient.class, () -> mock(CosmosClient.class))
-            .withPropertyValues(
-                "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
-                "spring.cloud.azure.cosmos.database=test",
-                "spring.cloud.azure.cosmos.populate-query-metrics=true")
-            .run(context -> assertThat(context).hasSingleBean(ResponseDiagnosticsProcessor.class));
+        try (MockedStatic<CosmosFactory> mockedStatic = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
+            when(cosmosClientBuilder.buildAsyncClient()).thenReturn(cosmosAsyncClient);
+            mockedStatic.when(() -> CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder))
+                .thenReturn(cosmosAsyncClient);
+            this.contextRunner
+                .withBean(CosmosClientBuilder.class, () -> cosmosClientBuilder)
+                .withBean(CosmosClient.class, () -> mock(CosmosClient.class))
+                .withPropertyValues(
+                    "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
+                    "spring.cloud.azure.cosmos.database=test",
+                    "spring.cloud.azure.cosmos.populate-query-metrics=true")
+                .run(context -> assertThat(context).hasSingleBean(ResponseDiagnosticsProcessor.class));
+        }
     }
 
     @Test
     void configureWithPopulateQueryMetricsDisabled() {
-        when(cosmosClientBuilder.buildAsyncClient()).thenReturn(cosmosAsyncClient);
-        mockedStatic.when(() -> CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder))
-            .thenReturn(cosmosAsyncClient);
-        this.contextRunner
-            .withBean(CosmosClientBuilder.class, () -> cosmosClientBuilder)
-            .withBean(CosmosClient.class, () -> mock(CosmosClient.class))
-            .withPropertyValues(
-                "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
-                "spring.cloud.azure.cosmos.database=test-database",
-                "spring.cloud.azure.cosmos.populate-query-metrics=false")
-            .run(context -> assertThat(context).doesNotHaveBean(ResponseDiagnosticsProcessor.class));
+        try (MockedStatic<CosmosFactory> mockedStatic = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
+            when(cosmosClientBuilder.buildAsyncClient()).thenReturn(cosmosAsyncClient);
+            mockedStatic.when(() -> CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder))
+                .thenReturn(cosmosAsyncClient);
+            this.contextRunner
+                .withBean(CosmosClientBuilder.class, () -> cosmosClientBuilder)
+                .withBean(CosmosClient.class, () -> mock(CosmosClient.class))
+                .withPropertyValues(
+                    "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
+                    "spring.cloud.azure.cosmos.database=test-database",
+                    "spring.cloud.azure.cosmos.populate-query-metrics=false")
+                .run(context -> assertThat(context).doesNotHaveBean(ResponseDiagnosticsProcessor.class));
+        }
     }
 
     @Test
