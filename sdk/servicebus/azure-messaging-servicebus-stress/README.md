@@ -33,7 +33,6 @@ Similar with concepts in [Event Hubs Stress Test - Cluster Namespace][event_hubs
 
 For Service Bus, the default value we set is `java-sb`.
 
-
 ## Examples
 
 ### Test Queue/Topic
@@ -41,14 +40,6 @@ For Service Bus, the default value we set is `java-sb`.
 You can switch to test Queue or Topic by providing the program argument `--SERVICEBUS_ENTITY_TYPE=QUEUE/TOPIC`. 
 
 If you haven't provided, the default value we are using is `QUEUE`.
-
-### Update MessageSender
-
-Change `SEND_TIMES` and `MESSAGE_NUMBER` to the number of messages you want to send.
-
-### Update MessageReceiverSync
-
-Change `MAX_MESSAGE_COUNT` to the number you want to receive.
 
 ### Add New Test Scenario
 
