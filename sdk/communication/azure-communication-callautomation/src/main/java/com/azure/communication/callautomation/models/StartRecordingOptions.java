@@ -130,16 +130,24 @@ public class StartRecordingOptions {
     }
 
     /**
-     * Get the channel affinity.
+     * Get the audioChannelParticipantOrdering property: The sequential order in which audio channels are assigned to
+     * participants in the unmixed recording. When 'recordingChannelType' is set to 'unmixed' and
+     * `audioChannelParticipantOrdering is not specified, the audio channel to participant mapping will be automatically
+     * assigned based on the order in which participant first audio was detected. Channel to participant mapping details
+     * can be found in the metadata of the recording.
      *
-     * @return the channel affinity.
+     * @return the audioChannelParticipantOrdering value.
      */
     public List<CommunicationIdentifier> getAudioChannelParticipantOrdering() {
         return audioChannelParticipantOrdering;
     }
 
     /**
-     * Sets the channel affinity.
+     * Set the audioChannelParticipantOrdering property: The sequential order in which audio channels are assigned to
+     * participants in the unmixed recording. When 'recordingChannelType' is set to 'unmixed' and
+     * `audioChannelParticipantOrdering is not specified, the audio channel to participant mapping will be automatically
+     * assigned based on the order in which participant first audio was detected. Channel to participant mapping details
+     * can be found in the metadata of the recording.
      *
      * @param audioChannelParticipantOrdering the list of {@link CommunicationIdentifier}.
      * @return the {@link StartRecordingOptions}
