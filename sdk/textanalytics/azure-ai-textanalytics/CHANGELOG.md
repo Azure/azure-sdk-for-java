@@ -8,6 +8,13 @@
 - Added property `fhirBundle` to `AnalyzeHealthcareEntitiesResult`.
 - Added property `confidenceScore` to `HealthcareEntityRelation`.
 - Added enum `HealthcareDocumentType` and `FhirVersion`.
+- Added property `resolutions` to `CategorizedEntity`.
+- Added models and enums related to resolutions: `BaseResolution`, `ResolutionKind`, `AgeResolution`, `AreaResolution`,
+  `BooleanResolution`, `CurrencyResolution`, `DateTimeResolution`, `InformationResolution`, `LengthResolution`,
+  `NumberResolution`, `NumericRangeResolution`, `OrdinalResolution`, `SpeedResolution`, `TemperatureResolution`,
+  `TemporalSpanResolution`, `VolumeResolution`, `WeightResolution`, `AgeUnit`, `AreaUnit`, `TemporalModifier`,
+  `InformationUnit`, `LengthUnit`, `NumberKind`, `RangeKind`, `RelativeTo`, `SpeedUnit`, `TemperatureUnit`,
+  `VolumeUnit`, and `WeightUnit`.
 
 ### Breaking Changes
 
