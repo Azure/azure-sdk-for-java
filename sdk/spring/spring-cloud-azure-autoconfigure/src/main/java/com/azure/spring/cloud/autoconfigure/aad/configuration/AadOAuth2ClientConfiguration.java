@@ -27,10 +27,8 @@ import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider
 import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.endpoint.DefaultClientCredentialsTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.DefaultJwtBearerTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.DefaultPasswordTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.DefaultRefreshTokenTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2ClientCredentialsGrantRequestEntityConverter;
-import org.springframework.security.oauth2.client.endpoint.OAuth2PasswordGrantRequestEntityConverter;
 import org.springframework.security.oauth2.client.endpoint.OAuth2RefreshTokenGrantRequestEntityConverter;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -126,7 +124,6 @@ public class AadOAuth2ClientConfiguration {
                 .authorizationCode()
                 .clientCredentials(builder ->
                     clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(builder, jwkResolver))
-                .password(builder -> passwordGrantBuilderAccessTokenResponseClientCustomizer(builder, jwkResolver))
                 .provider(refreshTokenProvider)
                 .provider(jwtBearerProvider)
                 .provider(azureDelegatedOAuth2AuthorizedClientProvider(refreshTokenProvider, authorizedClients))
@@ -169,21 +166,6 @@ public class AadOAuth2ClientConfiguration {
             provider.setAccessTokenResponseClient(responseClient);
         }
         return provider;
-    }
-
-    private void passwordGrantBuilderAccessTokenResponseClientCustomizer(
-            OAuth2AuthorizedClientProviderBuilder.PasswordGrantBuilder builder,
-            OAuth2ClientAuthenticationJwkResolver resolver) {
-        if (resolver != null) {
-            OAuth2PasswordGrantRequestEntityConverter converter = new OAuth2PasswordGrantRequestEntityConverter();
-            converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
-
-            DefaultPasswordTokenResponseClient client = new DefaultPasswordTokenResponseClient();
-            client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
-            client.setRequestEntityConverter(converter);
-
-            builder.accessTokenResponseClient(client);
-        }
     }
 
     private void clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(

@@ -5,39 +5,60 @@ package com.azure.spring.cloud.autoconfigure.aad;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AadJwtGrantedAuthoritiesConverter;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadResourceServerProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.StringUtils;
 
 /**
- * Abstract configuration class, used to make JwtConfigurer and AADJwtBearerTokenAuthenticationConverter take effect.
+ * Abstract configuration class, used to make {@link OAuth2ResourceServerConfigurer.JwtConfigurer } and {@link AadJwtGrantedAuthoritiesConverter} take effect.
  *
- * @see WebSecurityConfigurerAdapter
  */
-public abstract class AadResourceServerWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
-    @Autowired
-    AadResourceServerProperties properties;
+public abstract class AadResourceServerWebSecurityConfigurerAdapter {
 
     /**
-     * configure
-     *
+     * A security builder to configure the SecurityFilterChain instance.
+     */
+    protected final HttpSecurity httpSecurity;
+
+    final AadResourceServerProperties properties;
+
+    /**
+     * Creates a new instance
+     * @param properties the {@link AadResourceServerProperties} to configure the OAuth2 clients
+     * @param httpSecurity the security builder to configure the SecurityFilterChain instance.
+     */
+    public AadResourceServerWebSecurityConfigurerAdapter(AadResourceServerProperties properties, HttpSecurity httpSecurity) {
+        this.properties = properties;
+        this.httpSecurity = httpSecurity;
+    }
+
+    /**
+     * The subclass can extend the HttpSecurity configuration if necessary, it will be invoked by {@link AadResourceServerWebSecurityConfigurerAdapter#build()}.
      * @param http the {@link HttpSecurity} to use
      * @throws Exception Configuration failed
-     *
      */
-    @Override
     protected void configure(HttpSecurity http) throws Exception {
+
+    }
+
+    /**
+     * Build a SecurityFilterChain instance.
+     *
+     * @return a default SecurityFilterChain instance
+     * @throws Exception Configuration failed
+     */
+    public SecurityFilterChain build() throws Exception {
         // @formatter:off
-        http.oauth2ResourceServer()
-            .jwt()
-            .jwtAuthenticationConverter(jwtAuthenticationConverter());
+        httpSecurity.oauth2ResourceServer()
+                    .jwt()
+                    .jwtAuthenticationConverter(jwtAuthenticationConverter());
         // @formatter:off
+        return httpSecurity.build();
     }
 
     private Converter<Jwt, AbstractAuthenticationToken> jwtAuthenticationConverter() {

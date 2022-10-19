@@ -21,10 +21,8 @@ import org.springframework.security.oauth2.client.ClientCredentialsOAuth2Authori
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClientProviderBuilder;
-import org.springframework.security.oauth2.client.PasswordOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.RefreshTokenOAuth2AuthorizedClientProvider;
 import org.springframework.security.oauth2.client.endpoint.DefaultClientCredentialsTokenResponseClient;
-import org.springframework.security.oauth2.client.endpoint.DefaultPasswordTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.DefaultRefreshTokenTokenResponseClient;
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
@@ -148,7 +146,6 @@ public class AadB2cOAuth2ClientConfiguration {
                 .authorizationCode()
                 .provider(azureRefreshTokenProvider())
                 .provider(azureClientCredentialProvider())
-                .provider(azurePasswordProvider())
                 .build();
         DefaultOAuth2AuthorizedClientManager manager = new DefaultOAuth2AuthorizedClientManager(clients, authorizedClients);
         manager.setAuthorizedClientProvider(authorizedClientProvider);
@@ -166,14 +163,6 @@ public class AadB2cOAuth2ClientConfiguration {
     private ClientCredentialsOAuth2AuthorizedClientProvider azureClientCredentialProvider() {
         ClientCredentialsOAuth2AuthorizedClientProvider provider = new ClientCredentialsOAuth2AuthorizedClientProvider();
         DefaultClientCredentialsTokenResponseClient responseClient = new DefaultClientCredentialsTokenResponseClient();
-        responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
-        provider.setAccessTokenResponseClient(responseClient);
-        return provider;
-    }
-
-    private PasswordOAuth2AuthorizedClientProvider azurePasswordProvider() {
-        PasswordOAuth2AuthorizedClientProvider provider = new PasswordOAuth2AuthorizedClientProvider();
-        DefaultPasswordTokenResponseClient responseClient = new DefaultPasswordTokenResponseClient();
         responseClient.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         provider.setAccessTokenResponseClient(responseClient);
         return provider;

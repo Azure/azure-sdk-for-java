@@ -7,12 +7,12 @@ import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProp
 import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.FilteredClassLoader;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.List;
 
@@ -74,9 +74,12 @@ class AadResourceServerConfigurationTests {
         resourceServerContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
-                WebSecurityConfigurerAdapter webSecurityConfigurerAdapter = context
-                    .getBean(AadResourceServerConfiguration.DefaultAadResourceServerWebSecurityConfigurerAdapter.class);
+                AadResourceServerConfiguration.DefaultAadResourceServerConfiguration webSecurityConfigurerAdapter =
+                    context.getBean(AadResourceServerConfiguration.DefaultAadResourceServerConfiguration.class);
                 assertThat(webSecurityConfigurerAdapter).isNotNull();
+
+                SecurityFilterChain filterChain = context.getBean(SecurityFilterChain.class);
+                assertThat(filterChain).isNotNull();
             });
     }
 }
