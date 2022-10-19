@@ -52,6 +52,10 @@ public final class ActivityPolicy {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ActivityPolicy class. */
+    public ActivityPolicy() {
+    }
+
     /**
      * Get the timeout property: Specifies the timeout for the activity to run. The default timeout is 7 days. Type:
      * string (or Expression with resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).

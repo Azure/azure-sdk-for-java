@@ -36,6 +36,10 @@ public final class ApplicationGatewayRoutingRule extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of ApplicationGatewayRoutingRule class. */
+    public ApplicationGatewayRoutingRule() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the application gateway routing rule.
      *

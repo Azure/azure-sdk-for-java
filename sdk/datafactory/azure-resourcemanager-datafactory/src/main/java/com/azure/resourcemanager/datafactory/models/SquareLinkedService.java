@@ -24,6 +24,10 @@ public final class SquareLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SquareLinkedServiceTypeProperties innerTypeProperties = new SquareLinkedServiceTypeProperties();
 
+    /** Creates an instance of SquareLinkedService class. */
+    public SquareLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Square Service linked service properties.
      *

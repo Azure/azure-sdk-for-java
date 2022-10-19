@@ -22,6 +22,10 @@ public final class ConnectionMonitorEndpointFilterItem {
     @JsonProperty(value = "address")
     private String address;
 
+    /** Creates an instance of ConnectionMonitorEndpointFilterItem class. */
+    public ConnectionMonitorEndpointFilterItem() {
+    }
+
     /**
      * Get the type property: The type of item included in the filter. Currently only 'AgentAddress' is supported.
      *

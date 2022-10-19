@@ -43,6 +43,12 @@ public final class ExpressRouteLinkPropertiesFormat {
     private String rackId;
 
     /*
+     * Cololocation for ExpressRoute Hybrid Direct.
+     */
+    @JsonProperty(value = "coloLocation", access = JsonProperty.Access.WRITE_ONLY)
+    private String coloLocation;
+
+    /*
      * Physical fiber port type.
      */
     @JsonProperty(value = "connectorType", access = JsonProperty.Access.WRITE_ONLY)
@@ -67,6 +73,10 @@ public final class ExpressRouteLinkPropertiesFormat {
      */
     @JsonProperty(value = "macSecConfig")
     private ExpressRouteLinkMacSecConfig macSecConfig;
+
+    /** Creates an instance of ExpressRouteLinkPropertiesFormat class. */
+    public ExpressRouteLinkPropertiesFormat() {
+    }
 
     /**
      * Get the routerName property: Name of Azure router associated with physical port.
@@ -102,6 +112,15 @@ public final class ExpressRouteLinkPropertiesFormat {
      */
     public String rackId() {
         return this.rackId;
+    }
+
+    /**
+     * Get the coloLocation property: Cololocation for ExpressRoute Hybrid Direct.
+     *
+     * @return the coloLocation value.
+     */
+    public String coloLocation() {
+        return this.coloLocation;
     }
 
     /**

@@ -62,6 +62,10 @@ public final class SsisPackageLocationTypeProperties {
     @JsonProperty(value = "childPackages")
     private List<SsisChildPackage> childPackages;
 
+    /** Creates an instance of SsisPackageLocationTypeProperties class. */
+    public SsisPackageLocationTypeProperties() {
+    }
+
     /**
      * Get the packagePassword property: Password of the package.
      *

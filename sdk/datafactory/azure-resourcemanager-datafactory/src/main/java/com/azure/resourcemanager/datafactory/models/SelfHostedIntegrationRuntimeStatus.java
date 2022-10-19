@@ -27,6 +27,10 @@ public final class SelfHostedIntegrationRuntimeStatus extends IntegrationRuntime
     private SelfHostedIntegrationRuntimeStatusTypeProperties innerTypeProperties =
         new SelfHostedIntegrationRuntimeStatusTypeProperties();
 
+    /** Creates an instance of SelfHostedIntegrationRuntimeStatus class. */
+    public SelfHostedIntegrationRuntimeStatus() {
+    }
+
     /**
      * Get the innerTypeProperties property: Self-hosted integration runtime status type properties.
      *

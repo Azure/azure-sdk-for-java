@@ -24,6 +24,10 @@ public final class SybaseLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SybaseLinkedServiceTypeProperties innerTypeProperties = new SybaseLinkedServiceTypeProperties();
 
+    /** Creates an instance of SybaseLinkedService class. */
+    public SybaseLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Sybase linked service properties.
      *

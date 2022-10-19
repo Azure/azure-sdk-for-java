@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScheduledType. */
+/** The supported types for a scheduled task. */
 public final class ScheduledType extends ExpandableStringEnum<ScheduledType> {
     /** Static value StopDevBox for ScheduledType. */
     public static final ScheduledType STOP_DEV_BOX = fromString("StopDevBox");

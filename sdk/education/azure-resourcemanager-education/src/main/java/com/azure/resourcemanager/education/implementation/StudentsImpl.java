@@ -47,17 +47,6 @@ public final class StudentsImpl implements Students {
         return Utils.mapPage(inner, inner1 -> new StudentDetailsImpl(inner1, this.manager()));
     }
 
-    public StudentDetails get(
-        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
-        StudentDetailsInner inner =
-            this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName, studentAlias);
-        if (inner != null) {
-            return new StudentDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<StudentDetails> getWithResponse(
         String billingAccountName,
         String billingProfileName,
@@ -79,9 +68,15 @@ public final class StudentsImpl implements Students {
         }
     }
 
-    public void delete(
+    public StudentDetails get(
         String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
-        this.serviceClient().delete(billingAccountName, billingProfileName, invoiceSectionName, studentAlias);
+        StudentDetailsInner inner =
+            this.serviceClient().get(billingAccountName, billingProfileName, invoiceSectionName, studentAlias);
+        if (inner != null) {
+            return new StudentDetailsImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -95,21 +90,9 @@ public final class StudentsImpl implements Students {
             .deleteWithResponse(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, context);
     }
 
-    public StudentDetails createOrUpdate(
-        String billingAccountName,
-        String billingProfileName,
-        String invoiceSectionName,
-        String studentAlias,
-        StudentDetailsInner parameters) {
-        StudentDetailsInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters);
-        if (inner != null) {
-            return new StudentDetailsImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(
+        String billingAccountName, String billingProfileName, String invoiceSectionName, String studentAlias) {
+        this.serviceClient().delete(billingAccountName, billingProfileName, invoiceSectionName, studentAlias);
     }
 
     public Response<StudentDetails> createOrUpdateWithResponse(
@@ -130,6 +113,23 @@ public final class StudentsImpl implements Students {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new StudentDetailsImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public StudentDetails createOrUpdate(
+        String billingAccountName,
+        String billingProfileName,
+        String invoiceSectionName,
+        String studentAlias,
+        StudentDetailsInner parameters) {
+        StudentDetailsInner inner =
+            this
+                .serviceClient()
+                .createOrUpdate(billingAccountName, billingProfileName, invoiceSectionName, studentAlias, parameters);
+        if (inner != null) {
+            return new StudentDetailsImpl(inner, this.manager());
         } else {
             return null;
         }

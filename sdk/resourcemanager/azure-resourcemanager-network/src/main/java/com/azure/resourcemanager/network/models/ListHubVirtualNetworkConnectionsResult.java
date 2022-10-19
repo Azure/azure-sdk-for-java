@@ -24,6 +24,10 @@ public final class ListHubVirtualNetworkConnectionsResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ListHubVirtualNetworkConnectionsResult class. */
+    public ListHubVirtualNetworkConnectionsResult() {
+    }
+
     /**
      * Get the value property: List of HubVirtualNetworkConnections.
      *

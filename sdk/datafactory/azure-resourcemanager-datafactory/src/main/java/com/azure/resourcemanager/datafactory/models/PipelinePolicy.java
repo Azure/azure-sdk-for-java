@@ -16,6 +16,10 @@ public final class PipelinePolicy {
     @JsonProperty(value = "elapsedTimeMetric")
     private PipelineElapsedTimeMetricPolicy elapsedTimeMetric;
 
+    /** Creates an instance of PipelinePolicy class. */
+    public PipelinePolicy() {
+    }
+
     /**
      * Get the elapsedTimeMetric property: Pipeline ElapsedTime Metric Policy.
      *

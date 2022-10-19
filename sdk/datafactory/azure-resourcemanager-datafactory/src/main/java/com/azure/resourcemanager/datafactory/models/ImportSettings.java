@@ -34,6 +34,10 @@ public class ImportSettings {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ImportSettings class. */
+    public ImportSettings() {
+    }
+
     /**
      * Get the additionalProperties property: Import command settings.
      *

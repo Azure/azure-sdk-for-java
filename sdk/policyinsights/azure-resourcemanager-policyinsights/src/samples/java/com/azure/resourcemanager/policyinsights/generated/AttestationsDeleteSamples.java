@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Attestations Delete. */
 public final class AttestationsDeleteSamples {
     /*
-     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2021-01-01/examples/Attestations_DeleteResourceGroupScope.json
+     * x-ms-original-file: specification/policyinsights/resource-manager/Microsoft.PolicyInsights/stable/2022-09-01/examples/Attestations_DeleteResourceGroupScope.json
      */
     /**
      * Sample code: Delete attestation at resource group scope.
@@ -18,6 +18,8 @@ public final class AttestationsDeleteSamples {
      */
     public static void deleteAttestationAtResourceGroupScope(
         com.azure.resourcemanager.policyinsights.PolicyInsightsManager manager) {
-        manager.attestations().deleteWithResponse("myRg", "790996e6-9871-4b1f-9cd9-ec42cd6ced1e", Context.NONE);
+        manager
+            .attestations()
+            .deleteByResourceGroupWithResponse("myRg", "790996e6-9871-4b1f-9cd9-ec42cd6ced1e", Context.NONE);
     }
 }

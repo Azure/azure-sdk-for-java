@@ -28,6 +28,10 @@ public final class ContainerResources {
     @JsonProperty(value = "ephemeralStorage", access = JsonProperty.Access.WRITE_ONLY)
     private String ephemeralStorage;
 
+    /** Creates an instance of ContainerResources class. */
+    public ContainerResources() {
+    }
+
     /**
      * Get the cpu property: Required CPU in cores, e.g. 0.5.
      *

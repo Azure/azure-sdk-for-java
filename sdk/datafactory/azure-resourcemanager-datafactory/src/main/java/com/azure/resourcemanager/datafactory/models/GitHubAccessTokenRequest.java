@@ -35,6 +35,10 @@ public final class GitHubAccessTokenRequest {
     @JsonProperty(value = "gitHubAccessTokenBaseUrl", required = true)
     private String gitHubAccessTokenBaseUrl;
 
+    /** Creates an instance of GitHubAccessTokenRequest class. */
+    public GitHubAccessTokenRequest() {
+    }
+
     /**
      * Get the gitHubAccessCode property: GitHub access code.
      *

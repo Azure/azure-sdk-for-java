@@ -33,6 +33,9 @@ public enum BlockListType {
      */
     @JsonCreator
     public static BlockListType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         BlockListType[] items = BlockListType.values();
         for (BlockListType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum BlockListType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

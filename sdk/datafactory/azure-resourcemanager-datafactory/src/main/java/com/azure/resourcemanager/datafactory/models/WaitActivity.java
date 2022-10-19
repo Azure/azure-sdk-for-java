@@ -23,6 +23,10 @@ public final class WaitActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private WaitActivityTypeProperties innerTypeProperties = new WaitActivityTypeProperties();
 
+    /** Creates an instance of WaitActivity class. */
+    public WaitActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Wait activity properties.
      *

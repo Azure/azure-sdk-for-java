@@ -35,6 +35,10 @@ public final class PrivateLinkConnectionApprovalRequestResource extends SubResou
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of PrivateLinkConnectionApprovalRequestResource class. */
+    public PrivateLinkConnectionApprovalRequestResource() {
+    }
+
     /**
      * Get the properties property: Core resource properties.
      *

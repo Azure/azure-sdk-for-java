@@ -116,6 +116,10 @@ public final class PublicIpAddressPropertiesFormatInner {
     @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
 
+    /** Creates an instance of PublicIpAddressPropertiesFormatInner class. */
+    public PublicIpAddressPropertiesFormatInner() {
+    }
+
     /**
      * Get the publicIpAllocationMethod property: The public IP address allocation method.
      *

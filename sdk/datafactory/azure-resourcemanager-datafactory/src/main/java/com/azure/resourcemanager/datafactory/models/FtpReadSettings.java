@@ -73,6 +73,10 @@ public final class FtpReadSettings extends StoreReadSettings {
     @JsonProperty(value = "disableChunking")
     private Object disableChunking;
 
+    /** Creates an instance of FtpReadSettings class. */
+    public FtpReadSettings() {
+    }
+
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
      * boolean (or Expression with resultType boolean).

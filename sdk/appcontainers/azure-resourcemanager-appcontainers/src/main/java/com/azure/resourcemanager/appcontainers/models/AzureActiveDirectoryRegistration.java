@@ -11,62 +11,57 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureActiveDirectoryRegistration {
     /*
-     * The OpenID Connect Issuer URI that represents the entity which issues
-     * access tokens for this application.
-     * When using Azure Active Directory, this value is the URI of the
-     * directory tenant, e.g.
+     * The OpenID Connect Issuer URI that represents the entity which issues access tokens for this application.
+     * When using Azure Active Directory, this value is the URI of the directory tenant, e.g.
      * https://login.microsoftonline.com/v2.0/{tenant-guid}/.
      * This URI is a case-sensitive identifier for the token issuer.
-     * More information on OpenID Connect Discovery:
-     * http://openid.net/specs/openid-connect-discovery-1_0.html
+     * More information on OpenID Connect Discovery: http://openid.net/specs/openid-connect-discovery-1_0.html
      */
     @JsonProperty(value = "openIdIssuer")
     private String openIdIssuer;
 
     /*
      * The Client ID of this relying party application, known as the client_id.
-     * This setting is required for enabling OpenID Connection authentication
-     * with Azure Active Directory or
+     * This setting is required for enabling OpenID Connection authentication with Azure Active Directory or
      * other 3rd party OpenID Connect providers.
-     * More information on OpenID Connect:
-     * http://openid.net/specs/openid-connect-core-1_0.html
+     * More information on OpenID Connect: http://openid.net/specs/openid-connect-core-1_0.html
      */
     @JsonProperty(value = "clientId")
     private String clientId;
 
     /*
-     * The app setting name that contains the client secret of the relying
-     * party application.
+     * The app setting name that contains the client secret of the relying party application.
      */
     @JsonProperty(value = "clientSecretSettingName")
     private String clientSecretSettingName;
 
     /*
-     * An alternative to the client secret, that is the thumbprint of a
-     * certificate used for signing purposes. This property acts as
+     * An alternative to the client secret, that is the thumbprint of a certificate used for signing purposes. This
+     * property acts as
      * a replacement for the Client Secret. It is also optional.
      */
     @JsonProperty(value = "clientSecretCertificateThumbprint")
     private String clientSecretCertificateThumbprint;
 
     /*
-     * An alternative to the client secret thumbprint, that is the subject
-     * alternative name of a certificate used for signing purposes. This
-     * property acts as
-     * a replacement for the Client Secret Certificate Thumbprint. It is also
-     * optional.
+     * An alternative to the client secret thumbprint, that is the subject alternative name of a certificate used for
+     * signing purposes. This property acts as
+     * a replacement for the Client Secret Certificate Thumbprint. It is also optional.
      */
     @JsonProperty(value = "clientSecretCertificateSubjectAlternativeName")
     private String clientSecretCertificateSubjectAlternativeName;
 
     /*
-     * An alternative to the client secret thumbprint, that is the issuer of a
-     * certificate used for signing purposes. This property acts as
-     * a replacement for the Client Secret Certificate Thumbprint. It is also
-     * optional.
+     * An alternative to the client secret thumbprint, that is the issuer of a certificate used for signing purposes.
+     * This property acts as
+     * a replacement for the Client Secret Certificate Thumbprint. It is also optional.
      */
     @JsonProperty(value = "clientSecretCertificateIssuer")
     private String clientSecretCertificateIssuer;
+
+    /** Creates an instance of AzureActiveDirectoryRegistration class. */
+    public AzureActiveDirectoryRegistration() {
+    }
 
     /**
      * Get the openIdIssuer property: The OpenID Connect Issuer URI that represents the entity which issues access

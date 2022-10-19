@@ -37,6 +37,10 @@ public final class IdentityProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, UserIdentityProperties> userAssignedIdentities;
 
+    /** Creates an instance of IdentityProperties class. */
+    public IdentityProperties() {
+    }
+
     /**
      * Get the principalId property: The principalId property.
      *

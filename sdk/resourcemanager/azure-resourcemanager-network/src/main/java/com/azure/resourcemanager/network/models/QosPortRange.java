@@ -22,6 +22,10 @@ public final class QosPortRange {
     @JsonProperty(value = "end")
     private Integer end;
 
+    /** Creates an instance of QosPortRange class. */
+    public QosPortRange() {
+    }
+
     /**
      * Get the start property: Qos Port Range start.
      *

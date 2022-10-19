@@ -18,6 +18,10 @@ public final class PoolUpdate extends TrackedResourceUpdate {
     @JsonProperty(value = "properties")
     private PoolUpdateProperties innerProperties;
 
+    /** Creates an instance of PoolUpdate class. */
+    public PoolUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Properties of a pool to be updated.
      *

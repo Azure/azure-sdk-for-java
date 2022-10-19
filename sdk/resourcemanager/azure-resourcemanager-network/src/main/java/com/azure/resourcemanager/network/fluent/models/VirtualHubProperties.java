@@ -109,6 +109,12 @@ public final class VirtualHubProperties {
     private List<SubResource> ipConfigurations;
 
     /*
+     * List of references to RouteMaps.
+     */
+    @JsonProperty(value = "routeMaps", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> routeMaps;
+
+    /*
      * VirtualRouter ASN.
      */
     @JsonProperty(value = "virtualRouterAsn")
@@ -143,6 +149,10 @@ public final class VirtualHubProperties {
      */
     @JsonProperty(value = "virtualRouterAutoScaleConfiguration")
     private VirtualRouterAutoScaleConfiguration virtualRouterAutoScaleConfiguration;
+
+    /** Creates an instance of VirtualHubProperties class. */
+    public VirtualHubProperties() {
+    }
 
     /**
      * Get the virtualWan property: The VirtualWAN to which the VirtualHub belongs.
@@ -400,6 +410,15 @@ public final class VirtualHubProperties {
      */
     public List<SubResource> ipConfigurations() {
         return this.ipConfigurations;
+    }
+
+    /**
+     * Get the routeMaps property: List of references to RouteMaps.
+     *
+     * @return the routeMaps value.
+     */
+    public List<SubResource> routeMaps() {
+        return this.routeMaps;
     }
 
     /**

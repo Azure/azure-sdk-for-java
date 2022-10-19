@@ -31,6 +31,10 @@ public final class TeradataPartitionSettings {
     @JsonProperty(value = "partitionLowerBound")
     private Object partitionLowerBound;
 
+    /** Creates an instance of TeradataPartitionSettings class. */
+    public TeradataPartitionSettings() {
+    }
+
     /**
      * Get the partitionColumnName property: The name of the column that will be used for proceeding range or hash
      * partitioning. Type: string (or Expression with resultType string).

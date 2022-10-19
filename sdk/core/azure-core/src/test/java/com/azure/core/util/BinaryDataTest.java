@@ -293,25 +293,35 @@ public class BinaryDataTest {
         );
     }
 
-    @Test
-    public void createFromFluxValidations() {
-        Stream.of(
-            BinaryData.fromFlux(null),
-            BinaryData.fromFlux(null, null),
-            BinaryData.fromFlux(null, null, false),
-            BinaryData.fromFlux(null, null, true)
-        ).forEach(binaryDataMono -> StepVerifier.create(binaryDataMono)
-            .expectError(NullPointerException.class)
-            .verify());
+    @ParameterizedTest
+    @MethodSource("createFromFluxValidationsSupplier")
+    public void createFromFluxValidations(Flux<ByteBuffer> flux, Long length, Boolean buffer,
+        Class<? extends Throwable> expectedException) {
+        if (length == null && buffer == null) {
+            StepVerifier.create(BinaryData.fromFlux(flux))
+                .expectError(expectedException)
+                .verify();
+        } else if (buffer == null) {
+            StepVerifier.create(BinaryData.fromFlux(flux, length))
+                .expectError(expectedException)
+                .verify();
+        } else {
+            StepVerifier.create(BinaryData.fromFlux(flux, length, buffer))
+                .expectError(expectedException)
+                .verify();
+        }
+    }
 
-        Stream.of(
-            BinaryData.fromFlux(Flux.empty(), -1L),
-            BinaryData.fromFlux(Flux.empty(), -1L, false),
-            BinaryData.fromFlux(Flux.empty(), -1L, true),
-            BinaryData.fromFlux(Flux.empty(), Integer.MAX_VALUE - 7L, true)
-        ).forEach(binaryDataMono -> StepVerifier.create(binaryDataMono)
-            .expectError(IllegalArgumentException.class)
-            .verify());
+    private static Stream<Arguments> createFromFluxValidationsSupplier() {
+        return Stream.of(
+            Arguments.of(null, null, null, RuntimeException.class),
+            Arguments.of(null, null, false, RuntimeException.class),
+            Arguments.of(null, null, true, RuntimeException.class),
+
+            Arguments.of(Flux.empty(), -1L, null, IllegalArgumentException.class),
+            Arguments.of(Flux.empty(), -1L, false, IllegalArgumentException.class),
+            Arguments.of(Flux.empty(), -1L, true, IllegalArgumentException.class)
+        );
     }
 
     @Test

@@ -6,7 +6,7 @@ package com.azure.messaging.servicebus.administration.models;
 import com.azure.core.annotation.Immutable;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationAsyncClient;
 import com.azure.messaging.servicebus.administration.ServiceBusAdministrationClient;
-import com.azure.messaging.servicebus.implementation.models.MessageCountDetails;
+import com.azure.messaging.servicebus.administration.implementation.models.MessageCountDetails;
 
 import java.time.OffsetDateTime;
 import java.util.Objects;
