@@ -78,7 +78,7 @@ class CosmosDataDiagnosticsConfigurationTests {
     @AutoConfiguration
     @AutoConfigureBefore(CosmosDataDiagnosticsConfiguration.class)
     static class ResponseDiagnosticsProcessorConfiguration {
-        @Bean(name = "ResponseDiagnosticsProcessor" )
+        @Bean(name = "ResponseDiagnosticsProcessor")
         public ResponseDiagnosticsProcessor processor() {
             return new ResponseDiagnosticsProcessorExtend();
         }
