@@ -42,10 +42,17 @@ public final class StartCallRecordingRequestInternal {
     private RecordingFormatInternal recordingFormatType;
 
     /*
-     * The channel affinity of call recording.
+     * The sequential order in which audio channels are assigned to
+     * participants in the unmixed recording.
+     * When 'recordingChannelType' is set to 'unmixed' and
+     * `audioChannelParticipantOrdering is not specified,
+     * the audio channel to participant mapping will be automatically assigned
+     * based on the order in which participant
+     * first audio was detected.  Channel to participant mapping details can be
+     * found in the metadata of the recording.
      */
-    @JsonProperty(value = "channelAffinity")
-    private List<ChannelAffinityInternal> channelAffinity;
+    @JsonProperty(value = "audioChannelParticipantOrdering")
+    private List<CommunicationIdentifierModel> audioChannelParticipantOrdering;
 
     /**
      * Get the callLocator property: The call locator.
@@ -148,22 +155,31 @@ public final class StartCallRecordingRequestInternal {
     }
 
     /**
-     * Get the channelAffinity property: The channel affinity of call recording.
+     * Get the audioChannelParticipantOrdering property: The sequential order in which audio channels are assigned to
+     * participants in the unmixed recording. When 'recordingChannelType' is set to 'unmixed' and
+     * `audioChannelParticipantOrdering is not specified, the audio channel to participant mapping will be automatically
+     * assigned based on the order in which participant first audio was detected. Channel to participant mapping details
+     * can be found in the metadata of the recording.
      *
-     * @return the channelAffinity value.
+     * @return the audioChannelParticipantOrdering value.
      */
-    public List<ChannelAffinityInternal> getChannelAffinity() {
-        return this.channelAffinity;
+    public List<CommunicationIdentifierModel> getAudioChannelParticipantOrdering() {
+        return this.audioChannelParticipantOrdering;
     }
 
     /**
-     * Set the channelAffinity property: The channel affinity of call recording.
+     * Set the audioChannelParticipantOrdering property: The sequential order in which audio channels are assigned to
+     * participants in the unmixed recording. When 'recordingChannelType' is set to 'unmixed' and
+     * `audioChannelParticipantOrdering is not specified, the audio channel to participant mapping will be automatically
+     * assigned based on the order in which participant first audio was detected. Channel to participant mapping details
+     * can be found in the metadata of the recording.
      *
-     * @param channelAffinity the channelAffinity value to set.
+     * @param audioChannelParticipantOrdering the audioChannelParticipantOrdering value to set.
      * @return the StartCallRecordingRequestInternal object itself.
      */
-    public StartCallRecordingRequestInternal setChannelAffinity(List<ChannelAffinityInternal> channelAffinity) {
-        this.channelAffinity = channelAffinity;
+    public StartCallRecordingRequestInternal setAudioChannelParticipantOrdering(
+            List<CommunicationIdentifierModel> audioChannelParticipantOrdering) {
+        this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
         return this;
     }
 }

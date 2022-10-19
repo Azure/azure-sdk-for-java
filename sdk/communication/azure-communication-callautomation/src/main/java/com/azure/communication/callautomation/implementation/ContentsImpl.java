@@ -4,6 +4,7 @@
 
 package com.azure.communication.callautomation.implementation;
 
+import com.azure.communication.callautomation.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.callautomation.implementation.models.PlayRequest;
 import com.azure.communication.callautomation.implementation.models.RecognizeRequest;
 import com.azure.communication.callautomation.implementation.models.RecordingStateResponseInternal;
@@ -20,11 +21,11 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import java.net.URL;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
@@ -55,38 +56,41 @@ public final class ContentsImpl {
     public interface ContentsService {
         @Post("/calling/callConnections/{callConnectionId}:play")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> play(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") PlayRequest playRequest,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:cancelAllMediaOperations")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> cancelAllMediaOperations(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/calling/callConnections/{callConnectionId}:recognize")
         @ExpectedResponses({202})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> recognize(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json") RecognizeRequest recognizeRequest,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/calling/recordings")
         @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RecordingStateResponseInternal>> recording(
-                @HostParam("endpoint") String endpoint,
+                @HostParam("endpoint") URL endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Repeatability-Request-ID") UUID repeatabilityRequestID,
                 @HeaderParam("Repeatability-First-Sent") String repeatabilityFirstSent,
@@ -98,15 +102,16 @@ public final class ContentsImpl {
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
-     * @param playRequest The playRequest parameter.
+     * @param callConnectionId The call connection id.
+     * @param playRequest play request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> playWithResponseAsync(String callConnectionId, PlayRequest playRequest) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.play(
@@ -114,34 +119,36 @@ public final class ContentsImpl {
                                 callConnectionId,
                                 this.client.getApiVersion(),
                                 playRequest,
+                                accept,
                                 context));
     }
 
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
-     * @param playRequest The playRequest parameter.
+     * @param callConnectionId The call connection id.
+     * @param playRequest play request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> playWithResponseAsync(
             String callConnectionId, PlayRequest playRequest, Context context) {
+        final String accept = "application/json";
         return service.play(
-                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), playRequest, context);
+                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), playRequest, accept, context);
     }
 
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
-     * @param playRequest The playRequest parameter.
+     * @param callConnectionId The call connection id.
+     * @param playRequest play request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -153,11 +160,11 @@ public final class ContentsImpl {
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
-     * @param playRequest The playRequest parameter.
+     * @param callConnectionId The call connection id.
+     * @param playRequest play request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -170,10 +177,10 @@ public final class ContentsImpl {
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
-     * @param playRequest The playRequest parameter.
+     * @param callConnectionId The call connection id.
+     * @param playRequest play request payload.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -184,11 +191,11 @@ public final class ContentsImpl {
     /**
      * Plays audio to participants in the call.
      *
-     * @param callConnectionId The callConnectionId parameter.
-     * @param playRequest The playRequest parameter.
+     * @param callConnectionId The call connection id.
+     * @param playRequest play request payload.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -202,16 +209,21 @@ public final class ContentsImpl {
      *
      * @param callConnectionId The call connection id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.cancelAllMediaOperations(
-                                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), context));
+                                this.client.getEndpoint(),
+                                callConnectionId,
+                                this.client.getApiVersion(),
+                                accept,
+                                context));
     }
 
     /**
@@ -220,14 +232,15 @@ public final class ContentsImpl {
      * @param callConnectionId The call connection id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> cancelAllMediaOperationsWithResponseAsync(String callConnectionId, Context context) {
+        final String accept = "application/json";
         return service.cancelAllMediaOperations(
-                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), context);
+                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -235,7 +248,7 @@ public final class ContentsImpl {
      *
      * @param callConnectionId The call connection id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -251,7 +264,7 @@ public final class ContentsImpl {
      * @param callConnectionId The call connection id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -266,7 +279,7 @@ public final class ContentsImpl {
      *
      * @param callConnectionId The call connection id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -280,7 +293,7 @@ public final class ContentsImpl {
      * @param callConnectionId The call connection id.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -295,12 +308,13 @@ public final class ContentsImpl {
      * @param callConnectionId The call connection id.
      * @param recognizeRequest The media recognize request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> recognizeWithResponseAsync(String callConnectionId, RecognizeRequest recognizeRequest) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
                         service.recognize(
@@ -308,6 +322,7 @@ public final class ContentsImpl {
                                 callConnectionId,
                                 this.client.getApiVersion(),
                                 recognizeRequest,
+                                accept,
                                 context));
     }
 
@@ -318,15 +333,21 @@ public final class ContentsImpl {
      * @param recognizeRequest The media recognize request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> recognizeWithResponseAsync(
             String callConnectionId, RecognizeRequest recognizeRequest, Context context) {
+        final String accept = "application/json";
         return service.recognize(
-                this.client.getEndpoint(), callConnectionId, this.client.getApiVersion(), recognizeRequest, context);
+                this.client.getEndpoint(),
+                callConnectionId,
+                this.client.getApiVersion(),
+                recognizeRequest,
+                accept,
+                context);
     }
 
     /**
@@ -335,7 +356,7 @@ public final class ContentsImpl {
      * @param callConnectionId The call connection id.
      * @param recognizeRequest The media recognize request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -352,7 +373,7 @@ public final class ContentsImpl {
      * @param recognizeRequest The media recognize request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -368,7 +389,7 @@ public final class ContentsImpl {
      * @param callConnectionId The call connection id.
      * @param recognizeRequest The media recognize request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -383,7 +404,7 @@ public final class ContentsImpl {
      * @param recognizeRequest The media recognize request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -406,7 +427,7 @@ public final class ContentsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -442,7 +463,7 @@ public final class ContentsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -476,7 +497,7 @@ public final class ContentsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -510,7 +531,7 @@ public final class ContentsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -544,7 +565,7 @@ public final class ContentsImpl {
      *     header must also be specified. The value should be the date and time at which the request was first created,
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -570,7 +591,7 @@ public final class ContentsImpl {
      *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */

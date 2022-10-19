@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class StartRecordingOptions {
 
     private RecordingFormat recordingFormat;
 
-    private List<ChannelAffinity> channelAffinity;
+    private List<CommunicationIdentifier> audioChannelParticipantOrdering;
 
     /**
      * Constructor
@@ -133,18 +134,18 @@ public class StartRecordingOptions {
      *
      * @return the channel affinity.
      */
-    public List<ChannelAffinity> getChannelAffinity() {
-        return channelAffinity;
+    public List<CommunicationIdentifier> getAudioChannelParticipantOrdering() {
+        return audioChannelParticipantOrdering;
     }
 
     /**
      * Sets the channel affinity.
      *
-     * @param channelAffinity the list of {@link ChannelAffinity}.
+     * @param audioChannelParticipantOrdering the list of {@link CommunicationIdentifier}.
      * @return the {@link StartRecordingOptions}
      */
-    public StartRecordingOptions setChannelAffinity(List<ChannelAffinity> channelAffinity) {
-        this.channelAffinity = channelAffinity;
+    public StartRecordingOptions setAudioChannelParticipantOrdering(List<CommunicationIdentifier> audioChannelParticipantOrdering) {
+        this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
         return this;
     }
 }
