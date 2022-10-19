@@ -200,14 +200,12 @@ public class SearchAliasTests extends SearchTestBase {
         String aliasName = testResourceNamer.randomName("my-alias", 32);
         indexClient.createAlias(new SearchAlias(aliasName, Collections.singletonList(searchClient.getIndexName())));
 
-        assertDoesNotThrow(() -> indexClient.deleteIndex(aliasName));
+        assertDoesNotThrow(() -> indexClient.deleteAlias(aliasName));
 
-        // Alias changes take up to 10 seconds to propagate.
-        TestHelpers.sleepIfRunningAgainstService(10000);
+        // Wait for 1 second for the alias to update
+        TestHelpers.sleepIfRunningAgainstService(1000);
 
-        assertThrows(HttpResponseException.class, () -> indexClient.getIndex(aliasName), () -> String.format(
-            "Still able to access index '%s' using alias '%s' even after deleting the alias and waiting 10 seconds",
-            searchClient.getIndexName(), aliasName));
+        assertThrows(HttpResponseException.class, () -> indexClient.getIndex(aliasName));
     }
 
     // @Test
