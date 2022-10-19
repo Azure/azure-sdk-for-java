@@ -6,18 +6,9 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.HttpConstants;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.Utils;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.models.CosmosItemRequestOptions;
-import com.azure.cosmos.models.CosmosItemResponse;
-import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.FeedResponse;
-import com.azure.cosmos.models.ModelBridgeInternal;
-import com.azure.cosmos.models.PartitionKey;
-import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.*;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -33,11 +24,7 @@ import reactor.core.scheduler.Schedulers;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
@@ -159,6 +146,50 @@ public class CosmosItemTest extends TestSuiteBase {
                                                                                     InternalObjectNode.class);
         validateItemResponse(properties, readResponse1);
 
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readMany() throws Exception {
+        var cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
+
+        for (int i = 0; i < 5; i++) {
+            var document = getDocumentDefinition(UUID.randomUUID().toString());
+            container.createItem(document);
+
+            var partitionKey = new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(document, "mypk"));
+            var cosmosItemIdentity = new CosmosItemIdentity(partitionKey, document.getId());
+            cosmosItemIdentities.add(cosmosItemIdentity);
+        }
+
+        FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
+
+        assertThat(feedResponse).isNotNull();
+        assertThat(feedResponse.getResults()).isNotNull();
+        assertThat(feedResponse.getResults().size()).isEqualTo(5);
+    }
+
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readManyWithSamePartitionKey() throws Exception {
+        var partitionKeyValue = UUID.randomUUID().toString();
+        var cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
+
+        for (int i = 0; i < 5; i++) {
+            var documentId = UUID.randomUUID().toString();
+            var document = getDocumentDefinition(documentId, partitionKeyValue);
+            container.createItem(document);
+
+            var partitionKey = new PartitionKey(partitionKeyValue);
+            var cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
+
+            cosmosItemIdentities.add(cosmosItemIdentity);
+        }
+
+        FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
+
+        assertThat(feedResponse).isNotNull();
+        assertThat(feedResponse.getResults()).isNotNull();
+        assertThat(feedResponse.getResults().size()).isEqualTo(5);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

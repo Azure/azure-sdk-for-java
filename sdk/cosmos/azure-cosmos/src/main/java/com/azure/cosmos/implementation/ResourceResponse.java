@@ -399,10 +399,6 @@ public final class ResourceResponse<T extends Resource> {
         return 0;
     }
 
-    RxDocumentServiceResponse getResponse() {
-        return response;
-    }
-
     private void populateQuotaHeader(String headerMaxQuota, String headerCurrentUsage) {
         String[] headerMaxQuotaWords = headerMaxQuota.split(Constants.Quota.DELIMITER_CHARS, -1);
         String[] headerCurrentUsageWords = headerCurrentUsage.split(Constants.Quota.DELIMITER_CHARS, -1);

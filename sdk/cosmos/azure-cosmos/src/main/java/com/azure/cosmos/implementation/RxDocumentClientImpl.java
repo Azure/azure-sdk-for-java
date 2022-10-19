@@ -66,6 +66,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -80,14 +81,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.EnumSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -2253,22 +2247,19 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             singleItemPartitionRequestMap,
                             collection.getPartitionKey());
 
-                        // create point read requests
+                        // create point reads
                         var pointReads = singleItemPartitionRequestMap.values().size() > 0 ? Flux.fromIterable(singleItemPartitionRequestMap.values())
-                            .flatMap(cosmosItemIdentity -> readDocument(getDocumentLink(cosmosItemIdentity.getId(), collectionLink), ModelBridgeInternal.toRequestOptions(options)))
-                            .map(documentResourceResponse -> toFeedResponsePage(
-                                documentResourceResponse.getResponse(),
-                                ImplementationBridgeHelpers
-                                    .CosmosQueryRequestOptionsHelper
-                                    .getCosmosQueryRequestOptionsAccessor()
-                                    .getItemFactoryMethod(options, Document.class),
-                                Document.class
-                            ))
+                            .flatMap(item -> {
+                                options.setPartitionKey(item.getPartitionKey());
+                                return this.readDocument(getDocumentLink(item.getId(), resourceLink), ModelBridgeInternal.toRequestOptions(options));
+                            })
+                            .flatMap(itemResponse -> Mono.just(ModelBridgeInternal.createCosmosAsyncItemResponse(itemResponse, klass, getItemDeserializer())))
+                            .flatMap(cosmosItemResponse -> Mono.just(ModelBridgeInternal.createFeedResponse(new Document(cosmosItemResponse.getItem().toString()), cosmosItemResponse.getResponseHeaders())))
                             .collectList() : Mono.just(new ArrayList<FeedResponse<Document>>());
 
 
                         // create the executable query
-                        var queries = createReadManyQuery(
+                        var queries = rangeQueryMap.keySet().size() > 0 ? createReadManyQuery(
                             resourceLink,
                             new SqlQuerySpec(DUMMY_SQL_QUERY),
                             options,
@@ -2276,7 +2267,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             ResourceType.Document,
                             collection,
                             Collections.unmodifiableMap(rangeQueryMap))
-                            .collectList();
+                            .collectList() : Mono.just(new ArrayList<FeedResponse<Document>>());
 
                         // merge results from point reads and queries
                         return Flux.merge(pointReads, queries)
@@ -2299,7 +2290,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                     requestCharge += page.getRequestCharge();
                                     // TODO: this does double serialization: FIXME
                                     finalList.addAll(page.getResults().stream().map(document ->
-                                        ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).collect(Collectors.toList()));
+                                        ModelBridgeInternal.toObjectFromJsonSerializable(document, klass)).toList());
                                 }
                                 headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                     .toString(requestCharge));
@@ -4345,12 +4336,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return new FeedRangeEpkImpl(pkRange.toRange());
     }
 
-    private static String getDocumentLink(String itemId, String collectionLink) {
+    private static String getDocumentLink(String itemId, String parentCollectionLink) {
         StringBuilder builder = new StringBuilder();
-        builder.append(collectionLink);
-        builder.append("/");
-        builder.append(Paths.DOCUMENTS_PATH_SEGMENT);
-        builder.append("/");
+        builder.append(parentCollectionLink);
         builder.append(itemId);
         return builder.toString();
     }
