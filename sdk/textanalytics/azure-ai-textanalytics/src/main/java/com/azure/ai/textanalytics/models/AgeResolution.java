@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** Represents the Age entity resolution model. */
+@Immutable
 public final class AgeResolution extends BaseResolution {
     /*
      * The Age Unit of measurement

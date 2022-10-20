@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** Represents the length entity resolution model. */
+@Immutable
 public final class LengthResolution extends BaseResolution {
     /*
      * The length Unit of measurement

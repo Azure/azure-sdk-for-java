@@ -4,8 +4,10 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.TemporalSpanResolutionPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /** represents the resolution of a date and/or time span. */
+@Immutable
 public final class TemporalSpanResolution extends BaseResolution {
     /*
      * An extended ISO 8601 date/time representation as described in

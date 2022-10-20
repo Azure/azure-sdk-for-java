@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** Represents the speed entity resolution model. */
+@Immutable
 public final class SpeedResolution extends BaseResolution {
     /*
      * The speed Unit of measurement

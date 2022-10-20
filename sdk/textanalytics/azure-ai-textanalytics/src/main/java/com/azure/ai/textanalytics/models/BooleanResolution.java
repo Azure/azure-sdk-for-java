@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** A resolution for boolean expressions. */
+@Immutable
 public final class BooleanResolution extends BaseResolution {
     /*
      * The value property.

@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** A resolution for numeric entity instances. */
+@Immutable
 public final class NumberResolution extends BaseResolution {
     /*
      * The type of the extracted number entity.

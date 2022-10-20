@@ -4,8 +4,10 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.DateTimeResolutionPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /** A resolution for datetime entity instances. */
+@Immutable
 public final class DateTimeResolution extends BaseResolution {
     /*
      * An extended ISO 8601 date/time representation as described in

@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** Represents the volume entity resolution model. */
+@Immutable
 public final class VolumeResolution extends BaseResolution {
     /*
      * The Volume Unit of measurement

@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** Represents the area entity resolution model. */
+@Immutable
 public final class AreaResolution extends BaseResolution {
     /*
      * The area Unit of measurement

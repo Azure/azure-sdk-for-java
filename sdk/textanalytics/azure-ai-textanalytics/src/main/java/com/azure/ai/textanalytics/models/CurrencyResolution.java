@@ -4,8 +4,10 @@
 package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.CurrencyResolutionPropertiesHelper;
+import com.azure.core.annotation.Immutable;
 
 /** Represents the currency entity resolution model. */
+@Immutable
 public final class CurrencyResolution extends BaseResolution {
     /*
      * The alphabetic code based on another ISO standard, ISO 3166, which lists the codes for country names. The first

@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** Represents the temperature entity resolution model. */
+@Immutable
 public final class TemperatureResolution extends BaseResolution {
     /*
      * The temperature Unit of measurement.

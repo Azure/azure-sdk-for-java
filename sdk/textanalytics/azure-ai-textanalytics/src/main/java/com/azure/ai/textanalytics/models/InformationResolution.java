@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** Represents the information (data) entity resolution model. */
+@Immutable
 public final class InformationResolution extends BaseResolution {
     /*
      * The information (data) Unit of measurement.

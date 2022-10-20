@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** Represents the weight entity resolution model. */
+@Immutable
 public final class WeightResolution extends BaseResolution {
     /*
      * The weight Unit of measurement.

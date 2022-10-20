@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** A resolution for ordinal numbers entity instances. */
+@Immutable
 public final class OrdinalResolution extends BaseResolution {
     /*
      * The offset With respect to the reference (e.g., offset = -1 in "show me the second to last"

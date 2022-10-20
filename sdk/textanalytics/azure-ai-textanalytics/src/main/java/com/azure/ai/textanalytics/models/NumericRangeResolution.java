@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.core.annotation.Immutable;
+
 /** represents the resolution of numeric intervals. */
+@Immutable
 public final class NumericRangeResolution extends BaseResolution {
     /*
      * The kind of range that the resolution object represents.
