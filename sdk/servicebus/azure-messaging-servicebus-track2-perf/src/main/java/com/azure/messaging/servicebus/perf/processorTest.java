@@ -24,6 +24,8 @@ public class processorTest extends EventPerfTest<ServiceBusStressOptions> {
     private final String CONNECTION_STRING;
     private final String QUEUE_NAME;
 
+    private final AtomicInteger total = new AtomicInteger();
+
     /**
      * Creates an instance of performance test.
      *
@@ -78,11 +80,12 @@ public class processorTest extends EventPerfTest<ServiceBusStressOptions> {
                 .processor()
                 .queueName(QUEUE_NAME)
                 .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+                .maxConcurrentCalls(options.getMaxConcurrentCalls())
                 .processMessage(messageContext -> {
-
+                    total.incrementAndGet();
                 })
-                .processError(errorContest -> {
-
+                .processError(errorContext -> {
+                    LOGGER.error("Process message error: {}", errorContext.getException());
                 });
 
             return builder.buildProcessorClient();
