@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.BlobImmutabilityPolicyMode;
@@ -16,6 +17,20 @@ import java.time.OffsetDateTime;
 @JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class BlobsSetImmutabilityPolicyHeaders {
+    private static final HttpHeaderName X_MS_IMMUTABILITY_POLICY_MODE =
+            HttpHeaderName.fromString("x-ms-immutability-policy-mode");
+
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_IMMUTABILITY_POLICY_UNTIL_DATE =
+            HttpHeaderName.fromString("x-ms-immutability-policy-until-date");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_CLIENT_REQUEST_ID = HttpHeaderName.fromString("x-ms-client-request-id");
+
+    private static final HttpHeaderName DATE = HttpHeaderName.fromString("Date");
+
     /*
      * The x-ms-immutability-policy-mode property.
      */
@@ -59,18 +74,18 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsSetImmutabilityPolicyHeaders(HttpHeaders rawHeaders) {
-        String xMsImmutabilityPolicyMode = rawHeaders.getValue("x-ms-immutability-policy-mode");
+        String xMsImmutabilityPolicyMode = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_MODE);
         if (xMsImmutabilityPolicyMode != null) {
             this.xMsImmutabilityPolicyMode = BlobImmutabilityPolicyMode.fromString(xMsImmutabilityPolicyMode);
         }
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        String xMsImmutabilityPolicyUntilDate = rawHeaders.getValue("x-ms-immutability-policy-until-date");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        String xMsImmutabilityPolicyUntilDate = rawHeaders.getValue(X_MS_IMMUTABILITY_POLICY_UNTIL_DATE);
         if (xMsImmutabilityPolicyUntilDate != null) {
             this.xMsImmutabilityPolicyUntilDate = new DateTimeRfc1123(xMsImmutabilityPolicyUntilDate);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsClientRequestId = rawHeaders.getValue(X_MS_CLIENT_REQUEST_ID);
+        String date = rawHeaders.getValue(DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }

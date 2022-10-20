@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -17,6 +18,33 @@ import java.util.Base64;
 @JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class AppendBlobsAppendBlockFromUrlHeaders {
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName ETAG = HttpHeaderName.fromString("ETag");
+
+    private static final HttpHeaderName X_MS_CONTENT_CRC64 = HttpHeaderName.fromString("x-ms-content-crc64");
+
+    private static final HttpHeaderName X_MS_BLOB_COMMITTED_BLOCK_COUNT =
+            HttpHeaderName.fromString("x-ms-blob-committed-block-count");
+
+    private static final HttpHeaderName LAST_MODIFIED = HttpHeaderName.fromString("Last-Modified");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
+            HttpHeaderName.fromString("x-ms-encryption-key-sha256");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
+            HttpHeaderName.fromString("x-ms-request-server-encrypted");
+
+    private static final HttpHeaderName DATE = HttpHeaderName.fromString("Date");
+
+    private static final HttpHeaderName CONTENT_MD5 = HttpHeaderName.fromString("Content-MD5");
+
+    private static final HttpHeaderName X_MS_BLOB_APPEND_OFFSET = HttpHeaderName.fromString("x-ms-blob-append-offset");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
+
     /*
      * The x-ms-version property.
      */
@@ -96,36 +124,36 @@ public final class AppendBlobsAppendBlockFromUrlHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public AppendBlobsAppendBlockFromUrlHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.eTag = rawHeaders.getValue("ETag");
-        String xMsContentCrc64 = rawHeaders.getValue("x-ms-content-crc64");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.eTag = rawHeaders.getValue(ETAG);
+        String xMsContentCrc64 = rawHeaders.getValue(X_MS_CONTENT_CRC64);
         if (xMsContentCrc64 != null) {
             this.xMsContentCrc64 = Base64.getDecoder().decode(xMsContentCrc64);
         }
-        String xMsBlobCommittedBlockCount = rawHeaders.getValue("x-ms-blob-committed-block-count");
+        String xMsBlobCommittedBlockCount = rawHeaders.getValue(X_MS_BLOB_COMMITTED_BLOCK_COUNT);
         if (xMsBlobCommittedBlockCount != null) {
             this.xMsBlobCommittedBlockCount = Integer.parseInt(xMsBlobCommittedBlockCount);
         }
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        String lastModified = rawHeaders.getValue(LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        String xMsRequestServerEncrypted = rawHeaders.getValue("x-ms-request-server-encrypted");
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
         }
-        String date = rawHeaders.getValue("Date");
+        String date = rawHeaders.getValue(DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        String contentMD5 = rawHeaders.getValue("Content-MD5");
+        String contentMD5 = rawHeaders.getValue(CONTENT_MD5);
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
         }
-        this.xMsBlobAppendOffset = rawHeaders.getValue("x-ms-blob-append-offset");
-        this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
+        this.xMsBlobAppendOffset = rawHeaders.getValue(X_MS_BLOB_APPEND_OFFSET);
+        this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
     }
 
     /**

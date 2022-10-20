@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.implementation.util;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
@@ -57,9 +58,10 @@ import java.util.Map;
  * RESERVED FOR INTERNAL USE.
  */
 public final class ModelHelper {
-
     private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
+
+    private static final HttpHeaderName X_MS_ERROR_CODE = HttpHeaderName.fromString("x-ms-error-code");
 
     /**
      * Indicates the default size above which the upload will be broken into blocks and parallelized.
@@ -402,14 +404,14 @@ public final class ModelHelper {
     }
 
     public static String getErrorCode(HttpHeaders headers) {
-        return getHeaderValue(headers, "x-ms-error-code");
+        return getHeaderValue(headers, X_MS_ERROR_CODE);
     }
 
     public static String getETag(HttpHeaders headers) {
-        return getHeaderValue(headers, "ETag");
+        return getHeaderValue(headers, HttpHeaderName.ETAG);
     }
 
-    private static String getHeaderValue(HttpHeaders headers, String headerName) {
+    private static String getHeaderValue(HttpHeaders headers, HttpHeaderName headerName) {
         if (headers == null) {
             return null;
         }

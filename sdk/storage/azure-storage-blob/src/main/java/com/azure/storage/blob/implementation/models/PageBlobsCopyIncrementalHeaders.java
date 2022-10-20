@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.storage.blob.models.CopyStatusType;
@@ -16,6 +17,22 @@ import java.time.OffsetDateTime;
 @JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class PageBlobsCopyIncrementalHeaders {
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_COPY_ID = HttpHeaderName.fromString("x-ms-copy-id");
+
+    private static final HttpHeaderName ETAG = HttpHeaderName.fromString("ETag");
+
+    private static final HttpHeaderName LAST_MODIFIED = HttpHeaderName.fromString("Last-Modified");
+
+    private static final HttpHeaderName X_MS_COPY_STATUS = HttpHeaderName.fromString("x-ms-copy-status");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_CLIENT_REQUEST_ID = HttpHeaderName.fromString("x-ms-client-request-id");
+
+    private static final HttpHeaderName DATE = HttpHeaderName.fromString("Date");
+
     /*
      * The x-ms-version property.
      */
@@ -71,20 +88,20 @@ public final class PageBlobsCopyIncrementalHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PageBlobsCopyIncrementalHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsCopyId = rawHeaders.getValue("x-ms-copy-id");
-        this.eTag = rawHeaders.getValue("ETag");
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsCopyId = rawHeaders.getValue(X_MS_COPY_ID);
+        this.eTag = rawHeaders.getValue(ETAG);
+        String lastModified = rawHeaders.getValue(LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        String xMsCopyStatus = rawHeaders.getValue("x-ms-copy-status");
+        String xMsCopyStatus = rawHeaders.getValue(X_MS_COPY_STATUS);
         if (xMsCopyStatus != null) {
             this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
         }
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsClientRequestId = rawHeaders.getValue(X_MS_CLIENT_REQUEST_ID);
+        String date = rawHeaders.getValue(DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }

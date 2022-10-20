@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.implementation;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.util.Configuration;
 import com.azure.storage.common.sas.SasProtocol;
 import java.time.ZoneId;
@@ -249,6 +250,8 @@ public final class Constants {
         public static final String SMB_PROTOCOL = "SMB";
 
         public static final String NFS_PROTOCOL = "NFS";
+
+        public static final HttpHeaderName X_MS_DATE = HttpHeaderName.fromString("x-ms-date");
 
         private HeaderConstants() {
             // Private to prevent construction.

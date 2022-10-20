@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.DateTimeRfc1123;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -15,6 +16,16 @@ import java.time.OffsetDateTime;
 @JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class BlobsSetLegalHoldHeaders {
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_LEGAL_HOLD = HttpHeaderName.fromString("x-ms-legal-hold");
+
+    private static final HttpHeaderName X_MS_CLIENT_REQUEST_ID = HttpHeaderName.fromString("x-ms-client-request-id");
+
+    private static final HttpHeaderName DATE = HttpHeaderName.fromString("Date");
+
     /*
      * The x-ms-version property.
      */
@@ -52,14 +63,14 @@ public final class BlobsSetLegalHoldHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsSetLegalHoldHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        String xMsLegalHold = rawHeaders.getValue("x-ms-legal-hold");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        String xMsLegalHold = rawHeaders.getValue(X_MS_LEGAL_HOLD);
         if (xMsLegalHold != null) {
             this.xMsLegalHold = Boolean.parseBoolean(xMsLegalHold);
         }
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsClientRequestId = rawHeaders.getValue(X_MS_CLIENT_REQUEST_ID);
+        String date = rawHeaders.getValue(DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }

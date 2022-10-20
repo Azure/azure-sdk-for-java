@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
@@ -17,6 +18,30 @@ import java.util.Base64;
 @JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class PageBlobsCreateHeaders {
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName ETAG = HttpHeaderName.fromString("ETag");
+
+    private static final HttpHeaderName LAST_MODIFIED = HttpHeaderName.fromString("Last-Modified");
+
+    private static final HttpHeaderName X_MS_VERSION_ID = HttpHeaderName.fromString("x-ms-version-id");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_KEY_SHA256 =
+            HttpHeaderName.fromString("x-ms-encryption-key-sha256");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName X_MS_REQUEST_SERVER_ENCRYPTED =
+            HttpHeaderName.fromString("x-ms-request-server-encrypted");
+
+    private static final HttpHeaderName X_MS_CLIENT_REQUEST_ID = HttpHeaderName.fromString("x-ms-client-request-id");
+
+    private static final HttpHeaderName DATE = HttpHeaderName.fromString("Date");
+
+    private static final HttpHeaderName CONTENT_MD5 = HttpHeaderName.fromString("Content-MD5");
+
+    private static final HttpHeaderName X_MS_ENCRYPTION_SCOPE = HttpHeaderName.fromString("x-ms-encryption-scope");
+
     /*
      * The x-ms-version property.
      */
@@ -90,29 +115,29 @@ public final class PageBlobsCreateHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public PageBlobsCreateHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.eTag = rawHeaders.getValue("ETag");
-        String lastModified = rawHeaders.getValue("Last-Modified");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.eTag = rawHeaders.getValue(ETAG);
+        String lastModified = rawHeaders.getValue(LAST_MODIFIED);
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
-        this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
-        this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        String xMsRequestServerEncrypted = rawHeaders.getValue("x-ms-request-server-encrypted");
+        this.xMsVersionId = rawHeaders.getValue(X_MS_VERSION_ID);
+        this.xMsEncryptionKeySha256 = rawHeaders.getValue(X_MS_ENCRYPTION_KEY_SHA256);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        String xMsRequestServerEncrypted = rawHeaders.getValue(X_MS_REQUEST_SERVER_ENCRYPTED);
         if (xMsRequestServerEncrypted != null) {
             this.xMsRequestServerEncrypted = Boolean.parseBoolean(xMsRequestServerEncrypted);
         }
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
-        String date = rawHeaders.getValue("Date");
+        this.xMsClientRequestId = rawHeaders.getValue(X_MS_CLIENT_REQUEST_ID);
+        String date = rawHeaders.getValue(DATE);
         if (date != null) {
             this.date = new DateTimeRfc1123(date);
         }
-        String contentMD5 = rawHeaders.getValue("Content-MD5");
+        String contentMD5 = rawHeaders.getValue(CONTENT_MD5);
         if (contentMD5 != null) {
             this.contentMD5 = Base64.getDecoder().decode(contentMD5);
         }
-        this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");
+        this.xMsEncryptionScope = rawHeaders.getValue(X_MS_ENCRYPTION_SCOPE);
     }
 
     /**

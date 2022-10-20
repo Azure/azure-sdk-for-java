@@ -97,9 +97,8 @@ public final class BuilderHelper {
 
         // We need to place this policy right before the credential policy since headers may affect the string to sign
         // of the request.
-        HttpHeaders headers = new HttpHeaders();
-        clientOptions.getHeaders().forEach(header -> headers.put(header.getName(), header.getValue()));
-        if (headers.getSize() > 0) {
+        HttpHeaders headers = CoreUtils.createHttpHeadersFromClientOptions(clientOptions);
+        if (headers != null) {
             policies.add(new AddHeadersPolicy(headers));
         }
         policies.add(new MetadataValidationPolicy());

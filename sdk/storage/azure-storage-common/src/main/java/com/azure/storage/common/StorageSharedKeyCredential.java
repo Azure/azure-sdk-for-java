@@ -5,6 +5,7 @@ package com.azure.storage.common;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -164,26 +165,26 @@ public final class StorageSharedKeyCredential {
 
     private String buildStringToSign(URL requestURL, String httpMethod, HttpHeaders headers,
         boolean logStringToSign) {
-        String contentLength = headers.getValue("Content-Length");
+        String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
         contentLength = "0".equals(contentLength) ? "" : contentLength;
 
         // If the x-ms-header exists ignore the Date header
-        String dateHeader = (headers.getValue("x-ms-date") != null) ? ""
-            : getStandardHeaderValue(headers, "Date");
+        String dateHeader = (headers.getValue(Constants.HeaderConstants.X_MS_DATE) != null)
+            ? "" : getStandardHeaderValue(headers, HttpHeaderName.DATE);
 
         String stringToSign =  String.join("\n",
             httpMethod,
-            getStandardHeaderValue(headers, "Content-Encoding"),
-            getStandardHeaderValue(headers, "Content-Language"),
+            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_ENCODING),
+            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_LANGUAGE),
             contentLength,
-            getStandardHeaderValue(headers, "Content-MD5"),
-            getStandardHeaderValue(headers, "Content-Type"),
+            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_MD5),
+            getStandardHeaderValue(headers, HttpHeaderName.CONTENT_TYPE),
             dateHeader,
-            getStandardHeaderValue(headers, "If-Modified-Since"),
-            getStandardHeaderValue(headers, "If-Match"),
-            getStandardHeaderValue(headers, "If-None-Match"),
-            getStandardHeaderValue(headers, "If-Unmodified-Since"),
-            getStandardHeaderValue(headers, "Range"),
+            getStandardHeaderValue(headers, HttpHeaderName.IF_MODIFIED_SINCE),
+            getStandardHeaderValue(headers, HttpHeaderName.IF_MATCH),
+            getStandardHeaderValue(headers, HttpHeaderName.IF_NONE_MATCH),
+            getStandardHeaderValue(headers, HttpHeaderName.IF_UNMODIFIED_SINCE),
+            getStandardHeaderValue(headers, HttpHeaderName.RANGE),
             getAdditionalXmsHeaders(headers),
             getCanonicalizedResource(requestURL));
 
@@ -197,7 +198,7 @@ public final class StorageSharedKeyCredential {
     /*
      * Returns an empty string if the header value is null or empty.
      */
-    private String getStandardHeaderValue(HttpHeaders headers, String headerName) {
+    private String getStandardHeaderValue(HttpHeaders headers, HttpHeaderName headerName) {
         final Header header = headers.get(headerName);
         return header == null ? "" : header.getValue();
     }
@@ -278,7 +279,7 @@ public final class StorageSharedKeyCredential {
     }
 
     /**
-     * Searches for a {@link StorageSharedKeyCredential} in the passed {@link HttpPipeline}.
+     * Searches for a {@link StorageSharedKeyCredential} in the {@link HttpPipeline}.
      *
      * @param httpPipeline Pipeline being searched
      * @return a StorageSharedKeyCredential if the pipeline contains one, otherwise null.

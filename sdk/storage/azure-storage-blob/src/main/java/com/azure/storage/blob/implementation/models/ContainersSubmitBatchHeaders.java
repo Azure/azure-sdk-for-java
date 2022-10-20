@@ -5,6 +5,7 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -13,6 +14,12 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 @JacksonXmlRootElement(localName = "null")
 @Fluent
 public final class ContainersSubmitBatchHeaders {
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
+    private static final HttpHeaderName CONTENT_TYPE = HttpHeaderName.fromString("Content-Type");
+
     /*
      * The x-ms-version property.
      */
@@ -38,9 +45,9 @@ public final class ContainersSubmitBatchHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public ContainersSubmitBatchHeaders(HttpHeaders rawHeaders) {
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.contentType = rawHeaders.getValue("Content-Type");
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.contentType = rawHeaders.getValue(CONTENT_TYPE);
     }
 
     /**
