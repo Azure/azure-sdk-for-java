@@ -93,7 +93,7 @@ stages:
           - powershell: |
               if (Test-Path $env:JAVA_HOME\jre\lib\security) {
                 cd $env:JAVA_HOME\jre\lib\security
-              } elseif (Test-Path $eng:JAVA_HOME\lib\security) {
+              } elseif (Test-Path $env:JAVA_HOME\lib\security) {
                 cd $env:JAVA_HOME\lib\security
               } else {
                 Write-Error "JDK directory structure is unknown and unsupported. JAVA_HOME is '$env:JAVA_HOME'"
