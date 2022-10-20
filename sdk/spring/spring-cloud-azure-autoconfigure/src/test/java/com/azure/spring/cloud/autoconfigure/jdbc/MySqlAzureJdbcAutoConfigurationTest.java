@@ -84,6 +84,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
                     DatabaseType.MYSQL,
                     false,
                     connectionString,
+                    AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/",
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     MYSQL_USER_AGENT
                 );
@@ -108,6 +109,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
                     DatabaseType.MYSQL,
                     false,
                     connectionString,
+                    AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/",
                     AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     MYSQL_USER_AGENT

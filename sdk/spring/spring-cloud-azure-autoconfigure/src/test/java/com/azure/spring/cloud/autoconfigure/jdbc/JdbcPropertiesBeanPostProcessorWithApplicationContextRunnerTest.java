@@ -75,6 +75,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
                     String expectedJdbcUrl = enhanceJdbcUrl(
                         DatabaseType.MYSQL,
                         MYSQL_CONNECTION_STRING,
+                        AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/",
                         PropertyKey.connectionAttributes.getKeyName()  + "=_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
                         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
                     );

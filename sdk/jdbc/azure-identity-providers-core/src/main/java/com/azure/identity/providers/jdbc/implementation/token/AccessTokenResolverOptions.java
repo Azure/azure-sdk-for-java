@@ -4,16 +4,25 @@
 package com.azure.identity.providers.jdbc.implementation.token;
 
 
+import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
-
+import java.util.HashMap;
 import java.util.Properties;
-
 
 /**
  * Contains details of a request to get a token.
  */
 public class AccessTokenResolverOptions {
-
+    private static final ClientLogger LOGGER = new ClientLogger(AccessTokenResolverOptions.class);
+    private static final HashMap<String, String> OSS_RDBMS_SCOPE_MAP = new HashMap<String, String>() {
+        {
+            put(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD,  "https://ossrdbms-aad.database.windows.net/.default");
+            put(AzureAuthorityHosts.AZURE_CHINA, "https://ossrdbms-aad.database.chinacloudapi.cn/.default");
+            put(AzureAuthorityHosts.AZURE_GERMANY, "https://ossrdbms-aad.database.cloudapi.de/.default");
+            put(AzureAuthorityHosts.AZURE_GOVERNMENT, "https://ossrdbms-aad.database.usgovcloudapi.net/.default");
+        }
+    };
     private String claims;
     private String tenantId;
     private String[] scopes;
@@ -27,7 +36,25 @@ public class AccessTokenResolverOptions {
         this.claims = AuthProperty.CLAIMS.get(properties);
 
         String scopeProperty = AuthProperty.SCOPES.get(properties);
-        this.scopes = scopeProperty == null ?  new String[0] : scopeProperty.split(",");
+        if (scopeProperty == null) {
+            scopeProperty = getDefaultScope(properties);
+        }
+        this.scopes = scopeProperty.split(",");
+    }
+
+    private String getDefaultScope(Properties properties) {
+        String ossrdbmsScope = OSS_RDBMS_SCOPE_MAP.get(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            ossrdbmsScope = OSS_RDBMS_SCOPE_MAP.get(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        } else if (AzureAuthorityHosts.AZURE_CHINA.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            ossrdbmsScope = OSS_RDBMS_SCOPE_MAP.get(AzureAuthorityHosts.AZURE_CHINA);
+        } else if (AzureAuthorityHosts.AZURE_GERMANY.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            ossrdbmsScope = OSS_RDBMS_SCOPE_MAP.get(AzureAuthorityHosts.AZURE_GERMANY);
+        } else if (AzureAuthorityHosts.AZURE_GOVERNMENT.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+            ossrdbmsScope = OSS_RDBMS_SCOPE_MAP.get(AzureAuthorityHosts.AZURE_GOVERNMENT);
+        }
+        LOGGER.info("Ossrdbms scope set to ", ossrdbmsScope);
+        return ossrdbmsScope;
     }
 
     public String getClaims() {
@@ -47,7 +74,7 @@ public class AccessTokenResolverOptions {
     }
 
     public String[] getScopes() {
-        return scopes.clone();
+        return scopes == null ? null : scopes.clone();
     }
 
     public void setScopes(String[] scopes) {

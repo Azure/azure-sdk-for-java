@@ -4,9 +4,13 @@
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
+import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileConfigurationProperties;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
+import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import com.mysql.cj.conf.PropertyKey;
 import org.junit.jupiter.api.BeforeEach;
@@ -32,14 +36,18 @@ class JdbcPropertiesBeanPostProcessorTest {
     private MockEnvironment mockEnvironment;
 
     private ApplicationContext applicationContext;
+    private AzureGlobalProperties azureGlobalProperties;
     private JdbcPropertiesBeanPostProcessor jdbcPropertiesBeanPostProcessor;
 
     @BeforeEach
     void beforeEach() {
         this.mockEnvironment = new MockEnvironment();
         this.applicationContext = mock(GenericApplicationContext.class);
+        this.azureGlobalProperties = mock(AzureGlobalProperties.class);
+        when(this.azureGlobalProperties.getProfile()).thenReturn(new AzureProfileConfigurationProperties());
+        when(this.azureGlobalProperties.getCredential()).thenReturn(new TokenCredentialConfigurationProperties());
         when(this.applicationContext.getBean(AzureTokenCredentialResolver.class)).thenReturn(new AzureTokenCredentialResolver());
-        this.jdbcPropertiesBeanPostProcessor = new JdbcPropertiesBeanPostProcessor();
+        this.jdbcPropertiesBeanPostProcessor = new JdbcPropertiesBeanPostProcessor(azureGlobalProperties);
         jdbcPropertiesBeanPostProcessor.setEnvironment(this.mockEnvironment);
         jdbcPropertiesBeanPostProcessor.setApplicationContext(this.applicationContext);
     }
@@ -86,6 +94,29 @@ class JdbcPropertiesBeanPostProcessorTest {
             MYSQL_CONNECTION_STRING,
             PropertyKey.connectionAttributes.getKeyName()  + "=_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
             AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+        );
+
+        assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
+    }
+
+    @Test
+    void shouldGetCloudTypeFromAzureGlobal() {
+        AzureProfileConfigurationProperties azureProfileConfigurationProperties = new AzureProfileConfigurationProperties();
+        azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
+        when(this.azureGlobalProperties.getProfile()).thenReturn(azureProfileConfigurationProperties);
+
+        DataSourceProperties dataSourceProperties = new DataSourceProperties();
+        dataSourceProperties.setUrl(MYSQL_CONNECTION_STRING);
+
+        this.mockEnvironment.setProperty("spring.datasource.azure.passwordless-enabled", "true");
+        this.jdbcPropertiesBeanPostProcessor.postProcessBeforeInitialization(dataSourceProperties, "dataSourceProperties");
+
+        String expectedJdbcUrl = enhanceJdbcUrl(
+                DatabaseType.MYSQL,
+                MYSQL_CONNECTION_STRING,
+                PropertyKey.connectionAttributes.getKeyName()  + "=_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
+                AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
+                AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.us/"
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());

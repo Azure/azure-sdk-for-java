@@ -9,6 +9,12 @@
       "defaultValue": "[subscription().tenantId]",
       "type": "string"
     },
+    "testApplicationSecret": {
+      "type": "string"
+    },
+    "testApplicationOid": {
+      "type": "String"
+    },
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
@@ -78,10 +84,12 @@
     }
   },
   "variables": {
-    "location": "[resourceGroup().location]"
+    "location": "[resourceGroup().location]",
+    "skipResource": "[if(equals(resourceGroup().location, 'chinanorth3'), 'skipResource', 'notSkipResource')]"
   },
   "resources": [
     {
+      "condition": "[equals(variables('skipResource'),'notSkipResource')]",
       "type": "Microsoft.DBforMySQL/servers",
       "apiVersion": "2017-12-01",
       "name": "[parameters('serverName')]",
@@ -110,6 +118,7 @@
       }
     },
     {
+      "condition": "[equals(variables('skipResource'),'notSkipResource')]",
       "type": "Microsoft.DBforMySQL/servers/administrators",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/ActiveDirectory')]",
@@ -124,6 +133,7 @@
       }
     },
     {
+      "condition": "[equals(variables('skipResource'),'notSkipResource')]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/audit_log_enabled')]",
@@ -136,6 +146,7 @@
       }
     },
     {
+      "condition": "[equals(variables('skipResource'),'notSkipResource')]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/gtid_mode')]",
@@ -148,6 +159,7 @@
       }
     },
     {
+      "condition": "[equals(variables('skipResource'),'notSkipResource')]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/init_connect')]",
@@ -159,6 +171,7 @@
       }
     },
     {
+      "condition": "[equals(variables('skipResource'),'notSkipResource')]",
       "type": "Microsoft.DBforMySQL/servers/databases",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/db')]",
@@ -171,6 +184,7 @@
       }
     },
     {
+      "condition": "[equals(variables('skipResource'),'notSkipResource')]",
       "type": "Microsoft.DBforMySQL/servers/firewallRules",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/AllowAll_2022-9-14_18-12-24')]",
@@ -183,6 +197,7 @@
       }
     },
     {
+      "condition": "[equals(variables('skipResource'),'notSkipResource')]",
       "type": "Microsoft.DBforMySQL/servers/securityAlertPolicies",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/Default')]",
@@ -203,9 +218,29 @@
     }
   ],
   "outputs": {
+    "AZURE_SPRING_CLIENT_ID": {
+      "type": "string",
+      "value": "[parameters('testApplicationID')]"
+    },
+    "AZURE_SPRING_CLIENT_SECRET": {
+      "type": "string",
+      "value": "[parameters('testApplicationSecret')]"
+    },
+    "AZURE_SPRING_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
+    },
     "AZURE_MYSQL_ACCOUNT_NAME": {
       "type": "string",
       "value": "[parameters('serverName')]"
+    },
+    "AZURE_MYSQL_ACCOUNT_LOCATION": {
+      "type": "string",
+      "value": "[variables('location')]"
+    },
+    "AZURE_MYSQL_ENDPOINT": {
+      "type": "string",
+      "value": "[if(equals(resourceGroup().location, 'chinanorth3'), 'skipResource', reference(parameters('serverName')).fullyQualifiedDomainName)]"
     }
   }
 }

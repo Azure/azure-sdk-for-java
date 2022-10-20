@@ -5,8 +5,8 @@ package com.azure.spring.cloud.integration.tests.jdbc.mysql;
 
 import com.azure.cosmos.implementation.guava25.base.Joiner;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -16,7 +16,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 
-@Disabled("Disabled until issue #31476 has been fixed!")
+@DisabledIfEnvironmentVariable(named = "AZURE_MYSQL_ACCOUNT_LOCATION", matches = "chinanorth3")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-mysql")
 class PasswordlessMySQLIT {
