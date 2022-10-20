@@ -15,7 +15,7 @@ import java.util.Properties;
  */
 public class AccessTokenResolverOptions {
     private static final ClientLogger LOGGER = new ClientLogger(AccessTokenResolverOptions.class);
-    private HashMap<String, String> OSS_RDBMS_SCOPE_MAP = new HashMap<String, String>() {
+    private static final HashMap<String, String> OSS_RDBMS_SCOPE_MAP = new HashMap<String, String>() {
         {
             put(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD,  "https://ossrdbms-aad.database.windows.net/.default");
             put(AzureAuthorityHosts.AZURE_CHINA, "https://ossrdbms-aad.database.chinacloudapi.cn/.default");
@@ -74,7 +74,7 @@ public class AccessTokenResolverOptions {
     }
 
     public String[] getScopes() {
-        return scopes.clone();
+        return scopes == null ? null : scopes.clone();
     }
 
     public void setScopes(String[] scopes) {
