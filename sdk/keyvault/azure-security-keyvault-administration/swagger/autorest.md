@@ -52,13 +52,6 @@ service-interface-as-public: true
 sync-methods: none
 add-context-parameter: true
 context-client-method-parameter: true
-directive:
-- rename-operation:
-    from: UpdateSettings
-    to: CreateOrUpdateSetting
-- rename-operation:
-    from: GetSettingValue
-    to: GetSetting
 ```
 
 ### Tag: rbac
@@ -83,4 +76,11 @@ These settings apply only when `--tag=settings` is specified on the command line
 ``` yaml $(tag) == 'settings'
 input-file: https://github.com/Azure/azure-rest-api-specs/tree/fead0dec636e7554fb8401370418085136d4f052/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/settings.json
 title: KeyVaultSettingsClient
+directive:
+- rename-operation:
+    from: UpdateSettings
+    to: CreateOrUpdateSetting
+- rename-operation:
+    from: GetSettingValue
+    to: GetSetting
 ```
