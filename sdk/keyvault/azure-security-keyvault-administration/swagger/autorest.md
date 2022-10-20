@@ -49,7 +49,6 @@ models-subpackage: implementation.models
 custom-types-subpackage: models
 generate-client-as-impl: true
 service-interface-as-public: true
-sync-methods: none
 add-context-parameter: true
 context-client-method-parameter: true
 ```
@@ -60,6 +59,7 @@ These settings apply only when `--tag=rbac` is specified on the command line.
 ``` yaml $(tag) == 'rbac'
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/e2ef44b87405b412403ccb005bfb3975411adf60/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/rbac.json
 title: KeyVaultAccessControlClient
+sync-methods: none
 ```
 
 ### Tag: backuprestore
@@ -68,6 +68,7 @@ These settings apply only when `--tag=backuprestore` is specified on the command
 ``` yaml $(tag) == 'backuprestore'
 input-file: https://github.com/Azure/azure-rest-api-specs/blob/e2ef44b87405b412403ccb005bfb3975411adf60/specification/keyvault/data-plane/Microsoft.KeyVault/stable/7.3/backuprestore.json
 title: KeyVaultBackupClient
+sync-methods: none
 ```
 
 ### Tag: settings
@@ -76,6 +77,7 @@ These settings apply only when `--tag=settings` is specified on the command line
 ``` yaml $(tag) == 'settings'
 input-file: https://github.com/Azure/azure-rest-api-specs/tree/fead0dec636e7554fb8401370418085136d4f052/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/settings.json
 title: KeyVaultSettingsClient
+sync-methods: all
 directive:
 - rename-operation:
     from: UpdateSettings
