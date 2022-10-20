@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.http.HttpHeaders;
 import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
@@ -27,6 +28,10 @@ public final class BlobQueryHeaders {
         BlobQueryHeadersConstructorProxy.setAccessor(BlobQueryHeaders::new);
     }
 
+    /*
+     * The errorCode property.
+     */
+    @JsonProperty(value = "x-ms-error-code")
     private String errorCode;
 
     private BlobQueryHeaders(BlobsQueryHeaders internalHeaders) {
