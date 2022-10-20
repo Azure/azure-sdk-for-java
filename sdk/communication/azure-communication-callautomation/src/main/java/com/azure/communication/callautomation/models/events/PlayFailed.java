@@ -6,16 +6,16 @@ package com.azure.communication.callautomation.models.events;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PlayFailedEvent model. */
+/** The PlayFailed model. */
 @Immutable
-public final class PlayFailedEvent extends CallAutomationEventWithReasonCodeBase {
+public final class PlayFailed extends CallAutomationEventWithReasonCodeBase {
     /*
      * Contains the resulting SIP code/sub-code and message from NGC services.
      */
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
 
-    private PlayFailedEvent() {
+    private PlayFailed() {
         this.resultInformation = null;
     }
 

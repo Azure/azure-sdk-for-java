@@ -3,18 +3,18 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.models.events.PlayCanceledEvent;
+import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
+import com.azure.communication.callautomation.models.events.PlayCanceled;
+import com.azure.communication.callautomation.models.events.PlayCompleted;
+import com.azure.communication.callautomation.models.events.PlayFailed;
 import com.azure.communication.callautomation.models.events.ReasonCode;
-import com.azure.communication.callautomation.models.events.RecognizeCanceledEvent;
-import com.azure.communication.callautomation.models.events.RecognizeCompletedEvent;
+import com.azure.communication.callautomation.models.events.RecognizeCanceled;
+import com.azure.communication.callautomation.models.events.RecognizeCompleted;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.CallConnectedEvent;
-import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
-import com.azure.communication.callautomation.models.events.RecognizeFailedEvent;
-import com.azure.communication.callautomation.models.events.PlayCompletedEvent;
-import com.azure.communication.callautomation.models.events.PlayFailedEvent;
-import com.azure.communication.callautomation.models.events.RecordingStateChangedEvent;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.RecognizeFailed;
+import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -31,8 +31,8 @@ public class EventHandlerUnitTests {
         CallAutomationEventBase callAutomationEventBase = EventHandler.parseEvent(EVENT_PARTICIPANT_UPDATED);
 
         assertNotNull(callAutomationEventBase);
-        assertEquals(callAutomationEventBase.getClass(), ParticipantsUpdatedEvent.class);
-        assertNotNull(((ParticipantsUpdatedEvent) callAutomationEventBase).getParticipants());
+        assertEquals(callAutomationEventBase.getClass(), ParticipantsUpdated.class);
+        assertNotNull(((ParticipantsUpdated) callAutomationEventBase).getParticipants());
     }
 
     @Test
@@ -41,8 +41,8 @@ public class EventHandlerUnitTests {
             + EVENT_CALL_CONNECTED + "," + EVENT_PARTICIPANT_UPDATED + "]");
 
         assertNotNull(callAutomationEventBaseList);
-        assertEquals(callAutomationEventBaseList.get(0).getClass(), CallConnectedEvent.class);
-        assertEquals(callAutomationEventBaseList.get(1).getClass(), ParticipantsUpdatedEvent.class);
+        assertEquals(callAutomationEventBaseList.get(0).getClass(), CallConnected.class);
+        assertEquals(callAutomationEventBaseList.get(1).getClass(), ParticipantsUpdated.class);
         assertNotNull(callAutomationEventBaseList.get(0).getCallConnectionId());
     }
 
@@ -70,7 +70,7 @@ public class EventHandlerUnitTests {
             + "]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
-        RecordingStateChangedEvent recordingEvent = (RecordingStateChangedEvent) event;
+        RecordingStateChanged recordingEvent = (RecordingStateChanged) event;
         assertNotNull(recordingEvent);
         assertEquals("serverCallId", recordingEvent.getServerCallId());
         assertEquals("recordingId", recordingEvent.getRecordingId());
@@ -101,7 +101,7 @@ public class EventHandlerUnitTests {
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
-        PlayCompletedEvent playCompletedEvent = (PlayCompletedEvent) event;
+        PlayCompleted playCompletedEvent = (PlayCompleted) event;
         assertNotNull(playCompletedEvent);
         assertEquals("serverCallId", playCompletedEvent.getServerCallId());
         assertEquals(200, playCompletedEvent.getResultInformation().getCode());
@@ -132,7 +132,7 @@ public class EventHandlerUnitTests {
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
-        PlayFailedEvent playFailedEvent = (PlayFailedEvent) event;
+        PlayFailed playFailedEvent = (PlayFailed) event;
         assertNotNull(playFailedEvent);
         assertEquals("serverCallId", playFailedEvent.getServerCallId());
         assertEquals(400, playFailedEvent.getResultInformation().getCode());
@@ -158,7 +158,7 @@ public class EventHandlerUnitTests {
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
-        PlayCanceledEvent playCanceledEvent = (PlayCanceledEvent) event;
+        PlayCanceled playCanceledEvent = (PlayCanceled) event;
         assertNotNull(playCanceledEvent);
         assertEquals("serverCallId", playCanceledEvent.getServerCallId());
     }
@@ -186,7 +186,7 @@ public class EventHandlerUnitTests {
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
-        RecognizeCompletedEvent recognizeCompletedEvent = (RecognizeCompletedEvent) event;
+        RecognizeCompleted recognizeCompletedEvent = (RecognizeCompleted) event;
         assertNotNull(recognizeCompletedEvent);
         assertEquals("serverCallId", recognizeCompletedEvent.getServerCallId());
         assertEquals(200, recognizeCompletedEvent.getResultInformation().getCode());
@@ -217,7 +217,7 @@ public class EventHandlerUnitTests {
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
-        RecognizeFailedEvent recognizeFailedEvent = (RecognizeFailedEvent) event;
+        RecognizeFailed recognizeFailedEvent = (RecognizeFailed) event;
         assertNotNull(recognizeFailedEvent);
         assertEquals("serverCallId", recognizeFailedEvent.getServerCallId());
         assertEquals(400, recognizeFailedEvent.getResultInformation().getCode());
@@ -243,7 +243,7 @@ public class EventHandlerUnitTests {
             + "}]";
         CallAutomationEventBase event = EventHandler.parseEvent(receivedEvent);
         assertNotNull(event);
-        RecognizeCanceledEvent recognizeCanceledEvent = (RecognizeCanceledEvent) event;
+        RecognizeCanceled recognizeCanceledEvent = (RecognizeCanceled) event;
         assertNotNull(recognizeCanceledEvent);
         assertEquals("serverCallId", recognizeCanceledEvent.getServerCallId());
     }
