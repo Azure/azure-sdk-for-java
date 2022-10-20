@@ -1531,6 +1531,8 @@ public abstract class RestProxyTests {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
         assertTrue(headers.accessControlAllowCredentials());
@@ -1543,6 +1545,8 @@ public abstract class RestProxyTests {
         final ResponseBase<HttpBinHeaders, byte[]> response = createService(Service20.class).getBytes100BodyAndHeaders();
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
+
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
 
         final byte[] body = response.getValue();
         assertNotNull(body);
@@ -1559,6 +1563,8 @@ public abstract class RestProxyTests {
     public void service20GetBytesOnlyStatus() {
         final Response<Void> response = createService(Service20.class).getBytesOnlyStatus();
 
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
     }
@@ -1566,6 +1572,8 @@ public abstract class RestProxyTests {
     @Test
     public void service20GetBytesOnlyHeaders() {
         final Response<Void> response = createService(Service20.class).getBytes100OnlyRawHeaders();
+
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
 
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
@@ -1579,6 +1587,8 @@ public abstract class RestProxyTests {
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
+
         final HttpBinHeaders headers = response.getDeserializedHeaders();
         assertNotNull(headers);
         assertTrue(headers.accessControlAllowCredentials());
@@ -1591,6 +1601,8 @@ public abstract class RestProxyTests {
         final ResponseBase<HttpBinHeaders, HttpBinJSON> response = createService(Service20.class).putBodyAndHeaders("body string");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
+
+        assertEquals(HttpHeaders.class, response.getHeaders().getClass());
 
         final HttpBinJSON body = response.getValue();
         assertNotNull(body);

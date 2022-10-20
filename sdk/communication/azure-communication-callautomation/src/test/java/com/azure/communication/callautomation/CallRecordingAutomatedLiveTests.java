@@ -6,7 +6,6 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallConnectionState;
-import com.azure.communication.callautomation.models.ChannelAffinity;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RecordingChannel;
 import com.azure.communication.callautomation.models.RecordingContent;
@@ -16,6 +15,7 @@ import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.communication.callautomation.models.events.CallConnectedEvent;
 import com.azure.communication.callautomation.models.events.CallDisconnectedEvent;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.core.http.HttpClient;
@@ -165,10 +165,10 @@ public class CallRecordingAutomatedLiveTests extends CallAutomationAutomatedLive
                     .setRecordingContent(RecordingContent.AUDIO)
                     .setRecordingFormat(RecordingFormat.WAV)
                     .setRecordingStateCallbackUrl(DISPATCHER_CALLBACK)
-                    .setChannelAffinity(new ArrayList<ChannelAffinity>() {
+                    .setAudioChannelParticipantOrdering(new ArrayList<CommunicationIdentifier>() {
                         {
-                            add(new ChannelAffinity(0, source));
-                            add(new ChannelAffinity(1, target));
+                            add(source);
+                            add(target);
                         }
                     })
             );
