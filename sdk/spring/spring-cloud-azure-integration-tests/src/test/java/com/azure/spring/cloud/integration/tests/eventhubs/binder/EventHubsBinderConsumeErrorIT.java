@@ -5,6 +5,7 @@ package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.slf4j.Logger;
@@ -24,6 +25,8 @@ import java.util.concurrent.Exchanger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+// todo revert this commit
+@Disabled("test only, don't merge code")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "message" })
 class EventHubsBinderConsumeErrorIT {

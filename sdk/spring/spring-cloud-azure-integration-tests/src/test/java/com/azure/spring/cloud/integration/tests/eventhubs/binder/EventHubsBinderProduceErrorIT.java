@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,6 +27,8 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+// todo revert this commit
+@Disabled("test only, don't merge code")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "produceerror" })
 class EventHubsBinderProduceErrorIT {
