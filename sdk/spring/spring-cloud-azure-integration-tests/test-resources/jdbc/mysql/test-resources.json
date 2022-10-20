@@ -2,6 +2,12 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
+    "testApplicationSecret": {
+      "type": "string"
+    },
+    "testApplicationOid": {
+      "type": "String"
+    },
     "testApplicationId": {
       "type": "string"
     },
@@ -218,6 +224,18 @@
     "AZURE_MYSQL_ACCOUNT_LOCATION": {
       "type": "string",
       "value": "[variables('location')]"
+    },
+    "AZURE_SPRING_CLIENT_ID": {
+      "type": "string",
+      "value": "[parameters('testApplicationID')]"
+    },
+    "AZURE_SPRING_CLIENT_SECRET": {
+      "type": "string",
+      "value": "[parameters('testApplicationSecret')]"
+    },
+    "AZURE_SPRING_TENANT_ID": {
+      "type": "string",
+      "value": "[parameters('tenantId')]"
     }
   }
 }
