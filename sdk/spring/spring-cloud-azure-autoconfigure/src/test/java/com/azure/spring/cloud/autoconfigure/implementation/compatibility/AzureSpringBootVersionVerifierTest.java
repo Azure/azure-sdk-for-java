@@ -165,8 +165,6 @@ class AzureSpringBootVersionVerifierTest {
             }
         };
         versionVerifier.verify();
-        //Waiting for more stability
-        Thread.sleep(20000);
         String allOutput = capturedOutput.getAll();
         String log1 = "Currently running on Spring Boot version [2.6.2], trying to match it with Spring Cloud Azure accepted version [2.5.x].";
         String log2 = "Currently running on Spring Boot version [2.6.2], trying to match it with Spring Cloud Azure accepted version [2.6.x].";
