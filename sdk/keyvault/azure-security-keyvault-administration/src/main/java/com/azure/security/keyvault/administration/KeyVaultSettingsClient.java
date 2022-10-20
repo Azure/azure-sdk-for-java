@@ -13,7 +13,6 @@ import com.azure.core.util.Context;
 import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl;
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.Setting;
-import com.azure.security.keyvault.administration.implementation.models.SettingsListResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
 import com.azure.security.keyvault.administration.models.KeyVaultSettingType;
 import reactor.core.publisher.Mono;
