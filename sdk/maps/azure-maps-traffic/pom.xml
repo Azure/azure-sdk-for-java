@@ -11,8 +11,8 @@
   </parent>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-resourcemanager-traffic-generated</artifactId>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-resourcemanager-traffic-generated;current} -->
+  <artifactId>azure-maps-traffic</artifactId>
+  <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-maps-traffic;current} -->
   <packaging>jar</packaging>
 
   <name>Microsoft Azure client library for azure-maps-traffic service</name>
