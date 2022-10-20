@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -39,7 +40,7 @@ public final class StorageSharedKeyCredentialPolicy implements HttpPipelinePolic
             context.getHttpRequest().getHttpMethod().toString(),
             context.getHttpRequest().getHeaders(),
             Boolean.TRUE.equals(context.getData(Constants.STORAGE_LOG_STRING_TO_SIGN).orElse(false)));
-        context.getHttpRequest().setHeader("Authorization", authorizationValue);
+        context.getHttpRequest().getHeaders().set(HttpHeaderName.AUTHORIZATION, authorizationValue);
         return next.process();
     }
 }

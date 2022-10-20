@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -39,8 +40,9 @@ public class ResponseValidationPolicyBuilder {
      */
     public ResponseValidationPolicyBuilder addOptionalEcho(String headerName) {
         assertions.add((httpResponse, logger) -> {
-            String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(headerName);
-            String responseHeaderValue = httpResponse.getHeaderValue(headerName);
+            HttpHeaderName httpHeaderName = HttpHeaderName.fromString(headerName);
+            String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(httpHeaderName);
+            String responseHeaderValue = httpResponse.getHeaders().getValue(httpHeaderName);
             if (responseHeaderValue != null && !responseHeaderValue.equals(requestHeaderValue)) {
                 throw logger.logExceptionAsError(new RuntimeException(String.format(
                     "Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
