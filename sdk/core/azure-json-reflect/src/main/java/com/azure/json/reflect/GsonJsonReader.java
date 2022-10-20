@@ -11,6 +11,7 @@ import java.util.Base64;
 import java.util.Objects;
 
 import static java.lang.invoke.MethodType.methodType;
+import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 
 class GsonJsonReader extends JsonReader {
     private static final Class<?> GSON_JSON_TOKEN_ENUM;
@@ -69,7 +70,7 @@ class GsonJsonReader extends JsonReader {
             jsonReaderConstructor = (JsonReaderConstructor) LambdaMetafactory.metafactory(lookup, "createJsonReader", methodType(JsonReaderConstructor.class), methodType(Object.class, Reader.class), gsonReaderConstructor, gsonReaderConstructor.type()).getTarget().invoke();
 
             jsonReaderSetLenient = createMetaFactory("setLenient", gsonJsonReaderClass, methodType(void.class, boolean.class), JsonReaderSetLenient.class, methodType(void.class, Object.class, boolean.class), lookup);
-            jsonReaderClose = createMetaFactory("close", gsonJsonReaderClass, voidMT, JsonReaderClose.class, methodType(void.class, Object.class), lookup);
+            jsonReaderClose = createMetaFactory("close", gsonJsonReaderClass, voidMT, JsonReaderClose.class, voidObjectMT, lookup);
             jsonReaderPeek = createMetaFactory("peek", gsonJsonReaderClass, methodType(gsonJsonTokenEnum), JsonReaderPeek.class, methodType(Object.class, Object.class), lookup);
             jsonReaderBeginObject = createMetaFactory("beginObject", gsonJsonReaderClass, voidMT, JsonReaderBeginObject.class, voidObjectMT, lookup);
             jsonReaderEndObject = createMetaFactory("endObject", gsonJsonReaderClass, voidMT, JsonReaderEndObject.class, voidObjectMT, lookup);
@@ -184,7 +185,7 @@ class GsonJsonReader extends JsonReader {
 
     private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, boolean nonNumericNumbersSupported) {
         if (!INITIALIZED) {
-            throw new IllegalStateException("Initialization of GsonJsonReader failed. Gson is not present or an incorrect version is present.");
+            throw new IllegalStateException("Gson is not present or an incorrect version is present.");
         }
 
         gsonJsonReader = JSON_READER_CONSTRUCTOR.createJsonReader(reader);
@@ -194,12 +195,6 @@ class GsonJsonReader extends JsonReader {
         this.jsonBytes = jsonBytes;
         this.jsonString = jsonString;
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> T createMetaFactory(String methodName, Class<?> implClass, MethodType implType, Class<T> invokedClass, MethodType invokedType, MethodHandles.Lookup lookup) throws Throwable {
-        MethodHandle handle = lookup.findVirtual(implClass, methodName, implType);
-        return (T) LambdaMetafactory.metafactory(lookup, methodName, methodType(invokedClass), invokedType, handle, handle.type()).getTarget().invoke();
     }
 
     @Override

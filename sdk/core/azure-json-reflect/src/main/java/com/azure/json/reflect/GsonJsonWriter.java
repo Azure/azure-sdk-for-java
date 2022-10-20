@@ -6,6 +6,7 @@ import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
 
 import java.io.*;
+import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
@@ -13,29 +14,99 @@ import java.util.Base64;
 import java.util.Objects;
 
 import static java.lang.invoke.MethodType.methodType;
+import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 
 class GsonJsonWriter extends JsonWriter {
-    private static boolean initialized = false;
-    private static boolean attemptedInitialization = false;
-    private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
+    private static final JsonWriterConstructor JSON_WRITER_CONSTRUCTOR;
+    private static final JsonWriterSetLenient JSON_WRITER_SET_LENIENT;
+    private static final JsonWriterClose JSON_WRITER_CLOSE;
+    private static final JsonWriterFlush JSON_WRITER_FLUSH;
+    private static final JsonWriterBeginObject JSON_WRITER_BEGIN_OBJECT;
+    private static final JsonWriterEndObject JSON_WRITER_END_OBJECT;
+    private static final JsonWriterBeginArray JSON_WRITER_BEGIN_ARRAY;
+    private static final JsonWriterEndArray JSON_WRITER_END_ARRAY;
+    private static final JsonWriterNullValue JSON_WRITER_NULL_VALUE;
+    private static final JsonWriterName JSON_WRITER_NAME;
+    private static final JsonWriterStringValue JSON_WRITER_STRING_VALUE;
+    private static final JsonWriterBooleanValue JSON_WRITER_BOOLEAN_VALUE;
+    private static final JsonWriterLongValue JSON_WRITER_LONG_VALUE;
+    private static final JsonWriterDoubleValue JSON_WRITER_DOUBLE_VALUE;
+    private static final JsonWriterRawValue JSON_WRITER_RAW_VALUE;
 
-    private static MethodHandle gsonWriterConstructor;
-    private static MethodHandle setLenientMethod;
-    private static MethodHandle closeMethod;
-    private static MethodHandle flushMethod;
-    private static MethodHandle beginObjectMethod;
-    private static MethodHandle endObjectMethod;
-    private static MethodHandle beginArrayMethod;
-    private static MethodHandle endArrayMethod;
-    private static MethodHandle nameMethod;
-    private static MethodHandle valueBooleanMethod;
-    private static MethodHandle valueDoubleMethod;
-    private static MethodHandle valueLongMethod;
-    private static MethodHandle valueNullMethod;
-    private static MethodHandle valueStringMethod;
-    private static MethodHandle valueRawMethod;
+    static final boolean INITIALIZED;
 
-    private final Object gsonWriter;
+    static {
+        final MethodHandles.Lookup lookup = MethodHandles.lookup();
+
+        JsonWriterConstructor jsonWriterConstructor = null;
+        JsonWriterSetLenient jsonWriterSetLenient = null;
+        JsonWriterClose jsonWriterClose = null;
+        JsonWriterFlush jsonWriterFlush = null;
+        JsonWriterBeginObject jsonWriterBeginObject = null;
+        JsonWriterEndObject jsonWriterEndObject = null;
+        JsonWriterBeginArray jsonWriterBeginArray = null;
+        JsonWriterEndArray jsonWriterEndArray = null;
+        JsonWriterNullValue jsonWriterNullValue = null;
+        JsonWriterName jsonWriterName = null;
+        JsonWriterStringValue jsonWriterStringValue = null;
+        JsonWriterLongValue jsonWriterLongValue = null;
+        JsonWriterBooleanValue jsonWriterBooleanValue = null;
+        JsonWriterDoubleValue jsonWriterDoubleValue = null;
+        JsonWriterRawValue jsonWriterRawValue = null;
+
+        boolean initialized = false;
+
+        try {
+            Class<?> gsonJsonWriterClass = Class.forName("com.google.gson.stream.JsonWriter");
+
+            MethodHandle gsonWriterConstructor = lookup.findConstructor(gsonJsonWriterClass, methodType(void.class, Writer.class));
+            jsonWriterConstructor = (JsonWriterConstructor) LambdaMetafactory.metafactory(lookup, "createJsonWriter", methodType(JsonWriterConstructor.class), methodType(Object.class, Writer.class), gsonWriterConstructor, gsonWriterConstructor.type()).getTarget().invoke();
+
+            jsonWriterSetLenient = createMetaFactory("setLenient", gsonJsonWriterClass, methodType(void.class, boolean.class), JsonWriterSetLenient.class, methodType(void.class, Object.class, boolean.class), lookup);
+            jsonWriterClose = createMetaFactory("close", gsonJsonWriterClass, methodType(void.class), JsonWriterClose.class, methodType(void.class, Object.class), lookup);
+            jsonWriterFlush = createMetaFactory("flush", gsonJsonWriterClass, methodType(void.class), JsonWriterFlush.class, methodType(void.class, Object.class), lookup);
+            jsonWriterBeginObject = createMetaFactory("beginObject", gsonJsonWriterClass, methodType(gsonJsonWriterClass), JsonWriterBeginObject.class, methodType(Object.class, Object.class), lookup);
+            jsonWriterEndObject = createMetaFactory("endObject", gsonJsonWriterClass, methodType(gsonJsonWriterClass), JsonWriterEndObject.class, methodType(Object.class, Object.class), lookup);
+            jsonWriterBeginArray = createMetaFactory("beginArray", gsonJsonWriterClass, methodType(gsonJsonWriterClass), JsonWriterBeginArray.class, methodType(Object.class, Object.class), lookup);
+            jsonWriterEndArray = createMetaFactory("endArray", gsonJsonWriterClass, methodType(gsonJsonWriterClass), JsonWriterEndArray.class, methodType(Object.class, Object.class), lookup);
+            jsonWriterNullValue = createMetaFactory("nullValue", gsonJsonWriterClass, methodType(gsonJsonWriterClass), JsonWriterNullValue.class, methodType(Object.class, Object.class), lookup);
+            jsonWriterName = createMetaFactory("name", gsonJsonWriterClass, methodType(gsonJsonWriterClass, String.class), JsonWriterName.class, methodType(Object.class, Object.class, String.class), lookup);
+            jsonWriterStringValue = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, String.class), JsonWriterStringValue.class, methodType(Object.class, Object.class, String.class), lookup);
+            jsonWriterBooleanValue = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, boolean.class), JsonWriterBooleanValue.class, methodType(Object.class, Object.class, boolean.class), lookup);
+            jsonWriterLongValue = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, long.class), JsonWriterLongValue.class, methodType(Object.class, Object.class, long.class), lookup);
+            jsonWriterDoubleValue = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, double.class), JsonWriterDoubleValue.class, methodType(Object.class, Object.class, double.class), lookup);
+            jsonWriterRawValue = createMetaFactory("jsonValue", gsonJsonWriterClass, methodType(gsonJsonWriterClass, String.class), JsonWriterRawValue.class, methodType(Object.class, Object.class, String.class), lookup);
+
+            initialized = true;
+        } catch (Throwable e) {
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException) e;
+            } else if (e instanceof Error) {
+                throw (Error) e;
+            }
+        }
+
+        JSON_WRITER_CONSTRUCTOR = jsonWriterConstructor;
+        JSON_WRITER_SET_LENIENT = jsonWriterSetLenient;
+        JSON_WRITER_CLOSE = jsonWriterClose;
+        JSON_WRITER_FLUSH = jsonWriterFlush;
+        JSON_WRITER_BEGIN_OBJECT = jsonWriterBeginObject;
+        JSON_WRITER_END_OBJECT = jsonWriterEndObject;
+        JSON_WRITER_BEGIN_ARRAY = jsonWriterBeginArray;
+        JSON_WRITER_END_ARRAY = jsonWriterEndArray;
+        JSON_WRITER_NULL_VALUE = jsonWriterNullValue;
+        JSON_WRITER_NAME = jsonWriterName;
+        JSON_WRITER_STRING_VALUE = jsonWriterStringValue;
+        JSON_WRITER_BOOLEAN_VALUE = jsonWriterBooleanValue;
+        JSON_WRITER_LONG_VALUE = jsonWriterLongValue;
+        JSON_WRITER_DOUBLE_VALUE = jsonWriterDoubleValue;
+        JSON_WRITER_RAW_VALUE = jsonWriterRawValue;
+
+        INITIALIZED = initialized;
+
+    }
+
+    private final Object gsonJsonWriter;
     private JsonWriteContext context = JsonWriteContext.ROOT;
 
     /**
@@ -72,48 +143,12 @@ class GsonJsonWriter extends JsonWriter {
     }
 
     private GsonJsonWriter(Writer writer, JsonOptions options) {
-        try {
-            initialize();
-
-            gsonWriter = gsonWriterConstructor.invoke(writer);
-            setLenientMethod.invoke(gsonWriter, options.isNonNumericNumbersSupported());
-        } catch (Throwable e) {
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException) e.getCause();
-            } else {
-                throw new IllegalStateException("Gson is not present or an incorrect version is present.");
-            }
-        }
-    }
-
-    static synchronized void initialize() throws ReflectiveOperationException {
-        if (initialized) {
-            return;
-        } else if (attemptedInitialization) {
-            throw new ReflectiveOperationException("Initialization of GsonJsonWriter has failed in the past.");
+        if (!INITIALIZED) {
+            throw new IllegalStateException("Gson is not present or an incorrect version is present.");
         }
 
-        attemptedInitialization = true;
-
-        Class<?> gsonWriterClass = Class.forName("com.google.gson.stream.JsonWriter");
-
-        gsonWriterConstructor = publicLookup.findConstructor(gsonWriterClass, methodType(void.class, Writer.class));
-        setLenientMethod = publicLookup.findVirtual(gsonWriterClass, "setLenient", methodType(void.class, boolean.class));
-        closeMethod = publicLookup.findVirtual(gsonWriterClass, "close", methodType(void.class));
-        flushMethod = publicLookup.findVirtual(gsonWriterClass, "flush", methodType(void.class));
-        beginObjectMethod = publicLookup.findVirtual(gsonWriterClass, "beginObject", methodType(gsonWriterClass));
-        endObjectMethod = publicLookup.findVirtual(gsonWriterClass, "endObject", methodType(gsonWriterClass));
-        beginArrayMethod = publicLookup.findVirtual(gsonWriterClass, "beginArray", methodType(gsonWriterClass));
-        endArrayMethod = publicLookup.findVirtual(gsonWriterClass, "endArray", methodType(gsonWriterClass));
-        nameMethod = publicLookup.findVirtual(gsonWriterClass, "name", methodType(gsonWriterClass, String.class));
-        valueBooleanMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, boolean.class));
-        valueDoubleMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, double.class));
-        valueLongMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, long.class));
-        valueNullMethod = publicLookup.findVirtual(gsonWriterClass, "nullValue", methodType(gsonWriterClass));
-        valueStringMethod = publicLookup.findVirtual(gsonWriterClass, "value", methodType(gsonWriterClass, String.class));
-        valueRawMethod = publicLookup.findVirtual(gsonWriterClass, "jsonValue", methodType(gsonWriterClass, String.class));
-
-        initialized = true;
+        gsonJsonWriter = JSON_WRITER_CONSTRUCTOR.createJsonWriter(writer);
+        JSON_WRITER_SET_LENIENT.setLenient(gsonJsonWriter, options.isNonNumericNumbersSupported());
     }
 
     @Override
@@ -128,29 +163,13 @@ class GsonJsonWriter extends JsonWriter {
                 + "closed. Current writing state is '" + context.getWriteState() + "'.");
         }
 
-        try {
-            flush();
-            closeMethod.invoke(gsonWriter);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        flush();
+        JSON_WRITER_CLOSE.close(gsonJsonWriter);
     }
 
     @Override
     public JsonWriter flush() throws IOException {
-        try {
-            flushMethod.invoke(gsonWriter);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_FLUSH.flush(gsonJsonWriter);
         return this;
     }
 
@@ -158,15 +177,7 @@ class GsonJsonWriter extends JsonWriter {
     public JsonWriter writeStartObject() throws IOException {
         context.validateToken(JsonToken.START_OBJECT);
 
-        try {
-            beginObjectMethod.invoke(gsonWriter);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_BEGIN_OBJECT.beginObject(gsonJsonWriter);
 
         context = context.updateContext(JsonToken.START_OBJECT);
         return this;
@@ -176,15 +187,7 @@ class GsonJsonWriter extends JsonWriter {
     public JsonWriter writeEndObject() throws IOException {
         context.validateToken(JsonToken.END_OBJECT);
 
-        try {
-            endObjectMethod.invoke(gsonWriter);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_END_OBJECT.endObject(gsonJsonWriter);
 
         context = context.updateContext(JsonToken.END_OBJECT);
         return this;
@@ -194,15 +197,7 @@ class GsonJsonWriter extends JsonWriter {
     public JsonWriter writeStartArray() throws IOException {
         context.validateToken(JsonToken.START_ARRAY);
 
-        try {
-            beginArrayMethod.invoke(gsonWriter);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_BEGIN_ARRAY.beginArray(gsonJsonWriter);
 
         context = context.updateContext(JsonToken.START_ARRAY);
         return this;
@@ -212,15 +207,7 @@ class GsonJsonWriter extends JsonWriter {
     public JsonWriter writeEndArray() throws IOException {
         context.validateToken(JsonToken.END_ARRAY);
 
-        try {
-            endArrayMethod.invoke(gsonWriter);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_END_ARRAY.endArray(gsonJsonWriter);
 
         context = context.updateContext(JsonToken.END_ARRAY);
         return this;
@@ -231,15 +218,7 @@ class GsonJsonWriter extends JsonWriter {
         Objects.requireNonNull(fieldName, "'fieldName cannot be null.");
         context.validateToken(JsonToken.FIELD_NAME);
 
-        try {
-            nameMethod.invoke(gsonWriter, fieldName);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_NAME.name(gsonJsonWriter, fieldName);
 
         context = context.updateContext(JsonToken.FIELD_NAME);
         return this;
@@ -249,18 +228,10 @@ class GsonJsonWriter extends JsonWriter {
     public JsonWriter writeBinary(byte[] value) throws IOException {
         context.validateToken(JsonToken.STRING);
 
-        try {
-            if (value == null) {
-                valueNullMethod.invoke(gsonWriter);
-            } else {
-                valueStringMethod.invoke(gsonWriter, Base64.getEncoder().encodeToString(value));
-            }
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
+        if (value == null) {
+            JSON_WRITER_NULL_VALUE.nullValue(gsonJsonWriter);
+        } else {
+            JSON_WRITER_STRING_VALUE.value(gsonJsonWriter, Base64.getEncoder().encodeToString(value));
         }
 
         context = context.updateContext(JsonToken.STRING);
@@ -271,15 +242,7 @@ class GsonJsonWriter extends JsonWriter {
     public JsonWriter writeBoolean(boolean value) throws IOException {
         context.validateToken(JsonToken.BOOLEAN);
 
-        try {
-            valueBooleanMethod.invoke(gsonWriter, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_BOOLEAN_VALUE.value(gsonJsonWriter, value);
 
         context = context.updateContext(JsonToken.BOOLEAN);
         return this;
@@ -289,15 +252,7 @@ class GsonJsonWriter extends JsonWriter {
     public JsonWriter writeDouble(double value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
 
-        try {
-            valueDoubleMethod.invoke(gsonWriter, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_DOUBLE_VALUE.value(gsonJsonWriter, value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
@@ -305,53 +260,19 @@ class GsonJsonWriter extends JsonWriter {
 
     @Override
     public JsonWriter writeFloat(float value) throws IOException {
-        context.validateToken(JsonToken.NUMBER);
-
-        try {
-            valueDoubleMethod.invoke(gsonWriter, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
-        context = context.updateContext(JsonToken.NUMBER);
-        return this;
+        return writeDouble(value);
     }
 
     @Override
     public JsonWriter writeInt(int value) throws IOException {
-        context.validateToken(JsonToken.NUMBER);
-
-        try {
-            valueLongMethod.invoke(gsonWriter, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
-        context = context.updateContext(JsonToken.NUMBER);
-        return this;
+        return writeLong(value);
     }
 
     @Override
     public JsonWriter writeLong(long value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
 
-        try {
-            valueLongMethod.invoke(gsonWriter, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_LONG_VALUE.value(gsonJsonWriter, value);
 
         context = context.updateContext(JsonToken.NUMBER);
         return this;
@@ -361,15 +282,7 @@ class GsonJsonWriter extends JsonWriter {
     public JsonWriter writeNull() throws IOException {
         context.validateToken(JsonToken.NULL);
 
-        try {
-            valueNullMethod.invoke(gsonWriter);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_NULL_VALUE.nullValue(gsonJsonWriter);
 
         context = context.updateContext(JsonToken.NULL);
         return this;
@@ -379,15 +292,7 @@ class GsonJsonWriter extends JsonWriter {
     public JsonWriter writeString(String value) throws IOException {
         context.validateToken(JsonToken.STRING);
 
-        try {
-            valueStringMethod.invoke(gsonWriter, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_STRING_VALUE.value(gsonJsonWriter, value);
 
         context = context.updateContext(JsonToken.STRING);
         return this;
@@ -398,17 +303,84 @@ class GsonJsonWriter extends JsonWriter {
         Objects.requireNonNull(value, "'value' cannot be null.");
         context.validateToken(JsonToken.STRING);
 
-        try {
-            valueRawMethod.invoke(gsonWriter, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_WRITER_RAW_VALUE.jsonValue(gsonJsonWriter, value);
 
         context = context.updateContext(JsonToken.STRING);
         return this;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterConstructor {
+        Object createJsonWriter(Writer writer);
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterSetLenient {
+        void setLenient(Object jsonWriter, boolean lenient);
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterClose {
+        void close(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterFlush {
+        void flush(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterBeginObject {
+        Object beginObject(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterEndObject {
+        Object endObject(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterBeginArray {
+        Object beginArray(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterEndArray {
+        Object endArray(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterNullValue {
+        Object nullValue(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterName {
+        Object name(Object jsonWriter, String name) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterStringValue {
+        Object value(Object jsonWriter, String value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterBooleanValue {
+        Object value(Object jsonWriter, boolean value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterLongValue {
+        Object value(Object jsonWriter, long value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterDoubleValue {
+        Object value(Object jsonWriter, double value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonWriterRawValue {
+        Object jsonValue(Object jsonWriter, String value) throws IOException;
     }
 }

@@ -21,13 +21,6 @@
     </license>
   </licenses>
 
-  <distributionManagement>
-    <site>
-      <id>azure-java-build-docs</id>
-      <url>${site.url}/site/${project.artifactId}</url>
-    </site>
-  </distributionManagement>
-
   <scm>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <connection>scm:git:https://github.com/Azure/azure-sdk-for-java.git</connection>
@@ -54,7 +47,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
     </dependency>
 
     <!-- Test Dependencies -->
@@ -73,7 +66,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-json</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-json;current} -->
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -99,21 +92,10 @@
 
   <build>
     <plugins>
-
-      <!-- This plugin scans reports spotbugs in the code -->
       <plugin>
-        <groupId>com.github.spotbugs</groupId>
-        <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.2.2</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
-        <configuration>
-          <plugins>
-            <plugin>
-              <groupId>com.h3xstream.findsecbugs</groupId>
-              <artifactId>findsecbugs-plugin</artifactId>
-              <version>1.9.0</version> <!-- {x-version-update;com.h3xstream.findsecbugs:findsecbugs-plugin;external_dependency} -->
-            </plugin>
-          </plugins>
-        </configuration>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.22.2</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
       </plugin>
 
       <plugin>
@@ -121,8 +103,8 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
-          <source>17</source>
-          <target>17</target>
+          <source>1.8</source>
+          <target>1.8</target>
           <testSource>1.8</testSource>
           <testTarget>1.8</testTarget>
           <compilerArgs>

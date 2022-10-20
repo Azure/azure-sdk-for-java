@@ -11,7 +11,6 @@ public abstract class JsonFactory {
     private static boolean jacksonAttempted = false;
 
     private static JsonFactory gsonJsonFactory = null;
-    private static boolean gsonAttempted = false;
 
     public static JsonFactory getInstance() {
         JsonFactory jsonFactory = getJacksonInstance();
@@ -37,13 +36,12 @@ public abstract class JsonFactory {
     }
 
     public synchronized static JsonFactory getGsonInstance() {
-        if (!gsonAttempted) {
-            gsonAttempted = true;
-            try {
-                gsonJsonFactory = new GsonJsonFactory();
-            } catch (ReflectiveOperationException ignored) {
-                // Gson not on classpath
-            }
+        if (!GsonJsonFactory.INITIALIZED) {
+            throw new IllegalStateException("Gson is not present or an incorrect version is present.");
+        }
+
+        if (gsonJsonFactory == null) {
+            gsonJsonFactory = new GsonJsonFactory();
         }
 
         return gsonJsonFactory;
