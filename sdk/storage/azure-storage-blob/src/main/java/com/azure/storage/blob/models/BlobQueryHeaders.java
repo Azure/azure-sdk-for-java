@@ -5,11 +5,12 @@
 package com.azure.storage.blob.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.HeaderCollection;
-import com.azure.core.util.CoreUtils;
-import com.azure.core.util.DateTimeRfc1123;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.core.http.HttpHeaders;
+import com.azure.storage.blob.implementation.accesshelpers.BlobQueryHeadersConstructorProxy;
+import com.azure.storage.blob.implementation.models.BlobsQueryHeaders;
+import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
+
 import java.time.OffsetDateTime;
 import java.util.Map;
 
@@ -19,276 +20,26 @@ import java.util.Map;
 @JacksonXmlRootElement(localName = "Blob-Query-Headers")
 @Fluent
 public final class BlobQueryHeaders {
-    /*
-     * Returns the date and time the container was last modified. Any operation
-     * that modifies the blob, including an update of the blob's metadata or
-     * properties, changes the last-modified time of the blob.
-     */
-    @JsonProperty(value = "Last-Modified")
-    private DateTimeRfc1123 lastModified;
+    @JsonUnwrapped
+    private final BlobsQueryHeaders internalHeaders;
 
-    /*
-     * The metadata property.
-     */
-    @HeaderCollection("x-ms-meta-")
-    private Map<String, String> metadata;
+    static {
+        BlobQueryHeadersConstructorProxy.setAccessor(BlobQueryHeaders::new);
+    }
 
-    /*
-     * The number of bytes present in the response body.
-     */
-    @JsonProperty(value = "Content-Length")
-    private Long contentLength;
-
-    /*
-     * The media type of the body of the response. For Download Blob this is
-     * 'application/octet-stream'
-     */
-    @JsonProperty(value = "Content-Type")
-    private String contentType;
-
-    /*
-     * Indicates the range of bytes returned in the event that the client
-     * requested a subset of the blob by setting the 'Range' request header.
-     */
-    @JsonProperty(value = "Content-Range")
-    private String contentRange;
-
-    /*
-     * The ETag contains a value that you can use to perform operations
-     * conditionally. If the request version is 2011-08-18 or newer, the ETag
-     * value will be in quotes.
-     */
-    @JsonProperty(value = "ETag")
-    private String eTag;
-
-    /*
-     * If the blob has an MD5 hash and this operation is to read the full blob,
-     * this response header is returned so that the client can check for
-     * message content integrity.
-     */
-    @JsonProperty(value = "Content-MD5")
-    private byte[] contentMd5;
-
-    /*
-     * This header returns the value that was specified for the
-     * Content-Encoding request header
-     */
-    @JsonProperty(value = "Content-Encoding")
-    private String contentEncoding;
-
-    /*
-     * This header is returned if it was previously specified for the blob.
-     */
-    @JsonProperty(value = "Cache-Control")
-    private String cacheControl;
-
-    /*
-     * This header returns the value that was specified for the
-     * 'x-ms-blob-content-disposition' header. The Content-Disposition response
-     * header field conveys additional information about how to process the
-     * response payload, and also can be used to attach additional metadata.
-     * For example, if set to attachment, it indicates that the user-agent
-     * should not display the response, but instead show a Save As dialog with
-     * a filename other than the blob name specified.
-     */
-    @JsonProperty(value = "Content-Disposition")
-    private String contentDisposition;
-
-    /*
-     * This header returns the value that was specified for the
-     * Content-Language request header.
-     */
-    @JsonProperty(value = "Content-Language")
-    private String contentLanguage;
-
-    /*
-     * The current sequence number for a page blob. This header is not returned
-     * for block blobs or append blobs
-     */
-    @JsonProperty(value = "x-ms-blob-sequence-number")
-    private Long blobSequenceNumber;
-
-    /*
-     * The blob's type. Possible values include: 'BlockBlob', 'PageBlob',
-     * 'AppendBlob'
-     */
-    @JsonProperty(value = "x-ms-blob-type")
-    private BlobType blobType;
-
-    /*
-     * Conclusion time of the last attempted Copy Blob operation where this
-     * blob was the destination blob. This value can specify the time of a
-     * completed, aborted, or failed copy attempt. This header does not appear
-     * if a copy is pending, if this blob has never been the destination in a
-     * Copy Blob operation, or if this blob has been modified after a concluded
-     * Copy Blob operation using Set Blob Properties, Put Blob, or Put Block
-     * List.
-     */
-    @JsonProperty(value = "x-ms-copy-completion-time")
-    private DateTimeRfc1123 copyCompletionTime;
-
-    /*
-     * Only appears when x-ms-copy-status is failed or pending. Describes the
-     * cause of the last fatal or non-fatal copy operation failure. This header
-     * does not appear if this blob has never been the destination in a Copy
-     * Blob operation, or if this blob has been modified after a concluded Copy
-     * Blob operation using Set Blob Properties, Put Blob, or Put Block List
-     */
-    @JsonProperty(value = "x-ms-copy-status-description")
-    private String copyStatusDescription;
-
-    /*
-     * String identifier for this copy operation. Use with Get Blob Properties
-     * to check the status of this copy operation, or pass to Abort Copy Blob
-     * to abort a pending copy.
-     */
-    @JsonProperty(value = "x-ms-copy-id")
-    private String copyId;
-
-    /*
-     * Contains the number of bytes copied and the total bytes in the source in
-     * the last attempted Copy Blob operation where this blob was the
-     * destination blob. Can show between 0 and Content-Length bytes copied.
-     * This header does not appear if this blob has never been the destination
-     * in a Copy Blob operation, or if this blob has been modified after a
-     * concluded Copy Blob operation using Set Blob Properties, Put Blob, or
-     * Put Block List
-     */
-    @JsonProperty(value = "x-ms-copy-progress")
-    private String copyProgress;
-
-    /*
-     * URL up to 2 KB in length that specifies the source blob or file used in
-     * the last attempted Copy Blob operation where this blob was the
-     * destination blob. This header does not appear if this blob has never
-     * been the destination in a Copy Blob operation, or if this blob has been
-     * modified after a concluded Copy Blob operation using Set Blob
-     * Properties, Put Blob, or Put Block List.
-     */
-    @JsonProperty(value = "x-ms-copy-source")
-    private String copySource;
-
-    /*
-     * State of the copy operation identified by x-ms-copy-id. Possible values
-     * include: 'pending', 'success', 'aborted', 'failed'
-     */
-    @JsonProperty(value = "x-ms-copy-status")
-    private CopyStatusType copyStatus;
-
-    /*
-     * When a blob is leased, specifies whether the lease is of infinite or
-     * fixed duration. Possible values include: 'infinite', 'fixed'
-     */
-    @JsonProperty(value = "x-ms-lease-duration")
-    private LeaseDurationType leaseDuration;
-
-    /*
-     * Lease state of the blob. Possible values include: 'available', 'leased',
-     * 'expired', 'breaking', 'broken'
-     */
-    @JsonProperty(value = "x-ms-lease-state")
-    private LeaseStateType leaseState;
-
-    /*
-     * The current lease status of the blob. Possible values include: 'locked',
-     * 'unlocked'
-     */
-    @JsonProperty(value = "x-ms-lease-status")
-    private LeaseStatusType leaseStatus;
-
-    /*
-     * If a client request id header is sent in the request, this header will
-     * be present in the response with the same value.
-     */
-    @JsonProperty(value = "x-ms-client-request-id")
-    private String clientRequestId;
-
-    /*
-     * This header uniquely identifies the request that was made and can be
-     * used for troubleshooting the request.
-     */
-    @JsonProperty(value = "x-ms-request-id")
-    private String requestId;
-
-    /*
-     * Indicates the version of the Blob service used to execute the request.
-     * This header is returned for requests made against version 2009-09-19 and
-     * above.
-     */
-    @JsonProperty(value = "x-ms-version")
-    private String version;
-
-    /*
-     * Indicates that the service supports requests for partial blob content.
-     */
-    @JsonProperty(value = "Accept-Ranges")
-    private String acceptRanges;
-
-    /*
-     * UTC date/time value generated by the service that indicates the time at
-     * which the response was initiated
-     */
-    @JsonProperty(value = "Date")
-    private DateTimeRfc1123 dateProperty;
-
-    /*
-     * The number of committed blocks present in the blob. This header is
-     * returned only for append blobs.
-     */
-    @JsonProperty(value = "x-ms-blob-committed-block-count")
-    private Integer blobCommittedBlockCount;
-
-    /*
-     * The value of this header is set to true if the blob data and application
-     * metadata are completely encrypted using the specified algorithm.
-     * Otherwise, the value is set to false (when the blob is unencrypted, or
-     * if only parts of the blob/application metadata are encrypted).
-     */
-    @JsonProperty(value = "x-ms-server-encrypted")
-    private Boolean serverEncrypted;
-
-    /*
-     * The SHA-256 hash of the encryption key used to encrypt the blob. This
-     * header is only returned when the blob was encrypted with a
-     * customer-provided key.
-     */
-    @JsonProperty(value = "x-ms-encryption-key-sha256")
-    private String encryptionKeySha256;
-
-    /*
-     * Returns the name of the encryption scope used to encrypt the blob
-     * contents and application metadata.  Note that the absence of this header
-     * implies use of the default account encryption scope.
-     */
-    @JsonProperty(value = "x-ms-encryption-scope")
-    private String encryptionScope;
-
-    /*
-     * If the blob has a MD5 hash, and if request contains range header (Range
-     * or x-ms-range), this response header is returned with the value of the
-     * whole blob's MD5 value. This value may or may not be equal to the value
-     * returned in Content-MD5 header, with the latter calculated from the
-     * requested range
-     */
-    @JsonProperty(value = "x-ms-blob-content-md5")
-    private byte[] blobContentMd5;
-
-    /*
-     * If the request is to read a specified range and the
-     * x-ms-range-get-content-crc64 is set to true, then the request returns a
-     * crc64 for the range, as long as the range size is less than or equal to
-     * 4 MB. If both x-ms-range-get-content-crc64 and
-     * x-ms-range-get-content-md5 is specified in the same request, it will
-     * fail with 400(Bad Request)
-     */
-    @JsonProperty(value = "x-ms-content-crc64")
-    private byte[] contentCrc64;
-
-    /*
-     * The errorCode property.
-     */
-    @JsonProperty(value = "x-ms-error-code")
     private String errorCode;
+
+    private BlobQueryHeaders(BlobsQueryHeaders internalHeaders) {
+        this.internalHeaders = internalHeaders;
+    }
+
+    /**
+     * Constructs a new instance of {@link BlobQueryHeaders}.
+     */
+    public BlobQueryHeaders() {
+        // Added to maintain backwards compatibility as the private constructor removes the implicit no args constructor
+        this.internalHeaders = new BlobsQueryHeaders(new HttpHeaders());
+    }
 
     /**
      * Get the lastModified property: Returns the date and time the container
@@ -299,10 +50,7 @@ public final class BlobQueryHeaders {
      * @return the lastModified value.
      */
     public OffsetDateTime getLastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.getDateTime();
+        return internalHeaders.getLastModified();
     }
 
     /**
@@ -315,11 +63,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setLastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
+        internalHeaders.setLastModified(lastModified);
         return this;
     }
 
@@ -329,7 +73,7 @@ public final class BlobQueryHeaders {
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
-        return this.metadata;
+        return internalHeaders.getXMsMeta();
     }
 
     /**
@@ -339,7 +83,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setMetadata(Map<String, String> metadata) {
-        this.metadata = metadata;
+        internalHeaders.setXMsMeta(metadata);
         return this;
     }
 
@@ -350,7 +94,7 @@ public final class BlobQueryHeaders {
      * @return the contentLength value.
      */
     public Long getContentLength() {
-        return this.contentLength;
+        return internalHeaders.getContentLength();
     }
 
     /**
@@ -361,7 +105,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setContentLength(Long contentLength) {
-        this.contentLength = contentLength;
+        internalHeaders.setContentLength(contentLength);
         return this;
     }
 
@@ -372,7 +116,7 @@ public final class BlobQueryHeaders {
      * @return the contentType value.
      */
     public String getContentType() {
-        return this.contentType;
+        return internalHeaders.getContentType();
     }
 
     /**
@@ -383,7 +127,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setContentType(String contentType) {
-        this.contentType = contentType;
+        internalHeaders.setContentType(contentType);
         return this;
     }
 
@@ -395,7 +139,7 @@ public final class BlobQueryHeaders {
      * @return the contentRange value.
      */
     public String getContentRange() {
-        return this.contentRange;
+        return internalHeaders.getContentRange();
     }
 
     /**
@@ -407,7 +151,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setContentRange(String contentRange) {
-        this.contentRange = contentRange;
+        internalHeaders.setContentRange(contentRange);
         return this;
     }
 
@@ -419,7 +163,7 @@ public final class BlobQueryHeaders {
      * @return the eTag value.
      */
     public String getETag() {
-        return this.eTag;
+        return internalHeaders.getETag();
     }
 
     /**
@@ -431,7 +175,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setETag(String eTag) {
-        this.eTag = eTag;
+        internalHeaders.setETag(eTag);
         return this;
     }
 
@@ -443,7 +187,7 @@ public final class BlobQueryHeaders {
      * @return the contentMd5 value.
      */
     public byte[] getContentMd5() {
-        return CoreUtils.clone(this.contentMd5);
+        return internalHeaders.getContentMD5();
     }
 
     /**
@@ -455,7 +199,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = CoreUtils.clone(contentMd5);
+        internalHeaders.setContentMD5(contentMd5);
         return this;
     }
 
@@ -466,7 +210,7 @@ public final class BlobQueryHeaders {
      * @return the contentEncoding value.
      */
     public String getContentEncoding() {
-        return this.contentEncoding;
+        return internalHeaders.getContentEncoding();
     }
 
     /**
@@ -477,7 +221,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setContentEncoding(String contentEncoding) {
-        this.contentEncoding = contentEncoding;
+        internalHeaders.setContentEncoding(contentEncoding);
         return this;
     }
 
@@ -488,7 +232,7 @@ public final class BlobQueryHeaders {
      * @return the cacheControl value.
      */
     public String getCacheControl() {
-        return this.cacheControl;
+        return internalHeaders.getCacheControl();
     }
 
     /**
@@ -499,7 +243,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCacheControl(String cacheControl) {
-        this.cacheControl = cacheControl;
+        internalHeaders.setCacheControl(cacheControl);
         return this;
     }
 
@@ -516,7 +260,7 @@ public final class BlobQueryHeaders {
      * @return the contentDisposition value.
      */
     public String getContentDisposition() {
-        return this.contentDisposition;
+        return internalHeaders.getContentDisposition();
     }
 
     /**
@@ -533,7 +277,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setContentDisposition(String contentDisposition) {
-        this.contentDisposition = contentDisposition;
+        internalHeaders.setContentDisposition(contentDisposition);
         return this;
     }
 
@@ -544,7 +288,7 @@ public final class BlobQueryHeaders {
      * @return the contentLanguage value.
      */
     public String getContentLanguage() {
-        return this.contentLanguage;
+        return internalHeaders.getContentLanguage();
     }
 
     /**
@@ -555,7 +299,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setContentLanguage(String contentLanguage) {
-        this.contentLanguage = contentLanguage;
+        internalHeaders.setContentLanguage(contentLanguage);
         return this;
     }
 
@@ -566,7 +310,7 @@ public final class BlobQueryHeaders {
      * @return the blobSequenceNumber value.
      */
     public Long getBlobSequenceNumber() {
-        return this.blobSequenceNumber;
+        return internalHeaders.getXMsBlobSequenceNumber();
     }
 
     /**
@@ -577,7 +321,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setBlobSequenceNumber(Long blobSequenceNumber) {
-        this.blobSequenceNumber = blobSequenceNumber;
+        internalHeaders.setXMsBlobSequenceNumber(blobSequenceNumber);
         return this;
     }
 
@@ -588,7 +332,7 @@ public final class BlobQueryHeaders {
      * @return the blobType value.
      */
     public BlobType getBlobType() {
-        return this.blobType;
+        return internalHeaders.getXMsBlobType();
     }
 
     /**
@@ -599,7 +343,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setBlobType(BlobType blobType) {
-        this.blobType = blobType;
+        internalHeaders.setXMsBlobType(blobType);
         return this;
     }
 
@@ -615,10 +359,7 @@ public final class BlobQueryHeaders {
      * @return the copyCompletionTime value.
      */
     public OffsetDateTime getCopyCompletionTime() {
-        if (this.copyCompletionTime == null) {
-            return null;
-        }
-        return this.copyCompletionTime.getDateTime();
+        return internalHeaders.getXMsCopyCompletionTime();
     }
 
     /**
@@ -634,11 +375,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopyCompletionTime(OffsetDateTime copyCompletionTime) {
-        if (copyCompletionTime == null) {
-            this.copyCompletionTime = null;
-        } else {
-            this.copyCompletionTime = new DateTimeRfc1123(copyCompletionTime);
-        }
+        internalHeaders.setXMsCopyCompletionTime(copyCompletionTime);
         return this;
     }
 
@@ -653,7 +390,7 @@ public final class BlobQueryHeaders {
      * @return the copyStatusDescription value.
      */
     public String getCopyStatusDescription() {
-        return this.copyStatusDescription;
+        return internalHeaders.getXMsCopyStatusDescription();
     }
 
     /**
@@ -668,7 +405,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopyStatusDescription(String copyStatusDescription) {
-        this.copyStatusDescription = copyStatusDescription;
+        internalHeaders.setXMsCopyStatusDescription(copyStatusDescription);
         return this;
     }
 
@@ -680,7 +417,7 @@ public final class BlobQueryHeaders {
      * @return the copyId value.
      */
     public String getCopyId() {
-        return this.copyId;
+        return internalHeaders.getXMsCopyId();
     }
 
     /**
@@ -692,7 +429,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopyId(String copyId) {
-        this.copyId = copyId;
+        internalHeaders.setXMsCopyId(copyId);
         return this;
     }
 
@@ -708,7 +445,7 @@ public final class BlobQueryHeaders {
      * @return the copyProgress value.
      */
     public String getCopyProgress() {
-        return this.copyProgress;
+        return internalHeaders.getXMsCopyProgress();
     }
 
     /**
@@ -724,7 +461,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopyProgress(String copyProgress) {
-        this.copyProgress = copyProgress;
+        internalHeaders.setXMsCopyProgress(copyProgress);
         return this;
     }
 
@@ -739,7 +476,7 @@ public final class BlobQueryHeaders {
      * @return the copySource value.
      */
     public String getCopySource() {
-        return this.copySource;
+        return internalHeaders.getXMsCopySource();
     }
 
     /**
@@ -754,7 +491,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopySource(String copySource) {
-        this.copySource = copySource;
+        internalHeaders.setXMsCopySource(copySource);
         return this;
     }
 
@@ -766,7 +503,7 @@ public final class BlobQueryHeaders {
      * @return the copyStatus value.
      */
     public CopyStatusType getCopyStatus() {
-        return this.copyStatus;
+        return internalHeaders.getXMsCopyStatus();
     }
 
     /**
@@ -778,7 +515,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setCopyStatus(CopyStatusType copyStatus) {
-        this.copyStatus = copyStatus;
+        internalHeaders.setXMsCopyStatus(copyStatus);
         return this;
     }
 
@@ -790,7 +527,7 @@ public final class BlobQueryHeaders {
      * @return the leaseDuration value.
      */
     public LeaseDurationType getLeaseDuration() {
-        return this.leaseDuration;
+        return internalHeaders.getXMsLeaseDuration();
     }
 
     /**
@@ -802,7 +539,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setLeaseDuration(LeaseDurationType leaseDuration) {
-        this.leaseDuration = leaseDuration;
+        internalHeaders.setXMsLeaseDuration(leaseDuration);
         return this;
     }
 
@@ -813,7 +550,7 @@ public final class BlobQueryHeaders {
      * @return the leaseState value.
      */
     public LeaseStateType getLeaseState() {
-        return this.leaseState;
+        return internalHeaders.getXMsLeaseState();
     }
 
     /**
@@ -824,7 +561,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setLeaseState(LeaseStateType leaseState) {
-        this.leaseState = leaseState;
+        internalHeaders.setXMsLeaseState(leaseState);
         return this;
     }
 
@@ -835,7 +572,7 @@ public final class BlobQueryHeaders {
      * @return the leaseStatus value.
      */
     public LeaseStatusType getLeaseStatus() {
-        return this.leaseStatus;
+        return internalHeaders.getXMsLeaseStatus();
     }
 
     /**
@@ -846,7 +583,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setLeaseStatus(LeaseStatusType leaseStatus) {
-        this.leaseStatus = leaseStatus;
+        internalHeaders.setXMsLeaseStatus(leaseStatus);
         return this;
     }
 
@@ -858,7 +595,7 @@ public final class BlobQueryHeaders {
      * @return the clientRequestId value.
      */
     public String getClientRequestId() {
-        return this.clientRequestId;
+        return internalHeaders.getXMsClientRequestId();
     }
 
     /**
@@ -870,7 +607,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setClientRequestId(String clientRequestId) {
-        this.clientRequestId = clientRequestId;
+        internalHeaders.setXMsClientRequestId(clientRequestId);
         return this;
     }
 
@@ -881,7 +618,7 @@ public final class BlobQueryHeaders {
      * @return the requestId value.
      */
     public String getRequestId() {
-        return this.requestId;
+        return internalHeaders.getXMsRequestId();
     }
 
     /**
@@ -892,7 +629,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setRequestId(String requestId) {
-        this.requestId = requestId;
+        internalHeaders.setXMsRequestId(requestId);
         return this;
     }
 
@@ -904,7 +641,7 @@ public final class BlobQueryHeaders {
      * @return the version value.
      */
     public String getVersion() {
-        return this.version;
+        return internalHeaders.getXMsVersion();
     }
 
     /**
@@ -916,7 +653,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setVersion(String version) {
-        this.version = version;
+        internalHeaders.setXMsVersion(version);
         return this;
     }
 
@@ -927,7 +664,7 @@ public final class BlobQueryHeaders {
      * @return the acceptRanges value.
      */
     public String getAcceptRanges() {
-        return this.acceptRanges;
+        return internalHeaders.getAcceptRanges();
     }
 
     /**
@@ -938,7 +675,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setAcceptRanges(String acceptRanges) {
-        this.acceptRanges = acceptRanges;
+        internalHeaders.setAcceptRanges(acceptRanges);
         return this;
     }
 
@@ -949,10 +686,7 @@ public final class BlobQueryHeaders {
      * @return the dateProperty value.
      */
     public OffsetDateTime getDateProperty() {
-        if (this.dateProperty == null) {
-            return null;
-        }
-        return this.dateProperty.getDateTime();
+        return internalHeaders.getDate();
     }
 
     /**
@@ -963,11 +697,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setDateProperty(OffsetDateTime dateProperty) {
-        if (dateProperty == null) {
-            this.dateProperty = null;
-        } else {
-            this.dateProperty = new DateTimeRfc1123(dateProperty);
-        }
+        internalHeaders.setDate(dateProperty);
         return this;
     }
 
@@ -978,7 +708,7 @@ public final class BlobQueryHeaders {
      * @return the blobCommittedBlockCount value.
      */
     public Integer getBlobCommittedBlockCount() {
-        return this.blobCommittedBlockCount;
+        return internalHeaders.getXMsBlobCommittedBlockCount();
     }
 
     /**
@@ -989,7 +719,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
-        this.blobCommittedBlockCount = blobCommittedBlockCount;
+        internalHeaders.setXMsBlobCommittedBlockCount(blobCommittedBlockCount);
         return this;
     }
 
@@ -1003,7 +733,7 @@ public final class BlobQueryHeaders {
      * @return the serverEncrypted value.
      */
     public Boolean isServerEncrypted() {
-        return this.serverEncrypted;
+        return internalHeaders.isXMsServerEncrypted();
     }
 
     /**
@@ -1017,7 +747,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setServerEncrypted(Boolean serverEncrypted) {
-        this.serverEncrypted = serverEncrypted;
+        internalHeaders.setXMsServerEncrypted(serverEncrypted);
         return this;
     }
 
@@ -1029,7 +759,7 @@ public final class BlobQueryHeaders {
      * @return the encryptionKeySha256 value.
      */
     public String getEncryptionKeySha256() {
-        return this.encryptionKeySha256;
+        return internalHeaders.getXMsEncryptionKeySha256();
     }
 
     /**
@@ -1041,7 +771,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setEncryptionKeySha256(String encryptionKeySha256) {
-        this.encryptionKeySha256 = encryptionKeySha256;
+        internalHeaders.setXMsEncryptionKeySha256(encryptionKeySha256);
         return this;
     }
 
@@ -1054,7 +784,7 @@ public final class BlobQueryHeaders {
      * @return the encryptionScope value.
      */
     public String getEncryptionScope() {
-        return this.encryptionScope;
+        return internalHeaders.getXMsEncryptionScope();
     }
 
     /**
@@ -1067,7 +797,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setEncryptionScope(String encryptionScope) {
-        this.encryptionScope = encryptionScope;
+        internalHeaders.setXMsEncryptionScope(encryptionScope);
         return this;
     }
 
@@ -1081,7 +811,7 @@ public final class BlobQueryHeaders {
      * @return the blobContentMd5 value.
      */
     public byte[] getBlobContentMd5() {
-        return CoreUtils.clone(this.blobContentMd5);
+        return internalHeaders.getXMsBlobContentMd5();
     }
 
     /**
@@ -1095,7 +825,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setBlobContentMd5(byte[] blobContentMd5) {
-        this.blobContentMd5 = CoreUtils.clone(blobContentMd5);
+        internalHeaders.setXMsBlobContentMd5(blobContentMd5);
         return this;
     }
 
@@ -1110,7 +840,7 @@ public final class BlobQueryHeaders {
      * @return the contentCrc64 value.
      */
     public byte[] getContentCrc64() {
-        return CoreUtils.clone(this.contentCrc64);
+        return internalHeaders.getXMsContentCrc64();
     }
 
     /**
@@ -1125,7 +855,7 @@ public final class BlobQueryHeaders {
      * @return the BlobQueryHeaders object itself.
      */
     public BlobQueryHeaders setContentCrc64(byte[] contentCrc64) {
-        this.contentCrc64 = CoreUtils.clone(contentCrc64);
+        internalHeaders.setXMsContentCrc64(contentCrc64);
         return this;
     }
 

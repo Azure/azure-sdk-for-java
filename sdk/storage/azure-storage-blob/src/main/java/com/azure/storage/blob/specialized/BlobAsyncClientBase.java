@@ -2628,7 +2628,7 @@ public class BlobAsyncClientBase {
                 new BlobQueryReader(response.getValue(), queryOptions.getProgressConsumer(),
                     queryOptions.getErrorConsumer())
                     .read(),
-                ModelHelper.transformQueryHeaders(response.getHeaders())));
+                ModelHelper.transformQueryHeaders(response.getDeserializedHeaders(), response.getHeaders())));
     }
 
     /**
