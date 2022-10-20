@@ -10,10 +10,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 class GsonJsonFactory extends JsonFactory {
-    GsonJsonFactory() throws ReflectiveOperationException {
-        GsonJsonReader.initialize();
-        GsonJsonWriter.initialize();
-    }
+    static final boolean INITIALIZED = GsonJsonReader.INITIALIZED && GsonJsonWriter.INITIALIZED;
 
     @Override
     public JsonReader getJsonReader(byte[] bytes, JsonOptions options) {
