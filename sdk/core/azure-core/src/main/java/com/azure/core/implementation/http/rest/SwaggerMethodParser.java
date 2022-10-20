@@ -74,6 +74,19 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private static final List<Class<? extends Annotation>> REQUIRED_HTTP_METHODS =
         Arrays.asList(Delete.class, Get.class, Head.class, Options.class, Patch.class, Post.class, Put.class);
 
+    private static final Type BLOB_DOWNLOAD_HEADER_TYPE;
+
+    static {
+        Type type;
+        try {
+            type = Class.forName("com.azure.storage.blob.implementation.models.BlobsDownloadHeaders");
+        } catch (ClassNotFoundException e) {
+            type = null;
+        }
+
+        BLOB_DOWNLOAD_HEADER_TYPE = type;
+    }
+
     // TODO (alzimmer): There are many optimizations available to SwaggerMethodParser with regards to runtime.
     // The replacement locations and parameter ordering should remain consistent for the lifetime of an application,
     // so these values can be determined once and used for optimizations.
@@ -267,10 +280,16 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         if (isReactiveMethod) {
             Type reactiveTypeArgument = TypeUtil.getTypeArgument(returnType);
             this.isStreamResponse = isStreamResponseType(reactiveTypeArgument);
-            this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, reactiveTypeArgument);
+            if (TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, reactiveTypeArgument)) {
+                this.headersEagerlyConverted =
+                    TypeUtil.getTypeArguments(reactiveTypeArgument)[0] != BLOB_DOWNLOAD_HEADER_TYPE;
+            }
         } else {
             this.isStreamResponse = isStreamResponseType(returnType);
-            this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, returnType);
+            if (TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, reactiveTypeArgument)) {
+                this.headersEagerlyConverted =
+                    TypeUtil.getTypeArguments(reactiveTypeArgument)[0] != BLOB_DOWNLOAD_HEADER_TYPE;
+            }
         }
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
