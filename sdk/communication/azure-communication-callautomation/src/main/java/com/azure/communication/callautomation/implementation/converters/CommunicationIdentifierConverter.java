@@ -39,29 +39,17 @@ public class CommunicationIdentifierConverter {
         if (kind != null) {
             if (kind == CommunicationIdentifierModelKind.COMMUNICATION_USER
                 && identifier.getCommunicationUser() != null) {
-                Objects.requireNonNull(identifier.getCommunicationUser().getId());
-                return new CommunicationUserIdentifier(identifier.getCommunicationUser().getId());
+                return getCommunicationUserIdentifier(identifier);
             }
 
             if (kind == CommunicationIdentifierModelKind.PHONE_NUMBER
                 && identifier.getPhoneNumber() != null) {
-                String phoneNumber = identifier.getPhoneNumber().getValue();
-                Objects.requireNonNull(phoneNumber);
-                Objects.requireNonNull(rawId);
-                return new PhoneNumberIdentifier(phoneNumber).setRawId(rawId);
+                return getPhoneNumberIdentifier(identifier, rawId);
             }
 
             if (kind == CommunicationIdentifierModelKind.MICROSOFT_TEAMS_USER
                 && identifier.getMicrosoftTeamsUser() != null) {
-                MicrosoftTeamsUserIdentifierModel teamsUserIdentifierModel = identifier.getMicrosoftTeamsUser();
-                Objects.requireNonNull(teamsUserIdentifierModel.getUserId());
-                Objects.requireNonNull(teamsUserIdentifierModel.getCloud());
-                Objects.requireNonNull(rawId);
-                return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),
-                    teamsUserIdentifierModel.isAnonymous())
-                    .setRawId(rawId)
-                    .setCloudEnvironment(CommunicationCloudEnvironment
-                        .fromString(teamsUserIdentifierModel.getCloud().toString()));
+                return getMicrosoftTeamsUserIdentifier(identifier, rawId);
             }
 
             Objects.requireNonNull(rawId);
@@ -69,30 +57,18 @@ public class CommunicationIdentifierConverter {
         }
 
         if (identifier.getCommunicationUser() != null) {
-            Objects.requireNonNull(identifier.getCommunicationUser().getId());
-            return new CommunicationUserIdentifier(identifier.getCommunicationUser().getId());
+            return getCommunicationUserIdentifier(identifier);
         }
 
         if (identifier.getPhoneNumber() != null) {
-            String phoneNumber = identifier.getPhoneNumber().getValue();
-            Objects.requireNonNull(phoneNumber);
-            Objects.requireNonNull(rawId);
-            return new PhoneNumberIdentifier(phoneNumber).setRawId(rawId);
+            return getPhoneNumberIdentifier(identifier, rawId);
         }
 
         if (identifier.getMicrosoftTeamsUser() != null) {
-            MicrosoftTeamsUserIdentifierModel teamsUserIdentifierModel = identifier.getMicrosoftTeamsUser();
-            Objects.requireNonNull(teamsUserIdentifierModel.getUserId());
-            Objects.requireNonNull(teamsUserIdentifierModel.getCloud());
-            Objects.requireNonNull(rawId);
-            return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),
-                teamsUserIdentifierModel.isAnonymous())
-                .setRawId(rawId)
-                .setCloudEnvironment(CommunicationCloudEnvironment
-                    .fromString(teamsUserIdentifierModel.getCloud().toString()));
+            return getMicrosoftTeamsUserIdentifier(identifier, rawId);
         }
 
-        Objects.requireNonNull(rawId);
+        Objects.requireNonNull(rawId, "'RawID' of the CommunicationUserIdentifierModel cannot be null.");
         return new UnknownIdentifier(rawId);
     }
 
@@ -162,6 +138,31 @@ public class CommunicationIdentifierConverter {
                     "Only one of the identifier models in %s should be present.",
                     String.join(", ", presentProperties)));
         }
+    }
+
+    private static CommunicationUserIdentifier getCommunicationUserIdentifier(CommunicationIdentifierModel identifier) {
+        Objects.requireNonNull(identifier.getCommunicationUser().getId(),
+            "'ID' of the CommunicationUserIdentifierModel cannot be null.");
+        return new CommunicationUserIdentifier(identifier.getCommunicationUser().getId());
+    }
+
+    private static PhoneNumberIdentifier getPhoneNumberIdentifier(CommunicationIdentifierModel identifier, String rawId) {
+        String phoneNumber = identifier.getPhoneNumber().getValue();
+        Objects.requireNonNull(phoneNumber, "'PhoneNumber' of the CommunicationUserIdentifierModel cannot be null.");
+        Objects.requireNonNull(rawId, "'RawID' of the CommunicationUserIdentifierModel cannot be null.");
+        return new PhoneNumberIdentifier(phoneNumber).setRawId(rawId);
+    }
+
+    private static MicrosoftTeamsUserIdentifier getMicrosoftTeamsUserIdentifier(CommunicationIdentifierModel identifier, String rawId) {
+        MicrosoftTeamsUserIdentifierModel teamsUserIdentifierModel = identifier.getMicrosoftTeamsUser();
+        Objects.requireNonNull(teamsUserIdentifierModel.getUserId(), "'UserID' of the CommunicationUserIdentifierModel cannot be null.");
+        Objects.requireNonNull(teamsUserIdentifierModel.getCloud(), "'Cloud' of the CommunicationUserIdentifierModel cannot be null.");
+        Objects.requireNonNull(rawId, "'RawID' of the CommunicationUserIdentifierModel cannot be null.");
+        return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),
+            teamsUserIdentifierModel.isAnonymous())
+            .setRawId(rawId)
+            .setCloudEnvironment(CommunicationCloudEnvironment
+                .fromString(teamsUserIdentifierModel.getCloud().toString()));
     }
 }
 
