@@ -10,7 +10,7 @@ stages:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
         China:
           SubscriptionConfiguration: $(sub-config-cn-test-resources)
-          Location: 'chinaeast2'
+          Location: 'chinaeast'
       TestResourceDirectories:
         - spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql
       Artifacts:
