@@ -50,9 +50,9 @@ class CosmosDataAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("try")
     void cosmosTemplateExistsAndUsesIt() {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
-
             AzureCosmosProperties azureCosmosProperties = new AzureCosmosProperties();
             azureCosmosProperties.setEndpoint(ENDPOINT);
             azureCosmosProperties.setDatabase("test");
@@ -73,6 +73,7 @@ class CosmosDataAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("try")
     void noResponseDiagnosticsProcessorByDefault() {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             AzureCosmosProperties azureCosmosProperties = new AzureCosmosProperties();
@@ -96,6 +97,7 @@ class CosmosDataAutoConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("try")
     void hasResponseDiagnosticsProcessorWhenEnableQueryMetrics() {
         try (MockedStatic<CosmosFactory> ignored = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
             AzureCosmosProperties azureCosmosProperties = new AzureCosmosProperties();
