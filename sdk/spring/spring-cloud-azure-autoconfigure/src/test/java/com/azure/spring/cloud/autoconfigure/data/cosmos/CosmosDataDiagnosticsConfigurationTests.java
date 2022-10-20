@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.data.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration;
@@ -36,12 +35,10 @@ class CosmosDataDiagnosticsConfigurationTests {
     @Test
     void configureWithPopulateQueryMetricsEnabled() {
         try (MockedStatic<CosmosFactory> mockedStatic = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
-            when(cosmosClientBuilder.buildAsyncClient()).thenReturn(cosmosAsyncClient);
             mockedStatic.when(() -> CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder))
                 .thenReturn(cosmosAsyncClient);
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> cosmosClientBuilder)
-                .withBean(CosmosClient.class, () -> mock(CosmosClient.class))
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test",
@@ -56,12 +53,10 @@ class CosmosDataDiagnosticsConfigurationTests {
     @Test
     void configureWithPopulateQueryMetricsDisabled() {
         try (MockedStatic<CosmosFactory> mockedStatic = mockStatic(CosmosFactory.class, RETURNS_MOCKS)) {
-            when(cosmosClientBuilder.buildAsyncClient()).thenReturn(cosmosAsyncClient);
             mockedStatic.when(() -> CosmosFactory.createCosmosAsyncClient(cosmosClientBuilder))
                 .thenReturn(cosmosAsyncClient);
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> cosmosClientBuilder)
-                .withBean(CosmosClient.class, () -> mock(CosmosClient.class))
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test-database",
