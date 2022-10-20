@@ -59,5 +59,4 @@ class AccessTokenResolverOptionsTest {
                 Arguments.of(AzureAuthorityHosts.AZURE_GOVERNMENT, "https://ossrdbms-aad.database.usgovcloudapi.net/.default")
         );
     }
-
 }
