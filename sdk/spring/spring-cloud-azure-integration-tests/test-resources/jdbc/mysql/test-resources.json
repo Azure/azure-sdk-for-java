@@ -88,7 +88,7 @@
   },
   "resources": [
     {
-      "condition": "[not(equals(resourceGroup().location,'chinanorth3'))]",
+      "condition":"[not(bool(equals(resourceGroup().location,'chinanorth3')))]",
       "type": "Microsoft.DBforMySQL/servers",
       "apiVersion": "2017-12-01",
       "name": "[parameters('serverName')]",
@@ -117,7 +117,7 @@
       }
     },
     {
-      "condition": "[not(equals(resourceGroup().location,'chinanorth3'))]",
+      "condition":"[not(bool(equals(resourceGroup().location,'chinanorth3')))]",
       "type": "Microsoft.DBforMySQL/servers/administrators",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/ActiveDirectory')]",
@@ -132,7 +132,7 @@
       }
     },
     {
-      "condition": "[not(equals(resourceGroup().location,'chinanorth3'))]",
+      "condition":"[not(bool(equals(resourceGroup().location,'chinanorth3')))]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/audit_log_enabled')]",
@@ -145,7 +145,7 @@
       }
     },
     {
-      "condition": "[not(equals(resourceGroup().location,'chinanorth3'))]",
+      "condition":"[not(bool(equals(resourceGroup().location,'chinanorth3')))]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/gtid_mode')]",
@@ -158,7 +158,7 @@
       }
     },
     {
-      "condition": "[not(equals(resourceGroup().location,'chinanorth3'))]",
+      "condition":"[not(bool(equals(resourceGroup().location,'chinanorth3')))]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/init_connect')]",
@@ -170,7 +170,7 @@
       }
     },
     {
-      "condition": "[not(equals(resourceGroup().location,'chinanorth3'))]",
+      "condition":"[not(bool(equals(resourceGroup().location,'chinanorth3')))]",
       "type": "Microsoft.DBforMySQL/servers/databases",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/db')]",
@@ -183,7 +183,7 @@
       }
     },
     {
-      "condition": "[not(equals(resourceGroup().location,'chinanorth3'))]",
+      "condition":"[not(bool(equals(resourceGroup().location,'chinanorth3')))]",
       "type": "Microsoft.DBforMySQL/servers/firewallRules",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/AllowAll_2022-9-14_18-12-24')]",
@@ -196,7 +196,7 @@
       }
     },
     {
-      "condition": "[not(equals(resourceGroup().location,'chinanorth3'))]",
+      "condition":"[not(bool(equals(resourceGroup().location,'chinanorth3')))]",
       "type": "Microsoft.DBforMySQL/servers/securityAlertPolicies",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/Default')]",
