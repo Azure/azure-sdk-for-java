@@ -52,6 +52,13 @@ service-interface-as-public: true
 sync-methods: none
 add-context-parameter: true
 context-client-method-parameter: true
+directive:
+- rename-operation:
+    from: UpdateSettings
+    to: CreateOrUpdateSetting
+- rename-operation:
+    from: GetSettingValue
+    to: GetSetting
 ```
 
 ### Tag: rbac
