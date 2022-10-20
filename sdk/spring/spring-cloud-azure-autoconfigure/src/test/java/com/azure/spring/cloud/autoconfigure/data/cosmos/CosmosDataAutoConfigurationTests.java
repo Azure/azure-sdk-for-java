@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.data.cosmos;
 
-import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.spring.cloud.autoconfigure.implementation.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.data.cosmos.CosmosFactory;
@@ -59,7 +58,6 @@ class CosmosDataAutoConfigurationTests {
 
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-                .withBean(CosmosClient.class, () -> mock(CosmosClient.class))
                 .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
@@ -82,7 +80,6 @@ class CosmosDataAutoConfigurationTests {
 
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-                .withBean(CosmosClient.class, () -> mock(CosmosClient.class))
                 .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
@@ -107,7 +104,6 @@ class CosmosDataAutoConfigurationTests {
 
             this.contextRunner
                 .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-                .withBean(CosmosClient.class, () -> mock(CosmosClient.class))
                 .withBean(AzureCosmosProperties.class, () -> azureCosmosProperties)
                 .withPropertyValues(
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
