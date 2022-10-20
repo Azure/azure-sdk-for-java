@@ -4,13 +4,10 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
-import com.fasterxml.jackson.databind.node.ArrayNode
 
 import java.time.format.DateTimeFormatter
 import java.time.{ZoneOffset, ZonedDateTime}
 import java.util
-import scala.collection.immutable.Map
 import scala.collection.mutable.ArrayBuffer
 // scalastyle:off underscore.import
 import com.azure.cosmos.models._
@@ -18,7 +15,7 @@ import com.azure.cosmos.models._
 import com.azure.cosmos.CosmosException
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
-import org.apache.spark.sql.connector.catalog.{CatalogPlugin, Identifier, NamespaceChange, SupportsNamespaces, Table, TableCatalog, TableChange}
+import org.apache.spark.sql.connector.catalog._
 import org.apache.spark.sql.connector.expressions.Transform
 import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
 import org.apache.spark.sql.types.StructType
@@ -45,9 +42,8 @@ import scala.collection.JavaConverters._
 // scalastyle:off multiple.string.literals
 // scalastyle:off number.of.methods
 // scalastyle:off file.size.limit
-class CosmosCatalog
+class CosmosCatalogBase
   extends CatalogPlugin
-    with SupportsNamespaces
     with TableCatalog
     with BasicLoggingTrait {
 
@@ -109,13 +105,13 @@ class CosmosCatalog
    *
    * @return an array of multi-part namespace names.
    */
-  override def listNamespaces(): Array[Array[String]] = {
+/*  override def listNamespaces(): Array[Array[String]] = {
     logDebug("catalog:listNamespaces")
 
     TransientErrorsRetryPolicy.executeWithRetry(() => listNamespacesImpl())
-  }
+  }*/
 
-  private[this] def listNamespacesImpl(): Array[Array[String]] = {
+  def listNamespacesImpl(): Array[Array[String]] = {
     logDebug("catalog:listNamespaces")
 
     Loan(
@@ -144,13 +140,13 @@ class CosmosCatalog
    * Cosmos supports only single depth database. Hence we always return an empty list of namespaces.
    * or throw if the root namespace doesn't exist
    */
-  @throws(classOf[NoSuchNamespaceException])
+/*  @throws(classOf[NoSuchNamespaceException])
   override def listNamespaces(
                                namespace: Array[String]): Array[Array[String]] = {
     loadNamespaceMetadata(namespace) // throws NoSuchNamespaceException if namespace doesn't exist
     // Cosmos DB only has one single level depth databases
     Array.empty[Array[String]]
-  }
+  }*/
 
   /**
    * Load metadata properties for a namespace.
@@ -159,14 +155,14 @@ class CosmosCatalog
    * @return a string map of properties for the given namespace
    * @throws NoSuchNamespaceException If the namespace does not exist (optional)
    */
-  @throws(classOf[NoSuchNamespaceException])
+/*  @throws(classOf[NoSuchNamespaceException])
   override def loadNamespaceMetadata(
                                       namespace: Array[String]): util.Map[String, String] = {
 
     TransientErrorsRetryPolicy.executeWithRetry(() => loadNamespaceMetadataImpl(namespace))
-  }
+  }*/
 
-  private[this] def loadNamespaceMetadataImpl(
+  def loadNamespaceMetadataImpl(
                                       namespace: Array[String]): util.Map[String, String] = {
 
     checkNamespace(namespace)
@@ -203,14 +199,14 @@ class CosmosCatalog
       })
   }
 
-  @throws(classOf[NamespaceAlreadyExistsException])
+/*  @throws(classOf[NamespaceAlreadyExistsException])
   override def createNamespace(namespace: Array[String],
                                metadata: util.Map[String, String]): Unit = {
     TransientErrorsRetryPolicy.executeWithRetry(() => createNamespaceImpl(namespace, metadata))
-  }
+  }*/
 
   @throws(classOf[NamespaceAlreadyExistsException])
-  private[this] def createNamespaceImpl(namespace: Array[String],
+  def createNamespaceImpl(namespace: Array[String],
                                metadata: util.Map[String, String]): Unit = {
     checkNamespace(namespace)
     val throughputPropertiesOpt =
@@ -246,13 +242,13 @@ class CosmosCatalog
       })
   }
 
-  @throws(classOf[UnsupportedOperationException])
+/*  @throws(classOf[UnsupportedOperationException])
   override def alterNamespace(namespace: Array[String],
                               changes: NamespaceChange*): Unit = {
     checkNamespace(namespace)
     // TODO: moderakh we can support changing database level throughput?
     throw new UnsupportedOperationException("altering namespace not supported")
-  }
+  }*/
 
   /**
    * Drop a namespace from the catalog, recursively dropping all objects within the namespace.
@@ -260,13 +256,13 @@ class CosmosCatalog
    * @param namespace - a multi-part namespace
    * @return true if the namespace was dropped
    */
-  @throws(classOf[NoSuchNamespaceException])
+/*  @throws(classOf[NoSuchNamespaceException])
   override def dropNamespace(namespace: Array[String]): Boolean = {
     TransientErrorsRetryPolicy.executeWithRetry(() => dropNamespaceImpl(namespace))
-  }
+  }*/
 
   @throws(classOf[NoSuchNamespaceException])
-  private[this] def dropNamespaceImpl(namespace: Array[String]): Boolean = {
+  def dropNamespaceImpl(namespace: Array[String]): Boolean = {
     checkNamespace(namespace)
     try {
       Loan(
@@ -749,7 +745,7 @@ class CosmosCatalog
     Identifier.of(Array(namespaceName), viewDefinition.viewName)
   }
 
-  private def checkNamespace(namespace: Array[String]): Unit = {
+  def checkNamespace(namespace: Array[String]): Unit = {
     if (namespace == null || namespace.length != 1) {
       throw new CosmosCatalogException(
         s"invalid namespace ${namespace.mkString("Array(", ", ", ")")}." +

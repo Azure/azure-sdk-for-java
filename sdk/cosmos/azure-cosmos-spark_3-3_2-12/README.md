@@ -1,6 +1,6 @@
 # Azure Cosmos DB OLTP Spark 3 connector
 
-## Azure Cosmos DB OLTP Spark 3 connector for Spark 3.2
+## Azure Cosmos DB OLTP Spark 3 connector for Spark 3.3
 **Azure Cosmos DB OLTP Spark connector** provides Apache Spark support for Azure Cosmos DB using 
 the [SQL API][sql_api_query].
 [Azure Cosmos DB][cosmos_introduction] is a globally-distributed database service which allows 
@@ -91,7 +91,7 @@ You can use the maven coordinate of the jar to auto install the Spark Connector 
 
 You can also integrate against Cosmos DB Spark Connector in your SBT project:
 ```scala
-libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-2_2-12" % "4.14.1"
+libraryDependencies += "com.azure.cosmos.spark" % "azure-cosmos-spark_3-3_2-12" % "4.14.1"
 ```
 
 Cosmos DB Spark Connector is available on [Maven Central Repo](https://search.maven.org/search?q=g:com.azure.cosmos.spark).
