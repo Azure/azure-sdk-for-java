@@ -11,7 +11,7 @@ import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.RepeatabilityHeaders;
-import com.azure.communication.callautomation.models.events.CallConnectedEvent;
+import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
@@ -90,7 +90,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
-            CallConnectedEvent callConnectedEvent = waitForEvent(CallConnectedEvent.class, callerConnectionId, Duration.ofSeconds(10));
+            CallConnected callConnectedEvent = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnectedEvent);
 
             // add another receiver to the call
@@ -122,11 +122,11 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
 
             // clear the slot for next callConnectedEvent from another receiver call connection establishment.
             if (eventStore.get(callerConnectionId) != null) {
-                eventStore.get(callerConnectionId).remove(CallConnectedEvent.class);
+                eventStore.get(callerConnectionId).remove(CallConnected.class);
             }
 
             // wait for callConnected
-            CallConnectedEvent anotherCallConnectedEvent = waitForEvent(CallConnectedEvent.class, callerConnectionId, Duration.ofSeconds(10));
+            CallConnected anotherCallConnectedEvent = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnectedEvent);
 
             // check participant number in the call

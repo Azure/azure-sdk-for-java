@@ -348,6 +348,11 @@
           "justification": "To enable turn on/off the related auto-configurations manually."
         },
         {
+          "code": "java.annotation.added",
+          "new": "class com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration",
+          "justification": "Fixes a bug."
+        },
+        {
           "code": "java.missing.newSuperType",
           "old": "class com.azure.messaging.eventhubs.EventData",
           "new": "class com.azure.messaging.eventhubs.EventData",
