@@ -20,7 +20,6 @@ import com.azure.ai.textanalytics.implementation.models.CustomLabelClassificatio
 import com.azure.ai.textanalytics.implementation.models.CustomLabelClassificationResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.CustomSingleClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.DateTimeResolution;
-import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
@@ -616,6 +615,10 @@ public final class Utility {
 
     public static IterableStream<com.azure.ai.textanalytics.models.BaseResolution> toBaseResolutions(
             List<BaseResolution> resolutions) {
+        if (resolutions == null) {
+            return null;
+        }
+
         List<com.azure.ai.textanalytics.models.BaseResolution> baseResolutions = new ArrayList<>();
         resolutions.forEach(resolution -> baseResolutions.add(toBaseResolution(resolution)));
         return new IterableStream<>(baseResolutions);
@@ -724,6 +727,8 @@ public final class Utility {
                         entity.getConfidenceScore());
                     CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
                     CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
+                    CategorizedEntityPropertiesHelper.setResolutions(categorizedEntity, toBaseResolutions(
+                            entity.getResolutions()));
                     return categorizedEntity;
                 }).collect(Collectors.toList())),
                 new IterableStream<>(documentEntities.getWarnings().stream().map(
@@ -743,8 +748,8 @@ public final class Utility {
                         entity.getConfidenceScore());
                     CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
                     CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
-
-
+                    CategorizedEntityPropertiesHelper.setResolutions(categorizedEntity,
+                            toBaseResolutions(entity.getResolutions()));
                     return categorizedEntity;
                 }).collect(Collectors.toList())),
                 new IterableStream<>(documentEntities.getWarnings().stream().map(
@@ -810,26 +815,6 @@ public final class Utility {
                 toTextAnalyticsError(documentError.getError()), null));
         }
         return recognizeEntitiesResults;
-    }
-
-
-    public static RecognizeEntitiesResult toRecognizeEntitiesResult(DocumentEntities documentEntities) {
-        return new RecognizeEntitiesResult(
-            documentEntities.getId(),
-            documentEntities.getStatistics() == null ? null
-                : toTextDocumentStatistics(documentEntities.getStatistics()),
-            null,
-            new CategorizedEntityCollection(
-                new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
-                    final CategorizedEntity categorizedEntity = new CategorizedEntity(entity.getText(),
-                        EntityCategory.fromString(entity.getCategory()), entity.getSubcategory(),
-                        entity.getConfidenceScore());
-                    CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
-                    CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
-                    return categorizedEntity;
-                }).collect(Collectors.toList())),
-                new IterableStream<>(documentEntities.getWarnings().stream().map(
-                    warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
     }
 
     public static RecognizePiiEntitiesResultCollection toRecognizePiiEntitiesResultCollection(

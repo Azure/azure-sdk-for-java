@@ -122,7 +122,7 @@ public final class CategorizedEntity {
      *
      * @return the resolutions value.
      */
-    public Iterable<BaseResolution> getResolutions() {
+    public IterableStream<? extends BaseResolution> getResolutions() {
         return this.resolutions;
     }
 

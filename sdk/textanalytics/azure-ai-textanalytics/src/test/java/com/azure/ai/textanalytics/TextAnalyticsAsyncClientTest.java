@@ -555,6 +555,16 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesResolutions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        recognizeEntitiesBatchResolutionRunner((inputs, options) ->
+                StepVerifier.create(client.recognizeEntitiesBatch(inputs, null, options))
+                        .assertNext(recognizeEntitiesResults -> validateEntityResolutions(recognizeEntitiesResults))
+                        .verifyComplete());
+    }
+
     // Recognize Personally Identifiable Information entity
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2442,6 +2452,26 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     )),
                     result.toStream().collect(Collectors.toList()));
             }
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeEntitiesRecognitionActionResolution(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsAsyncClient(httpClient, serviceVersion);
+        analyzeEntitiesRecognitionResolutionRunner(
+                (documents, tasks) -> {
+                    SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedFlux> syncPoller =
+                            client.beginAnalyzeActions(documents, tasks).getSyncPoller();
+                    syncPoller = setPollInterval(syncPoller);
+                    syncPoller.waitForCompletion();
+                    AnalyzeActionsResultPagedFlux result = syncPoller.getFinalResult();
+                    result.toStream().forEach(actionsResult -> {
+                        actionsResult.getRecognizeEntitiesResults().forEach(nerActionResult -> {
+                            validateEntityResolutions(nerActionResult.getDocumentsResults());
+                        });
+                    });
+                }
         );
     }
 
