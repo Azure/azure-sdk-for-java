@@ -9,9 +9,6 @@
       "defaultValue": "[subscription().tenantId]",
       "type": "string"
     },
-    "testApplicationSecret": {
-      "type": "string"
-    },
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
@@ -215,18 +212,6 @@
     }
   ],
   "outputs": {
-    "AZURE_SPRING_CLIENT_ID": {
-      "type": "string",
-      "value": "[parameters('testApplicationID')]"
-    },
-    "AZURE_SPRING_CLIENT_SECRET": {
-      "type": "string",
-      "value": "[parameters('testApplicationSecret')]"
-    },
-    "AZURE_SPRING_TENANT_ID": {
-      "type": "string",
-      "value": "[parameters('tenantId')]"
-    },
     "AZURE_MYSQL_ACCOUNT_NAME": {
       "type": "string",
       "value": "[parameters('serverName')]"

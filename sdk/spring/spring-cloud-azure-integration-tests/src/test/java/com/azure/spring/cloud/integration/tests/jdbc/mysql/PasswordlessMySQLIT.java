@@ -16,6 +16,9 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Disable this IT in China cloud, because it can't provision MySQL resource in China cloud with test subscription.
+ */
 @DisabledIfEnvironmentVariable(named = "AZURE_MYSQL_ACCOUNT_LOCATION", matches = "chinanorth3")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-mysql")
