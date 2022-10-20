@@ -1156,7 +1156,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 asList(ENTITY_RESOLUTION_INPUT),
                 new TextAnalyticsActions()
                         .setRecognizeEntitiesActions(new RecognizeEntitiesAction()
-                                .setModelVersion(TextAnalyticsServiceVersion.getLatest().getVersion())));
+                                .setModelVersion("2022-10-01-preview")));
     }
 
     void analyzePiiEntityRecognitionWithCategoriesFiltersRunner(

@@ -5,7 +5,6 @@ package com.azure.ai.textanalytics.batch;
 
 import com.azure.ai.textanalytics.TextAnalyticsAsyncClient;
 import com.azure.ai.textanalytics.TextAnalyticsClientBuilder;
-import com.azure.ai.textanalytics.TextAnalyticsServiceVersion;
 import com.azure.ai.textanalytics.models.AgeResolution;
 import com.azure.ai.textanalytics.models.BaseResolution;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
@@ -44,7 +43,7 @@ public class RecognizeEntitiesBatchDocumentsAsync {
         );
 
         TextAnalyticsRequestOptions requestOptions = new TextAnalyticsRequestOptions().setIncludeStatistics(true)
-                .setModelVersion(TextAnalyticsServiceVersion.getLatest().getVersion());
+                .setModelVersion("2022-10-01-preview");
 
         // Recognizing entities for each document in a batch of documents
         client.recognizeEntitiesBatchWithResponse(documents, requestOptions).subscribe(
@@ -79,11 +78,11 @@ public class RecognizeEntitiesBatchDocumentsAsync {
                                 for (BaseResolution resolution : resolutions) {
                                     if (resolution instanceof WeightResolution) {
                                         WeightResolution weightResolution = (WeightResolution) resolution;
-                                        System.out.printf("\tWeightResolution: unit: %s. value: %s.%n", weightResolution.getUnit(),
+                                        System.out.printf("\tWeightResolution: unit: %s. value: %f.%n", weightResolution.getUnit(),
                                                 weightResolution.getValue());
                                     } else if (resolution instanceof AgeResolution) {
                                         AgeResolution weightResolution = (AgeResolution) resolution;
-                                        System.out.printf("\tAgeResolution: unit: %s. value: %s.%n", weightResolution.getUnit(),
+                                        System.out.printf("\tAgeResolution: unit: %s. value: %f.%n", weightResolution.getUnit(),
                                                 weightResolution.getValue());
                                     }
                                 }

@@ -119,6 +119,7 @@ public final class CategorizedEntity {
 
     /**
      * Get the resolutions property: The collection of entity resolution objects.
+     * More information in https://aka.ms/azsdk/language/ner-resolutions
      *
      * @return the resolutions value.
      */
@@ -128,6 +129,7 @@ public final class CategorizedEntity {
 
     /**
      * Set the resolutions property: The collection of entity resolution objects.
+     * More information in https://aka.ms/azsdk/language/ner-resolutions
      *
      * @param resolutions the resolutions value to set.
      */
