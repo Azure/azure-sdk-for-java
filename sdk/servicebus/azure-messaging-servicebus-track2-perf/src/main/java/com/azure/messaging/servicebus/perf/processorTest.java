@@ -2,9 +2,7 @@ package com.azure.messaging.servicebus.perf;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.messaging.servicebus.ServiceBusMessage;
-import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.messaging.servicebus.*;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.EventPerfTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
@@ -75,7 +73,7 @@ public class processorTest extends EventPerfTest<ServiceBusStressOptions> {
     @Override
     public Mono<Void> runAllAsync(long endNanoTime) {
         return Mono.usingWhen(Mono.fromCallable(() -> {
-            final ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder = new ServiceBusClientBuilder()
+            final ServiceBusProcessorClient processor = new ServiceBusClientBuilder()
                 .connectionString(CONNECTION_STRING)
                 .processor()
                 .queueName(QUEUE_NAME)
@@ -86,14 +84,22 @@ public class processorTest extends EventPerfTest<ServiceBusStressOptions> {
                 })
                 .processError(errorContext -> {
                     LOGGER.error("Process message error: {}", errorContext.getException());
-                });
+                })
+                .buildProcessorClient();
 
-            return builder.buildProcessorClient();
+            return processor;
         }), processor -> {
             processor.start();
             return Mono.delay(Duration.ofNanos(endNanoTime - System.nanoTime())).then();
         }, processor -> Mono.delay(Duration.ofMillis(500), Schedulers.boundedElastic())
             .then(Mono.fromRunnable(processor::stop)));
 
+    }
+
+
+    @Override
+    public Mono<Void> cleanupAsync() {
+        LOGGER.info("Total messages: {}", total.get());
+        return Mono.empty();
     }
 }
