@@ -38,7 +38,7 @@
       "DESIRED_CONSISTENCIES": "[\"Session\"]",
       "ACCOUNT_CONSISTENCY": "Session",
       "PROTOCOLS": "[\"Tcp\"]",
-      "ProfileFlag": [ "-Pfast", "-Pdirect", "-e -Plong" ],
+      "ProfileFlag": [ "-Pfast", "-Pdirect" ],
       "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
@@ -73,7 +73,18 @@
       "Agent": {
         "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
       },
-      "JavaTestVersion": ["1.8", "1.11", "1.17"]
+      "JavaTestVersion": ["1.8", "1.11"]
+    },
+    {
+      "DESIRED_CONSISTENCIES": "[\"Session\"]",
+      "ACCOUNT_CONSISTENCY": "Session",
+      "PROTOCOLS": "[\"Tcp\"]",
+      "ProfileFlag": [ "-Plong" ],
+      "ArmTemplateParameters": "@{ enableMultipleWriteLocations = $false; defaultConsistencyLevel = 'Session' }",
+      "Agent": {
+        "ubuntu": { "OSVmImage": "MMSUbuntu20.04", "Pool": "azsdk-pool-mms-ubuntu-2004-general" }
+      },
+      "JavaTestVersion": ["1.8", "1.11"]
     },
     {
       "DESIRED_CONSISTENCIES": "[\"Session\"]",

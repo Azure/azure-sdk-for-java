@@ -101,7 +101,7 @@ if ($Stage -eq "Launch")
   $process = Start-Process $emulator -ArgumentList $argumentList -ErrorAction Stop -PassThru
   Write-Host "Emulator process started: $($process.Name), $($process.FileVersion)"
 
-  $Timeout = 600
+  $Timeout = 900
   $result="NotYetStarted"
   $complete = if ($Timeout -gt 0) {
     $start = [DateTimeOffset]::Now
