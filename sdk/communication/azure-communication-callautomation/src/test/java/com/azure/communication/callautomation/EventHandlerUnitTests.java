@@ -52,7 +52,7 @@ public class EventHandlerUnitTests {
             + "    {\n"
             + "        \"id\": \"bf59843a-888f-47ca-8d1c-885c1f5e71dc\",\n"
             + "        \"source\": \"calling/recordings/serverCallId/recordingId/recordingId/RecordingStateChanged\",\n"
-            + "        \"type\": \"Microsoft.Communication.CallRecordingStateChanged\",\n"
+            + "        \"type\": \"Microsoft.Communication.RecordingStateChanged\",\n"
             + "        \"data\": {\n"
             + "            \"type\": \"recordingStateChanged\",\n"
             + "            \"recordingId\": \"recordingId\",\n"
