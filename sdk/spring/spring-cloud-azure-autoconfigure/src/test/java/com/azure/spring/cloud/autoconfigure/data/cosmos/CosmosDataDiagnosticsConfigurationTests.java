@@ -14,7 +14,6 @@ import com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedStatic;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -47,7 +46,10 @@ class CosmosDataDiagnosticsConfigurationTests {
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test",
                     "spring.cloud.azure.cosmos.populate-query-metrics=true")
-                .run(context -> assertThat(context).hasSingleBean(ResponseDiagnosticsProcessor.class));
+                .run(context -> {
+                    assertThat(context).hasSingleBean(CosmosDataDiagnosticsConfiguration.class);
+                    assertThat(context).hasSingleBean(ResponseDiagnosticsProcessor.class);
+                });
         }
     }
 
@@ -64,14 +66,17 @@ class CosmosDataDiagnosticsConfigurationTests {
                     "spring.cloud.azure.cosmos.endpoint=" + ENDPOINT,
                     "spring.cloud.azure.cosmos.database=test-database",
                     "spring.cloud.azure.cosmos.populate-query-metrics=false")
-                .run(context -> assertThat(context).doesNotHaveBean(ResponseDiagnosticsProcessor.class));
+                .run(context -> {
+                    assertThat(context).doesNotHaveBean(ResponseDiagnosticsProcessor.class);
+                    assertThat(context).hasSingleBean(CosmosDataAutoConfiguration.class);
+                });
         }
     }
 
     @Test
     void configureWithUserProvideResponseDiagnosticsProcessor() {
         this.contextRunner
-            .withConfiguration(AutoConfigurations.of(ResponseDiagnosticsProcessorConfiguration.class))
+            .withUserConfiguration(ResponseDiagnosticsProcessorConfiguration.class)
             .run(context -> {
                 ResponseDiagnosticsProcessor processor = (ResponseDiagnosticsProcessor) context.getBean("ResponseDiagnosticsProcessor");
                 assertTrue(processor instanceof ResponseDiagnosticsProcessorExtend);
@@ -79,7 +84,6 @@ class CosmosDataDiagnosticsConfigurationTests {
     }
 
     @Configuration
-    @AutoConfigureBefore(CosmosDataDiagnosticsConfiguration.class)
     static class ResponseDiagnosticsProcessorConfiguration {
         @Bean(name = "ResponseDiagnosticsProcessor")
         public ResponseDiagnosticsProcessor processor() {
