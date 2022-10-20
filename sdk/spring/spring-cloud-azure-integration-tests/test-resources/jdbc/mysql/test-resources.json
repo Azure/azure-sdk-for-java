@@ -234,9 +234,13 @@
       "type": "string",
       "value": "[parameters('serverName')]"
     },
+    "AZURE_MYSQL_ACCOUNT_LOCATION": {
+      "type": "string",
+      "value": "[variables('location')]"
+    },
     "AZURE_MYSQL_ENDPOINT": {
       "type": "string",
-      "value": "[reference(parameters('serverName')).fullyQualifiedDomainName]"
+      "value": "[if(equals(resourceGroup().location, 'chinanorth3'), 'skipResource', reference(parameters('serverName')).fullyQualifiedDomainName)]",
     }
   }
 }
