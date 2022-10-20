@@ -12,9 +12,6 @@
     "testApplicationSecret": {
       "type": "string"
     },
-    "testApplicationOid": {
-      "type": "String"
-    },
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"

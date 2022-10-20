@@ -100,7 +100,7 @@ class JdbcPropertiesBeanPostProcessorTest {
     }
 
     @Test
-    void shouldGetCloudTypeFromAzureGlobal() {
+    void shouldGetCloudTypeFromAzureUSGov() {
         AzureProfileConfigurationProperties azureProfileConfigurationProperties = new AzureProfileConfigurationProperties();
         azureProfileConfigurationProperties.setCloudType(AzureProfileOptionsProvider.CloudType.AZURE_US_GOVERNMENT);
         when(this.azureGlobalProperties.getProfile()).thenReturn(azureProfileConfigurationProperties);
