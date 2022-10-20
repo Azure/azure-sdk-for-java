@@ -13,30 +13,107 @@ import java.util.Objects;
 import static java.lang.invoke.MethodType.methodType;
 
 class GsonJsonReader extends JsonReader {
-    private static final MethodHandles.Lookup LOOKUP = MethodHandles.lookup();
+    private static final Class<?> GSON_JSON_TOKEN_ENUM;
 
-    private static Class<?> GSON_JSON_READER_CLASS;
-    private static Class<?> GSON_JSON_TOKEN_ENUM;
+    private static final JsonReaderConstructor JSON_READER_CONSTRUCTOR;
+    private static final JsonReaderSetLenient JSON_READER_SET_LENIENT;
+    private static final JsonReaderClose JSON_READER_CLOSE;
+    private static final JsonReaderPeek JSON_READER_PEEK;
+    private static final JsonReaderBeginObject JSON_READER_BEGIN_OBJECT;
+    private static final JsonReaderEndObject JSON_READER_END_OBJECT;
+    private static final JsonReaderBeginArray JSON_READER_BEGIN_ARRAY;
+    private static final JsonReaderEndArray JSON_READER_END_ARRAY;
+    private static final JsonReaderNextNull JSON_READER_NEXT_NULL;
+    private static final JsonReaderNextName JSON_READER_NEXT_NAME;
+    private static final JsonReaderNextString JSON_READER_NEXT_STRING;
+    private static final JsonReaderNextBoolean JSON_READER_NEXT_BOOLEAN;
+    private static final JsonReaderNextInt JSON_READER_NEXT_INT;
+    private static final JsonReaderNextLong JSON_READER_NEXT_LONG;
+    private static final JsonReaderNextDouble JSON_READER_NEXT_DOUBLE;
+    private static final JsonReaderSkipValue JSON_READER_SKIP_VALUE;
 
-    private static JsonReaderConstructor JSON_READER_CONSTRUCTOR;
-    private static JsonReaderSetLenient JSON_READER_SET_LENIENT;
-    private static JsonReaderClose JSON_READER_CLOSE;
-    private static JsonReaderPeek JSON_READER_PEEK;
-    private static JsonReaderBeginObject JSON_READER_BEGIN_OBJECT;
-    private static JsonReaderEndObject JSON_READER_END_OBJECT;
-    private static JsonReaderBeginArray JSON_READER_BEGIN_ARRAY;
-    private static JsonReaderEndArray JSON_READER_END_ARRAY;
-    private static JsonReaderNextNull JSON_READER_NEXT_NULL;
-    private static JsonReaderNextName JSON_READER_NEXT_NAME;
-    private static JsonReaderNextString JSON_READER_NEXT_STRING;
-    private static JsonReaderNextBoolean JSON_READER_NEXT_BOOLEAN;
-    private static JsonReaderNextInt JSON_READER_NEXT_INT;
-    private static JsonReaderNextLong JSON_READER_NEXT_LONG;
-    private static JsonReaderNextDouble JSON_READER_NEXT_DOUBLE;
-    private static JsonReaderSkipValue JSON_READER_SKIP_VALUE;
+    static final boolean INITIALIZED;
 
-    private static boolean INITIALIZED = false;
-    private static boolean ATTEMPTED_INITIALIZATION = false;
+    static {
+        final MethodHandles.Lookup lookup = MethodHandles.lookup();
+
+        final MethodType voidMT = methodType(void.class);
+        final MethodType voidObjectMT = methodType(void.class, Object.class);
+
+        Class<?> gsonJsonTokenEnum = null;
+
+        JsonReaderConstructor jsonReaderConstructor = null;
+        JsonReaderSetLenient jsonReaderSetLenient = null;
+        JsonReaderClose jsonReaderClose = null;
+        JsonReaderPeek jsonReaderPeek = null;
+        JsonReaderBeginObject jsonReaderBeginObject = null;
+        JsonReaderEndObject jsonReaderEndObject = null;
+        JsonReaderBeginArray jsonReaderBeginArray = null;
+        JsonReaderEndArray jsonReaderEndArray = null;
+        JsonReaderNextNull jsonReaderNextNull = null;
+        JsonReaderNextName jsonReaderNextName = null;
+        JsonReaderNextString jsonReaderNextString = null;
+        JsonReaderNextBoolean jsonReaderNextBoolean = null;
+        JsonReaderNextInt jsonReaderNextInt = null;
+        JsonReaderNextLong jsonReaderNextLong = null;
+        JsonReaderNextDouble jsonReaderNextDouble = null;
+        JsonReaderSkipValue jsonReaderSkipValue = null;
+
+        boolean initialized = false;
+
+        try {
+            Class<?> gsonJsonReaderClass = Class.forName("com.google.gson.stream.JsonReader");
+            gsonJsonTokenEnum = Class.forName("com.google.gson.stream.JsonToken");
+
+            MethodHandle gsonReaderConstructor = lookup.findConstructor(gsonJsonReaderClass, methodType(void.class, Reader.class));
+            jsonReaderConstructor = (JsonReaderConstructor) LambdaMetafactory.metafactory(lookup, "createJsonReader", methodType(JsonReaderConstructor.class), methodType(Object.class, Reader.class), gsonReaderConstructor, gsonReaderConstructor.type()).getTarget().invoke();
+
+            jsonReaderSetLenient = createMetaFactory("setLenient", gsonJsonReaderClass, methodType(void.class, boolean.class), JsonReaderSetLenient.class, methodType(void.class, Object.class, boolean.class), lookup);
+            jsonReaderClose = createMetaFactory("close", gsonJsonReaderClass, voidMT, JsonReaderClose.class, methodType(void.class, Object.class), lookup);
+            jsonReaderPeek = createMetaFactory("peek", gsonJsonReaderClass, methodType(gsonJsonTokenEnum), JsonReaderPeek.class, methodType(Object.class, Object.class), lookup);
+            jsonReaderBeginObject = createMetaFactory("beginObject", gsonJsonReaderClass, voidMT, JsonReaderBeginObject.class, voidObjectMT, lookup);
+            jsonReaderEndObject = createMetaFactory("endObject", gsonJsonReaderClass, voidMT, JsonReaderEndObject.class, voidObjectMT, lookup);
+            jsonReaderBeginArray = createMetaFactory("beginArray", gsonJsonReaderClass, voidMT, JsonReaderBeginArray.class, voidObjectMT, lookup);
+            jsonReaderEndArray = createMetaFactory("endArray", gsonJsonReaderClass, voidMT, JsonReaderEndArray.class, voidObjectMT, lookup);
+            jsonReaderNextNull = createMetaFactory("nextNull", gsonJsonReaderClass, voidMT, JsonReaderNextNull.class, voidObjectMT, lookup);
+            jsonReaderNextName = createMetaFactory("nextName", gsonJsonReaderClass, methodType(String.class), JsonReaderNextName.class, methodType(String.class, Object.class), lookup);
+            jsonReaderNextString = createMetaFactory("nextString", gsonJsonReaderClass, methodType(String.class), JsonReaderNextString.class, methodType(String.class, Object.class), lookup);
+            jsonReaderNextBoolean = createMetaFactory("nextBoolean", gsonJsonReaderClass, methodType(boolean.class), JsonReaderNextBoolean.class, methodType(boolean.class, Object.class), lookup);
+            jsonReaderNextInt = createMetaFactory("nextInt", gsonJsonReaderClass, methodType(int.class), JsonReaderNextInt.class, methodType(int.class, Object.class), lookup);
+            jsonReaderNextLong = createMetaFactory("nextLong", gsonJsonReaderClass, methodType(long.class), JsonReaderNextLong.class, methodType(long.class, Object.class), lookup);
+            jsonReaderNextDouble = createMetaFactory("nextDouble", gsonJsonReaderClass, methodType(double.class), JsonReaderNextDouble.class, methodType(double.class, Object.class), lookup);
+            jsonReaderSkipValue = createMetaFactory("skipValue", gsonJsonReaderClass, voidMT, JsonReaderSkipValue.class, voidObjectMT, lookup);
+
+            initialized = true;
+        } catch (Throwable e) {
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException) e;
+            } else if (e instanceof Error) {
+                throw (Error) e;
+            }
+        }
+
+        GSON_JSON_TOKEN_ENUM = gsonJsonTokenEnum;
+
+        JSON_READER_CONSTRUCTOR = jsonReaderConstructor;
+        JSON_READER_SET_LENIENT = jsonReaderSetLenient;
+        JSON_READER_CLOSE = jsonReaderClose;
+        JSON_READER_PEEK = jsonReaderPeek;
+        JSON_READER_BEGIN_OBJECT = jsonReaderBeginObject;
+        JSON_READER_END_OBJECT = jsonReaderEndObject;
+        JSON_READER_BEGIN_ARRAY = jsonReaderBeginArray;
+        JSON_READER_END_ARRAY = jsonReaderEndArray;
+        JSON_READER_NEXT_NULL = jsonReaderNextNull;
+        JSON_READER_NEXT_NAME = jsonReaderNextName;
+        JSON_READER_NEXT_STRING = jsonReaderNextString;
+        JSON_READER_NEXT_BOOLEAN = jsonReaderNextBoolean;
+        JSON_READER_NEXT_INT = jsonReaderNextInt;
+        JSON_READER_NEXT_LONG = jsonReaderNextLong;
+        JSON_READER_NEXT_DOUBLE = jsonReaderNextDouble;
+        JSON_READER_SKIP_VALUE = jsonReaderSkipValue;
+
+        INITIALIZED = initialized;
+    }
 
     private final Object gsonJsonReader;
     private JsonToken currentToken;
@@ -106,10 +183,8 @@ class GsonJsonReader extends JsonReader {
     }
 
     private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, boolean nonNumericNumbersSupported) {
-        try {
-            initialize();
-        } catch (ReflectiveOperationException e) {
-            throw new IllegalStateException("Gson is not present or an incorrect version is present.");
+        if (!INITIALIZED) {
+            throw new IllegalStateException("Initialization of GsonJsonReader failed. Gson is not present or an incorrect version is present.");
         }
 
         gsonJsonReader = JSON_READER_CONSTRUCTOR.createJsonReader(reader);
@@ -121,55 +196,10 @@ class GsonJsonReader extends JsonReader {
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
     }
 
-    static synchronized void initialize() throws ReflectiveOperationException {
-        if (INITIALIZED) {
-            return;
-        } else if (ATTEMPTED_INITIALIZATION) {
-            throw new ReflectiveOperationException("Initialization of GsonJsonReader has failed in the past.");
-        }
-
-        ATTEMPTED_INITIALIZATION = true;
-
-        GSON_JSON_TOKEN_ENUM = Class.forName("com.google.gson.stream.JsonToken");
-        GSON_JSON_READER_CLASS = Class.forName("com.google.gson.stream.JsonReader");
-
-        MethodType voidMT = methodType(void.class);
-        MethodType voidObjectMT = methodType(void.class, Object.class);
-
-        try {
-            MethodHandle gsonReaderConstructor = LOOKUP.findConstructor(GSON_JSON_READER_CLASS, methodType(void.class, Reader.class));
-            JSON_READER_CONSTRUCTOR = (JsonReaderConstructor) LambdaMetafactory.metafactory(LOOKUP, "createJsonReader", methodType(JsonReaderConstructor.class), methodType(Object.class, Reader.class), gsonReaderConstructor, gsonReaderConstructor.type()).getTarget().invoke();
-
-            JSON_READER_SET_LENIENT = createMetaFactory("setLenient", methodType(void.class, boolean.class), JsonReaderSetLenient.class, methodType(void.class, Object.class, boolean.class));
-            JSON_READER_CLOSE = createMetaFactory("close", voidMT, JsonReaderClose.class, methodType(void.class, Object.class));
-            JSON_READER_PEEK = createMetaFactory("peek", methodType(GSON_JSON_TOKEN_ENUM), JsonReaderPeek.class, methodType(Object.class, Object.class));
-            JSON_READER_BEGIN_OBJECT = createMetaFactory("beginObject", voidMT, JsonReaderBeginObject.class, voidObjectMT);
-            JSON_READER_END_OBJECT = createMetaFactory("endObject", voidMT, JsonReaderEndObject.class, voidObjectMT);
-            JSON_READER_BEGIN_ARRAY = createMetaFactory("beginArray", voidMT, JsonReaderBeginArray.class, voidObjectMT);
-            JSON_READER_END_ARRAY = createMetaFactory("endArray", voidMT, JsonReaderEndArray.class, voidObjectMT);
-            JSON_READER_NEXT_NULL = createMetaFactory("nextNull", voidMT, JsonReaderNextNull.class, voidObjectMT);
-            JSON_READER_NEXT_NAME = createMetaFactory("nextName", methodType(String.class), JsonReaderNextName.class, methodType(String.class, Object.class));
-            JSON_READER_NEXT_STRING = createMetaFactory("nextString", methodType(String.class), JsonReaderNextString.class, methodType(String.class, Object.class));
-            JSON_READER_NEXT_BOOLEAN = createMetaFactory("nextBoolean", methodType(boolean.class), JsonReaderNextBoolean.class, methodType(boolean.class, Object.class));
-            JSON_READER_NEXT_INT = createMetaFactory("nextInt", methodType(int.class), JsonReaderNextInt.class, methodType(int.class, Object.class));
-            JSON_READER_NEXT_LONG = createMetaFactory("nextLong", methodType(long.class), JsonReaderNextLong.class, methodType(long.class, Object.class));
-            JSON_READER_NEXT_DOUBLE = createMetaFactory("nextDouble", methodType(double.class), JsonReaderNextDouble.class, methodType(double.class, Object.class));
-            JSON_READER_SKIP_VALUE = createMetaFactory("skipValue", voidMT, JsonReaderSkipValue.class, voidObjectMT);
-        } catch (Throwable e) {
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            } else {
-                throw new ReflectiveOperationException("Initialization of GsonJsonReader failed.");
-            }
-        }
-
-        INITIALIZED = true;
-    }
-
     @SuppressWarnings("unchecked")
-    private static <T> T createMetaFactory(String methodName, MethodType implType, Class<T> invokedClass, MethodType invokedType) throws Throwable {
-        MethodHandle handle = LOOKUP.findVirtual(GSON_JSON_READER_CLASS, methodName, implType);
-        return (T) LambdaMetafactory.metafactory(LOOKUP, methodName, methodType(invokedClass), invokedType, handle, handle.type()).getTarget().invoke();
+    private static <T> T createMetaFactory(String methodName, Class<?> implClass, MethodType implType, Class<T> invokedClass, MethodType invokedType, MethodHandles.Lookup lookup) throws Throwable {
+        MethodHandle handle = lookup.findVirtual(implClass, methodName, implType);
+        return (T) LambdaMetafactory.metafactory(lookup, methodName, methodType(invokedClass), invokedType, handle, handle.type()).getTarget().invoke();
     }
 
     @Override
@@ -238,7 +268,7 @@ class GsonJsonReader extends JsonReader {
             JSON_READER_NEXT_NULL.nextNull(gsonJsonReader);
             return null;
         } else {
-            return Base64.getDecoder().decode((String) JSON_READER_NEXT_STRING.nextString(gsonJsonReader));
+            return Base64.getDecoder().decode(JSON_READER_NEXT_STRING.nextString(gsonJsonReader));
         }
     }
 

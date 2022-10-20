@@ -11,7 +11,12 @@ import java.io.Writer;
 
 class GsonJsonFactory extends JsonFactory {
     GsonJsonFactory() throws ReflectiveOperationException {
-        GsonJsonReader.initialize();
+//        GsonJsonReader.initialize();
+
+        if (!GsonJsonReader.INITIALIZED) {
+            throw new ReflectiveOperationException();
+        }
+
         GsonJsonWriter.initialize();
     }
 
