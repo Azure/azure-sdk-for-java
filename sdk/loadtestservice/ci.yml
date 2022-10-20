@@ -38,3 +38,6 @@ extends:
       - name: azure-resourcemanager-loadtestservice
         groupId: com.azure.resourcemanager
         safeName: azureresourcemanagerloadtestservice
+      - name: azure-developer-loadtesting
+        groupId: com.azure
+        safeName: azuredeveloperloadtesting
