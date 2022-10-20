@@ -9,7 +9,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -33,7 +32,6 @@ import com.azure.storage.blob.implementation.accesshelpers.BlobPropertiesConstru
 import com.azure.storage.blob.implementation.models.BlobPropertiesInternalGetProperties;
 import com.azure.storage.blob.implementation.models.BlobTag;
 import com.azure.storage.blob.implementation.models.BlobTags;
-import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.BlobsSetImmutabilityPolicyHeaders;
 import com.azure.storage.blob.implementation.models.BlobsStartCopyFromURLHeaders;
@@ -51,7 +49,6 @@ import com.azure.storage.blob.models.BlobBeginCopySourceRequestConditions;
 import com.azure.storage.blob.models.BlobCopyInfo;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.BlobDownloadContentAsyncResponse;
-import com.azure.storage.blob.models.BlobDownloadHeaders;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
@@ -1265,10 +1262,7 @@ public class BlobAsyncClientBase {
 
         return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5, context)
             .map(response -> {
-                BlobsDownloadHeaders blobsDownloadHeaders = response.getDeserializedHeaders();
-                String eTag = blobsDownloadHeaders.getETag();
-                BlobDownloadHeaders blobDownloadHeaders = ModelHelper.populateBlobDownloadHeaders(
-                    blobsDownloadHeaders, ModelHelper.getErrorCode(response.getHeaders()));
+                String eTag = response.getHeaders().getValue("ETag");
 
                 /*
                     If the customer did not specify a count, they are reading to the end of the blob. Extract this value
@@ -1277,7 +1271,7 @@ public class BlobAsyncClientBase {
                 long finalCount;
                 long initialOffset = finalRange.getOffset();
                 if (finalRange.getCount() == null) {
-                    long blobLength = ModelHelper.getBlobLength(blobDownloadHeaders);
+                    long blobLength = ModelHelper.getBlobLength(response.getHeaders());
                     finalCount = blobLength - initialOffset;
                 } else {
                     finalCount = finalRange.getCount();
@@ -1285,8 +1279,8 @@ public class BlobAsyncClientBase {
 
                 // The resume function takes throwable and offset at the destination.
                 // I.e. offset is relative to the starting point.
-                BiFunction<Throwable, Long, Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>>>
-                    onDownloadErrorResume = (throwable, offset) -> {
+                BiFunction<Throwable, Long, Mono<Response<Flux<ByteBuffer>>>> onDownloadErrorResume =
+                    (throwable, offset) -> {
                         if (!(throwable instanceof IOException || throwable instanceof TimeoutException)) {
                             return Mono.error(throwable);
                         }
@@ -1318,13 +1312,14 @@ public class BlobAsyncClientBase {
             });
     }
 
-    private Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>> downloadRange(BlobRange range,
-        BlobRequestConditions requestConditions, String eTag, Boolean getMD5, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> downloadRange(BlobRange range, BlobRequestConditions requestConditions,
+        String eTag, Boolean getMD5, Context context) {
         return azureBlobStorage.getBlobs().downloadWithResponseAsync(containerName, blobName, snapshot, versionId, null,
             range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), eTag,
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-            customerProvidedKey, context);
+            customerProvidedKey, context)
+            .map(response -> response);
     }
 
     /**

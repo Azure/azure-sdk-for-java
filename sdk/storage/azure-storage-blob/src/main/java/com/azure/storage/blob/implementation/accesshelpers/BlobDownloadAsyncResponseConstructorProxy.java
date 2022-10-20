@@ -6,8 +6,7 @@ package com.azure.storage.blob.implementation.accesshelpers;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.rest.ResponseBase;
-import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
+import com.azure.core.http.rest.Response;
 import com.azure.storage.blob.models.BlobDownloadAsyncResponse;
 import com.azure.storage.blob.models.DownloadRetryOptions;
 import reactor.core.publisher.Flux;
@@ -36,8 +35,8 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
          * @param onErrorResume Function used to resume.
          * @param retryOptions Retry options.
          */
-        BlobDownloadAsyncResponse create(ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>> sourceResponse,
-            BiFunction<Throwable, Long, Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>>> onErrorResume,
+        BlobDownloadAsyncResponse create(Response<Flux<ByteBuffer>> sourceResponse,
+            BiFunction<Throwable, Long, Mono<Response<Flux<ByteBuffer>>>> onErrorResume,
             DownloadRetryOptions retryOptions);
     }
 
@@ -57,8 +56,8 @@ public final class BlobDownloadAsyncResponseConstructorProxy {
      * @param onErrorResume Function used to resume.
      * @param retryOptions Retry options.
      */
-    public static BlobDownloadAsyncResponse create(ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>> sourceResponse,
-        BiFunction<Throwable, Long, Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>>> onErrorResume,
+    public static BlobDownloadAsyncResponse create(Response<Flux<ByteBuffer>> sourceResponse,
+        BiFunction<Throwable, Long, Mono<Response<Flux<ByteBuffer>>>> onErrorResume,
         DownloadRetryOptions retryOptions) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses BlobDownloadAsyncResponse which triggers the accessor to be configured. So, if the accessor

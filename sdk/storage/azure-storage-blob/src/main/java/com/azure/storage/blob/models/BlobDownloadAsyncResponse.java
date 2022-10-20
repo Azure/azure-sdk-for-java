@@ -10,8 +10,6 @@ import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
-import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
-import com.azure.storage.blob.implementation.util.ModelHelper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -54,24 +52,18 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
      * @param onErrorResume Function used to resume.
      * @param retryOptions Retry options.
      */
-    BlobDownloadAsyncResponse(ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>> sourceResponse,
-        BiFunction<Throwable, Long, Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>>> onErrorResume,
+    BlobDownloadAsyncResponse(Response<Flux<ByteBuffer>> sourceResponse,
+        BiFunction<Throwable, Long, Mono<Response<Flux<ByteBuffer>>>> onErrorResume,
         DownloadRetryOptions retryOptions) {
         super(sourceResponse.getRequest(), sourceResponse.getStatusCode(), sourceResponse.getHeaders(),
             createResponseFlux(sourceResponse,
                 Objects.requireNonNull(onErrorResume, "'onErrorResume' must not be null"),
                 Objects.requireNonNull(retryOptions, "'retryOptions' must not be null")),
-            extractHeaders(sourceResponse));
+            null);
     }
 
-    private static BlobDownloadHeaders extractHeaders(ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>> response) {
-        return ModelHelper.populateBlobDownloadHeaders(response.getDeserializedHeaders(),
-            ModelHelper.getErrorCode(response.getHeaders()));
-    }
-
-    private static Flux<ByteBuffer> createResponseFlux(
-        ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>> sourceResponse,
-        BiFunction<Throwable, Long, Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>>> onErrorResume,
+    private static Flux<ByteBuffer> createResponseFlux(Response<Flux<ByteBuffer>> sourceResponse,
+        BiFunction<Throwable, Long, Mono<Response<Flux<ByteBuffer>>>> onErrorResume,
         DownloadRetryOptions retryOptions) {
         return FluxUtil.createRetriableDownloadFlux(sourceResponse::getValue,
                 (throwable, position) -> onErrorResume.apply(throwable, position).flatMapMany(Response::getValue),

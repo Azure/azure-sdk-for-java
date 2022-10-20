@@ -18,6 +18,19 @@ import java.lang.reflect.Type;
 final class HttpResponseHeaderDecoder {
     private static final String MALFORMED_HEADERS_MESSAGE = "HTTP response has malformed headers";
 
+    private static final Type BLOB_DOWNLOAD_HEADER_TYPE;
+
+    static {
+        Type type;
+        try {
+            type = Class.forName("com.azure.storage.blob.implementation.models.BlobsDownloadHeaders");
+        } catch (ClassNotFoundException e) {
+            type = null;
+        }
+
+        BLOB_DOWNLOAD_HEADER_TYPE = type;
+    }
+
     /**
      * Decodes the {@link HttpHeaders} in an {@link HttpResponse}.
      * <p>
@@ -31,7 +44,7 @@ final class HttpResponseHeaderDecoder {
      */
     static Object decode(HttpResponse response, SerializerAdapter serializer, Type decodedHeadersType) {
         // There is no type to decode into, return null.
-        if (decodedHeadersType == null) {
+        if (decodedHeadersType == null || decodedHeadersType == BLOB_DOWNLOAD_HEADER_TYPE) {
             return null;
         }
 
