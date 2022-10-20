@@ -73,6 +73,20 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    public void convertWithoutKindCommunicationUserNoId() {
+        CommunicationUserIdentifierModel communicationUserIdentifierModel = new CommunicationUserIdentifierModel();
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setCommunicationUser(communicationUserIdentifierModel)
+            .setRawId(testRawId);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
+        }
+    }
+
+    @Test
     public void convertWithKindButNoCommunicationUser() {
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
             .setKind(CommunicationIdentifierModelKind.COMMUNICATION_USER)
@@ -152,6 +166,20 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    public void convertWithoutKindPhoneNumberNoPhoneValue() {
+        PhoneNumberIdentifierModel phoneNumberIdentifierModel = new PhoneNumberIdentifierModel();
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setPhoneNumber(phoneNumberIdentifierModel)
+            .setRawId(testPhoneNumberRawId);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
+        }
+    }
+
+    @Test
     public void convertWithoutKindMicrosoftTeamsUser() {
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
             .setUserId(testTeamsUserId)
@@ -211,6 +239,22 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    public void convertWithoutKindMicrosoftTeamsUserNoUserId() {
+        MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
+            .setCloud(CommunicationCloudEnvironmentModel.GCCH)
+            .setIsAnonymous(true);
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setMicrosoftTeamsUser(microsoftTeamsUserIdentifierModel)
+            .setRawId(testRawId);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
+        }
+    }
+
+    @Test
     public void convertWithKindMicrosoftTeamsUserNoCloudEnv() {
         MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
             .setUserId(testTeamsUserId)
@@ -218,6 +262,22 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
             .setMicrosoftTeamsUser(microsoftTeamsUserIdentifierModel)
             .setKind(CommunicationIdentifierModelKind.MICROSOFT_TEAMS_USER)
+            .setRawId(testRawId);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
+        }
+    }
+
+    @Test
+    public void convertWithoutKindMicrosoftTeamsUserNoCloudEnv() {
+        MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
+            .setUserId(testTeamsUserId)
+            .setIsAnonymous(true);
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setMicrosoftTeamsUser(microsoftTeamsUserIdentifierModel)
             .setRawId(testRawId);
 
         try {
@@ -245,9 +305,36 @@ public class CommunicationIdentifierConverterUnitTests extends CallAutomationUni
     }
 
     @Test
+    public void convertWithoutKindMicrosoftTeamsUserNoRawId() {
+        MicrosoftTeamsUserIdentifierModel microsoftTeamsUserIdentifierModel = new MicrosoftTeamsUserIdentifierModel()
+            .setUserId(testTeamsUserId)
+            .setCloud(CommunicationCloudEnvironmentModel.GCCH)
+            .setIsAnonymous(true);
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
+            .setMicrosoftTeamsUser(microsoftTeamsUserIdentifierModel);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
+        }
+    }
+
+    @Test
     public void convertWithKindUnknownAndRawId() {
         CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel()
             .setKind(CommunicationIdentifierModelKind.UNKNOWN);
+
+        try {
+            CommunicationIdentifierConverter.convert(communicationIdentifierModel);
+        } catch (Exception e) {
+            assert (e instanceof NullPointerException);
+        }
+    }
+
+    @Test
+    public void convertWithoutKindUnknownAndRawId() {
+        CommunicationIdentifierModel communicationIdentifierModel = new CommunicationIdentifierModel();
 
         try {
             CommunicationIdentifierConverter.convert(communicationIdentifierModel);
