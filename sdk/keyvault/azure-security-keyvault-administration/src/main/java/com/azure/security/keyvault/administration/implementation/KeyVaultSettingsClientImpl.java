@@ -124,7 +124,7 @@ public final class KeyVaultSettingsClientImpl {
         @Patch("/settings/{setting-name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<Setting>> updateSettings(
+        Mono<Response<Setting>> createOrUpdateSetting(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam("setting-name") String settingName,
                 @QueryParam("api-version") String apiVersion,
@@ -135,7 +135,7 @@ public final class KeyVaultSettingsClientImpl {
         @Get("/settings/{setting-name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<Setting>> getSettingValue(
+        Mono<Response<Setting>> getSetting(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam("setting-name") String settingName,
                 @QueryParam("api-version") String apiVersion,
@@ -166,14 +166,14 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Setting>> updateSettingsWithResponseAsync(
+    public Mono<Response<Setting>> createOrUpdateSettingWithResponseAsync(
             String vaultBaseUrl, String settingName, String value) {
         final String accept = "application/json";
         UpdateSettingsRequest parameters = new UpdateSettingsRequest();
         parameters.setValue(value);
         return FluxUtil.withContext(
                 context ->
-                        service.updateSettings(
+                        service.createOrUpdateSetting(
                                 vaultBaseUrl, settingName, this.getApiVersion(), parameters, accept, context));
     }
 
@@ -192,12 +192,13 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Setting>> updateSettingsWithResponseAsync(
+    public Mono<Response<Setting>> createOrUpdateSettingWithResponseAsync(
             String vaultBaseUrl, String settingName, String value, Context context) {
         final String accept = "application/json";
         UpdateSettingsRequest parameters = new UpdateSettingsRequest();
         parameters.setValue(value);
-        return service.updateSettings(vaultBaseUrl, settingName, this.getApiVersion(), parameters, accept, context);
+        return service.createOrUpdateSetting(
+                vaultBaseUrl, settingName, this.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -214,8 +215,8 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Setting> updateSettingsAsync(String vaultBaseUrl, String settingName, String value) {
-        return updateSettingsWithResponseAsync(vaultBaseUrl, settingName, value)
+    public Mono<Setting> createOrUpdateSettingAsync(String vaultBaseUrl, String settingName, String value) {
+        return createOrUpdateSettingWithResponseAsync(vaultBaseUrl, settingName, value)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -234,8 +235,9 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Setting> updateSettingsAsync(String vaultBaseUrl, String settingName, String value, Context context) {
-        return updateSettingsWithResponseAsync(vaultBaseUrl, settingName, value, context)
+    public Mono<Setting> createOrUpdateSettingAsync(
+            String vaultBaseUrl, String settingName, String value, Context context) {
+        return createOrUpdateSettingWithResponseAsync(vaultBaseUrl, settingName, value, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -252,10 +254,10 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Setting>> getSettingValueWithResponseAsync(String vaultBaseUrl, String settingName) {
+    public Mono<Response<Setting>> getSettingWithResponseAsync(String vaultBaseUrl, String settingName) {
         final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.getSettingValue(vaultBaseUrl, settingName, this.getApiVersion(), accept, context));
+                context -> service.getSetting(vaultBaseUrl, settingName, this.getApiVersion(), accept, context));
     }
 
     /**
@@ -272,10 +274,10 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Setting>> getSettingValueWithResponseAsync(
+    public Mono<Response<Setting>> getSettingWithResponseAsync(
             String vaultBaseUrl, String settingName, Context context) {
         final String accept = "application/json";
-        return service.getSettingValue(vaultBaseUrl, settingName, this.getApiVersion(), accept, context);
+        return service.getSetting(vaultBaseUrl, settingName, this.getApiVersion(), accept, context);
     }
 
     /**
@@ -291,9 +293,8 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Setting> getSettingValueAsync(String vaultBaseUrl, String settingName) {
-        return getSettingValueWithResponseAsync(vaultBaseUrl, settingName)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    public Mono<Setting> getSettingAsync(String vaultBaseUrl, String settingName) {
+        return getSettingWithResponseAsync(vaultBaseUrl, settingName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -310,8 +311,8 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Setting> getSettingValueAsync(String vaultBaseUrl, String settingName, Context context) {
-        return getSettingValueWithResponseAsync(vaultBaseUrl, settingName, context)
+    public Mono<Setting> getSettingAsync(String vaultBaseUrl, String settingName, Context context) {
+        return getSettingWithResponseAsync(vaultBaseUrl, settingName, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
