@@ -243,6 +243,44 @@ public final class KeyVaultSettingsClientImpl {
     }
 
     /**
+     * Updates key vault account setting, stores it, then returns the setting name and value to the client.
+     *
+     * <p>Description of the pool setting to be updated.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param settingName The name of the account setting. Must be a valid settings option.
+     * @param value The value of the pool setting.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Setting> createOrUpdateSettingWithResponse(
+            String vaultBaseUrl, String settingName, String value, Context context) {
+        return createOrUpdateSettingWithResponseAsync(vaultBaseUrl, settingName, value, context).block();
+    }
+
+    /**
+     * Updates key vault account setting, stores it, then returns the setting name and value to the client.
+     *
+     * <p>Description of the pool setting to be updated.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param settingName The name of the account setting. Must be a valid settings option.
+     * @param value The value of the pool setting.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Setting createOrUpdateSetting(String vaultBaseUrl, String settingName, String value) {
+        return createOrUpdateSettingWithResponse(vaultBaseUrl, settingName, value, Context.NONE).getValue();
+    }
+
+    /**
      * Get specified account setting value.
      *
      * <p>Retrieves the value of a specified, value account setting.
@@ -318,6 +356,41 @@ public final class KeyVaultSettingsClientImpl {
     }
 
     /**
+     * Get specified account setting value.
+     *
+     * <p>Retrieves the value of a specified, value account setting.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param settingName The name of the account setting. Must be a valid settings option.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Setting> getSettingWithResponse(String vaultBaseUrl, String settingName, Context context) {
+        return getSettingWithResponseAsync(vaultBaseUrl, settingName, context).block();
+    }
+
+    /**
+     * Get specified account setting value.
+     *
+     * <p>Retrieves the value of a specified, value account setting.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param settingName The name of the account setting. Must be a valid settings option.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Setting getSetting(String vaultBaseUrl, String settingName) {
+        return getSettingWithResponse(vaultBaseUrl, settingName, Context.NONE).getValue();
+    }
+
+    /**
      * List account settings.
      *
      * <p>Retrieves a list of all the available account settings that can be configured.
@@ -384,5 +457,38 @@ public final class KeyVaultSettingsClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SettingsListResult> getSettingsAsync(String vaultBaseUrl, Context context) {
         return getSettingsWithResponseAsync(vaultBaseUrl, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * List account settings.
+     *
+     * <p>Retrieves a list of all the available account settings that can be configured.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the settings list result along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SettingsListResult> getSettingsWithResponse(String vaultBaseUrl, Context context) {
+        return getSettingsWithResponseAsync(vaultBaseUrl, context).block();
+    }
+
+    /**
+     * List account settings.
+     *
+     * <p>Retrieves a list of all the available account settings that can be configured.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws KeyVaultErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the settings list result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SettingsListResult getSettings(String vaultBaseUrl) {
+        return getSettingsWithResponse(vaultBaseUrl, Context.NONE).getValue();
     }
 }

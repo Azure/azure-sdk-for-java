@@ -39,7 +39,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /** A builder for creating a new instance of the KeyVaultSettingsClient type. */
-@ServiceClientBuilder(serviceClients = {KeyVaultSettingsAsyncClient.class})
+@ServiceClientBuilder(serviceClients = {KeyVaultSettingsClient.class, KeyVaultSettingsAsyncClient.class})
 public final class KeyVaultSettingsClientBuilder
         implements HttpTrait<KeyVaultSettingsClientBuilder>, ConfigurationTrait<KeyVaultSettingsClientBuilder> {
     @Generated private static final String SDK_NAME = "name";
@@ -262,5 +262,15 @@ public final class KeyVaultSettingsClientBuilder
     @Generated
     public KeyVaultSettingsAsyncClient buildAsyncClient() {
         return new KeyVaultSettingsAsyncClient(buildInnerClient());
+    }
+
+    /**
+     * Builds an instance of KeyVaultSettingsClient class.
+     *
+     * @return an instance of KeyVaultSettingsClient.
+     */
+    @Generated
+    public KeyVaultSettingsClient buildClient() {
+        return new KeyVaultSettingsClient(buildInnerClient());
     }
 }
