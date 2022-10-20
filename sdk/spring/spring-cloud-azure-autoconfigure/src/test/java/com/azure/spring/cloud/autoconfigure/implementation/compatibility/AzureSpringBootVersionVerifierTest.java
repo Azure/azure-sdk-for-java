@@ -154,7 +154,7 @@ class AzureSpringBootVersionVerifierTest {
     }
 
     @Test
-    public void testVersionVerifierLog(CapturedOutput capturedOutput) throws InterruptedException {
+    public void testVersionVerifierLog(CapturedOutput capturedOutput) {
         List<String> acceptedVersions = Arrays.asList("2.5.x", "2.6.x", "2.7.x");
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
 
