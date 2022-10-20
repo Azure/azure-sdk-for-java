@@ -16,6 +16,10 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Enable this IT only in Public cloud.
+ * PasswordlessMySQLIT should be run in 'Public,UsGov,China' clouds, but for now PasswordlessMySQLIT can't work as expected in UsGov and China clouds.
+ */
 @EnabledIfEnvironmentVariable(named = "AZURE_MYSQL_ACCOUNT_LOCATION", matches = "westus")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles("jdbc-mysql")
