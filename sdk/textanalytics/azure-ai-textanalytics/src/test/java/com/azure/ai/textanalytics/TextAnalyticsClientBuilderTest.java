@@ -221,6 +221,7 @@ public class TextAnalyticsClientBuilderTest extends TestBase {
     /**
      * Test for default language in client builder for a batch of documents
      */
+    @Disabled("Regression output, https://dev.azure.com/msazure/Cognitive%20Services/_workitems/edit/15811649")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void clientBuilderWithDefaultLanguageForBatchOperation(HttpClient httpClient,
