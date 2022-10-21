@@ -21,7 +21,7 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
 
     public Mono<Void> globalSetupAsync() {
         int count = options.getCount();
-        long size = (1.6 * 1024 * 1024 * 1024) / count;
+        long size = (long)((1.6 * 1024 * 1024 * 1024) / count);
 
         Flux<ByteBuffer> data = createRandomByteBufferFlux(size);
 
