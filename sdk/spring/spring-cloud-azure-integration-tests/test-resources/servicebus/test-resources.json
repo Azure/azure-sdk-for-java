@@ -74,7 +74,7 @@
       "apiVersion": "2022-01-01-preview",
       "name": "[concat(variables('azureServiceBusNamespaceName'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
-      "dependsOn": ["[resourceId('Microsoft.Resources/deploymentScripts', 'WaitSection')]"],
+      "dependsOn": ["WaitSection"],
       "properties": {
         "rights": [
           "Listen",
@@ -241,7 +241,7 @@
       "apiVersion": "2017-04-01",
       "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
-      "dependsOn": "[resourceId('Microsoft.Resources/deploymentScripts', 'WaitSection1')]",
+      "dependsOn": ["WaitSection1"],
       "properties": {
         "rights": [
           "Listen",
@@ -271,7 +271,7 @@
       "apiVersion": "2017-04-01",
       "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
-      "dependsOn": "[resourceId('Microsoft.Resources/deploymentScripts', 'WaitSection2')]",
+      "dependsOn": ["WaitSection2"],
       "properties": {
         "rights": [
           "Listen",
@@ -301,7 +301,7 @@
       "apiVersion": "2017-04-01",
       "name": "[concat(variables('azureServiceBusNamespaceName_3'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
-      "dependsOn": "[resourceId('Microsoft.Resources/deploymentScripts', 'WaitSection3')]",
+      "dependsOn": ["WaitSection3"],
       "properties": {
         "rights": [
           "Listen",
