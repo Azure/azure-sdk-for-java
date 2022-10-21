@@ -13,7 +13,6 @@ import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoCon
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
-import com.azure.spring.cloud.core.implementation.util.ReflectionUtils;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -21,10 +20,11 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractAzureServiceClientBuilderFactory<?>,
-    P extends AzureProperties> {
+        P extends AzureProperties> {
 
     protected abstract ApplicationContextRunner getMinimalContextRunner();
 
@@ -37,55 +37,55 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
     @Test
     protected void usGovCloudShouldWorkWithClientSecretCredential() {
         getMinimalContextRunner()
-            .withPropertyValues(
-                getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
-                getPropertyPrefix() + ".profile.tenant-id=fake-tenant-id",
-                getPropertyPrefix() + ".credential.client-id=fake-client-id",
-                getPropertyPrefix() + ".credential.client-secret=fake-client-secret"
-            )
-            .withConfiguration(AutoConfigurations.of(
-                AzureTokenCredentialAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class
-            ))
-            .run(context -> {
-                assertSovereignCloudsSetInCredential(context, ClientSecretCredential.class);
-            });
+                .withPropertyValues(
+                        getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
+                        getPropertyPrefix() + ".profile.tenant-id=fake-tenant-id",
+                        getPropertyPrefix() + ".credential.client-id=fake-client-id",
+                        getPropertyPrefix() + ".credential.client-secret=fake-client-secret"
+                )
+                .withConfiguration(AutoConfigurations.of(
+                        AzureTokenCredentialAutoConfiguration.class,
+                        AzureGlobalPropertiesAutoConfiguration.class
+                ))
+                .run(context -> {
+                    assertSovereignCloudsSetInCredential(context, ClientSecretCredential.class);
+                });
     }
 
     @Test
     protected void usGovCloudShouldWorkWithClientCertificateCredential() {
         getMinimalContextRunner()
-            .withPropertyValues(
-                getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
-                getPropertyPrefix() + ".profile.tenant-id=fake-tenant-id",
-                getPropertyPrefix() + ".credential.client-id=fake-client-id",
-                getPropertyPrefix() + ".credential.client-certificate-path=fake-client-cert-path"
-            )
-            .withConfiguration(AutoConfigurations.of(
-                AzureTokenCredentialAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class
-            ))
-            .run(context -> {
-                assertSovereignCloudsSetInCredential(context, ClientCertificateCredential.class);
-            });
+                .withPropertyValues(
+                        getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
+                        getPropertyPrefix() + ".profile.tenant-id=fake-tenant-id",
+                        getPropertyPrefix() + ".credential.client-id=fake-client-id",
+                        getPropertyPrefix() + ".credential.client-certificate-path=fake-client-cert-path"
+                )
+                .withConfiguration(AutoConfigurations.of(
+                        AzureTokenCredentialAutoConfiguration.class,
+                        AzureGlobalPropertiesAutoConfiguration.class
+                ))
+                .run(context -> {
+                    assertSovereignCloudsSetInCredential(context, ClientCertificateCredential.class);
+                });
     }
 
     @Test
     protected void usGovCloudShouldWorkWithUsernamePasswordCredential() {
         getMinimalContextRunner()
-            .withPropertyValues(
-                getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
-                getPropertyPrefix() + ".credential.client-id=fake-client-id",
-                getPropertyPrefix() + ".credential.username=123",
-                getPropertyPrefix() + ".credential.password=123"
-            )
-            .withConfiguration(AutoConfigurations.of(
-                AzureTokenCredentialAutoConfiguration.class,
-                AzureGlobalPropertiesAutoConfiguration.class
-            ))
-            .run(context -> {
-                assertSovereignCloudsSetInCredential(context, UsernamePasswordCredential.class);
-            });
+                .withPropertyValues(
+                        getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
+                        getPropertyPrefix() + ".credential.client-id=fake-client-id",
+                        getPropertyPrefix() + ".credential.username=123",
+                        getPropertyPrefix() + ".credential.password=123"
+                )
+                .withConfiguration(AutoConfigurations.of(
+                        AzureTokenCredentialAutoConfiguration.class,
+                        AzureGlobalPropertiesAutoConfiguration.class
+                ))
+                .run(context -> {
+                    assertSovereignCloudsSetInCredential(context, UsernamePasswordCredential.class);
+                });
     }
 
     private <C> void assertSovereignCloudsSetInCredential(AssertableApplicationContext context, Class<C> credentialType) {
@@ -105,12 +105,12 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
     }
 
     private AzureTokenCredentialResolver getAzureTokenCredentialResolver(T builderFactory) {
-        return (AzureTokenCredentialResolver) ReflectionUtils.getField(getBuilderFactoryType(),
-            "tokenCredentialResolver", builderFactory);
+        return (AzureTokenCredentialResolver) getField(getBuilderFactoryType(),
+                "tokenCredentialResolver", builderFactory);
     }
 
     private IdentityClient getIdentityClient(TokenCredential credential) {
-        return (IdentityClient) ReflectionUtils.getField(credential.getClass(), "identityClient", credential);
+        return (IdentityClient) getField(credential.getClass(), "identityClient", credential);
     }
 
 }
