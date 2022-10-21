@@ -9,6 +9,7 @@ Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies 
 - Fix bug: RestOperations is not well configured when jwkResolver is null. [#31218](https://github.com/Azure/azure-sdk-for-java/issues/31218).
 - Fix bug: Duplicated "scope" parameter. [#31191](https://github.com/Azure/azure-sdk-for-java/issues/31191).
 - Fix bug: NimbusJwtDecoder still uses `RestTemplate()` instead `RestTemplateBuilder` [#31233](https://github.com/Azure/azure-sdk-for-java/issues/31233)
+- Fix bug: Proxy setting not work in Azure AD B2C web application [31593](https://github.com/Azure/azure-sdk-for-java/issues/31593)
 
 ## 4.4.0 (2022-09-26)
 Upgrade Spring Boot dependencies version to 2.7.3 and Spring Cloud dependencies version to 2021.0.3
