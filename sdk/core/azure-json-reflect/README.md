@@ -18,7 +18,7 @@ To use Azure Json Reflect a compatible version of Jackson or Gson must be presen
 #### Gson
 - Versions 2.4 and newer
 
-## Key Concepts
+## Key concepts
 
 See `azure-json` for more key concepts.
 
