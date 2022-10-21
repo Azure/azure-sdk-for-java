@@ -759,20 +759,28 @@ public class CosmosItemTest extends TestSuiteBase {
             this.val = val;
         }
 
-        public String getId() { return this.id; }
-        public String getVal() { return this.val; }
-        public String getMypk() {return this.mypk; };
+        public String getId() {
+            return this.id;
+        }
 
         public void setId(String id) {
             this.id = id;
+        }
+
+        public String getMypk() {
+            return this.mypk;
+        }
+
+        public void setMypk(String mypk) {
+            this.mypk = mypk;
         }
 
         public void setVal(String val) {
             this.val = val;
         }
 
-        public void setMypk(String mypk) {
-            this.mypk = mypk;
+        public String getVal() {
+            return this.val;
         }
     }
 }
