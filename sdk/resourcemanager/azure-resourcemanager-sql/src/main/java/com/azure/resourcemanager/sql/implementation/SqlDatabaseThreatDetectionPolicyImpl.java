@@ -176,13 +176,6 @@ public class SqlDatabaseThreatDetectionPolicyImpl
     }
 
     @Override
-    public SqlDatabaseThreatDetectionPolicyImpl withPolicyNew() {
-        // todo (xiaofeicao) Is NEW removed from possible states?
-//        this.innerModel().withState(SecurityAlertsPolicyState.NEW);
-        return this;
-    }
-
-    @Override
     public SqlDatabaseThreatDetectionPolicyImpl withDefaultSecurityAlertPolicy() {
         return this;
     }

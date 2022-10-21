@@ -10,6 +10,7 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.azure.resourcemanager.sql.models.AutomaticTuningMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeActual;
@@ -29,6 +30,8 @@ import com.azure.resourcemanager.sql.models.ReadWriteEndpointFailoverPolicy;
 import com.azure.resourcemanager.sql.models.RegionCapabilities;
 import com.azure.resourcemanager.sql.models.ReplicationLink;
 import com.azure.resourcemanager.sql.models.SampleName;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import com.azure.resourcemanager.sql.models.ServiceObjectiveName;
 import com.azure.resourcemanager.sql.models.Sku;
 import com.azure.resourcemanager.sql.models.SqlActiveDirectoryAdministrator;
@@ -37,6 +40,7 @@ import com.azure.resourcemanager.sql.models.SqlDatabaseAutomaticTuning;
 import com.azure.resourcemanager.sql.models.SqlDatabaseImportExportResponse;
 import com.azure.resourcemanager.sql.models.SqlDatabasePremiumServiceObjective;
 import com.azure.resourcemanager.sql.models.SqlDatabaseStandardServiceObjective;
+import com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy;
 import com.azure.resourcemanager.sql.models.SqlElasticPool;
 import com.azure.resourcemanager.sql.models.SqlElasticPoolBasicEDTUs;
 import com.azure.resourcemanager.sql.models.SqlFailoverGroup;
@@ -44,6 +48,7 @@ import com.azure.resourcemanager.sql.models.SqlFirewallRule;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServerAutomaticTuning;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAlias;
+import com.azure.resourcemanager.sql.models.SqlServerSecurityAlertPolicy;
 import com.azure.resourcemanager.sql.models.SqlSyncGroup;
 import com.azure.resourcemanager.sql.models.SqlSyncMember;
 import com.azure.resourcemanager.sql.models.SqlWarehouse;
@@ -972,6 +977,30 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         validateSqlDatabase(sqlDatabase, SQL_DATABASE_NAME);
         Assertions.assertTrue(sqlServer.databases().list().size() > 0);
+
+        // Test security alert policy settings.
+
+        final String storageAccountName = generateRandomResourceName( "sqlsa", 20);
+        StorageAccount storageAccount = storageManager.storageAccounts().define(storageAccountName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .create();
+        String accountKey = storageAccount.getKeys().get(0).value();
+        String blobEntrypoint = storageAccount.endPoints().primary().blob();
+
+        sqlDatabase.defineThreatDetectionPolicy(SecurityAlertPolicyName.DEFAULT.toString())
+            .withPolicyEnabled()
+            .withStorageEndpoint(blobEntrypoint)
+            .withStorageAccountAccessKey(accountKey)
+            .create();
+
+        sqlDatabase.refresh();
+
+        SqlDatabaseThreatDetectionPolicy alertPolicy = sqlDatabase.getThreatDetectionPolicy();
+        Assertions.assertNotNull(alertPolicy);
+        Assertions.assertEquals(SecurityAlertPolicyState.ENABLED, alertPolicy.currentState());
+
+        // Done testing security alert policy
 
         // Test transparent data encryption settings.
         TransparentDataEncryption transparentDataEncryption = sqlDatabase.getTransparentDataEncryption();

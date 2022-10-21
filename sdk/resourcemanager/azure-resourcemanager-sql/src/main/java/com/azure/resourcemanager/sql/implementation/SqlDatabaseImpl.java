@@ -242,7 +242,7 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public boolean isDataWarehouse() {
-        return this.edition().toString().equalsIgnoreCase("DATA_WAREHOUSE");
+        return this.edition().toString().equalsIgnoreCase(DatabaseEdition.DATA_WAREHOUSE.toString());
     }
 
     @Override
@@ -357,8 +357,10 @@ class SqlDatabaseImpl extends ExternalChildResourceImpl<SqlDatabase, DatabaseInn
 
     @Override
     public SqlDatabaseThreatDetectionPolicy.DefinitionStages.Blank defineThreatDetectionPolicy(String policyName) {
-        return new SqlDatabaseThreatDetectionPolicyImpl(
+        SqlDatabaseThreatDetectionPolicyImpl result = new SqlDatabaseThreatDetectionPolicyImpl(
             policyName, this, new DatabaseSecurityAlertPolicyInner(), this.sqlServerManager);
+        result.setPendingOperation(ExternalChildResourceImpl.PendingOperation.ToBeCreated);
+        return result;
     }
 
     @Override

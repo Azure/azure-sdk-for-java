@@ -112,13 +112,6 @@ public interface SqlDatabaseThreatDetectionPolicy
             /**
              * Sets the security alert policy state to "New".
              *
-             * @return the next stage of the definition.
-             */
-            SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithStorageEndpoint withPolicyNew();
-
-            /**
-             * Sets the security alert policy state to "New".
-             *
              * @return the next stage of the definition
              */
             SqlDatabaseThreatDetectionPolicy.DefinitionStages.WithCreate withDefaultSecurityAlertPolicy();
@@ -255,13 +248,6 @@ public interface SqlDatabaseThreatDetectionPolicy
              * @return the next stage of the definition
              */
             SqlDatabaseThreatDetectionPolicy.Update withPolicyDisabled();
-
-            /**
-             * Updates the security alert policy state to "New".
-             *
-             * @return the next stage of the definition.
-             */
-            SqlDatabaseThreatDetectionPolicy.Update withPolicyNew();
 
             /**
              * Updates the security alert policy state to "New".
