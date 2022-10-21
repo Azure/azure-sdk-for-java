@@ -7,7 +7,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.implementation.DefaultJsonWriter;
 
 import java.io.*;
-import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.nio.charset.StandardCharsets;
@@ -145,7 +144,7 @@ class JacksonJsonWriter extends JsonWriter {
      * @throws NullPointerException If {@code json} is null.
      * @throws IOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the {@link OutputStream}.
      */
-    static JsonWriter toStream(OutputStream json, JsonOptions options) throws IOException {
+    static JsonWriter toStream(OutputStream json, JsonOptions options){
         Objects.requireNonNull(json, "'json' cannot be null.");
         return new JacksonJsonWriter(new OutputStreamWriter(json, StandardCharsets.UTF_8), options);
     }
@@ -162,12 +161,12 @@ class JacksonJsonWriter extends JsonWriter {
      * @throws NullPointerException If {@code json} is null.
      * @throws IOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the {@link Writer}.
      */
-    static JsonWriter toWriter(Writer json, JsonOptions options) throws IOException {
+    static JsonWriter toWriter(Writer json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
         return new JacksonJsonWriter(json, options);
     }
 
-    private JacksonJsonWriter(Writer writer, JsonOptions options) throws IOException {
+    private JacksonJsonWriter(Writer writer, JsonOptions options) {
         if (!INITIALIZED) {
             throw new IllegalStateException("Jackson is not present or an incorrect version is present.");
         }
@@ -308,7 +307,7 @@ class JacksonJsonWriter extends JsonWriter {
     }
 
     @Override
-    public JsonWriter writeRawValue(String value) throws IOException {
+    public JsonWriter writeRawValue(String value)  {
         Objects.requireNonNull(value, "'value' cannot be null.");
         context.validateToken(JsonToken.STRING);
         JSON_WRITER_WRITE_RAW_VALUE.writeRawValue(jacksonGenerator,value);
