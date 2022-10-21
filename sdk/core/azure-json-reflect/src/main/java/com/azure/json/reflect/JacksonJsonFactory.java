@@ -7,9 +7,14 @@ import com.azure.json.JsonReader;
 import java.io.*;
 
 class JacksonJsonFactory extends JsonFactory {
-    JacksonJsonFactory() throws ReflectiveOperationException {
-        JacksonJsonReader.initialize();
-        JacksonJsonWriter.initialize();
+    static final boolean INITIALIZED = JacksonJsonReader.INITIALIZED;
+
+    JacksonJsonFactory() {
+        try {
+            JacksonJsonWriter.initialize();
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

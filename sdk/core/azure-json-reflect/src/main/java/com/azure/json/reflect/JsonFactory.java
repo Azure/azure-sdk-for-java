@@ -8,8 +8,6 @@ import java.io.*;
 
 public abstract class JsonFactory {
     private static JsonFactory jacksonJsonFactory = null;
-    private static boolean jacksonAttempted = false;
-
     private static JsonFactory gsonJsonFactory = null;
 
     public static JsonFactory getInstance() {
@@ -23,13 +21,12 @@ public abstract class JsonFactory {
     }
 
     public synchronized static JsonFactory getJacksonInstance() {
-        if (!jacksonAttempted) {
-            jacksonAttempted = true;
-            try {
-                jacksonJsonFactory = new JacksonJsonFactory();
-            } catch (ReflectiveOperationException ignored) {
-                // Jackson not on classpath
-            }
+        if (!JacksonJsonFactory.INITIALIZED) {
+            throw new IllegalStateException("Jackson is not present or an incorrect version is present.");
+        }
+
+        if(jacksonJsonFactory == null) {
+            jacksonJsonFactory = new JacksonJsonFactory();
         }
 
         return jacksonJsonFactory;
