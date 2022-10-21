@@ -13,7 +13,7 @@ import java.util.UUID;
 /**
  * Simple constant holder for a {@link SimpleTypeHolder} enriched with Cosmos specific simple types.
  */
-public final class CosmosSimpleTypes {
+final class CosmosSimpleTypes {
 
     private static final Set<Class<?>> COSMOS_SIMPLE_TYPES;
 
