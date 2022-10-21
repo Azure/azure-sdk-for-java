@@ -66,7 +66,6 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
@@ -2248,13 +2247,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             collection.getPartitionKey());
 
                         // create point reads
-                        var pointReads = singleItemPartitionRequestMap.values().size() > 0 ? Flux.fromIterable(singleItemPartitionRequestMap.values())
-                            .flatMap(item -> {
-                                options.setPartitionKey(item.getPartitionKey());
-                                return this.readDocument(getDocumentLink(item.getId(), resourceLink), ModelBridgeInternal.toRequestOptions(options));
-                            })
-                            .flatMap(itemResponse -> Mono.just(ModelBridgeInternal.createCosmosAsyncItemResponse(itemResponse, klass, getItemDeserializer())))
-                            .flatMap(cosmosItemResponse -> Mono.just(ModelBridgeInternal.createFeedResponse(new Document(cosmosItemResponse.getItem().toString()), cosmosItemResponse.getResponseHeaders())))
+                        var pointReads = singleItemPartitionRequestMap.values().size() > 0 ? createPointReadQuery(
+                            singleItemPartitionRequestMap,
+                            resourceLink,
+                            options,
+                            klass)
                             .collectList() : Mono.just(new ArrayList<FeedResponse<Document>>());
 
 
@@ -2432,6 +2429,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                           klass,
                                                                           resourceTypeEnum);
         return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
+    }
+
+    private <T> Flux<FeedResponse<Document>> createPointReadQuery(
+        Map<PartitionKeyRange, CosmosItemIdentity> singleItemPartitionRequestMap,
+        String resourceLink,
+        CosmosQueryRequestOptions queryRequestOptions,
+        Class<T> klass
+    ) {
+        return Flux.fromIterable(singleItemPartitionRequestMap.values())
+            .flatMap(item -> {
+                queryRequestOptions.setPartitionKey(item.getPartitionKey());
+                return this.readDocument(getDocumentLink(item.getId(), resourceLink), ModelBridgeInternal.toRequestOptions(queryRequestOptions));
+            })
+            .flatMap(itemResponse -> Mono.just(ModelBridgeInternal.createCosmosAsyncItemResponse(itemResponse, klass, getItemDeserializer())))
+            .flatMap(cosmosItemResponse -> Mono.just(ModelBridgeInternal.createFeedResponse(new Document(cosmosItemResponse.getItem().toString()), cosmosItemResponse.getResponseHeaders())));
     }
 
     @Override
