@@ -1,14 +1,8 @@
 ## Release History
 
 ### 4.39.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
 #### Other Changes
+* Updated test dependency of apache commons-text to version 1.10.0 - CVE-2022-42889 - See [PR blah](blah)
 
 ### 4.38.0 (2022-10-12)
 #### Features Added
