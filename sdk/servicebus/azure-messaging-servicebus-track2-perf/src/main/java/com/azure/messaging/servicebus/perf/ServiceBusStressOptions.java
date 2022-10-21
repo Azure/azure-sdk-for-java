@@ -28,6 +28,9 @@ public class ServiceBusStressOptions extends PerfStressOptions {
     @Parameter(names = { "-mcc", "--maxConcurrentCalls" }, description = "Processor client max concurrent calls")
     private int maxConcurrentCalls = 1;
 
+    @Parameter(names = { "-mst", "--messageSendTimes" }, description = "Messages send times")
+    private int messageSendTimes = 10;
+
     /**
      * Get the configured messagesToSend option for performance test.
      * @return The size.
@@ -66,5 +69,13 @@ public class ServiceBusStressOptions extends PerfStressOptions {
      */
     public int getMaxConcurrentCalls() {
         return maxConcurrentCalls;
+    }
+
+    /**
+     * Get the configured maxConcurrentCalls option for performance test.
+     * @return The message send times.
+     */
+    public int getMessageSendTimes() {
+        return messageSendTimes;
     }
 }

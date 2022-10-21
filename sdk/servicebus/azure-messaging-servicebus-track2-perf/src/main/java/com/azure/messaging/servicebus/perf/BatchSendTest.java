@@ -64,9 +64,9 @@ public class BatchSendTest extends BatchPerfTest<ServiceBusStressOptions> {
 
     private List<ServiceBusMessage> getSendMessages() {
         List<ServiceBusMessage> messages = new ArrayList<>();
+        String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
         for (int i = 0; i < options.getMessagesToSend(); i++) {
-            ServiceBusMessage message = new ServiceBusMessage(
-                TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend()));
+            ServiceBusMessage message = new ServiceBusMessage(messageContent);
             message.setMessageId(UUID.randomUUID().toString());
             messages.add(message);
         }

@@ -13,8 +13,8 @@ import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class ProcessorTest extends EventPerfTest<ServiceBusStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(ProcessorTest.class);
+public class ServiceBusProcessorTest extends EventPerfTest<ServiceBusStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(ServiceBusProcessorTest.class);
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
@@ -30,7 +30,7 @@ public class ProcessorTest extends EventPerfTest<ServiceBusStressOptions> {
      * @param options the options configured for the test.
      * @throws IllegalStateException if SSL context cannot be created.
      */
-    public ProcessorTest(ServiceBusStressOptions options) {
+    public ServiceBusProcessorTest(ServiceBusStressOptions options) {
         super(options);
 
         CONNECTION_STRING = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
@@ -55,11 +55,16 @@ public class ProcessorTest extends EventPerfTest<ServiceBusStressOptions> {
             .queueName(QUEUE_NAME)
             .buildClient();
 
-        for (int i = 0; i < options.getMessagesToSend(); i++) {
-            ServiceBusMessage message = new ServiceBusMessage(
-                TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend()));
-            message.setMessageId(UUID.randomUUID().toString());
-            sender.sendMessage(message);
+        String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
+
+        for (int i = 0; i < options.getMessageSendTimes(); i++) {
+            ServiceBusMessageBatch batch = sender.createMessageBatch();
+            for (int j = 0; j < options.getMessagesToSend(); j++) {
+                ServiceBusMessage message = new ServiceBusMessage(messageContent);
+                message.setMessageId(UUID.randomUUID().toString());
+                batch.tryAddMessage(message);
+            }
+            sender.sendMessages(batch);
         }
         return Mono.empty();
     }
