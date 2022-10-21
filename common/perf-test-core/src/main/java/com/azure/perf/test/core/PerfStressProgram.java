@@ -123,18 +123,21 @@ public class PerfStressProgram {
 
         PerfTestBase<?>[] tests = new PerfTestBase<?>[options.getParallel()];
 
-        for (int i = 0; i < options.getParallel(); i++) {
-            try {
-                tests[i] = (PerfTestBase<?>) testClass.getConstructor(options.getClass()).newInstance(options);
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | SecurityException | NoSuchMethodException e) {
-                throw new RuntimeException(e);
-            }
-        }
+        Flux.range(0, options.getParallel())
+            .parallel()
+            .runOn(Schedulers.parallel())
+            .flatMap(i -> {
+                try {
+                    tests[i] = (PerfTestBase<?>) testClass.getConstructor(options.getClass()).newInstance(options);
+                    return tests[i].globalSetupAsync();
+                } catch (ReflectiveOperationException | RuntimeException e) {
+                    return Mono.error(e);
+                }
+            })
+            .sequential()
+            .blockLast();
 
         try {
-            tests[0].globalSetupAsync().block();
-
             boolean startedPlayback = false;
 
             try {
@@ -146,9 +149,8 @@ public class PerfStressProgram {
 
                     try {
                         ForkJoinPool forkJoinPool = new ForkJoinPool(tests.length);
-                        forkJoinPool.submit(() -> {
-                            IntStream.range(0, tests.length).parallel().forEach(i -> tests[i].postSetupAsync().block());
-                        }).get();
+                        forkJoinPool.submit(() -> IntStream.range(0, tests.length).parallel()
+                            .forEach(i -> tests[i].postSetupAsync().block())).get();
                     } catch (InterruptedException | ExecutionException e) {
                         System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
                         e.printStackTrace(System.err);
@@ -197,7 +199,12 @@ public class PerfStressProgram {
                     cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
                 }
 
-                tests[0].globalCleanupAsync().block();
+                Flux.range(0, options.getParallel())
+                    .parallel()
+                    .runOn(Schedulers.parallel())
+                    .flatMap(i -> tests[i].globalCleanupAsync())
+                    .sequential()
+                    .blockLast();
             }
         }
 
@@ -300,9 +307,7 @@ public class PerfStressProgram {
                 System.out.println();
             }
             System.out.println();
-        }).subscribe(i -> {
-            printStatusHelper(status, newLine, needsExtraNewline);
-        });
+        }).subscribe(i -> printStatusHelper(status, newLine, needsExtraNewline));
     }
 
     private static void printStatusHelper(Supplier<Object> status, boolean newLine, boolean[] needsExtraNewline) {
