@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
-import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.nio.charset.StandardCharsets;
@@ -18,37 +17,126 @@ import java.util.Arrays;
 import java.util.Objects;
 
 import static java.lang.invoke.MethodType.methodType;
+import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 
 class JacksonJsonWriter extends JsonWriter {
-    private static boolean initialized = false;
-    private static boolean attemptedInitialization = false;
-    private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
+    private static final Class JACKSON_FEATURE_ENUM;
+    private static final Object JSON_JSON_FACTORY;
+    private static final JsonFactoryCreateJsonGenerator JSON_FACTORY_CREATE_JSON_GENERATOR;
+    private static final JsonGeneratorWriteRawValue JSON_GENERATOR_WRITE_RAW_VALUE;
+    private static final JsonGeneratorFlush JSON_GENERATOR_FLUSH;
+    private static final JsonGeneratorClose JSON_GENERATOR_CLOSE;
+    private static final JsonGeneratorWriteStartObject JSON_GENERATOR_WRITE_START_OBJECT;
+    private static final JsonGeneratorWriteEndObject JSON_GENERATOR_WRITE_END_OBJECT;
+    private static final JsonGeneratorWriteStartArray JSON_GENERATOR_WRITE_START_ARRAY;
+    private static final JsonGeneratorWriteEndArray JSON_GENERATOR_WRITE_END_ARRAY;
+    private static final JsonGeneratorWriteFieldName JSON_GENERATOR_WRITE_FIELD_NAME;
+    private static final JsonGeneratorWriteNull JSON_GENERATOR_WRITE_NULL;
+    private static final JsonGeneratorWriteBinary JSON_GENERATOR_WRITE_BINARY;
+    private static final JsonGeneratorWriteBoolean JSON_GENERATOR_WRITE_BOOLEAN;
+    private static final JsonGeneratorWriteDouble JSON_GENERATOR_WRITE_DOUBLE;
+    private static final JsonGeneratorWriteFloat JSON_GENERATOR_WRITE_FLOAT;
+    private static final JsonGeneratorWriteInt JSON_GENERATOR_WRITE_INT;
+    private static final JsonGeneratorWriteLong JSON_GENERATOR_WRITE_LONG;
+    private static final JsonGeneratorWriteString JSON_GENERATOR_WRITE_STRING;
+    private static final JsonGeneratorConfigure JSON_GENERATOR_CONFIGURE;
 
-    private JsonWriteContext context = JsonWriteContext.ROOT;
+    static final boolean INITIALIZED;
+
+    static{
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        Object jsonFactory = null;
+
+        Class jacksonFeatureEnum = null;
+
+        JsonFactoryCreateJsonGenerator jsonFactoryCreateJsonGenerator = null;
+        JsonGeneratorWriteRawValue jsonGeneratorWriteRawValue = null;
+        JsonGeneratorFlush jsonGeneratorFlush = null;
+        JsonGeneratorClose jsonGeneratorClose = null;
+        JsonGeneratorWriteStartObject jsonGeneratorWriteStartObject = null;
+        JsonGeneratorWriteEndObject jsonGeneratorWriteEndObject = null;
+        JsonGeneratorWriteStartArray jsonGeneratorWriteStartArray = null;
+        JsonGeneratorWriteEndArray jsonGeneratorWriteEndArray = null;
+        JsonGeneratorWriteFieldName jsonGeneratorWriteFieldName = null;
+        JsonGeneratorWriteNull jsonGeneratorWriteNull = null;
+        JsonGeneratorWriteBinary jsonGeneratorWriteBinary = null;
+        JsonGeneratorWriteBoolean jsonGeneratorWriteBoolean = null;
+        JsonGeneratorWriteDouble jsonGeneratorWriteDouble = null;
+        JsonGeneratorWriteFloat jsonGeneratorWriteFloat = null;
+        JsonGeneratorWriteInt jsonGeneratorWriteInt = null;
+        JsonGeneratorWriteLong jsonGeneratorWriteLong = null;
+        JsonGeneratorWriteString jsonGeneratorWriteString = null;
+        JsonGeneratorConfigure jsonGeneratorConfigure = null;
+
+        boolean initialized = false;
+
+        try{
+            Class<?> jacksonJsonFactoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
+            Class<?> jacksonJsonGeneratorClass = Class.forName("com.fasterxml.jackson.core.JsonGenerator");
+
+            jacksonFeatureEnum = Arrays.stream(jacksonJsonGeneratorClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
+
+            jsonFactory = lookup.findConstructor(jacksonJsonFactoryClass, methodType(void.class)).invoke();
+
+            MethodType voidMT = methodType(void.class);
+            MethodType voidStringMt = methodType(void.class, String.class);
+            MethodType voidObjectMT = methodType(void.class, Object.class);
+
+            jsonFactoryCreateJsonGenerator = createMetaFactory("createGenerator", jacksonJsonFactoryClass, methodType(jacksonJsonGeneratorClass, Writer.class), JsonFactoryCreateJsonGenerator.class, methodType(Object.class,Object.class, Writer.class), lookup);
+            jsonGeneratorWriteRawValue = createMetaFactory("writeRawValue", jacksonJsonGeneratorClass, voidStringMt, JsonGeneratorWriteRawValue.class, methodType(void.class, Object.class, String.class), lookup);
+            jsonGeneratorFlush = createMetaFactory("flush", jacksonJsonGeneratorClass, voidMT, JsonGeneratorFlush.class, voidObjectMT, lookup);
+            jsonGeneratorClose = createMetaFactory("close", jacksonJsonGeneratorClass, voidMT, JsonGeneratorClose.class, voidObjectMT, lookup);
+            jsonGeneratorWriteStartObject = createMetaFactory("writeStartObject", jacksonJsonGeneratorClass, voidMT, JsonGeneratorWriteStartObject.class, voidObjectMT, lookup);
+            jsonGeneratorWriteEndObject = createMetaFactory("writeEndObject", jacksonJsonGeneratorClass, voidMT, JsonGeneratorWriteEndObject.class, voidObjectMT, lookup);
+            jsonGeneratorWriteStartArray = createMetaFactory("writeStartArray", jacksonJsonGeneratorClass, voidMT, JsonGeneratorWriteStartArray.class, voidObjectMT, lookup);
+            jsonGeneratorWriteEndArray = createMetaFactory("writeEndArray", jacksonJsonGeneratorClass, voidMT, JsonGeneratorWriteEndArray.class, voidObjectMT, lookup);
+            jsonGeneratorWriteFieldName = createMetaFactory("writeFieldName", jacksonJsonGeneratorClass, voidStringMt, JsonGeneratorWriteFieldName.class, methodType(void.class, Object.class, String.class), lookup);
+            jsonGeneratorWriteNull = createMetaFactory("writeNull", jacksonJsonGeneratorClass, voidMT, JsonGeneratorWriteNull.class, voidObjectMT, lookup);
+            jsonGeneratorWriteBinary = createMetaFactory("writeBinary", jacksonJsonGeneratorClass, methodType(void.class, byte[].class), JsonGeneratorWriteBinary.class, methodType(void.class, Object.class, byte[].class), lookup);
+            jsonGeneratorWriteBoolean = createMetaFactory("writeBoolean", jacksonJsonGeneratorClass, methodType(void.class, boolean.class), JsonGeneratorWriteBoolean.class, methodType(void.class, Object.class, boolean.class), lookup);
+            jsonGeneratorWriteDouble = createMetaFactory("writeNumber", jacksonJsonGeneratorClass, methodType(void.class, double.class),  JsonGeneratorWriteDouble.class, methodType(void.class, Object.class, double.class), lookup);
+            jsonGeneratorWriteFloat = createMetaFactory("writeNumber", jacksonJsonGeneratorClass, methodType(void.class, float.class), JsonGeneratorWriteFloat.class, methodType(void.class, Object.class, float.class), lookup);
+            jsonGeneratorWriteInt = createMetaFactory("writeNumber", jacksonJsonGeneratorClass, methodType(void.class, int.class), JsonGeneratorWriteInt.class, methodType(void.class, Object.class, int.class), lookup);
+            jsonGeneratorWriteLong = createMetaFactory("writeNumber", jacksonJsonGeneratorClass, methodType(void.class, long.class), JsonGeneratorWriteLong.class, methodType(void.class, Object.class, long.class), lookup);
+            jsonGeneratorWriteString = createMetaFactory("writeString", jacksonJsonGeneratorClass, voidStringMt, JsonGeneratorWriteString.class, methodType(void.class, Object.class, String.class), lookup);
+            jsonGeneratorConfigure = createMetaFactory("configure", jacksonJsonGeneratorClass, methodType(jacksonJsonGeneratorClass, jacksonFeatureEnum, boolean.class), JsonGeneratorConfigure.class, methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
+
+            initialized = true;
+        }
+        catch (Throwable e) {
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException) e;
+            } else if (e instanceof Error) {
+                throw (Error) e;
+            }
+        }
+
+        JACKSON_FEATURE_ENUM = jacksonFeatureEnum;
+        JSON_JSON_FACTORY = jsonFactory;
+        JSON_FACTORY_CREATE_JSON_GENERATOR = jsonFactoryCreateJsonGenerator;
+        JSON_GENERATOR_WRITE_RAW_VALUE = jsonGeneratorWriteRawValue;
+        JSON_GENERATOR_FLUSH = jsonGeneratorFlush;
+        JSON_GENERATOR_CLOSE = jsonGeneratorClose;
+        JSON_GENERATOR_WRITE_START_OBJECT = jsonGeneratorWriteStartObject;
+        JSON_GENERATOR_WRITE_END_OBJECT = jsonGeneratorWriteEndObject;
+        JSON_GENERATOR_WRITE_START_ARRAY = jsonGeneratorWriteStartArray;
+        JSON_GENERATOR_WRITE_END_ARRAY = jsonGeneratorWriteEndArray;
+        JSON_GENERATOR_WRITE_FIELD_NAME = jsonGeneratorWriteFieldName;
+        JSON_GENERATOR_WRITE_NULL = jsonGeneratorWriteNull;
+        JSON_GENERATOR_WRITE_BINARY = jsonGeneratorWriteBinary;
+        JSON_GENERATOR_WRITE_BOOLEAN = jsonGeneratorWriteBoolean;
+        JSON_GENERATOR_WRITE_DOUBLE = jsonGeneratorWriteDouble;
+        JSON_GENERATOR_WRITE_FLOAT = jsonGeneratorWriteFloat;
+        JSON_GENERATOR_WRITE_INT = jsonGeneratorWriteInt;
+        JSON_GENERATOR_WRITE_LONG = jsonGeneratorWriteLong;
+        JSON_GENERATOR_WRITE_STRING = jsonGeneratorWriteString;
+        JSON_GENERATOR_CONFIGURE = jsonGeneratorConfigure;
+
+        INITIALIZED = initialized;
+    }
 
     private final Object jacksonGenerator;
-    private static Object FACTORY;
-
-    private static Class jacksonFeatureEnum;
-
-    private static MethodHandle flushMethod;
-    private static MethodHandle closeMethod;
-    private static MethodHandle writeStartObjectMethod;
-    private static MethodHandle writeEndObjectMethod;
-    private static MethodHandle writeStartArrayMethod;
-    private static MethodHandle writeEndArrayMethod;
-    private static MethodHandle writeFieldNameMethod;
-    private static MethodHandle writeNullMethod;
-    private static MethodHandle writeBinaryMethod;
-    private static MethodHandle writeBooleanMethod;
-    private static MethodHandle writeDoubleMethod;
-    private static MethodHandle writeFloatMethod;
-    private static MethodHandle writeIntMethod;
-    private static MethodHandle writeLongMethod;
-    private static MethodHandle writeStringMethod;
-    private static MethodHandle writeRawValueMethod;
-    private static MethodHandle createGeneratorMethod;
-    private static MethodHandle configureMethod;
+    JsonWriteContext context = JsonWriteContext.ROOT;
 
     /**
      * Creates a {@link DefaultJsonWriter} that writes the given {@link OutputStream}.
@@ -85,67 +173,14 @@ class JacksonJsonWriter extends JsonWriter {
     }
 
     private JacksonJsonWriter(Writer writer, JsonOptions options) throws IOException {
-        try {
-            initialize();
-
-            jacksonGenerator = createGeneratorMethod.invoke(FACTORY, writer);
-            // Configure Jackson to support non-numeric numbers
-            configureMethod.invoke(jacksonGenerator, Enum.valueOf(jacksonFeatureEnum, "QUOTE_NON_NUMERIC_NUMBERS"), options.isNonNumericNumbersSupported());
-
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else if (e instanceof RuntimeException) {
-                throw (RuntimeException) e.getCause();
-            } else {
-                throw new IllegalStateException("Jackson is not present or an incorrect version is present.");
-            }
+        if (!INITIALIZED) {
+            throw new IllegalStateException("No compatible version of Jackson is present on the classpath.");
         }
 
-    }
-
-    static synchronized void initialize() throws ReflectiveOperationException {
-        if (initialized) {
-            return;
-        } else if (attemptedInitialization) {
-            throw new ReflectiveOperationException("Initialization of JacksonJsonWriter has failed in the past.");
-        }
-
-        attemptedInitialization = true;
-
-        Class<?> factoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
-        Class<?> jacksonGeneratorClass = Class.forName("com.fasterxml.jackson.core.JsonGenerator");
-        jacksonFeatureEnum = (Class) Arrays.stream(jacksonGeneratorClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
-
-        MethodHandle constructorFactory = publicLookup.findConstructor(factoryClass, methodType(void.class));
-        createGeneratorMethod = publicLookup.findVirtual(factoryClass, "createGenerator", methodType(jacksonGeneratorClass, Writer.class));
-        try {
-            FACTORY = constructorFactory.invoke();
-        } catch (Throwable e) {
-            throw (RuntimeException) e.getCause();
-        }
-
-        MethodType voidMT = methodType(void.class);
-
-        writeRawValueMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeRawValue", methodType(void.class, String.class));
-        flushMethod = publicLookup.findVirtual(jacksonGeneratorClass, "flush", voidMT);
-        closeMethod = publicLookup.findVirtual(jacksonGeneratorClass, "close", voidMT);
-        writeStartObjectMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeStartObject", voidMT);
-        writeEndObjectMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeEndObject", voidMT);
-        writeStartArrayMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeStartArray", voidMT);
-        writeEndArrayMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeEndArray", voidMT);
-        writeFieldNameMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeFieldName", methodType(void.class, String.class));
-        writeNullMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNull", voidMT);
-        writeBinaryMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeBinary", methodType(void.class, byte[].class));
-        writeBooleanMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeBoolean", methodType(void.class, boolean.class));
-        writeDoubleMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", methodType(void.class, double.class));
-        writeFloatMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", methodType(void.class, float.class));
-        writeIntMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", methodType(void.class, int.class));
-        writeLongMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeNumber", methodType(void.class, long.class));
-        writeStringMethod = publicLookup.findVirtual(jacksonGeneratorClass, "writeString", methodType(void.class, String.class));
-        configureMethod = publicLookup.findVirtual(jacksonGeneratorClass, "configure", methodType(jacksonGeneratorClass, jacksonFeatureEnum, boolean.class));
-
-        initialized = true;
+        jacksonGenerator = JSON_FACTORY_CREATE_JSON_GENERATOR.createGenerator(JSON_JSON_FACTORY, writer);
+        // Configure Jackson to support non-numeric numbers
+        JSON_GENERATOR_CONFIGURE.configure(jacksonGenerator, Enum.valueOf(JACKSON_FEATURE_ENUM,
+            "QUOTE_NON_NUMERIC_NUMBERS"), options.isNonNumericNumbersSupported());
     }
 
     @Override
@@ -159,46 +194,19 @@ class JacksonJsonWriter extends JsonWriter {
             throw new IllegalStateException("Writing of the JSON object must be completed before the writer can be "
                 + "closed. Current writing state is '" + context.getWriteState() + "'.");
         }
-        try {
-            closeMethod.invoke(jacksonGenerator);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_GENERATOR_CLOSE.close(jacksonGenerator);
     }
 
     @Override
     public JsonWriter flush() throws IOException {
-        try {
-            flushMethod.invoke(jacksonGenerator);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_FLUSH.flush(jacksonGenerator);
         return this;
     }
 
     @Override
     public JsonWriter writeStartObject() throws IOException {
         context.validateToken(JsonToken.START_OBJECT);
-
-        try {
-            writeStartObjectMethod.invoke(jacksonGenerator);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_START_OBJECT.writeStartObject(jacksonGenerator);
         context = context.updateContext(JsonToken.START_OBJECT);
         return this;
     }
@@ -206,17 +214,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeEndObject() throws IOException {
         context.validateToken(JsonToken.END_OBJECT);
-
-        try {
-            writeEndObjectMethod.invoke(jacksonGenerator);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_END_OBJECT.writeEndObject(jacksonGenerator);
         context = context.updateContext(JsonToken.END_OBJECT);
         return this;
     }
@@ -224,17 +222,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeStartArray() throws IOException {
         context.validateToken(JsonToken.START_ARRAY);
-
-        try {
-            writeStartArrayMethod.invoke(jacksonGenerator);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_START_ARRAY.writeStartArray(jacksonGenerator);
         context = context.updateContext(JsonToken.START_ARRAY);
         return this;
     }
@@ -242,17 +230,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeEndArray() throws IOException {
         context.validateToken(JsonToken.END_ARRAY);
-
-        try {
-            writeEndArrayMethod.invoke(jacksonGenerator);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_END_ARRAY.writeEndArray(jacksonGenerator);
         context = context.updateContext(JsonToken.END_ARRAY);
         return this;
     }
@@ -260,19 +238,8 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeFieldName(String fieldName) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
-
         context.validateToken(JsonToken.FIELD_NAME);
-
-        try {
-            writeFieldNameMethod.invoke(jacksonGenerator, fieldName);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_FIELD_NAME.writeFieldName(jacksonGenerator,fieldName);
         context = context.updateContext(JsonToken.FIELD_NAME);
         return this;
     }
@@ -280,21 +247,11 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeBinary(byte[] value) throws IOException {
         context.validateToken(JsonToken.STRING);
-
-        try {
-            if (value == null) {
-                writeNullMethod.invoke(jacksonGenerator);
-            } else {
-                writeBinaryMethod.invoke(jacksonGenerator, value);
-            }
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
+        if (value == null) {
+            JSON_GENERATOR_WRITE_NULL.writeNull(jacksonGenerator);
+        } else {
+            JSON_GENERATOR_WRITE_BINARY.writeBinary(jacksonGenerator,value);
         }
-
         context = context.updateContext(JsonToken.STRING);
         return this;
     }
@@ -302,17 +259,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeBoolean(boolean value) throws IOException {
         context.validateToken(JsonToken.BOOLEAN);
-
-        try {
-            writeBooleanMethod.invoke(jacksonGenerator, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_BOOLEAN.writeBoolean(jacksonGenerator,value);
         context = context.updateContext(JsonToken.BOOLEAN);
         return this;
     }
@@ -320,17 +267,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeDouble(double value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-
-        try {
-            writeDoubleMethod.invoke(jacksonGenerator, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_DOUBLE.writeNumber(jacksonGenerator,value);
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
@@ -338,17 +275,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeFloat(float value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-
-        try {
-            writeFloatMethod.invoke(jacksonGenerator, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_FLOAT.writeNumber(jacksonGenerator,value);
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
@@ -356,17 +283,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeInt(int value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-
-        try {
-            writeIntMethod.invoke(jacksonGenerator, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_INT.writeNumber(jacksonGenerator,value);
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
@@ -374,17 +291,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeLong(long value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-
-        try {
-            writeLongMethod.invoke(jacksonGenerator, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_LONG.writeNumber(jacksonGenerator,value);
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
@@ -392,17 +299,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeNull() throws IOException {
         context.validateToken(JsonToken.NULL);
-
-        try {
-            writeNullMethod.invoke(jacksonGenerator);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_NULL.writeNull(jacksonGenerator);
         context = context.updateContext(JsonToken.NULL);
         return this;
     }
@@ -410,17 +307,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeString(String value) throws IOException {
         context.validateToken(JsonToken.STRING);
-
-        try {
-            writeStringMethod.invoke(jacksonGenerator, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_STRING.writeString(jacksonGenerator,value);
         context = context.updateContext(JsonToken.STRING);
         return this;
     }
@@ -428,20 +315,100 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeRawValue(String value) throws IOException {
         Objects.requireNonNull(value, "'value' cannot be null.");
-
         context.validateToken(JsonToken.STRING);
-
-        try {
-            writeRawValueMethod.invoke(jacksonGenerator, value);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        JSON_GENERATOR_WRITE_RAW_VALUE.writeRawValue(jacksonGenerator,value);
         context = context.updateContext(JsonToken.STRING);
         return this;
     }
+
+    @FunctionalInterface
+    private interface JsonFactoryCreateJsonGenerator {
+        Object createGenerator(Object JsonFactory, Writer writer) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteRawValue {
+        void writeRawValue(Object jsonWriter, String value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorFlush {
+        void flush(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorClose {
+        void close(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteStartObject {
+        void writeStartObject(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteEndObject {
+        void writeEndObject(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteStartArray {
+        void writeStartArray(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteEndArray {
+        void writeEndArray(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteFieldName {
+        void writeFieldName(Object jsonWriter, String fieldName) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteNull {
+        void writeNull(Object jsonWriter) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteBinary {
+        void writeBinary(Object jsonWriter, byte[] value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteBoolean {
+        void writeBoolean(Object jsonWriter, boolean value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteDouble {
+        void writeNumber(Object jsonWriter, double value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteFloat {
+        void writeNumber(Object jsonWriter, float value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteInt {
+        void writeNumber(Object jsonWriter, int value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteLong {
+        void writeNumber(Object jsonWriter, long value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorWriteString {
+        void writeString(Object jsonWriter, String value) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonGeneratorConfigure {
+        Object configure(Object jsonWriter, Object featureEnum, boolean options);
+    }
+
 }

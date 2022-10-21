@@ -4,13 +4,14 @@ import com.azure.json.JsonOptions;
 import com.azure.json.JsonWriter;
 import com.azure.json.JsonReader;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.Reader;
+import java.io.Writer;
 
 class JacksonJsonFactory extends JsonFactory {
-    JacksonJsonFactory() throws ReflectiveOperationException {
-        JacksonJsonReader.initialize();
-        JacksonJsonWriter.initialize();
-    }
+    static final boolean INITIALIZED = JacksonJsonReader.INITIALIZED && JacksonJsonWriter.INITIALIZED;
 
     @Override
     public JsonReader getJsonReader(byte[] bytes, JsonOptions options) throws IOException {
