@@ -6,6 +6,7 @@ import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.AuditableEntity;
 import com.azure.spring.data.cosmos.domain.AuditableIdGeneratedEntity;
+import com.azure.spring.data.cosmos.repository.AuditableConfig;
 import com.azure.spring.data.cosmos.repository.StubAuditorProvider;
 import com.azure.spring.data.cosmos.repository.StubDateTimeProvider;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
@@ -28,7 +29,10 @@ import java.util.UUID;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = TestRepositoryConfig.class)
+@ContextConfiguration(classes = {
+    TestRepositoryConfig.class,
+    AuditableConfig.class
+})
 public class ReactiveAuditableIT {
 
     @ClassRule
