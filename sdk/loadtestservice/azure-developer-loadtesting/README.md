@@ -279,8 +279,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 1. Create new Pull Request
 
 <!-- LINKS -->
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src
-[sample_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtestservice/azure-developer-loadtesting/src
+[sample_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtestservice/azure-developer-loadtesting/src/samples
 [api_reference_doc]: https://docs.microsoft.com/rest/api/loadtesting/
 [product_documentation]: https://azure.microsoft.com/services/load-testing/
 [jdk]: https://docs.microsoft.com/java/azure/jdk/
