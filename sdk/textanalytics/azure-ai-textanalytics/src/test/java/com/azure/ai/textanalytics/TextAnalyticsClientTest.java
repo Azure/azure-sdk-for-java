@@ -542,6 +542,14 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         );
     }
 
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void recognizeEntitiesResolutions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        recognizeEntitiesBatchResolutionRunner(
+                (inputs, options) -> validateEntityResolutions(client.recognizeEntitiesBatch(inputs, null, options)));
+    }
+
     // Recognize Personally Identifiable Information entity
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -2388,6 +2396,27 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     )),
                     result.stream().collect(Collectors.toList()));
             }
+        );
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
+    public void analyzeEntitiesRecognitionActionResolution(HttpClient httpClient,
+                                                           TextAnalyticsServiceVersion serviceVersion) {
+        client = getTextAnalyticsClient(httpClient, serviceVersion);
+        analyzeEntitiesRecognitionResolutionRunner(
+                (documents, tasks) -> {
+                    SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
+                            client.beginAnalyzeActions(documents, tasks);
+                    syncPoller = setPollInterval(syncPoller);
+                    syncPoller.waitForCompletion();
+                    AnalyzeActionsResultPagedIterable result = syncPoller.getFinalResult();
+                    result.forEach(actionsResult -> {
+                        actionsResult.getRecognizeEntitiesResults().forEach(nerActionResult -> {
+                            validateEntityResolutions(nerActionResult.getDocumentsResults());
+                        });
+                    });
+                }
         );
     }
 

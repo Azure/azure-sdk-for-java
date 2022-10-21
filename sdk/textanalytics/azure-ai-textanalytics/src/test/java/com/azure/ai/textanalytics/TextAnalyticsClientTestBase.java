@@ -4,6 +4,8 @@
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
+import com.azure.ai.textanalytics.models.AgeResolution;
+import com.azure.ai.textanalytics.models.AgeUnit;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesAction;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
@@ -13,6 +15,7 @@ import com.azure.ai.textanalytics.models.AnalyzeSentimentAction;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
+import com.azure.ai.textanalytics.models.BaseResolution;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
@@ -60,6 +63,8 @@ import com.azure.ai.textanalytics.models.TextAnalyticsResult;
 import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
+import com.azure.ai.textanalytics.models.WeightResolution;
+import com.azure.ai.textanalytics.models.WeightUnit;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
@@ -83,6 +88,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -97,6 +103,7 @@ import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ENTITIES_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_MULTI_CLASSIFICATION;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_SINGLE_CLASSIFICATION;
 import static com.azure.ai.textanalytics.TestUtils.DETECT_LANGUAGE_INPUTS;
+import static com.azure.ai.textanalytics.TestUtils.ENTITY_RESOLUTION_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.FAKE_API_KEY;
 import static com.azure.ai.textanalytics.TestUtils.HEALTHCARE_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.KEY_PHRASE_INPUTS;
@@ -266,6 +273,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeEntitiesResolutions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Personally Identifiable Information Entities
     @Test
@@ -633,7 +643,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient,
-                                                        TextAnalyticsServiceVersion serviceVersion);
+                                                                                                                TextAnalyticsServiceVersion serviceVersion);
 
     // Healthcare LRO - Cancellation
 
@@ -663,6 +673,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void analyzeEntitiesRecognitionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void analyzeEntitiesRecognitionActionResolution(HttpClient httpClient,
+                                                             TextAnalyticsServiceVersion serviceVersion);
 
     @Test
     abstract void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
@@ -823,6 +837,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void recognizeStringBatchCategorizedEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
+    }
+
+    void recognizeEntitiesBatchResolutionRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
+        testRunner.accept(Arrays.asList(ENTITY_RESOLUTION_INPUT),
+                new TextAnalyticsRequestOptions().setModelVersion("2022-10-01-preview"));
     }
 
     // Personally Identifiable Information Entity runner
@@ -1224,6 +1243,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setRecognizeEntitiesActions(new RecognizeEntitiesAction()));
     }
 
+    void analyzeEntitiesRecognitionResolutionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+                asList(ENTITY_RESOLUTION_INPUT),
+                new TextAnalyticsActions()
+                        .setRecognizeEntitiesActions(new RecognizeEntitiesAction()
+                                .setModelVersion("2022-10-01-preview")));
+    }
+
     void analyzePiiEntityRecognitionWithCategoriesFiltersRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
         testRunner.accept(
@@ -1407,6 +1434,30 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validatePiiEntitiesResultCollection(showStatistics, expected, response.getValue());
+    }
+
+    static void validateEntityResolutions(RecognizeEntitiesResultCollection actualResults) {
+        actualResults.forEach(result -> {
+            result.getEntities().forEach(entity -> {
+                String text = entity.getText();
+                IterableStream<? extends BaseResolution> resolutions = entity.getResolutions();
+                if ("1 year old".equals(text)) {
+                    for (BaseResolution resolution : resolutions) {
+                        assertTrue(resolution instanceof AgeResolution);
+                        AgeResolution ageResolution = (AgeResolution) resolution;
+                        assertEquals(AgeUnit.YEAR, ageResolution.getUnit());
+                        assertEquals(1.0, ageResolution.getValue());
+                    }
+                } else if ("10 pounds".equals(text)) {
+                    for (BaseResolution resolution : resolutions) {
+                        assertTrue(resolution instanceof WeightResolution);
+                        WeightResolution weightResolution = (WeightResolution) resolution;
+                        assertEquals(WeightUnit.POUND, weightResolution.getUnit());
+                        assertEquals(10.0, weightResolution.getValue());
+                    }
+                }
+            });
+        });
     }
 
     static void validatePiiEntitiesResultCollection(boolean showStatistics,

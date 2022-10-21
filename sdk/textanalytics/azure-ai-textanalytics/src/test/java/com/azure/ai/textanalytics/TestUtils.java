@@ -157,6 +157,7 @@ final class TestUtils {
     static final List<String> CATEGORIZED_ENTITY_INPUTS = asList(
         "I had a wonderful trip to Seattle last week.", "I work at Microsoft.");
 
+    static final String ENTITY_RESOLUTION_INPUT = "The cat is 1 year old and weighs 10 pounds.";
     static final List<String> PII_ENTITY_INPUTS = asList(
         "Microsoft employee with ssn 859-98-0987 is using our awesome API's.",
         "Your ABA number - 111000025 - is the first 9 digits in the lower left hand corner of your personal check.");

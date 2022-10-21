@@ -4,19 +4,24 @@
 package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.TextAnalyticsServiceVersion;
+import com.azure.ai.textanalytics.implementation.models.AgeResolution;
 import com.azure.ai.textanalytics.implementation.models.AbstractiveSummarizationResult;
 import com.azure.ai.textanalytics.implementation.models.AbstractiveSummarizationResultBaseDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextTaskResult;
+import com.azure.ai.textanalytics.implementation.models.AreaResolution;
 import com.azure.ai.textanalytics.implementation.models.Association;
+import com.azure.ai.textanalytics.implementation.models.BaseResolution;
+import com.azure.ai.textanalytics.implementation.models.BooleanResolution;
 import com.azure.ai.textanalytics.implementation.models.Certainty;
 import com.azure.ai.textanalytics.implementation.models.ClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.Conditionality;
+import com.azure.ai.textanalytics.implementation.models.CurrencyResolution;
 import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.CustomLabelClassificationResult;
 import com.azure.ai.textanalytics.implementation.models.CustomLabelClassificationResultDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.CustomSingleClassificationResult;
-import com.azure.ai.textanalytics.implementation.models.DocumentEntities;
+import com.azure.ai.textanalytics.implementation.models.DateTimeResolution;
 import com.azure.ai.textanalytics.implementation.models.DocumentError;
 import com.azure.ai.textanalytics.implementation.models.DocumentLanguage;
 import com.azure.ai.textanalytics.implementation.models.DocumentSentiment;
@@ -32,12 +37,13 @@ import com.azure.ai.textanalytics.implementation.models.Error;
 import com.azure.ai.textanalytics.implementation.models.ErrorCode;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponse;
 import com.azure.ai.textanalytics.implementation.models.ErrorResponseException;
-import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.ExtractedSummarySentence;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResult;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationResultDocumentsItem;
+import com.azure.ai.textanalytics.implementation.models.FhirVersion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareAssertion;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
+import com.azure.ai.textanalytics.implementation.models.InformationResolution;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorCode;
 import com.azure.ai.textanalytics.implementation.models.InnerErrorModel;
 import com.azure.ai.textanalytics.implementation.models.InputError;
@@ -49,7 +55,11 @@ import com.azure.ai.textanalytics.implementation.models.LanguageDetectionResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageDetectionTaskResult;
 import com.azure.ai.textanalytics.implementation.models.LanguageInput;
 import com.azure.ai.textanalytics.implementation.models.LanguageResult;
+import com.azure.ai.textanalytics.implementation.models.LengthResolution;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageInput;
+import com.azure.ai.textanalytics.implementation.models.NumberResolution;
+import com.azure.ai.textanalytics.implementation.models.NumericRangeResolution;
+import com.azure.ai.textanalytics.implementation.models.OrdinalResolution;
 import com.azure.ai.textanalytics.implementation.models.PiiCategory;
 import com.azure.ai.textanalytics.implementation.models.PiiResult;
 import com.azure.ai.textanalytics.implementation.models.PiiTaskResult;
@@ -62,18 +72,26 @@ import com.azure.ai.textanalytics.implementation.models.SentimentConfidenceScore
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.SentimentResponseDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.SentimentTaskResult;
+import com.azure.ai.textanalytics.implementation.models.SpeedResolution;
 import com.azure.ai.textanalytics.implementation.models.TargetConfidenceScoreLabel;
 import com.azure.ai.textanalytics.implementation.models.TargetRelationType;
+import com.azure.ai.textanalytics.implementation.models.TemperatureResolution;
+import com.azure.ai.textanalytics.implementation.models.TemporalSpanResolution;
+import com.azure.ai.textanalytics.implementation.models.VolumeResolution;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
+import com.azure.ai.textanalytics.implementation.models.WeightResolution;
+import com.azure.ai.textanalytics.models.AgeUnit;
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
+import com.azure.ai.textanalytics.models.AreaUnit;
 import com.azure.ai.textanalytics.models.AssessmentSentiment;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.CategorizedEntityCollection;
 import com.azure.ai.textanalytics.models.ClassificationCategory;
 import com.azure.ai.textanalytics.models.ClassifyDocumentResult;
+import com.azure.ai.textanalytics.models.DateTimeSubKind;
 import com.azure.ai.textanalytics.models.DetectLanguageInput;
 import com.azure.ai.textanalytics.models.DetectLanguageResult;
 import com.azure.ai.textanalytics.models.DetectedLanguage;
@@ -90,23 +108,31 @@ import com.azure.ai.textanalytics.models.HealthcareEntityCategory;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelation;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.HealthcareEntityRelationType;
+import com.azure.ai.textanalytics.models.InformationUnit;
 import com.azure.ai.textanalytics.models.KeyPhrasesCollection;
+import com.azure.ai.textanalytics.models.LengthUnit;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityCollection;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
+import com.azure.ai.textanalytics.models.NumberKind;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
+import com.azure.ai.textanalytics.models.RangeKind;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
+import com.azure.ai.textanalytics.models.RelativeTo;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.SpeedUnit;
 import com.azure.ai.textanalytics.models.SummaryContext;
 import com.azure.ai.textanalytics.models.SummarySentence;
 import com.azure.ai.textanalytics.models.SummarySentenceCollection;
 import com.azure.ai.textanalytics.models.TargetSentiment;
+import com.azure.ai.textanalytics.models.TemperatureUnit;
+import com.azure.ai.textanalytics.models.TemporalModifier;
 import com.azure.ai.textanalytics.models.TextAnalyticsError;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
@@ -115,8 +141,10 @@ import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.models.VolumeUnit;
 import com.azure.ai.textanalytics.models.WarningCode;
 import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
+import com.azure.ai.textanalytics.models.WeightUnit;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.ClassifyDocumentResultCollection;
@@ -576,6 +604,8 @@ public final class Utility {
                                     entity.getSubcategory(), entity.getConfidenceScore());
                             CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
                             CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
+                            CategorizedEntityPropertiesHelper.setResolutions(categorizedEntity,
+                                    toBaseResolutions(entity.getResolutions()));
                             return categorizedEntity;
                         }).collect(Collectors.toList())),
                         new IterableStream<>(
@@ -587,6 +617,107 @@ public final class Utility {
                 toTextAnalyticsError(documentError.getError()), null));
         }
         return recognizeEntitiesResults;
+    }
+
+    public static IterableStream<com.azure.ai.textanalytics.models.BaseResolution> toBaseResolutions(
+            List<BaseResolution> resolutions) {
+        if (resolutions == null) {
+            return null;
+        }
+
+        List<com.azure.ai.textanalytics.models.BaseResolution> baseResolutions = new ArrayList<>();
+        resolutions.forEach(resolution -> baseResolutions.add(toBaseResolution(resolution)));
+        return new IterableStream<>(baseResolutions);
+    }
+
+    public static com.azure.ai.textanalytics.models.BaseResolution toBaseResolution(BaseResolution resolution) {
+        if (resolution instanceof AgeResolution) {
+            AgeResolution ageResolutionImpl = (AgeResolution) resolution;
+            return new com.azure.ai.textanalytics.models.AgeResolution(
+                    AgeUnit.fromString(ageResolutionImpl.getUnit().toString()), ageResolutionImpl.getValue());
+        } else if (resolution instanceof VolumeResolution) {
+            VolumeResolution volumeResolutionImpl = (VolumeResolution) resolution;
+            return new com.azure.ai.textanalytics.models.VolumeResolution(
+                    VolumeUnit.fromString(volumeResolutionImpl.getUnit().toString()), volumeResolutionImpl.getValue());
+        } else if (resolution instanceof SpeedResolution) {
+            SpeedResolution speedResolutionImpl = (SpeedResolution) resolution;
+            return new com.azure.ai.textanalytics.models.SpeedResolution(
+                    SpeedUnit.fromString(speedResolutionImpl.getUnit().toString()), speedResolutionImpl.getValue());
+        } else if (resolution instanceof AreaResolution) {
+            AreaResolution areaResolutionImpl = (AreaResolution) resolution;
+            return new com.azure.ai.textanalytics.models.AreaResolution(
+                    AreaUnit.fromString(areaResolutionImpl.getUnit().toString()), areaResolutionImpl.getValue());
+        } else if (resolution instanceof LengthResolution) {
+            LengthResolution lengthResolutionImpl = (LengthResolution) resolution;
+            return new com.azure.ai.textanalytics.models.LengthResolution(
+                    LengthUnit.fromString(lengthResolutionImpl.getUnit().toString()), lengthResolutionImpl.getValue());
+        } else if (resolution instanceof InformationResolution) {
+            InformationResolution informationResolutionImpl = (InformationResolution) resolution;
+            return new com.azure.ai.textanalytics.models.InformationResolution(
+                    InformationUnit.fromString(informationResolutionImpl.getUnit().toString()),
+                    informationResolutionImpl.getValue());
+        } else if (resolution instanceof TemperatureResolution) {
+            TemperatureResolution temperatureResolutionImpl = (TemperatureResolution) resolution;
+            return new com.azure.ai.textanalytics.models.TemperatureResolution(
+                    TemperatureUnit.fromString(temperatureResolutionImpl.getUnit().toString()),
+                    temperatureResolutionImpl.getValue());
+        } else if (resolution instanceof WeightResolution) {
+            WeightResolution weightResolutionImpl = (WeightResolution) resolution;
+            return new com.azure.ai.textanalytics.models.WeightResolution(
+                    WeightUnit.fromString(weightResolutionImpl.getUnit().toString()),
+                    weightResolutionImpl.getValue());
+        } else if (resolution instanceof CurrencyResolution) {
+            CurrencyResolution currencyResolutionImpl = (CurrencyResolution) resolution;
+            com.azure.ai.textanalytics.models.CurrencyResolution currencyResolution
+                    = new com.azure.ai.textanalytics.models.CurrencyResolution(
+                            currencyResolutionImpl.getUnit(), currencyResolutionImpl.getValue());
+            CurrencyResolutionPropertiesHelper.setISO4217(currencyResolution, currencyResolutionImpl.getISO4217());
+            return currencyResolution;
+        } else if (resolution instanceof BooleanResolution) {
+            BooleanResolution booleanResolutionImpl = (BooleanResolution) resolution;
+            return new com.azure.ai.textanalytics.models.BooleanResolution(booleanResolutionImpl.isValue());
+        } else if (resolution instanceof DateTimeResolution) {
+            DateTimeResolution dateTimeResolutionImpl = (DateTimeResolution) resolution;
+            com.azure.ai.textanalytics.models.DateTimeResolution dateTimeResolution
+                    = new com.azure.ai.textanalytics.models.DateTimeResolution(dateTimeResolutionImpl.getTimex(),
+                    DateTimeSubKind.fromString(dateTimeResolutionImpl.getDateTimeSubKind().toString()),
+                    dateTimeResolutionImpl.getValue());
+            DateTimeResolutionPropertiesHelper.setModifier(dateTimeResolution,
+                    TemporalModifier.fromString(dateTimeResolutionImpl.getModifier().toString()));
+            return dateTimeResolution;
+        } else if (resolution instanceof NumberResolution) {
+            NumberResolution numberResolutionImpl = (NumberResolution) resolution;
+            return new com.azure.ai.textanalytics.models.NumberResolution(
+                    NumberKind.fromString(numberResolutionImpl.getNumberKind().toString()),
+                    numberResolutionImpl.getValue());
+        } else if (resolution instanceof OrdinalResolution) {
+            OrdinalResolution ordinalResolutionImpl = (OrdinalResolution) resolution;
+            return new com.azure.ai.textanalytics.models.OrdinalResolution(
+                    ordinalResolutionImpl.getOffset(),
+                    RelativeTo.fromString(ordinalResolutionImpl.getRelativeTo().toString()),
+                    ordinalResolutionImpl.getValue());
+        } else if (resolution instanceof TemporalSpanResolution) {
+            TemporalSpanResolution temporalSpanResolutionImpl = (TemporalSpanResolution) resolution;
+            com.azure.ai.textanalytics.models.TemporalSpanResolution temporalSpanResolution
+                    = new com.azure.ai.textanalytics.models.TemporalSpanResolution();
+            TemporalSpanResolutionPropertiesHelper.setBegin(temporalSpanResolution,
+                    temporalSpanResolutionImpl.getBegin());
+            TemporalSpanResolutionPropertiesHelper.setEnd(temporalSpanResolution,
+                    temporalSpanResolutionImpl.getEnd());
+            TemporalSpanResolutionPropertiesHelper.setDuration(temporalSpanResolution,
+                    temporalSpanResolutionImpl.getDuration());
+            TemporalSpanResolutionPropertiesHelper.setModifier(temporalSpanResolution,
+                    TemporalModifier.fromString(temporalSpanResolutionImpl.getModifier().toString()));
+            return temporalSpanResolution;
+        } else if (resolution instanceof NumericRangeResolution) {
+            NumericRangeResolution numericRangeResolutionImpl = (NumericRangeResolution) resolution;
+            return new com.azure.ai.textanalytics.models.NumericRangeResolution(
+                    RangeKind.fromString(numericRangeResolutionImpl.getRangeKind().toString()),
+                    numericRangeResolutionImpl.getMinimum(), numericRangeResolutionImpl.getMaximum());
+        } else {
+            // else throw exception
+            throw LOGGER.logExceptionAsError(new RuntimeException("Unknown Resolution type: " + resolution.getClass()));
+        }
     }
 
     public static RecognizeEntitiesResult toRecognizeEntitiesResult(EntitiesResultDocumentsItem documentEntities) {
@@ -602,6 +733,8 @@ public final class Utility {
                         entity.getConfidenceScore());
                     CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
                     CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
+                    CategorizedEntityPropertiesHelper.setResolutions(categorizedEntity, toBaseResolutions(
+                            entity.getResolutions()));
                     return categorizedEntity;
                 }).collect(Collectors.toList())),
                 new IterableStream<>(documentEntities.getWarnings().stream().map(
@@ -621,6 +754,8 @@ public final class Utility {
                         entity.getConfidenceScore());
                     CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
                     CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
+                    CategorizedEntityPropertiesHelper.setResolutions(categorizedEntity,
+                            toBaseResolutions(entity.getResolutions()));
                     return categorizedEntity;
                 }).collect(Collectors.toList())),
                 new IterableStream<>(documentEntities.getWarnings().stream().map(
@@ -686,26 +821,6 @@ public final class Utility {
                 toTextAnalyticsError(documentError.getError()), null));
         }
         return recognizeEntitiesResults;
-    }
-
-
-    public static RecognizeEntitiesResult toRecognizeEntitiesResult(DocumentEntities documentEntities) {
-        return new RecognizeEntitiesResult(
-            documentEntities.getId(),
-            documentEntities.getStatistics() == null ? null
-                : toTextDocumentStatistics(documentEntities.getStatistics()),
-            null,
-            new CategorizedEntityCollection(
-                new IterableStream<>(documentEntities.getEntities().stream().map(entity -> {
-                    final CategorizedEntity categorizedEntity = new CategorizedEntity(entity.getText(),
-                        EntityCategory.fromString(entity.getCategory()), entity.getSubcategory(),
-                        entity.getConfidenceScore());
-                    CategorizedEntityPropertiesHelper.setLength(categorizedEntity, entity.getLength());
-                    CategorizedEntityPropertiesHelper.setOffset(categorizedEntity, entity.getOffset());
-                    return categorizedEntity;
-                }).collect(Collectors.toList())),
-                new IterableStream<>(documentEntities.getWarnings().stream().map(
-                    warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList()))));
     }
 
     public static RecognizePiiEntitiesResultCollection toRecognizePiiEntitiesResultCollection(
