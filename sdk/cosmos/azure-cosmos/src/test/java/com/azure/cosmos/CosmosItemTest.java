@@ -191,6 +191,8 @@ public class CosmosItemTest extends TestSuiteBase {
             assertThat(items.get(0).get("property1").asText()).isEqualTo("7");
         } finally {
             Utils.configureSimpleObjectMapper(false);
+            // remove the item with duplicate properties as it will break other tests after it
+            container.deleteItem(id, new PartitionKey(id), new CosmosItemRequestOptions());
         }
     }
 

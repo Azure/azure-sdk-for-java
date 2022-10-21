@@ -11,7 +11,7 @@ import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandUpdate;
 /** Samples for VirtualMachineRunCommands Update. */
 public final class VirtualMachineRunCommandsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/runCommandExamples/VirtualMachineRunCommand_Update.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/runCommandExamples/VirtualMachineRunCommand_Update.json
      */
     /**
      * Sample code: Update a run command.

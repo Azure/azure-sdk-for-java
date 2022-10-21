@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
 import com.azure.spring.cloud.autoconfigure.aad.AadClientRegistrationRepository;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;

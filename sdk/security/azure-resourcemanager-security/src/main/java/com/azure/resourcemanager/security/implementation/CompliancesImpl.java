@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.CompliancesClient;
 import com.azure.resourcemanager.security.fluent.models.ComplianceInner;
 import com.azure.resourcemanager.security.models.Compliance;
 import com.azure.resourcemanager.security.models.Compliances;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class CompliancesImpl implements Compliances {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CompliancesImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CompliancesImpl.class);
 
     private final CompliancesClient innerClient;
 

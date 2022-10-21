@@ -50,6 +50,13 @@ public class RntbdChannelAcquisitionEvent {
         }
     }
 
+    public Duration getDuration() {
+        if (this.completeTime == null) {
+            return null;
+        }
+        return Duration.between(this.createdTime, this.completeTime);
+    }
+
     public static class RntbdChannelAcquisitionEventJsonSerializer extends com.fasterxml.jackson.databind.JsonSerializer<RntbdChannelAcquisitionEvent> {
         @Override
         public void serialize(RntbdChannelAcquisitionEvent event,
@@ -59,7 +66,7 @@ public class RntbdChannelAcquisitionEvent {
 
             writer.writeStringField(event.eventType.toString(), event.createdTime.toString());
             if (event.completeTime != null) {
-                writer.writeNumberField("durationInMilliSecs", (double) Duration.between(event.createdTime, event.completeTime).toNanos() / (1000d * 1000d));
+                writer.writeNumberField("durationInMilliSecs", (double) event.getDuration().toNanos() / (1000d * 1000d));
             }
 
             writer.writeEndObject();

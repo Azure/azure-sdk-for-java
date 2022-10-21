@@ -121,76 +121,6 @@
       "ignore": true,
       "differences": [
         {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, org.springframework.web.client.RestOperations)",
-          "justification": "The change is expected. This will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration::<init>(org.springframework.web.client.RestOperations)",
-          "justification": "The change is expected. This will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration::<init>(org.springframework.web.client.RestOperations)",
-          "justification": "The change is expected. This will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.web.client.RestOperations)",
-          "justification": "The change is expected. This will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector<com.nimbusds.jose.proc.SecurityContext> com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::aadIssuerJwsKeySelector(com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository, com.nimbusds.jose.util.ResourceRetriever)",
-          "justification": "The change is expected. This will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.web.client.RestOperations)",
-          "justification": "The change is expected. This will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.annotation.attributeValueChanged",
-          "new": "class com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration",
-          "justification": "The change is expected. This is bean definition class, will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method org.springframework.security.oauth2.jwt.JwtDecoder com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration::jwtDecoder(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, org.springframework.web.client.RestOperations)",
-          "justification": "The change is expected. This is bean definition method, will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.annotation.added",
-          "new": "class com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration",
-          "justification": "The change is expected. This is bean definition class, will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.annotation.attributeValueChanged",
-          "new": "class com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration",
-          "justification": "The change is expected. This is bean definition class, will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::authorizedClientManager(org.springframework.web.client.RestOperations, org.springframework.security.oauth2.client.registration.ClientRegistrationRepository, org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository)",
-          "justification": "The change is expected. This is bean definition method, will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.annotation.attributeValueChanged",
-          "new": "class com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration",
-          "justification": "The change is expected. This is bean definition class, will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method com.nimbusds.jose.util.ResourceRetriever com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::jwtResourceRetriever(org.springframework.web.client.RestOperations)",
-          "justification": "The change is expected. This is bean definition method, will not be used by customer's java code directly."
-        },
-        {
-          "code": "java.method.numberOfParametersChanged",
-          "new": "method com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector<com.nimbusds.jose.proc.SecurityContext> com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::aadIssuerJwsKeySelector(org.springframework.web.client.RestOperations, com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository, com.nimbusds.jose.util.ResourceRetriever)",
-          "justification": "The change is expected. This is bean definition method, will not be used by customer's java code directly."
-        },
-        {
           "regex": true,
           "code": "java.class.nonPublicPartOfAPI",
           "new": "class com.azure.spring.messaging.container.DefaultMessageListenerContainer",
@@ -479,6 +409,18 @@
           "justification": "Thi isn't an external class"
         },
         {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class|enum) com\\.mysql\\.cj\\..*",
+          "justification": "Mysql driver classes are allowed to be exposed by dependencies using them."
+        },
+        {
+          "regex": true,
+          "code": "java\\.class\\.externalClassExposedInAPI",
+          "new": "(interface|class|enum) org\\.postgresql\\..*",
+          "justification": "Postgresql driver classes are allowed to be exposed by dependencies using them."
+        },
+        {
           "code": "java.method.parameterTypeParameterChanged",
           "old": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===java.lang.Object===, com.azure.cosmos.models.PartitionKey)",
           "new": "parameter <T> reactor.core.publisher.Mono<T> com.azure.spring.data.cosmos.core.ReactiveCosmosOperations::insert(java.lang.String, ===T===, com.azure.cosmos.models.PartitionKey)",
@@ -521,6 +463,62 @@
           "code": "java.field.removedWithConstant",
           "old": "field com.azure.spring.cloud.config.properties.AppConfigurationStoreSelects.LABEL_SEPARATOR",
           "justification": "Not a public api"
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.AadAuthenticationFilterAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadOAuth2ClientConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadResourceServerConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.configuration.AadWebApplicationConfiguration::<init>(org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.azure.spring.cloud.autoconfigure.aad.filter.UserPrincipalManager, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Customer's java code will not call this method directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Customer's java code will not call this method directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aad.filter.AadAuthenticationFilter::<init>(com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties, com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints, com.nimbusds.jose.util.ResourceRetriever, com.nimbusds.jose.jwk.source.JWKSetCache, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Customer's java code will not call this method directly."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector<com.nimbusds.jose.proc.SecurityContext> com.azure.spring.cloud.autoconfigure.aadb2c.AadB2cResourceServerAutoConfiguration::aadIssuerJwsKeySelector(com.azure.spring.cloud.autoconfigure.aad.AadTrustedIssuerRepository, com.nimbusds.jose.util.ResourceRetriever)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "code": "java.method.numberOfParametersChanged",
+          "new": "method void com.azure.spring.cloud.autoconfigure.aadb2c.configuration.AadB2cOAuth2ClientConfiguration::<init>(com.azure.spring.cloud.autoconfigure.aadb2c.properties.AadB2cProperties, org.springframework.boot.web.client.RestTemplateBuilder)",
+          "justification": "Bean configuration will not be used by customer in java code."
+        },
+        {
+          "regex": true,
+          "code": "java.annotation.added",
+          "new": "class com.azure.ai.formrecognizer.documentanalysis.models.(DocumentField|DocumentLine)",
+          "justification": "Skip customized getters on class when serialization and deserialization."
         }
       ]
     }

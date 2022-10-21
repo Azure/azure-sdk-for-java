@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.SubAssessmentsClient;
 import com.azure.resourcemanager.security.fluent.models.SecuritySubAssessmentInner;
 import com.azure.resourcemanager.security.models.SecuritySubAssessmentList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SubAssessmentsClient. */
 public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
-    private final ClientLogger logger = new ClientLogger(SubAssessmentsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SubAssessmentsService service;
 
@@ -124,7 +121,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope.
+     * @return security sub-assessments on all your scanned resources inside a subscription scope along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySubAssessmentInner>> listAllSinglePageAsync(String scope) {
@@ -162,7 +160,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope.
+     * @return security sub-assessments on all your scanned resources inside a subscription scope along with {@link
+     *     PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySubAssessmentInner>> listAllSinglePageAsync(String scope, Context context) {
@@ -199,7 +198,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope.
+     * @return security sub-assessments on all your scanned resources inside a subscription scope as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecuritySubAssessmentInner> listAllAsync(String scope) {
@@ -215,7 +215,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope.
+     * @return security sub-assessments on all your scanned resources inside a subscription scope as paginated response
+     *     with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecuritySubAssessmentInner> listAllAsync(String scope, Context context) {
@@ -231,7 +232,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope.
+     * @return security sub-assessments on all your scanned resources inside a subscription scope as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySubAssessmentInner> listAll(String scope) {
@@ -247,7 +249,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a subscription scope.
+     * @return security sub-assessments on all your scanned resources inside a subscription scope as paginated response
+     *     with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySubAssessmentInner> listAll(String scope, Context context) {
@@ -263,7 +266,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope.
+     * @return security sub-assessments on all your scanned resources inside a scope along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySubAssessmentInner>> listSinglePageAsync(String scope, String assessmentName) {
@@ -306,7 +310,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope.
+     * @return security sub-assessments on all your scanned resources inside a scope along with {@link PagedResponse} on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySubAssessmentInner>> listSinglePageAsync(
@@ -348,7 +353,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope.
+     * @return security sub-assessments on all your scanned resources inside a scope as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecuritySubAssessmentInner> listAsync(String scope, String assessmentName) {
@@ -366,7 +372,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope.
+     * @return security sub-assessments on all your scanned resources inside a scope as paginated response with {@link
+     *     PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecuritySubAssessmentInner> listAsync(String scope, String assessmentName, Context context) {
@@ -384,7 +391,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope.
+     * @return security sub-assessments on all your scanned resources inside a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySubAssessmentInner> list(String scope, String assessmentName) {
@@ -401,7 +409,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security sub-assessments on all your scanned resources inside a scope.
+     * @return security sub-assessments on all your scanned resources inside a scope as paginated response with {@link
+     *     PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecuritySubAssessmentInner> list(String scope, String assessmentName, Context context) {
@@ -418,7 +427,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security sub-assessment on your scanned resource.
+     * @return a security sub-assessment on your scanned resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecuritySubAssessmentInner>> getWithResponseAsync(
@@ -467,7 +477,8 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security sub-assessment on your scanned resource.
+     * @return a security sub-assessment on your scanned resource along with {@link Response} on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecuritySubAssessmentInner>> getWithResponseAsync(
@@ -505,19 +516,12 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security sub-assessment on your scanned resource.
+     * @return a security sub-assessment on your scanned resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SecuritySubAssessmentInner> getAsync(String scope, String assessmentName, String subAssessmentName) {
         return getWithResponseAsync(scope, assessmentName, subAssessmentName)
-            .flatMap(
-                (Response<SecuritySubAssessmentInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -548,7 +552,7 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a security sub-assessment on your scanned resource.
+     * @return a security sub-assessment on your scanned resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecuritySubAssessmentInner> getWithResponse(
@@ -559,11 +563,13 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security sub-assessments.
+     * @return list of security sub-assessments along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySubAssessmentInner>> listAllNextSinglePageAsync(String nextLink) {
@@ -594,12 +600,14 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security sub-assessments.
+     * @return list of security sub-assessments along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySubAssessmentInner>> listAllNextSinglePageAsync(
@@ -631,11 +639,13 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security sub-assessments.
+     * @return list of security sub-assessments along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySubAssessmentInner>> listNextSinglePageAsync(String nextLink) {
@@ -666,12 +676,14 @@ public final class SubAssessmentsClientImpl implements SubAssessmentsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security sub-assessments.
+     * @return list of security sub-assessments along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecuritySubAssessmentInner>> listNextSinglePageAsync(String nextLink, Context context) {

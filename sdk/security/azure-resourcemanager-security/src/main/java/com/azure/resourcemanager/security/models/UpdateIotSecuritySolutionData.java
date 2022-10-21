@@ -5,30 +5,35 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.azure.resourcemanager.security.fluent.models.UpdateIoTSecuritySolutionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** The UpdateIotSecuritySolutionData model. */
-@JsonFlatten
 @Fluent
-public class UpdateIotSecuritySolutionData extends TagsResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateIotSecuritySolutionData.class);
-
+public final class UpdateIotSecuritySolutionData extends TagsResource {
     /*
-     * Properties of the IoT Security solution's user defined resources.
+     * Security Solution data
      */
-    @JsonProperty(value = "properties.userDefinedResources")
-    private UserDefinedResourcesProperties userDefinedResources;
+    @JsonProperty(value = "properties")
+    private UpdateIoTSecuritySolutionProperties innerProperties;
 
-    /*
-     * List of the configuration status for each recommendation type.
+    /**
+     * Get the innerProperties property: Security Solution data.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.recommendationsConfiguration")
-    private List<RecommendationConfigurationProperties> recommendationsConfiguration;
+    private UpdateIoTSecuritySolutionProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public UpdateIotSecuritySolutionData withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
 
     /**
      * Get the userDefinedResources property: Properties of the IoT Security solution's user defined resources.
@@ -36,7 +41,7 @@ public class UpdateIotSecuritySolutionData extends TagsResource {
      * @return the userDefinedResources value.
      */
     public UserDefinedResourcesProperties userDefinedResources() {
-        return this.userDefinedResources;
+        return this.innerProperties() == null ? null : this.innerProperties().userDefinedResources();
     }
 
     /**
@@ -46,7 +51,10 @@ public class UpdateIotSecuritySolutionData extends TagsResource {
      * @return the UpdateIotSecuritySolutionData object itself.
      */
     public UpdateIotSecuritySolutionData withUserDefinedResources(UserDefinedResourcesProperties userDefinedResources) {
-        this.userDefinedResources = userDefinedResources;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateIoTSecuritySolutionProperties();
+        }
+        this.innerProperties().withUserDefinedResources(userDefinedResources);
         return this;
     }
 
@@ -56,7 +64,7 @@ public class UpdateIotSecuritySolutionData extends TagsResource {
      * @return the recommendationsConfiguration value.
      */
     public List<RecommendationConfigurationProperties> recommendationsConfiguration() {
-        return this.recommendationsConfiguration;
+        return this.innerProperties() == null ? null : this.innerProperties().recommendationsConfiguration();
     }
 
     /**
@@ -67,14 +75,10 @@ public class UpdateIotSecuritySolutionData extends TagsResource {
      */
     public UpdateIotSecuritySolutionData withRecommendationsConfiguration(
         List<RecommendationConfigurationProperties> recommendationsConfiguration) {
-        this.recommendationsConfiguration = recommendationsConfiguration;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public UpdateIotSecuritySolutionData withTags(Map<String, String> tags) {
-        super.withTags(tags);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new UpdateIoTSecuritySolutionProperties();
+        }
+        this.innerProperties().withRecommendationsConfiguration(recommendationsConfiguration);
         return this;
     }
 
@@ -86,11 +90,8 @@ public class UpdateIotSecuritySolutionData extends TagsResource {
     @Override
     public void validate() {
         super.validate();
-        if (userDefinedResources() != null) {
-            userDefinedResources().validate();
-        }
-        if (recommendationsConfiguration() != null) {
-            recommendationsConfiguration().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -28,7 +28,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.security.fluent.AlertsClient;
@@ -41,8 +40,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in AlertsClient. */
 public final class AlertsClientImpl implements AlertsClient {
-    private final ClientLogger logger = new ClientLogger(AlertsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final AlertsService service;
 
@@ -139,9 +136,9 @@ public final class AlertsClientImpl implements AlertsClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ascLocation") String ascLocation,
             @PathParam("alertName") String alertName,
-            @PathParam("resourceGroupName") String resourceGroupName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -192,6 +189,21 @@ public final class AlertsClientImpl implements AlertsClient {
 
         @Headers({"Content-Type: application/json"})
         @Post(
+            "/subscriptions/{subscriptionId}/providers/Microsoft.Security/locations/{ascLocation}/alerts/{alertName}"
+                + "/inProgress")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> updateSubscriptionLevelStateToInProgress(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("ascLocation") String ascLocation,
+            @PathParam("alertName") String alertName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
                 + "/{ascLocation}/alerts/{alertName}/resolve")
         @ExpectedResponses({204})
@@ -200,9 +212,9 @@ public final class AlertsClientImpl implements AlertsClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ascLocation") String ascLocation,
             @PathParam("alertName") String alertName,
-            @PathParam("resourceGroupName") String resourceGroupName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -216,9 +228,9 @@ public final class AlertsClientImpl implements AlertsClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ascLocation") String ascLocation,
             @PathParam("alertName") String alertName,
-            @PathParam("resourceGroupName") String resourceGroupName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -232,9 +244,25 @@ public final class AlertsClientImpl implements AlertsClient {
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("ascLocation") String ascLocation,
             @PathParam("alertName") String alertName,
+            @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Security/locations"
+                + "/{ascLocation}/alerts/{alertName}/inProgress")
+        @ExpectedResponses({204})
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Void>> updateResourceGroupLevelStateToInProgress(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("ascLocation") String ascLocation,
+            @PathParam("alertName") String alertName,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -299,7 +327,7 @@ public final class AlertsClientImpl implements AlertsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listSinglePageAsync() {
@@ -315,7 +343,7 @@ public final class AlertsClientImpl implements AlertsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -341,7 +369,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listSinglePageAsync(Context context) {
@@ -357,7 +385,7 @@ public final class AlertsClientImpl implements AlertsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -378,7 +406,7 @@ public final class AlertsClientImpl implements AlertsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertInner> listAsync() {
@@ -392,7 +420,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertInner> listAsync(Context context) {
@@ -405,7 +433,7 @@ public final class AlertsClientImpl implements AlertsClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> list() {
@@ -419,7 +447,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> list(Context context) {
@@ -434,7 +462,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -454,7 +482,7 @@ public final class AlertsClientImpl implements AlertsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -488,7 +516,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listByResourceGroupSinglePageAsync(
@@ -509,7 +537,7 @@ public final class AlertsClientImpl implements AlertsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -539,7 +567,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -557,7 +585,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -574,7 +602,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> listByResourceGroup(String resourceGroupName) {
@@ -590,7 +618,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -605,7 +633,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listSubscriptionLevelByRegionSinglePageAsync(String ascLocation) {
@@ -624,7 +652,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -658,7 +686,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listSubscriptionLevelByRegionSinglePageAsync(
@@ -678,7 +706,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -703,7 +731,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertInner> listSubscriptionLevelByRegionAsync(String ascLocation) {
@@ -721,7 +749,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertInner> listSubscriptionLevelByRegionAsync(String ascLocation, Context context) {
@@ -738,7 +766,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> listSubscriptionLevelByRegion(String ascLocation) {
@@ -754,7 +782,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> listSubscriptionLevelByRegion(String ascLocation, Context context) {
@@ -771,7 +799,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listResourceGroupLevelByRegionSinglePageAsync(
@@ -795,7 +823,7 @@ public final class AlertsClientImpl implements AlertsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -832,7 +860,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listResourceGroupLevelByRegionSinglePageAsync(
@@ -856,7 +884,7 @@ public final class AlertsClientImpl implements AlertsClient {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -889,7 +917,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertInner> listResourceGroupLevelByRegionAsync(String ascLocation, String resourceGroupName) {
@@ -909,7 +937,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<AlertInner> listResourceGroupLevelByRegionAsync(
@@ -929,7 +957,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> listResourceGroupLevelByRegion(String ascLocation, String resourceGroupName) {
@@ -947,7 +975,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AlertInner> listResourceGroupLevelByRegion(
@@ -964,7 +992,8 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated with a subscription.
+     * @return an alert that is associated with a subscription along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertInner>> getSubscriptionLevelWithResponseAsync(String ascLocation, String alertName) {
@@ -986,7 +1015,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1013,7 +1042,8 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated with a subscription.
+     * @return an alert that is associated with a subscription along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertInner>> getSubscriptionLevelWithResponseAsync(
@@ -1036,7 +1066,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1059,19 +1089,12 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated with a subscription.
+     * @return an alert that is associated with a subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AlertInner> getSubscriptionLevelAsync(String ascLocation, String alertName) {
         return getSubscriptionLevelWithResponseAsync(ascLocation, alertName)
-            .flatMap(
-                (Response<AlertInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -1100,7 +1123,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated with a subscription.
+     * @return an alert that is associated with a subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertInner> getSubscriptionLevelWithResponse(
@@ -1111,19 +1134,20 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get an alert that is associated a resource group or a resource in a resource group.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated a resource group or a resource in a resource group.
+     * @return an alert that is associated a resource group or a resource in a resource group along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertInner>> getResourceGroupLevelWithResponseAsync(
-        String ascLocation, String alertName, String resourceGroupName) {
+        String resourceGroupName, String ascLocation, String alertName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1136,17 +1160,17 @@ public final class AlertsClientImpl implements AlertsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
         }
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1156,9 +1180,9 @@ public final class AlertsClientImpl implements AlertsClient {
                             this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            resourceGroupName,
                             ascLocation,
                             alertName,
-                            resourceGroupName,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1167,20 +1191,21 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get an alert that is associated a resource group or a resource in a resource group.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated a resource group or a resource in a resource group.
+     * @return an alert that is associated a resource group or a resource in a resource group along with {@link
+     *     Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<AlertInner>> getResourceGroupLevelWithResponseAsync(
-        String ascLocation, String alertName, String resourceGroupName, Context context) {
+        String resourceGroupName, String ascLocation, String alertName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1193,17 +1218,17 @@ public final class AlertsClientImpl implements AlertsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
         }
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1211,9 +1236,9 @@ public final class AlertsClientImpl implements AlertsClient {
                 this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
+                resourceGroupName,
                 ascLocation,
                 alertName,
-                resourceGroupName,
                 accept,
                 context);
     }
@@ -1221,66 +1246,61 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get an alert that is associated a resource group or a resource in a resource group.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated a resource group or a resource in a resource group.
+     * @return an alert that is associated a resource group or a resource in a resource group on successful completion
+     *     of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<AlertInner> getResourceGroupLevelAsync(
-        String ascLocation, String alertName, String resourceGroupName) {
-        return getResourceGroupLevelWithResponseAsync(ascLocation, alertName, resourceGroupName)
-            .flatMap(
-                (Response<AlertInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        String resourceGroupName, String ascLocation, String alertName) {
+        return getResourceGroupLevelWithResponseAsync(resourceGroupName, ascLocation, alertName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get an alert that is associated a resource group or a resource in a resource group.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an alert that is associated a resource group or a resource in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AlertInner getResourceGroupLevel(String ascLocation, String alertName, String resourceGroupName) {
-        return getResourceGroupLevelAsync(ascLocation, alertName, resourceGroupName).block();
+    public AlertInner getResourceGroupLevel(String resourceGroupName, String ascLocation, String alertName) {
+        return getResourceGroupLevelAsync(resourceGroupName, ascLocation, alertName).block();
     }
 
     /**
      * Get an alert that is associated a resource group or a resource in a resource group.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an alert that is associated a resource group or a resource in a resource group.
+     * @return an alert that is associated a resource group or a resource in a resource group along with {@link
+     *     Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AlertInner> getResourceGroupLevelWithResponse(
-        String ascLocation, String alertName, String resourceGroupName, Context context) {
-        return getResourceGroupLevelWithResponseAsync(ascLocation, alertName, resourceGroupName, context).block();
+        String resourceGroupName, String ascLocation, String alertName, Context context) {
+        return getResourceGroupLevelWithResponseAsync(resourceGroupName, ascLocation, alertName, context).block();
     }
 
     /**
@@ -1292,7 +1312,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateSubscriptionLevelStateToDismissWithResponseAsync(
@@ -1315,7 +1335,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1342,7 +1362,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateSubscriptionLevelStateToDismissWithResponseAsync(
@@ -1365,7 +1385,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1388,12 +1408,12 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateSubscriptionLevelStateToDismissAsync(String ascLocation, String alertName) {
         return updateSubscriptionLevelStateToDismissWithResponseAsync(ascLocation, alertName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1421,7 +1441,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateSubscriptionLevelStateToDismissWithResponse(
@@ -1438,7 +1458,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateSubscriptionLevelStateToResolveWithResponseAsync(
@@ -1461,7 +1481,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1488,7 +1508,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateSubscriptionLevelStateToResolveWithResponseAsync(
@@ -1511,7 +1531,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1534,12 +1554,12 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateSubscriptionLevelStateToResolveAsync(String ascLocation, String alertName) {
         return updateSubscriptionLevelStateToResolveWithResponseAsync(ascLocation, alertName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1567,7 +1587,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateSubscriptionLevelStateToResolveWithResponse(
@@ -1584,7 +1604,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateSubscriptionLevelStateToActivateWithResponseAsync(
@@ -1607,7 +1627,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1634,7 +1654,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateSubscriptionLevelStateToActivateWithResponseAsync(
@@ -1657,7 +1677,7 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1680,12 +1700,12 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateSubscriptionLevelStateToActivateAsync(String ascLocation, String alertName) {
         return updateSubscriptionLevelStateToActivateWithResponseAsync(ascLocation, alertName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -1713,7 +1733,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateSubscriptionLevelStateToActivateWithResponse(
@@ -1727,16 +1747,14 @@ public final class AlertsClientImpl implements AlertsClient {
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateResourceGroupLevelStateToResolveWithResponseAsync(
-        String ascLocation, String alertName, String resourceGroupName) {
+    private Mono<Response<Void>> updateSubscriptionLevelStateToInProgressWithResponseAsync(
+        String ascLocation, String alertName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1755,11 +1773,159 @@ public final class AlertsClientImpl implements AlertsClient {
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
+        final String apiVersion = "2022-01-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateSubscriptionLevelStateToInProgress(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            ascLocation,
+                            alertName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> updateSubscriptionLevelStateToInProgressWithResponseAsync(
+        String ascLocation, String alertName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (ascLocation == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
+        }
+        if (alertName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-01-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .updateSubscriptionLevelStateToInProgress(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                ascLocation,
+                alertName,
+                accept,
+                context);
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> updateSubscriptionLevelStateToInProgressAsync(String ascLocation, String alertName) {
+        return updateSubscriptionLevelStateToInProgressWithResponseAsync(ascLocation, alertName)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateSubscriptionLevelStateToInProgress(String ascLocation, String alertName) {
+        updateSubscriptionLevelStateToInProgressAsync(ascLocation, alertName).block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateSubscriptionLevelStateToInProgressWithResponse(
+        String ascLocation, String alertName, Context context) {
+        return updateSubscriptionLevelStateToInProgressWithResponseAsync(ascLocation, alertName, context).block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> updateResourceGroupLevelStateToResolveWithResponseAsync(
+        String resourceGroupName, String ascLocation, String alertName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
-        final String apiVersion = "2021-01-01";
+        if (ascLocation == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
+        }
+        if (alertName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1769,9 +1935,9 @@ public final class AlertsClientImpl implements AlertsClient {
                             this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            resourceGroupName,
                             ascLocation,
                             alertName,
-                            resourceGroupName,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1780,20 +1946,20 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateResourceGroupLevelStateToResolveWithResponseAsync(
-        String ascLocation, String alertName, String resourceGroupName, Context context) {
+        String resourceGroupName, String ascLocation, String alertName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1806,17 +1972,17 @@ public final class AlertsClientImpl implements AlertsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
         }
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1824,9 +1990,9 @@ public final class AlertsClientImpl implements AlertsClient {
                 this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
+                resourceGroupName,
                 ascLocation,
                 alertName,
-                resourceGroupName,
                 accept,
                 context);
     }
@@ -1834,78 +2000,78 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateResourceGroupLevelStateToResolveAsync(
-        String ascLocation, String alertName, String resourceGroupName) {
-        return updateResourceGroupLevelStateToResolveWithResponseAsync(ascLocation, alertName, resourceGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        String resourceGroupName, String ascLocation, String alertName) {
+        return updateResourceGroupLevelStateToResolveWithResponseAsync(resourceGroupName, ascLocation, alertName)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateResourceGroupLevelStateToResolve(String ascLocation, String alertName, String resourceGroupName) {
-        updateResourceGroupLevelStateToResolveAsync(ascLocation, alertName, resourceGroupName).block();
+    public void updateResourceGroupLevelStateToResolve(String resourceGroupName, String ascLocation, String alertName) {
+        updateResourceGroupLevelStateToResolveAsync(resourceGroupName, ascLocation, alertName).block();
     }
 
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateResourceGroupLevelStateToResolveWithResponse(
-        String ascLocation, String alertName, String resourceGroupName, Context context) {
+        String resourceGroupName, String ascLocation, String alertName, Context context) {
         return updateResourceGroupLevelStateToResolveWithResponseAsync(
-                ascLocation, alertName, resourceGroupName, context)
+                resourceGroupName, ascLocation, alertName, context)
             .block();
     }
 
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateResourceGroupLevelStateToDismissWithResponseAsync(
-        String ascLocation, String alertName, String resourceGroupName) {
+        String resourceGroupName, String ascLocation, String alertName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1918,17 +2084,17 @@ public final class AlertsClientImpl implements AlertsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
         }
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1938,9 +2104,9 @@ public final class AlertsClientImpl implements AlertsClient {
                             this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            resourceGroupName,
                             ascLocation,
                             alertName,
-                            resourceGroupName,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1949,20 +2115,20 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateResourceGroupLevelStateToDismissWithResponseAsync(
-        String ascLocation, String alertName, String resourceGroupName, Context context) {
+        String resourceGroupName, String ascLocation, String alertName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -1975,17 +2141,17 @@ public final class AlertsClientImpl implements AlertsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
         }
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -1993,9 +2159,9 @@ public final class AlertsClientImpl implements AlertsClient {
                 this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
+                resourceGroupName,
                 ascLocation,
                 alertName,
-                resourceGroupName,
                 accept,
                 context);
     }
@@ -2003,78 +2169,78 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateResourceGroupLevelStateToDismissAsync(
-        String ascLocation, String alertName, String resourceGroupName) {
-        return updateResourceGroupLevelStateToDismissWithResponseAsync(ascLocation, alertName, resourceGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        String resourceGroupName, String ascLocation, String alertName) {
+        return updateResourceGroupLevelStateToDismissWithResponseAsync(resourceGroupName, ascLocation, alertName)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateResourceGroupLevelStateToDismiss(String ascLocation, String alertName, String resourceGroupName) {
-        updateResourceGroupLevelStateToDismissAsync(ascLocation, alertName, resourceGroupName).block();
+    public void updateResourceGroupLevelStateToDismiss(String resourceGroupName, String ascLocation, String alertName) {
+        updateResourceGroupLevelStateToDismissAsync(resourceGroupName, ascLocation, alertName).block();
     }
 
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateResourceGroupLevelStateToDismissWithResponse(
-        String ascLocation, String alertName, String resourceGroupName, Context context) {
+        String resourceGroupName, String ascLocation, String alertName, Context context) {
         return updateResourceGroupLevelStateToDismissWithResponseAsync(
-                ascLocation, alertName, resourceGroupName, context)
+                resourceGroupName, ascLocation, alertName, context)
             .block();
     }
 
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateResourceGroupLevelStateToActivateWithResponseAsync(
-        String ascLocation, String alertName, String resourceGroupName) {
+        String resourceGroupName, String ascLocation, String alertName) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2087,17 +2253,17 @@ public final class AlertsClientImpl implements AlertsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
         }
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2107,9 +2273,9 @@ public final class AlertsClientImpl implements AlertsClient {
                             this.client.getEndpoint(),
                             apiVersion,
                             this.client.getSubscriptionId(),
+                            resourceGroupName,
                             ascLocation,
                             alertName,
-                            resourceGroupName,
                             accept,
                             context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -2118,20 +2284,20 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> updateResourceGroupLevelStateToActivateWithResponseAsync(
-        String ascLocation, String alertName, String resourceGroupName, Context context) {
+        String resourceGroupName, String ascLocation, String alertName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -2144,17 +2310,17 @@ public final class AlertsClientImpl implements AlertsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
         if (ascLocation == null) {
             return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
         }
         if (alertName == null) {
             return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
         }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2162,9 +2328,9 @@ public final class AlertsClientImpl implements AlertsClient {
                 this.client.getEndpoint(),
                 apiVersion,
                 this.client.getSubscriptionId(),
+                resourceGroupName,
                 ascLocation,
                 alertName,
-                resourceGroupName,
                 accept,
                 context);
     }
@@ -2172,60 +2338,230 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> updateResourceGroupLevelStateToActivateAsync(
-        String ascLocation, String alertName, String resourceGroupName) {
-        return updateResourceGroupLevelStateToActivateWithResponseAsync(ascLocation, alertName, resourceGroupName)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        String resourceGroupName, String ascLocation, String alertName) {
+        return updateResourceGroupLevelStateToActivateWithResponseAsync(resourceGroupName, ascLocation, alertName)
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void updateResourceGroupLevelStateToActivate(
-        String ascLocation, String alertName, String resourceGroupName) {
-        updateResourceGroupLevelStateToActivateAsync(ascLocation, alertName, resourceGroupName).block();
+        String resourceGroupName, String ascLocation, String alertName) {
+        updateResourceGroupLevelStateToActivateAsync(resourceGroupName, ascLocation, alertName).block();
     }
 
     /**
      * Update the alert's state.
      *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
      * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
      *     locations.
      * @param alertName Name of the alert object.
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
-     *     insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> updateResourceGroupLevelStateToActivateWithResponse(
-        String ascLocation, String alertName, String resourceGroupName, Context context) {
+        String resourceGroupName, String ascLocation, String alertName, Context context) {
         return updateResourceGroupLevelStateToActivateWithResponseAsync(
-                ascLocation, alertName, resourceGroupName, context)
+                resourceGroupName, ascLocation, alertName, context)
+            .block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> updateResourceGroupLevelStateToInProgressWithResponseAsync(
+        String resourceGroupName, String ascLocation, String alertName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ascLocation == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
+        }
+        if (alertName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-01-01";
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateResourceGroupLevelStateToInProgress(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            ascLocation,
+                            alertName,
+                            accept,
+                            context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Void>> updateResourceGroupLevelStateToInProgressWithResponseAsync(
+        String resourceGroupName, String ascLocation, String alertName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (ascLocation == null) {
+            return Mono.error(new IllegalArgumentException("Parameter ascLocation is required and cannot be null."));
+        }
+        if (alertName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter alertName is required and cannot be null."));
+        }
+        final String apiVersion = "2022-01-01";
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .updateResourceGroupLevelStateToInProgress(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                ascLocation,
+                alertName,
+                accept,
+                context);
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> updateResourceGroupLevelStateToInProgressAsync(
+        String resourceGroupName, String ascLocation, String alertName) {
+        return updateResourceGroupLevelStateToInProgressWithResponseAsync(resourceGroupName, ascLocation, alertName)
+            .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void updateResourceGroupLevelStateToInProgress(
+        String resourceGroupName, String ascLocation, String alertName) {
+        updateResourceGroupLevelStateToInProgressAsync(resourceGroupName, ascLocation, alertName).block();
+    }
+
+    /**
+     * Update the alert's state.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param ascLocation The location where ASC stores the data of the subscription. can be retrieved from Get
+     *     locations.
+     * @param alertName Name of the alert object.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> updateResourceGroupLevelStateToInProgressWithResponse(
+        String resourceGroupName, String ascLocation, String alertName, Context context) {
+        return updateResourceGroupLevelStateToInProgressWithResponseAsync(
+                resourceGroupName, ascLocation, alertName, context)
             .block();
     }
 
@@ -2238,7 +2574,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> simulateWithResponseAsync(
@@ -2266,7 +2602,7 @@ public final class AlertsClientImpl implements AlertsClient {
         } else {
             alertSimulatorRequestBody.validate();
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -2293,7 +2629,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> simulateWithResponseAsync(
@@ -2321,7 +2657,7 @@ public final class AlertsClientImpl implements AlertsClient {
         } else {
             alertSimulatorRequestBody.validate();
         }
-        final String apiVersion = "2021-01-01";
+        final String apiVersion = "2022-01-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -2344,15 +2680,16 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginSimulateAsync(
         String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody) {
         Mono<Response<Flux<ByteBuffer>>> mono = simulateWithResponseAsync(ascLocation, alertSimulatorRequestBody);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2365,9 +2702,9 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginSimulateAsync(
         String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody, Context context) {
         context = this.client.mergeContext(context);
@@ -2387,9 +2724,9 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSimulate(
         String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody) {
         return beginSimulateAsync(ascLocation, alertSimulatorRequestBody).getSyncPoller();
@@ -2405,9 +2742,9 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSimulate(
         String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody, Context context) {
         return beginSimulateAsync(ascLocation, alertSimulatorRequestBody, context).getSyncPoller();
@@ -2422,7 +2759,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> simulateAsync(String ascLocation, AlertSimulatorRequestBody alertSimulatorRequestBody) {
@@ -2441,7 +2778,7 @@ public final class AlertsClientImpl implements AlertsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> simulateAsync(
@@ -2485,11 +2822,12 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listNextSinglePageAsync(String nextLink) {
@@ -2520,12 +2858,13 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -2556,11 +2895,12 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2592,12 +2932,13 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
@@ -2628,11 +2969,12 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listSubscriptionLevelByRegionNextSinglePageAsync(String nextLink) {
@@ -2665,12 +3007,13 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listSubscriptionLevelByRegionNextSinglePageAsync(
@@ -2702,11 +3045,12 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listResourceGroupLevelByRegionNextSinglePageAsync(String nextLink) {
@@ -2739,12 +3083,13 @@ public final class AlertsClientImpl implements AlertsClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security alerts.
+     * @return list of security alerts along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<AlertInner>> listResourceGroupLevelByRegionNextSinglePageAsync(

@@ -265,7 +265,7 @@ public class AnnotatedQueryIT {
     }
 
     @Test
-    public void testAnnotatedQueryWithMultipleCities() {
+    public void testAnnotatedQueryWithMultipleCitiesAndSort() {
         final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2);
         addressRepository.saveAll(addresses);
 
@@ -278,6 +278,41 @@ public class AnnotatedQueryIT {
         cities2.add(TestConstants.CITY);
         cities2.add(TestConstants.CITY_0);
         final List<Address> resultsAsc2 = addressRepository.annotatedFindByCityIn(cities2, Sort.by(Sort.Direction.ASC, "postalCode"));
+        assertAddressOrder(resultsAsc2, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2, Address.TEST_ADDRESS1_PARTITION1);
+    }
+
+    @Test
+    public void testAnnotatedQueryWithArrayContains() {
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2);
+        addressRepository.saveAll(addresses);
+
+        List<String> cities = new ArrayList<>();
+        cities.add(TestConstants.CITY);
+        final List<Address> resultsAsc = addressRepository.annotatedFindByCities(cities);
+        assertAddressOrder(resultsAsc, Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1);
+
+        List<String> cities2 = new ArrayList<>();
+        cities2.add(TestConstants.CITY);
+        cities2.add(TestConstants.CITY_0);
+        final List<Address> resultsAsc2 = addressRepository.annotatedFindByCities(cities2);
+        assertAddressOrder(resultsAsc2, Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2);
+
+    }
+
+    @Test
+    public void testAnnotatedQueryWithArrayContainsAndSort() {
+        final List<Address> addresses = Arrays.asList(Address.TEST_ADDRESS1_PARTITION1, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2);
+        addressRepository.saveAll(addresses);
+
+        List<String> cities = new ArrayList<>();
+        cities.add(TestConstants.CITY);
+        final List<Address> resultsAsc = addressRepository.annotatedFindByCitiesWithSort(cities, Sort.by(Sort.Direction.ASC, "postalCode"));
+        assertAddressOrder(resultsAsc, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION1);
+
+        List<String> cities2 = new ArrayList<>();
+        cities2.add(TestConstants.CITY);
+        cities2.add(TestConstants.CITY_0);
+        final List<Address> resultsAsc2 = addressRepository.annotatedFindByCitiesWithSort(cities2, Sort.by(Sort.Direction.ASC, "postalCode"));
         assertAddressOrder(resultsAsc2, Address.TEST_ADDRESS2_PARTITION1, Address.TEST_ADDRESS1_PARTITION2, Address.TEST_ADDRESS1_PARTITION1);
     }
 }

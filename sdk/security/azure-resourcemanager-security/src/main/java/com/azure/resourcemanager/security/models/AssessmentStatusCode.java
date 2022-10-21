@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AssessmentStatusCode. */
+/** Programmatic code for the status of the assessment. */
 public final class AssessmentStatusCode extends ExpandableStringEnum<AssessmentStatusCode> {
     /** Static value Healthy for AssessmentStatusCode. */
     public static final AssessmentStatusCode HEALTHY = fromString("Healthy");
@@ -30,7 +30,11 @@ public final class AssessmentStatusCode extends ExpandableStringEnum<AssessmentS
         return fromString(name, AssessmentStatusCode.class);
     }
 
-    /** @return known AssessmentStatusCode values. */
+    /**
+     * Gets known AssessmentStatusCode values.
+     *
+     * @return known AssessmentStatusCode values.
+     */
     public static Collection<AssessmentStatusCode> values() {
         return values(AssessmentStatusCode.class);
     }

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AntispamMailDirection. */
+/** The directionality of this mail message. */
 public final class AntispamMailDirection extends ExpandableStringEnum<AntispamMailDirection> {
     /** Static value Unknown for AntispamMailDirection. */
     public static final AntispamMailDirection UNKNOWN = fromString("Unknown");

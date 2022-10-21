@@ -34,6 +34,10 @@ public final class TopologyResourceImpl implements TopologyResource {
         return this.innerModel().type();
     }
 
+    public String location() {
+        return this.innerModel().location();
+    }
+
     public OffsetDateTime calculatedDateTime() {
         return this.innerModel().calculatedDateTime();
     }
@@ -45,10 +49,6 @@ public final class TopologyResourceImpl implements TopologyResource {
         } else {
             return Collections.emptyList();
         }
-    }
-
-    public String location() {
-        return this.innerModel().location();
     }
 
     public TopologyResourceInner innerModel() {

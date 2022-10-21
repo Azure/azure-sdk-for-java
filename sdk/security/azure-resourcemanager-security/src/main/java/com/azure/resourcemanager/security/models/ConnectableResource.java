@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Describes the allowed inbound and outbound traffic of an Azure resource. */
 @Immutable
 public final class ConnectableResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectableResource.class);
-
     /*
      * The Azure resource id
      */
@@ -22,15 +18,13 @@ public final class ConnectableResource {
     private String id;
 
     /*
-     * The list of Azure resources that the resource has inbound allowed
-     * connection from
+     * The list of Azure resources that the resource has inbound allowed connection from
      */
     @JsonProperty(value = "inboundConnectedResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectedResource> inboundConnectedResources;
 
     /*
-     * The list of Azure resources that the resource has outbound allowed
-     * connection to
+     * The list of Azure resources that the resource has outbound allowed connection to
      */
     @JsonProperty(value = "outboundConnectedResources", access = JsonProperty.Access.WRITE_ONLY)
     private List<ConnectedResource> outboundConnectedResources;

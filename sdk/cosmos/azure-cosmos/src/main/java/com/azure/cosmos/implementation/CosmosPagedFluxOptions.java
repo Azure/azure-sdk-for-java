@@ -26,6 +26,7 @@ public class CosmosPagedFluxOptions {
     private String serviceEndpoint;
     private CosmosAsyncClient cosmosAsyncClient;
     private Duration thresholdForDiagnosticsOnTracer;
+    private String operationId;
 
     public CosmosPagedFluxOptions() {}
 
@@ -159,11 +160,23 @@ public class CosmosPagedFluxOptions {
         this.thresholdForDiagnosticsOnTracer = thresholdForDiagnosticsOnTracer;
     }
 
-    public void setTracerInformation(TracerProvider tracerProvider, String tracerSpanName, String serviceEndpoint, String databaseId) {
+    public String getOperationId() {
+        return this.operationId;
+    }
+
+
+    public void setTracerInformation(
+        TracerProvider tracerProvider,
+        String tracerSpanName,
+        String serviceEndpoint,
+        String databaseId,
+        String operationId) {
+
         this.databaseId = databaseId;
         this.serviceEndpoint = serviceEndpoint;
         this.tracerSpanName = tracerSpanName;
         this.tracerProvider = tracerProvider;
+        this.operationId = operationId;
     }
 
     public void setTracerAndTelemetryInformation(String tracerSpanName,
@@ -171,7 +184,8 @@ public class CosmosPagedFluxOptions {
                                                  String containerId,
                                                  OperationType operationType,
                                                  ResourceType resourceType,
-                                                 CosmosAsyncClient cosmosAsyncClient
+                                                 CosmosAsyncClient cosmosAsyncClient,
+                                                 String operationId
     ) {
         this.tracerProvider = BridgeInternal.getTracerProvider(cosmosAsyncClient);
         this.serviceEndpoint = BridgeInternal.getServiceEndpoint(cosmosAsyncClient);
@@ -181,5 +195,6 @@ public class CosmosPagedFluxOptions {
         this.operationType = operationType;
         this.resourceType = resourceType;
         this.cosmosAsyncClient = cosmosAsyncClient;
+        this.operationId = operationId;
     }
 }

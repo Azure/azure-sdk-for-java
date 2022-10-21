@@ -15,7 +15,7 @@ import java.util.UUID;
 /** Samples for Incidents CreateOrUpdate. */
 public final class IncidentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/incidents/CreateIncident.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/incidents/CreateIncident.json
      */
     /**
      * Sample code: Creates or updates an incident.

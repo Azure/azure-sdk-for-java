@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RepoType. */
+/** The type of repository. */
 public final class RepoType extends ExpandableStringEnum<RepoType> {
     /** Static value Github for RepoType. */
     public static final RepoType GITHUB = fromString("Github");

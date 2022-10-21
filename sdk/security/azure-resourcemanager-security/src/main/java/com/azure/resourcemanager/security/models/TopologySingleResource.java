@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The TopologySingleResource model. */
 @Immutable
 public final class TopologySingleResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologySingleResource.class);
-
     /*
      * Azure resource id
      */
@@ -34,8 +30,7 @@ public final class TopologySingleResource {
     private Boolean recommendationsExist;
 
     /*
-     * Indicates the resource connectivity level to the Internet
-     * (InternetFacing, Internal ,etc.)
+     * Indicates the resource connectivity level to the Internet (InternetFacing, Internal ,etc.)
      */
     @JsonProperty(value = "networkZones", access = JsonProperty.Access.WRITE_ONLY)
     private String networkZones;
@@ -53,15 +48,13 @@ public final class TopologySingleResource {
     private String location;
 
     /*
-     * Azure resources connected to this resource which are in higher level in
-     * the topology view
+     * Azure resources connected to this resource which are in higher level in the topology view
      */
     @JsonProperty(value = "parents", access = JsonProperty.Access.WRITE_ONLY)
     private List<TopologySingleResourceParent> parents;
 
     /*
-     * Azure resources connected to this resource which are in lower level in
-     * the topology view
+     * Azure resources connected to this resource which are in lower level in the topology view
      */
     @JsonProperty(value = "children", access = JsonProperty.Access.WRITE_ONLY)
     private List<TopologySingleResourceChild> children;

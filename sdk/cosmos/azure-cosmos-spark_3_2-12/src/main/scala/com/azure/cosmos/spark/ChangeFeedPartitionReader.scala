@@ -81,9 +81,9 @@ private case class ChangeFeedPartitionReader
 
     var factoryMethod: java.util.function.Function[JsonNode, _] = (_: JsonNode) => {}
       cosmosChangeFeedConfig.changeFeedMode match {
-          case ChangeFeedModes.Incremental =>
+          case ChangeFeedModes.Incremental | ChangeFeedModes.LatestVersion =>
               factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethod(jsonNode)
-          case ChangeFeedModes.FullFidelity =>
+          case ChangeFeedModes.FullFidelity | ChangeFeedModes.AllVersionsAndDeletes =>
               factoryMethod = (jsonNode: JsonNode) => changeFeedItemFactoryMethodV1(jsonNode)
     }
 

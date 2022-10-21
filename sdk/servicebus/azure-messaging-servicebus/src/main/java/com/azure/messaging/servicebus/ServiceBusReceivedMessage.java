@@ -534,6 +534,18 @@ public final class ServiceBusReceivedMessage {
     }
 
     /**
+     * Adds a new key value pair to the existing context on Message.
+     *
+     * @param key The key for this context object
+     * @param value The value for this context object.
+     *
+     * @return The updated {@link ServiceBusMessage}.
+     * @throws NullPointerException if {@code key} or {@code value} is null.
+     */
+    Context getContext() {
+        return this.context;
+    }
+    /**
      * Gets whether the message has been settled.
      *
      * @return True if the message has been settled, false otherwise.

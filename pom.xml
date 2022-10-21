@@ -62,6 +62,7 @@
     <module>sdk/deploymentmanager</module>
     <module>sdk/desktopvirtualization</module>
     <module>sdk/devcenter</module>
+    <module>sdk/devhub</module>
     <module>sdk/deviceprovisioningservices</module>
     <module>sdk/deviceupdate</module>
     <module>sdk/devspaces</module>
@@ -90,6 +91,7 @@
     <module>sdk/imagebuilder</module>
     <module>sdk/iotcentral</module>
     <module>sdk/iothub</module>
+    <module>sdk/jdbc</module>
     <module>sdk/keyvault</module>
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>

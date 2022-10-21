@@ -13,22 +13,19 @@ import java.util.List;
 @Fluent
 public final class FusionSourceSettings {
     /*
-     * Determines whether this source signal is enabled or disabled in Fusion
-     * detection.
+     * Determines whether this source signal is enabled or disabled in Fusion detection.
      */
     @JsonProperty(value = "enabled", required = true)
     private boolean enabled;
 
     /*
-     * Name of the Fusion source signal. Refer to Fusion alert rule template
-     * for supported values.
+     * Name of the Fusion source signal. Refer to Fusion alert rule template for supported values.
      */
     @JsonProperty(value = "sourceName", required = true)
     private String sourceName;
 
     /*
-     * Configuration for all source subtypes under this source signal consumed
-     * in fusion detection.
+     * Configuration for all source subtypes under this source signal consumed in fusion detection.
      */
     @JsonProperty(value = "sourceSubTypes")
     private List<FusionSourceSubTypeSetting> sourceSubTypes;

@@ -37,6 +37,15 @@ public final class IoTSecurityAggregatedAlertImpl implements IoTSecurityAggregat
         return this.innerModel().type();
     }
 
+    public Map<String, String> tags() {
+        Map<String, String> inner = this.innerModel().tags();
+        if (inner != null) {
+            return Collections.unmodifiableMap(inner);
+        } else {
+            return Collections.emptyMap();
+        }
+    }
+
     public String alertType() {
         return this.innerModel().alertType();
     }
@@ -91,15 +100,6 @@ public final class IoTSecurityAggregatedAlertImpl implements IoTSecurityAggregat
             return Collections.unmodifiableList(inner);
         } else {
             return Collections.emptyList();
-        }
-    }
-
-    public Map<String, String> tags() {
-        Map<String, String> inner = this.innerModel().tags();
-        if (inner != null) {
-            return Collections.unmodifiableMap(inner);
-        } else {
-            return Collections.emptyMap();
         }
     }
 

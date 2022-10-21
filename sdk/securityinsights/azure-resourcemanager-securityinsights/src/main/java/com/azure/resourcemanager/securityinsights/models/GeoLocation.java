@@ -29,26 +29,23 @@ public final class GeoLocation {
     private String countryCode;
 
     /*
-     * Country name according to ISO 3166 Alpha 2: the lowercase of the English
-     * Short Name
+     * Country name according to ISO 3166 Alpha 2: the lowercase of the English Short Name
      */
     @JsonProperty(value = "countryName", access = JsonProperty.Access.WRITE_ONLY)
     private String countryName;
 
     /*
-     * The longitude of the identified location, expressed as a floating point
-     * number with range of -180 to 180, with positive numbers representing
-     * East and negative numbers representing West. Latitude and longitude are
-     * derived from the city or postal code.
+     * The longitude of the identified location, expressed as a floating point number with range of -180 to 180, with
+     * positive numbers representing East and negative numbers representing West. Latitude and longitude are derived
+     * from the city or postal code.
      */
     @JsonProperty(value = "latitude", access = JsonProperty.Access.WRITE_ONLY)
     private Double latitude;
 
     /*
-     * The latitude of the identified location, expressed as a floating point
-     * number with range of - 90 to 90, with positive numbers representing
-     * North and negative numbers representing South. Latitude and longitude
-     * are derived from the city or postal code.
+     * The latitude of the identified location, expressed as a floating point number with range of - 90 to 90, with
+     * positive numbers representing North and negative numbers representing South. Latitude and longitude are derived
+     * from the city or postal code.
      */
     @JsonProperty(value = "longitude", access = JsonProperty.Access.WRITE_ONLY)
     private Double longitude;

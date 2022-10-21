@@ -26,7 +26,7 @@ import com.azure.cosmos.implementation.changefeed.common.DefaultObserverFactory;
 import com.azure.cosmos.implementation.changefeed.common.EqualPartitionsBalancingStrategy;
 import com.azure.cosmos.implementation.changefeed.common.PartitionedByIdCollectionRequestOptionsFactory;
 import com.azure.cosmos.implementation.changefeed.common.TraceHealthMonitor;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.ChangeFeedProcessorOptions;
 import com.azure.cosmos.models.ChangeFeedProcessorState;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
@@ -151,7 +151,7 @@ public class ChangeFeedProcessorBuilderImpl implements ChangeFeedProcessor, Auto
                            CosmosChangeFeedRequestOptions options = CosmosChangeFeedRequestOptions
                                .createForProcessingFromNow(lease.getFeedRange())
                                .setMaxItemCount(1)
-                               .fullFidelity();
+                               .allVersionsAndDeletes();
 
                            return this.feedContextClient
                                .createDocumentChangeFeedQuery(this.feedContextClient.getContainerClient(), options, ChangeFeedProcessorItem.class)

@@ -20,7 +20,7 @@ import java.util.Map;
 /** Samples for VirtualMachineExtensions CreateOrUpdate. */
 public final class VirtualMachineExtensionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachineExtensions_CreateOrUpdate_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachineExtensions_CreateOrUpdate_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensions_CreateOrUpdate_MinimumSet_Gen.
@@ -43,7 +43,7 @@ public final class VirtualMachineExtensionsCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachineExtensions_CreateOrUpdate_MaximumSet_Gen.

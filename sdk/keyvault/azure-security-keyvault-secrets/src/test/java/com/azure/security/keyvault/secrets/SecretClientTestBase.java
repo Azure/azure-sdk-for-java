@@ -104,7 +104,7 @@ public abstract class SecretClientTestBase extends TestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential));
+            policies.add(new KeyVaultCredentialPolicy(credential, false));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);

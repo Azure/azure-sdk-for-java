@@ -10,6 +10,7 @@ import com.azure.core.util.logging.LogLevel;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessor;
 import com.azure.messaging.eventhubs.implementation.PartitionProcessorException;
+import com.azure.messaging.eventhubs.implementation.ReactorShim;
 import com.azure.messaging.eventhubs.models.Checkpoint;
 import com.azure.messaging.eventhubs.models.CloseContext;
 import com.azure.messaging.eventhubs.models.CloseReason;
@@ -244,8 +245,7 @@ class PartitionPumpManager {
                 });
 
             if (maxWaitTime != null) {
-                partitionEventFlux = receiver
-                    .windowTimeout(maxBatchSize, maxWaitTime);
+                partitionEventFlux = ReactorShim.windowTimeout(receiver, maxBatchSize, maxWaitTime);
             } else {
                 partitionEventFlux = receiver
                     .window(maxBatchSize);

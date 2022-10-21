@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ConfidenceLevel. */
+/** The confidence level of this alert. */
 public final class ConfidenceLevel extends ExpandableStringEnum<ConfidenceLevel> {
     /** Static value Unknown for ConfidenceLevel. */
     public static final ConfidenceLevel UNKNOWN = fromString("Unknown");

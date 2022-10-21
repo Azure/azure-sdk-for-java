@@ -803,7 +803,8 @@ public class IdentityClient {
                                 .resolveTenantId(tenantId, request, options));
                     return confidentialClient.acquireToken(builder.build());
                 }
-            )).map(MsalToken::new);
+            )).onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
+            .map(MsalToken::new);
     }
 
     private HttpPipeline setupPipeline(HttpClient httpClient) {

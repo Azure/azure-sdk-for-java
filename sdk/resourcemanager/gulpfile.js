@@ -55,7 +55,7 @@ async function defaultInfo() {
 
 const maxParallelism = parseInt(args['parallel'], 10) || os.cpus().length;
 var projects = args['projects'];
-var autoRestVersion = '3.8.1'; // default
+var autoRestVersion = '3.8.4'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }

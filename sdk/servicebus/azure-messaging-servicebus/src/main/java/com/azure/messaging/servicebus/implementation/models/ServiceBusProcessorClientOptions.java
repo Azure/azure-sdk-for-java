@@ -3,7 +3,6 @@
 
 package com.azure.messaging.servicebus.implementation.models;
 
-import com.azure.core.amqp.implementation.TracerProvider;
 import com.azure.core.annotation.Fluent;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 
@@ -15,8 +14,6 @@ public final class ServiceBusProcessorClientOptions {
 
     private int maxConcurrentCalls = 1;
     private boolean disableAutoComplete;
-
-    private TracerProvider tracerProvider;
 
     /**
      * Returns true if the auto-complete and auto-abandon feature is disabled.
@@ -51,26 +48,6 @@ public final class ServiceBusProcessorClientOptions {
      */
     public ServiceBusProcessorClientOptions setMaxConcurrentCalls(int maxConcurrentCalls) {
         this.maxConcurrentCalls = maxConcurrentCalls;
-        return this;
-    }
-
-    /**
-     * Returns the {@link TracerProvider} instance that is used in {@link ServiceBusProcessorClient}.
-     * 
-     * @return The {@link TracerProvider} instance that is used in {@link ServiceBusProcessorClient}.
-     */
-    public TracerProvider getTracerProvider() {
-        return tracerProvider;
-    }
-
-    /**
-     * Sets the {@link TracerProvider} instance to use in {@link ServiceBusProcessorClient}.
-     *
-     * @param tracerProvider The {@link TracerProvider} instance to use in {@link ServiceBusProcessorClient}.
-     * @return The updated instance of {@link ServiceBusProcessorClientOptions}.
-     */
-    public ServiceBusProcessorClientOptions setTracerProvider(TracerProvider tracerProvider) {
-        this.tracerProvider = tracerProvider;
         return this;
     }
 }

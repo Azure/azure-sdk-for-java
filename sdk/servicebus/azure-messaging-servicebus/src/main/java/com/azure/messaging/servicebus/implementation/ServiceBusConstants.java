@@ -19,7 +19,6 @@ public class ServiceBusConstants {
     // Please see <a href=https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     public static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
-    public static final String AZ_TRACING_SERVICE_NAME = "ServiceBus.";
 
     public static final String SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusSupplementaryAuthorization";
     public static final String SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusDlqSupplementaryAuthorization";

@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.hybridnetwork.fluent.NetworkFunctionVendorsClient;
 import com.azure.resourcemanager.hybridnetwork.fluent.models.NetworkFunctionVendorInner;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionVendorListResult;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in NetworkFunctionVendorsClient. */
 public final class NetworkFunctionVendorsClientImpl implements NetworkFunctionVendorsClient {
-    private final ClientLogger logger = new ClientLogger(NetworkFunctionVendorsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final NetworkFunctionVendorsService service;
 
@@ -87,7 +84,8 @@ public final class NetworkFunctionVendorsClientImpl implements NetworkFunctionVe
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network function vendor list result.
+     * @return the network function vendor list result along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionVendorInner>> listSinglePageAsync() {
@@ -133,7 +131,8 @@ public final class NetworkFunctionVendorsClientImpl implements NetworkFunctionVe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network function vendor list result.
+     * @return the network function vendor list result along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionVendorInner>> listSinglePageAsync(Context context) {
@@ -174,7 +173,7 @@ public final class NetworkFunctionVendorsClientImpl implements NetworkFunctionVe
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network function vendor list result.
+     * @return the network function vendor list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFunctionVendorInner> listAsync() {
@@ -188,7 +187,7 @@ public final class NetworkFunctionVendorsClientImpl implements NetworkFunctionVe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network function vendor list result.
+     * @return the network function vendor list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NetworkFunctionVendorInner> listAsync(Context context) {
@@ -201,7 +200,7 @@ public final class NetworkFunctionVendorsClientImpl implements NetworkFunctionVe
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network function vendor list result.
+     * @return the network function vendor list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFunctionVendorInner> list() {
@@ -215,7 +214,7 @@ public final class NetworkFunctionVendorsClientImpl implements NetworkFunctionVe
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network function vendor list result.
+     * @return the network function vendor list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<NetworkFunctionVendorInner> list(Context context) {
@@ -225,11 +224,13 @@ public final class NetworkFunctionVendorsClientImpl implements NetworkFunctionVe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network function vendor list result.
+     * @return the network function vendor list result along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionVendorInner>> listNextSinglePageAsync(String nextLink) {
@@ -260,12 +261,14 @@ public final class NetworkFunctionVendorsClientImpl implements NetworkFunctionVe
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the network function vendor list result.
+     * @return the network function vendor list result along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NetworkFunctionVendorInner>> listNextSinglePageAsync(String nextLink, Context context) {

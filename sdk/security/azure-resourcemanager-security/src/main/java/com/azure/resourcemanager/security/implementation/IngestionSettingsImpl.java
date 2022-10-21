@@ -17,10 +17,9 @@ import com.azure.resourcemanager.security.models.ConnectionStrings;
 import com.azure.resourcemanager.security.models.IngestionSetting;
 import com.azure.resourcemanager.security.models.IngestionSettingToken;
 import com.azure.resourcemanager.security.models.IngestionSettings;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class IngestionSettingsImpl implements IngestionSettings {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(IngestionSettingsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(IngestionSettingsImpl.class);
 
     private final IngestionSettingsClient innerClient;
 
@@ -121,7 +120,7 @@ public final class IngestionSettingsImpl implements IngestionSettings {
     public IngestionSetting getById(String id) {
         String ingestionSettingName = Utils.getValueFromIdByName(id, "ingestionSettings");
         if (ingestionSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -134,7 +133,7 @@ public final class IngestionSettingsImpl implements IngestionSettings {
     public Response<IngestionSetting> getByIdWithResponse(String id, Context context) {
         String ingestionSettingName = Utils.getValueFromIdByName(id, "ingestionSettings");
         if (ingestionSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
@@ -147,20 +146,20 @@ public final class IngestionSettingsImpl implements IngestionSettings {
     public void deleteById(String id) {
         String ingestionSettingName = Utils.getValueFromIdByName(id, "ingestionSettings");
         if (ingestionSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'ingestionSettings'.", id)));
         }
-        this.deleteWithResponse(ingestionSettingName, Context.NONE).getValue();
+        this.deleteWithResponse(ingestionSettingName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String ingestionSettingName = Utils.getValueFromIdByName(id, "ingestionSettings");
         if (ingestionSettingName == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         String

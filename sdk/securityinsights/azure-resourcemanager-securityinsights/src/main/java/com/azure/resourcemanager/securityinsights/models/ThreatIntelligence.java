@@ -17,8 +17,7 @@ public final class ThreatIntelligence {
     private Double confidence;
 
     /*
-     * Name of the provider from whom this Threat Intelligence information was
-     * received
+     * Name of the provider from whom this Threat Intelligence information was received
      */
     @JsonProperty(value = "providerName", access = JsonProperty.Access.WRITE_ONLY)
     private String providerName;

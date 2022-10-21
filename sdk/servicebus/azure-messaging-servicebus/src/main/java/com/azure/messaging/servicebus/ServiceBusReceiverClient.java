@@ -7,6 +7,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusReceiverClientBuilder;
+import com.azure.messaging.servicebus.implementation.ServiceBusReceiverTracer;
 import com.azure.messaging.servicebus.models.AbandonOptions;
 import com.azure.messaging.servicebus.models.CompleteOptions;
 import com.azure.messaging.servicebus.models.DeadLetterOptions;
@@ -16,6 +17,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
 import java.time.Duration;
+import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -64,6 +66,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     /* To ensure synchronousMessageSubscriber is subscribed only once. */
     private final AtomicBoolean syncSubscribed = new AtomicBoolean(false);
 
+    private final ServiceBusReceiverTracer tracer;
     /**
      * Creates a synchronous receiver given its asynchronous counterpart.
      *
@@ -77,6 +80,7 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
         this.isPrefetchDisabled = isPrefetchDisabled;
+        this.tracer = asyncClient.getTracer();
     }
 
     /**
@@ -392,13 +396,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
+        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessages(maxMessages, sessionId)
             .timeout(operationTimeout);
 
-        // Subscribe so we can kick off this operation.
+        final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.reportSyncReceiverSpan("ServiceBus.peekMessages", startTime, messages);
+        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
         messages.subscribe();
 
-        return new IterableStream<>(messages);
+        return new IterableStream<>(tracedMessages);
     }
 
     /**
@@ -442,13 +448,15 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 "'maxMessages' cannot be less than or equal to 0. maxMessages: " + maxMessages));
         }
 
+        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.peekMessages(maxMessages, sequenceNumber,
             sessionId).timeout(operationTimeout);
 
-        // Subscribe so we can kick off this operation.
+        final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.reportSyncReceiverSpan("ServiceBus.peekMessages", startTime, messages);
+        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
         messages.subscribe();
 
-        return new IterableStream<>(messages);
+        return new IterableStream<>(tracedMessages);
     }
 
     /**
@@ -498,13 +506,22 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
         }
 
+        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
+
         // There are two subscribers to this emitter. One is the timeout between messages subscription in
         // SynchronousReceiverWork.start() and the other is the IterableStream(emitter.asFlux());
         // Since the subscriptions may happen at different times, we want to replay results to downstream subscribers.
         final Sinks.Many<ServiceBusReceivedMessage> emitter = Sinks.many().replay().all();
+
         queueWork(maxMessages, maxWaitTime, emitter);
 
-        return new IterableStream<>(emitter.asFlux());
+        final Flux<ServiceBusReceivedMessage> messagesFlux = emitter.asFlux();
+        final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.reportSyncReceiverSpan("ServiceBus.receiveMessages", startTime, messagesFlux);
+
+        // Subscribe to message flux so we can kick off this operation, but not to tracing - caller subscriber will take care of it.
+        messagesFlux.subscribe();
+
+        return new IterableStream<>(tracedMessages);
     }
 
     /**
@@ -571,13 +588,16 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     IterableStream<ServiceBusReceivedMessage> receiveDeferredMessageBatch(Iterable<Long> sequenceNumbers,
         String sessionId) {
+
+        final Instant startTime = tracer.isEnabled() ? Instant.now() : null;
         final Flux<ServiceBusReceivedMessage> messages = asyncClient.receiveDeferredMessages(sequenceNumbers,
             sessionId).timeout(operationTimeout);
 
+        final Flux<ServiceBusReceivedMessage> tracedMessages = tracer.reportSyncReceiverSpan("ServiceBus.receiveDeferredMessageBatch", startTime, messages);
         // Subscribe so we can kick off this operation.
         messages.subscribe();
 
-        return new IterableStream<>(messages);
+        return new IterableStream<>(tracedMessages);
     }
 
     /**

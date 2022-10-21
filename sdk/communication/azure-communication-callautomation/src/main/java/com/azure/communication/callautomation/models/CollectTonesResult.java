@@ -15,25 +15,25 @@ public final class CollectTonesResult {
      * The tones property.
      */
     @JsonProperty(value = "tones")
-    private List<Tone> tones;
+    private List<DtmfTone> dtmfTones;
 
     /**
      * Get the tones property: The tones property.
      *
      * @return the tones value.
      */
-    public List<Tone> getTones() {
-        return this.tones;
+    public List<DtmfTone> getTones() {
+        return this.dtmfTones;
     }
 
     /**
      * Set the tones property: The tones property.
      *
-     * @param tones the tones value to set.
+     * @param dtmfTones the tones value to set.
      * @return the CollectTonesResult object itself.
      */
-    public CollectTonesResult setTones(List<Tone> tones) {
-        this.tones = tones;
+    public CollectTonesResult setTones(List<DtmfTone> dtmfTones) {
+        this.dtmfTones = dtmfTones;
         return this;
     }
 }

@@ -13,8 +13,7 @@ import java.util.UUID;
 @Fluent
 public final class BookmarkExpandParameters {
     /*
-     * The end date filter, so the only expansion results returned are before
-     * this date.
+     * The end date filter, so the only expansion results returned are before this date.
      */
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
@@ -26,8 +25,7 @@ public final class BookmarkExpandParameters {
     private UUID expansionId;
 
     /*
-     * The start date filter, so the only expansion results returned are after
-     * this date.
+     * The start date filter, so the only expansion results returned are after this date.
      */
     @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;

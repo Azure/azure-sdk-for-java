@@ -25,7 +25,7 @@
         <dependency>
             <groupId>io.projectreactor</groupId>
             <artifactId>reactor-core</artifactId>
-            <version>3.4.22</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
+            <version>3.4.23</version> <!-- {x-version-update;io.projectreactor:reactor-core;external_dependency} -->
         </dependency>
 
         <!-- Dependencies required for Log4j2 -->
@@ -47,7 +47,7 @@
         <dependency>
             <groupId>org.codehaus.groovy</groupId>
             <artifactId>groovy-jsr223</artifactId>
-            <version>3.0.12</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
+            <version>3.0.13</version> <!-- {x-version-update;org.codehaus.groovy:groovy-jsr223;external_dependency} -->
             <scope>runtime</scope>
         </dependency>
 
@@ -60,7 +60,7 @@
         <dependency>
             <groupId>org.codehaus.janino</groupId>
             <artifactId>janino</artifactId>
-            <version>3.1.7</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
+            <version>3.1.8</version> <!-- {x-version-update;org.codehaus.janino:janino;external_dependency} -->
         </dependency>
     </dependencies>
 </project>

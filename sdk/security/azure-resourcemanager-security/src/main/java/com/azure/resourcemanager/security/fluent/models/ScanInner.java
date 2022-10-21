@@ -6,16 +6,12 @@ package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.ScanProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A vulnerability assessment scan record. */
 @Fluent
 public final class ScanInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScanInner.class);
-
     /*
      * A vulnerability assessment scan record properties.
      */

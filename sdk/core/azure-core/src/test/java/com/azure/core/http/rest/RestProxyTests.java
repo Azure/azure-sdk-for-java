@@ -156,9 +156,7 @@ public class RestProxyTests {
             .build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
-        Response<Void> response = testInterface.testMethod(data,
-                "application/json", contentLength)
-            .block();
+        Response<Void> response = testInterface.testMethod(data, "application/json", contentLength).block();
         assertEquals(200, response.getStatusCode());
         assertSame(data, client.getLastHttpRequest().getBodyAsBinaryData());
     }
@@ -173,8 +171,6 @@ public class RestProxyTests {
             Arguments.of(Named.of("bytes", BinaryData.fromBytes(bytes)), bytes.length),
             Arguments.of(Named.of("string", BinaryData.fromString(string)), bytes.length),
             Arguments.of(Named.of("file", BinaryData.fromFile(file)), bytes.length),
-            Arguments.of(Named.of("flux with length",
-                BinaryData.fromFlux(Flux.just(ByteBuffer.wrap(bytes))).block()), bytes.length),
             Arguments.of(Named.of("serializable", BinaryData.fromObject(bytes)),
                 BinaryData.fromObject(bytes).getLength())
         );

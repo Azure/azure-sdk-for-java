@@ -16,6 +16,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.module.afterburner.AfterburnerModule;
 import io.netty.buffer.ByteBuf;
 import org.slf4j.Logger;
@@ -100,6 +101,8 @@ public class Utils {
         if (JAVA_VERSION != -1 && JAVA_VERSION < 16) {
             objectMapper.registerModule(new AfterburnerModule());
         }
+
+        objectMapper.registerModule(new JavaTimeModule());
 
         return objectMapper;
     }

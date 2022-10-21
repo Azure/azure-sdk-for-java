@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation;
 
+import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
@@ -16,9 +17,11 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.PartitionScopeThresholds;
+import com.azure.cosmos.implementation.clienttelemetry.TagName;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
 import com.azure.cosmos.models.CosmosBatchRequestOptions;
@@ -40,12 +43,15 @@ import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import io.micrometer.core.instrument.MeterRegistry;
+import io.micrometer.core.instrument.Tag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -73,7 +79,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosClientBuilderAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosClientBuilderAccessor...");
+                logger.debug("Setting CosmosClientBuilderAccessor...");
                 cosmosClientBuilderClassLoaded.set(true);
             }
         }
@@ -121,7 +127,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("PartitionKeyAccessor already initialized!");
             } else {
-                logger.info("Setting PartitionKeyAccessor...");
+                logger.debug("Setting PartitionKeyAccessor...");
                 partitionKeyClassLoaded.set(true);
             }
         }
@@ -156,7 +162,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("DirectConnectionConfigAccessor already initialized!");
             } else {
-                logger.info("Setting DirectConnectionConfigAccessor...");
+                logger.debug("Setting DirectConnectionConfigAccessor...");
                 directConnectionConfigClassLoaded.set(true);
             }
         }
@@ -196,7 +202,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosQueryRequestOptionsAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosQueryRequestOptionsAccessor...");
+                logger.debug("Setting CosmosQueryRequestOptionsAccessor...");
                 cosmosQueryRequestOptionsClassLoaded.set(true);
             }
         }
@@ -227,8 +233,10 @@ public class ImplementationBridgeHelpers {
             CosmosQueryRequestOptions setCorrelationActivityId(CosmosQueryRequestOptions queryRequestOptions, UUID correlationActivityId);
             boolean isEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions);
             CosmosQueryRequestOptions setEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
+            CosmosQueryRequestOptions withEmptyPageDiagnosticsEnabled(CosmosQueryRequestOptions queryRequestOptions, boolean emptyPageDiagnosticsEnabled);
             <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Class<T> classOfT);
             CosmosQueryRequestOptions setItemFactoryMethod(CosmosQueryRequestOptions queryRequestOptions, Function<JsonNode, ?> factoryMethod);
+            String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions, String defaultQueryName);
         }
     }
 
@@ -242,7 +250,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosChangeFeedRequestOptionsAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosChangeFeedRequestOptionsAccessor...");
+                logger.debug("Setting CosmosChangeFeedRequestOptionsAccessor...");
                 cosmosChangeFeedRequestOptionsClassLoaded.set(true);
             }
         }
@@ -282,7 +290,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosItemRequestOptionsAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosItemRequestOptionsAccessor...");
+                logger.debug("Setting CosmosItemRequestOptionsAccessor...");
                 cosmosItemRequestOptionsClassLoaded.set(true);
             }
         }
@@ -321,7 +329,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosBulkExecutionOptionsAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosBulkExecutionOptionsAccessor...");
+                logger.debug("Setting CosmosBulkExecutionOptionsAccessor...");
                 cosmosBulkExecutionOptionsClassLoaded.set(true);
             }
         }
@@ -393,7 +401,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosItemResponseBuilderAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosItemResponseBuilderAccessor...");
+                logger.debug("Setting CosmosItemResponseBuilderAccessor...");
                 cosmosItemResponseClassLoaded.set(true);
             }
         }
@@ -437,7 +445,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosClientAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosClientAccessor...");
+                logger.debug("Setting CosmosClientAccessor...");
                 cosmosClientClassLoaded.set(true);
             }
         }
@@ -473,7 +481,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosContainerPropertiesAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosContainerPropertiesAccessor...");
+                logger.debug("Setting CosmosContainerPropertiesAccessor...");
                 cosmosContainerPropertiesClassLoaded.set(true);
             }
         }
@@ -510,7 +518,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosPageFluxAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosPageFluxAccessor...");
+                logger.debug("Setting CosmosPageFluxAccessor...");
                 cosmosPagedFluxClassLoaded.set(true);
             }
         }
@@ -546,7 +554,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosAsyncDatabaseAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosAsyncDatabaseAccessor...");
+                logger.debug("Setting CosmosAsyncDatabaseAccessor...");
                 cosmosAsyncDatabaseClassLoaded.set(true);
             }
         }
@@ -583,7 +591,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosBulkExecutionThresholdsStateAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosBulkExecutionThresholdsStateAccessor...");
+                logger.debug("Setting CosmosBulkExecutionThresholdsStateAccessor...");
                 cosmosBulkExecutionThresholdsStateClassLoaded.set(true);
             }
         }
@@ -622,7 +630,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosDiagnosticsAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosDiagnosticsAccessor...");
+                logger.debug("Setting CosmosDiagnosticsAccessor...");
                 cosmosDiagnosticsClassLoaded.set(true);
             }
         }
@@ -645,6 +653,9 @@ public class ImplementationBridgeHelpers {
         public interface CosmosDiagnosticsAccessor {
             FeedResponseDiagnostics getFeedResponseDiagnostics(CosmosDiagnostics cosmosDiagnostics);
             AtomicBoolean isDiagnosticsCapturedInPagedFlux(CosmosDiagnostics cosmosDiagnostics);
+            List<ClientSideRequestStatistics> getClientSideRequestStatistics(CosmosDiagnostics cosmosDiagnostics);
+            int getTotalResponsePayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
+            int getRequestPayloadSizeInBytes(CosmosDiagnostics cosmosDiagnostics);
         }
     }
 
@@ -659,7 +670,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosAsyncContainerAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosAsyncContainerAccessor...");
+                logger.debug("Setting CosmosAsyncContainerAccessor...");
                 cosmosAsyncContainerClassLoaded.set(true);
             }
         }
@@ -698,7 +709,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("FeedResponseAccessor already initialized!");
             } else {
-                logger.info("Setting FeedResponseAccessor...");
+                logger.debug("Setting FeedResponseAccessor...");
                 feedResponseClassLoaded.set(true);
             }
         }
@@ -750,7 +761,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosBatchRequestOptionsAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosBatchRequestOptionsAccessor...");
+                logger.debug("Setting CosmosBatchRequestOptionsAccessor...");
                 cosmosBatchRequestOptionsClassLoaded.set(true);
             }
         }
@@ -790,7 +801,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosBatchOperationResultAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosBatchOperationResultAccessor...");
+                logger.debug("Setting CosmosBatchOperationResultAccessor...");
                 cosmosBatchOperationResultClassLoaded.set(true);
             }
         }
@@ -827,7 +838,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosPatchOperationsAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosPatchOperationsAccessor...");
+                logger.debug("Setting CosmosPatchOperationsAccessor...");
                 cosmosPatchOperationsClassLoaded.set(true);
             }
         }
@@ -863,7 +874,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosBatchAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosBatchAccessor...");
+                logger.debug("Setting CosmosBatchAccessor...");
                 cosmosBatchClassLoaded.set(true);
             }
         }
@@ -899,7 +910,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosBulkItemResponseAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosBulkItemResponseAccessor...");
+                logger.debug("Setting CosmosBulkItemResponseAccessor...");
                 cosmosBulkItemResponseClassLoaded.set(true);
             }
         }
@@ -938,7 +949,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosBatchResponseAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosBatchResponseAccessor...");
+                logger.debug("Setting CosmosBatchResponseAccessor...");
                 cosmosBatchResponseClassLoaded.set(true);
             }
         }
@@ -974,7 +985,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosAsyncClientEncryptionKeyAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosAsyncClientEncryptionKeyAccessor...");
+                logger.debug("Setting CosmosAsyncClientEncryptionKeyAccessor...");
                 cosmosAsyncClientEncryptionKeyClassLoaded.set(true);
             }
         }
@@ -982,6 +993,45 @@ public class ImplementationBridgeHelpers {
         public interface CosmosAsyncClientEncryptionKeyAccessor {
             Mono<CosmosClientEncryptionKeyResponse> readClientEncryptionKey(CosmosAsyncClientEncryptionKey cosmosAsyncClientEncryptionKey,
                                                                             RequestOptions requestOptions);
+        }
+    }
+
+    public static final class CosmosAsyncClientHelper {
+        private static final AtomicReference<CosmosAsyncClientAccessor> accessor = new AtomicReference<>();
+        private static final AtomicBoolean cosmosAsyncClientClassLoaded = new AtomicBoolean(false);
+
+        private CosmosAsyncClientHelper() {}
+
+        public static void setCosmosAsyncClientAccessor(final CosmosAsyncClientAccessor newAccessor) {
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosAsyncClientAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosAsyncClientAccessor...");
+                cosmosAsyncClientClassLoaded.set(true);
+            }
+        }
+
+        public static CosmosAsyncClientAccessor getCosmosAsyncClientAccessor() {
+            if (!cosmosAsyncClientClassLoaded.get()) {
+                logger.debug("Initializing CosmosAsyncClientAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosAsyncClientAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosAsyncClientAccessor is not initialized yet!");
+                System.exit(9723); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public interface CosmosAsyncClientAccessor {
+            Tag getClientCorrelationTag(CosmosAsyncClient client);
+            String getAccountTagValue(CosmosAsyncClient client);
+            EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client);
+            boolean isClientTelemetryMetricsEnabled(CosmosAsyncClient client);
+            boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
         }
     }
 
@@ -1011,7 +1061,7 @@ public class ImplementationBridgeHelpers {
             if (!accessor.compareAndSet(null, newAccessor)) {
                 logger.debug("CosmosExceptionAccessor already initialized!");
             } else {
-                logger.info("Setting CosmosExceptionAccessor...");
+                logger.debug("Setting CosmosExceptionAccessor...");
                 cosmosExceptionClassLoaded.set(true);
             }
         }
@@ -1019,6 +1069,58 @@ public class ImplementationBridgeHelpers {
         public interface CosmosExceptionAccessor {
             CosmosException createCosmosException(int statusCode, Exception innerException);
             List<String> getReplicaStatusList(CosmosException cosmosException);
+        }
+    }
+
+    public static final class CosmosClientTelemetryConfigHelper {
+        private final static AtomicBoolean cosmosClientTelemetryClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosClientTelemetryConfigAccessor> accessor = new AtomicReference<>();
+
+        private CosmosClientTelemetryConfigHelper() {
+        }
+
+        public static CosmosClientTelemetryConfigAccessor getCosmosClientTelemetryConfigAccessor() {
+            if (!cosmosClientTelemetryClassLoaded.get()) {
+                logger.debug("Initializing CosmosClientTelemetryConfigAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosClientTelemetryConfigAccessor snapshot = accessor.get();
+            if (snapshot == null) {
+                logger.error("CosmosClientTelemetryConfigAccessor is not initialized yet!");
+                System.exit(9724); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setCosmosClientTelemetryConfigAccessor(
+            final CosmosClientTelemetryConfigAccessor newAccessor) {
+
+            assert(newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosClientTelemetryConfigAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosClientTelemetryConfigAccessor...");
+                cosmosClientTelemetryClassLoaded.set(true);
+            }
+        }
+
+        public interface CosmosClientTelemetryConfigAccessor {
+            Duration getHttpNetworkRequestTimeout(CosmosClientTelemetryConfig config);
+            int getMaxConnectionPoolSize(CosmosClientTelemetryConfig config);
+            Duration getIdleHttpConnectionTimeout(CosmosClientTelemetryConfig config);
+            ProxyOptions getProxy(CosmosClientTelemetryConfig config);
+            EnumSet<TagName> getMetricTagNames(CosmosClientTelemetryConfig config);
+            String getClientCorrelationId(CosmosClientTelemetryConfig config);
+            MeterRegistry getClientMetricRegistry(CosmosClientTelemetryConfig config);
+            Boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
+            boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config);
+            void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
+            CosmosClientTelemetryConfig createSnapshot(
+                CosmosClientTelemetryConfig config,
+                boolean effectiveIsClientTelemetryEnabled);
         }
     }
 }

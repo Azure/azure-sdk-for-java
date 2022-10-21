@@ -10,6 +10,20 @@
 
 ### Other Changes
 
+## 1.12.6 (2022-10-07)
+
+### Bugs Fixed
+
+- Fixed a bug where `HttpClientOptions.connectTimeout` wasn't being passed when using `HttpClientProvider(ClientOptions)`. ([#31079](https://github.com/Azure/azure-sdk-for-java/pull/31079))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+- Upgraded Netty from `4.1.79.Final` to `4.1.82.Final`.
+- Upgraded Reactor Netty from `1.0.22` to `1.0.23`.
+
 ## 1.12.5 (2022-09-01)
 
 ### Bugs Fixed

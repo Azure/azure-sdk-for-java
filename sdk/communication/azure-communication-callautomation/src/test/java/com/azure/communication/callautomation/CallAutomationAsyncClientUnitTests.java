@@ -3,10 +3,14 @@
 
 package com.azure.communication.callautomation;
 
+import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallRejectReason;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.RedirectCallOptions;
+import com.azure.communication.callautomation.models.RejectCallOptions;
+import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
@@ -30,11 +34,8 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             )));
         CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
-        CreateCallOptions callOptions = new CreateCallOptions(caller, targets, CALL_CALLBACK_URL);
-        callOptions.setSubject(CALL_SUBJECT);
 
-        CreateCallResult createCallResult = callAutomationAsyncClient.createCall(callOptions).block();
-
+        CreateCallResult createCallResult = callAutomationAsyncClient.createCall(caller, targets, CALL_CALLBACK_URL).block();
         assertNotNull(createCallResult);
     }
 
@@ -57,6 +58,11 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         assertEquals(201, createCallResult.getStatusCode());
         assertNotNull(createCallResult.getValue());
         assertEquals("mediaSubscriptionId", createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
+
+        RepeatabilityHeaders repeatabilityHeaders = callOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -80,13 +86,20 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
                     CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 200)
             )));
 
+        AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL)
+            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
         Response<AnswerCallResult> answerCallResult = callAutomationAsyncClient.answerCallWithResponse(
-            CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL, MEDIA_STREAMING_CONFIGURATION).block();
+            answerCallOptions).block();
 
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());
         assertNotNull(answerCallResult.getValue());
         assertEquals("mediaSubscriptionId", answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
+
+        RepeatabilityHeaders repeatabilityHeaders = answerCallOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -109,12 +122,16 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             ))
         );
         CommunicationUserIdentifier target = new CommunicationUserIdentifier(CALL_TARGET_ID);
-
-        Response<Void> redirectCallResponse = callAutomationAsyncClient.redirectCallWithResponse(
-            CALL_INCOMING_CALL_CONTEXT, target).block();
+        RedirectCallOptions redirectCallOptions = new RedirectCallOptions(CALL_INCOMING_CALL_CONTEXT, target);
+        Response<Void> redirectCallResponse = callAutomationAsyncClient.redirectCallWithResponse(redirectCallOptions).block();
 
         assertNotNull(redirectCallResponse);
         assertEquals(204, redirectCallResponse.getStatusCode());
+
+        RepeatabilityHeaders repeatabilityHeaders = redirectCallOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 
     @Test
@@ -125,7 +142,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             ))
         );
 
-        callAutomationAsyncClient.rejectCall(CALL_INCOMING_CALL_CONTEXT, CallRejectReason.BUSY);
+        callAutomationAsyncClient.rejectCall(CALL_INCOMING_CALL_CONTEXT);
     }
 
     @Test
@@ -136,10 +153,16 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             ))
         );
 
-        Response<Void> rejectCallResponse = callAutomationAsyncClient.rejectCallWithResponse(CALL_INCOMING_CALL_CONTEXT,
-            CallRejectReason.BUSY).block();
+        RejectCallOptions rejectCallOptions = new RejectCallOptions(CALL_INCOMING_CALL_CONTEXT)
+            .setCallRejectReason(CallRejectReason.BUSY);
+        Response<Void> rejectCallResponse = callAutomationAsyncClient.rejectCallWithResponse(rejectCallOptions).block();
 
         assertNotNull(rejectCallResponse);
         assertEquals(204, rejectCallResponse.getStatusCode());
+
+        RepeatabilityHeaders repeatabilityHeaders = rejectCallOptions.getRepeatabilityHeaders();
+        assertNotNull(repeatabilityHeaders);
+        assertNotNull(repeatabilityHeaders.getRepeatabilityFirstSentInHttpDateFormat());
+        assertNotNull(repeatabilityHeaders.getRepeatabilityRequestId().toString());
     }
 }

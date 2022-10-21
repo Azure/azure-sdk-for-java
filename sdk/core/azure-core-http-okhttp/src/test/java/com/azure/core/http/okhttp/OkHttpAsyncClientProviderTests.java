@@ -71,6 +71,7 @@ public class OkHttpAsyncClientProviderTests {
         long expectedTimeout = 15000;
         Duration timeout = Duration.ofMillis(expectedTimeout);
         HttpClientOptions clientOptions = new HttpClientOptions()
+            .setConnectTimeout(timeout)
             .setWriteTimeout(timeout)
             .setResponseTimeout(timeout)
             .setReadTimeout(timeout);
@@ -78,6 +79,7 @@ public class OkHttpAsyncClientProviderTests {
         OkHttpAsyncHttpClient httpClient = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider()
             .createInstance(clientOptions);
 
+        assertEquals(expectedTimeout, httpClient.httpClient.connectTimeoutMillis());
         assertEquals(expectedTimeout, httpClient.httpClient.writeTimeoutMillis());
         assertEquals(expectedTimeout, httpClient.httpClient.readTimeoutMillis());
     }

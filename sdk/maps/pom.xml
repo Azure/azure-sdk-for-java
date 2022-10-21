@@ -9,62 +9,12 @@
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
 
-  <profiles>
-    <profile>
-      <id>coverage</id>
-      <modules>
-        <module>azure-maps-search</module>
-        <module>azure-maps-route</module>
-        <module>azure-maps-render</module>
-      </modules>
-
-      <dependencies>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-maps-search</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-maps-search;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-maps-route</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-maps-route;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure</groupId>
-          <artifactId>azure-maps-render</artifactId>
-          <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure:azure-maps-render;current} -->
-        </dependency>
-      </dependencies>
-
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>0.8.8</version> <!-- {x-version-update;org.jacoco:jacoco-maven-plugin;external_dependency} -->
-            <configuration>
-              <outputDirectory>${project.reporting.outputDirectory}/test-coverage</outputDirectory>
-              <includes>
-                <include>com/azure/maps/search/*.class</include>
-                <include>com/azure/maps/route/*.class</include>
-                <include>com/azure/maps/render*.class</include>
-              </includes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>default</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <modules>
-        <module>azure-resourcemanager-maps</module>
-        <module>azure-maps-search</module>
-        <module>azure-maps-route</module>
-        <module>azure-maps-render</module>
-      </modules>
-    </profile>
-  </profiles>
+  <modules>
+    <module>azure-maps-search</module>
+    <module>azure-maps-route</module>
+    <module>azure-maps-render</module>
+    <module>azure-maps-timezone</module>
+    <module>azure-maps-geolocation</module>
+    <module>azure-resourcemanager-maps</module>
+  </modules>
 </project>

@@ -3,6 +3,18 @@
 ## 5.3.0-beta.1 (Unreleased)
 
 ### Features Added
+- This version of the client library marks a beta release and defaults to the service API version `2022-10-01-preview`.
+- Added properties `fhirVersion` and `documentType` to `AnalyzeHealthcareEntitiesOptions` and `AnalyzeHealthcareEntitiesAction`.
+- Added property `fhirBundle` to `AnalyzeHealthcareEntitiesResult`.
+- Added property `confidenceScore` to `HealthcareEntityRelation`.
+- Added enum `HealthcareDocumentType` and `FhirVersion`.
+- Added property `resolutions` to `CategorizedEntity`.
+- Added models and enums related to resolutions: `BaseResolution`, `ResolutionKind`, `AgeResolution`, `AreaResolution`,
+  `BooleanResolution`, `CurrencyResolution`, `DateTimeResolution`, `InformationResolution`, `LengthResolution`,
+  `NumberResolution`, `NumericRangeResolution`, `OrdinalResolution`, `SpeedResolution`, `TemperatureResolution`,
+  `TemporalSpanResolution`, `VolumeResolution`, `WeightResolution`, `AgeUnit`, `AreaUnit`, `TemporalModifier`,
+  `InformationUnit`, `LengthUnit`, `NumberKind`, `RangeKind`, `RelativeTo`, `SpeedUnit`, `TemperatureUnit`,
+  `VolumeUnit`, and `WeightUnit`.
 
 ### Breaking Changes
 

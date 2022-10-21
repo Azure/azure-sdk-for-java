@@ -6,7 +6,6 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,8 +15,6 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("OnPremiseSql")
 @Fluent
 public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OnPremiseSqlResourceDetails.class);
-
     /*
      * The Sql server name installed on the machine
      */
@@ -107,16 +104,18 @@ public final class OnPremiseSqlResourceDetails extends OnPremiseResourceDetails 
     public void validate() {
         super.validate();
         if (serverName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property serverName in model OnPremiseSqlResourceDetails"));
         }
         if (databaseName() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property databaseName in model OnPremiseSqlResourceDetails"));
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OnPremiseSqlResourceDetails.class);
 }

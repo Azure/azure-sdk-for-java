@@ -27,9 +27,9 @@ public interface HttpResponseDecodeData {
 
     /**
      * Get the type of the entity to be used to deserialize 'Matching' headers.
-     *
+     * <p>
      * The 'header entity' is optional and client can choose it when a strongly typed model is needed for headers.
-     *
+     * <p>
      * 'Matching' headers are the HTTP response headers those with:
      * 1. header names same as name of a properties in the 'header entity'.
      * 2. header names start with value of {@link HeaderCollection} annotation applied to the properties in the 'header
@@ -64,7 +64,7 @@ public interface HttpResponseDecodeData {
 
     /**
      * Get the type of the 'entity' in HTTP response content.
-     *
+     * <p>
      * When this method return non-null {@code java.lang.reflect.Type} then the raw HTTP response
      * content will need to parsed to this {@code java.lang.reflect.Type} then converted to actual
      * {@code returnType}.

@@ -6,11 +6,7 @@ package com.azure.messaging.servicebus.implementation;
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.implementation.AmqpConstants;
-import com.azure.core.amqp.implementation.TracerProvider;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
-import com.azure.core.util.tracing.ProcessKind;
-import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusTransactionContext;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.DescribedType;
@@ -23,7 +19,6 @@ import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import reactor.core.publisher.Signal;
 
 import java.net.URI;
 import java.nio.ByteBuffer;
@@ -35,20 +30,10 @@ import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
-
-import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.core.util.tracing.Tracer.DIAGNOSTIC_ID_KEY;
-import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
-import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_SERVICE_NAME;
-import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.EPOCH_TICKS;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TICK_PER_SECOND;
 import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.TIME_LENGTH_DELTA;
-
 
 /**
  * Contains helper methods for message conversions, reading status codes, and getting delivery state.
@@ -308,35 +293,6 @@ public final class MessageUtils {
         transactionalState.setOutcome(outcome);
         return transactionalState;
     }
-
-    /**
-     * Used in ServiceBusMessageBatch.tryAddMessage() to start tracing for to-be-sent out messages.
-     */
-    public static ServiceBusMessage traceMessageSpan(ServiceBusMessage serviceBusMessage,
-        Context messageContext, String hostname, String entityPath, TracerProvider tracerProvider) {
-        Optional<Object> eventContextData = messageContext.getData(SPAN_CONTEXT_KEY);
-        if (eventContextData.isPresent()) {
-            // if message has context (in case of retries), don't start a message span or add a new context
-            return serviceBusMessage;
-        } else {
-            // Starting the span makes the sampling decision (nothing is logged at this time)
-            Context newMessageContext = messageContext
-                .addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
-                .addData(ENTITY_PATH_KEY, entityPath)
-                .addData(HOST_NAME_KEY, hostname);
-            Context eventSpanContext = tracerProvider.startSpan(AZ_TRACING_SERVICE_NAME, newMessageContext,
-                ProcessKind.MESSAGE);
-            Optional<Object> eventDiagnosticIdOptional = eventSpanContext.getData(DIAGNOSTIC_ID_KEY);
-            if (eventDiagnosticIdOptional.isPresent()) {
-                serviceBusMessage.getApplicationProperties().put(DIAGNOSTIC_ID_KEY, eventDiagnosticIdOptional.get()
-                    .toString());
-                tracerProvider.endSpan(eventSpanContext, Signal.complete());
-                serviceBusMessage.addContext(SPAN_CONTEXT_KEY, eventSpanContext);
-            }
-        }
-        return serviceBusMessage;
-    }
-
 
     /**
      * Convert DescribedType to origin type based on the descriptor.

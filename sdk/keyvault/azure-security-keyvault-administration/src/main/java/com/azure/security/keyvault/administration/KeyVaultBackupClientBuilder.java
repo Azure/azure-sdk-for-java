@@ -94,6 +94,7 @@ public final class KeyVaultBackupClientBuilder implements
     private Configuration configuration;
     private ClientOptions clientOptions;
     private KeyVaultAdministrationServiceVersion serviceVersion;
+    private boolean disableChallengeResourceVerification = false;
 
     /**
      * Creates a {@link KeyVaultBackupClientBuilder} instance that is able to configure and construct instances of
@@ -182,7 +183,7 @@ public final class KeyVaultBackupClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -199,7 +200,9 @@ public final class KeyVaultBackupClientBuilder implements
     }
 
     /**
-     * Sets the URL to the Key Vault on which the client operates. Appears as "DNS Name" in the Azure portal.
+     * Sets the URL to the Key Vault on which the client operates. Appears as "DNS Name" in the Azure portal. You should
+     * validate that this URL references a valid Key Vault or Managed HSM resource.
+     * Refer to the following  <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * @param vaultUrl The vault URL is used as destination on Azure to send requests to.
      *
@@ -433,6 +436,18 @@ public final class KeyVaultBackupClientBuilder implements
      */
     public KeyVaultBackupClientBuilder serviceVersion(KeyVaultAdministrationServiceVersion serviceVersion) {
         this.serviceVersion = serviceVersion;
+
+        return this;
+    }
+
+    /**
+     * Disables verifying if the authentication challenge resource matches the Key Vault or Managed HSM domain. This
+     * verification is performed by default.
+     *
+     * @return The updated {@link KeyVaultBackupClientBuilder} object.
+     */
+    public KeyVaultBackupClientBuilder disableChallengeResourceVerification() {
+        this.disableChallengeResourceVerification = true;
 
         return this;
     }

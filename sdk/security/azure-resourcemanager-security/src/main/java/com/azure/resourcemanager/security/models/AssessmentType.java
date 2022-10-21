@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AssessmentType. */
+/**
+ * BuiltIn if the assessment based on built-in Azure Policy definition, Custom if the assessment based on custom Azure
+ * Policy definition.
+ */
 public final class AssessmentType extends ExpandableStringEnum<AssessmentType> {
     /** Static value BuiltIn for AssessmentType. */
     public static final AssessmentType BUILT_IN = fromString("BuiltIn");
@@ -33,7 +36,11 @@ public final class AssessmentType extends ExpandableStringEnum<AssessmentType> {
         return fromString(name, AssessmentType.class);
     }
 
-    /** @return known AssessmentType values. */
+    /**
+     * Gets known AssessmentType values.
+     *
+     * @return known AssessmentType values.
+     */
     public static Collection<AssessmentType> values() {
         return values(AssessmentType.class);
     }

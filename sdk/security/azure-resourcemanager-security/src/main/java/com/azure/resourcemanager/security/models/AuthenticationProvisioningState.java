@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthenticationProvisioningState. */
+/** State of the multi-cloud connector. */
 public final class AuthenticationProvisioningState extends ExpandableStringEnum<AuthenticationProvisioningState> {
     /** Static value Valid for AuthenticationProvisioningState. */
     public static final AuthenticationProvisioningState VALID = fromString("Valid");
@@ -33,7 +33,11 @@ public final class AuthenticationProvisioningState extends ExpandableStringEnum<
         return fromString(name, AuthenticationProvisioningState.class);
     }
 
-    /** @return known AuthenticationProvisioningState values. */
+    /**
+     * Gets known AuthenticationProvisioningState values.
+     *
+     * @return known AuthenticationProvisioningState values.
+     */
     public static Collection<AuthenticationProvisioningState> values() {
         return values(AuthenticationProvisioningState.class);
     }

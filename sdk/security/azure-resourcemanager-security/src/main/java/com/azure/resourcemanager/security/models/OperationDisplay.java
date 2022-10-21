@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Security operation display. */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
-
     /*
      * The resource provider for the operation.
      */

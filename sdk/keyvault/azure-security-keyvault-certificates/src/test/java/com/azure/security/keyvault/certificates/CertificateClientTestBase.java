@@ -119,7 +119,7 @@ public abstract class CertificateClientTestBase extends TestBase {
         policies.add(new RetryPolicy(strategy));
 
         if (credential != null) {
-            policies.add(new KeyVaultCredentialPolicy(credential));
+            policies.add(new KeyVaultCredentialPolicy(credential, false));
         }
 
         HttpPolicyProviders.addAfterRetryPolicies(policies);
@@ -632,18 +632,18 @@ public abstract class CertificateClientTestBase extends TestBase {
         return endpoint;
     }
 
-    static void assertRestException(Runnable exceptionThrower, int expectedStatusCode) {
-        assertRestException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
+    static void assertResponseException(Runnable exceptionThrower, int expectedStatusCode) {
+        assertResponseException(exceptionThrower, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(Runnable exceptionThrower,
-                                    Class<? extends HttpResponseException> expectedExceptionType,
-                                    int expectedStatusCode) {
+    static void assertResponseException(Runnable exceptionThrower,
+                                        Class<? extends HttpResponseException> expectedExceptionType,
+                                        int expectedStatusCode) {
         try {
             exceptionThrower.run();
             fail();
         } catch (HttpResponseException e) {
-            assertRestException(e, expectedExceptionType, expectedStatusCode);
+            assertResponseException(e, expectedExceptionType, expectedStatusCode);
         }
     }
 
@@ -653,13 +653,18 @@ public abstract class CertificateClientTestBase extends TestBase {
      * @param exception Expected error thrown during the test.
      * @param expectedStatusCode Expected HTTP status code contained in the error response.
      */
-    static void assertRestException(HttpResponseException exception, int expectedStatusCode) {
-        assertRestException(exception, HttpResponseException.class, expectedStatusCode);
+    static void assertResponseException(HttpResponseException exception, int expectedStatusCode) {
+        assertResponseException(exception, HttpResponseException.class, expectedStatusCode);
     }
 
-    static void assertRestException(HttpResponseException exception,
-                                    Class<? extends HttpResponseException> expectedExceptionType,
-                                    int expectedStatusCode) {
+    static void assertResponseException(Throwable exception, Class<? extends HttpResponseException> expectedExceptionType, int expectedStatusCode) {
+        assertEquals(expectedExceptionType, exception.getClass());
+        assertEquals(expectedStatusCode, ((HttpResponseException) exception).getResponse().getStatusCode());
+    }
+
+    static void assertResponseException(HttpResponseException exception,
+                                        Class<? extends HttpResponseException> expectedExceptionType,
+                                        int expectedStatusCode) {
         assertEquals(expectedExceptionType, exception.getClass());
         assertEquals(expectedStatusCode, exception.getResponse().getStatusCode());
     }
@@ -747,6 +752,15 @@ public abstract class CertificateClientTestBase extends TestBase {
         return Arrays.stream(configuredServiceVersionList)
             .anyMatch(configuredServiceVersion ->
                 serviceVersion.getVersion().equals(configuredServiceVersion.trim()));
+    }
+
+    void validateMapResponse(Map<String, String> expected, Map<String, String> returned) {
+        for (String key : expected.keySet()) {
+            String val = returned.get(key);
+            String expectedVal = expected.get(key);
+
+            assertEquals(expectedVal, val);
+        }
     }
 }
 

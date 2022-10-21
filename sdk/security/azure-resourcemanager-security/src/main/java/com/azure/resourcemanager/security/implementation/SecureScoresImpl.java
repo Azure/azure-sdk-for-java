@@ -13,10 +13,9 @@ import com.azure.resourcemanager.security.fluent.SecureScoresClient;
 import com.azure.resourcemanager.security.fluent.models.SecureScoreItemInner;
 import com.azure.resourcemanager.security.models.SecureScoreItem;
 import com.azure.resourcemanager.security.models.SecureScores;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class SecureScoresImpl implements SecureScores {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(SecureScoresImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(SecureScoresImpl.class);
 
     private final SecureScoresClient innerClient;
 

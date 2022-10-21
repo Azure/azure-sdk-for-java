@@ -78,18 +78,6 @@ import java.util.Map;
  * can be specified. It provides finer control over the construction of {@link CertificateAsyncClient} and {@link
  * CertificateClient}</p>
  *
- * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withPipeline -->
- * <pre>
- * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
- *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
- *     .build&#40;&#41;;
- * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
- *     .pipeline&#40;pipeline&#41;
- *     .vaultUrl&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
- *     .buildAsyncClient&#40;&#41;;
- * </pre>
- * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation.withPipeline -->
- *
  * <p> The minimal configuration options required by {@link CertificateClientBuilder certificateClientBuilder} to build
  * {@link CertificateClient}
  * are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
@@ -132,6 +120,7 @@ public final class CertificateClientBuilder implements
     private Configuration configuration;
     private CertificateServiceVersion version;
     private ClientOptions clientOptions;
+    private boolean disableChallengeResourceVerification = false;
 
     /**
      * The constructor with defaults.
@@ -230,7 +219,7 @@ public final class CertificateClientBuilder implements
         // Add retry policy.
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
 
-        policies.add(new KeyVaultCredentialPolicy(credential));
+        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
         // Add per retry additional policies.
         policies.addAll(perRetryPolicies);
@@ -247,7 +236,8 @@ public final class CertificateClientBuilder implements
     }
 
     /**
-     * Sets the vault endpoint URL to send HTTP requests to.
+     * Sets the vault endpoint URL to send HTTP requests to. You should validate that this URL references a valid Key
+     * Vault resource. Refer to the following <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
      * @param vaultUrl The vault endpoint url is used as destination on Azure to send requests to. If you have a
      * certificate identifier, create a new {@link KeyVaultCertificateIdentifier} to parse it and obtain the
@@ -482,6 +472,18 @@ public final class CertificateClientBuilder implements
     @Override
     public CertificateClientBuilder clientOptions(ClientOptions clientOptions) {
         this.clientOptions = clientOptions;
+
+        return this;
+    }
+
+    /**
+     * Disables verifying if the authentication challenge resource matches the Key Vault domain. This verification is
+     * performed by default.
+     *
+     * @return The updated {@link CertificateClientBuilder} object.
+     */
+    public CertificateClientBuilder disableChallengeResourceVerification() {
+        this.disableChallengeResourceVerification = true;
 
         return this;
     }

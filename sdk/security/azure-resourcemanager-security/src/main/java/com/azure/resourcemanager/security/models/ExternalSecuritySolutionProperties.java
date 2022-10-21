@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -16,8 +15,6 @@ import java.util.Map;
 /** The solution properties (correspond to the solution kind). */
 @Fluent
 public class ExternalSecuritySolutionProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExternalSecuritySolutionProperties.class);
-
     /*
      * The deviceVendor property.
      */

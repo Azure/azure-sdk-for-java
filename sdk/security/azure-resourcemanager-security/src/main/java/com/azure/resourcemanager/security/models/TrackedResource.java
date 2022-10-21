@@ -6,16 +6,13 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Describes an Azure tracked resource. */
 @Fluent
 public final class TrackedResource extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrackedResource.class);
-
     /*
      * Location where the resource is stored
      */
@@ -29,8 +26,7 @@ public final class TrackedResource extends ProxyResource {
     private String kind;
 
     /*
-     * Entity tag is used for comparing two or more entities from the same
-     * requested resource.
+     * Entity tag is used for comparing two or more entities from the same requested resource.
      */
     @JsonProperty(value = "etag")
     private String etag;
@@ -39,6 +35,7 @@ public final class TrackedResource extends ProxyResource {
      * A list of key value pairs that describe the resource.
      */
     @JsonProperty(value = "tags")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
     /**

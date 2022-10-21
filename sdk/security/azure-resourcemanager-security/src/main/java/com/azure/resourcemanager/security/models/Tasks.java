@@ -15,7 +15,7 @@ public interface Tasks {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecurityTask> list();
 
@@ -27,7 +27,7 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecurityTask> list(String filter, Context context);
 
@@ -39,7 +39,7 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecurityTask> listByHomeRegion(String ascLocation);
 
@@ -53,7 +53,7 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecurityTask> listByHomeRegion(String ascLocation, String filter, Context context);
 
@@ -80,7 +80,7 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
+     * @return security task that we recommend to do in order to strengthen security along with {@link Response}.
      */
     Response<SecurityTask> getSubscriptionLevelTaskWithResponse(String ascLocation, String taskName, Context context);
 
@@ -96,7 +96,7 @@ public interface Tasks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void updateSubscriptionLevelTaskState(
-        String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType);
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType);
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
@@ -109,10 +109,10 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> updateSubscriptionLevelTaskStateWithResponse(
-        String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType, Context context);
+        String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType, Context context);
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
@@ -124,7 +124,7 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecurityTask> listByResourceGroup(String resourceGroupName, String ascLocation);
 
@@ -140,7 +140,7 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security task recommendations.
+     * @return list of security task recommendations as paginated response with {@link PagedIterable}.
      */
     PagedIterable<SecurityTask> listByResourceGroup(
         String resourceGroupName, String ascLocation, String filter, Context context);
@@ -172,7 +172,7 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return security task that we recommend to do in order to strengthen security.
+     * @return security task that we recommend to do in order to strengthen security along with {@link Response}.
      */
     Response<SecurityTask> getResourceGroupLevelTaskWithResponse(
         String resourceGroupName, String ascLocation, String taskName, Context context);
@@ -191,7 +191,7 @@ public interface Tasks {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     void updateResourceGroupLevelTaskState(
-        String resourceGroupName, String ascLocation, String taskName, TasksTaskUpdateActionType taskUpdateActionType);
+        String resourceGroupName, String ascLocation, String taskName, TaskUpdateActionType taskUpdateActionType);
 
     /**
      * Recommended tasks that will help improve the security of the subscription proactively.
@@ -206,12 +206,12 @@ public interface Tasks {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> updateResourceGroupLevelTaskStateWithResponse(
         String resourceGroupName,
         String ascLocation,
         String taskName,
-        TasksTaskUpdateActionType taskUpdateActionType,
+        TaskUpdateActionType taskUpdateActionType,
         Context context);
 }
