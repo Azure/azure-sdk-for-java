@@ -15,6 +15,8 @@ import java.nio.ByteBuffer;
 import java.util.UUID;
 
 public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
+    private List<BlobAsyncClient> _clients;
+
     public ListBlobsTest(PerfStressOptions options) {
         super(options);
     }
@@ -32,6 +34,11 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
                 .then());
     }
 
+    public Mono<Void> setupAsync() {
+        _clients = blobContainerAsyncClient.listBlobs().collectList().block();
+        return Mono.empty();
+    }
+
     @Override
     public void run() {
         blobContainerClient.listBlobs().forEach(b -> {
@@ -40,11 +47,9 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return blobContainerAsyncClient
-            .listBlobs()
-            .flatMap(b -> blobContainerAsyncClient
-                .getBlobAsyncClient(b.getName())
-                .downloadToFile(b.getName(), /* overwrite */ true)
+        return Flux.fromIterable(_clients)
+            .flatMap(c -> c
+                .downloadToFile(c.getBlobName(), /* overwrite */ true)
                 .doOnError(ex -> System.out.println("Download error: " + ex.toString()))
                 .onErrorResume(ex -> Mono.empty()))
             .parallel()
