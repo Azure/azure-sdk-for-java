@@ -58,6 +58,8 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
      * @param handler the AAD B2C logout success handler
      * @param resolver the AAD B2C authorization request resolver
      * @param accessTokenResponseClient the AAD B2C access token response client
+     * @param restTemplateBuilder the RestTemplateBuilder used to build OAuth2AccessTokenResponseClient.
+     *                           It will be used only when accessTokenResponseClient is null.
      */
     public AadB2cOidcLoginConfigurer(LogoutSuccessHandler handler,
              OAuth2AuthorizationRequestResolver resolver,
