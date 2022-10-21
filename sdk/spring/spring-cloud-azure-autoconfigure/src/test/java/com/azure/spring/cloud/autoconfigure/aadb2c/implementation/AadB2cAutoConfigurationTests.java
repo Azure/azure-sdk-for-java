@@ -286,7 +286,7 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
 
         private final AadB2cOidcLoginConfigurer configurer;
 
-        public AadB2cTestWebSecurityConfiguration(AadB2cOidcLoginConfigurer configurer) {
+        AadB2cTestWebSecurityConfiguration(AadB2cOidcLoginConfigurer configurer) {
             this.configurer = configurer;
         }
 
