@@ -9,11 +9,12 @@ import com.azure.storage.blob.BlobContainerClient;
 
 import reactor.core.publisher.Mono;
 
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class ContainerTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
     private static final AtomicInteger ITERATION = new AtomicInteger();
-    private static final String CONTAINER_NAME_BASE = "perfstress-";
+    private static final String CONTAINER_NAME_BASE = "perfstress-" + UUID.randomUUID();
 
     protected final BlobContainerClient blobContainerClient;
     protected final BlobContainerAsyncClient blobContainerAsyncClient;
