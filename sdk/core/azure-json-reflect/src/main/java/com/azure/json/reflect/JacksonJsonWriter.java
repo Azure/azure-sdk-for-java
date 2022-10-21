@@ -7,53 +7,131 @@ import com.azure.json.JsonToken;
 import com.azure.json.implementation.DefaultJsonWriter;
 
 import java.io.*;
-import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Objects;
-import java.util.function.Supplier;
+import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 
 import static java.lang.invoke.MethodType.methodType;
 
 class JacksonJsonWriter extends JsonWriter {
-    private static boolean initialized = false;
-    private static boolean attemptedInitialization = false;
-    private static final MethodHandles.Lookup lookup = MethodHandles.lookup();
-    private static JsonWriterJsonGenerator JSON_WRITER_GENERATOR;
-    private static JsonWriterConstructor JSON_FACTORY_CONSTRUCTOR;
-    private static JsonWriterWriteRawValue JSON_WRITER_WRITE_RAW_VALUE;
-    private static JsonWriterFlush JSON_WRITER_FLUSH;
-    private static JsonWriterClose JSON_WRITER_CLOSE;
-    private static JsonWriterWriteStartObject JSON_WRITER_WRITE_START_OBJECT;
-    private static JsonWriterWriteEndObject JSON_WRITER_WRITE_END_OBJECT;
-    private static JsonWriterWriteStartArray JSON_WRITER_WRITE_START_ARRAY;
-    private static JsonWriterWriteEndArray JSON_WRITER_WRITE_END_ARRAY;
-    private static JsonWriterWriteFieldName JSON_WRITER_WRITE_FIELD_NAME;
-    private static JsonWriterWriteNull JSON_WRITER_WRITE_NULL;
-    private static JsonWriterWriteBinary JSON_WRITER_WRITE_BINARY;
-    private static JsonWriterWriteBoolean JSON_WRITER_WRITE_BOOLEAN;
-    private static JsonWriterWriteDouble JSON_WRITER_WRITE_DOUBLE;
-    private static JsonWriterWriteFloat JSON_WRITER_WRITE_FLOAT;
-    private static JsonWriterWriteInt JSON_WRITER_WRITE_INT;
-    private static JsonWriterWriteLong JSON_WRITER_WRITE_LONG;
-    private static JsonWriterWriteString JSON_WRITER_WRITE_STRING;
-    private static JsonWriterConfigure JSON_WRITER_CONFIGURE;
+    private static final Object JSON_WRITER_FACTORY;
+    private static final Class JACKSON_FEATURE_ENUM;
+    private static final JsonWriterJsonGenerator JSON_WRITER_GENERATOR;
+    private static final JsonWriterWriteRawValue JSON_WRITER_WRITE_RAW_VALUE;
+    private static final JsonWriterFlush JSON_WRITER_FLUSH;
+    private static final JsonWriterClose JSON_WRITER_CLOSE;
+    private static final JsonWriterWriteStartObject JSON_WRITER_WRITE_START_OBJECT;
+    private static final JsonWriterWriteEndObject JSON_WRITER_WRITE_END_OBJECT;
+    private static final JsonWriterWriteStartArray JSON_WRITER_WRITE_START_ARRAY;
+    private static final JsonWriterWriteEndArray JSON_WRITER_WRITE_END_ARRAY;
+    private static final JsonWriterWriteFieldName JSON_WRITER_WRITE_FIELD_NAME;
+    private static final JsonWriterWriteNull JSON_WRITER_WRITE_NULL;
+    private static final JsonWriterWriteBinary JSON_WRITER_WRITE_BINARY;
+    private static final JsonWriterWriteBoolean JSON_WRITER_WRITE_BOOLEAN;
+    private static final JsonWriterWriteDouble JSON_WRITER_WRITE_DOUBLE;
+    private static final JsonWriterWriteFloat JSON_WRITER_WRITE_FLOAT;
+    private static final JsonWriterWriteInt JSON_WRITER_WRITE_INT;
+    private static final JsonWriterWriteLong JSON_WRITER_WRITE_LONG;
+    private static final JsonWriterWriteString JSON_WRITER_WRITE_STRING;
+    private static final JsonWriterConfigure JSON_WRITER_CONFIGURE;
 
+    static final boolean INITIALIZED;
 
+    static{
+        MethodHandles.Lookup lookup = MethodHandles.lookup();
+        Object jsonFactory = null;
 
+        Class jacksonFeatureEnum = null;
 
-    private JsonWriteContext context = JsonWriteContext.ROOT;
+        JsonWriterJsonGenerator jsonWriterJsonGenerator = null;
+        JsonWriterWriteRawValue jsonWriterWriteRawValue = null;
+        JsonWriterFlush jsonWriterFlush = null;
+        JsonWriterClose jsonWriterClose = null;
+        JsonWriterWriteStartObject jsonWriterWriteStartObject = null;
+        JsonWriterWriteEndObject jsonWriterWriteEndObject = null;
+        JsonWriterWriteStartArray jsonWriterWriteStartArray = null;
+        JsonWriterWriteEndArray jsonWriterWriteEndArray = null;
+        JsonWriterWriteFieldName jsonWriterWriteFieldName = null;
+        JsonWriterWriteNull jsonWriterWriteNull= null;
+        JsonWriterWriteBinary jsonWriterWriteBinary= null;
+        JsonWriterWriteBoolean jsonWriterWriteBoolean= null;
+        JsonWriterWriteDouble jsonWriterWriteDouble= null;
+        JsonWriterWriteFloat jsonWriterWriteFloat= null;
+        JsonWriterWriteInt jsonWriterWriteInt= null;
+        JsonWriterWriteLong jsonWriterWriteLong= null;
+        JsonWriterWriteString jsonWriterWriteString= null;
+        JsonWriterConfigure jsonWriterConfigure= null;
 
+        boolean initialized = false;
+
+        try{
+            Class<?> factoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
+            Class<?> jacksonGeneratorClass = Class.forName("com.fasterxml.jackson.core.JsonGenerator");
+            jacksonFeatureEnum = Arrays.stream(jacksonGeneratorClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
+            jsonFactory = lookup.findConstructor(factoryClass, methodType(void.class)).invoke();
+
+            MethodType voidMT = methodType(void.class);
+            MethodType voidStringMt = methodType(void.class,String.class);
+            MethodType voidObjectMT = methodType(void.class, Object.class);
+
+            jsonWriterJsonGenerator = createMetaFactory("createGenerator",factoryClass,methodType(jacksonGeneratorClass, Writer.class),JsonWriterJsonGenerator.class,methodType(Object.class,Object.class, Writer.class),lookup);
+            jsonWriterWriteRawValue = createMetaFactory("writeRawValue",jacksonGeneratorClass,voidStringMt,JsonWriterWriteRawValue.class,methodType(void.class,Object.class,String.class),lookup);
+            jsonWriterFlush = createMetaFactory("flush",jacksonGeneratorClass,voidMT,JsonWriterFlush.class,voidObjectMT,lookup);
+            jsonWriterClose = createMetaFactory("close",jacksonGeneratorClass, voidMT, JsonWriterClose.class, voidObjectMT,lookup);
+            jsonWriterWriteStartObject = createMetaFactory("writeStartObject",jacksonGeneratorClass,voidMT,JsonWriterWriteStartObject.class, voidObjectMT,lookup);
+            jsonWriterWriteEndObject = createMetaFactory("writeEndObject",jacksonGeneratorClass,voidMT,JsonWriterWriteEndObject.class,voidObjectMT,lookup);
+            jsonWriterWriteStartArray = createMetaFactory("writeStartArray",jacksonGeneratorClass,voidMT,JsonWriterWriteStartArray.class,voidObjectMT,lookup);
+            jsonWriterWriteEndArray = createMetaFactory("writeEndArray",jacksonGeneratorClass,voidMT, JsonWriterWriteEndArray.class,voidObjectMT,lookup);
+            jsonWriterWriteFieldName = createMetaFactory("writeFieldName",jacksonGeneratorClass,voidStringMt,JsonWriterWriteFieldName.class,methodType(void.class,Object.class,String.class),lookup);
+            jsonWriterWriteNull = createMetaFactory("writeNull",jacksonGeneratorClass,voidMT,JsonWriterWriteNull.class,voidObjectMT,lookup);
+            jsonWriterWriteBinary = createMetaFactory("writeBinary",jacksonGeneratorClass,methodType(void.class,byte[].class),JsonWriterWriteBinary.class, methodType(void.class, Object.class, byte[].class),lookup);
+            jsonWriterWriteBoolean = createMetaFactory("writeBoolean",jacksonGeneratorClass,methodType(void.class,boolean.class),JsonWriterWriteBoolean.class,methodType(void.class, Object.class, boolean.class),lookup);
+            jsonWriterWriteDouble = createMetaFactory("writeNumber",jacksonGeneratorClass,methodType(void.class,double.class),JsonWriterWriteDouble.class,methodType(void.class,Object.class, double.class),lookup);
+            jsonWriterWriteFloat = createMetaFactory("writeNumber",jacksonGeneratorClass,methodType(void.class,float.class),JsonWriterWriteFloat.class,methodType(void.class, Object.class, float.class),lookup);
+            jsonWriterWriteInt = createMetaFactory("writeNumber",jacksonGeneratorClass,methodType(void.class,int.class),JsonWriterWriteInt.class,methodType(void.class, Object.class, int.class),lookup);
+            jsonWriterWriteLong = createMetaFactory("writeNumber",jacksonGeneratorClass,methodType(void.class,long.class),JsonWriterWriteLong.class,methodType(void.class, Object.class, long.class),lookup);
+            jsonWriterWriteString = createMetaFactory("writeString",jacksonGeneratorClass,voidStringMt,JsonWriterWriteString.class,methodType(void.class,Object.class,String.class),lookup);
+            jsonWriterConfigure = createMetaFactory("configure",jacksonGeneratorClass,methodType(jacksonGeneratorClass,jacksonFeatureEnum,boolean.class),JsonWriterConfigure.class,methodType(Object.class, Object.class,Object.class,boolean.class),lookup);
+
+            initialized = true;
+        }
+        catch (Throwable e) {
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException) e;
+            } else if (e instanceof Error) {
+                throw (Error) e;
+            }
+        }
+
+        JACKSON_FEATURE_ENUM = jacksonFeatureEnum;
+        JSON_WRITER_FACTORY = jsonFactory;
+        JSON_WRITER_GENERATOR = jsonWriterJsonGenerator;
+        JSON_WRITER_WRITE_RAW_VALUE = jsonWriterWriteRawValue;
+        JSON_WRITER_FLUSH = jsonWriterFlush;
+        JSON_WRITER_CLOSE = jsonWriterClose;
+        JSON_WRITER_WRITE_START_OBJECT = jsonWriterWriteStartObject;
+        JSON_WRITER_WRITE_END_OBJECT = jsonWriterWriteEndObject;
+        JSON_WRITER_WRITE_START_ARRAY = jsonWriterWriteStartArray;
+        JSON_WRITER_WRITE_END_ARRAY = jsonWriterWriteEndArray;
+        JSON_WRITER_WRITE_FIELD_NAME = jsonWriterWriteFieldName;
+        JSON_WRITER_WRITE_NULL = jsonWriterWriteNull;
+        JSON_WRITER_WRITE_BINARY = jsonWriterWriteBinary;
+        JSON_WRITER_WRITE_BOOLEAN = jsonWriterWriteBoolean;
+        JSON_WRITER_WRITE_DOUBLE = jsonWriterWriteDouble;
+        JSON_WRITER_WRITE_FLOAT = jsonWriterWriteFloat;
+        JSON_WRITER_WRITE_INT = jsonWriterWriteInt;
+        JSON_WRITER_WRITE_LONG = jsonWriterWriteLong;
+        JSON_WRITER_WRITE_STRING = jsonWriterWriteString;
+        JSON_WRITER_CONFIGURE = jsonWriterConfigure;
+
+        INITIALIZED = initialized;
+    }
     private final Object jacksonGenerator;
-    private static Object FACTORY;
-
-    private static Class jacksonFeatureEnum;
-    private static Class<?> jacksonGeneratorClass;
-    private static Class<?> factoryClass;
-
+    JsonWriteContext context = JsonWriteContext.ROOT;
 
     /**
      * Creates a {@link DefaultJsonWriter} that writes the given {@link OutputStream}.
@@ -90,83 +168,14 @@ class JacksonJsonWriter extends JsonWriter {
     }
 
     private JacksonJsonWriter(Writer writer, JsonOptions options) throws IOException {
-        try {
-            initialize();
-
-            jacksonGenerator = JSON_WRITER_GENERATOR.createGenerator(FACTORY,writer);//fails here
-            // Configure Jackson to support non-numeric numbers
-            JSON_WRITER_CONFIGURE.configure(jacksonGenerator, Enum.valueOf(jacksonFeatureEnum, "QUOTE_NON_NUMERIC_NUMBERS"), options.isNonNumericNumbersSupported());
-
-        } catch (ReflectiveOperationException e) {
-
-                throw new IllegalStateException("Jackson is not present or an incorrect version is present.");
-            }
-
-
-    }
-
-    static synchronized void initialize() throws ReflectiveOperationException{
-        if (initialized) {
-            return;
-        } else if (attemptedInitialization) {
-            throw new ReflectiveOperationException("Initialization of JacksonJsonWriter has failed in the past.");
+        if (!INITIALIZED) {
+            throw new IllegalStateException("Jackson is not present or an incorrect version is present.");
         }
 
-        attemptedInitialization = true;
-
-        factoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
-        jacksonGeneratorClass = Class.forName("com.fasterxml.jackson.core.JsonGenerator");
-        jacksonFeatureEnum = Arrays.stream(jacksonGeneratorClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
-        try{
-            MethodType voidMT = methodType(void.class);
-            MethodType voidStringMt = methodType(void.class,String.class);
-            MethodType voidObjectMT = methodType(void.class, Object.class);
-
-            MethodHandle constructorFactory = lookup.findConstructor(factoryClass, voidMT);
-            JSON_FACTORY_CONSTRUCTOR =(JsonWriterConstructor) LambdaMetafactory.metafactory(lookup,"jsonFactory",methodType(JsonWriterConstructor.class), constructorFactory.type().generic(), constructorFactory, constructorFactory.type()).getTarget().invoke();
-            JSON_WRITER_GENERATOR = createMetaFactoryJsonFactory("createGenerator",methodType(jacksonGeneratorClass, Writer.class),JsonWriterJsonGenerator.class,methodType(Object.class,Object.class, Writer.class));
-            FACTORY = JSON_FACTORY_CONSTRUCTOR.jsonFactory();
-
-            JSON_WRITER_WRITE_RAW_VALUE = createMetaFactory("writeRawValue",voidStringMt,JsonWriterWriteRawValue.class,methodType(void.class,Object.class,String.class));
-            JSON_WRITER_FLUSH = createMetaFactory("flush",voidMT,JsonWriterFlush.class,voidObjectMT);
-            JSON_WRITER_CLOSE = createMetaFactory("close", voidMT, JsonWriterClose.class, voidObjectMT);
-            JSON_WRITER_WRITE_START_OBJECT = createMetaFactory("writeStartObject",voidMT,JsonWriterWriteStartObject.class, voidObjectMT);
-            JSON_WRITER_WRITE_END_OBJECT = createMetaFactory("writeEndObject",voidMT,JsonWriterWriteEndObject.class,voidObjectMT);
-            JSON_WRITER_WRITE_START_ARRAY = createMetaFactory("writeStartArray",voidMT,JsonWriterWriteStartArray.class,voidObjectMT);
-            JSON_WRITER_WRITE_END_ARRAY = createMetaFactory("writeEndArray",voidMT, JsonWriterWriteEndArray.class,voidObjectMT);
-            JSON_WRITER_WRITE_FIELD_NAME = createMetaFactory("writeFieldName",voidStringMt,JsonWriterWriteFieldName.class,methodType(void.class,Object.class,String.class));
-            JSON_WRITER_WRITE_NULL = createMetaFactory("writeNull",voidMT,JsonWriterWriteNull.class,voidObjectMT);
-            JSON_WRITER_WRITE_BINARY = createMetaFactory("writeBinary",methodType(void.class,byte[].class),JsonWriterWriteBinary.class, methodType(void.class, Object.class, byte[].class));
-            JSON_WRITER_WRITE_BOOLEAN = createMetaFactory("writeBoolean",methodType(void.class,boolean.class),JsonWriterWriteBoolean.class,methodType(void.class, Object.class, boolean.class));
-            JSON_WRITER_WRITE_DOUBLE = createMetaFactory("writeNumber",methodType(void.class,double.class),JsonWriterWriteDouble.class,methodType(void.class,Object.class, double.class));
-            JSON_WRITER_WRITE_FLOAT = createMetaFactory("writeNumber",methodType(void.class,float.class),JsonWriterWriteFloat.class,methodType(void.class, Object.class, float.class));
-            JSON_WRITER_WRITE_INT = createMetaFactory("writeNumber",methodType(void.class,int.class),JsonWriterWriteInt.class,methodType(void.class, Object.class, int.class));
-            JSON_WRITER_WRITE_LONG = createMetaFactory("writeNumber",methodType(void.class,long.class),JsonWriterWriteLong.class,methodType(void.class, Object.class, long.class));
-            JSON_WRITER_WRITE_STRING = createMetaFactory("writeString",voidStringMt,JsonWriterWriteString.class,methodType(void.class,Object.class,String.class));
-            JSON_WRITER_CONFIGURE = createMetaFactory("configure",methodType(jacksonGeneratorClass,jacksonFeatureEnum,boolean.class),JsonWriterConfigure.class,methodType(Object.class, Object.class,Object.class,boolean.class));
-        }
-        catch (Throwable e) {
-            if (e instanceof RuntimeException) {
-                throw (RuntimeException) e;
-            } else {
-                throw new ReflectiveOperationException("Initialization of JacksonJsonWriter failed.");
-            }
-        }
-
-
-        initialized = true;
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> T createMetaFactory(String methodName, MethodType implType, Class<T> invokedClass, MethodType invokedType) throws Throwable {
-        MethodHandle handle = lookup.findVirtual(jacksonGeneratorClass, methodName, implType);
-        return (T) LambdaMetafactory.metafactory(lookup, methodName, methodType(invokedClass), invokedType, handle, handle.type()).getTarget().invoke();
-    }
-
-    @SuppressWarnings("unchecked")
-    private static <T> T createMetaFactoryJsonFactory(String methodName, MethodType implType, Class<T> invokedClass, MethodType invokedType) throws Throwable {
-        MethodHandle handle = lookup.findVirtual(factoryClass, methodName, implType);
-        return (T) LambdaMetafactory.metafactory(lookup, methodName, methodType(invokedClass), invokedType, handle, handle.type()).getTarget().invoke();
+        jacksonGenerator = JSON_WRITER_GENERATOR.createGenerator(JSON_WRITER_FACTORY,writer);//fails here
+        // Configure Jackson to support non-numeric numbers
+        JSON_WRITER_CONFIGURE.configure(jacksonGenerator, Enum.valueOf(JACKSON_FEATURE_ENUM,
+            "QUOTE_NON_NUMERIC_NUMBERS"), options.isNonNumericNumbersSupported());
     }
 
     @Override
@@ -301,17 +310,10 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeRawValue(String value) throws IOException {
         Objects.requireNonNull(value, "'value' cannot be null.");
-
         context.validateToken(JsonToken.STRING);
-
         JSON_WRITER_WRITE_RAW_VALUE.writeRawValue(jacksonGenerator,value);
-
         context = context.updateContext(JsonToken.STRING);
         return this;
-    }
-    @FunctionalInterface
-    private interface  JsonWriterConstructor {
-        Object jsonFactory();
     }
 
     @FunctionalInterface

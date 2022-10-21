@@ -7,15 +7,7 @@ import com.azure.json.JsonReader;
 import java.io.*;
 
 class JacksonJsonFactory extends JsonFactory {
-    static final boolean INITIALIZED = JacksonJsonReader.INITIALIZED;
-
-    JacksonJsonFactory() {
-        try {
-            JacksonJsonWriter.initialize();
-        } catch (ReflectiveOperationException e) {
-            e.printStackTrace();
-        }
-    }
+    static final boolean INITIALIZED = JacksonJsonReader.INITIALIZED && JacksonJsonWriter.INITIALIZED;
 
     @Override
     public JsonReader getJsonReader(byte[] bytes, JsonOptions options) throws IOException {
