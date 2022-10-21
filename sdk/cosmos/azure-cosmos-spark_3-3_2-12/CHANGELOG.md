@@ -165,7 +165,7 @@
 ### 4.5.0 (2021-12-09)
 #### New Features
 * Added a user defined function that can be used to calculate the "feedRange" of a partition key value. This "feedRange" can be used to determine co-located documents and to optimize query performance when the query is scoped to a single/few logical partitions. - See [PR 25889](https://github.com/Azure/azure-sdk-for-java/pull/25889).
-* Extended set of provided/accepted TBLPROPERTIES within the `CosmosCatalog` to allow retrieving partition key count, provisioned throughput, partition key definition etc. natively via the `DESCRIBE TABLE EXTENDED` command. - See [PR 25853](https://github.com/Azure/azure-sdk-for-java/pull/25853).
+* Extended set of provided/accepted `TBLPROPERTIES` within the `CosmosCatalog` to allow retrieving partition key count, provisioned throughput, partition key definition etc. natively via the `DESCRIBE TABLE EXTENDED` command. - See [PR 25853](https://github.com/Azure/azure-sdk-for-java/pull/25853).
 #### Bugs Fixed
 * Suppressing query plan retrieval in Spark queries (where they never would be necessary) to suppress I/O calls to the gateway and improve latency for query execution. - See [PR 25668](https://github.com/Azure/azure-sdk-for-java/pull/25668)
 * Fixed a bug resulting in not being able to use views defined in the CosmosCatalog after cluster restart. Error observed in this case was `com.databricks.backend.common.rpc.DatabricksExceptions$SQLExecutionException: org.json4s.package$MappingException: unknown error`. - See [PR 25908](https://github.com/Azure/azure-sdk-for-java/pull/25908)

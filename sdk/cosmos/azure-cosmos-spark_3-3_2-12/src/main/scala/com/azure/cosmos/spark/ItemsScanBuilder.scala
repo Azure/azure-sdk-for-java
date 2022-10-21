@@ -62,7 +62,7 @@ private case class ItemsScanBuilder(session: SparkSession,
       case None => FilterAnalyzer().analyze(Array.empty[Filter], this.readConfig).cosmosParametrizedQuery
     }
 
-    // TODO moderakh when inferring schema we should consolidate the schema from pruneColumns
+    // TODO when inferring schema we should consolidate the schema from pruneColumns
     ItemsScan(
       session,
       inputSchema,
@@ -84,7 +84,7 @@ private case class ItemsScanBuilder(session: SparkSession,
     * pruning applied here.
     */
   override def pruneColumns(requiredSchema: StructType): Unit = {
-    // TODO moderakh: we need to decide whether do a push down or not on the projection
+    // TODO: we need to decide whether do a push down or not on the projection
     // spark will do column pruning on the returned data.
     // pushing down projection to cosmos has tradeoffs:
     //   - it increases consumed RU in cosmos query engine

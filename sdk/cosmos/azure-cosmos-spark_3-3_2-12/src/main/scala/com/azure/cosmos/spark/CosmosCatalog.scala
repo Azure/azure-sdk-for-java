@@ -65,7 +65,7 @@ class CosmosCatalog
     override def alterNamespace(namespace: Array[String],
                                 changes: NamespaceChange*): Unit = {
         checkNamespace(namespace)
-        // TODO: moderakh we can support changing database level throughput?
+        // TODO: we can support changing database level throughput?
         throw new UnsupportedOperationException("altering namespace not supported")
     }
 

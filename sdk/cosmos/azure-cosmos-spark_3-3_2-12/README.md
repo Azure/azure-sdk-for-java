@@ -15,13 +15,13 @@ https://github.com/Azure/azure-sdk-for-java/issues/new
 - [Catalog API](https://aka.ms/azure-cosmos-spark-3-catalog-api)
 - [Configuration Parameter Reference](https://aka.ms/azure-cosmos-spark-3-config)
 
-[//]: # (//TODO: moderakh add more sections)
-[//]: # (//TODO: moderakh Enable Client Logging)
-[//]: # (//TODO: moderakh Examples)
-[//]: # (//TODO: moderakh Next steps)
-[//]: # (//TODO: moderakh Key concepts)
-[//]: # (//TODO: moderakh Azure Cosmos DB Partition)
-[//]: # (//TODO: moderakh Troubleshooting)
+[//]: # (//TODO: add more sections)
+[//]: # (//TODO: Enable Client Logging)
+[//]: # (//TODO: Examples)
+[//]: # (//TODO: Next steps)
+[//]: # (//TODO: Key concepts)
+[//]: # (//TODO: Azure Cosmos DB Partition)
+[//]: # (//TODO: Troubleshooting)
 
 ### Version Compatibility
 
