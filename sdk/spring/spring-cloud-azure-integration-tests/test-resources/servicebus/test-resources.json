@@ -61,8 +61,8 @@
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
       ],
+      "referenceValue": "[reference(variables('azureServiceBusNamespaceName')).serviceBusEndpoint.value]",
       "properties": {
-        "referenceValue": "[reference(variables('azureServiceBusNamespaceName')).serviceBusEndpoint.value]",
         "rights": [
           "Listen",
           "Manage",
@@ -215,8 +215,8 @@
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
       ],
+      "referenceValue": "[reference(variables('azureServiceBusNamespaceName_1')).serviceBusEndpoint.value]",
       "properties": {
-        "referenceValue": "[reference(variables('azureServiceBusNamespaceName_1')).serviceBusEndpoint.value]",
         "rights": [
           "Listen",
           "Manage",
@@ -232,8 +232,8 @@
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_2'))]"
       ],
+      "referenceValue": "[reference(variables('azureServiceBusNamespaceName_2')).serviceBusEndpoint.value]",
       "properties": {
-        "referenceValue": "[reference(variables('azureServiceBusNamespaceName_2')).serviceBusEndpoint.value]",
         "rights": [
           "Listen",
           "Manage",
@@ -249,8 +249,8 @@
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_3'))]"
       ],
+      "referenceValue": "[reference(variables('azureServiceBusNamespaceName_3')).serviceBusEndpoint.value]",
       "properties": {
-        "referenceValue": "[reference(variables('azureServiceBusNamespaceName_3')).serviceBusEndpoint.value]",
         "rights": [
           "Listen",
           "Manage",
