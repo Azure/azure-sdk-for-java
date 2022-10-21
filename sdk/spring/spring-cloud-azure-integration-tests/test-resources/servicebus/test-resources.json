@@ -59,9 +59,8 @@
       "name": "[concat(variables('azureServiceBusNamespaceName'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
+        "[reference(variables('azureServiceBusNamespaceName')).id]"
       ],
-      "referenceValue": "[reference(variables('azureServiceBusNamespaceName')).serviceBusEndpoint.value]",
       "properties": {
         "rights": [
           "Listen",
@@ -213,9 +212,8 @@
       "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
+        "[reference(variables('azureServiceBusNamespaceName_1')).id]"
       ],
-      "referenceValue": "[reference(variables('azureServiceBusNamespaceName_1')).serviceBusEndpoint.value]",
       "properties": {
         "rights": [
           "Listen",
@@ -230,9 +228,9 @@
       "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_2'))]"
+        "[reference(variables('azureServiceBusNamespaceName_2')).id]"
+
       ],
-      "referenceValue": "[reference(variables('azureServiceBusNamespaceName_2')).serviceBusEndpoint.value]",
       "properties": {
         "rights": [
           "Listen",
@@ -247,9 +245,8 @@
       "name": "[concat(variables('azureServiceBusNamespaceName_3'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_3'))]"
+        "[reference(variables('azureServiceBusNamespaceName_3')).id]"
       ],
-      "referenceValue": "[reference(variables('azureServiceBusNamespaceName_3')).serviceBusEndpoint.value]",
       "properties": {
         "rights": [
           "Listen",
