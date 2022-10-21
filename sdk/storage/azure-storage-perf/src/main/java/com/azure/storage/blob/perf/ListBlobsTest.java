@@ -7,6 +7,9 @@ import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
+
+import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 import java.nio.ByteBuffer;
 import java.util.UUID;
@@ -39,7 +42,7 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
     public Mono<Void> runAsync() {
         return blobContainerAsyncClient
             .listBlobs()
-            .flatMap(b -> container
+            .flatMap(b -> blobContainerAsyncClient
                 .getBlobAsyncClient(b.getName())
                 .downloadToFile(b.getName())
                 .doOnError(ex -> System.out.println("Download error: " + ex.toString()))
