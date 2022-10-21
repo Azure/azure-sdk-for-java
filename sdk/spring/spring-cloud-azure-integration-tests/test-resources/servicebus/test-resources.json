@@ -54,28 +54,15 @@
       }
     },
     {
-      "type": "Microsoft.Resources/deploymentScripts",
-      "apiVersion": "2020-10-01",
-      "kind": "AzurePowerShell",
-      "name": "WaitSection",
+      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+      "apiVersion": "2022-01-01-preview",
+      "name": "[concat(variables('azureServiceBusNamespaceName'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName'))]"
       ],
       "properties": {
-        "azPowerShellVersion": "3.0",
-        "scriptContent": "start-sleep -Seconds 30",
-        "cleanupPreference": "Always",
-        "retentionInterval": "PT1H"
-      }
-    },
-    {
-      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
-      "apiVersion": "2022-01-01-preview",
-      "name": "[concat(variables('azureServiceBusNamespaceName'), '/RootManageSharedAccessKey')]",
-      "location": "[variables('location')]",
-      "dependsOn": ["WaitSection"],
-      "properties": {
+        "referenceValue": "[reference(variables('azureServiceBusNamespaceName')).serviceBusEndpoint]",
         "rights": [
           "Listen",
           "Manage",
@@ -221,49 +208,20 @@
       }
     },
     {
-      "type": "Microsoft.Resources/deploymentScripts",
-      "apiVersion": "2020-10-01",
-      "kind": "AzurePowerShell",
-      "name": "WaitSection1",
+      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_1'))]"
       ],
       "properties": {
-        "azPowerShellVersion": "3.0",
-        "scriptContent": "start-sleep -Seconds 30",
-        "cleanupPreference": "Always",
-        "retentionInterval": "PT1H"
-      }
-    },
-    {
-      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
-      "apiVersion": "2017-04-01",
-      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/RootManageSharedAccessKey')]",
-      "location": "[variables('location')]",
-      "dependsOn": ["WaitSection1"],
-      "properties": {
+        "referenceValue": "[reference(variables('azureServiceBusNamespaceName_1')).serviceBusEndpoint]",
         "rights": [
           "Listen",
           "Manage",
           "Send"
         ]
-      }
-    },
-    {
-      "type": "Microsoft.Resources/deploymentScripts",
-      "apiVersion": "2020-10-01",
-      "kind": "AzurePowerShell",
-      "name": "WaitSection2",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_2'))]"
-      ],
-      "properties": {
-        "azPowerShellVersion": "3.0",
-        "scriptContent": "start-sleep -Seconds 30",
-        "cleanupPreference": "Always",
-        "retentionInterval": "PT1H"
       }
     },
     {
@@ -271,8 +229,11 @@
       "apiVersion": "2017-04-01",
       "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
-      "dependsOn": ["WaitSection2"],
+      "dependsOn": [
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_2'))]"
+      ],
       "properties": {
+        "referenceValue": "[reference(variables('azureServiceBusNamespaceName_2')).serviceBusEndpoint]",
         "rights": [
           "Listen",
           "Manage",
@@ -281,28 +242,15 @@
       }
     },
     {
-      "type": "Microsoft.Resources/deploymentScripts",
-      "apiVersion": "2020-10-01",
-      "kind": "AzurePowerShell",
-      "name": "WaitSection3",
+      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
+      "apiVersion": "2017-04-01",
+      "name": "[concat(variables('azureServiceBusNamespaceName_3'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_3'))]"
       ],
       "properties": {
-        "azPowerShellVersion": "3.0",
-        "scriptContent": "start-sleep -Seconds 30",
-        "cleanupPreference": "Always",
-        "retentionInterval": "PT1H"
-      }
-    },
-    {
-      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
-      "apiVersion": "2017-04-01",
-      "name": "[concat(variables('azureServiceBusNamespaceName_3'), '/RootManageSharedAccessKey')]",
-      "location": "[variables('location')]",
-      "dependsOn": ["WaitSection3"],
-      "properties": {
+        "referenceValue": "[reference(variables('azureServiceBusNamespaceName_3')).serviceBusEndpoint]",
         "rights": [
           "Listen",
           "Manage",
