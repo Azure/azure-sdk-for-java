@@ -144,7 +144,7 @@ public class IOUtilsTest {
             IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
             () -> new IOException("KABOOM"),
             3,
-            1024)) {
+            1048512)) {
 
             StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(
                     channel, initialResponse, onErrorResume, null, 5))
@@ -153,7 +153,7 @@ public class IOUtilsTest {
 
         assertEquals(3, retries.get());
         assertEquals(3, offsets.size());
-        offsets.forEach(e -> assertEquals(1024L, e));
+        offsets.forEach(e -> assertEquals(1048512L, e));
         assertEquals(3, throwables.size());
         throwables.forEach(e -> assertEquals("KABOOM", e.getMessage()));
         assertArrayEquals(data, Files.readAllBytes(tempFile));
@@ -200,7 +200,7 @@ public class IOUtilsTest {
             IOUtils.toAsynchronousByteChannel(AsynchronousFileChannel.open(tempFile, StandardOpenOption.WRITE), 0),
             () -> new IOException("KABOOM"),
             3,
-            1024)) {
+            1048512)) {
 
             StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(
                     channel, initialResponse, onErrorResume, null, 2))
@@ -210,10 +210,10 @@ public class IOUtilsTest {
 
         assertEquals(2, retries.get());
         assertEquals(2, offsets.size());
-        offsets.forEach(e -> assertEquals(1024L, e));
+        offsets.forEach(e -> assertEquals(1048512L, e));
         assertEquals(2, throwables.size());
         throwables.forEach(e -> assertEquals("KABOOM", e.getMessage()));
-        assertArrayEquals(Arrays.copyOfRange(data, 0, 1024), Files.readAllBytes(tempFile));
+        assertArrayEquals(Arrays.copyOfRange(data, 0, 1048512), Files.readAllBytes(tempFile));
         // check that all responses are closed
         assertEquals(3, responses.size());
         responses.forEach(r -> Mockito.verify(r).close());
