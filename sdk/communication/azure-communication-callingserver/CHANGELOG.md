@@ -16,7 +16,7 @@ This is the first version of the restart of Azure Communication Service Calling 
 - Call recording.
 - Get, add and remove participants from the call.
 - Recording download apis.
-- Added support for an optional `kind` property for a converter of `CommunicationIdentifierModel`.
+- Optimized the logic for deserializing types derived from the `CommunicationIdentifier`.
 
 ### Breaking Changes
 - Incompatible with previous version of service
