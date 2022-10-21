@@ -4,6 +4,7 @@
 package com.azure.storage.blob.perf;
 
 import com.azure.perf.test.core.PerfStressOptions;
+import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.perf.core.ContainerTest;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
