@@ -11,37 +11,114 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
-import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 
 import static java.lang.invoke.MethodType.methodType;
+import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 
 class JacksonJsonReader extends JsonReader {
-    private static boolean initialized = false;
-    private static boolean attemptedInitialization = false;
-    private static final MethodHandles.Lookup publicLookup = MethodHandles.publicLookup();
-    private static Class<?> jacksonTokenEnum = null;
-    private static Class jacksonFeatureEnum;
-    private static Object jsonFactory;
+    private static final Class<?> JACKSON_JSON_TOKEN_ENUM;
+    private static final Class JACKSON_FEATURE_ENUM;
+    private static final Object JSON_FACTORY;
 
-    private final Object jacksonParser;
+    private static final JsonFactoryCreateParser JSON_FACTORY_CREATE_PARSER;
+    private static final JsonParserConfigure JSON_PARSER_CONFIGURE;
+    private static final JsonParserClose JSON_PARSER_CLOSE;
+    private static final JsonParserSkipChildren JSON_PARSER_SKIP_CHILDREN;
+    private static final JsonParserNextToken JSON_PARSER_NEXT_TOKEN;
+    private static final JsonParserCurrentName JSON_PARSER_CURRENT_NAME;
+    private static final JsonParserGetValueAsString JSON_PARSER_GET_VALUE_AS_STRING;
+    private static final JsonParserGetBinaryValue JSON_PARSER_GET_BINARY_VALUE;
+    private static final JsonParserGetBooleanValue JSON_PARSER_GET_BOOLEAN_VALUE;
+    private static final JsonParserGetIntValue JSON_PARSER_GET_INT_VALUE;
+    private static final JsonParserGetLongValue JSON_PARSER_GET_LONG_VALUE;
+    private static final JsonParserGetFloatValue JSON_PARSER_GET_FLOAT_VALUE;
+    private static final JsonParserGetDoubleValue JSON_PARSER_GET_DOUBLE_VALUE;
+
+    static final boolean INITIALIZED;
+
+    static {
+        final MethodHandles.Lookup lookup = MethodHandles.lookup();
+
+        Class<?> jacksonJsonTokenEnum = null;
+        Class jacksonFeatureEnum = null;
+
+        Object jsonFactory = null;
+
+        JsonFactoryCreateParser jsonFactoryCreateParser = null;
+        JsonParserConfigure jsonParserConfigure = null;
+        JsonParserClose jsonParserClose = null;
+        JsonParserSkipChildren jsonParserSkipChildren = null;
+        JsonParserNextToken jsonParserNextToken = null;
+        JsonParserCurrentName jsonParserCurrentName = null;
+        JsonParserGetValueAsString jsonParserGetValueAsString = null;
+        JsonParserGetBinaryValue jsonParserGetBinaryValue = null;
+        JsonParserGetBooleanValue jsonParserGetBooleanValue = null;
+        JsonParserGetIntValue jsonParserGetIntValue = null;
+        JsonParserGetLongValue jsonParserGetLongValue = null;
+        JsonParserGetFloatValue jsonParserGetFloatValue = null;
+        JsonParserGetDoubleValue jsonParserGetDoubleValue = null;
+
+        boolean initialized = false;
+
+        try {
+            Class<?> jacksonJsonFactoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
+            Class<?> jacksonJsonParserClass = Class.forName("com.fasterxml.jackson.core.JsonParser");
+
+            jacksonJsonTokenEnum = Class.forName("com.fasterxml.jackson.core.JsonToken");
+            jacksonFeatureEnum = Arrays.stream(jacksonJsonParserClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
+
+            jsonFactory = lookup.findConstructor(jacksonJsonFactoryClass, methodType(void.class)).invoke();
+
+            jsonFactoryCreateParser = createMetaFactory("createParser", jacksonJsonFactoryClass, methodType(jacksonJsonParserClass, Reader.class), JsonFactoryCreateParser.class, methodType(Object.class, Object.class, Reader.class), lookup);
+            jsonParserConfigure = createMetaFactory("configure", jacksonJsonParserClass, methodType(jacksonJsonParserClass, jacksonFeatureEnum, boolean.class), JsonParserConfigure.class, methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
+            jsonParserClose = createMetaFactory("close", jacksonJsonParserClass, methodType(void.class), JsonParserClose.class, methodType(void.class, Object.class), lookup);
+            jsonParserSkipChildren = createMetaFactory("skipChildren", jacksonJsonParserClass, methodType(jacksonJsonParserClass), JsonParserSkipChildren.class, methodType(Object.class, Object.class), lookup);
+            jsonParserNextToken = createMetaFactory("nextToken", jacksonJsonParserClass, methodType(jacksonJsonTokenEnum), JsonParserNextToken.class, methodType(Object.class, Object.class), lookup);
+            jsonParserCurrentName = createMetaFactory("currentName", jacksonJsonParserClass, methodType(String.class), JsonParserCurrentName.class, methodType(String.class, Object.class), lookup);
+            jsonParserGetValueAsString = createMetaFactory("getValueAsString", jacksonJsonParserClass, methodType(String.class), JsonParserGetValueAsString.class, methodType(String.class, Object.class), lookup);
+            jsonParserGetBinaryValue = createMetaFactory("getBinaryValue", jacksonJsonParserClass, methodType(byte[].class), JsonParserGetBinaryValue.class, methodType(byte[].class, Object.class), lookup);
+            jsonParserGetBooleanValue = createMetaFactory("getBooleanValue", jacksonJsonParserClass, methodType(boolean.class), JsonParserGetBooleanValue.class, methodType(boolean.class, Object.class), lookup);
+            jsonParserGetIntValue = createMetaFactory("getIntValue", jacksonJsonParserClass, methodType(int.class), JsonParserGetIntValue.class, methodType(int.class, Object.class), lookup);
+            jsonParserGetLongValue = createMetaFactory("getLongValue", jacksonJsonParserClass, methodType(long.class), JsonParserGetLongValue.class, methodType(long.class, Object.class), lookup);
+            jsonParserGetFloatValue = createMetaFactory("getFloatValue", jacksonJsonParserClass, methodType(float.class), JsonParserGetFloatValue.class, methodType(float.class, Object.class), lookup);
+            jsonParserGetDoubleValue = createMetaFactory("getDoubleValue", jacksonJsonParserClass, methodType(double.class), JsonParserGetDoubleValue.class, methodType(double.class, Object.class), lookup);
+
+            initialized = true;
+        } catch (Throwable e) {
+            if (e instanceof RuntimeException) {
+                throw (RuntimeException) e;
+            } else if (e instanceof Error) {
+                throw (Error) e;
+            }
+        }
+
+        JACKSON_JSON_TOKEN_ENUM = jacksonJsonTokenEnum;
+        JACKSON_FEATURE_ENUM = jacksonFeatureEnum;
+
+        JSON_FACTORY = jsonFactory;
+
+        JSON_FACTORY_CREATE_PARSER = jsonFactoryCreateParser;
+        JSON_PARSER_CONFIGURE = jsonParserConfigure;
+        JSON_PARSER_CLOSE = jsonParserClose;
+        JSON_PARSER_SKIP_CHILDREN = jsonParserSkipChildren;
+        JSON_PARSER_NEXT_TOKEN = jsonParserNextToken;
+        JSON_PARSER_CURRENT_NAME = jsonParserCurrentName;
+        JSON_PARSER_GET_VALUE_AS_STRING = jsonParserGetValueAsString;
+        JSON_PARSER_GET_BINARY_VALUE = jsonParserGetBinaryValue;
+        JSON_PARSER_GET_BOOLEAN_VALUE = jsonParserGetBooleanValue;
+        JSON_PARSER_GET_INT_VALUE = jsonParserGetIntValue;
+        JSON_PARSER_GET_LONG_VALUE = jsonParserGetLongValue;
+        JSON_PARSER_GET_FLOAT_VALUE = jsonParserGetFloatValue;
+        JSON_PARSER_GET_DOUBLE_VALUE = jsonParserGetDoubleValue;
+
+        INITIALIZED = initialized;
+    }
+
+    private final Object jacksonJsonParser;
     private JsonToken currentToken;
-
-    private static MethodHandle createParserMethod;
-    private static MethodHandle getBooleanMethod;
-    private static MethodHandle getFloatValueMethod;
-    private static MethodHandle getDoubleValueMethod;
-    private static MethodHandle getIntValueMethod;
-    private static MethodHandle getLongValueMethod;
-    private static MethodHandle getBinaryValueMethod;
-    private static MethodHandle nextTokenMethod;
-    private static MethodHandle getValueAsStringMethod;
-    private static MethodHandle currentNameMethod;
-    private static MethodHandle skipChildrenMethod;
-    private static MethodHandle closeMethod;
-    private static MethodHandle configureMethod;
 
     private final byte[] jsonBytes;
     private final String jsonString;
@@ -101,69 +178,18 @@ class JacksonJsonReader extends JsonReader {
     }
 
     private JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, boolean nonNumericNumbersSupported) throws IOException {
-        try {
-            initialize();
-
-            jacksonParser = createParserMethod.invoke(jsonFactory, reader);
-            // Configure Jackson to support non-numeric numbers
-            configureMethod.invoke(jacksonParser, Enum.valueOf(jacksonFeatureEnum, "ALLOW_NON_NUMERIC_NUMBERS"), nonNumericNumbersSupported);
-
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else if (e instanceof RuntimeException) {
-                throw (RuntimeException) e.getCause();
-            } else {
-                throw new IllegalStateException("Jackson is not present or an incorrect version is present.");
-            }
+        if (!INITIALIZED) {
+            throw new IllegalStateException("Jackson is not present or an incorrect version is present.");
         }
+
+        jacksonJsonParser = JSON_FACTORY_CREATE_PARSER.createParser(JSON_FACTORY, reader);
+        // Configure Jackson to support non-numeric numbers
+        JSON_PARSER_CONFIGURE.configure(jacksonJsonParser, Enum.valueOf(JACKSON_FEATURE_ENUM, "ALLOW_NON_NUMERIC_NUMBERS"), nonNumericNumbersSupported);
+
         this.resetSupported = resetSupported;
         this.jsonBytes = jsonBytes;
         this.jsonString = jsonString;
         this.nonNumericNumbersSupported = nonNumericNumbersSupported;
-
-    }
-
-    static synchronized void initialize() throws ReflectiveOperationException {
-        if (initialized) {
-            return;
-        } else if (attemptedInitialization) {
-            throw new ReflectiveOperationException("Initialization of JacksonJsonReader has failed in the past.");
-        }
-
-        attemptedInitialization = true;
-
-        jacksonTokenEnum =  Class.forName("com.fasterxml.jackson.core.JsonToken");
-
-        // The jacksonParserClass is made via the JsonFactory
-        Class<?> jacksonFactoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
-        Class<?> jacksonParserClass = Class.forName("com.fasterxml.jackson.core.JsonParser");
-
-        jacksonFeatureEnum = (Class) Arrays.stream(jacksonParserClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
-
-        // Initializing the factory
-        try {
-            jsonFactory = publicLookup.findConstructor(jacksonFactoryClass, methodType(void.class)).invoke();
-        } catch (Throwable e) {
-            throw (RuntimeException) e.getCause();
-        }
-
-        // Initializing all the method handles.
-        createParserMethod = publicLookup.findVirtual(jacksonFactoryClass, "createParser", methodType(jacksonParserClass, Reader.class));
-        getBooleanMethod = publicLookup.findVirtual(jacksonParserClass, "getBooleanValue", methodType(boolean.class));
-        getFloatValueMethod = publicLookup.findVirtual(jacksonParserClass, "getFloatValue", methodType(float.class));
-        getDoubleValueMethod = publicLookup.findVirtual(jacksonParserClass, "getDoubleValue", methodType(double.class));
-        getIntValueMethod = publicLookup.findVirtual(jacksonParserClass, "getIntValue", methodType(int.class));
-        getLongValueMethod = publicLookup.findVirtual(jacksonParserClass, "getLongValue", methodType(long.class));
-        getBinaryValueMethod = publicLookup.findVirtual(jacksonParserClass, "getBinaryValue", methodType(byte[].class));
-        nextTokenMethod = publicLookup.findVirtual(jacksonParserClass, "nextToken", methodType(jacksonTokenEnum));
-        getValueAsStringMethod = publicLookup.findVirtual(jacksonParserClass, "getValueAsString", methodType(String.class));
-        currentNameMethod = publicLookup.findVirtual(jacksonParserClass, "currentName", methodType(String.class));
-        skipChildrenMethod = publicLookup.findVirtual(jacksonParserClass, "skipChildren", methodType(jacksonParserClass));
-        closeMethod = publicLookup.findVirtual(jacksonParserClass, "close", methodType(void.class));
-        configureMethod = publicLookup.findVirtual(jacksonParserClass, "configure", methodType(jacksonParserClass, jacksonFeatureEnum, boolean.class));
-
-        initialized = true;
     }
 
     @Override
@@ -173,138 +199,58 @@ class JacksonJsonReader extends JsonReader {
 
     @Override
     public JsonToken nextToken() throws IOException {
-        try {
-            currentToken = mapToken((Enum<?>) nextTokenMethod.invoke(jacksonParser));
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
-
+        currentToken = mapToken((Enum<?>) JSON_PARSER_NEXT_TOKEN.nextToken(jacksonJsonParser));
         return currentToken;
     }
 
     @Override
     public byte[] getBinary() throws IOException {
-        try {
-            // GetBinaryValue cannot handle a Null token
-            if (currentToken() == JsonToken.NULL) {
-                return null;
-            }
-            return (byte[]) getBinaryValueMethod.invoke(jacksonParser);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
+        // GetBinaryValue cannot handle a Null token
+        if (currentToken() == JsonToken.NULL) {
+            return null;
         }
+
+        return JSON_PARSER_GET_BINARY_VALUE.getBinaryValue(jacksonJsonParser);
     }
 
     @Override
     public boolean getBoolean() throws IOException {
-        try {
-            return (boolean) getBooleanMethod.invoke(jacksonParser);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        return JSON_PARSER_GET_BOOLEAN_VALUE.getBooleanValue(jacksonJsonParser);
     }
 
     @Override
     public float getFloat() throws IOException {
-        try {
-            return (float) getFloatValueMethod.invoke(jacksonParser);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        return JSON_PARSER_GET_FLOAT_VALUE.getFloatValue(jacksonJsonParser);
     }
 
     @Override
     public double getDouble() throws IOException {
-        try {
-            return (double) getDoubleValueMethod.invoke(jacksonParser);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        return JSON_PARSER_GET_DOUBLE_VALUE.getDoubleValue(jacksonJsonParser);
     }
 
     @Override
     public int getInt() throws IOException {
-        try {
-            return (int) getIntValueMethod.invoke(jacksonParser);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        return JSON_PARSER_GET_INT_VALUE.getIntValue(jacksonJsonParser);
     }
 
     @Override
     public long getLong() throws IOException {
-        try {
-            return (long) getLongValueMethod.invoke(jacksonParser);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        return JSON_PARSER_GET_LONG_VALUE.getLongValue(jacksonJsonParser);
     }
 
     @Override
     public String getString() throws IOException {
-        try {
-            return (String) getValueAsStringMethod.invoke(jacksonParser);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        return JSON_PARSER_GET_VALUE_AS_STRING.getValueAsString(jacksonJsonParser);
     }
 
     @Override
     public String getFieldName() throws IOException {
-        try {
-            return (String) currentNameMethod.invoke(jacksonParser);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        return JSON_PARSER_CURRENT_NAME.currentName(jacksonJsonParser);
     }
 
     @Override
     public void skipChildren() throws IOException {
-        try {
-            skipChildrenMethod.invoke(jacksonParser);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_PARSER_SKIP_CHILDREN.skipChildren(jacksonJsonParser);
     }
 
     @Override
@@ -342,15 +288,7 @@ class JacksonJsonReader extends JsonReader {
 
     @Override
     public void close() throws IOException {
-        try {
-            closeMethod.invoke(jacksonParser);
-        } catch (Throwable e) {
-            if (e instanceof IOException) {
-                throw (IOException) e.getCause();
-            } else {
-                throw (RuntimeException) e.getCause();
-            }
-        }
+        JSON_PARSER_CLOSE.close(jacksonJsonParser);
     }
 
     /*
@@ -362,7 +300,7 @@ class JacksonJsonReader extends JsonReader {
         }
 
         // Check token is Jackson token
-        if (token.getClass() != jacksonTokenEnum) {
+        if (token.getClass() != JACKSON_JSON_TOKEN_ENUM) {
             throw new IllegalStateException("Unsupported enum, pass a Jackson JsonToken");
         }
 
@@ -396,5 +334,70 @@ class JacksonJsonReader extends JsonReader {
             default:
                 throw new IllegalStateException("Unsupported token type: '" + token + "'.");
         }
+    }
+
+    @FunctionalInterface
+    private interface JsonFactoryCreateParser {
+        Object createParser(Object jsonFactory, Reader reader) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonParserConfigure {
+        Object configure(Object jsonParser, Object feature, boolean state);
+    }
+
+    @FunctionalInterface
+    private interface JsonParserClose {
+        void close(Object jsonParser) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonParserSkipChildren {
+        Object skipChildren(Object jsonParser) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonParserNextToken {
+        Object nextToken(Object jsonParser) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonParserCurrentName {
+        String currentName(Object jsonParser) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonParserGetValueAsString {
+        String getValueAsString(Object jsonParser) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonParserGetBinaryValue {
+        byte[] getBinaryValue(Object jsonParser) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonParserGetBooleanValue {
+        boolean getBooleanValue(Object jsonParser) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonParserGetIntValue {
+        int getIntValue(Object jsonParser) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonParserGetLongValue {
+        long getLongValue(Object jsonParser) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonParserGetFloatValue {
+        float getFloatValue(Object jsonParser) throws IOException;
+    }
+
+    @FunctionalInterface
+    private interface JsonParserGetDoubleValue {
+        double getDoubleValue(Object jsonParser) throws IOException;
     }
 }
