@@ -123,19 +123,15 @@ public class PerfStressProgram {
 
         PerfTestBase<?>[] tests = new PerfTestBase<?>[options.getParallel()];
 
-        Flux.range(0, options.getParallel())
-            .parallel()
-            .runOn(Schedulers.parallel())
-            .flatMap(i -> {
-                try {
-                    tests[i] = (PerfTestBase<?>) testClass.getConstructor(options.getClass()).newInstance(options);
-                    return tests[i].globalSetupAsync();
-                } catch (ReflectiveOperationException | RuntimeException e) {
-                    return Mono.error(e);
-                }
-            })
-            .sequential()
-            .blockLast();
+        for (int i = 0; i < options.getParallel(); i++) {
+            try {
+                tests[i] = (PerfTestBase<?>) testClass.getConstructor(options.getClass()).newInstance(options);
+                tests[i].globalSetupAsync().block();
+            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                | InvocationTargetException | SecurityException | NoSuchMethodException e) {
+                throw new RuntimeException(e);
+            }
+        }
 
         try {
             boolean startedPlayback = false;
@@ -199,12 +195,9 @@ public class PerfStressProgram {
                     cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
                 }
 
-                Flux.range(0, options.getParallel())
-                    .parallel()
-                    .runOn(Schedulers.parallel())
-                    .flatMap(i -> tests[i].globalCleanupAsync())
-                    .sequential()
-                    .blockLast();
+                for (int i = 0; i < options.getParallel(); i++) {
+                    tests[i].globalCleanupAsync().block();
+                }
             }
         }
 
