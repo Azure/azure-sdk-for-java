@@ -401,7 +401,7 @@ class JacksonJsonWriter extends JsonWriter {
 
     @FunctionalInterface
     private interface JsonWriterConfigure {
-        void configure(Object JsonWriter, Object featureEnum, boolean options);
+        Object configure(Object JsonWriter, Object featureEnum, boolean options);
     }
 
 }
