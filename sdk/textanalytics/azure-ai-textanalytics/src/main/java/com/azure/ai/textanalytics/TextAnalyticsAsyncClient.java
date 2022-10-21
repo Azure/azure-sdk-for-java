@@ -1696,11 +1696,12 @@ public final class TextAnalyticsAsyncClient {
 
 
     /**
-     *
-     * @param documents
-     * @param language
-     * @param options
-     * @return
+     * a
+     * 
+     * @param documents a
+     * @param language a
+     * @param options a
+     * @return a
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DynamicClassifyDocumentResultCollection> dynamicClassifyBatch(

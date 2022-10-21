@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
@@ -10,7 +13,7 @@ import java.util.List;
 @Fluent
 public final class DynamicClassificationOptions extends TextAnalyticsRequestOptions {
     private List<String> categories;
-    private ClassificationType type;
+    private ClassificationType classificationType;
     /**
      * Sets the model version. This value indicates which model will be used for scoring, e.g. "latest", "2019-10-01".
      * If a model-version is not specified, the API will default to the latest, non-preview version.
@@ -78,12 +81,25 @@ public final class DynamicClassificationOptions extends TextAnalyticsRequestOpti
         return this;
     }
 
+    /**
+     * Get the classificationType property: Specifies either one or multiple categories per document. Defaults to multi
+     * classification which may return more than one class for each document.
+     *
+     * @return the classificationType value.
+     */
     public ClassificationType getClassificationType() {
-        return type;
+        return classificationType;
     }
 
-    public DynamicClassificationOptions setClassificationType(ClassificationType type) {
-        this.type = type;
+    /**
+     * Set the classificationType property: Specifies either one or multiple categories per document. Defaults to multi
+     * classification which may return more than one class for each document.
+     *
+     * @param classificationType the classificationType value to set.
+     * @return the DynamicClassificationOptions object itself.
+     */
+    public DynamicClassificationOptions setClassificationType(ClassificationType classificationType) {
+        this.classificationType = classificationType;
         return this;
     }
 }

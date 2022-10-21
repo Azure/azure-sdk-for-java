@@ -573,7 +573,7 @@ public final class Utility {
             classificationResult.getModelVersion());
 
         // TODO: add this property
-        classificationResult.getErrors();
+//        classificationResult.getErrors();
 
         return resultCollection;
     }

@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.implementation.MicrosoftCognitiveLanguageServiceTextAnalysisImpl;
@@ -6,7 +9,6 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeTextDynamicClassi
 import com.azure.ai.textanalytics.implementation.models.ClassificationType;
 import com.azure.ai.textanalytics.implementation.models.DynamicClassificationTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.MultiLanguageAnalysisInput;
-import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.DynamicClassificationOptions;
 import com.azure.ai.textanalytics.models.DynamicClassifyDocumentResultCollection;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
@@ -40,7 +42,6 @@ class DynamicClassificationAsyncClient {
         this.serviceVersion = serviceVersion;
     }
 
-
     Mono<Response<DynamicClassifyDocumentResultCollection>> dynamicClassifyBatch(
         Iterable<TextDocumentInput> documents, DynamicClassificationOptions options) {
         try {
@@ -66,7 +67,6 @@ class DynamicClassificationAsyncClient {
             new AnalyzeTextDynamicClassificationInput()
                 .setParameters(
                     new DynamicClassificationTaskParameters()
-//                                      .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
                         .setCategories(options.getCategories())
                         .setClassificationType(finalClassificationType == null ? null
                             : ClassificationType.fromString(finalClassificationType.toString()))
@@ -81,22 +81,6 @@ class DynamicClassificationAsyncClient {
             .doOnError(error -> logger.warning("Failed to dynamic classify - {}", error))
             .map(Utility::toDynamicClassifyDocumentResultCollectionResponse)
             .onErrorMap(Utility::mapToHttpResponseExceptionIfExists);
-    }
-
-    private void throwIfCallingNotAvailableFeatureInOptions(AnalyzeSentimentOptions options) {
-        if (options == null) {
-            return;
-        }
-        if (options.isIncludeOpinionMining()) {
-            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("DynamicClassificationOptions.includeOpinionMining",
-                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
-        }
-        if (options.isServiceLogsDisabled()) {
-            throwIfTargetServiceVersionFound(this.serviceVersion, Arrays.asList(TextAnalyticsServiceVersion.V3_0),
-                getUnsupportedServiceApiVersionMessage("DynamicClassificationOptions.disableServiceLogs",
-                    serviceVersion, TextAnalyticsServiceVersion.V3_1));
-        }
     }
 
     private DynamicClassificationOptions getNotNullDynamicClassificationOptions(
