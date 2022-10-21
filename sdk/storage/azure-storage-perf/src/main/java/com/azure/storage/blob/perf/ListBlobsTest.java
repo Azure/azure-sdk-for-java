@@ -37,7 +37,11 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
     }
 
     public Mono<Void> setupAsync() {
-        _clients = blobContainerAsyncClient.listBlobs().collectList().block();
+        _clients = blobContainerAsyncClient.listBlobs()
+            .map(b -> blobContainerAsyncClient.getBlobAsyncClient(b.getName()))
+            .collectList()
+            .block();
+
         return Mono.empty();
     }
 
