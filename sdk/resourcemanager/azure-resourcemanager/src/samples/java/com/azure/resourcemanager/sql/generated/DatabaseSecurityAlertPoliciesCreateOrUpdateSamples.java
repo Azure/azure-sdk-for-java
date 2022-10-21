@@ -7,7 +7,7 @@ package com.azure.resourcemanager.sql.generated;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
-import com.azure.resourcemanager.sql.models.SecurityAlertsPolicyState;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import java.util.Arrays;
 
 /** Samples for DatabaseSecurityAlertPolicies CreateOrUpdate. */
@@ -33,7 +33,7 @@ public final class DatabaseSecurityAlertPoliciesCreateOrUpdateSamples {
                 "testdb",
                 SecurityAlertPolicyName.DEFAULT,
                 new DatabaseSecurityAlertPolicyInner()
-                    .withState(SecurityAlertsPolicyState.ENABLED)
+                    .withState(SecurityAlertPolicyState.ENABLED)
                     .withDisabledAlerts(Arrays.asList("Sql_Injection", "Usage_Anomaly"))
                     .withEmailAddresses(Arrays.asList("test@microsoft.com", "user@microsoft.com"))
                     .withEmailAccountAdmins(true)
@@ -64,7 +64,7 @@ public final class DatabaseSecurityAlertPoliciesCreateOrUpdateSamples {
                 "securityalert-6440",
                 "testdb",
                 SecurityAlertPolicyName.DEFAULT,
-                new DatabaseSecurityAlertPolicyInner().withState(SecurityAlertsPolicyState.ENABLED),
+                new DatabaseSecurityAlertPolicyInner().withState(SecurityAlertPolicyState.ENABLED),
                 Context.NONE);
     }
 }

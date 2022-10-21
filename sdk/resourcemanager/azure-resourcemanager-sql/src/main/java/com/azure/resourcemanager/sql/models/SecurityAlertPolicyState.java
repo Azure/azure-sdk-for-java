@@ -12,9 +12,6 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * specific database.
  */
 public enum SecurityAlertPolicyState {
-    /** Enum value New. */
-    NEW("New"),
-
     /** Enum value Enabled. */
     ENABLED("Enabled"),
 

@@ -6,7 +6,7 @@ package com.azure.resourcemanager.sql.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.sql.models.SecurityAlertsPolicyState;
+import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
@@ -19,7 +19,7 @@ public final class SecurityAlertsPolicyProperties {
      * specific database.
      */
     @JsonProperty(value = "state", required = true)
-    private SecurityAlertsPolicyState state;
+    private SecurityAlertPolicyState state;
 
     /*
      * Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability,
@@ -75,7 +75,7 @@ public final class SecurityAlertsPolicyProperties {
      *
      * @return the state value.
      */
-    public SecurityAlertsPolicyState state() {
+    public SecurityAlertPolicyState state() {
         return this.state;
     }
 
@@ -86,7 +86,7 @@ public final class SecurityAlertsPolicyProperties {
      * @param state the state value to set.
      * @return the SecurityAlertsPolicyProperties object itself.
      */
-    public SecurityAlertsPolicyProperties withState(SecurityAlertsPolicyState state) {
+    public SecurityAlertsPolicyProperties withState(SecurityAlertPolicyState state) {
         this.state = state;
         return this;
     }

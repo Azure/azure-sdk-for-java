@@ -8,7 +8,6 @@ import com.azure.resourcemanager.sql.SqlServerManager;
 import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyName;
 import com.azure.resourcemanager.sql.models.SecurityAlertPolicyState;
-import com.azure.resourcemanager.sql.models.SecurityAlertsPolicyState;
 import com.azure.resourcemanager.sql.models.SqlDatabase;
 import com.azure.resourcemanager.sql.models.SqlDatabaseThreatDetectionPolicy;
 import reactor.core.publisher.Mono;
@@ -166,13 +165,13 @@ public class SqlDatabaseThreatDetectionPolicyImpl
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withPolicyEnabled() {
-        this.innerModel().withState(SecurityAlertsPolicyState.ENABLED);
+        this.innerModel().withState(SecurityAlertPolicyState.ENABLED);
         return this;
     }
 
     @Override
     public SqlDatabaseThreatDetectionPolicyImpl withPolicyDisabled() {
-        this.innerModel().withState(SecurityAlertsPolicyState.DISABLED);
+        this.innerModel().withState(SecurityAlertPolicyState.DISABLED);
         return this;
     }
 
