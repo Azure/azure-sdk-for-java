@@ -37,6 +37,10 @@ public final class PrivateLinkServiceConnection extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of PrivateLinkServiceConnection class. */
+    public PrivateLinkServiceConnection() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the private link service connection.
      *

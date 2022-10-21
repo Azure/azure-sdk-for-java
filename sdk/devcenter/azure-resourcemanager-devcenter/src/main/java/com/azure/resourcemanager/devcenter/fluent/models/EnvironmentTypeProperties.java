@@ -16,6 +16,10 @@ public final class EnvironmentTypeProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of EnvironmentTypeProperties class. */
+    public EnvironmentTypeProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *

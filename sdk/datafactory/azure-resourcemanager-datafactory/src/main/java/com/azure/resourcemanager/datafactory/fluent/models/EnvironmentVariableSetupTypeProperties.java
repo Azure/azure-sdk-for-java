@@ -23,6 +23,10 @@ public final class EnvironmentVariableSetupTypeProperties {
     @JsonProperty(value = "variableValue", required = true)
     private String variableValue;
 
+    /** Creates an instance of EnvironmentVariableSetupTypeProperties class. */
+    public EnvironmentVariableSetupTypeProperties() {
+    }
+
     /**
      * Get the variableName property: The name of the environment variable.
      *

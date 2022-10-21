@@ -28,6 +28,10 @@ public final class ExpressRoutePortAuthorizationListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of ExpressRoutePortAuthorizationListResult class. */
+    public ExpressRoutePortAuthorizationListResult() {
+    }
+
     /**
      * Get the value property: The authorizations in an ExpressRoute Port.
      *

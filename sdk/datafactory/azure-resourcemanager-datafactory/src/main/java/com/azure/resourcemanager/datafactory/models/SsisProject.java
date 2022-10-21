@@ -39,6 +39,10 @@ public final class SsisProject extends SsisObjectMetadata {
     @JsonProperty(value = "parameters")
     private List<SsisParameter> parameters;
 
+    /** Creates an instance of SsisProject class. */
+    public SsisProject() {
+    }
+
     /**
      * Get the folderId property: Folder id which contains project.
      *

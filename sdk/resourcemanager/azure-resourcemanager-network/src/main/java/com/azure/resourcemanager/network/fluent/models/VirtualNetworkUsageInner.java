@@ -41,6 +41,10 @@ public final class VirtualNetworkUsageInner {
     @JsonProperty(value = "unit", access = JsonProperty.Access.WRITE_ONLY)
     private String unit;
 
+    /** Creates an instance of VirtualNetworkUsageInner class. */
+    public VirtualNetworkUsageInner() {
+    }
+
     /**
      * Get the currentValue property: Indicates number of IPs used from the Subnet.
      *

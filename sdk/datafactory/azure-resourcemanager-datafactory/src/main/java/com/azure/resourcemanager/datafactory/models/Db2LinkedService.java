@@ -24,6 +24,10 @@ public final class Db2LinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private Db2LinkedServiceTypeProperties innerTypeProperties = new Db2LinkedServiceTypeProperties();
 
+    /** Creates an instance of Db2LinkedService class. */
+    public Db2LinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: DB2 linked service properties.
      *

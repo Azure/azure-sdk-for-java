@@ -25,6 +25,10 @@ public final class ExecuteSsisPackageActivity extends ExecutionActivity {
     private ExecuteSsisPackageActivityTypeProperties innerTypeProperties =
         new ExecuteSsisPackageActivityTypeProperties();
 
+    /** Creates an instance of ExecuteSsisPackageActivity class. */
+    public ExecuteSsisPackageActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Execute SSIS package activity properties.
      *

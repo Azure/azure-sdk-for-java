@@ -40,6 +40,10 @@ public final class PolicySettings {
     @JsonProperty(value = "fileUploadLimitInMb")
     private Integer fileUploadLimitInMb;
 
+    /** Creates an instance of PolicySettings class. */
+    public PolicySettings() {
+    }
+
     /**
      * Get the state property: The state of the policy.
      *

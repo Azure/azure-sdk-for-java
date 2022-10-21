@@ -24,6 +24,10 @@ public final class ImageVersionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ImageVersionListResult class. */
+    public ImageVersionListResult() {
+    }
+
     /**
      * Get the value property: Current page of results.
      *

@@ -20,6 +20,10 @@ public final class HttpServerLocation extends DatasetLocation {
     @JsonProperty(value = "relativeUrl")
     private Object relativeUrl;
 
+    /** Creates an instance of HttpServerLocation class. */
+    public HttpServerLocation() {
+    }
+
     /**
      * Get the relativeUrl property: Specify the relativeUrl of http server. Type: string (or Expression with resultType
      * string).

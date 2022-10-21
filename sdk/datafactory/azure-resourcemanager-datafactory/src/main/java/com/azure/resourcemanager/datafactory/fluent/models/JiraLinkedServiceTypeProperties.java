@@ -63,6 +63,10 @@ public final class JiraLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of JiraLinkedServiceTypeProperties class. */
+    public JiraLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: The IP address or host name of the Jira service. (e.g. jira.example.com).
      *

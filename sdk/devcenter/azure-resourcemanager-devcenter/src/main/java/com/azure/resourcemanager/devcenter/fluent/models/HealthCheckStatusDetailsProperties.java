@@ -31,6 +31,10 @@ public final class HealthCheckStatusDetailsProperties {
     @JsonProperty(value = "healthChecks", access = JsonProperty.Access.WRITE_ONLY)
     private List<HealthCheck> healthChecks;
 
+    /** Creates an instance of HealthCheckStatusDetailsProperties class. */
+    public HealthCheckStatusDetailsProperties() {
+    }
+
     /**
      * Get the startDateTime property: Start time of last execution of the health checks.
      *

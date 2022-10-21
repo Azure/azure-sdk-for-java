@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.fluent.models.ScriptPackageInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A list of the available script packages. */
 @Immutable
 public final class ScriptPackagesList {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptPackagesList.class);
-
     /*
      * List of script package resources
      */
@@ -27,6 +23,10 @@ public final class ScriptPackagesList {
      */
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
+
+    /** Creates an instance of ScriptPackagesList class. */
+    public ScriptPackagesList() {
+    }
 
     /**
      * Get the value property: List of script package resources.

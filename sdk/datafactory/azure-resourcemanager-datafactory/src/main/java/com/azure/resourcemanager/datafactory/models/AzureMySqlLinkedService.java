@@ -24,6 +24,10 @@ public final class AzureMySqlLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureMySqlLinkedServiceTypeProperties innerTypeProperties = new AzureMySqlLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureMySqlLinkedService class. */
+    public AzureMySqlLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure MySQL database linked service properties.
      *

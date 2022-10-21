@@ -41,6 +41,10 @@ public final class ExpressRoutePortsLocationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ExpressRoutePortsLocationPropertiesFormat class. */
+    public ExpressRoutePortsLocationPropertiesFormat() {
+    }
+
     /**
      * Get the address property: Address of peering location.
      *

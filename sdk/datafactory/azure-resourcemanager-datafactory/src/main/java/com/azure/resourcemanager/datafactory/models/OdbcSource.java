@@ -20,6 +20,10 @@ public final class OdbcSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of OdbcSource class. */
+    public OdbcSource() {
+    }
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *

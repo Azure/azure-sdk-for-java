@@ -128,6 +128,10 @@ public final class ScriptExecutionImpl implements ScriptExecution, ScriptExecuti
         }
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ScriptExecutionInner innerModel() {
         return this.innerObject;
     }
@@ -224,18 +228,18 @@ public final class ScriptExecutionImpl implements ScriptExecution, ScriptExecuti
         return this;
     }
 
-    public ScriptExecution getExecutionLogs() {
-        return serviceManager
-            .scriptExecutions()
-            .getExecutionLogs(resourceGroupName, privateCloudName, scriptExecutionName);
-    }
-
     public Response<ScriptExecution> getExecutionLogsWithResponse(
         List<ScriptOutputStreamType> scriptOutputStreamType, Context context) {
         return serviceManager
             .scriptExecutions()
             .getExecutionLogsWithResponse(
                 resourceGroupName, privateCloudName, scriptExecutionName, scriptOutputStreamType, context);
+    }
+
+    public ScriptExecution getExecutionLogs() {
+        return serviceManager
+            .scriptExecutions()
+            .getExecutionLogs(resourceGroupName, privateCloudName, scriptExecutionName);
     }
 
     public ScriptExecutionImpl withScriptCmdletId(String scriptCmdletId) {

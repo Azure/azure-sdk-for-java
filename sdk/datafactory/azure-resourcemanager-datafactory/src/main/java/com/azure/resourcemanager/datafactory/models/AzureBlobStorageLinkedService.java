@@ -25,6 +25,10 @@ public final class AzureBlobStorageLinkedService extends LinkedService {
     private AzureBlobStorageLinkedServiceTypeProperties innerTypeProperties =
         new AzureBlobStorageLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureBlobStorageLinkedService class. */
+    public AzureBlobStorageLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Blob Storage linked service properties.
      *

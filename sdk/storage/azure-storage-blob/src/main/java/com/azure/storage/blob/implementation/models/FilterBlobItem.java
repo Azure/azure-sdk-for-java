@@ -30,6 +30,9 @@ public final class FilterBlobItem {
     @JsonProperty(value = "Tags")
     private BlobTags tags;
 
+    /** Creates an instance of FilterBlobItem class. */
+    public FilterBlobItem() {}
+
     /**
      * Get the name property: The Name property.
      *

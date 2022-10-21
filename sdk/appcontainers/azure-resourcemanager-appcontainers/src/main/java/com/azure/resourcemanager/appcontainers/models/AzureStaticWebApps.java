@@ -11,8 +11,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureStaticWebApps {
     /*
-     * <code>false</code> if the Azure Static Web Apps provider should not be
-     * enabled despite the set registration; otherwise, <code>true</code>.
+     * <code>false</code> if the Azure Static Web Apps provider should not be enabled despite the set registration;
+     * otherwise, <code>true</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
@@ -22,6 +22,10 @@ public final class AzureStaticWebApps {
      */
     @JsonProperty(value = "registration")
     private AzureStaticWebAppsRegistration registration;
+
+    /** Creates an instance of AzureStaticWebApps class. */
+    public AzureStaticWebApps() {
+    }
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the Azure Static Web Apps provider should not be

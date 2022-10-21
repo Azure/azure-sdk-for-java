@@ -23,6 +23,10 @@ public final class ValidationActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ValidationActivityTypeProperties innerTypeProperties = new ValidationActivityTypeProperties();
 
+    /** Creates an instance of ValidationActivity class. */
+    public ValidationActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Validation activity properties.
      *

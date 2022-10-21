@@ -73,6 +73,9 @@ public final class ListFilesAndDirectoriesSegmentResponse {
     @JsonProperty(value = "DirectoryId")
     private String directoryId;
 
+    /** Creates an instance of ListFilesAndDirectoriesSegmentResponse class. */
+    public ListFilesAndDirectoriesSegmentResponse() {}
+
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
      *

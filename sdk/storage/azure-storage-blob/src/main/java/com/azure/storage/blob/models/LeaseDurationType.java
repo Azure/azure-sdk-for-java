@@ -30,6 +30,9 @@ public enum LeaseDurationType {
      */
     @JsonCreator
     public static LeaseDurationType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         LeaseDurationType[] items = LeaseDurationType.values();
         for (LeaseDurationType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -39,6 +42,7 @@ public enum LeaseDurationType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

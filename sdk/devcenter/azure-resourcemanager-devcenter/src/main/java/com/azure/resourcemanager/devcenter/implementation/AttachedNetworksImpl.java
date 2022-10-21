@@ -40,17 +40,6 @@ public final class AttachedNetworksImpl implements AttachedNetworks {
         return Utils.mapPage(inner, inner1 -> new AttachedNetworkConnectionImpl(inner1, this.manager()));
     }
 
-    public AttachedNetworkConnection getByProject(
-        String resourceGroupName, String projectName, String attachedNetworkConnectionName) {
-        AttachedNetworkConnectionInner inner =
-            this.serviceClient().getByProject(resourceGroupName, projectName, attachedNetworkConnectionName);
-        if (inner != null) {
-            return new AttachedNetworkConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AttachedNetworkConnection> getByProjectWithResponse(
         String resourceGroupName, String projectName, String attachedNetworkConnectionName, Context context) {
         Response<AttachedNetworkConnectionInner> inner =
@@ -63,6 +52,17 @@ public final class AttachedNetworksImpl implements AttachedNetworks {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AttachedNetworkConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AttachedNetworkConnection getByProject(
+        String resourceGroupName, String projectName, String attachedNetworkConnectionName) {
+        AttachedNetworkConnectionInner inner =
+            this.serviceClient().getByProject(resourceGroupName, projectName, attachedNetworkConnectionName);
+        if (inner != null) {
+            return new AttachedNetworkConnectionImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -81,17 +81,6 @@ public final class AttachedNetworksImpl implements AttachedNetworks {
         return Utils.mapPage(inner, inner1 -> new AttachedNetworkConnectionImpl(inner1, this.manager()));
     }
 
-    public AttachedNetworkConnection getByDevCenter(
-        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
-        AttachedNetworkConnectionInner inner =
-            this.serviceClient().getByDevCenter(resourceGroupName, devCenterName, attachedNetworkConnectionName);
-        if (inner != null) {
-            return new AttachedNetworkConnectionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<AttachedNetworkConnection> getByDevCenterWithResponse(
         String resourceGroupName, String devCenterName, String attachedNetworkConnectionName, Context context) {
         Response<AttachedNetworkConnectionInner> inner =
@@ -104,6 +93,17 @@ public final class AttachedNetworksImpl implements AttachedNetworks {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new AttachedNetworkConnectionImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public AttachedNetworkConnection getByDevCenter(
+        String resourceGroupName, String devCenterName, String attachedNetworkConnectionName) {
+        AttachedNetworkConnectionInner inner =
+            this.serviceClient().getByDevCenter(resourceGroupName, devCenterName, attachedNetworkConnectionName);
+        if (inner != null) {
+            return new AttachedNetworkConnectionImpl(inner, this.manager());
         } else {
             return null;
         }

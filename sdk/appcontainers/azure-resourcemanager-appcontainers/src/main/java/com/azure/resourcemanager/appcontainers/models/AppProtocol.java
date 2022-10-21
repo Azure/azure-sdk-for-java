@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AppProtocol. */
+/** Tells Dapr which protocol your application is using. Valid options are http and grpc. Default is http. */
 public final class AppProtocol extends ExpandableStringEnum<AppProtocol> {
     /** Static value http for AppProtocol. */
     public static final AppProtocol HTTP = fromString("http");

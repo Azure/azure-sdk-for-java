@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallingServerErrorException;
-import com.azure.communication.callautomation.models.ChannelAffinity;
 import com.azure.communication.callautomation.models.RecordingChannel;
 import com.azure.communication.callautomation.models.RecordingContent;
 import com.azure.communication.callautomation.models.RecordingFormat;
@@ -12,6 +11,7 @@ import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.RecordingStateResult;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -48,9 +48,9 @@ public class CallRecordingAsyncUnitTests extends CallRecordingUnitTestBase {
             .setRecordingChannel(RecordingChannel.MIXED)
             .setRecordingFormat(RecordingFormat.MP4)
             .setRecordingStateCallbackUrl("/not/absolute/uri")
-            .setChannelAffinity(new ArrayList<ChannelAffinity>(Arrays.asList(
-                new ChannelAffinity(0, new CommunicationUserIdentifier("rawId1")),
-                new ChannelAffinity(1, new CommunicationUserIdentifier("rawId2")))));
+            .setAudioChannelParticipantOrdering(new ArrayList<CommunicationIdentifier>(Arrays.asList(
+                new CommunicationUserIdentifier("rawId1"),
+                new CommunicationUserIdentifier("rawId2"))));
 
         validateError(InvalidParameterException.class, callRecording.startRecordingWithResponse(startRecordingOptions));
     }
