@@ -169,6 +169,7 @@ com.azure:azure-verticals-agrifood-farming;1.0.0-beta.2;1.0.0-beta.3
 com.azure:azure-xml;1.0.0-beta.1;1.0.0-beta.2
 com.azure:perf-test-core;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-email;1.0.0-beta.1;1.0.0-beta.2
+com.azure:azure-developer-loadtesting;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-identity-providers-core;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-identity-providers-jdbc-mysql;1.0.0-beta.1;1.0.0-beta.2
 com.azure:azure-identity-providers-jdbc-postgresql;1.0.0-beta.1;1.0.0-beta.2
@@ -379,7 +380,7 @@ com.azure.resourcemanager:azure-resourcemanager-alertsmanagement;1.0.0-beta.1;1.
 com.azure.resourcemanager:azure-resourcemanager-nginx;1.0.0-beta.2;1.0.0-beta.3
 com.azure.resourcemanager:azure-resourcemanager-agrifood;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-devhub;1.0.0-beta.1;1.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager-elasticsan;1.0.0-beta.1;1.0.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-elasticsan;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-hybridcontainerservice;1.0.0-beta.1;1.0.0-beta.2
 com.azure.resourcemanager:azure-resourcemanager-securitydevops;1.0.0-beta.1;1.0.0-beta.2
 com.azure.tools:azure-sdk-archetype;1.0.0;1.2.0-beta.1
