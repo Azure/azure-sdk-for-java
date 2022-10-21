@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Updated test dependency of apache commons-text to version 1.10.0 - CVE-2022-42889 - See [PR 31674](https://github.com/Azure/azure-sdk-for-java/pull/31674)
 
 ### 4.38.0 (2022-10-12)
 #### Features Added
