@@ -13,8 +13,8 @@ import java.time.Duration;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class processorTest extends EventPerfTest<ServiceBusStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(processorTest.class);
+public class ProcessorTest extends EventPerfTest<ServiceBusStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(ProcessorTest.class);
 
     private static final String AZURE_SERVICE_BUS_CONNECTION_STRING = "AZURE_SERVICE_BUS_CONNECTION_STRING";
     private static final String AZURE_SERVICEBUS_QUEUE_NAME = "AZURE_SERVICEBUS_QUEUE_NAME";
@@ -30,7 +30,7 @@ public class processorTest extends EventPerfTest<ServiceBusStressOptions> {
      * @param options the options configured for the test.
      * @throws IllegalStateException if SSL context cannot be created.
      */
-    public processorTest(ServiceBusStressOptions options) {
+    public ProcessorTest(ServiceBusStressOptions options) {
         super(options);
 
         CONNECTION_STRING = System.getenv(AZURE_SERVICE_BUS_CONNECTION_STRING);
