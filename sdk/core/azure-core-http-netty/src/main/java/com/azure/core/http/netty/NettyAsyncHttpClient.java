@@ -263,6 +263,7 @@ class NettyAsyncHttpClient implements HttpClient {
                 // Set up the body flux and dispose the connection once it has been received.
                 return reactorNettyConnection.inbound().receive().aggregate().asByteArray()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
+                    .switchIfEmpty(Mono.fromSupplier(() -> new byte[0]))
                     .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
                         headersEagerlyConverted));
             } else {
