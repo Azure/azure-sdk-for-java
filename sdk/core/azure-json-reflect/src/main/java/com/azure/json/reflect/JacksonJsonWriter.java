@@ -95,7 +95,7 @@ class JacksonJsonWriter extends JsonWriter {
 
             jacksonGenerator = JSON_WRITER_GENERATOR.createGenerator(FACTORY,writer);//fails here
             // Configure Jackson to support non-numeric numbers
-            JSON_WRITER_CONFIGURE.configure(jacksonFeatureEnum, Enum.valueOf(jacksonFeatureEnum, "QUOTE_NON_NUMERIC_NUMBERS"), options.isNonNumericNumbersSupported());
+            JSON_WRITER_CONFIGURE.configure(jacksonGenerator, Enum.valueOf(jacksonFeatureEnum, "QUOTE_NON_NUMERIC_NUMBERS"), options.isNonNumericNumbersSupported());
 
         } catch (ReflectiveOperationException e) {
 
@@ -116,7 +116,7 @@ class JacksonJsonWriter extends JsonWriter {
 
         factoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
         jacksonGeneratorClass = Class.forName("com.fasterxml.jackson.core.JsonGenerator");
-        jacksonFeatureEnum = (Class) Arrays.stream(jacksonGeneratorClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
+        jacksonFeatureEnum = Arrays.stream(jacksonGeneratorClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
         try{
             MethodType voidMT = methodType(void.class);
             MethodType voidStringMt = methodType(void.class,String.class);
