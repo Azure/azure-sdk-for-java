@@ -623,6 +623,13 @@
         "linksource",
         "listbyconfigurationprofileassignments"
       ]
+    },
+    {
+      "filename": "sdk/spring/CHANGELOG.md",
+      "words": [
+        "AADB",
+        "JPMS"
+      ]
     }
   ],
   "allowCompoundWords": true
