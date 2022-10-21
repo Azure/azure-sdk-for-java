@@ -12,6 +12,7 @@ import reactor.core.scheduler.Schedulers;
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.UUID;
 
 public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
@@ -47,6 +48,11 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
+        // return blobContainerAsyncClient
+        //     .listBlobs()
+        //     .flatMap(b -> blobContainerAsyncClient
+        //         .getBlobAsyncClient(b.getName())
+        //         .downloadToFile(b.getName(), /* overwrite */ true)
         return Flux.fromIterable(_clients)
             .flatMap(c -> c
                 .downloadToFile(c.getBlobName(), /* overwrite */ true)
