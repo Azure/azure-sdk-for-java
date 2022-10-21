@@ -7,6 +7,7 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.HttpPipelineCallState;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.Objects;
@@ -103,7 +104,7 @@ public final class HttpPipeline {
         return Mono.defer(() -> {
             HttpPipelineNextPolicy next =
                 new HttpPipelineNextPolicy(new HttpPipelineCallState(this, context));
-            return next.process();
+            return next.process().publishOn(Schedulers.boundedElastic());
         });
     }
 
