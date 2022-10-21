@@ -34,11 +34,11 @@ public class EventProcessor extends EventHubsScenario {
             .connectionString(eventHubsConnStr, eventHub)
             .checkpointStore(new BlobCheckpointStore(blobContainerAsyncClient))
             .processEvent(eventContext -> {
-                LOGGER.info("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
+                LOGGER.verbose("Partition id = " + eventContext.getPartitionContext().getPartitionId() + " and "
                     + "sequence number of event = " + eventContext.getEventData().getSequenceNumber());
             })
             .processError(errorContext -> {
-                LOGGER.info("Error occurred while processing events " + errorContext.getThrowable().getMessage());
+                LOGGER.error("Error occurred while processing events " + errorContext.getThrowable().getMessage());
             })
             .buildEventProcessorClient();
 

@@ -1,10 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.eventhubs.stress.scenarios;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubBufferedProducerClientBuilder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -17,8 +19,8 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 @Service("EventSenderBuffered")
-public class EventSenderBuffered extends EventHubsScenario{
-    private final Logger logger = LoggerFactory.getLogger(EventSenderBuffered.class);
+public class EventSenderBuffered extends EventHubsScenario {
+    private static final ClientLogger LOGGER = new ClientLogger(EventSenderBuffered.class);
 
     @Value("${SEND_TIMES:1000000}")
     private int sendTimes;
@@ -31,6 +33,7 @@ public class EventSenderBuffered extends EventHubsScenario{
 
     @Override
     public void run() {
+
         final String eventHubConnStr = options.getEventhubsConnectionString();
         final String eventHub = options.getEventhubsEventHubName();
 
@@ -47,11 +50,11 @@ public class EventSenderBuffered extends EventHubsScenario{
                     numberOfEvents = String.valueOf(stream.count());
                 }
 
-                logger.warn("partitionId[{}] # events[{}] Unable to publish events. ",
+                LOGGER.warning("partitionId[{}] # events[{}] Unable to publish events. ",
                     context.getPartitionId(), numberOfEvents, context.getThrowable());
             })
             .onSendBatchSucceeded(context -> {
-                logger.debug("Send success.");
+                LOGGER.verbose("Send success.");
             })
             .buildAsyncClient();
 
