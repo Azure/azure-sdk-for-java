@@ -121,6 +121,9 @@ public class PerfStressProgram {
         Disposable setupStatus = printStatus("=== Setup ===", () -> ".", false, false);
         Disposable cleanupStatus = null;
 
+        System.setProperty("reactor.netty.ioWorkerCount",
+            String.valueOf(Runtime.getRuntime().availableProcessors() * 2));
+
         PerfTestBase<?>[] tests = new PerfTestBase<?>[options.getParallel()];
 
         for (int i = 0; i < options.getParallel(); i++) {
@@ -251,7 +254,7 @@ public class PerfStressProgram {
                 });
 
                 Flux.range(0, parallel)
-                    .parallel(parallel)
+                    .parallel(Runtime.getRuntime().availableProcessors() * 2)
                     .runOn(Schedulers.boundedElastic())
                     .flatMap(i -> tests[i].runAllAsync(endNanoTime))
                     .then()
