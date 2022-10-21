@@ -14,18 +14,19 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 public final class SourceModifiedAccessConditions {
 
     /*
-     * Specify the crc64 value to operate only on range with a matching crc64
-     * checksum.
+     * Specify the crc64 value to operate only on range with a matching crc64 checksum.
      */
     @JsonProperty(value = "sourceIfMatchCrc64")
     private byte[] sourceIfMatchCrc64;
 
     /*
-     * Specify the crc64 value to operate only on range without a matching
-     * crc64 checksum.
+     * Specify the crc64 value to operate only on range without a matching crc64 checksum.
      */
     @JsonProperty(value = "sourceIfNoneMatchCrc64")
     private byte[] sourceIfNoneMatchCrc64;
+
+    /** Creates an instance of SourceModifiedAccessConditions class. */
+    public SourceModifiedAccessConditions() {}
 
     /**
      * Get the sourceIfMatchCrc64 property: Specify the crc64 value to operate only on range with a matching crc64

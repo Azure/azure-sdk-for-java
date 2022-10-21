@@ -300,8 +300,7 @@ public class RestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         testInterface.testDownload();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertFalse((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
     }
 
     @Test
@@ -319,8 +318,7 @@ public class RestProxyTests {
             .expectNextCount(1)
             .verifyComplete();
 
-        assertTrue(client.lastContext.getData("azure-eagerly-read-response").isPresent());
-        assertFalse((Boolean) client.lastContext.getData("azure-eagerly-read-response").get());
+        assertFalse(client.lastContext.getData("azure-eagerly-read-response").isPresent());
     }
 
     private static Stream<Arguments> doesNotChangeBinaryDataContentTypeDataProvider() throws Exception {

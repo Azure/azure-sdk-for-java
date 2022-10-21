@@ -8,11 +8,12 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AddParticipantsRequestInternal model. */
+/** The request payload for adding participants to the call. */
 @Fluent
 public final class AddParticipantsRequestInternal {
     /*
-     * The source caller Id that's shown to the PSTN participant being invited.
+     * The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
      * Required only when inviting a PSTN participant.
      */
     @JsonProperty(value = "sourceCallerId")
@@ -32,14 +33,15 @@ public final class AddParticipantsRequestInternal {
     private Integer invitationTimeoutInSeconds;
 
     /*
-     * The operation context.
+     * Used by customers when calling mid-call actions to correlate the request
+     * to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /**
-     * Get the sourceCallerId property: The source caller Id that's shown to the PSTN participant being invited.
-     * Required only when inviting a PSTN participant.
+     * Get the sourceCallerId property: The source caller Id, a phone number, that's shown to the PSTN participant being
+     * invited. Required only when inviting a PSTN participant.
      *
      * @return the sourceCallerId value.
      */
@@ -48,8 +50,8 @@ public final class AddParticipantsRequestInternal {
     }
 
     /**
-     * Set the sourceCallerId property: The source caller Id that's shown to the PSTN participant being invited.
-     * Required only when inviting a PSTN participant.
+     * Set the sourceCallerId property: The source caller Id, a phone number, that's shown to the PSTN participant being
+     * invited. Required only when inviting a PSTN participant.
      *
      * @param sourceCallerId the sourceCallerId value to set.
      * @return the AddParticipantsRequestInternal object itself.
@@ -102,7 +104,8 @@ public final class AddParticipantsRequestInternal {
     }
 
     /**
-     * Get the operationContext property: The operation context.
+     * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
      *
      * @return the operationContext value.
      */
@@ -111,7 +114,8 @@ public final class AddParticipantsRequestInternal {
     }
 
     /**
-     * Set the operationContext property: The operation context.
+     * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
+     * the response event.
      *
      * @param operationContext the operationContext value to set.
      * @return the AddParticipantsRequestInternal object itself.
