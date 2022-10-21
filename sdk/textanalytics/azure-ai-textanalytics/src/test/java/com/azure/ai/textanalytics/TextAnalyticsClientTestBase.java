@@ -5,6 +5,7 @@ package com.azure.ai.textanalytics;
 
 import com.azure.ai.textanalytics.models.*;
 import com.azure.ai.textanalytics.util.*;
+import com.azure.ai.textanalytics.util.ExtractSummaryResultCollection;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -181,6 +182,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void recognizeEntitiesZalgoText(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
+    abstract void recognizeEntitiesResolutions(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     // Personally Identifiable Information Entities
     @Test
@@ -579,6 +583,10 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     abstract void analyzeEntitiesRecognitionAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
 
     @Test
+    abstract void analyzeEntitiesRecognitionActionResolution(HttpClient httpClient,
+                                                             TextAnalyticsServiceVersion serviceVersion);
+
+    @Test
     abstract void analyzePiiEntityRecognitionWithCategoriesFilters(HttpClient httpClient,
         TextAnalyticsServiceVersion serviceVersion);
 
@@ -737,6 +745,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
     void recognizeStringBatchCategorizedEntitiesShowStatsRunner(
         BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
         testRunner.accept(CATEGORIZED_ENTITY_INPUTS, new TextAnalyticsRequestOptions().setIncludeStatistics(true));
+    }
+
+    void recognizeEntitiesBatchResolutionRunner(BiConsumer<List<String>, TextAnalyticsRequestOptions> testRunner) {
+        testRunner.accept(Arrays.asList(ENTITY_RESOLUTION_INPUT),
+                new TextAnalyticsRequestOptions().setModelVersion("2022-10-01-preview"));
     }
 
     // Personally Identifiable Information Entity runner
@@ -1138,6 +1151,14 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setRecognizeEntitiesActions(new RecognizeEntitiesAction()));
     }
 
+    void analyzeEntitiesRecognitionResolutionRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner) {
+        testRunner.accept(
+                asList(ENTITY_RESOLUTION_INPUT),
+                new TextAnalyticsActions()
+                        .setRecognizeEntitiesActions(new RecognizeEntitiesAction()
+                                .setModelVersion("2022-10-01-preview")));
+    }
+
     void analyzePiiEntityRecognitionWithCategoriesFiltersRunner(
         BiConsumer<List<TextDocumentInput>, TextAnalyticsActions> testRunner) {
         testRunner.accept(
@@ -1301,6 +1322,30 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         assertNotNull(response);
         assertEquals(expectedStatusCode, response.getStatusCode());
         validatePiiEntitiesResultCollection(showStatistics, expected, response.getValue());
+    }
+
+    static void validateEntityResolutions(RecognizeEntitiesResultCollection actualResults) {
+        actualResults.forEach(result -> {
+            result.getEntities().forEach(entity -> {
+                String text = entity.getText();
+                IterableStream<? extends BaseResolution> resolutions = entity.getResolutions();
+                if ("1 year old".equals(text)) {
+                    for (BaseResolution resolution : resolutions) {
+                        assertTrue(resolution instanceof AgeResolution);
+                        AgeResolution ageResolution = (AgeResolution) resolution;
+                        assertEquals(AgeUnit.YEAR, ageResolution.getUnit());
+                        assertEquals(1.0, ageResolution.getValue());
+                    }
+                } else if ("10 pounds".equals(text)) {
+                    for (BaseResolution resolution : resolutions) {
+                        assertTrue(resolution instanceof WeightResolution);
+                        WeightResolution weightResolution = (WeightResolution) resolution;
+                        assertEquals(WeightUnit.POUND, weightResolution.getUnit());
+                        assertEquals(10.0, weightResolution.getValue());
+                    }
+                }
+            });
+        });
     }
 
     static void validatePiiEntitiesResultCollection(boolean showStatistics,
