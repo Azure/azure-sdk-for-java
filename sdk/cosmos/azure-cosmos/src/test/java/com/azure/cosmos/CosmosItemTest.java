@@ -22,6 +22,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
@@ -151,21 +152,29 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readMany() throws Exception {
         var cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
+        var idSet = new HashSet<String>();
+        var numDocuments = 5;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < numDocuments; i++) {
             var document = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(document);
 
             var partitionKey = new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(document, "mypk"));
             var cosmosItemIdentity = new CosmosItemIdentity(partitionKey, document.getId());
             cosmosItemIdentities.add(cosmosItemIdentity);
+            idSet.add(document.getId());
         }
 
         FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
 
         assertThat(feedResponse).isNotNull();
         assertThat(feedResponse.getResults()).isNotNull();
-        assertThat(feedResponse.getResults().size()).isEqualTo(5);
+        assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
+
+        for (int i = 0; i < feedResponse.getResults().size(); i++) {
+            var fetchedResult = feedResponse.getResults().get(i);
+            assertThat(idSet.contains(fetchedResult.getId())).isTrue();
+        }
     }
 
 
@@ -173,8 +182,10 @@ public class CosmosItemTest extends TestSuiteBase {
     public void readManyWithSamePartitionKey() throws Exception {
         var partitionKeyValue = UUID.randomUUID().toString();
         var cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
+        var idSet = new HashSet<String>();
+        var numDocuments = 5;
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < numDocuments; i++) {
             var documentId = UUID.randomUUID().toString();
             var document = getDocumentDefinition(documentId, partitionKeyValue);
             container.createItem(document);
@@ -183,14 +194,81 @@ public class CosmosItemTest extends TestSuiteBase {
             var cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
 
             cosmosItemIdentities.add(cosmosItemIdentity);
+            idSet.add(documentId);
         }
 
         FeedResponse<InternalObjectNode> feedResponse = container.readMany(cosmosItemIdentities, InternalObjectNode.class);
 
         assertThat(feedResponse).isNotNull();
         assertThat(feedResponse.getResults()).isNotNull();
-        assertThat(feedResponse.getResults().size()).isEqualTo(5);
+        assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
+
+        for (int i = 0; i < feedResponse.getResults().size(); i++) {
+            InternalObjectNode fetchedResult = feedResponse.getResults().get(i);
+            assertThat(idSet.contains(fetchedResult.getId())).isTrue();
+        }
     }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readManyWithPojo() throws Exception {
+        var cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
+        var idSet = new HashSet<String>();
+        var valSet = new HashSet<String>();
+        var numDocuments = 5;
+
+        for (int i = 0; i < numDocuments; i++) {
+            var document = new SampleType(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+            container.createItem(document);
+
+            var partitionKey = new PartitionKey(document.getMypk());
+            var cosmosItemIdentity = new CosmosItemIdentity(partitionKey, document.getId());
+            cosmosItemIdentities.add(cosmosItemIdentity);
+            idSet.add(document.getId());
+            valSet.add(document.getVal());
+        }
+
+        FeedResponse<SampleType> feedResponse = container.readMany(cosmosItemIdentities, SampleType.class);
+
+        assertThat(feedResponse).isNotNull();
+        assertThat(feedResponse.getResults()).isNotNull();
+        assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
+
+        for (int i = 0; i < feedResponse.getResults().size(); i++) {
+            var fetchedResult = feedResponse.getResults().get(i);
+            assertThat(idSet.contains(fetchedResult.getId())).isTrue();
+            assertThat(valSet.contains(fetchedResult.getVal())).isTrue();
+        }
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void readManyWithSingleTuple() throws Exception {
+        var partitionKeyValue = UUID.randomUUID().toString();
+        var cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
+        var idSet = new HashSet<String>();
+        var numDocuments = 5;
+
+        for (int i = 0; i < numDocuments; i++) {
+            var documentId = UUID.randomUUID().toString();
+            var document = getDocumentDefinition(documentId, partitionKeyValue);
+            container.createItem(document);
+
+            var partitionKey = new PartitionKey(partitionKeyValue);
+            var cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
+
+            cosmosItemIdentities.add(cosmosItemIdentity);
+            idSet.add(documentId);
+        }
+
+        for (int i = 0; i < numDocuments; i++) {
+            FeedResponse<InternalObjectNode> feedResponse = container.readMany(List.of(cosmosItemIdentities.get(i)), InternalObjectNode.class);
+
+            assertThat(feedResponse).isNotNull();
+            assertThat(feedResponse.getResults()).isNotNull();
+            assertThat(feedResponse.getResults().size()).isEqualTo(1);
+            assertThat(idSet.contains(feedResponse.getResults().get(0).getId())).isTrue();
+        }
+    }
+
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryItemWithDuplicateJsonProperties() throws Exception {
@@ -661,6 +739,36 @@ public class CosmosItemTest extends TestSuiteBase {
 
         public String getMypk() {
             return mypk;
+        }
+
+        public void setMypk(String mypk) {
+            this.mypk = mypk;
+        }
+    }
+
+    private static class SampleType {
+        private String id;
+        private String val;
+        private String mypk;
+
+        public SampleType() {
+        }
+
+        SampleType(String id, String val, String mypk) {
+            this.id = id;
+            this.val = val;
+        }
+
+        public String getId() { return this.id; }
+        public String getVal() { return this.val; }
+        public String getMypk() {return this.mypk; };
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public void setVal(String val) {
+            this.val = val;
         }
 
         public void setMypk(String mypk) {
