@@ -24,6 +24,10 @@ public final class IpGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of IpGroupListResult class. */
+    public IpGroupListResult() {
+    }
+
     /**
      * Get the value property: The list of IpGroups information resources.
      *

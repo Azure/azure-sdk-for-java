@@ -46,6 +46,10 @@ public final class NatGatewayInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of NatGatewayInner class. */
+    public NatGatewayInner() {
+    }
+
     /**
      * Get the sku property: The nat gateway SKU.
      *

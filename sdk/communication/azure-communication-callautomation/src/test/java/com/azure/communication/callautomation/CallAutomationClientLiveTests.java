@@ -67,6 +67,7 @@ public class CallAutomationClientLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(callConnection);
             CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
+            assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
 
             callConnection.hangUp(true);
             waitForOperationCompletion(5000);
@@ -117,6 +118,7 @@ public class CallAutomationClientLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(callConnection);
             CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
+            assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
 
             callConnection.hangUp(true);
             waitForOperationCompletion(5000);

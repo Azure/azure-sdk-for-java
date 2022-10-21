@@ -23,8 +23,7 @@ public final class Dapr {
     private String appId;
 
     /*
-     * Tells Dapr which protocol your application is using. Valid options are
-     * http and grpc. Default is http
+     * Tells Dapr which protocol your application is using. Valid options are http and grpc. Default is http
      */
     @JsonProperty(value = "appProtocol")
     private AppProtocol appProtocol;
@@ -34,6 +33,35 @@ public final class Dapr {
      */
     @JsonProperty(value = "appPort")
     private Integer appPort;
+
+    /*
+     * Dapr max size of http header read buffer in KB to handle when sending multi-KB headers. Default is 65KB.
+     */
+    @JsonProperty(value = "httpReadBufferSize")
+    private Integer httpReadBufferSize;
+
+    /*
+     * Increasing max size of request body http and grpc servers parameter in MB to handle uploading of big files.
+     * Default is 4 MB.
+     */
+    @JsonProperty(value = "httpMaxRequestSize")
+    private Integer httpMaxRequestSize;
+
+    /*
+     * Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error. Default is info.
+     */
+    @JsonProperty(value = "logLevel")
+    private LogLevel logLevel;
+
+    /*
+     * Enables API logging for the Dapr sidecar
+     */
+    @JsonProperty(value = "enableApiLogging")
+    private Boolean enableApiLogging;
+
+    /** Creates an instance of Dapr class. */
+    public Dapr() {
+    }
 
     /**
      * Get the enabled property: Boolean indicating if the Dapr side car is enabled.
@@ -114,6 +142,92 @@ public final class Dapr {
      */
     public Dapr withAppPort(Integer appPort) {
         this.appPort = appPort;
+        return this;
+    }
+
+    /**
+     * Get the httpReadBufferSize property: Dapr max size of http header read buffer in KB to handle when sending
+     * multi-KB headers. Default is 65KB.
+     *
+     * @return the httpReadBufferSize value.
+     */
+    public Integer httpReadBufferSize() {
+        return this.httpReadBufferSize;
+    }
+
+    /**
+     * Set the httpReadBufferSize property: Dapr max size of http header read buffer in KB to handle when sending
+     * multi-KB headers. Default is 65KB.
+     *
+     * @param httpReadBufferSize the httpReadBufferSize value to set.
+     * @return the Dapr object itself.
+     */
+    public Dapr withHttpReadBufferSize(Integer httpReadBufferSize) {
+        this.httpReadBufferSize = httpReadBufferSize;
+        return this;
+    }
+
+    /**
+     * Get the httpMaxRequestSize property: Increasing max size of request body http and grpc servers parameter in MB to
+     * handle uploading of big files. Default is 4 MB.
+     *
+     * @return the httpMaxRequestSize value.
+     */
+    public Integer httpMaxRequestSize() {
+        return this.httpMaxRequestSize;
+    }
+
+    /**
+     * Set the httpMaxRequestSize property: Increasing max size of request body http and grpc servers parameter in MB to
+     * handle uploading of big files. Default is 4 MB.
+     *
+     * @param httpMaxRequestSize the httpMaxRequestSize value to set.
+     * @return the Dapr object itself.
+     */
+    public Dapr withHttpMaxRequestSize(Integer httpMaxRequestSize) {
+        this.httpMaxRequestSize = httpMaxRequestSize;
+        return this;
+    }
+
+    /**
+     * Get the logLevel property: Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error.
+     * Default is info.
+     *
+     * @return the logLevel value.
+     */
+    public LogLevel logLevel() {
+        return this.logLevel;
+    }
+
+    /**
+     * Set the logLevel property: Sets the log level for the Dapr sidecar. Allowed values are debug, info, warn, error.
+     * Default is info.
+     *
+     * @param logLevel the logLevel value to set.
+     * @return the Dapr object itself.
+     */
+    public Dapr withLogLevel(LogLevel logLevel) {
+        this.logLevel = logLevel;
+        return this;
+    }
+
+    /**
+     * Get the enableApiLogging property: Enables API logging for the Dapr sidecar.
+     *
+     * @return the enableApiLogging value.
+     */
+    public Boolean enableApiLogging() {
+        return this.enableApiLogging;
+    }
+
+    /**
+     * Set the enableApiLogging property: Enables API logging for the Dapr sidecar.
+     *
+     * @param enableApiLogging the enableApiLogging value to set.
+     * @return the Dapr object itself.
+     */
+    public Dapr withEnableApiLogging(Boolean enableApiLogging) {
+        this.enableApiLogging = enableApiLogging;
         return this;
     }
 

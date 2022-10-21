@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Addons Delete. */
 public final class AddonsDeleteSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Addons_Delete.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Addons_Delete.json
      */
     /**
      * Sample code: Addons_Delete.

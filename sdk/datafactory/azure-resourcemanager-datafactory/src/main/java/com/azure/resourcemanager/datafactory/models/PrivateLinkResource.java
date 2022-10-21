@@ -35,6 +35,10 @@ public final class PrivateLinkResource extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of PrivateLinkResource class. */
+    public PrivateLinkResource() {
+    }
+
     /**
      * Get the properties property: Core resource properties.
      *

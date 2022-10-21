@@ -57,6 +57,10 @@ public final class IntegrationRuntimeComputeProperties {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of IntegrationRuntimeComputeProperties class. */
+    public IntegrationRuntimeComputeProperties() {
+    }
+
     /**
      * Get the location property: The location for managed integration runtime. The supported regions could be found on
      * https://docs.microsoft.com/en-us/azure/data-factory/data-factory-data-movement-activities.

@@ -24,6 +24,10 @@ public final class AzureMLLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureMLLinkedServiceTypeProperties innerTypeProperties = new AzureMLLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureMLLinkedService class. */
+    public AzureMLLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure ML Studio Web Service linked service properties.
      *

@@ -23,6 +23,10 @@ public final class AdminRule extends BaseAdminRuleInner {
     @JsonProperty(value = "properties")
     private AdminPropertiesFormat innerProperties;
 
+    /** Creates an instance of AdminRule class. */
+    public AdminRule() {
+    }
+
     /**
      * Get the innerProperties property: Indicates the properties of the security admin rule.
      *

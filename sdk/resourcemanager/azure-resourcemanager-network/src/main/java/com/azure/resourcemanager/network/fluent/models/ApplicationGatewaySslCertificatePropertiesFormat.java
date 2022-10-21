@@ -41,6 +41,10 @@ public final class ApplicationGatewaySslCertificatePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of ApplicationGatewaySslCertificatePropertiesFormat class. */
+    public ApplicationGatewaySslCertificatePropertiesFormat() {
+    }
+
     /**
      * Get the data property: Base-64 encoded pfx certificate. Only applicable in PUT Request.
      *

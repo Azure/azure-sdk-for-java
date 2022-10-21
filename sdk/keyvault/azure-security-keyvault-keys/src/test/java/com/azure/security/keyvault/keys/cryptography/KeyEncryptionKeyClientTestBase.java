@@ -62,6 +62,7 @@ public abstract class KeyEncryptionKeyClientTestBase extends TestBase {
                 .clientSecret(clientKey)
                 .clientId(clientId)
                 .tenantId(tenantId)
+                .additionallyAllowedTenants("*")
                 .build();
         }
 

@@ -36,6 +36,10 @@ public final class NetworkInterfaceTapConfigurationInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of NetworkInterfaceTapConfigurationInner class. */
+    public NetworkInterfaceTapConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Virtual Network Tap configuration.
      *

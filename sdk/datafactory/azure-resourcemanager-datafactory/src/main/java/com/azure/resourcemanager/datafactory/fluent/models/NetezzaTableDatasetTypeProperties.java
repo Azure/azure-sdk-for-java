@@ -28,6 +28,10 @@ public final class NetezzaTableDatasetTypeProperties {
     @JsonProperty(value = "schema")
     private Object schema;
 
+    /** Creates an instance of NetezzaTableDatasetTypeProperties class. */
+    public NetezzaTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

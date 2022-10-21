@@ -23,6 +23,10 @@ public final class TriggerSubscriptionOperationStatusInner {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private EventSubscriptionStatus status;
 
+    /** Creates an instance of TriggerSubscriptionOperationStatusInner class. */
+    public TriggerSubscriptionOperationStatusInner() {
+    }
+
     /**
      * Get the triggerName property: Trigger name.
      *

@@ -38,6 +38,10 @@ public final class HubRouteTableInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of HubRouteTableInner class. */
+    public HubRouteTableInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the RouteTable resource.
      *

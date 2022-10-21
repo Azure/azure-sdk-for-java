@@ -44,6 +44,12 @@ public final class DaprComponentProperties {
     private List<Secret> secrets;
 
     /*
+     * Name of a Dapr component to retrieve component secrets from
+     */
+    @JsonProperty(value = "secretStoreComponent")
+    private String secretStoreComponent;
+
+    /*
      * Component metadata
      */
     @JsonProperty(value = "metadata")
@@ -54,6 +60,10 @@ public final class DaprComponentProperties {
      */
     @JsonProperty(value = "scopes")
     private List<String> scopes;
+
+    /** Creates an instance of DaprComponentProperties class. */
+    public DaprComponentProperties() {
+    }
 
     /**
      * Get the componentType property: Component type.
@@ -152,6 +162,26 @@ public final class DaprComponentProperties {
      */
     public DaprComponentProperties withSecrets(List<Secret> secrets) {
         this.secrets = secrets;
+        return this;
+    }
+
+    /**
+     * Get the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
+     *
+     * @return the secretStoreComponent value.
+     */
+    public String secretStoreComponent() {
+        return this.secretStoreComponent;
+    }
+
+    /**
+     * Set the secretStoreComponent property: Name of a Dapr component to retrieve component secrets from.
+     *
+     * @param secretStoreComponent the secretStoreComponent value to set.
+     * @return the DaprComponentProperties object itself.
+     */
+    public DaprComponentProperties withSecretStoreComponent(String secretStoreComponent) {
+        this.secretStoreComponent = secretStoreComponent;
         return this;
     }
 

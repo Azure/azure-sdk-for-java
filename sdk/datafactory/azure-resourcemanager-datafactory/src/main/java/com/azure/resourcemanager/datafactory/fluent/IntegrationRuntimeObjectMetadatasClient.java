@@ -86,21 +86,6 @@ public interface IntegrationRuntimeObjectMetadatasClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param integrationRuntimeName The integration runtime name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a SSIS integration runtime object metadata by specified path.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SsisObjectMetadataListResponseInner get(
-        String resourceGroupName, String factoryName, String integrationRuntimeName);
-
-    /**
-     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param integrationRuntimeName The integration runtime name.
      * @param getMetadataRequest The parameters for getting a SSIS object metadata.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,4 +100,19 @@ public interface IntegrationRuntimeObjectMetadatasClient {
         String integrationRuntimeName,
         GetSsisObjectMetadataRequest getMetadataRequest,
         Context context);
+
+    /**
+     * Get a SSIS integration runtime object metadata by specified path. The return is pageable metadata list.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param integrationRuntimeName The integration runtime name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a SSIS integration runtime object metadata by specified path.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SsisObjectMetadataListResponseInner get(
+        String resourceGroupName, String factoryName, String integrationRuntimeName);
 }

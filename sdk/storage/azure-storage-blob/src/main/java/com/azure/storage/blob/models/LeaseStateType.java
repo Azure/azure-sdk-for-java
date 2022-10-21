@@ -39,6 +39,9 @@ public enum LeaseStateType {
      */
     @JsonCreator
     public static LeaseStateType fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         LeaseStateType[] items = LeaseStateType.values();
         for (LeaseStateType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -48,6 +51,7 @@ public enum LeaseStateType {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Catalogs ListByDevCenter. */
 public final class CatalogsListByDevCenterSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Catalogs_List.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Catalogs_List.json
      */
     /**
      * Sample code: Catalogs_ListByDevCenter.
