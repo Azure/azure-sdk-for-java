@@ -69,7 +69,7 @@ class EventHubsBinderConsumeErrorIT {
 
         @Bean
         Consumer<MessageHandlingException> consumeError() {
-            return message -> {
+            return exception -> {
                 try {
                     EXCHANGER.exchange("ERROR!");
                 } catch (InterruptedException e) {
