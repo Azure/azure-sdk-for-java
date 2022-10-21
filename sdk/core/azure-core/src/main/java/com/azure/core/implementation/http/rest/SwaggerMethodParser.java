@@ -280,16 +280,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         if (isReactiveMethod) {
             Type reactiveTypeArgument = TypeUtil.getTypeArgument(returnType);
             this.isStreamResponse = isStreamResponseType(reactiveTypeArgument);
-            if (TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, reactiveTypeArgument)) {
-                this.headersEagerlyConverted =
-                    TypeUtil.getTypeArguments(reactiveTypeArgument)[0] != BLOB_DOWNLOAD_HEADER_TYPE;
-            }
+            this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, reactiveTypeArgument)
+                && TypeUtil.getTypeArguments(reactiveTypeArgument)[0] != BLOB_DOWNLOAD_HEADER_TYPE;
         } else {
             this.isStreamResponse = isStreamResponseType(returnType);
-            if (TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, reactiveTypeArgument)) {
-                this.headersEagerlyConverted =
-                    TypeUtil.getTypeArguments(reactiveTypeArgument)[0] != BLOB_DOWNLOAD_HEADER_TYPE;
-            }
+            this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, returnType)
+                && TypeUtil.getTypeArguments(returnType)[0] != BLOB_DOWNLOAD_HEADER_TYPE;
         }
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
