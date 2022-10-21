@@ -44,7 +44,7 @@ public class ListBlobsTest extends ContainerTest<PerfStressOptions> {
             .listBlobs()
             .flatMap(b -> blobContainerAsyncClient
                 .getBlobAsyncClient(b.getName())
-                .downloadToFile(b.getName())
+                .downloadToFile(b.getName(), /* overwrite */ true)
                 .doOnError(ex -> System.out.println("Download error: " + ex.toString()))
                 .onErrorResume(ex -> Mono.empty()))
             .parallel()
