@@ -262,7 +262,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
     }
 
     @SuppressWarnings("unchecked")
-    @Test(groups = {"non-emulator"}, dataProvider = "useProxy", timeOut = TIMEOUT)
+    @Test(groups = {"long"}, dataProvider = "useProxy", timeOut = TIMEOUT)
     public void clientTelemetryWithStageJunoEndpoint(boolean useProxy) throws InterruptedException, NoSuchFieldException,
         IllegalAccessException {
         CosmosClient cosmosClient = null;

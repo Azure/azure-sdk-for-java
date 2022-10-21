@@ -7,8 +7,8 @@ import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.FileSource;
-import com.azure.communication.callautomation.models.events.CallConnectedEvent;
-import com.azure.communication.callautomation.models.events.PlayCompletedEvent;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.PlayCompleted;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
@@ -83,13 +83,13 @@ public class CallMediaAsyncAutomatedLiveTests extends CallAutomationAutomatedLiv
             callDestructors.add(answerCallResult.getCallConnectionAsync());
 
             // wait for callConnected
-            CallConnectedEvent callConnectedEvent = waitForEvent(CallConnectedEvent.class, callerConnectionId, Duration.ofSeconds(10));
+            CallConnected callConnectedEvent = waitForEvent(CallConnected.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(callConnectedEvent);
 
             // play media to all participants
             CallMediaAsync callMediaAsync = createCallResult.getCallConnectionAsync().getCallMediaAsync();
             callMediaAsync.playToAll(new FileSource().setUri(MEDIA_SOURCE)).block();
-            PlayCompletedEvent playCompletedEvent = waitForEvent(PlayCompletedEvent.class, callerConnectionId, Duration.ofSeconds(20));
+            PlayCompleted playCompletedEvent = waitForEvent(PlayCompleted.class, callerConnectionId, Duration.ofSeconds(20));
             assertNotNull(playCompletedEvent);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
