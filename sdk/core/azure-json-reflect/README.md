@@ -1,4 +1,4 @@
-# Azure Json Reflect
+# Azure Json Reflect shared library for Java
 
 Azure Json Reflect provides implementations of `azure-json` using reflection.
 It uses Jackson and Gson but has no dependencies on these libraries.
@@ -19,6 +19,7 @@ To use Azure Json Reflect a compatible version of Jackson or Gson must be presen
 - Versions 2.4 and newer
 
 ## Key Concepts
+
 See `azure-json` for more key concepts.
 
 This package searches the relative class path for Jackson or Gson.
