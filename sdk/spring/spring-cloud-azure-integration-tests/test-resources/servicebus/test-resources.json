@@ -54,22 +54,6 @@
       }
     },
     {
-      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
-      "apiVersion": "2022-01-01-preview",
-      "name": "[concat(variables('azureServiceBusNamespaceName'), '/RootManageSharedAccessKey')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[reference(variables('azureServiceBusNamespaceName')).id]"
-      ],
-      "properties": {
-        "rights": [
-          "Listen",
-          "Manage",
-          "Send"
-        ]
-      }
-    },
-    {
       "type": "Microsoft.ServiceBus/namespaces/queues",
       "apiVersion": "2022-01-01-preview",
       "name": "[concat(variables('azureServiceBusNamespaceName'), '/que001')]",
@@ -120,15 +104,6 @@
       }
     },
     {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), parameters('baseName')))]",
-      "properties": {
-        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
-        "principalId": "[parameters('testApplicationOid')]"
-      }
-    },
-    {
       "type": "Microsoft.ServiceBus/namespaces",
       "apiVersion": "2018-01-01-preview",
       "name": "[variables('azureServiceBusNamespaceName_1')]",
@@ -139,19 +114,6 @@
       },
       "properties": {
         "zoneRedundant": false
-      }
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_1')))]",
-      "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_1'))]",
-      "dependsOn": [
-        "[variables('azureServiceBusNamespaceName_1')]"
-      ],
-      "properties": {
-        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
-        "principalId": "[parameters('testApplicationOid')]"
       }
     },
     {
@@ -168,19 +130,6 @@
       }
     },
     {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_2')))]",
-      "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_2'))]",
-      "dependsOn": [
-        "[variables('azureServiceBusNamespaceName_2')]"
-      ],
-      "properties": {
-        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
-        "principalId": "[parameters('testApplicationOid')]"
-      }
-    },
-    {
       "type": "Microsoft.ServiceBus/namespaces",
       "apiVersion": "2018-01-01-preview",
       "name": "[variables('azureServiceBusNamespaceName_3')]",
@@ -191,68 +140,6 @@
       },
       "properties": {
         "zoneRedundant": false
-      }
-    },
-    {
-      "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_3')))]",
-      "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_3'))]",
-      "dependsOn": [
-        "[variables('azureServiceBusNamespaceName_3')]"
-      ],
-      "properties": {
-        "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
-        "principalId": "[parameters('testApplicationOid')]"
-      }
-    },
-    {
-      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
-      "apiVersion": "2017-04-01",
-      "name": "[concat(variables('azureServiceBusNamespaceName_1'), '/RootManageSharedAccessKey')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[reference(variables('azureServiceBusNamespaceName_1')).id]"
-      ],
-      "properties": {
-        "rights": [
-          "Listen",
-          "Manage",
-          "Send"
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
-      "apiVersion": "2017-04-01",
-      "name": "[concat(variables('azureServiceBusNamespaceName_2'), '/RootManageSharedAccessKey')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[reference(variables('azureServiceBusNamespaceName_2')).id]"
-
-      ],
-      "properties": {
-        "rights": [
-          "Listen",
-          "Manage",
-          "Send"
-        ]
-      }
-    },
-    {
-      "type": "Microsoft.ServiceBus/namespaces/AuthorizationRules",
-      "apiVersion": "2017-04-01",
-      "name": "[concat(variables('azureServiceBusNamespaceName_3'), '/RootManageSharedAccessKey')]",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[reference(variables('azureServiceBusNamespaceName_3')).id]"
-      ],
-      "properties": {
-        "rights": [
-          "Listen",
-          "Manage",
-          "Send"
-        ]
       }
     },
     {
@@ -400,10 +287,6 @@
     "AZURE_SPRING_TENANT_ID": {
       "type": "string",
       "value": "[parameters('tenantId')]"
-    },
-    "AZURE_SERVICE_BUS_JMS_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[listKeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', variables('azureServiceBusNamespaceName'), 'RootManageSharedAccessKey'), '2022-01-01-preview').primaryConnectionString]"
     },
     "AZURE_SERVICE_BUS_NAMESPACE": {
       "type": "string",
