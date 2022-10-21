@@ -5,7 +5,10 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.lang.invoke.LambdaMetafactory;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
@@ -144,7 +147,7 @@ class GsonJsonWriter extends JsonWriter {
 
     private GsonJsonWriter(Writer writer, JsonOptions options) {
         if (!INITIALIZED) {
-            throw new IllegalStateException("Gson is not present or an incorrect version is present.");
+            throw new IllegalStateException("No compatible version of Gson is present on the classpath.");
         }
 
         gsonJsonWriter = JSON_WRITER_CONSTRUCTOR.createJsonWriter(writer);

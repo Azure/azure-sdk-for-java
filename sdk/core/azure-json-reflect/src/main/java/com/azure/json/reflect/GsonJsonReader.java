@@ -185,7 +185,7 @@ class GsonJsonReader extends JsonReader {
 
     private GsonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, boolean nonNumericNumbersSupported) {
         if (!INITIALIZED) {
-            throw new IllegalStateException("Gson is not present or an incorrect version is present.");
+            throw new IllegalStateException("No compatible version of Gson is present on the classpath.");
         }
 
         gsonJsonReader = JSON_READER_CONSTRUCTOR.createJsonReader(reader);

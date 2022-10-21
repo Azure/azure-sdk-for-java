@@ -23,7 +23,7 @@ class JacksonJsonReader extends JsonReader {
     private static final Class JACKSON_FEATURE_ENUM;
     private static final Object JSON_FACTORY;
 
-    private static final JsonFactoryCreateParser JSON_FACTORY_CREATE_PARSER;
+    private static final JsonFactoryCreateJsonParser JSON_FACTORY_CREATE_JSON_PARSER;
     private static final JsonParserConfigure JSON_PARSER_CONFIGURE;
     private static final JsonParserClose JSON_PARSER_CLOSE;
     private static final JsonParserSkipChildren JSON_PARSER_SKIP_CHILDREN;
@@ -47,7 +47,7 @@ class JacksonJsonReader extends JsonReader {
 
         Object jsonFactory = null;
 
-        JsonFactoryCreateParser jsonFactoryCreateParser = null;
+        JsonFactoryCreateJsonParser jsonFactoryCreateJsonParser = null;
         JsonParserConfigure jsonParserConfigure = null;
         JsonParserClose jsonParserClose = null;
         JsonParserSkipChildren jsonParserSkipChildren = null;
@@ -72,7 +72,7 @@ class JacksonJsonReader extends JsonReader {
 
             jsonFactory = lookup.findConstructor(jacksonJsonFactoryClass, methodType(void.class)).invoke();
 
-            jsonFactoryCreateParser = createMetaFactory("createParser", jacksonJsonFactoryClass, methodType(jacksonJsonParserClass, Reader.class), JsonFactoryCreateParser.class, methodType(Object.class, Object.class, Reader.class), lookup);
+            jsonFactoryCreateJsonParser = createMetaFactory("createParser", jacksonJsonFactoryClass, methodType(jacksonJsonParserClass, Reader.class), JsonFactoryCreateJsonParser.class, methodType(Object.class, Object.class, Reader.class), lookup);
             jsonParserConfigure = createMetaFactory("configure", jacksonJsonParserClass, methodType(jacksonJsonParserClass, jacksonFeatureEnum, boolean.class), JsonParserConfigure.class, methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
             jsonParserClose = createMetaFactory("close", jacksonJsonParserClass, methodType(void.class), JsonParserClose.class, methodType(void.class, Object.class), lookup);
             jsonParserSkipChildren = createMetaFactory("skipChildren", jacksonJsonParserClass, methodType(jacksonJsonParserClass), JsonParserSkipChildren.class, methodType(Object.class, Object.class), lookup);
@@ -100,7 +100,7 @@ class JacksonJsonReader extends JsonReader {
 
         JSON_FACTORY = jsonFactory;
 
-        JSON_FACTORY_CREATE_PARSER = jsonFactoryCreateParser;
+        JSON_FACTORY_CREATE_JSON_PARSER = jsonFactoryCreateJsonParser;
         JSON_PARSER_CONFIGURE = jsonParserConfigure;
         JSON_PARSER_CLOSE = jsonParserClose;
         JSON_PARSER_SKIP_CHILDREN = jsonParserSkipChildren;
@@ -179,10 +179,10 @@ class JacksonJsonReader extends JsonReader {
 
     private JacksonJsonReader(Reader reader, boolean resetSupported, byte[] jsonBytes, String jsonString, boolean nonNumericNumbersSupported) throws IOException {
         if (!INITIALIZED) {
-            throw new IllegalStateException("Jackson is not present or an incorrect version is present.");
+            throw new IllegalStateException("No compatible version of Jackson is present on the classpath.");
         }
 
-        jacksonJsonParser = JSON_FACTORY_CREATE_PARSER.createParser(JSON_FACTORY, reader);
+        jacksonJsonParser = JSON_FACTORY_CREATE_JSON_PARSER.createParser(JSON_FACTORY, reader);
         // Configure Jackson to support non-numeric numbers
         JSON_PARSER_CONFIGURE.configure(jacksonJsonParser, Enum.valueOf(JACKSON_FEATURE_ENUM, "ALLOW_NON_NUMERIC_NUMBERS"), nonNumericNumbersSupported);
 
@@ -337,7 +337,7 @@ class JacksonJsonReader extends JsonReader {
     }
 
     @FunctionalInterface
-    private interface JsonFactoryCreateParser {
+    private interface JsonFactoryCreateJsonParser {
         Object createParser(Object jsonFactory, Reader reader) throws IOException;
     }
 
