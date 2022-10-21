@@ -10,7 +10,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
-import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
 import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
 import com.azure.core.http.netty.implementation.RequestProgressReportingHandler;
 import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
@@ -25,7 +24,6 @@ import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
@@ -263,9 +261,7 @@ class NettyAsyncHttpClient implements HttpClient {
              */
             if (eagerlyReadResponse) {
                 // Set up the body flux and dispose the connection once it has been received.
-                return FluxUtil.collectBytesFromNetworkResponse(
-                        reactorNettyConnection.inbound().receive().asByteBuffer(),
-                        new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
+                return reactorNettyConnection.inbound().receive().aggregate().asByteArray()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
                     .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
                         headersEagerlyConverted));
