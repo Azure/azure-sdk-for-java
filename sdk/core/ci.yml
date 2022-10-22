@@ -180,6 +180,10 @@ extends:
         groupId: com.azure
         safeName: azurejsongson
         releaseInBatch: ${{ parameters.release_azurejsongson }}
+      - name: azure-json-reflect
+        groupId: com.azure
+        safeName: azurejsonreflect
+        releaseInBatch: ${{ parameters.release_azurejsonreflect }}
       - name: azure-xml
         groupId: com.azure
         safeName: azurexml
@@ -281,6 +285,9 @@ extends:
             - name: azure-json-gson
               groupId: com.azure
               safeName: azurejsongson
+            - name: azure-json-reflect
+              groupId: com.azure
+              safeName: azurejsonreflect
           MatrixReplace:
             - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
       - template: /sdk/storage/tests-template.yml
