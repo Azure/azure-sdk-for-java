@@ -275,6 +275,7 @@
     "Dskip",
     "mvnw",
     "TBLPROPERTIES",
+    "Cyclomatic",
     "branchcoverage",
     "cacerts",
     "checkstyle",
