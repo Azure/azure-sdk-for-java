@@ -157,6 +157,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-core-json-reflect</artifactId>
+      <version>1.12.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-core-management</artifactId>
       <version>1.9.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core-management;current} -->
     </dependency>
