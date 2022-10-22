@@ -14,6 +14,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  *  {@link EnableAutoConfiguration Auto-configuration} for Spring Data Cosmos support.
@@ -24,6 +25,7 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass({ CosmosTemplate.class })
 @ConditionalOnExpression("${spring.cloud.azure.cosmos.enabled:true}")
 @ConditionalOnProperty(prefix = "spring.cloud.azure.cosmos", name = { "endpoint", "database" })
+@Import(CosmosDataDiagnosticsConfiguration.class)
 public class CosmosDataAutoConfiguration extends AbstractCosmosConfiguration {
 
     private final AzureCosmosProperties cosmosProperties;

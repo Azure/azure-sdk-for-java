@@ -33,6 +33,9 @@ public enum PathSetAccessControlRecursiveMode {
      */
     @JsonCreator
     public static PathSetAccessControlRecursiveMode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         PathSetAccessControlRecursiveMode[] items = PathSetAccessControlRecursiveMode.values();
         for (PathSetAccessControlRecursiveMode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -42,6 +45,7 @@ public enum PathSetAccessControlRecursiveMode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

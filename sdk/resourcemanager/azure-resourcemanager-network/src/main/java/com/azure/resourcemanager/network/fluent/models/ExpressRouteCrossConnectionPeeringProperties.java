@@ -105,6 +105,10 @@ public final class ExpressRouteCrossConnectionPeeringProperties {
     @JsonProperty(value = "ipv6PeeringConfig")
     private Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig;
 
+    /** Creates an instance of ExpressRouteCrossConnectionPeeringProperties class. */
+    public ExpressRouteCrossConnectionPeeringProperties() {
+    }
+
     /**
      * Get the peeringType property: The peering type.
      *

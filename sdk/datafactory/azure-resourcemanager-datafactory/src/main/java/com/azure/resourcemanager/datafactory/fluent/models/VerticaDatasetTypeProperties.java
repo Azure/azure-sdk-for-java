@@ -28,6 +28,10 @@ public final class VerticaDatasetTypeProperties {
     @JsonProperty(value = "schema")
     private Object schema;
 
+    /** Creates an instance of VerticaDatasetTypeProperties class. */
+    public VerticaDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

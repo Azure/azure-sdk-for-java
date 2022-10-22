@@ -27,6 +27,10 @@ public final class WebBasicAuthentication extends WebLinkedServiceTypeProperties
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
+    /** Creates an instance of WebBasicAuthentication class. */
+    public WebBasicAuthentication() {
+    }
+
     /**
      * Get the username property: User name for Basic authentication. Type: string (or Expression with resultType
      * string).

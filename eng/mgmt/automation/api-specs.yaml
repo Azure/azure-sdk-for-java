@@ -43,6 +43,8 @@ dns:
 eventhub:
   service: eventhubs
   suffix: generated
+hybridaks:
+  service: hybridcontainerservice
 keyvault:
   suffix: generated
 machinelearningservices:

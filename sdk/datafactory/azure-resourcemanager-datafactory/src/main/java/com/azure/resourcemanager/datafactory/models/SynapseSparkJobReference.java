@@ -18,10 +18,14 @@ public final class SynapseSparkJobReference {
     private SparkJobReferenceType type;
 
     /*
-     * Reference spark job name.
+     * Reference spark job name. Expression with resultType string.
      */
     @JsonProperty(value = "referenceName", required = true)
-    private String referenceName;
+    private Object referenceName;
+
+    /** Creates an instance of SynapseSparkJobReference class. */
+    public SynapseSparkJobReference() {
+    }
 
     /**
      * Get the type property: Synapse spark job reference type.
@@ -44,21 +48,21 @@ public final class SynapseSparkJobReference {
     }
 
     /**
-     * Get the referenceName property: Reference spark job name.
+     * Get the referenceName property: Reference spark job name. Expression with resultType string.
      *
      * @return the referenceName value.
      */
-    public String referenceName() {
+    public Object referenceName() {
         return this.referenceName;
     }
 
     /**
-     * Set the referenceName property: Reference spark job name.
+     * Set the referenceName property: Reference spark job name. Expression with resultType string.
      *
      * @param referenceName the referenceName value to set.
      * @return the SynapseSparkJobReference object itself.
      */
-    public SynapseSparkJobReference withReferenceName(String referenceName) {
+    public SynapseSparkJobReference withReferenceName(Object referenceName) {
         this.referenceName = referenceName;
         return this;
     }

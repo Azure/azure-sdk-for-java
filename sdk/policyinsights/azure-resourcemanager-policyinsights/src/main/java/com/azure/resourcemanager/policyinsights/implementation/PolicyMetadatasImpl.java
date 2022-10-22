@@ -15,10 +15,9 @@ import com.azure.resourcemanager.policyinsights.fluent.models.SlimPolicyMetadata
 import com.azure.resourcemanager.policyinsights.models.PolicyMetadata;
 import com.azure.resourcemanager.policyinsights.models.PolicyMetadatas;
 import com.azure.resourcemanager.policyinsights.models.SlimPolicyMetadata;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PolicyMetadatasImpl implements PolicyMetadatas {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyMetadatasImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PolicyMetadatasImpl.class);
 
     private final PolicyMetadatasClient innerClient;
 
@@ -31,15 +30,6 @@ public final class PolicyMetadatasImpl implements PolicyMetadatas {
         this.serviceManager = serviceManager;
     }
 
-    public PolicyMetadata getResource(String resourceName) {
-        PolicyMetadataInner inner = this.serviceClient().getResource(resourceName);
-        if (inner != null) {
-            return new PolicyMetadataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PolicyMetadata> getResourceWithResponse(String resourceName, Context context) {
         Response<PolicyMetadataInner> inner = this.serviceClient().getResourceWithResponse(resourceName, context);
         if (inner != null) {
@@ -48,6 +38,15 @@ public final class PolicyMetadatasImpl implements PolicyMetadatas {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new PolicyMetadataImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public PolicyMetadata getResource(String resourceName) {
+        PolicyMetadataInner inner = this.serviceClient().getResource(resourceName);
+        if (inner != null) {
+            return new PolicyMetadataImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -33,6 +33,10 @@ public final class SalesforceServiceCloudSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of SalesforceServiceCloudSource class. */
+    public SalesforceServiceCloudSource() {
+    }
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *

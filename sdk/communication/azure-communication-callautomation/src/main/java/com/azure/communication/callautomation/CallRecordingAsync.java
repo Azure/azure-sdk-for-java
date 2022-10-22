@@ -10,7 +10,7 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Recor
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
-import com.azure.communication.callautomation.implementation.models.ChannelAffinityInternal;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
@@ -164,14 +164,11 @@ public class CallRecordingAsync {
         if (options.getRecordingStateCallbackUrl() != null) {
             request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUrl());
         }
-        if (options.getChannelAffinity() != null) {
-            List<ChannelAffinityInternal> channelAffinityInternal = options.getChannelAffinity()
-                .stream()
-                .map(c -> new ChannelAffinityInternal()
-                    .setChannel(c.getChannel())
-                    .setParticipant(CommunicationIdentifierConverter.convert(c.getParticipant())))
+        if (options.getAudioChannelParticipantOrdering() != null) {
+            List<CommunicationIdentifierModel> audioChannelParticipantOrdering = options.getAudioChannelParticipantOrdering()
+                .stream().map(CommunicationIdentifierConverter::convert)
                 .collect(Collectors.toList());
-            request.setChannelAffinity(channelAffinityInternal);
+            request.setAudioChannelParticipantOrdering(audioChannelParticipantOrdering);
         }
 
         return request;

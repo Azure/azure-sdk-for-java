@@ -42,8 +42,17 @@ public final class TimeTransition {
     @JsonProperty(value = "UtcEnd", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime utcEnd;
 
-    /** TimeTransition constructor */
+    /** Set default TimeTransition constructor to private */
     private TimeTransition() {}
+
+    /**
+     * Get the tag property: Tag property.
+     *
+     * @return the tag value.
+     */
+    public String getTag() {
+        return this.tag;
+    }
 
     /**
      * TimeTransition constructor
@@ -54,15 +63,6 @@ public final class TimeTransition {
     private TimeTransition(ZoneOffset daylightSavings, ZoneOffset standardOffset) {
         this.daylightSavings = daylightSavings.toString();
         this.standardOffset = standardOffset.toString();
-    }
-
-    /**
-     * Get the tag property: Tag property.
-     *
-     * @return the tag value.
-     */
-    public String getTag() {
-        return this.tag;
     }
 
     /**

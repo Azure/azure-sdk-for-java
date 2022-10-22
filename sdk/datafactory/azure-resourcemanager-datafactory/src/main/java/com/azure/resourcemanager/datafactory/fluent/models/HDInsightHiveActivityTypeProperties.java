@@ -65,6 +65,10 @@ public final class HDInsightHiveActivityTypeProperties {
     @JsonProperty(value = "queryTimeout")
     private Integer queryTimeout;
 
+    /** Creates an instance of HDInsightHiveActivityTypeProperties class. */
+    public HDInsightHiveActivityTypeProperties() {
+    }
+
     /**
      * Get the storageLinkedServices property: Storage linked service references.
      *

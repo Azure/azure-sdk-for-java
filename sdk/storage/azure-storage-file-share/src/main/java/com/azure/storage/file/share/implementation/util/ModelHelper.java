@@ -5,13 +5,13 @@ package com.azure.storage.file.share.implementation.util;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.serializer.JacksonAdapter;
-import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.storage.common.ParallelTransferOptions;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.file.share.implementation.accesshelpers.ShareFileDownloadHeadersConstructorProxy;
 import com.azure.storage.file.share.implementation.models.DeleteSnapshotsOptionType;
 import com.azure.storage.file.share.implementation.models.FileProperty;
+import com.azure.storage.file.share.implementation.models.FilesDownloadHeaders;
 import com.azure.storage.file.share.implementation.models.InternalShareFileItemProperties;
 import com.azure.storage.file.share.implementation.models.ServicesListSharesSegmentHeaders;
 import com.azure.storage.file.share.implementation.models.ShareItemInternal;
@@ -23,11 +23,7 @@ import com.azure.storage.file.share.models.ShareProperties;
 import com.azure.storage.file.share.models.ShareProtocols;
 import com.azure.storage.file.share.models.ShareSnapshotsDeleteOptionType;
 
-import java.io.IOException;
-
 public class ModelHelper {
-
-    private static final SerializerAdapter SERIALIZER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final ClientLogger LOGGER = new ClientLogger(ModelHelper.class);
 
     private static final long MAX_FILE_PUT_RANGE_BYTES = 4 * Constants.MB;
@@ -175,22 +171,18 @@ public class ModelHelper {
         if (headers == null) {
             return null;
         }
-        try {
-            return SERIALIZER.deserialize(headers, ServicesListSharesSegmentHeaders.class);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+
+        return new ServicesListSharesSegmentHeaders(headers);
     }
 
-    public static ShareFileDownloadHeaders transformFileDownloadHeaders(HttpHeaders headers) {
+    public static ShareFileDownloadHeaders transformFileDownloadHeaders(FilesDownloadHeaders headers,
+        HttpHeaders rawHeaders) {
         if (headers == null) {
             return null;
         }
-        try {
-            return SERIALIZER.deserialize(headers, ShareFileDownloadHeaders.class);
-        } catch (IOException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(e));
-        }
+
+        return ShareFileDownloadHeadersConstructorProxy.create(headers)
+            .setErrorCode(rawHeaders.getValue("x-ms-error-code"));
     }
 
     public static String getETag(HttpHeaders headers) {

@@ -24,6 +24,10 @@ public final class NetezzaLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private NetezzaLinkedServiceTypeProperties innerTypeProperties = new NetezzaLinkedServiceTypeProperties();
 
+    /** Creates an instance of NetezzaLinkedService class. */
+    public NetezzaLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Netezza linked service properties.
      *

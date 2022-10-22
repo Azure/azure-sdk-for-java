@@ -53,6 +53,10 @@ public final class AzureFirewallApplicationRule {
     @JsonProperty(value = "sourceIpGroups")
     private List<String> sourceIpGroups;
 
+    /** Creates an instance of AzureFirewallApplicationRule class. */
+    public AzureFirewallApplicationRule() {
+    }
+
     /**
      * Get the name property: Name of the application rule.
      *

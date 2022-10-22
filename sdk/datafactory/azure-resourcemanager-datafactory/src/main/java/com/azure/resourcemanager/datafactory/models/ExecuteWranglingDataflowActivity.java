@@ -30,6 +30,10 @@ public final class ExecuteWranglingDataflowActivity extends Activity {
     @JsonProperty(value = "policy")
     private ActivityPolicy policy;
 
+    /** Creates an instance of ExecuteWranglingDataflowActivity class. */
+    public ExecuteWranglingDataflowActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Execute power query activity properties.
      *

@@ -43,6 +43,10 @@ public final class VpnSiteLinkProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of VpnSiteLinkProperties class. */
+    public VpnSiteLinkProperties() {
+    }
+
     /**
      * Get the linkProperties property: The link provider properties.
      *

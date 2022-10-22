@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for NetworkConnections GetByResourceGroup. */
 public final class NetworkConnectionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/NetworkConnections_Get.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/NetworkConnections_Get.json
      */
     /**
      * Sample code: NetworkConnections_Get.

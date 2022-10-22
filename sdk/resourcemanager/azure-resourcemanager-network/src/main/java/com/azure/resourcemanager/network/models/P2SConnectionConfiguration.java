@@ -32,6 +32,10 @@ public final class P2SConnectionConfiguration extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of P2SConnectionConfiguration class. */
+    public P2SConnectionConfiguration() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the P2S connection configuration.
      *

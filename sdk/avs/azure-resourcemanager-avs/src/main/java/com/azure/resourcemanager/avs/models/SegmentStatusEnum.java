@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SegmentStatusEnum. */
+/** Segment status. */
 public final class SegmentStatusEnum extends ExpandableStringEnum<SegmentStatusEnum> {
     /** Static value SUCCESS for SegmentStatusEnum. */
     public static final SegmentStatusEnum SUCCESS = fromString("SUCCESS");
@@ -27,7 +27,11 @@ public final class SegmentStatusEnum extends ExpandableStringEnum<SegmentStatusE
         return fromString(name, SegmentStatusEnum.class);
     }
 
-    /** @return known SegmentStatusEnum values. */
+    /**
+     * Gets known SegmentStatusEnum values.
+     *
+     * @return known SegmentStatusEnum values.
+     */
     public static Collection<SegmentStatusEnum> values() {
         return values(SegmentStatusEnum.class);
     }

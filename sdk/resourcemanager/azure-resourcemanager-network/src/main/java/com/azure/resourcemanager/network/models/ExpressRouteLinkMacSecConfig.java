@@ -38,6 +38,10 @@ public final class ExpressRouteLinkMacSecConfig {
     @JsonProperty(value = "sciState")
     private ExpressRouteLinkMacSecSciState sciState;
 
+    /** Creates an instance of ExpressRouteLinkMacSecConfig class. */
+    public ExpressRouteLinkMacSecConfig() {
+    }
+
     /**
      * Get the cknSecretIdentifier property: Keyvault Secret Identifier URL containing Mac security CKN key.
      *
