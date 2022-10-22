@@ -7,9 +7,7 @@
     "AZURE_TEST_HTTP_CLIENTS": "netty",
     "TestGoals": "surefire:test",
     "VersionOverrides": [
-      "jackson_2.10",
       "jackson_2.9.4",
-      "gson_2.6",
       "gson_2.4"
     ],
     "AZURE_VERSION_OVERRIDE_TESTS": true,

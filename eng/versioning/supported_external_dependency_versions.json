@@ -1,4 +1,17 @@
 {
+  "jackson_2.9.4":
+  [
+    { "com.fasterxml.jackson.core:jackson-annotations": "2.9.4" },
+    { "com.fasterxml.jackson.core:jackson-annotations": "2.9.4" },
+    { "com.fasterxml.jackson.core:jackson-core": "2.9.4" },
+    { "com.fasterxml.jackson.core:jackson-databind": "2.9.4" },
+    { "com.fasterxml.jackson.dataformat:jackson-dataformat-avro": "2.9.4" },
+    { "com.fasterxml.jackson.dataformat:jackson-dataformat-xml": "2.9.4" },
+    { "com.fasterxml.jackson.datatype:jackson-datatype-jdk8": "2.9.4" },
+    { "com.fasterxml.jackson.datatype:jackson-datatype-jsr310": "2.9.4" },
+    { "com.fasterxml.jackson.module:jackson-module-parameter-names": "2.9.4" },
+    { "com.fasterxml.jackson.module:jackson-module-scala_2.12": "2.9.4" }
+  ],
   "jackson_2.10":
   [
     { "com.fasterxml.jackson.core:jackson-annotations": "2.10.0" },
@@ -37,6 +50,19 @@
     { "com.fasterxml.jackson.datatype:jackson-datatype-jsr310": "2.12.0" },
     { "com.fasterxml.jackson.module:jackson-module-parameter-names": "2.12.0" },
     { "com.fasterxml.jackson.module:jackson-module-scala_2.12": "2.12.0" }
+  ],
+  "gson_2.4":
+  [
+    { "com.fasterxml.jackson.core:jackson-annotations": "2.4" },
+    { "com.fasterxml.jackson.core:jackson-annotations": "2.4" },
+    { "com.fasterxml.jackson.core:jackson-core": "2.4" },
+    { "com.fasterxml.jackson.core:jackson-databind": "2.4" },
+    { "com.fasterxml.jackson.dataformat:jackson-dataformat-avro": "2.4" },
+    { "com.fasterxml.jackson.dataformat:jackson-dataformat-xml": "2.4" },
+    { "com.fasterxml.jackson.datatype:jackson-datatype-jdk8": "2.4" },
+    { "com.fasterxml.jackson.datatype:jackson-datatype-jsr310": "2.4" },
+    { "com.fasterxml.jackson.module:jackson-module-parameter-names": "2.4" },
+    { "com.fasterxml.jackson.module:jackson-module-scala_2.12": "2.4" }
   ],
   "reactor_2022":
   [
