@@ -49,6 +49,13 @@
     </javaModulesSurefireArgLine>
   </properties>
 
+  <developers>
+    <developer>
+      <id>microsoft</id>
+      <name>Microsoft</name>
+    </developer>
+  </developers>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
@@ -60,7 +67,7 @@
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
-      <version>2.9.0</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
+      <version>2.9.1</version> <!-- {x-version-update;com.google.code.gson:gson;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -96,12 +103,6 @@
     </dependency>
   </dependencies>
 
-  <developers>
-    <developer>
-      <id>microsoft</id>
-      <name>Microsoft</name>
-    </developer>
-  </developers>
   <build>
     <plugins>
 
@@ -128,8 +129,8 @@
         <configuration>
           <source>17</source>
           <target>17</target>
-          <testSource>1.5</testSource>
-          <testTarget>1.5</testTarget>
+          <testSource>1.8</testSource>
+          <testTarget>1.8</testTarget>
           <compilerArgs>
             <arg>-Xlint:deprecation</arg>
           </compilerArgs>
