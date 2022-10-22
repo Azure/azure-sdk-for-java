@@ -2354,31 +2354,7 @@ class BlobAPITest extends APISpec {
         false  | true
         false  | false
     }
-
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_12_02")
-    def "Copy access tier cold"() {
-        setup:
-        def copyDestBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient()
-        def copyOptions = new BlobBeginCopyOptions(bc.getBlobUrl())
-            .setTier(AccessTier.COLD)
-            .setPollInterval(getPollingDuration(1000))
-
-        when:
-        def poller = copyDestBlob.beginCopy(copyOptions)
-        def verifier = StepVerifier.create(poller.take(1))
-
-        then:
-        verifier.assertNext({
-            assert it.getValue() != null
-            assert it.getValue().getCopyId() != null
-            assert it.getValue().getCopySourceUrl() == bc.getBlobUrl()
-            assert it.getStatus() == LongRunningOperationStatus.IN_PROGRESS || it.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
-        }).verifyComplete()
-
-        // confirm the access tier is set as COLD
-        copyDestBlob.getProperties().block().getAccessTier() == AccessTier.COLD
-    }
-
+    
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2019_12_12")
     @Unroll
     def "Copy source AC"() {
