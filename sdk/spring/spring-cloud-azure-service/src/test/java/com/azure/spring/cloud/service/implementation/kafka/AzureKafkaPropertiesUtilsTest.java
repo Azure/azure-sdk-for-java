@@ -9,7 +9,9 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.*;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.Mapping.cloudType;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.Mapping.managedIdentityEnabled;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertAzurePropertiesToConfigMap;
@@ -87,6 +89,51 @@ class AzureKafkaPropertiesUtilsTest {
                 assertEquals(mapping.propertyKey() + ".test", customKafkaConfigs.get(mapping.propertyKey()));
             }
         });
+    }
+
+    @Test
+    void testCovertAzurePropertiesToJaasProperty() {
+        String jaasConfig = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;";
+        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
+        convertConfigMapToAzureProperties(buildKafkaSourceConfigsFromAzureProperties(), properties);
+        String converted = convertAzurePropertiesToJaasProperty(properties, jaasConfig);
+
+        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values())
+            .filter(mapping -> Objects.nonNull(mapping.getter().apply(properties)))
+            .forEach(mapping -> {
+                if (mapping == managedIdentityEnabled) {
+                    assertTrue(converted.contains(String.format(JAAS_KEY_VALUE_PATTERN, mapping.propertyKey(), "true")));
+                } else if (mapping == AzureKafkaPropertiesUtils.Mapping.cloudType) {
+                    assertTrue(converted.contains(String.format(JAAS_KEY_VALUE_PATTERN, mapping.propertyKey(), AzureProfileOptionsProvider.CloudType.AZURE_CHINA.name())));
+                } else {
+                    assertTrue(converted.contains(String.format(JAAS_KEY_VALUE_PATTERN, mapping.propertyKey(), mapping.propertyKey() + ".test")));
+                }
+            });
+        assertTrue(converted.startsWith("org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required "));
+        assertTrue(converted.endsWith(";"));
+    }
+
+    @Test
+    void testConvertJaasPropertyToAzureProperties() {
+        String jaasConfig = "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;";
+        AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
+        convertConfigMapToAzureProperties(buildKafkaSourceConfigsFromAzureProperties(), properties);
+        String converted = convertAzurePropertiesToJaasProperty(properties, jaasConfig);
+
+        convertJaasPropertyToAzureProperties(converted, properties);
+
+        Arrays.stream(AzureKafkaPropertiesUtils.Mapping.values())
+            .filter(mapping -> Objects.nonNull(mapping.getter().apply(properties)))
+            .forEach(mapping -> {
+                if (mapping == managedIdentityEnabled) {
+                    assertEquals(mapping.getter().apply(properties), "true");
+                } else if (mapping == AzureKafkaPropertiesUtils.Mapping.cloudType) {
+                    assertEquals(mapping.getter().apply(properties), AzureProfileOptionsProvider.CloudType.AZURE_CHINA.name());
+                } else {
+                    assertEquals(mapping.getter().apply(properties), mapping.propertyKey() + ".test");
+                }
+            });
+
     }
 
 }

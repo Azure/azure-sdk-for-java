@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.implementation.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils;
 import com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.apache.kafka.common.message.ApiVersionsRequestData;
@@ -24,6 +25,7 @@ import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUti
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS_KAFKA_OAUTH;
 import static com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier.VERSION;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertJaasPropertyToAzureProperties;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
@@ -38,8 +40,7 @@ public final class AzureKafkaConfigurationUtils {
     public static final Map<String, String> KAFKA_OAUTH_CONFIGS;
     public static final String SECURITY_PROTOCOL_CONFIG_SASL = SASL_SSL.name();
     public static final String SASL_MECHANISM_OAUTH = OAUTHBEARER_MECHANISM;
-    public static final String SASL_JAAS_CONFIG_OAUTH =
-        "org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule required;";
+    public static final String SASL_JAAS_CONFIG_OAUTH = AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX + ";";
     public static final String SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH =
         KafkaOAuth2AuthenticateCallbackHandler.class.getName();
 
@@ -56,7 +57,6 @@ public final class AzureKafkaConfigurationUtils {
         Map<String, String> configs = new HashMap<>();
         configs.put(SECURITY_PROTOCOL_CONFIG, SECURITY_PROTOCOL_CONFIG_SASL);
         configs.put(SASL_MECHANISM, SASL_MECHANISM_OAUTH);
-        configs.put(SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
         configs.put(SASL_LOGIN_CALLBACK_HANDLER_CLASS, SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
         KAFKA_OAUTH_CONFIGS = Collections.unmodifiableMap(configs);
     }
@@ -135,6 +135,11 @@ public final class AzureKafkaConfigurationUtils {
      */
     public static void configureOAuthProperties(Map<String, String> propertiesToConfigure) {
         propertiesToConfigure.putAll(AzureKafkaConfigurationUtils.KAFKA_OAUTH_CONFIGS);
+        if (!propertiesToConfigure.containsKey(SASL_JAAS_CONFIG)
+            || (propertiesToConfigure.get(SASL_JAAS_CONFIG) != null
+                && !propertiesToConfigure.get(SASL_JAAS_CONFIG).startsWith(AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX))) {
+            propertiesToConfigure.put(SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
+        }
     }
 
     /**
@@ -162,6 +167,7 @@ public final class AzureKafkaConfigurationUtils {
         copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), azurePasswordlessProperties.getProfile());
         copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), azurePasswordlessProperties.getCredential());
         convertConfigMapToAzureProperties(kafkaProperties, azurePasswordlessProperties);
+        convertJaasPropertyToAzureProperties((String) kafkaProperties.get(SASL_JAAS_CONFIG), azurePasswordlessProperties);
         return azurePasswordlessProperties;
     }
 }

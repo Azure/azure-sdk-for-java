@@ -6,15 +6,21 @@ import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import org.apache.kafka.common.security.oauthbearer.OAuthBearerLoginModule;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Store the constants for customized Azure properties with Kafka.
  */
 public final class AzureKafkaPropertiesUtils {
+    public static final String SASL_JAAS_CONFIG_OAUTH_PREFIX = OAuthBearerLoginModule.class.getName() + " required";
+
     private AzureKafkaPropertiesUtils() {
     }
 
@@ -24,6 +30,7 @@ public final class AzureKafkaPropertiesUtils {
     static final String CREDENTIAL_PREFIX = "azure.credential.";
     static final String PROFILE_PREFIX = "azure.profile.";
     static final String ENVIRONMENT_PREFIX = PROFILE_PREFIX + "environment.";
+    static final String JAAS_KEY_VALUE_PATTERN = " %s=\"%s\"";
 
     public static void convertConfigMapToAzureProperties(Map<String, ?> source,
                                                          AzurePasswordlessProperties target) {
@@ -37,6 +44,33 @@ public final class AzureKafkaPropertiesUtils {
         for (Mapping m : Mapping.values()) {
             PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> target.putIfAbsent(m.propertyKey, p));
         }
+    }
+
+    public static void convertJaasPropertyToAzureProperties(String source, AzurePasswordlessProperties target) {
+        if (source == null || !source.startsWith(SASL_JAAS_CONFIG_OAUTH_PREFIX) || !source.endsWith(";")) {
+            return;
+        }
+        Map<String, String> map = Arrays.stream(source.substring(0, source.length() - 1).split(" "))
+            .filter(str -> str.contains("="))
+            .map(str -> str.split("=", 2))
+            .collect(Collectors.toMap(s -> s[0], s -> {
+                if (s[1].length() > 2 && s[1].startsWith("\"") && s[1].endsWith("\"")) {
+                    return s[1].substring(1, s[1].length() - 1);
+                }
+                return null;
+            }));
+
+        for (Mapping m : Mapping.values()) {
+            PROPERTY_MAPPER.from(map.get(m.propertyKey)).to(v -> m.setter.accept(target, v));
+        }
+    }
+
+    public static String convertAzurePropertiesToJaasProperty(AzurePasswordlessProperties source, String target) {
+        StringBuilder builder = new StringBuilder(target.endsWith(";") ? target.substring(0, target.length() - 1) : target);
+        for (Mapping m : Mapping.values()) {
+            PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> builder.append(String.format(JAAS_KEY_VALUE_PATTERN, m.propertyKey, p)));
+        }
+        return builder.append(";").toString();
     }
 
     enum Mapping {
@@ -69,7 +103,8 @@ public final class AzureKafkaPropertiesUtils {
             p -> p.getCredential().getUsername(),
             (p, s) -> p.getCredential().setUsername(s)),
 
-        cloudType(PROFILE_PREFIX + "cloud-type", p -> p.getProfile().getCloudType().name(),
+        cloudType(PROFILE_PREFIX + "cloud-type",
+            p -> Optional.ofNullable(p.getProfile().getCloudType()).map(v -> v.name()).orElse(null),
             (p, s) -> p.getProfile().setCloudType(AzureProfileOptionsProvider.CloudType.fromString(s))),
 
         activeDirectoryEndpoint(ENVIRONMENT_PREFIX + "active-directory-endpoint",

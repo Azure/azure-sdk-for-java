@@ -24,6 +24,7 @@ import java.util.function.Function;
 
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
+import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 
 /**
  * {@link AuthenticateCallbackHandler} implementation for OAuth2 authentication with Azure Event Hubs.
@@ -51,6 +52,7 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
     @Override
     public void configure(Map<String, ?> configs, String mechanism, List<AppConfigurationEntry> jaasConfigEntries) {
         AzureKafkaPropertiesUtils.convertConfigMapToAzureProperties(configs, properties);
+        AzureKafkaPropertiesUtils.convertJaasPropertyToAzureProperties((String) configs.get(SASL_JAAS_CONFIG), properties);
         TokenRequestContext request = buildTokenRequestContext(configs);
         this.resolveToken = tokenCredential -> tokenCredential.getToken(request).map(AzureOAuthBearerToken::new);
         this.tokenCredentialResolver = new InternalCredentialResolver(externalTokenCredentialResolver, configs);

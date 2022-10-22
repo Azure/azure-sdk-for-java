@@ -11,12 +11,10 @@ import org.springframework.cloud.stream.binder.kafka.properties.KafkaBinderConfi
 
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.buildAzureProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.configureKafkaUserAgent;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.configureOAuthProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.logConfigureOAuthProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.needConfigureSaslOAuth;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.*;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertAzurePropertiesToConfigMap;
+import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.convertAzurePropertiesToJaasProperty;
+import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.springframework.cloud.stream.binder.kafka.provisioning.KafkaTopicProvisioner.normalalizeBootPropsWithBinder;
 
 /**
@@ -62,11 +60,12 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor implements BeanPostPro
         return bean;
     }
 
-    private void configureKafkaBinderProperties(Map<String, Object> mergedConfiguration, Map<String, String> sourceProperties) {
+    void configureKafkaBinderProperties(Map<String, Object> mergedConfiguration, Map<String, String> sourceProperties) {
+        configureOAuthProperties(sourceProperties);
         AzurePasswordlessProperties azurePasswordlessProperties =
             buildAzureProperties(mergedConfiguration, azureGlobalProperties);
-        convertAzurePropertiesToConfigMap(azurePasswordlessProperties, sourceProperties);
-        configureOAuthProperties(sourceProperties);
+        sourceProperties.put(SASL_JAAS_CONFIG,
+            convertAzurePropertiesToJaasProperty(azurePasswordlessProperties, SASL_JAAS_CONFIG_OAUTH));
         logConfigureOAuthProperties();
     }
 

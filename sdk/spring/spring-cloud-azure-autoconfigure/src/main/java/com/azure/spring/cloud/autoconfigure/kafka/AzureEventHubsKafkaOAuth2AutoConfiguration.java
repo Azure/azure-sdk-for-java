@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.kafka;
 import com.azure.core.credential.TokenCredential;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,12 +22,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.KAFKA_OAUTH_CONFIGS;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.buildAzureProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.configureKafkaUserAgent;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.logConfigureOAuthProperties;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.needConfigureSaslOAuth;
+import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaConfigurationUtils.*;
 import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
+import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Event Hubs Kafka support. Provide Azure Identity-based
@@ -78,10 +76,15 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
 
 
     private void configureOAuth2Properties(Map<String, Object> sourceKafkaProperties, Map<String, Object> updateConfigs) {
+        updateConfigs.putAll(KAFKA_OAUTH_CONFIGS);
+        if (!sourceKafkaProperties.containsKey(SASL_JAAS_CONFIG)
+                || (sourceKafkaProperties.get(SASL_JAAS_CONFIG) != null
+                && !((String) sourceKafkaProperties.get(SASL_JAAS_CONFIG)).startsWith(AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX))) {
+            updateConfigs.put(SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
+        }
         AzurePasswordlessProperties azurePasswordlessProperties = buildAzureProperties(sourceKafkaProperties,
                 azureGlobalProperties);
         updateConfigs.put(AZURE_TOKEN_CREDENTIAL, resolveSpringCloudAzureTokenCredential(azurePasswordlessProperties));
-        updateConfigs.putAll(KAFKA_OAUTH_CONFIGS);
         logConfigureOAuthProperties();
     }
 
