@@ -49,6 +49,10 @@ public final class HubVirtualNetworkConnectionProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of HubVirtualNetworkConnectionProperties class. */
+    public HubVirtualNetworkConnectionProperties() {
+    }
+
     /**
      * Get the remoteVirtualNetwork property: Reference to the remote virtual network.
      *

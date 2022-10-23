@@ -36,6 +36,10 @@ public final class SqlAlwaysEncryptedProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of SqlAlwaysEncryptedProperties class. */
+    public SqlAlwaysEncryptedProperties() {
+    }
+
     /**
      * Get the alwaysEncryptedAkvAuthType property: Sql always encrypted AKV authentication type. Type: string (or
      * Expression with resultType string).

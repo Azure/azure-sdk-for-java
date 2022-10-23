@@ -28,6 +28,10 @@ public final class NginxPrivateIpAddress {
     @JsonProperty(value = "subnetId")
     private String subnetId;
 
+    /** Creates an instance of NginxPrivateIpAddress class. */
+    public NginxPrivateIpAddress() {
+    }
+
     /**
      * Get the privateIpAddress property: The privateIPAddress property.
      *

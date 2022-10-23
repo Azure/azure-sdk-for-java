@@ -16,6 +16,10 @@ public final class GitHubAccessTokenResponseInner {
     @JsonProperty(value = "gitHubAccessToken")
     private String gitHubAccessToken;
 
+    /** Creates an instance of GitHubAccessTokenResponseInner class. */
+    public GitHubAccessTokenResponseInner() {
+    }
+
     /**
      * Get the gitHubAccessToken property: GitHub access token.
      *

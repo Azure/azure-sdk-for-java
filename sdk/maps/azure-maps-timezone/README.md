@@ -55,7 +55,7 @@ With above configuration, `azure` client can be authenticated by following code:
 DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 // Creates a client
-TimezoneClient client = new TimezoneClientBuilder()
+TimeZoneClient client = new TimeZoneClientBuilder()
     .credential(tokenCredential)
     .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
     .buildClient();
@@ -72,14 +72,14 @@ See [API design][design] for general introduction on design and key concepts on 
 ## Examples
 Get Timezone By Id
 ```java com.azure.maps.timezone.sync.get_timezone_by_id
-TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL);
+TimeZoneIdOptions options = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimeZoneOptions.ALL);
 client.getTimezoneById(options);
 ```
 
 Get Timezone By Coordinates
 ```java com.azure.maps.timezone.sync.get_timezone_by_coordinates
 GeoPosition cd = new GeoPosition(-122, 47.0);
-TimezoneCoordinateOptions op = new TimezoneCoordinateOptions(cd).setTimezoneOptions(TimezoneOptions.ALL);
+TimeZoneCoordinateOptions op = new TimeZoneCoordinateOptions(cd).setTimezoneOptions(TimeZoneOptions.ALL);
 client.getTimezoneByCoordinates(op);
 ```
 

@@ -47,6 +47,10 @@ public final class TypeConversionSettings {
     @JsonProperty(value = "culture")
     private Object culture;
 
+    /** Creates an instance of TypeConversionSettings class. */
+    public TypeConversionSettings() {
+    }
+
     /**
      * Get the allowDataTruncation property: Whether to allow data truncation when converting the data. Type: boolean
      * (or Expression with resultType boolean).

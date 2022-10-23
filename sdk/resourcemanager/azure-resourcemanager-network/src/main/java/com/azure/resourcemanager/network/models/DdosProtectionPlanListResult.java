@@ -24,6 +24,10 @@ public final class DdosProtectionPlanListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of DdosProtectionPlanListResult class. */
+    public DdosProtectionPlanListResult() {
+    }
+
     /**
      * Get the value property: A list of DDoS protection plans.
      *

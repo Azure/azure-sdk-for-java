@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.avs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The properties describing private cloud availability zone distribution. */
 @Fluent
 public final class AvailabilityProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailabilityProperties.class);
-
     /*
      * The availability strategy for the private cloud
      */
@@ -31,6 +27,10 @@ public final class AvailabilityProperties {
      */
     @JsonProperty(value = "secondaryZone")
     private Integer secondaryZone;
+
+    /** Creates an instance of AvailabilityProperties class. */
+    public AvailabilityProperties() {
+    }
 
     /**
      * Get the strategy property: The availability strategy for the private cloud.

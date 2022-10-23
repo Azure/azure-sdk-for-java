@@ -243,22 +243,6 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rerun(String resourceGroupName, String factoryName, String triggerName, String runId) {
-        rerunAsync(resourceGroupName, factoryName, triggerName, runId).block();
-    }
-
-    /**
-     * Rerun single trigger instance by runId.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param runId The pipeline run identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -269,6 +253,22 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     public Response<Void> rerunWithResponse(
         String resourceGroupName, String factoryName, String triggerName, String runId, Context context) {
         return rerunWithResponseAsync(resourceGroupName, factoryName, triggerName, runId, context).block();
+    }
+
+    /**
+     * Rerun single trigger instance by runId.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void rerun(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        rerunWithResponse(resourceGroupName, factoryName, triggerName, runId, Context.NONE);
     }
 
     /**
@@ -410,22 +410,6 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
      * @param runId The pipeline run identifier.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void cancel(String resourceGroupName, String factoryName, String triggerName, String runId) {
-        cancelAsync(resourceGroupName, factoryName, triggerName, runId).block();
-    }
-
-    /**
-     * Cancel a single trigger instance by runId.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param triggerName The trigger name.
-     * @param runId The pipeline run identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -436,6 +420,22 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     public Response<Void> cancelWithResponse(
         String resourceGroupName, String factoryName, String triggerName, String runId, Context context) {
         return cancelWithResponseAsync(resourceGroupName, factoryName, triggerName, runId, context).block();
+    }
+
+    /**
+     * Cancel a single trigger instance by runId.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param triggerName The trigger name.
+     * @param runId The pipeline run identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void cancel(String resourceGroupName, String factoryName, String triggerName, String runId) {
+        cancelWithResponse(resourceGroupName, factoryName, triggerName, runId, Context.NONE);
     }
 
     /**
@@ -572,23 +572,6 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the pipeline run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of trigger runs.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public TriggerRunsQueryResponseInner queryByFactory(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
-        return queryByFactoryAsync(resourceGroupName, factoryName, filterParameters).block();
-    }
-
-    /**
-     * Query trigger runs.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param factoryName The factory name.
-     * @param filterParameters Parameters to filter the pipeline run.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -599,5 +582,22 @@ public final class TriggerRunsClientImpl implements TriggerRunsClient {
     public Response<TriggerRunsQueryResponseInner> queryByFactoryWithResponse(
         String resourceGroupName, String factoryName, RunFilterParameters filterParameters, Context context) {
         return queryByFactoryWithResponseAsync(resourceGroupName, factoryName, filterParameters, context).block();
+    }
+
+    /**
+     * Query trigger runs.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param factoryName The factory name.
+     * @param filterParameters Parameters to filter the pipeline run.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a list of trigger runs.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public TriggerRunsQueryResponseInner queryByFactory(
+        String resourceGroupName, String factoryName, RunFilterParameters filterParameters) {
+        return queryByFactoryWithResponse(resourceGroupName, factoryName, filterParameters, Context.NONE).getValue();
     }
 }

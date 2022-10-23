@@ -270,6 +270,7 @@ class FileAPITest extends APISpec {
         fc.createWithResponse(permissions, umask, null, null, null, null, Context.NONE).getStatusCode() == 201
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with ACL"() {
         when:
         List<PathAccessControlEntry> pathAccessControlEntries = PathAccessControlEntry.parseList("user::rwx,group::r--,other::---,mask::rwx")
@@ -284,6 +285,7 @@ class FileAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with owner and group"() {
         when:
         def ownerName = namer.getRandomUuid()
@@ -374,6 +376,7 @@ class FileAPITest extends APISpec {
         PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with lease id"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -395,6 +398,7 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with lease duration"() {
         when:
         def leaseId = UUID.randomUUID().toString()
@@ -410,6 +414,7 @@ class FileAPITest extends APISpec {
         fileProps.getLeaseDuration() == LeaseDurationType.FIXED
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with time expires on"() {
         when:
         def options = new DataLakePathCreateOptions().setScheduleDeletionOptions(deletionOptions)
@@ -425,6 +430,7 @@ class FileAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create options with time to expire relative to now"() {
         when:
         def deletionOptions = new DataLakePathScheduleDeletionOptions(Duration.ofDays(6))
@@ -553,7 +559,7 @@ class FileAPITest extends APISpec {
             Context.NONE).getStatusCode() == 201
     }
 
-
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with ACL"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -569,6 +575,7 @@ class FileAPITest extends APISpec {
         acl.get(1) == pathAccessControlEntries.get(1) // testing if group is set the same
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with owner and group"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -664,6 +671,7 @@ class FileAPITest extends APISpec {
         PathPermissions.parseSymbolic("rwx-w----").toString() == acl.getPermissions().toString()
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with lease id"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -687,6 +695,7 @@ class FileAPITest extends APISpec {
         thrown(DataLakeStorageException)
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with lease duration"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -704,6 +713,7 @@ class FileAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with time expires on"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -721,6 +731,7 @@ class FileAPITest extends APISpec {
 
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_12_06")
     def "Create if not exists options with time to expire relative to now"() {
         when:
         fc = fsc.getFileClient(generatePathName())
@@ -2597,6 +2608,7 @@ class FileAPITest extends APISpec {
         os.toByteArray() == data.defaultBytes
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Append data flush"() {
         setup:
         def appendOptions = new DataLakeFileAppendOptions().setFlush(true)
@@ -2634,6 +2646,7 @@ class FileAPITest extends APISpec {
         Boolean.parseBoolean(headers.getValue("x-ms-request-server-encrypted"))
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     def "Append binary data flush"() {
         setup:
         def appendOptions = new DataLakeFileAppendOptions().setFlush(true)

@@ -24,7 +24,7 @@ public interface DatastoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of datastores.
+     * @return a paged list of datastores as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatastoreInner> list(String resourceGroupName, String privateCloudName, String clusterName);
@@ -39,11 +39,28 @@ public interface DatastoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a paged list of datastores.
+     * @return a paged list of datastores as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DatastoreInner> list(
         String resourceGroupName, String privateCloudName, String clusterName, Context context);
+
+    /**
+     * Get a datastore in a private cloud cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster in the private cloud.
+     * @param datastoreName Name of the datastore in the private cloud cluster.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a datastore in a private cloud cluster along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<DatastoreInner> getWithResponse(
+        String resourceGroupName, String privateCloudName, String clusterName, String datastoreName, Context context);
 
     /**
      * Get a datastore in a private cloud cluster.
@@ -61,23 +78,6 @@ public interface DatastoresClient {
     DatastoreInner get(String resourceGroupName, String privateCloudName, String clusterName, String datastoreName);
 
     /**
-     * Get a datastore in a private cloud cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param datastoreName Name of the datastore in the private cloud cluster.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datastore in a private cloud cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DatastoreInner> getWithResponse(
-        String resourceGroupName, String privateCloudName, String clusterName, String datastoreName, Context context);
-
-    /**
      * Create or update a datastore in a private cloud cluster.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
@@ -88,7 +88,7 @@ public interface DatastoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datastore resource.
+     * @return the {@link SyncPoller} for polling of a datastore resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreateOrUpdate(
@@ -110,7 +110,7 @@ public interface DatastoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a datastore resource.
+     * @return the {@link SyncPoller} for polling of a datastore resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DatastoreInner>, DatastoreInner> beginCreateOrUpdate(
@@ -175,7 +175,7 @@ public interface DatastoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -192,7 +192,7 @@ public interface DatastoresClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(

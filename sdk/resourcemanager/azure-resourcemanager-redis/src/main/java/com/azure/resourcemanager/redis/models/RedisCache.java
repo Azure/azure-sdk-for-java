@@ -564,7 +564,10 @@ public interface RedisCache
         V6("6"),
         /**
          * version 4.x.x
+         * @deprecated Because Redis version 4 is no longer supported by the open source community,
+         *             it will be retired from Azure Cache for Redis.
          */
+        @Deprecated
         V4("4");
 
         private final String value;
@@ -582,5 +585,4 @@ public interface RedisCache
             return value;
         }
     }
-
 }

@@ -29,6 +29,10 @@ public final class CrossTenantScopes {
     @JsonProperty(value = "subscriptions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> subscriptions;
 
+    /** Creates an instance of CrossTenantScopes class. */
+    public CrossTenantScopes() {
+    }
+
     /**
      * Get the tenantId property: Tenant ID.
      *

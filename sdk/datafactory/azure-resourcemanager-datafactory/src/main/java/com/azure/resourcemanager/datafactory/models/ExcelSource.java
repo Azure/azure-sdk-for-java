@@ -27,6 +27,10 @@ public final class ExcelSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of ExcelSource class. */
+    public ExcelSource() {
+    }
+
     /**
      * Get the storeSettings property: Excel store settings.
      *

@@ -22,6 +22,10 @@ public final class ManagedIdentityCredential extends Credential {
     @JsonProperty(value = "typeProperties")
     private ManagedIdentityTypeProperties innerTypeProperties;
 
+    /** Creates an instance of ManagedIdentityCredential class. */
+    public ManagedIdentityCredential() {
+    }
+
     /**
      * Get the innerTypeProperties property: Managed identity credential properties.
      *

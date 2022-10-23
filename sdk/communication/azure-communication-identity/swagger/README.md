@@ -24,8 +24,8 @@ autorest README.md --java --v4 --use=C:/work/autorest.java
 
 ### Code generation settings
 ``` yaml
-tag: package-2022-06
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/5b0818f55339dbff370a967e3f068e180c6ad5a1/specification/communication/data-plane/Identity/readme.md
+tag: package-2022-10
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a8c4340400f1ab1ae6a43b10e8d635ecb9c49a2a/specification/communication/data-plane/Identity/readme.md
 add-context-parameter: true
 custom-types: CommunicationTokenScope,TeamsUserExchangeTokenRequest
 custom-types-subpackage: models

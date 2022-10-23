@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.devcenter.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.models.HealthCheck;
@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 import java.util.List;
 
 /** Health Check details. */
-@Fluent
+@Immutable
 public final class HealthCheckStatusDetailsInner extends ProxyResource {
     /*
      * Health check status details properties.
@@ -26,6 +26,10 @@ public final class HealthCheckStatusDetailsInner extends ProxyResource {
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of HealthCheckStatusDetailsInner class. */
+    public HealthCheckStatusDetailsInner() {
+    }
 
     /**
      * Get the innerProperties property: Health check status details properties.

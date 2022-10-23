@@ -4,7 +4,6 @@
 package com.azure.identity;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.implementation.RegionalAuthority;
 import com.azure.identity.implementation.util.ValidationUtil;
 
 import java.io.InputStream;
@@ -119,19 +118,6 @@ public class ClientCertificateCredentialBuilder extends AadCredentialBuilderBase
      */
     public ClientCertificateCredentialBuilder sendCertificateChain(boolean sendCertificateChain) {
         this.identityClientOptions.setIncludeX5c(sendCertificateChain);
-        return this;
-    }
-
-    /**
-     * Specifies either the specific regional authority, or use {@link RegionalAuthority#AUTO_DISCOVER_REGION} to
-     * attempt to auto-detect the region. If unset, a non-regional authority will be used. This argument should be used
-     * only by applications deployed to Azure VMs.
-     *
-     * @param regionalAuthority the regional authority
-     * @return An updated instance of this builder with the regional authority configured.
-     */
-    ClientCertificateCredentialBuilder regionalAuthority(RegionalAuthority regionalAuthority) {
-        this.identityClientOptions.setRegionalAuthority(regionalAuthority);
         return this;
     }
 

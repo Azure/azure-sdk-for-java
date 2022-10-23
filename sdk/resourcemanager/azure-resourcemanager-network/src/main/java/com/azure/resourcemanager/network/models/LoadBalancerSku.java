@@ -22,6 +22,10 @@ public final class LoadBalancerSku {
     @JsonProperty(value = "tier")
     private LoadBalancerSkuTier tier;
 
+    /** Creates an instance of LoadBalancerSku class. */
+    public LoadBalancerSku() {
+    }
+
     /**
      * Get the name property: Name of a load balancer SKU.
      *

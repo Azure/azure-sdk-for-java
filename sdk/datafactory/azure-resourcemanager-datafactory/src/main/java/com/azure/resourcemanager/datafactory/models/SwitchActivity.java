@@ -26,6 +26,10 @@ public final class SwitchActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private SwitchActivityTypeProperties innerTypeProperties = new SwitchActivityTypeProperties();
 
+    /** Creates an instance of SwitchActivity class. */
+    public SwitchActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Switch activity properties.
      *

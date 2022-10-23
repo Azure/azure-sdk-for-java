@@ -24,6 +24,10 @@ public final class ApplicationSecurityGroupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ApplicationSecurityGroupListResult class. */
+    public ApplicationSecurityGroupListResult() {
+    }
+
     /**
      * Get the value property: A list of application security groups.
      *

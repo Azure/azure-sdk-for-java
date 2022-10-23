@@ -10,9 +10,13 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appcontainers.fluent.ManagedEnvironmentsClient;
+import com.azure.resourcemanager.appcontainers.fluent.models.EnvironmentAuthTokenInner;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
+import com.azure.resourcemanager.appcontainers.fluent.models.WorkloadProfileStatesInner;
+import com.azure.resourcemanager.appcontainers.models.EnvironmentAuthToken;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironment;
 import com.azure.resourcemanager.appcontainers.models.ManagedEnvironments;
+import com.azure.resourcemanager.appcontainers.models.WorkloadProfileStates;
 
 public final class ManagedEnvironmentsImpl implements ManagedEnvironments {
     private static final ClientLogger LOGGER = new ClientLogger(ManagedEnvironmentsImpl.class);
@@ -49,15 +53,6 @@ public final class ManagedEnvironmentsImpl implements ManagedEnvironments {
         return Utils.mapPage(inner, inner1 -> new ManagedEnvironmentImpl(inner1, this.manager()));
     }
 
-    public ManagedEnvironment getByResourceGroup(String resourceGroupName, String environmentName) {
-        ManagedEnvironmentInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, environmentName);
-        if (inner != null) {
-            return new ManagedEnvironmentImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ManagedEnvironment> getByResourceGroupWithResponse(
         String resourceGroupName, String environmentName, Context context) {
         Response<ManagedEnvironmentInner> inner =
@@ -68,6 +63,15 @@ public final class ManagedEnvironmentsImpl implements ManagedEnvironments {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new ManagedEnvironmentImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public ManagedEnvironment getByResourceGroup(String resourceGroupName, String environmentName) {
+        ManagedEnvironmentInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, environmentName);
+        if (inner != null) {
+            return new ManagedEnvironmentImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -91,6 +95,44 @@ public final class ManagedEnvironmentsImpl implements ManagedEnvironments {
         ManagedEnvironmentInner environmentEnvelope,
         Context context) {
         this.serviceClient().update(resourceGroupName, environmentName, environmentEnvelope, context);
+    }
+
+    public Response<EnvironmentAuthToken> getAuthTokenWithResponse(
+        String resourceGroupName, String environmentName, Context context) {
+        Response<EnvironmentAuthTokenInner> inner =
+            this.serviceClient().getAuthTokenWithResponse(resourceGroupName, environmentName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new EnvironmentAuthTokenImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public EnvironmentAuthToken getAuthToken(String resourceGroupName, String environmentName) {
+        EnvironmentAuthTokenInner inner = this.serviceClient().getAuthToken(resourceGroupName, environmentName);
+        if (inner != null) {
+            return new EnvironmentAuthTokenImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PagedIterable<WorkloadProfileStates> listWorkloadProfileStates(
+        String resourceGroupName, String environmentName) {
+        PagedIterable<WorkloadProfileStatesInner> inner =
+            this.serviceClient().listWorkloadProfileStates(resourceGroupName, environmentName);
+        return Utils.mapPage(inner, inner1 -> new WorkloadProfileStatesImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<WorkloadProfileStates> listWorkloadProfileStates(
+        String resourceGroupName, String environmentName, Context context) {
+        PagedIterable<WorkloadProfileStatesInner> inner =
+            this.serviceClient().listWorkloadProfileStates(resourceGroupName, environmentName, context);
+        return Utils.mapPage(inner, inner1 -> new WorkloadProfileStatesImpl(inner1, this.manager()));
     }
 
     public ManagedEnvironment getById(String id) {

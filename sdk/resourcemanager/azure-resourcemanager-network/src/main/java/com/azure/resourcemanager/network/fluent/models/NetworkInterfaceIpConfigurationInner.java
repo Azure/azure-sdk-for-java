@@ -41,6 +41,10 @@ public final class NetworkInterfaceIpConfigurationInner extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of NetworkInterfaceIpConfigurationInner class. */
+    public NetworkInterfaceIpConfigurationInner() {
+    }
+
     /**
      * Get the innerProperties property: Network interface IP configuration properties.
      *

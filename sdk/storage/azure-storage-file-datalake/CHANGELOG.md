@@ -1,6 +1,6 @@
 # Release History
 
-## 12.13.0-beta.2 (Unreleased)
+## 12.14.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,22 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.13.0 (2022-10-11)
+
+### Features Added
+- Added support for 2021-10-04 service version.
+- Added support for flush parameter to `DataLakeFileClient.appendWithResponse()`
+- Added support for encryption scopes.
+- Added support for encryption scope SAS.
+- Added new method `DataLakeFileSystemClient.exists()` to determine whether file system exists.
+- Added `DataLakeServiceClientBuilder.connectionString()` to allow connection string to be set on the client builder.
+- Added `DataLakeFileClient.uploadFromFileWithResponse()` which returns a response of `PathItem` upon completion.
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+- Upgraded `azure-storage-blob` from `12.19.1` to version `12.20.0`.
 
 ## 12.12.1 (2022-09-12)
 

@@ -416,15 +416,6 @@ public interface NetworkConnection {
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
      * health check details.
      *
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void runHealthChecks();
-
-    /**
-     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
-     * health check details.
-     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -432,4 +423,13 @@ public interface NetworkConnection {
      * @return the {@link Response}.
      */
     Response<Void> runHealthChecksWithResponse(Context context);
+
+    /**
+     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
+     * health check details.
+     *
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void runHealthChecks();
 }

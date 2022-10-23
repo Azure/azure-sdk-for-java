@@ -71,6 +71,10 @@ public class ConnectionMonitorParameters {
     @JsonProperty(value = "notes")
     private String notes;
 
+    /** Creates an instance of ConnectionMonitorParameters class. */
+    public ConnectionMonitorParameters() {
+    }
+
     /**
      * Get the source property: Describes the source of connection monitor.
      *

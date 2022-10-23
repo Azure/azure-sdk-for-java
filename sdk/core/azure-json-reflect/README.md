@@ -1,50 +1,64 @@
-# Azure Json Reflect
-***
-Azure Json Reflect is intended to remove any hard dependencies on Jackson and Gson.
-This library uses reflection to generate Json readers and writers at runtime. 
-This requires a working version of Jackson or Gson on the class path. 
+# Azure Json Reflect shared library for Java
 
-## Dependencies
-***
-- Azure.Json (Azure sdk dependent)
+Azure Json Reflect provides implementations of `azure-json` using reflection.
+It uses Jackson and Gson but has no dependencies on these libraries.
+To use Azure Json Reflect a compatible version of Jackson or Gson must be present on the classpath.
 
 ## Getting started
-***
+
+### Prerequisites
+
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
 
 ### Supported versions
 
 #### Jackson
+- Versions 2.9.4 and newer
 
 #### Gson
+- Versions 2.4 and newer
 
-## Key Concepts
-***
-This package searches the relative class path for a version of Jackson or Gson.
-If it finds a valid version, then it uses reflection to get the constructor and 
-any required methods for the Json reader or writer to work. It then emulates the behavior 
-of an actual Jackson/Gson JsonReader/Writer.
+## Key concepts
+
+See `azure-json` for more key concepts.
+
+This package searches the relative classpath for Jackson or Gson.
+It will then search for all the methods that are required for the `JsonReader` and `JsonWriter` implementations.
+These implementations provide abstractions of the JSON libraries.
 
 ### Entry point
-The entry point to the library is the JsonFactoryBuilder. 
-Use JsonFactoryBuilder.Build to get a JsonFactory. This factory will be either a 
-JacksonJsonFactory, or a GsonJsonFactory depending on what is found on the class path. 
-NOTE: Jackson has priority over Gson - it checks for Jackson before Gson. 
+Use `JsonFactory.getInstance()`, `JsonFactory.getJacksonInstance()`, or `JsonFactory.getGsonInstance()` to get a `JsonFactory`.
+`JsonFactory` contains the methods:
+- `getJsonReader(byte[] bytes, JsonOptions options)`
+- `getJsonReader(String string, JsonOptions options)`
+- `getJsonReader(InputStream stream, JsonOptions options)`
+- `getJsonReader(Reader reader, JsonOptions options)`
+- `getJsonWriter(OutputStream stream, JsonOptions options)`
+- `getJsonWriter(Writer writer, JsonOptions options)`
 
-You can also access the library via the Gson/JacksonJsonFactory. However, this requires 
-`Package jsonPackage` which is the Jackson/Gson package on the relative class path. Therefore, 
-it is recommended that you use the JsonFactoryBuilder as the entry point.
-
-
+These methods return implementations of `JsonReader` or `JsonWriter`.
 
 ## Examples
-***
 
+See `azure-json` for examples.
+
+## Next steps
+
+Get started with Azure libraries that are [built using Azure Core](https://azure.github.io/azure-sdk/releases/latest/#java).
+
+## Troubleshooting
+
+If you encounter any bugs, please file issues via [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
+or checkout [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
 
 ## Contributing
-***
+
 For details on contributing to this repository, see the <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/CONTRIBUTING.md"> contributing guide</a>.
 1. Fork it
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some features`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new pull Request
+
+<!-- links -->
+[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable

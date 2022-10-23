@@ -24,6 +24,10 @@ public final class JiraLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private JiraLinkedServiceTypeProperties innerTypeProperties = new JiraLinkedServiceTypeProperties();
 
+    /** Creates an instance of JiraLinkedService class. */
+    public JiraLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Jira Service linked service properties.
      *

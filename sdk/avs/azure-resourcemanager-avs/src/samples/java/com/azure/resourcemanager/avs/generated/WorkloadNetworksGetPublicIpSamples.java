@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkloadNetworks GetPublicIp. */
 public final class WorkloadNetworksGetPublicIpSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_GetPublicIPs.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_GetPublicIPs.json
      */
     /**
      * Sample code: WorkloadNetworks_GetPublicIP.
