@@ -24,7 +24,7 @@ If it finds a valid version, then it uses reflection to get the constructor and
 any required methods for the Json reader or writer to work. It then emulates the behavior 
 of an actual Jackson/Gson JsonReader/Writer.
 
-#### Entry point
+### Entry point
 The entry point to the library is the JsonFactoryBuilder. 
 Use JsonFactoryBuilder.Build to get a JsonFactory. This factory will be either a 
 JacksonJsonFactory, or a GsonJsonFactory depending on what is found on the class path. 
