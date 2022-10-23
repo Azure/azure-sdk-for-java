@@ -146,35 +146,11 @@ class JacksonJsonWriter extends JsonWriter {
     private final Object jacksonGenerator;
     JsonWriteContext context = JsonWriteContext.ROOT;
 
-    /**
-     * Creates a {@link DefaultJsonWriter} that writes the given {@link OutputStream}.
-     * <p>
-     * The passed {@link OutputStream} won't be closed when {@link #close()} is called as the {@link DefaultJsonWriter}
-     * isn't the owner of the stream.
-     *
-     * @param json The {@link OutputStream} that will be written.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
-     * @return An instance of {@link DefaultJsonWriter}.
-     * @throws NullPointerException If {@code json} is null.
-     * @throws IOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the {@link OutputStream}.
-     */
     static JsonWriter toStream(OutputStream json, JsonOptions options) throws IOException {
         Objects.requireNonNull(json, "'json' cannot be null.");
         return new JacksonJsonWriter(new OutputStreamWriter(json, StandardCharsets.UTF_8), options);
     }
 
-    /**
-     * Creates a {@link DefaultJsonWriter} that writes the given {@link Writer}.
-     * <p>
-     * The passed {@link Writer} won't be closed when {@link #close()} is called as the {@link DefaultJsonWriter} isn't
-     * the owner of the stream.
-     *
-     * @param json The {@link Writer} that will be written.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
-     * @return An instance of {@link DefaultJsonWriter}.
-     * @throws NullPointerException If {@code json} is null.
-     * @throws IOException If a {@link DefaultJsonWriter} wasn't able to be constructed from the {@link Writer}.
-     */
     static JsonWriter toWriter(Writer json, JsonOptions options) throws IOException {
         Objects.requireNonNull(json, "'json' cannot be null.");
         return new JacksonJsonWriter(json, options);
