@@ -22,11 +22,11 @@ To use Azure Json Reflect a compatible version of Jackson or Gson must be presen
 
 See `azure-json` for more key concepts.
 
-This package searches the relative class path for Jackson or Gson.
+This package searches the relative classpath for Jackson or Gson.
 It will then search for all the methods that are required for the `JsonReader` and `JsonWriter` implementations.
 These implementations provide abstractions of the JSON libraries.
 
-#### Entry point
+### Entry point
 Use `JsonFactory.getInstance()`, `JsonFactory.getJacksonInstance()`, or `JsonFactory.getGsonInstance()` to get a `JsonFactory`.
 `JsonFactory` contains the methods:
 - `getJsonReader(byte[] bytes, JsonOptions options)`
