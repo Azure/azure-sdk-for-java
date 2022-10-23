@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
 import java.nio.charset.StandardCharsets;
@@ -20,8 +21,9 @@ import static java.lang.invoke.MethodType.methodType;
 import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 
 class JacksonJsonWriter extends JsonWriter {
-    private static final Class JACKSON_FEATURE_ENUM;
-    private static final Object JSON_JSON_FACTORY;
+    private static final Object ALLOW_NAN_MAPPED;
+    private static final Object JSON_FACTORY;
+
     private static final JsonFactoryCreateJsonGenerator JSON_FACTORY_CREATE_JSON_GENERATOR;
     private static final JsonGeneratorWriteRawValue JSON_GENERATOR_WRITE_RAW_VALUE;
     private static final JsonGeneratorFlush JSON_GENERATOR_FLUSH;
@@ -45,9 +47,9 @@ class JacksonJsonWriter extends JsonWriter {
 
     static{
         MethodHandles.Lookup lookup = MethodHandles.lookup();
-        Object jsonFactory = null;
 
-        Class jacksonFeatureEnum = null;
+        Object allowNaNMapped = null;
+        Object jsonFactory = null;
 
         JsonFactoryCreateJsonGenerator jsonFactoryCreateJsonGenerator = null;
         JsonGeneratorWriteRawValue jsonGeneratorWriteRawValue = null;
@@ -74,7 +76,12 @@ class JacksonJsonWriter extends JsonWriter {
             Class<?> jacksonJsonFactoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
             Class<?> jacksonJsonGeneratorClass = Class.forName("com.fasterxml.jackson.core.JsonGenerator");
 
-            jacksonFeatureEnum = Arrays.stream(jacksonJsonGeneratorClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
+            // Get JsonGenerator.Feature enum value for allowing non-numeric numbers
+            Class<?> jsonGeneratorFeature = Arrays.stream(jacksonJsonGeneratorClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
+            Class<?> jsonWriteFeature = Class.forName("com.fasterxml.jackson.core.json.JsonWriteFeature");
+            MethodHandle jsonWriteFeatureMappedFeature = lookup.findVirtual(jsonWriteFeature, "mappedFeature", methodType(jsonGeneratorFeature));
+            MethodHandle jsonWriteFeatureValueOf = lookup.findStatic(jsonWriteFeature, "valueOf", methodType(jsonWriteFeature, String.class));
+            allowNaNMapped = jsonWriteFeatureMappedFeature.invoke(jsonWriteFeatureValueOf.invoke("WRITE_NAN_AS_STRINGS"));
 
             jsonFactory = lookup.findConstructor(jacksonJsonFactoryClass, methodType(void.class)).invoke();
 
@@ -99,7 +106,7 @@ class JacksonJsonWriter extends JsonWriter {
             jsonGeneratorWriteInt = createMetaFactory("writeNumber", jacksonJsonGeneratorClass, methodType(void.class, int.class), JsonGeneratorWriteInt.class, methodType(void.class, Object.class, int.class), lookup);
             jsonGeneratorWriteLong = createMetaFactory("writeNumber", jacksonJsonGeneratorClass, methodType(void.class, long.class), JsonGeneratorWriteLong.class, methodType(void.class, Object.class, long.class), lookup);
             jsonGeneratorWriteString = createMetaFactory("writeString", jacksonJsonGeneratorClass, voidStringMt, JsonGeneratorWriteString.class, methodType(void.class, Object.class, String.class), lookup);
-            jsonGeneratorConfigure = createMetaFactory("configure", jacksonJsonGeneratorClass, methodType(jacksonJsonGeneratorClass, jacksonFeatureEnum, boolean.class), JsonGeneratorConfigure.class, methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
+            jsonGeneratorConfigure = createMetaFactory("configure", jacksonJsonGeneratorClass, methodType(jacksonJsonGeneratorClass, jsonGeneratorFeature, boolean.class), JsonGeneratorConfigure.class, methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
 
             initialized = true;
         }
@@ -111,8 +118,9 @@ class JacksonJsonWriter extends JsonWriter {
             }
         }
 
-        JACKSON_FEATURE_ENUM = jacksonFeatureEnum;
-        JSON_JSON_FACTORY = jsonFactory;
+        ALLOW_NAN_MAPPED = allowNaNMapped;
+        JSON_FACTORY = jsonFactory;
+
         JSON_FACTORY_CREATE_JSON_GENERATOR = jsonFactoryCreateJsonGenerator;
         JSON_GENERATOR_WRITE_RAW_VALUE = jsonGeneratorWriteRawValue;
         JSON_GENERATOR_FLUSH = jsonGeneratorFlush;
@@ -177,10 +185,9 @@ class JacksonJsonWriter extends JsonWriter {
             throw new IllegalStateException("No compatible version of Jackson is present on the classpath.");
         }
 
-        jacksonGenerator = JSON_FACTORY_CREATE_JSON_GENERATOR.createGenerator(JSON_JSON_FACTORY, writer);
+        jacksonGenerator = JSON_FACTORY_CREATE_JSON_GENERATOR.createGenerator(JSON_FACTORY, writer);
         // Configure Jackson to support non-numeric numbers
-        JSON_GENERATOR_CONFIGURE.configure(jacksonGenerator, Enum.valueOf(JACKSON_FEATURE_ENUM,
-            "QUOTE_NON_NUMERIC_NUMBERS"), options.isNonNumericNumbersSupported());
+        JSON_GENERATOR_CONFIGURE.configure(jacksonGenerator, ALLOW_NAN_MAPPED, options.isNonNumericNumbersSupported());
     }
 
     @Override

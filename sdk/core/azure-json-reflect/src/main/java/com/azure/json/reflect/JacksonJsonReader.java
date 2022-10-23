@@ -70,17 +70,17 @@ class JacksonJsonReader extends JsonReader {
 
             jacksonJsonToken = Class.forName("com.fasterxml.jackson.core.JsonToken");
 
-            // Get JsonParserFeature enum value for allowing non-numeric numbers
-            Class<?> JsonParserFeature = Arrays.stream(jacksonJsonParserClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
+            // Get JsonParser.Feature enum value for allowing non-numeric numbers
+            Class<?> jsonParserFeature = Arrays.stream(jacksonJsonParserClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
             Class<?> jsonReadFeature = Class.forName("com.fasterxml.jackson.core.json.JsonReadFeature");
-            MethodHandle jsonReadFeatureMappedFeature = lookup.findVirtual(jsonReadFeature, "mappedFeature", methodType(JsonParserFeature));
+            MethodHandle jsonReadFeatureMappedFeature = lookup.findVirtual(jsonReadFeature, "mappedFeature", methodType(jsonParserFeature));
             MethodHandle jsonReadFeatureValueOf = lookup.findStatic(jsonReadFeature, "valueOf", methodType(jsonReadFeature, String.class));
             allowNaNMapped = jsonReadFeatureMappedFeature.invoke(jsonReadFeatureValueOf.invoke("ALLOW_NON_NUMERIC_NUMBERS"));
 
             jsonFactory = lookup.findConstructor(jacksonJsonFactoryClass, methodType(void.class)).invoke();
 
             jsonFactoryCreateJsonParser = createMetaFactory("createParser", jacksonJsonFactoryClass, methodType(jacksonJsonParserClass, Reader.class), JsonFactoryCreateJsonParser.class, methodType(Object.class, Object.class, Reader.class), lookup);
-            jsonParserConfigure = createMetaFactory("configure", jacksonJsonParserClass, methodType(jacksonJsonParserClass, JsonParserFeature, boolean.class), JsonParserConfigure.class, methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
+            jsonParserConfigure = createMetaFactory("configure", jacksonJsonParserClass, methodType(jacksonJsonParserClass, jsonParserFeature, boolean.class), JsonParserConfigure.class, methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
             jsonParserClose = createMetaFactory("close", jacksonJsonParserClass, methodType(void.class), JsonParserClose.class, methodType(void.class, Object.class), lookup);
             jsonParserSkipChildren = createMetaFactory("skipChildren", jacksonJsonParserClass, methodType(jacksonJsonParserClass), JsonParserSkipChildren.class, methodType(Object.class, Object.class), lookup);
             jsonParserNextToken = createMetaFactory("nextToken", jacksonJsonParserClass, methodType(jacksonJsonToken), JsonParserNextToken.class, methodType(Object.class, Object.class), lookup);
