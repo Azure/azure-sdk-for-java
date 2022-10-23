@@ -236,6 +236,27 @@ extends:
                     groupId: com.azure
                     safeName: azurecoreserializerjsonjackson
                     releaseInBatch: ${{ parameters.release_azurecoreserializerjsonjackson }}
+      -   stage: AzureJsonReflectVersionSupport
+          displayName: 'azure-json-reflect Version Support'
+          dependsOn: [ ]
+          jobs:
+              -   template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
+                  parameters:
+                      JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
+                      MatrixConfigs:
+                          -   Name: azure_json_reflect_version_support
+                              Path: sdk/core/azure-json-reflect-version-support-matrix.json
+                              Selection: all
+                              GenerateVMJobs: true
+                      AdditionalParameters:
+                          ServiceDirectory: core
+
+
+                          Artifacts:
+                              -   name: azure-json-reflect
+                                  groupId: com.azure
+                                  safeName: azurejsonreflect
+
     LiveTestStages:
       - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
         parameters:
