@@ -22,6 +22,10 @@ public final class Flowlet extends DataFlow {
     @JsonProperty(value = "typeProperties")
     private FlowletTypeProperties innerTypeProperties;
 
+    /** Creates an instance of Flowlet class. */
+    public Flowlet() {
+    }
+
     /**
      * Get the innerTypeProperties property: Flowlet type properties.
      *

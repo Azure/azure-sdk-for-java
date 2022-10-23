@@ -55,6 +55,9 @@ public final class UserDelegationKey {
     @JsonProperty(value = "Value", required = true)
     private String value;
 
+    /** Creates an instance of UserDelegationKey class. */
+    public UserDelegationKey() {}
+
     /**
      * Get the signedObjectId property: The Azure Active Directory object ID in GUID format.
      *

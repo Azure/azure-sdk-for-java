@@ -6,6 +6,7 @@ package com.azure.resourcemanager.devcenter.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.models.ManagedServiceIdentity;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
@@ -24,6 +25,16 @@ public final class DevCenterInner extends Resource {
      */
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /** Creates an instance of DevCenterInner class. */
+    public DevCenterInner() {
+    }
 
     /**
      * Get the innerProperties property: DevCenter properties.
@@ -52,6 +63,15 @@ public final class DevCenterInner extends Resource {
     public DevCenterInner withIdentity(ManagedServiceIdentity identity) {
         this.identity = identity;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /** {@inheritDoc} */

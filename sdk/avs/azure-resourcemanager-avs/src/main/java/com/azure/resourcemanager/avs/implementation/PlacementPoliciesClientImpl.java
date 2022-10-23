@@ -30,7 +30,6 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.avs.fluent.PlacementPoliciesClient;
@@ -43,8 +42,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PlacementPoliciesClient. */
 public final class PlacementPoliciesClientImpl implements PlacementPoliciesClient {
-    private final ClientLogger logger = new ClientLogger(PlacementPoliciesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PlacementPoliciesService service;
 
@@ -175,7 +172,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents list of placement policies.
+     * @return represents list of placement policies along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PlacementPolicyInner>> listSinglePageAsync(
@@ -239,7 +237,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents list of placement policies.
+     * @return represents list of placement policies along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PlacementPolicyInner>> listSinglePageAsync(
@@ -299,7 +298,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents list of placement policies.
+     * @return represents list of placement policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PlacementPolicyInner> listAsync(
@@ -319,7 +318,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents list of placement policies.
+     * @return represents list of placement policies as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<PlacementPolicyInner> listAsync(
@@ -338,7 +337,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents list of placement policies.
+     * @return represents list of placement policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlacementPolicyInner> list(
@@ -356,7 +355,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents list of placement policies.
+     * @return represents list of placement policies as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PlacementPolicyInner> list(
@@ -374,7 +373,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a placement policy by name in a private cloud cluster.
+     * @return a placement policy by name in a private cloud cluster along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PlacementPolicyInner>> getWithResponseAsync(
@@ -435,7 +435,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a placement policy by name in a private cloud cluster.
+     * @return a placement policy by name in a private cloud cluster along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PlacementPolicyInner>> getWithResponseAsync(
@@ -496,20 +497,37 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a placement policy by name in a private cloud cluster.
+     * @return a placement policy by name in a private cloud cluster on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PlacementPolicyInner> getAsync(
         String resourceGroupName, String privateCloudName, String clusterName, String placementPolicyName) {
         return getWithResponseAsync(resourceGroupName, privateCloudName, clusterName, placementPolicyName)
-            .flatMap(
-                (Response<PlacementPolicyInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get a placement policy by name in a private cloud cluster.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param privateCloudName Name of the private cloud.
+     * @param clusterName Name of the cluster in the private cloud.
+     * @param placementPolicyName Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a placement policy by name in a private cloud cluster along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PlacementPolicyInner> getWithResponse(
+        String resourceGroupName,
+        String privateCloudName,
+        String clusterName,
+        String placementPolicyName,
+        Context context) {
+        return getWithResponseAsync(resourceGroupName, privateCloudName, clusterName, placementPolicyName, context)
+            .block();
     }
 
     /**
@@ -527,31 +545,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PlacementPolicyInner get(
         String resourceGroupName, String privateCloudName, String clusterName, String placementPolicyName) {
-        return getAsync(resourceGroupName, privateCloudName, clusterName, placementPolicyName).block();
-    }
-
-    /**
-     * Get a placement policy by name in a private cloud cluster.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param privateCloudName Name of the private cloud.
-     * @param clusterName Name of the cluster in the private cloud.
-     * @param placementPolicyName Name of the VMware vSphere Distributed Resource Scheduler (DRS) placement policy.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a placement policy by name in a private cloud cluster.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PlacementPolicyInner> getWithResponse(
-        String resourceGroupName,
-        String privateCloudName,
-        String clusterName,
-        String placementPolicyName,
-        Context context) {
-        return getWithResponseAsync(resourceGroupName, privateCloudName, clusterName, placementPolicyName, context)
-            .block();
+        return getWithResponse(resourceGroupName, privateCloudName, clusterName, placementPolicyName, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -565,7 +560,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -638,7 +634,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
@@ -708,7 +705,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return the {@link PollerFlux} for polling of a vSphere Distributed Resource Scheduler (DRS) placement policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PlacementPolicyInner>, PlacementPolicyInner> beginCreateOrUpdateAsync(
@@ -727,7 +724,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
                 this.client.getHttpPipeline(),
                 PlacementPolicyInner.class,
                 PlacementPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -742,7 +739,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return the {@link PollerFlux} for polling of a vSphere Distributed Resource Scheduler (DRS) placement policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PlacementPolicyInner>, PlacementPolicyInner> beginCreateOrUpdateAsync(
@@ -773,7 +770,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return the {@link SyncPoller} for polling of a vSphere Distributed Resource Scheduler (DRS) placement policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PlacementPolicyInner>, PlacementPolicyInner> beginCreateOrUpdate(
@@ -799,7 +796,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return the {@link SyncPoller} for polling of a vSphere Distributed Resource Scheduler (DRS) placement policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PlacementPolicyInner>, PlacementPolicyInner> beginCreateOrUpdate(
@@ -825,7 +822,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PlacementPolicyInner> createOrUpdateAsync(
@@ -852,7 +849,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PlacementPolicyInner> createOrUpdateAsync(
@@ -931,7 +928,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1004,7 +1002,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
@@ -1074,7 +1073,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return the {@link PollerFlux} for polling of a vSphere Distributed Resource Scheduler (DRS) placement policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PlacementPolicyInner>, PlacementPolicyInner> beginUpdateAsync(
@@ -1093,7 +1092,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
                 this.client.getHttpPipeline(),
                 PlacementPolicyInner.class,
                 PlacementPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1108,7 +1107,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return the {@link PollerFlux} for polling of a vSphere Distributed Resource Scheduler (DRS) placement policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PlacementPolicyInner>, PlacementPolicyInner> beginUpdateAsync(
@@ -1139,7 +1138,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return the {@link SyncPoller} for polling of a vSphere Distributed Resource Scheduler (DRS) placement policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PlacementPolicyInner>, PlacementPolicyInner> beginUpdate(
@@ -1165,7 +1164,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return the {@link SyncPoller} for polling of a vSphere Distributed Resource Scheduler (DRS) placement policy.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PlacementPolicyInner>, PlacementPolicyInner> beginUpdate(
@@ -1191,7 +1190,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PlacementPolicyInner> updateAsync(
@@ -1218,7 +1217,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy.
+     * @return a vSphere Distributed Resource Scheduler (DRS) placement policy on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PlacementPolicyInner> updateAsync(
@@ -1295,7 +1294,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1356,7 +1355,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
@@ -1417,7 +1416,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1426,7 +1425,8 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
             deleteWithResponseAsync(resourceGroupName, privateCloudName, clusterName, placementPolicyName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(
+                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1440,7 +1440,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
@@ -1467,7 +1467,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1486,7 +1486,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
@@ -1509,7 +1509,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1530,7 +1530,7 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(
@@ -1586,11 +1586,13 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents list of placement policies.
+     * @return represents list of placement policies along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PlacementPolicyInner>> listNextSinglePageAsync(String nextLink) {
@@ -1621,12 +1623,14 @@ public final class PlacementPoliciesClientImpl implements PlacementPoliciesClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents list of placement policies.
+     * @return represents list of placement policies along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<PlacementPolicyInner>> listNextSinglePageAsync(String nextLink, Context context) {

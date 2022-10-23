@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SourceControlOperationState. */
+/** Current provisioning State of the operation. */
 public final class SourceControlOperationState extends ExpandableStringEnum<SourceControlOperationState> {
     /** Static value InProgress for SourceControlOperationState. */
     public static final SourceControlOperationState IN_PROGRESS = fromString("InProgress");

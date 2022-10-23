@@ -43,6 +43,10 @@ public final class UserAccessPolicy {
     @JsonProperty(value = "expireTime")
     private String expireTime;
 
+    /** Creates an instance of UserAccessPolicy class. */
+    public UserAccessPolicy() {
+    }
+
     /**
      * Get the permissions property: The string with permissions for Data Plane access. Currently only 'r' is supported
      * which grants read only access.

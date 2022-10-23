@@ -16,6 +16,10 @@ public final class InformixTableDatasetTypeProperties {
     @JsonProperty(value = "tableName")
     private Object tableName;
 
+    /** Creates an instance of InformixTableDatasetTypeProperties class. */
+    public InformixTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: The Informix table name. Type: string (or Expression with resultType string).
      *

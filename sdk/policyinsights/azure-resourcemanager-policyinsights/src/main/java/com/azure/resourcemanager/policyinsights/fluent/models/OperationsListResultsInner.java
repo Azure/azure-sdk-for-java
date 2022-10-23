@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.policyinsights.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.models.Operation;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** List of available operations. */
 @Fluent
 public final class OperationsListResultsInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsListResultsInner.class);
-
     /*
      * OData entity count; represents the number of operations returned.
      */
@@ -27,6 +23,10 @@ public final class OperationsListResultsInner {
      */
     @JsonProperty(value = "value")
     private List<Operation> value;
+
+    /** Creates an instance of OperationsListResultsInner class. */
+    public OperationsListResultsInner() {
+    }
 
     /**
      * Get the odataCount property: OData entity count; represents the number of operations returned.

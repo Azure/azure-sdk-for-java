@@ -25,6 +25,10 @@ public final class MongoDbAtlasCollectionDataset extends Dataset {
     private MongoDbAtlasCollectionDatasetTypeProperties innerTypeProperties =
         new MongoDbAtlasCollectionDatasetTypeProperties();
 
+    /** Creates an instance of MongoDbAtlasCollectionDataset class. */
+    public MongoDbAtlasCollectionDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: MongoDB Atlas database dataset properties.
      *

@@ -4,22 +4,22 @@
 
 package com.azure.resourcemanager.avs.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Script Package resources available for execution. */
-@Fluent
+@Immutable
 public final class ScriptPackageInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ScriptPackageInner.class);
-
     /*
      * ScriptPackage resource properties
      */
     @JsonProperty(value = "properties")
     private ScriptPackageProperties innerProperties;
+
+    /** Creates an instance of ScriptPackageInner class. */
+    public ScriptPackageInner() {
+    }
 
     /**
      * Get the innerProperties property: ScriptPackage resource properties.
@@ -46,6 +46,24 @@ public final class ScriptPackageInner extends ProxyResource {
      */
     public String version() {
         return this.innerProperties() == null ? null : this.innerProperties().version();
+    }
+
+    /**
+     * Get the company property: Company that created and supports the package.
+     *
+     * @return the company value.
+     */
+    public String company() {
+        return this.innerProperties() == null ? null : this.innerProperties().company();
+    }
+
+    /**
+     * Get the uri property: Link to support by the package vendor.
+     *
+     * @return the uri value.
+     */
+    public String uri() {
+        return this.innerProperties() == null ? null : this.innerProperties().uri();
     }
 
     /**

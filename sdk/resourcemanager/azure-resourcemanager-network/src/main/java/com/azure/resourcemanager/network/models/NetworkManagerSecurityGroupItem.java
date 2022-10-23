@@ -17,6 +17,10 @@ public final class NetworkManagerSecurityGroupItem {
     @JsonProperty(value = "networkGroupId", required = true)
     private String networkGroupId;
 
+    /** Creates an instance of NetworkManagerSecurityGroupItem class. */
+    public NetworkManagerSecurityGroupItem() {
+    }
+
     /**
      * Get the networkGroupId property: Network manager group Id.
      *

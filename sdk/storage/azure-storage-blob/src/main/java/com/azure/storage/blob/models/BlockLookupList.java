@@ -32,6 +32,9 @@ public final class BlockLookupList {
     @JsonProperty("Latest")
     private List<String> latest = new ArrayList<>();
 
+    /** Creates an instance of BlockLookupList class. */
+    public BlockLookupList() {}
+
     /**
      * Get the committed property: The Committed property.
      *

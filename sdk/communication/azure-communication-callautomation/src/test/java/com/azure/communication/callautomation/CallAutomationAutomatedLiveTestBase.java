@@ -5,19 +5,21 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
-import com.azure.communication.callautomation.models.events.AddParticipantsFailedEvent;
-import com.azure.communication.callautomation.models.events.AddParticipantsSucceededEvent;
+import com.azure.communication.callautomation.models.events.AddParticipantsFailed;
+import com.azure.communication.callautomation.models.events.AddParticipantsSucceeded;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
-import com.azure.communication.callautomation.models.events.CallConnectedEvent;
-import com.azure.communication.callautomation.models.events.CallDisconnectedEvent;
-import com.azure.communication.callautomation.models.events.CallTransferAcceptedEvent;
-import com.azure.communication.callautomation.models.events.CallTransferFailedEvent;
-import com.azure.communication.callautomation.models.events.ParticipantsUpdatedEvent;
-import com.azure.communication.callautomation.models.events.PlayCompletedEvent;
-import com.azure.communication.callautomation.models.events.PlayFailedEvent;
+import com.azure.communication.callautomation.models.events.CallConnected;
+import com.azure.communication.callautomation.models.events.CallDisconnected;
+import com.azure.communication.callautomation.models.events.CallTransferAccepted;
+import com.azure.communication.callautomation.models.events.CallTransferFailed;
+import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
+import com.azure.communication.callautomation.models.events.PlayCanceled;
+import com.azure.communication.callautomation.models.events.PlayCompleted;
+import com.azure.communication.callautomation.models.events.PlayFailed;
+import com.azure.communication.callautomation.models.events.RecognizeCanceled;
 import com.azure.communication.callautomation.models.events.RecognizeCompleted;
 import com.azure.communication.callautomation.models.events.RecognizeFailed;
-import com.azure.communication.callautomation.models.events.RecordingStateChangedEvent;
+import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.http.HttpMethod;
@@ -224,30 +226,34 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
     @SuppressWarnings("unchecked")
     private <T extends CallAutomationEventBase> T generateEventForPlayback(Class<T> eventType) {
         String eventName = "";
-        if (eventType.equals(CallConnectedEvent.class)) {
+        if (eventType.equals(CallConnected.class)) {
             eventName = "Microsoft.Communication.CallConnected";
-        } else if (eventType.equals(CallDisconnectedEvent.class)) {
+        } else if (eventType.equals(CallDisconnected.class)) {
             eventName = "Microsoft.Communication.CallDisconnected";
-        } else if (eventType.equals(AddParticipantsFailedEvent.class)) {
+        } else if (eventType.equals(AddParticipantsFailed.class)) {
             eventName = "Microsoft.Communication.AddParticipantsFailed";
-        } else if (eventType.equals(AddParticipantsSucceededEvent.class)) {
+        } else if (eventType.equals(AddParticipantsSucceeded.class)) {
             eventName = "Microsoft.Communication.AddParticipantsSucceeded";
-        } else if (eventType.equals(CallTransferAcceptedEvent.class)) {
+        } else if (eventType.equals(CallTransferAccepted.class)) {
             eventName = "Microsoft.Communication.CallTransferAccepted";
-        } else if (eventType.equals(CallTransferFailedEvent.class)) {
+        } else if (eventType.equals(CallTransferFailed.class)) {
             eventName = "Microsoft.Communication.CallTransferFailed";
-        } else if (eventType.equals(ParticipantsUpdatedEvent.class)) {
+        } else if (eventType.equals(ParticipantsUpdated.class)) {
             eventName = "Microsoft.Communication.ParticipantsUpdated";
-        } else if (eventType.equals(RecordingStateChangedEvent.class)) {
+        } else if (eventType.equals(RecordingStateChanged.class)) {
             eventName = "Microsoft.Communication.CallRecordingStateChanged";
-        } else if (eventType.equals(PlayCompletedEvent.class)) {
+        } else if (eventType.equals(PlayCompleted.class)) {
             eventName = "Microsoft.Communication.PlayCompleted";
-        } else if (eventType.equals(PlayFailedEvent.class)) {
+        } else if (eventType.equals(PlayFailed.class)) {
             eventName = "Microsoft.Communication.PlayFailed";
+        }  else if (eventType.equals(PlayCanceled.class)) {
+            eventName = "Microsoft.Communication.PlayCanceled";
         } else if (eventType.equals(RecognizeCompleted.class)) {
             eventName = "Microsoft.Communication.RecognizeCompleted";
         } else if (eventType.equals(RecognizeFailed.class)) {
             eventName = "Microsoft.Communication.RecognizeFailed";
+        } else if (eventType.equals(RecognizeCanceled.class)) {
+            eventName = "Microsoft.Communication.RecognizeCanceled";
         } else {
             return null;
         }

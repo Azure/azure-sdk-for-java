@@ -37,7 +37,7 @@ public class TestUtils {
         List<Arguments> argumentsList = new ArrayList<>();
         TestBase.getHttpClients()
             .forEach(httpClient -> {
-                Arrays.stream(GeoLocationServiceVersion.values())
+                Arrays.stream(GeolocationServiceVersion.values())
                     .forEach(serviceVersion -> argumentsList.add(Arguments.of(httpClient, serviceVersion)));
             });
         return argumentsList.stream();

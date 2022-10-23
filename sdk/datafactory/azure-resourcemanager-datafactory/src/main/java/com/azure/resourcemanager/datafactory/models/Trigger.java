@@ -54,6 +54,10 @@ public class Trigger {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of Trigger class. */
+    public Trigger() {
+    }
+
     /**
      * Get the description property: Trigger description.
      *

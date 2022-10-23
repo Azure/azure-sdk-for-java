@@ -24,6 +24,10 @@ public final class LoadBalancerBackendAddressPoolListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of LoadBalancerBackendAddressPoolListResult class. */
+    public LoadBalancerBackendAddressPoolListResult() {
+    }
+
     /**
      * Get the value property: A list of backend address pools in a load balancer.
      *

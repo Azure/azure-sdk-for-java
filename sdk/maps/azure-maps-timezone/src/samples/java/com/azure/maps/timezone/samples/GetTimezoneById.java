@@ -5,11 +5,11 @@ package com.azure.maps.timezone.samples;
 
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.maps.timezone.TimezoneAsyncClient;
-import com.azure.maps.timezone.TimezoneClient;
-import com.azure.maps.timezone.TimezoneClientBuilder;
-import com.azure.maps.timezone.models.TimezoneIdOptions;
-import com.azure.maps.timezone.models.TimezoneOptions;
+import com.azure.maps.timezone.TimeZoneAsyncClient;
+import com.azure.maps.timezone.TimeZoneClient;
+import com.azure.maps.timezone.TimeZoneClientBuilder;
+import com.azure.maps.timezone.models.TimeZoneIdOptions;
+import com.azure.maps.timezone.models.TimeZoneOptions;
 
 public class GetTimezoneById {
     public static void main(String[] args) {
@@ -21,7 +21,7 @@ public class GetTimezoneById {
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
-        TimezoneClient client = new TimezoneClientBuilder() 
+        TimeZoneClient client = new TimeZoneClientBuilder() 
             .credential(tokenCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildClient();
@@ -30,7 +30,7 @@ public class GetTimezoneById {
         // https://docs.microsoft.com/en-us/rest/api/maps/timezone/get-timezone-by-id
         // This API returns current, historical, and future time zone information for the specified IANA time zone ID.
         // BEGIN: com.azure.maps.timezone.sync.get_timezone_by_id
-        TimezoneIdOptions options = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL);
+        TimeZoneIdOptions options = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimeZoneOptions.ALL);
         client.getTimezoneById(options);
         // END: com.azure.maps.timezone.sync.get_timezone_by_id
 
@@ -42,7 +42,7 @@ public class GetTimezoneById {
         // This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
         DefaultAzureCredential asyncClientTokenCredential = new DefaultAzureCredentialBuilder().build();
 
-        TimezoneAsyncClient asyncClient = new TimezoneClientBuilder()
+        TimeZoneAsyncClient asyncClient = new TimeZoneClientBuilder()
             .credential(asyncClientTokenCredential)
             .timezoneClientId(System.getenv("MAPS_CLIENT_ID"))
             .buildAsyncClient();
@@ -51,7 +51,7 @@ public class GetTimezoneById {
         // https://docs.microsoft.com/en-us/rest/api/maps/timezone/get-timezone-by-id
         // This API returns current, historical, and future time zone information for the specified IANA time zone ID.
         // BEGIN: com.azure.maps.timezone.async.get_timezone_by_id
-        TimezoneIdOptions options2 = new TimezoneIdOptions("Asia/Bahrain").setOptions(TimezoneOptions.ALL);
+        TimeZoneIdOptions options2 = new TimeZoneIdOptions("Asia/Bahrain").setOptions(TimeZoneOptions.ALL);
         asyncClient.getTimezoneById(options2);
         // END: com.azure.maps.timezone.async.get_timezone_by_id
     }

@@ -142,19 +142,6 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
      * Redeem invite code to join a redeemable lab.
      *
      * @param parameters Request parameters to provide redeem code.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void redeemInvitationCode(RedeemRequest parameters) {
-        redeemInvitationCodeAsync(parameters).block();
-    }
-
-    /**
-     * Redeem invite code to join a redeemable lab.
-     *
-     * @param parameters Request parameters to provide redeem code.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -164,5 +151,18 @@ public final class ResourceProvidersClientImpl implements ResourceProvidersClien
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> redeemInvitationCodeWithResponse(RedeemRequest parameters, Context context) {
         return redeemInvitationCodeWithResponseAsync(parameters, context).block();
+    }
+
+    /**
+     * Redeem invite code to join a redeemable lab.
+     *
+     * @param parameters Request parameters to provide redeem code.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void redeemInvitationCode(RedeemRequest parameters) {
+        redeemInvitationCodeWithResponse(parameters, Context.NONE);
     }
 }

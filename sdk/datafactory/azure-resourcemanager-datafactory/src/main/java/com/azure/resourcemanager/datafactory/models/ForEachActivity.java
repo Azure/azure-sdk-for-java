@@ -23,6 +23,10 @@ public final class ForEachActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ForEachActivityTypeProperties innerTypeProperties = new ForEachActivityTypeProperties();
 
+    /** Creates an instance of ForEachActivity class. */
+    public ForEachActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: ForEach activity properties.
      *

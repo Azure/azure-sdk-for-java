@@ -25,6 +25,10 @@ public final class OracleServiceCloudLinkedService extends LinkedService {
     private OracleServiceCloudLinkedServiceTypeProperties innerTypeProperties =
         new OracleServiceCloudLinkedServiceTypeProperties();
 
+    /** Creates an instance of OracleServiceCloudLinkedService class. */
+    public OracleServiceCloudLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Oracle Service Cloud linked service properties.
      *

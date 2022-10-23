@@ -9,6 +9,7 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
+import com.azure.resourcemanager.network.models.VirtualNetworkGatewayPolicyGroup;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.models.VpnClientConfiguration;
@@ -89,6 +90,13 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private VpnClientConfiguration vpnClientConfiguration;
 
     /*
+     * The reference to the VirtualNetworkGatewayPolicyGroup resource which represents the available
+     * VirtualNetworkGatewayPolicyGroup for the gateway.
+     */
+    @JsonProperty(value = "virtualNetworkGatewayPolicyGroups")
+    private List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups;
+
+    /*
      * Virtual network gateway's BGP speaker settings.
      */
     @JsonProperty(value = "bgpSettings")
@@ -142,6 +150,23 @@ public final class VirtualNetworkGatewayPropertiesFormat {
      */
     @JsonProperty(value = "enableBgpRouteTranslationForNat")
     private Boolean enableBgpRouteTranslationForNat;
+
+    /*
+     * Configures this gateway to accept traffic from remote Virtual WAN networks.
+     */
+    @JsonProperty(value = "allowVirtualWanTraffic")
+    private Boolean allowVirtualWanTraffic;
+
+    /*
+     * Configure this gateway to accept traffic from other Azure Virtual Networks. This configuration does not support
+     * connectivity to Azure Virtual WAN.
+     */
+    @JsonProperty(value = "allowRemoteVnetTraffic")
+    private Boolean allowRemoteVnetTraffic;
+
+    /** Creates an instance of VirtualNetworkGatewayPropertiesFormat class. */
+    public VirtualNetworkGatewayPropertiesFormat() {
+    }
 
     /**
      * Get the ipConfigurations property: IP configurations for virtual network gateway.
@@ -377,6 +402,29 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
+     * Get the virtualNetworkGatewayPolicyGroups property: The reference to the VirtualNetworkGatewayPolicyGroup
+     * resource which represents the available VirtualNetworkGatewayPolicyGroup for the gateway.
+     *
+     * @return the virtualNetworkGatewayPolicyGroups value.
+     */
+    public List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups() {
+        return this.virtualNetworkGatewayPolicyGroups;
+    }
+
+    /**
+     * Set the virtualNetworkGatewayPolicyGroups property: The reference to the VirtualNetworkGatewayPolicyGroup
+     * resource which represents the available VirtualNetworkGatewayPolicyGroup for the gateway.
+     *
+     * @param virtualNetworkGatewayPolicyGroups the virtualNetworkGatewayPolicyGroups value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withVirtualNetworkGatewayPolicyGroups(
+        List<VirtualNetworkGatewayPolicyGroup> virtualNetworkGatewayPolicyGroups) {
+        this.virtualNetworkGatewayPolicyGroups = virtualNetworkGatewayPolicyGroups;
+        return this;
+    }
+
+    /**
      * Get the bgpSettings property: Virtual network gateway's BGP speaker settings.
      *
      * @return the bgpSettings value.
@@ -531,6 +579,50 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
+     * Get the allowVirtualWanTraffic property: Configures this gateway to accept traffic from remote Virtual WAN
+     * networks.
+     *
+     * @return the allowVirtualWanTraffic value.
+     */
+    public Boolean allowVirtualWanTraffic() {
+        return this.allowVirtualWanTraffic;
+    }
+
+    /**
+     * Set the allowVirtualWanTraffic property: Configures this gateway to accept traffic from remote Virtual WAN
+     * networks.
+     *
+     * @param allowVirtualWanTraffic the allowVirtualWanTraffic value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withAllowVirtualWanTraffic(Boolean allowVirtualWanTraffic) {
+        this.allowVirtualWanTraffic = allowVirtualWanTraffic;
+        return this;
+    }
+
+    /**
+     * Get the allowRemoteVnetTraffic property: Configure this gateway to accept traffic from other Azure Virtual
+     * Networks. This configuration does not support connectivity to Azure Virtual WAN.
+     *
+     * @return the allowRemoteVnetTraffic value.
+     */
+    public Boolean allowRemoteVnetTraffic() {
+        return this.allowRemoteVnetTraffic;
+    }
+
+    /**
+     * Set the allowRemoteVnetTraffic property: Configure this gateway to accept traffic from other Azure Virtual
+     * Networks. This configuration does not support connectivity to Azure Virtual WAN.
+     *
+     * @param allowRemoteVnetTraffic the allowRemoteVnetTraffic value to set.
+     * @return the VirtualNetworkGatewayPropertiesFormat object itself.
+     */
+    public VirtualNetworkGatewayPropertiesFormat withAllowRemoteVnetTraffic(Boolean allowRemoteVnetTraffic) {
+        this.allowRemoteVnetTraffic = allowRemoteVnetTraffic;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -544,6 +636,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
         }
         if (vpnClientConfiguration() != null) {
             vpnClientConfiguration().validate();
+        }
+        if (virtualNetworkGatewayPolicyGroups() != null) {
+            virtualNetworkGatewayPolicyGroups().forEach(e -> e.validate());
         }
         if (bgpSettings() != null) {
             bgpSettings().validate();

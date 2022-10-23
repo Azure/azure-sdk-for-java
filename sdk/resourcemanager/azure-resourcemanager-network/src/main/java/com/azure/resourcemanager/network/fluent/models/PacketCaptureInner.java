@@ -22,6 +22,10 @@ public final class PacketCaptureInner {
     @JsonProperty(value = "properties", required = true)
     private PacketCaptureParameters innerProperties = new PacketCaptureParameters();
 
+    /** Creates an instance of PacketCaptureInner class. */
+    public PacketCaptureInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the packet capture.
      *

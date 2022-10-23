@@ -24,6 +24,10 @@ public final class AmazonRdsForOracleLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AmazonRdsForLinkedServiceTypeProperties innerTypeProperties = new AmazonRdsForLinkedServiceTypeProperties();
 
+    /** Creates an instance of AmazonRdsForOracleLinkedService class. */
+    public AmazonRdsForOracleLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: AmazonRdsForOracle database linked service properties.
      *

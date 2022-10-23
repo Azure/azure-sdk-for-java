@@ -76,6 +76,10 @@ public final class PublicIpPrefixPropertiesFormatInner {
     @JsonProperty(value = "natGateway")
     private NatGatewayInner natGateway;
 
+    /** Creates an instance of PublicIpPrefixPropertiesFormatInner class. */
+    public PublicIpPrefixPropertiesFormatInner() {
+    }
+
     /**
      * Get the publicIpAddressVersion property: The public IP address version.
      *

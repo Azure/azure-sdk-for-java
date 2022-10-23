@@ -10,7 +10,7 @@ import com.azure.resourcemanager.devcenter.models.LocalAdminStatus;
 /** Samples for Pools CreateOrUpdate. */
 public final class PoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-08-01-preview/examples/Pools_Put.json
+     * x-ms-original-file: specification/devcenter/resource-manager/Microsoft.DevCenter/preview/2022-09-01-preview/examples/Pools_Put.json
      */
     /**
      * Sample code: Pools_CreateOrUpdate.

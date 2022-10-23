@@ -22,6 +22,10 @@ public final class TriggerFilterParameters {
     @JsonProperty(value = "parentTriggerName")
     private String parentTriggerName;
 
+    /** Creates an instance of TriggerFilterParameters class. */
+    public TriggerFilterParameters() {
+    }
+
     /**
      * Get the continuationToken property: The continuation token for getting the next page of results. Null for first
      * page.
