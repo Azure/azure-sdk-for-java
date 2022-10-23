@@ -13,8 +13,8 @@ import java.io.IOException;
  * Tests {@link JacksonJsonReader} against the contract required by {@link JsonReader}.
  */
 public class JacksonJsonReaderContractTests extends JsonReaderContractTests {
-	@Override
-	public JsonReader getJsonReader(String json) throws IOException {
+    @Override
+    public JsonReader getJsonReader(String json) throws IOException {
         return JsonFactory.getJacksonInstance().getJsonReader(json, new JsonOptions());
     }
 }

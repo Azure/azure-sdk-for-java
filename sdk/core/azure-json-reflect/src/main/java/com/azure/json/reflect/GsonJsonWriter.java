@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.json.reflect;
 
 import com.azure.json.JsonOptions;
@@ -19,7 +22,7 @@ import java.util.Objects;
 import static java.lang.invoke.MethodType.methodType;
 import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 
-class GsonJsonWriter extends JsonWriter {
+final class GsonJsonWriter extends JsonWriter {
     private static final JsonWriterConstructor JSON_WRITER_CONSTRUCTOR;
     private static final JsonWriterSetLenient JSON_WRITER_SET_LENIENT;
     private static final JsonWriterClose JSON_WRITER_CLOSE;

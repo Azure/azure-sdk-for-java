@@ -1,11 +1,22 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.json.reflect;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 
-import java.io.*;
-import java.lang.invoke.*;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.IOException;
+import java.io.Reader;
+import java.io.StringReader;
+import java.lang.invoke.LambdaMetafactory;
+import java.lang.invoke.MethodHandle;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.MethodType;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.Objects;
@@ -13,7 +24,7 @@ import java.util.Objects;
 import static java.lang.invoke.MethodType.methodType;
 import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 
-class GsonJsonReader extends JsonReader {
+final class GsonJsonReader extends JsonReader {
     private static final Class<?> GSON_JSON_TOKEN_ENUM;
 
     private static final JsonReaderConstructor JSON_READER_CONSTRUCTOR;
@@ -172,9 +183,9 @@ class GsonJsonReader extends JsonReader {
 
     @Override
     public JsonToken nextToken() throws IOException {
-    if (complete) {
-        return currentToken;
-    }
+        if (complete) {
+            return currentToken;
+        }
 
     // GSON requires explicitly beginning and ending arrays and objects and consuming null values.
     // The contract of JsonReader implicitly overlooks these properties.

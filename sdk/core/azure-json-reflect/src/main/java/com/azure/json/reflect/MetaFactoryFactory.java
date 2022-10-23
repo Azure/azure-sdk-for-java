@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.json.reflect;
 
 import java.lang.invoke.LambdaMetafactory;
@@ -7,7 +10,7 @@ import java.lang.invoke.MethodType;
 
 import static java.lang.invoke.MethodType.methodType;
 
-class MetaFactoryFactory {
+final class MetaFactoryFactory {
     private MetaFactoryFactory() {
         throw new IllegalStateException();
     }
