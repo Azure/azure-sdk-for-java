@@ -17,11 +17,11 @@
   ],
   "gson_2.8":
   [
-    { "com.google.code.gson:gson": "2.8" }
+    { "com.google.code.gson:gson": "2.8.0" }
   ],
   "gson_2.9":
   [
-    { "com.google.code.gson:gson": "2.9" }
+    { "com.google.code.gson:gson": "2.9.0" }
   ],
   "jackson_2.10":
   [
