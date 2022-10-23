@@ -131,50 +131,18 @@ class JacksonJsonReader extends JsonReader {
     private final boolean resetSupported;
     private final boolean nonNumericNumbersSupported;
 
-    /**
-     * Constructs an instance of {@link JsonReader} from a {@code byte[]}.
-     *
-     * @param json JSON {@code byte[]}.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
-     * @return An instance of {@link JsonReader}.
-     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON {@code byte[]}.
-     */
     static JsonReader fromBytes(byte[] json, JsonOptions options) throws IOException {
         return new JacksonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8), true, json, null, options);
     }
 
-    /**
-     * Constructs an instance of {@link JsonReader} from a String.
-     *
-     * @param json JSON String.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
-     * @return An instance of {@link JsonReader}.
-     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON String.
-     */
     static JsonReader fromString(String json, JsonOptions options) throws IOException {
         return new JacksonJsonReader(new StringReader(json), true, null, json, options);
     }
 
-    /**
-     * Constructs an instance of {@link JsonReader} from an {@link InputStream}.
-     *
-     * @param json JSON {@link InputStream}.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
-     * @return An instance of {@link JsonReader}.
-     * @throws IOException If a {@link JsonReader} wasn't able to be constructed from the JSON {@link InputStream}.
-     */
     static JsonReader fromStream(InputStream json, JsonOptions options) throws IOException {
         return new JacksonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), false, null, null, options);
     }
 
-    /**
-     * Constructs an instance of {@link DefaultJsonReader} from a {@link Reader}.
-     *
-     * @param reader JSON {@link Reader}.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
-     * @return An instance of {@link DefaultJsonReader}.
-     * @throws IOException If a {@link DefaultJsonReader} wasn't able to be constructed from the JSON {@link Reader}.
-     */
     static JsonReader fromReader(Reader reader, JsonOptions options) throws IOException {
         return new JacksonJsonReader(reader, reader.markSupported(), null, null, options);
     }

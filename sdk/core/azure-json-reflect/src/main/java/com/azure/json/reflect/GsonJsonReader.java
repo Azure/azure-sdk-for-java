@@ -127,53 +127,21 @@ class GsonJsonReader extends JsonReader {
     private boolean consumed = false;
     private boolean complete = false;
 
-    /**
-     * Constructs an instance of {@link JsonReader} from a {@code byte[]}.
-     *
-     * @param json JSON {@code byte[]}.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
-     * @return An instance of {@link JsonReader}.
-     * @throws NullPointerException If {@code json} is null.
-     */
     static JsonReader fromBytes(byte[] json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
         return new GsonJsonReader(new InputStreamReader(new ByteArrayInputStream(json), StandardCharsets.UTF_8), true, json, null, options);
     }
 
-    /**
-     * Constructs an instance of {@link JsonReader} from a String.
-     *
-     * @param json JSON String.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
-     * @return An instance of {@link JsonReader}.
-     * @throws NullPointerException If {@code json} is null.
-     */
     static JsonReader fromString(String json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
         return new GsonJsonReader(new StringReader(json), true, null, json, options);
     }
 
-    /**
-     * Constructs an instance of {@link JsonReader} from an {@link InputStream}.
-     *
-     * @param json JSON {@link InputStream}.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
-     * @return An instance of {@link JsonReader}.
-     * @throws NullPointerException If {@code json} is null.
-     */
     static JsonReader fromStream(InputStream json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
         return new GsonJsonReader(new InputStreamReader(json, StandardCharsets.UTF_8), json.markSupported(), null, null, options);
     }
 
-    /**
-     * Constructs an instance of {@link GsonJsonReader} from a {@link Reader}.
-     *
-     * @param json JSON {@link Reader}.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
-     * @return An instance of {@link GsonJsonReader}.
-     * @throws NullPointerException If {@code json} is null.
-     */
     static JsonReader fromReader(Reader json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
         return new GsonJsonReader(json, json.markSupported(), null, null, options);

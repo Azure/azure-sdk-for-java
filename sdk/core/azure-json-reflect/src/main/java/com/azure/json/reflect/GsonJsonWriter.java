@@ -112,35 +112,12 @@ class GsonJsonWriter extends JsonWriter {
     private final Object gsonJsonWriter;
     private JsonWriteContext context = JsonWriteContext.ROOT;
 
-    /**
-     * Creates a {@link GsonJsonWriter} that writes the given {@link OutputStream}.
-     * <p>
-     * The passed {@link OutputStream} won't be closed when {@link #close()} is called as the {@link GsonJsonWriter}
-     * isn't the owner of the stream.
-     *
-     * @param json The {@link OutputStream} that will be written.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
-     * @return An instance of {@link GsonJsonWriter}.
-     * @throws NullPointerException If {@code json} is null.
-     *
-     */
     static JsonWriter toStream(OutputStream json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
         return new GsonJsonWriter(new OutputStreamWriter(json, StandardCharsets.UTF_8), options);
     }
 
-    /**
-     * Creates a {@link GsonJsonWriter} that writes the given {@link Writer}.
-     * <p>
-     * The passed {@link Writer} won't be closed when {@link #close()} is called as the {@link GsonJsonWriter}
-     * isn't the owner of the stream.
-     *
-     * @param json The {@link Writer} that will be written.
-     * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
-     * @return An instance of {@link GsonJsonWriter}.
-     * @throws NullPointerException If {@code json} is null.
-     */
-    public static JsonWriter toWriter(Writer json, JsonOptions options) {
+    static JsonWriter toWriter(Writer json, JsonOptions options) {
         Objects.requireNonNull(json, "'json' cannot be null.");
         return new GsonJsonWriter(json, options);
     }
