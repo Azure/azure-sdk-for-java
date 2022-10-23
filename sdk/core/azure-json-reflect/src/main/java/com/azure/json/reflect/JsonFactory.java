@@ -10,7 +10,17 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.io.Writer;
 
-
+/**
+ * The main factory class of Azure Json Reflect package, used to
+ * construct {@link JsonReader} and {@link JsonWriter} instances.
+ *<p>
+ * Returned instances of {@link JsonReader} and {@link JsonWriter}
+ * reflectively search for either Jackson or Gson on the class path
+ * and provide abstractions of these libraries without having any
+ * hard dependencies on them.
+ *
+ * @author Jack Sandford
+ */
 public abstract class JsonFactory {
     private static JsonFactory jacksonJsonFactory = null;
     private static JsonFactory gsonJsonFactory = null;
@@ -73,7 +83,7 @@ public abstract class JsonFactory {
      * @param bytes JSON {@code byte[]}.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link JsonReader}.
-     * @throws IOException If reader initialization fails due to I/O problem
+     * @throws IOException If reader initialization fails due to I/O problem.
      * @throws NullPointerException If {@code bytes} is null.
      */
     public abstract JsonReader getJsonReader(byte[] bytes, JsonOptions options) throws IOException;
@@ -84,7 +94,7 @@ public abstract class JsonFactory {
      * @param string JSON String.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link JsonReader}.
-     * @throws IOException If reader initialization fails due to I/O problem
+     * @throws IOException If reader initialization fails due to I/O problem.
      * @throws NullPointerException If {@code string} is null.
      */
     public abstract JsonReader getJsonReader(String string, JsonOptions options) throws IOException;
@@ -95,7 +105,7 @@ public abstract class JsonFactory {
      * @param stream JSON {@link InputStream}.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link JsonReader}.
-     * @throws IOException If reader initialization fails due to I/O problem
+     * @throws IOException If reader initialization fails due to I/O problem.
      * @throws NullPointerException If {@code stream} is null.
      */
     public abstract JsonReader getJsonReader(InputStream stream, JsonOptions options) throws IOException;
@@ -106,7 +116,7 @@ public abstract class JsonFactory {
      * @param reader JSON {@link Reader}.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonReader}.
      * @return An instance of {@link GsonJsonReader}.
-     * @throws IOException If reader initialization fails due to I/O problem
+     * @throws IOException If reader initialization fails due to I/O problem.
      * @throws NullPointerException If {@code reader} is null.
      */
     public abstract JsonReader getJsonReader(Reader reader, JsonOptions options) throws IOException;
@@ -120,7 +130,7 @@ public abstract class JsonFactory {
      * @param stream The {@link OutputStream} that will be written.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link JsonWriter}.
-     * @throws IOException If writer initialization fails due to I/O problem
+     * @throws IOException If writer initialization fails due to I/O problem.
      * @throws NullPointerException If {@code stream} is null.
      *
      */
@@ -135,7 +145,7 @@ public abstract class JsonFactory {
      * @param writer The {@link Writer} that will be written.
      * @param options {@link JsonOptions} to configure the creation of the {@link JsonWriter}.
      * @return An instance of {@link JsonWriter}.
-     * @throws IOException If writer initialization fails due to I/O problem
+     * @throws IOException If writer initialization fails due to I/O problem.
      * @throws NullPointerException If {@code writer} is null.
      */
     public abstract JsonWriter getJsonWriter(Writer writer, JsonOptions options) throws IOException;
