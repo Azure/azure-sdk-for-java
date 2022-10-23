@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.io.StringReader;
+import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -19,8 +20,8 @@ import static java.lang.invoke.MethodType.methodType;
 import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 
 class JacksonJsonReader extends JsonReader {
-    private static final Class<?> JACKSON_JSON_TOKEN_ENUM;
-    private static final Class JACKSON_FEATURE_ENUM;
+    private static final Class<?> JACKSON_JSON_TOKEN;
+    private static final Object ALLOW_NAN_MAPPED;
     private static final Object JSON_FACTORY;
 
     private static final JsonFactoryCreateJsonParser JSON_FACTORY_CREATE_JSON_PARSER;
@@ -42,9 +43,9 @@ class JacksonJsonReader extends JsonReader {
     static {
         final MethodHandles.Lookup lookup = MethodHandles.lookup();
 
-        Class<?> jacksonJsonTokenEnum = null;
-        Class jacksonFeatureEnum = null;
+        Class<?> jacksonJsonToken = null;
 
+        Object allowNaNMapped = null;
         Object jsonFactory = null;
 
         JsonFactoryCreateJsonParser jsonFactoryCreateJsonParser = null;
@@ -67,16 +68,22 @@ class JacksonJsonReader extends JsonReader {
             Class<?> jacksonJsonFactoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
             Class<?> jacksonJsonParserClass = Class.forName("com.fasterxml.jackson.core.JsonParser");
 
-            jacksonJsonTokenEnum = Class.forName("com.fasterxml.jackson.core.JsonToken");
-            jacksonFeatureEnum = Arrays.stream(jacksonJsonParserClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
+            jacksonJsonToken = Class.forName("com.fasterxml.jackson.core.JsonToken");
+
+            // Get JsonParserFeature enum value for allowing non-numeric numbers
+            Class<?> JsonParserFeature = Arrays.stream(jacksonJsonParserClass.getDeclaredClasses()).filter(c -> "Feature".equals(c.getSimpleName())).findAny().orElse(null);
+            Class<?> jsonReadFeature = Class.forName("com.fasterxml.jackson.core.json.JsonReadFeature");
+            MethodHandle jsonReadFeatureMappedFeature = lookup.findVirtual(jsonReadFeature, "mappedFeature", methodType(JsonParserFeature));
+            MethodHandle jsonReadFeatureValueOf = lookup.findStatic(jsonReadFeature, "valueOf", methodType(jsonReadFeature, String.class));
+            allowNaNMapped = jsonReadFeatureMappedFeature.invoke(jsonReadFeatureValueOf.invoke("ALLOW_NON_NUMERIC_NUMBERS"));
 
             jsonFactory = lookup.findConstructor(jacksonJsonFactoryClass, methodType(void.class)).invoke();
 
             jsonFactoryCreateJsonParser = createMetaFactory("createParser", jacksonJsonFactoryClass, methodType(jacksonJsonParserClass, Reader.class), JsonFactoryCreateJsonParser.class, methodType(Object.class, Object.class, Reader.class), lookup);
-            jsonParserConfigure = createMetaFactory("configure", jacksonJsonParserClass, methodType(jacksonJsonParserClass, jacksonFeatureEnum, boolean.class), JsonParserConfigure.class, methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
+            jsonParserConfigure = createMetaFactory("configure", jacksonJsonParserClass, methodType(jacksonJsonParserClass, JsonParserFeature, boolean.class), JsonParserConfigure.class, methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
             jsonParserClose = createMetaFactory("close", jacksonJsonParserClass, methodType(void.class), JsonParserClose.class, methodType(void.class, Object.class), lookup);
             jsonParserSkipChildren = createMetaFactory("skipChildren", jacksonJsonParserClass, methodType(jacksonJsonParserClass), JsonParserSkipChildren.class, methodType(Object.class, Object.class), lookup);
-            jsonParserNextToken = createMetaFactory("nextToken", jacksonJsonParserClass, methodType(jacksonJsonTokenEnum), JsonParserNextToken.class, methodType(Object.class, Object.class), lookup);
+            jsonParserNextToken = createMetaFactory("nextToken", jacksonJsonParserClass, methodType(jacksonJsonToken), JsonParserNextToken.class, methodType(Object.class, Object.class), lookup);
             jsonParserCurrentName = createMetaFactory("currentName", jacksonJsonParserClass, methodType(String.class), JsonParserCurrentName.class, methodType(String.class, Object.class), lookup);
             jsonParserGetValueAsString = createMetaFactory("getValueAsString", jacksonJsonParserClass, methodType(String.class), JsonParserGetValueAsString.class, methodType(String.class, Object.class), lookup);
             jsonParserGetBinaryValue = createMetaFactory("getBinaryValue", jacksonJsonParserClass, methodType(byte[].class), JsonParserGetBinaryValue.class, methodType(byte[].class, Object.class), lookup);
@@ -95,9 +102,8 @@ class JacksonJsonReader extends JsonReader {
             }
         }
 
-        JACKSON_JSON_TOKEN_ENUM = jacksonJsonTokenEnum;
-        JACKSON_FEATURE_ENUM = jacksonFeatureEnum;
-
+        JACKSON_JSON_TOKEN = jacksonJsonToken;
+        ALLOW_NAN_MAPPED = allowNaNMapped;
         JSON_FACTORY = jsonFactory;
 
         JSON_FACTORY_CREATE_JSON_PARSER = jsonFactoryCreateJsonParser;
@@ -184,7 +190,7 @@ class JacksonJsonReader extends JsonReader {
 
         jacksonJsonParser = JSON_FACTORY_CREATE_JSON_PARSER.createParser(JSON_FACTORY, reader);
         // Configure Jackson to support non-numeric numbers
-        JSON_PARSER_CONFIGURE.configure(jacksonJsonParser, Enum.valueOf(JACKSON_FEATURE_ENUM, "ALLOW_NON_NUMERIC_NUMBERS"), nonNumericNumbersSupported);
+        JSON_PARSER_CONFIGURE.configure(jacksonJsonParser, ALLOW_NAN_MAPPED, nonNumericNumbersSupported);
 
         this.resetSupported = resetSupported;
         this.jsonBytes = jsonBytes;
@@ -300,7 +306,7 @@ class JacksonJsonReader extends JsonReader {
         }
 
         // Check token is Jackson token
-        if (token.getClass() != JACKSON_JSON_TOKEN_ENUM) {
+        if (token.getClass() != JACKSON_JSON_TOKEN) {
             throw new IllegalStateException("Unsupported enum, pass a Jackson JsonToken");
         }
 
