@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.json.reflect;
 
 import com.azure.json.JsonOptions;
@@ -47,7 +50,7 @@ public abstract class JsonFactory {
      * @return An instance of {@link JsonFactory}.
      * @throws IllegalStateException If no compatible version of Jackson is present on the classpath.
      */
-    public synchronized static JsonFactory getJacksonInstance() {
+    public static synchronized JsonFactory getJacksonInstance() {
         if (!JacksonJsonFactory.INITIALIZED) {
             throw new IllegalStateException("No compatible version of Jackson is present on the classpath.");
         }
@@ -65,7 +68,7 @@ public abstract class JsonFactory {
      * @return An instance of {@link JsonFactory}.
      * @throws IllegalStateException If no compatible version of Gson is present on the classpath.
      */
-    public synchronized static JsonFactory getGsonInstance() {
+    public static synchronized JsonFactory getGsonInstance() {
         if (!GsonJsonFactory.INITIALIZED) {
             throw new IllegalStateException("No compatible version of Gson is present on the classpath.");
         }

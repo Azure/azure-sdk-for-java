@@ -1,10 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.json.reflect;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonWriteContext;
 import com.azure.json.JsonWriter;
 import com.azure.json.JsonToken;
-import com.azure.json.implementation.DefaultJsonWriter;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -20,7 +22,7 @@ import java.util.Objects;
 import static java.lang.invoke.MethodType.methodType;
 import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 
-class JacksonJsonWriter extends JsonWriter {
+final class JacksonJsonWriter extends JsonWriter {
     private static final Object ALLOW_NAN_MAPPED;
     private static final Object JSON_FACTORY;
 
@@ -45,7 +47,7 @@ class JacksonJsonWriter extends JsonWriter {
 
     static final boolean INITIALIZED;
 
-    static{
+    static {
         MethodHandles.Lookup lookup = MethodHandles.lookup();
 
         Object allowNaNMapped = null;
@@ -72,7 +74,7 @@ class JacksonJsonWriter extends JsonWriter {
 
         boolean initialized = false;
 
-        try{
+        try {
             Class<?> jacksonJsonFactoryClass = Class.forName("com.fasterxml.jackson.core.JsonFactory");
             Class<?> jacksonJsonGeneratorClass = Class.forName("com.fasterxml.jackson.core.JsonGenerator");
 
@@ -89,7 +91,7 @@ class JacksonJsonWriter extends JsonWriter {
             MethodType voidStringMt = methodType(void.class, String.class);
             MethodType voidObjectMT = methodType(void.class, Object.class);
 
-            jsonFactoryCreateJsonGenerator = createMetaFactory("createGenerator", jacksonJsonFactoryClass, methodType(jacksonJsonGeneratorClass, Writer.class), JsonFactoryCreateJsonGenerator.class, methodType(Object.class,Object.class, Writer.class), lookup);
+            jsonFactoryCreateJsonGenerator = createMetaFactory("createGenerator", jacksonJsonFactoryClass, methodType(jacksonJsonGeneratorClass, Writer.class), JsonFactoryCreateJsonGenerator.class, methodType(Object.class, Object.class, Writer.class), lookup);
             jsonGeneratorWriteRawValue = createMetaFactory("writeRawValue", jacksonJsonGeneratorClass, voidStringMt, JsonGeneratorWriteRawValue.class, methodType(void.class, Object.class, String.class), lookup);
             jsonGeneratorFlush = createMetaFactory("flush", jacksonJsonGeneratorClass, voidMT, JsonGeneratorFlush.class, voidObjectMT, lookup);
             jsonGeneratorClose = createMetaFactory("close", jacksonJsonGeneratorClass, voidMT, JsonGeneratorClose.class, voidObjectMT, lookup);
@@ -109,8 +111,7 @@ class JacksonJsonWriter extends JsonWriter {
             jsonGeneratorConfigure = createMetaFactory("configure", jacksonJsonGeneratorClass, methodType(jacksonJsonGeneratorClass, jsonGeneratorFeature, boolean.class), JsonGeneratorConfigure.class, methodType(Object.class, Object.class, Object.class, boolean.class), lookup);
 
             initialized = true;
-        }
-        catch (Throwable e) {
+        } catch (Throwable e) {
             if (e instanceof RuntimeException) {
                 throw (RuntimeException) e;
             } else if (e instanceof Error) {
@@ -222,7 +223,7 @@ class JacksonJsonWriter extends JsonWriter {
     public JsonWriter writeFieldName(String fieldName) throws IOException {
         Objects.requireNonNull(fieldName, "'fieldName' cannot be null.");
         context.validateToken(JsonToken.FIELD_NAME);
-        JSON_GENERATOR_WRITE_FIELD_NAME.writeFieldName(jacksonGenerator,fieldName);
+        JSON_GENERATOR_WRITE_FIELD_NAME.writeFieldName(jacksonGenerator, fieldName);
         context = context.updateContext(JsonToken.FIELD_NAME);
         return this;
     }
@@ -233,7 +234,7 @@ class JacksonJsonWriter extends JsonWriter {
         if (value == null) {
             JSON_GENERATOR_WRITE_NULL.writeNull(jacksonGenerator);
         } else {
-            JSON_GENERATOR_WRITE_BINARY.writeBinary(jacksonGenerator,value);
+            JSON_GENERATOR_WRITE_BINARY.writeBinary(jacksonGenerator, value);
         }
         context = context.updateContext(JsonToken.STRING);
         return this;
@@ -242,7 +243,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeBoolean(boolean value) throws IOException {
         context.validateToken(JsonToken.BOOLEAN);
-        JSON_GENERATOR_WRITE_BOOLEAN.writeBoolean(jacksonGenerator,value);
+        JSON_GENERATOR_WRITE_BOOLEAN.writeBoolean(jacksonGenerator, value);
         context = context.updateContext(JsonToken.BOOLEAN);
         return this;
     }
@@ -250,7 +251,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeDouble(double value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        JSON_GENERATOR_WRITE_DOUBLE.writeNumber(jacksonGenerator,value);
+        JSON_GENERATOR_WRITE_DOUBLE.writeNumber(jacksonGenerator, value);
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
@@ -258,7 +259,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeFloat(float value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        JSON_GENERATOR_WRITE_FLOAT.writeNumber(jacksonGenerator,value);
+        JSON_GENERATOR_WRITE_FLOAT.writeNumber(jacksonGenerator, value);
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
@@ -266,7 +267,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeInt(int value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        JSON_GENERATOR_WRITE_INT.writeNumber(jacksonGenerator,value);
+        JSON_GENERATOR_WRITE_INT.writeNumber(jacksonGenerator, value);
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
@@ -274,7 +275,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeLong(long value) throws IOException {
         context.validateToken(JsonToken.NUMBER);
-        JSON_GENERATOR_WRITE_LONG.writeNumber(jacksonGenerator,value);
+        JSON_GENERATOR_WRITE_LONG.writeNumber(jacksonGenerator, value);
         context = context.updateContext(JsonToken.NUMBER);
         return this;
     }
@@ -290,7 +291,7 @@ class JacksonJsonWriter extends JsonWriter {
     @Override
     public JsonWriter writeString(String value) throws IOException {
         context.validateToken(JsonToken.STRING);
-        JSON_GENERATOR_WRITE_STRING.writeString(jacksonGenerator,value);
+        JSON_GENERATOR_WRITE_STRING.writeString(jacksonGenerator, value);
         context = context.updateContext(JsonToken.STRING);
         return this;
     }
@@ -299,14 +300,14 @@ class JacksonJsonWriter extends JsonWriter {
     public JsonWriter writeRawValue(String value) throws IOException {
         Objects.requireNonNull(value, "'value' cannot be null.");
         context.validateToken(JsonToken.STRING);
-        JSON_GENERATOR_WRITE_RAW_VALUE.writeRawValue(jacksonGenerator,value);
+        JSON_GENERATOR_WRITE_RAW_VALUE.writeRawValue(jacksonGenerator, value);
         context = context.updateContext(JsonToken.STRING);
         return this;
     }
 
     @FunctionalInterface
     private interface JsonFactoryCreateJsonGenerator {
-        Object createGenerator(Object JsonFactory, Writer writer) throws IOException;
+        Object createGenerator(Object jsonFactory, Writer writer) throws IOException;
     }
 
     @FunctionalInterface

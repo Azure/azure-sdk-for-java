@@ -1,9 +1,11 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.json.reflect;
 
 import com.azure.json.JsonOptions;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
-import com.azure.json.implementation.DefaultJsonReader;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -19,7 +21,7 @@ import java.util.Arrays;
 import static java.lang.invoke.MethodType.methodType;
 import static com.azure.json.reflect.MetaFactoryFactory.createMetaFactory;
 
-class JacksonJsonReader extends JsonReader {
+final class JacksonJsonReader extends JsonReader {
     private static final Class<?> JACKSON_JSON_TOKEN;
     private static final Object ALLOW_NAN_MAPPED;
     private static final Object JSON_FACTORY;
@@ -278,7 +280,7 @@ class JacksonJsonReader extends JsonReader {
             throw new IllegalStateException("Unsupported enum, pass a Jackson JsonToken");
         }
 
-    	switch(token.name()) {
+        switch (token.name()) {
             case "START_OBJECT":
                 return JsonToken.START_OBJECT;
             case "END_OBJECT":
