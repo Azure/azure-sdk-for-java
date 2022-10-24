@@ -146,6 +146,10 @@
     "AZURE_SERVICE_BUS_NAMESPACE1": {
       "type": "string",
       "value": "[variables('azureServiceBusNamespaceName_1')]"
+    },
+    "AZURE_SERVICE_BUS_DOMAIN_NAME": {
+      "type": "string",
+      "value": "[substring(parameters('serviceBusEndpointSuffix'), 1)]"
     }
   }
 }
