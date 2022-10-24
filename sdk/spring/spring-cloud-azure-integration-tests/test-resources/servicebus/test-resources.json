@@ -20,7 +20,7 @@
       "type": "string"
     },
     "baseName": {
-      "defaultValue": "[resourceGroup().name]",
+      "defaultValue": "[concat('rg-servicebus-1',resourceGroup().location)]",
       "type": "String"
     },
     "serviceBusEndpointSuffix": {

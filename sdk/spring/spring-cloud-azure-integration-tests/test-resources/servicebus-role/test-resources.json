@@ -20,7 +20,7 @@
       "type": "string"
     },
     "baseName": {
-      "defaultValue": "[resourceGroup().name]",
+      "defaultValue": "[concat('rg-servicebus-1',resourceGroup().location)]",
       "type": "String"
     },
     "serviceBusEndpointSuffix": {
@@ -29,11 +29,11 @@
     }
   },
   "variables": {
-    "azureServiceBusNamespaceName": "[concat(parameters('AZURE_SERVICEBUS_BASENAME'),'-test-servicebus')]",
+    "azureServiceBusNamespaceName": "[concat(parameters('baseName'),'-test-servicebus')]",
     "azureServiceBusDataOwnerRoleId": "/subscriptions/[parameters('subscriptionId')]/providers/Microsoft.Authorization/roleDefinitions/090c5cfd-751d-490a-894a-3ce6f1109419",
-    "azureServiceBusNamespaceName_1": "[concat(parameters('AZURE_SERVICEBUS_BASENAME'), '-test-servicebus-1')]",
-    "azureServiceBusNamespaceName_2": "[concat(parameters('AZURE_SERVICEBUS_BASENAME'), '-test-servicebus-2')]",
-    "azureServiceBusNamespaceName_3": "[concat(parameters('AZURE_SERVICEBUS_BASENAME'), '-test-servicebus-3')]",
+    "azureServiceBusNamespaceName_1": "[concat(parameters('baseName'), '-test-servicebus-1')]",
+    "azureServiceBusNamespaceName_2": "[concat(parameters('baseName'), '-test-servicebus-2')]",
+    "azureServiceBusNamespaceName_3": "[concat(parameters('baseName'), '-test-servicebus-3')]",
     "location": "[resourceGroup().location]"
   },
   "resources": [
