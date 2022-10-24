@@ -10,7 +10,6 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasResourceGrou
 import com.azure.resourcemanager.resources.fluentcore.model.HasInnerModel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
-import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 import com.azure.resourcemanager.sql.fluent.models.ServerKeyInner;
 import reactor.core.publisher.Mono;
 

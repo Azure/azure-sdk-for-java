@@ -5,7 +5,6 @@ package com.azure.resourcemanager.sql.implementation;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.WrapperImpl;
 import com.azure.resourcemanager.sql.models.ServerMetric;
 import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
-import java.time.OffsetDateTime;
 
 /** Implementation for DatabaseMetric interface. */
 class ServerMetricImpl extends WrapperImpl<ServerUsageInner> implements ServerMetric {

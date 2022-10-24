@@ -10,7 +10,6 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.sql.fluent.models.DatabaseSecurityAlertPolicyInner;
 import com.azure.resourcemanager.sql.models.AdministratorType;
 import com.azure.resourcemanager.sql.models.AutomaticTuningMode;
 import com.azure.resourcemanager.sql.models.AutomaticTuningOptionModeActual;
@@ -48,7 +47,6 @@ import com.azure.resourcemanager.sql.models.SqlFirewallRule;
 import com.azure.resourcemanager.sql.models.SqlServer;
 import com.azure.resourcemanager.sql.models.SqlServerAutomaticTuning;
 import com.azure.resourcemanager.sql.models.SqlServerDnsAlias;
-import com.azure.resourcemanager.sql.models.SqlServerSecurityAlertPolicy;
 import com.azure.resourcemanager.sql.models.SqlSyncGroup;
 import com.azure.resourcemanager.sql.models.SqlSyncMember;
 import com.azure.resourcemanager.sql.models.SqlWarehouse;
@@ -71,7 +69,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.Duration;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -981,7 +978,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
 
         // Test security alert policy settings.
 
-        final String storageAccountName = generateRandomResourceName( "sqlsa", 20);
+        final String storageAccountName = generateRandomResourceName("sqlsa", 20);
         StorageAccount storageAccount = storageManager.storageAccounts().define(storageAccountName)
             .withRegion(Region.US_EAST)
             .withExistingResourceGroup(rgName)
@@ -1652,7 +1649,7 @@ public class SqlServerOperationsTests extends SqlServerTest {
             .forEach((x, serverVersionCapability) -> {
                 serverVersionCapability.supportedEditions().forEach(edition -> {
                     edition.supportedServiceLevelObjectives().forEach(serviceObjective -> {
-                        if (serviceObjective.status() != CapabilityStatus.AVAILABLE && serviceObjective.status() != CapabilityStatus.DEFAULT|| "M".equals(serviceObjective.sku().family())) {
+                        if (serviceObjective.status() != CapabilityStatus.AVAILABLE && serviceObjective.status() != CapabilityStatus.DEFAULT || "M".equals(serviceObjective.sku().family())) {
                             databaseSkus.remove(DatabaseSku.fromSku(serviceObjective.sku()));
                         }
                     });

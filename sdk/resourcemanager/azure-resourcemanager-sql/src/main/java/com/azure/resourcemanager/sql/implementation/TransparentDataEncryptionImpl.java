@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.sql.implementation;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.RefreshableWrapperImpl;
 import com.azure.resourcemanager.sql.SqlServerManager;
@@ -66,16 +65,16 @@ class TransparentDataEncryptionImpl
 
     @Override
     public TransparentDataEncryption updateStatus(TransparentDataEncryptionState transparentDataEncryptionState) {
-            this
-                .sqlServerManager
-                .serviceClient()
-                .getTransparentDataEncryptions()
-                .createOrUpdate(
-                    this.resourceGroupName,
-                    this.sqlServerName,
-                    this.databaseName(),
-                    TransparentDataEncryptionName.CURRENT,
-                    new LogicalDatabaseTransparentDataEncryptionInner().withState(transparentDataEncryptionState));
+        this
+            .sqlServerManager
+            .serviceClient()
+            .getTransparentDataEncryptions()
+            .createOrUpdate(
+                this.resourceGroupName,
+                this.sqlServerName,
+                this.databaseName(),
+                TransparentDataEncryptionName.CURRENT,
+                new LogicalDatabaseTransparentDataEncryptionInner().withState(transparentDataEncryptionState));
         this.refresh();
 
         return this;

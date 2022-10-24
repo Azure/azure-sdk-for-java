@@ -4,7 +4,6 @@ package com.azure.resourcemanager.sql.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import java.time.OffsetDateTime;
 
 /** A representation of the Azure SQL Server Key operations. */
 @Fluent
