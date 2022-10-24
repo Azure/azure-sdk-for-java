@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RehydrationPriority. */
+/** Rehydration Priority. */
 public final class RehydrationPriority extends ExpandableStringEnum<RehydrationPriority> {
     /** Static value Standard for RehydrationPriority. */
     public static final RehydrationPriority STANDARD = fromString("Standard");

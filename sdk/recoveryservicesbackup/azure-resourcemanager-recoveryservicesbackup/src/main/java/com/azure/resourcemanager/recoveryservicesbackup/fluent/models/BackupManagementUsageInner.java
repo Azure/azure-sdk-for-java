@@ -49,6 +49,10 @@ public final class BackupManagementUsageInner {
     @JsonProperty(value = "name")
     private NameInfo name;
 
+    /** Creates an instance of BackupManagementUsageInner class. */
+    public BackupManagementUsageInner() {
+    }
+
     /**
      * Get the unit property: Unit of the usage.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScheduleRunType. */
+/** Frequency of the schedule operation of this policy. */
 public final class ScheduleRunType extends ExpandableStringEnum<ScheduleRunType> {
     /** Static value Invalid for ScheduleRunType. */
     public static final ScheduleRunType INVALID = fromString("Invalid");

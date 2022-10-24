@@ -28,6 +28,10 @@ public final class TokenInformationInner {
     @JsonProperty(value = "securityPIN")
     private String securityPin;
 
+    /** Creates an instance of TokenInformationInner class. */
+    public TokenInformationInner() {
+    }
+
     /**
      * Get the token property: Token value.
      *
