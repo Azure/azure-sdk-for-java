@@ -10,6 +10,10 @@ import java.util.Map;
 /** RecoveryPoint Tier Information V2. */
 @Fluent
 public final class RecoveryPointTierInformationV2 extends RecoveryPointTierInformation {
+    /** Creates an instance of RecoveryPointTierInformationV2 class. */
+    public RecoveryPointTierInformationV2() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public RecoveryPointTierInformationV2 withType(RecoveryPointTierType type) {

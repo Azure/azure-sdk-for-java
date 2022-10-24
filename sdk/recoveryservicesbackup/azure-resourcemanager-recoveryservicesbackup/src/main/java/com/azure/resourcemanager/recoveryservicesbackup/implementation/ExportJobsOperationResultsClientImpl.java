@@ -208,24 +208,6 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the export job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the operation result of operation triggered by Export Jobs API.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationResultInfoBaseResourceInner get(String vaultName, String resourceGroupName, String operationId) {
-        return getAsync(vaultName, resourceGroupName, operationId).block();
-    }
-
-    /**
-     * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
-     * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
-     * format.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param operationId OperationID which represents the export job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -236,5 +218,23 @@ public final class ExportJobsOperationResultsClientImpl implements ExportJobsOpe
     public Response<OperationResultInfoBaseResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, operationId, context).block();
+    }
+
+    /**
+     * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
+     * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
+     * format.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param operationId OperationID which represents the export job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the operation result of operation triggered by Export Jobs API.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationResultInfoBaseResourceInner get(String vaultName, String resourceGroupName, String operationId) {
+        return getWithResponse(vaultName, resourceGroupName, operationId, Context.NONE).getValue();
     }
 }

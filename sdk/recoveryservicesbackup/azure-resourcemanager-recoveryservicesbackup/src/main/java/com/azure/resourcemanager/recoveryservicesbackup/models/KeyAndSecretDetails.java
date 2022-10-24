@@ -32,6 +32,10 @@ public final class KeyAndSecretDetails {
     @JsonProperty(value = "encryptionMechanism")
     private String encryptionMechanism;
 
+    /** Creates an instance of KeyAndSecretDetails class. */
+    public KeyAndSecretDetails() {
+    }
+
     /**
      * Get the kekDetails property: KEK is encryption key for BEK.
      *
