@@ -22,7 +22,7 @@ import java.util.stream.StreamSupport;
 public class EventSenderBuffered extends EventHubsScenario {
     private static final ClientLogger LOGGER = new ClientLogger(EventSenderBuffered.class);
 
-    @Value("${SEND_TIMES:1000000}")
+    @Value("${SEND_TIMES:10000}")
     private int sendTimes;
 
     @Value("${SEND_EVENTS:500}")

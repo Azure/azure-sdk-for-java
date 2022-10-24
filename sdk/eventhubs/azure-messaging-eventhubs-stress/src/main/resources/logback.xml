@@ -9,8 +9,8 @@
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-          <!-- rollover hourly and gzip logs -->
-          <fileNamePattern>${DEBUG_SHARE}/archived/java-eventhubs-stress-test-%d{yyyy-MM-dd-HH}.log.gz</fileNamePattern>
+          <!-- daily rollover and gzip logs -->
+          <fileNamePattern>${DEBUG_SHARE}/archived/java-eventhubs-stress-test-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
         </rollingPolicy>
       </appender>
 

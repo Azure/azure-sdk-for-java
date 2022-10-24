@@ -18,7 +18,7 @@ import java.util.stream.IntStream;
 @Service("EventSender")
 public class EventSender extends EventHubsScenario {
 
-    @Value("${SEND_TIMES:1000000}")
+    @Value("${SEND_TIMES:10000}")
     private int sendTimes;
 
     @Value("${SEND_EVENTS:500}")

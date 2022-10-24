@@ -72,6 +72,12 @@ Stop and remove deployed package:
 ```shell
 helm uninstall <stress test name> -n <stress test namespace>
 ```
+### Configure Logs
+
+Because some eventhubs client logs need to be tuned, currently all logs are printed to azure file share. 
+The log configuration is done by [logback.xml][logback_path].
+
+See [Stress Test File Share][config_file_share] for more details.
 
 ### Configure Faults
 
@@ -291,6 +297,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli
 [powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
 [azure_sdk_chaos]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md
+[logback_path]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-stress/src/main/resources/logback.xml
+[config_file_share]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#stress-test-file-share
 [enable_application_insights]: https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent#enable-azure-monitor-application-insights
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [config_faults]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#configuring-faults
