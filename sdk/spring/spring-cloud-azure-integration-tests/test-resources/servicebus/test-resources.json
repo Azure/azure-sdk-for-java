@@ -248,7 +248,11 @@
       "name": "[concat(variables('azureServiceBusNamespaceName_3'), '/RootManageSharedAccessKey')]",
       "location": "[variables('location')]",
       "dependsOn": [
-        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_3'))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces', variables('azureServiceBusNamespaceName_3'))]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName'))))]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_1'))))]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_2'))))]",
+        "[resourceId('Microsoft.ServiceBus/namespaces', guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_3'))))]"
       ],
       "properties": {
         "rights": [
