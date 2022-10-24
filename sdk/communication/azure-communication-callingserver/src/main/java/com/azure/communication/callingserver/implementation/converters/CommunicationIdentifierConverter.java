@@ -39,24 +39,24 @@ public class CommunicationIdentifierConverter {
         if (kind == CommunicationIdentifierModelKind.COMMUNICATION_USER
             && identifier.getCommunicationUser() != null) {
             Objects.requireNonNull(identifier.getCommunicationUser().getId(),
-                "'ID' of the CommunicationUserIdentifierModel cannot be null.");
+                "'ID' of the CommunicationIdentifierModel cannot be null.");
             return new CommunicationUserIdentifier(identifier.getCommunicationUser().getId());
         }
 
         if (kind == CommunicationIdentifierModelKind.PHONE_NUMBER
             && identifier.getPhoneNumber() != null) {
             String phoneNumber = identifier.getPhoneNumber().getValue();
-            Objects.requireNonNull(phoneNumber, "'PhoneNumber' of the CommunicationUserIdentifierModel cannot be null.");
-            Objects.requireNonNull(rawId, "'RawID' of the CommunicationUserIdentifierModel cannot be null.");
+            Objects.requireNonNull(phoneNumber, "'PhoneNumber' of the CommunicationIdentifierModel cannot be null.");
+            Objects.requireNonNull(rawId, "'RawID' of the CommunicationIdentifierModel cannot be null.");
             return new PhoneNumberIdentifier(phoneNumber).setRawId(rawId);
         }
 
         if (kind == CommunicationIdentifierModelKind.MICROSOFT_TEAMS_USER
             && identifier.getMicrosoftTeamsUser() != null) {
             MicrosoftTeamsUserIdentifierModel teamsUserIdentifierModel = identifier.getMicrosoftTeamsUser();
-            Objects.requireNonNull(teamsUserIdentifierModel.getUserId(), "'UserID' of the CommunicationUserIdentifierModel cannot be null.");
-            Objects.requireNonNull(teamsUserIdentifierModel.getCloud(), "'Cloud' of the CommunicationUserIdentifierModel cannot be null.");
-            Objects.requireNonNull(rawId, "'RawID' of the CommunicationUserIdentifierModel cannot be null.");
+            Objects.requireNonNull(teamsUserIdentifierModel.getUserId(), "'UserID' of the CommunicationIdentifierModel cannot be null.");
+            Objects.requireNonNull(teamsUserIdentifierModel.getCloud(), "'Cloud' of the CommunicationIdentifierModel cannot be null.");
+            Objects.requireNonNull(rawId, "'RawID' of the CommunicationIdentifierModel cannot be null.");
             return new MicrosoftTeamsUserIdentifier(teamsUserIdentifierModel.getUserId(),
                 teamsUserIdentifierModel.isAnonymous())
                 .setRawId(rawId)
@@ -64,7 +64,7 @@ public class CommunicationIdentifierConverter {
                     .fromString(teamsUserIdentifierModel.getCloud().toString()));
         }
 
-        Objects.requireNonNull(rawId, "'RawID' of the CommunicationUserIdentifierModel cannot be null.");
+        Objects.requireNonNull(rawId, "'RawID' of the CommunicationIdentifierModel cannot be null.");
         return new UnknownIdentifier(rawId);
     }
 
