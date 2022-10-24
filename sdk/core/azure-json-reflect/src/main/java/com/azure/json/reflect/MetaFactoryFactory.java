@@ -12,7 +12,7 @@ import static java.lang.invoke.MethodType.methodType;
 
 final class MetaFactoryFactory {
     private MetaFactoryFactory() {
-        throw new IllegalStateException();
+        throw new UnsupportedOperationException();
     }
 
     @SuppressWarnings("unchecked")

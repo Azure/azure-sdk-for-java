@@ -19,9 +19,13 @@ import com.azure.json.JsonWriter;
  *
  * @author Jack Sandford
  */
-public abstract class JsonProviderFactory {
+public class JsonProviderFactory {
     private static JsonProvider jacksonJsonProvider = null;
     private static JsonProvider gsonJsonProvider = null;
+
+    private JsonProviderFactory() {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Constructs a singleton instance of {@link JsonProvider} prioritizing Jackson over Gson.
