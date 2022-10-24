@@ -125,7 +125,7 @@
       "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), parameters('baseName')))]",
       "dependsOn": [
         "[concat(variables('azureServiceBusNamespaceName'), '/errorHandler-in-0')]",
-        "[concat(variables('azureServiceBusNamespaceName'), '/que001')]
+        "[concat(variables('azureServiceBusNamespaceName'), '/que001')]"
       ],
       "properties": {
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
