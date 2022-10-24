@@ -203,7 +203,7 @@
       "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_3')))]",
       "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_3'))]",
       "dependsOn": [
-        "[concat(variables('azureServiceBusNamespaceName_3'), '/queue1')]
+        "[concat(variables('azureServiceBusNamespaceName_3'), '/queue1')]"
       ],
       "properties": {
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
