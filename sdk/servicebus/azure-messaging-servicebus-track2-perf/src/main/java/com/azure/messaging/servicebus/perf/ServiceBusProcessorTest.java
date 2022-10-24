@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.perf;
 
 import com.azure.core.util.CoreUtils;
@@ -24,6 +27,8 @@ public class ServiceBusProcessorTest extends EventPerfTest<ServiceBusStressOptio
 
     private final AtomicInteger total = new AtomicInteger();
 
+    private final ServiceBusProcessorClient processor;
+
     /**
      * Creates an instance of performance test.
      *
@@ -45,10 +50,24 @@ public class ServiceBusProcessorTest extends EventPerfTest<ServiceBusStressOptio
                 String.format("Environment variable %s must be set", AZURE_SERVICEBUS_QUEUE_NAME)));
         }
 
+        processor = new ServiceBusClientBuilder()
+            .connectionString(CONNECTION_STRING)
+            .processor()
+            .queueName(QUEUE_NAME)
+            .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
+            .maxConcurrentCalls(options.getMaxConcurrentCalls())
+            .processMessage(messageContext -> {
+                total.incrementAndGet();
+            })
+            .processError(errorContext -> {
+                LOGGER.error("Process message error: {}", errorContext.getException());
+            })
+            .buildProcessorClient();
+
     }
 
     @Override
-    public Mono<Void> setupAsync() {
+    public Mono<Void> globalSetupAsync() {
         ServiceBusSenderClient sender = new ServiceBusClientBuilder()
             .connectionString(CONNECTION_STRING)
             .sender()
@@ -57,7 +76,7 @@ public class ServiceBusProcessorTest extends EventPerfTest<ServiceBusStressOptio
 
         String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
 
-        for (int i = 0; i < options.getMessageSendTimes(); i++) {
+        for (int i = 0; i < options.getMessageBatchSendTimes(); i++) {
             ServiceBusMessageBatch batch = sender.createMessageBatch();
             for (int j = 0; j < options.getMessagesToSend(); j++) {
                 ServiceBusMessage message = new ServiceBusMessage(messageContent);
@@ -69,42 +88,20 @@ public class ServiceBusProcessorTest extends EventPerfTest<ServiceBusStressOptio
         return Mono.empty();
     }
 
-
     @Override
-    public void runAll(long endNanoTime) {
-        runAllAsync(endNanoTime).block();
-    }
-
-    @Override
-    public Mono<Void> runAllAsync(long endNanoTime) {
-        return Mono.usingWhen(Mono.fromCallable(() -> {
-            final ServiceBusProcessorClient processor = new ServiceBusClientBuilder()
-                .connectionString(CONNECTION_STRING)
-                .processor()
-                .queueName(QUEUE_NAME)
-                .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
-                .maxConcurrentCalls(options.getMaxConcurrentCalls())
-                .processMessage(messageContext -> {
-                    total.incrementAndGet();
-                })
-                .processError(errorContext -> {
-                    LOGGER.error("Process message error: {}", errorContext.getException());
-                })
-                .buildProcessorClient();
-
-            return processor;
-        }), processor -> {
+    public Mono<Void> setupAsync() {
+        return super.setupAsync().then(Mono.defer(() -> {
             processor.start();
-            return Mono.delay(Duration.ofNanos(endNanoTime - System.nanoTime())).then();
-        }, processor -> Mono.delay(Duration.ofMillis(500), Schedulers.boundedElastic())
-            .then(Mono.fromRunnable(processor::stop)));
-
+            return Mono.empty();
+        }));
     }
-
 
     @Override
     public Mono<Void> cleanupAsync() {
-        LOGGER.info("Total messages: {}", total.get());
-        return Mono.empty();
+        return Mono.defer(() -> {
+            processor.stop();
+            LOGGER.info("Total messages: {}", total.get());
+            return Mono.empty();
+        }).then(super.cleanupAsync());
     }
 }

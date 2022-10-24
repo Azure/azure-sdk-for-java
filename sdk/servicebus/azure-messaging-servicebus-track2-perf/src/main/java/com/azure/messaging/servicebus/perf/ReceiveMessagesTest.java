@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.messaging.servicebus.perf;
 
 import com.azure.core.util.CoreUtils;
@@ -79,9 +82,9 @@ public class ReceiveMessagesTest extends BatchPerfTest<ServiceBusStressOptions> 
     @Override
     public Mono<Void> setupAsync() {
         String messageContent = TestDataCreationHelper.generateRandomString(options.getMessagesSizeBytesToSend());
-        for (int i = 0; i < options.getMessageSendTimes(); i++) {
+        for (int i = 0; i < options.getMessageBatchSendTimes(); i++) {
             ServiceBusMessageBatch batch = sender.createMessageBatch();
-            for (int j = 0; j < options.getMessagesToSend(); j++) {
+            for (int j = 0; j < options.getMessageBatchSize(); j++) {
                 ServiceBusMessage message = new ServiceBusMessage(messageContent);
                 message.setMessageId(UUID.randomUUID().toString());
                 batch.tryAddMessage(message);
