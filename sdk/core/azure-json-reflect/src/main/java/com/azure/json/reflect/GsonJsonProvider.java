@@ -14,7 +14,7 @@ import java.io.Reader;
 import java.io.Writer;
 
 
-public class GsonJsonProvider implements JsonProvider {
+class GsonJsonProvider implements JsonProvider {
     static final boolean INITIALIZED = GsonJsonReader.INITIALIZED && GsonJsonWriter.INITIALIZED;
 
     @Override
