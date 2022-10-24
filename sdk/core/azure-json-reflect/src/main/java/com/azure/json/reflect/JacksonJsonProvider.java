@@ -16,7 +16,7 @@ import java.io.Writer;
 
 
 class JacksonJsonProvider implements JsonProvider {
-    static final boolean INITIALIZED = JacksonJsonReader.INITIALIZED && JacksonJsonReader.INITIALIZED;
+    static final boolean INITIALIZED = JacksonJsonReader.INITIALIZED && JacksonJsonWriter.INITIALIZED;
 
     @Override
     public JsonReader createReader(byte[] json, JsonOptions options) throws IOException {
