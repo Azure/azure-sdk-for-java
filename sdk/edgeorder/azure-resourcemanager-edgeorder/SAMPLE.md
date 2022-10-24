@@ -641,7 +641,7 @@ public final class ResourceProviderUpdateAddressSamples {
             .withContactDetails(
                 new ContactDetails()
                     .withContactName("Petr Cech")
-                    .withPhone("fake")
+                    .withPhone("fakePhoneNumberPlaceholder")
                     .withPhoneExtension("")
                     .withEmailList(Arrays.asList("ssemcr@microsoft.com")))
             .apply();
