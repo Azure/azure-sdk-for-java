@@ -37,7 +37,7 @@ public class UsernamePasswordCredentialTest {
     public void testValidUserCredential() throws Exception {
         // setup
         String username = "testuser";
-        String password = "P@ssw0rd";
+        String password = "fakeCredentialPlaceholder";
         String token1 = "token1";
         String token2 = "token2";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
@@ -147,7 +147,7 @@ public class UsernamePasswordCredentialTest {
     public void testInvalidParameters() throws Exception {
         // setup
         String username = "testuser";
-        String password = "P@ssw0rd";
+        String password = "fakeCredentialPlaceholder";
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
@@ -185,7 +185,7 @@ public class UsernamePasswordCredentialTest {
     public void testValidAuthenticate() throws Exception {
         // setup
         String username = "testuser";
-        String password = "P@ssw0rd";
+        String password = "fakeCredentialPlaceholder";
         String token1 = "token1";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresAt = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);

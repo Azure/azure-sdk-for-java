@@ -27,7 +27,7 @@ public final class JavaDocCodeSnippets {
     private String clientId = System.getenv("AZURE_CLIENT_ID");
     private String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
     private String username = "sampleuser";
-    private String password = "Samp1eP@ssw0rd";
+    private String password = "fakeCredentialPlaceholder";
 
     /**
      * Method to insert code snippets for {@link ClientSecretCredential}

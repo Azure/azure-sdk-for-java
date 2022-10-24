@@ -42,7 +42,7 @@ public class ProxyOptionsTests {
 
     private static final String PROXY_HOST = "localhost";
     private static final String PROXY_USER = "user";
-    private static final String PROXY_PASSWORD = "pass";
+    private static final String PROXY_PASSWORD = "fakeCredentialPlaceholder";
     private static final String NON_PROXY_HOSTS = "notlocalhost";
 
     private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";

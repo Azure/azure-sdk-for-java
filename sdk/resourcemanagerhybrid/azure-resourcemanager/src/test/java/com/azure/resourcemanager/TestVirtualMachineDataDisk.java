@@ -27,7 +27,7 @@ public class TestVirtualMachineDataDisk extends TestTemplate<VirtualMachine, Vir
                 .withoutPrimaryPublicIPAddress()
                 .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
                 .withAdminUsername("testuser")
-                .withAdminPassword("12NewPA$$w0rd!")
+                .withAdminPassword("fakeCredentialPlaceholder")
                 .withUnmanagedDisks()
                 .withNewUnmanagedDataDisk(30)
                 .defineUnmanagedDataDisk("disk2")
