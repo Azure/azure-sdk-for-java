@@ -161,7 +161,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_1')))]",
+      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_1'), 'topic1'))]",
       "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_1'),'/topics/topic1')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces/topics/subscriptions', variables('azureServiceBusNamespaceName_1'), 'topic1','topicSub') ]"
@@ -200,7 +200,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-10-01-preview",
-      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_2')))]",
+      "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_2'), 'topic1'))]",
       "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_2'), '/topics/topic1')]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces/topics/subscriptions', variables('azureServiceBusNamespaceName_2'), 'topic1','topicSub')]"
