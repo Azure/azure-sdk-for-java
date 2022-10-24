@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for JobCancellations Trigger. */
 public final class JobCancellationsTriggerSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/Common/TriggerCancelJob.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/TriggerCancelJob.json
      */
     /**
      * Sample code: Cancel Job.

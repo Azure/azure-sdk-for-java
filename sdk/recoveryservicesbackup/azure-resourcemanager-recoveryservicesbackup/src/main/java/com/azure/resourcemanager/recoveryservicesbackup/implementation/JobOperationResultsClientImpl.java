@@ -207,22 +207,6 @@ public final class JobOperationResultsClientImpl implements JobOperationResultsC
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Job name whose operation result has to be fetched.
      * @param operationId OperationID which represents the operation whose result has to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void get(String vaultName, String resourceGroupName, String jobName, String operationId) {
-        getAsync(vaultName, resourceGroupName, jobName, operationId).block();
-    }
-
-    /**
-     * Fetches the result of any operation.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param jobName Job name whose operation result has to be fetched.
-     * @param operationId OperationID which represents the operation whose result has to be fetched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -233,5 +217,21 @@ public final class JobOperationResultsClientImpl implements JobOperationResultsC
     public Response<Void> getWithResponse(
         String vaultName, String resourceGroupName, String jobName, String operationId, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, jobName, operationId, context).block();
+    }
+
+    /**
+     * Fetches the result of any operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param jobName Job name whose operation result has to be fetched.
+     * @param operationId OperationID which represents the operation whose result has to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void get(String vaultName, String resourceGroupName, String jobName, String operationId) {
+        getWithResponse(vaultName, resourceGroupName, jobName, operationId, Context.NONE);
     }
 }

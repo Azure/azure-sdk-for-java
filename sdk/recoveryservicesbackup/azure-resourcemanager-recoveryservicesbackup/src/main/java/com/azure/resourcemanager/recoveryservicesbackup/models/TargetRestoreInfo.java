@@ -23,8 +23,7 @@ public final class TargetRestoreInfo {
     private String containerId;
 
     /*
-     * Database name InstanceName/DataBaseName for SQL or System/DbName for SAP
-     * Hana
+     * Database name InstanceName/DataBaseName for SQL or System/DbName for SAP Hana
      */
     @JsonProperty(value = "databaseName")
     private String databaseName;
@@ -34,6 +33,10 @@ public final class TargetRestoreInfo {
      */
     @JsonProperty(value = "targetDirectoryForFileRestore")
     private String targetDirectoryForFileRestore;
+
+    /** Creates an instance of TargetRestoreInfo class. */
+    public TargetRestoreInfo() {
+    }
 
     /**
      * Get the overwriteOption property: Can Overwrite if Target DataBase already exists.

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for BackupEngineType. */
+/** Type of the backup engine. */
 public final class BackupEngineType extends ExpandableStringEnum<BackupEngineType> {
     /** Static value Invalid for BackupEngineType. */
     public static final BackupEngineType INVALID = fromString("Invalid");
