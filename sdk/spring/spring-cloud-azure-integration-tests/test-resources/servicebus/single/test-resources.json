@@ -132,7 +132,7 @@
     {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2022-04-01",
-      "name": "retry",
+      "name": "c6d90a63-8089-435f-9771-20a51dac6fbf",
       "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_1'))]",
       "dependsOn": [
         "faf404dc-9914-43f1-8e7e-058c76265e69"
