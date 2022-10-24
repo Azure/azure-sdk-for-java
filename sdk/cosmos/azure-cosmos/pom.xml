@@ -253,7 +253,12 @@ Licensed under the MIT License.
       <version>4.5.1</version> <!-- {x-version-update;org.mockito:mockito-inline;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-test</artifactId>
+      <version>5.3.23</version>
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>

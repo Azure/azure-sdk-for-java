@@ -2202,6 +2202,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             collection.getResourceId(),
                             null,
                             null);
+
                     return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
                         Map<PartitionKeyRange, List<CosmosItemIdentity>> partitionRangeItemKeyMap = new HashMap<>();
                         Map<PartitionKeyRange, CosmosItemIdentity> singleItemPartitionRequestMap = new HashMap<>();
@@ -2443,7 +2444,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 return this.readDocument(getDocumentLink(item.getId(), resourceLink), ModelBridgeInternal.toRequestOptions(queryRequestOptions));
             })
             .flatMap(itemResponse -> Mono.just(ModelBridgeInternal.createCosmosAsyncItemResponse(itemResponse, klass, getItemDeserializer())))
-            .flatMap(cosmosItemResponse -> Mono.just(ModelBridgeInternal.createFeedResponse(new Document(cosmosItemResponse.getItem().toString()), cosmosItemResponse.getResponseHeaders())));
+            .flatMap(cosmosItemResponse -> {
+                var document = new Document(cosmosItemResponse.getItem().toString());
+                var feedResponse = ModelBridgeInternal.createFeedResponse(document, cosmosItemResponse.getResponseHeaders());
+                return Mono.just(feedResponse);
+            });
     }
 
     @Override
