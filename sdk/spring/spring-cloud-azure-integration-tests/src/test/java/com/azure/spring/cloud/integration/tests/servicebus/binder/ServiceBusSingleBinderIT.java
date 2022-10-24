@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.servicebus.binder;
 
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,7 +92,8 @@ class ServiceBusSingleBinderIT {
         }
     }
 
-    @Test
+
+    @RepeatedTest(3)
     void testSingleServiceBusSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("SingleServiceBusQueueAndTopicBinderIT begin.");
         GenericMessage<String> genericMessage = new GenericMessage<>(MESSAGE);
