@@ -23,12 +23,6 @@ public class DownloadTransferValidationOptions {
         return checksumAlgorithm;
     }
 
-    public StorageChecksumAlgorithm getChecksumAlgorithmResolveAuto() {
-        return checksumAlgorithm == StorageChecksumAlgorithm.Auto
-            ? StorageChecksumAlgorithm.StorageCrc64
-            : checksumAlgorithm;
-    }
-
     /**
      * Sets the identifier of the checksum algorithm to use.
      * @param checksumAlgorithm Checksum algorithm ID.

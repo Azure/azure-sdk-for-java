@@ -36,10 +36,11 @@ import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
+import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.TransferValidationOptions;
+import com.azure.storage.common.UploadTransferValidationOptions;
 import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.implementation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
@@ -433,22 +434,32 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         BlobImmutabilityPolicy immutabilityPolicy = options.getImmutabilityPolicy() == null
             ? new BlobImmutabilityPolicy() : options.getImmutabilityPolicy();
 
-        return dataMono.flatMap(data ->
-            this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
-                options.getLength(), data, null, options.getContentMd5(), options.getMetadata(),
-                requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
-                requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
-                requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
-                tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
-                options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
-                encryptionScope, finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(rb -> {
-                BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
-                BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
-                    hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
-                    hd.getXMsVersionId());
-                return new SimpleResponse<>(rb, item);
-            }));
+        // TODO will this always be non-null?
+        UploadTransferValidationOptions validationOptions = options.getTransferValidation() != null
+            ? options.getTransferValidation() : this.getValidationOptions().getUpload();
+
+        return dataMono.flatMap(bData -> ChecksumUtils.checksumDataAsync(bData, validationOptions))
+            .flatMap(tuple2 -> {
+                BinaryData bData = tuple2.getT1();
+                ChecksumValue finalValidation = tuple2.getT2();
+                // TODO get crc in generated put blob
+                if (finalValidation.getCrc64() != null) throw new UnsupportedOperationException("crc not in generated code");
+                return this.azureBlobStorage.getBlockBlobs().uploadWithResponseAsync(containerName, blobName,
+                    options.getLength(), bData, null, finalValidation.getMd5(), options.getMetadata(),
+                    requestConditions.getLeaseId(), options.getTier(), requestConditions.getIfModifiedSince(),
+                    requestConditions.getIfUnmodifiedSince(), requestConditions.getIfMatch(),
+                    requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
+                    tagsToString(options.getTags()), immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(),
+                    options.isLegalHold(), options.getHeaders(), getCustomerProvidedKey(),
+                    encryptionScope, finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
+                .map(rb -> {
+                    BlockBlobsUploadHeaders hd = rb.getDeserializedHeaders();
+                    BlockBlobItem item = new BlockBlobItem(hd.getETag(), hd.getLastModified(), hd.getContentMD5(),
+                        hd.isXMsRequestServerEncrypted(), hd.getXMsEncryptionKeySha256(), hd.getXMsEncryptionScope(),
+                        hd.getXMsVersionId());
+                    return new SimpleResponse<>(rb, item);
+                });
+            });
     }
 
     /**
@@ -703,9 +714,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId) {
+        UploadTransferValidationOptions validation = contentMd5 != null
+            ? new UploadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
+                .setPrecalculatedChecksum(contentMd5)
+            : null;
         try {
             return withContext(context -> stageBlockWithResponse(base64BlockId, data, length,
-                contentMd5, leaseId, context));
+                validation, leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -743,29 +758,38 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
         try {
             return withContext(context -> stageBlockWithResponse(
                 options.getBase64BlockId(), options.getData(),
-                options.getContentMd5(), options.getLeaseId(), context));
+                options.getTransferValidation(), options.getLeaseId(), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
     }
 
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
-        byte[] contentMd5, String leaseId, Context context) {
+        UploadTransferValidationOptions transferValidation, String leaseId, Context context) {
         return BinaryData.fromFlux(data, length, false)
             .flatMap(
-                binaryData -> stageBlockWithResponse(base64BlockId, binaryData, contentMd5, leaseId, context));
+                binaryData -> stageBlockWithResponse(base64BlockId, binaryData, transferValidation, leaseId, context));
     }
 
     Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, BinaryData data,
-        byte[] contentMd5, String leaseId, Context context) {
+        UploadTransferValidationOptions transferValidation, String leaseId, Context context) {
         Objects.requireNonNull(data, "data must not be null");
         Objects.requireNonNull(data.getLength(), "data must have defined length");
-        context = context == null ? Context.NONE : context;
-        return this.azureBlobStorage.getBlockBlobs().stageBlockWithResponseAsync(containerName, blobName,
-                base64BlockId, data.getLength(), data, contentMd5, null, null,
-                leaseId, null, getCustomerProvidedKey(),
-                encryptionScope, context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
-            .map(response -> new SimpleResponse<>(response, null));
+        Context finalContext = context == null ? Context.NONE : context;
+
+        // TODO will this always be non-null?
+        UploadTransferValidationOptions validationOptions = transferValidation != null
+            ? transferValidation : this.getValidationOptions().getUpload();
+
+        return ChecksumUtils.checksumDataAsync(data, validationOptions).flatMap(tuple2 -> {
+            BinaryData bData = tuple2.getT1();
+            ChecksumValue finalValidation = tuple2.getT2();
+            return this.azureBlobStorage.getBlockBlobs().stageBlockWithResponseAsync(containerName, blobName,
+                base64BlockId, bData.getLength(), bData, finalValidation.getMd5(), finalValidation.getCrc64(), null,
+                leaseId, null, getCustomerProvidedKey(), encryptionScope,
+                finalContext.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE)
+            ).map(response -> new SimpleResponse<>(response, null));
+        });
     }
 
     /**

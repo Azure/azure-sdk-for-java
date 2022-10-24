@@ -6,6 +6,8 @@ package com.azure.storage.blob.options;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
+import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.UploadTransferValidationOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
@@ -16,7 +18,7 @@ public final class BlockBlobStageBlockOptions {
     private final String base64BlockId;
     private final BinaryData data;
     private String leaseId;
-    private byte[] contentMd5;
+    private UploadTransferValidationOptions transferValidation;
 
     /**
      * @param base64BlockId The block ID to assign the new block.
@@ -68,7 +70,10 @@ public final class BlockBlobStageBlockOptions {
      * operation will fail.
      */
     public byte[] getContentMd5() {
-        return CoreUtils.clone(contentMd5);
+        if (transferValidation != null && transferValidation.getChecksumAlgorithm() == StorageChecksumAlgorithm.MD5) {
+            return CoreUtils.clone(transferValidation.getPrecalculatedChecksum());
+        }
+        return null;
     }
 
     /**
@@ -79,7 +84,17 @@ public final class BlockBlobStageBlockOptions {
      * @return The updated options
      */
     public BlockBlobStageBlockOptions setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = CoreUtils.clone(contentMd5);
+        this.transferValidation = new UploadTransferValidationOptions()
+            .setChecksumAlgorithm(StorageChecksumAlgorithm.MD5).setPrecalculatedChecksum(CoreUtils.clone(contentMd5));
+        return this;
+    }
+
+    public UploadTransferValidationOptions getTransferValidation() {
+        return transferValidation;
+    }
+
+    public BlockBlobStageBlockOptions setTransferValidation(UploadTransferValidationOptions transferValidation) {
+        this.transferValidation = transferValidation;
         return this;
     }
 }

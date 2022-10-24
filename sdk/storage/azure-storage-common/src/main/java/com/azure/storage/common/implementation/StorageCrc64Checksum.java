@@ -2,7 +2,6 @@ package com.azure.storage.common.implementation;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.zip.Checksum;
 
 public class StorageCrc64Checksum implements Checksum {
     private long _uCrc;
@@ -16,18 +15,18 @@ public class StorageCrc64Checksum implements Checksum {
     }
 
     @Override
-    public void update(int b) {
-        throw new UnsupportedOperationException();
-    }
-
-    @Override
     public void update(byte[] b, int off, int len) {
         _uCrc = StorageCrc64Calculator.ComputeSlicedSafe(b, off, len, _uCrc);
     }
 
     @Override
-    public long getValue() {
-        return _uCrc;
+    public byte[] getValue() {
+        return getCrcBytes(_uCrc);
+    }
+
+    @Override
+    public void reset() {
+        _uCrc = 0L;
     }
 
     public static byte[] getCrcBytes(long crc) {
@@ -35,10 +34,5 @@ public class StorageCrc64Checksum implements Checksum {
         bb.order(ByteOrder.LITTLE_ENDIAN);
         bb.putLong(crc);
         return bb.array();
-    }
-
-    @Override
-    public void reset() {
-        _uCrc = 0L;
     }
 }

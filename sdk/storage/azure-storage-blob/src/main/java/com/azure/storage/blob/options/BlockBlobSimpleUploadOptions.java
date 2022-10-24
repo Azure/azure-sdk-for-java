@@ -9,6 +9,8 @@ import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
+import com.azure.storage.common.StorageChecksumAlgorithm;
+import com.azure.storage.common.UploadTransferValidationOptions;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 
@@ -24,11 +26,11 @@ public class BlockBlobSimpleUploadOptions {
     private final InputStream dataStream;
     private final BinaryData data;
     private final long length;
+    private UploadTransferValidationOptions transferValidation;
     private BlobHttpHeaders headers;
     private Map<String, String> metadata;
     private Map<String, String> tags;
     private AccessTier tier;
-    private byte[] contentMd5;
     private BlobRequestConditions requestConditions;
     private BlobImmutabilityPolicy immutabilityPolicy;
     private Boolean legalHold;
@@ -176,7 +178,10 @@ public class BlockBlobSimpleUploadOptions {
      * operation will fail.
      */
     public byte[] getContentMd5() {
-        return CoreUtils.clone(contentMd5);
+        if (transferValidation != null && transferValidation.getChecksumAlgorithm() == StorageChecksumAlgorithm.MD5) {
+            return CoreUtils.clone(transferValidation.getPrecalculatedChecksum());
+        }
+        return null;
     }
 
     /**
@@ -187,7 +192,8 @@ public class BlockBlobSimpleUploadOptions {
      * @return The updated options
      */
     public BlockBlobSimpleUploadOptions setContentMd5(byte[] contentMd5) {
-        this.contentMd5 = CoreUtils.clone(contentMd5);
+        this.transferValidation = new UploadTransferValidationOptions()
+            .setChecksumAlgorithm(StorageChecksumAlgorithm.MD5).setPrecalculatedChecksum(CoreUtils.clone(contentMd5));
         return this;
     }
 
@@ -240,6 +246,15 @@ public class BlockBlobSimpleUploadOptions {
      */
     public BlockBlobSimpleUploadOptions setLegalHold(Boolean legalHold) {
         this.legalHold = legalHold;
+        return this;
+    }
+
+    public UploadTransferValidationOptions getTransferValidation() {
+        return transferValidation;
+    }
+
+    public BlockBlobSimpleUploadOptions setTransferValidation(UploadTransferValidationOptions transferValidation) {
+        this.transferValidation = transferValidation;
         return this;
     }
 }

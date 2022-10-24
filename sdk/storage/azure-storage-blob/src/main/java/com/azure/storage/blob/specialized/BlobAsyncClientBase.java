@@ -79,11 +79,8 @@ import com.azure.storage.blob.options.BlobQueryOptions;
 import com.azure.storage.blob.options.BlobSetAccessTierOptions;
 import com.azure.storage.blob.options.BlobSetTagsOptions;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
-import com.azure.storage.common.StorageSharedKeyCredential;
-import com.azure.storage.common.TransferValidationOptions;
-import com.azure.storage.common.Utility;
-import com.azure.storage.common.implementation.SasImplUtils;
-import com.azure.storage.common.implementation.StorageImplUtils;
+import com.azure.storage.common.*;
+import com.azure.storage.common.implementation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.SignalType;
@@ -1242,9 +1239,12 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
+        DownloadTransferValidationOptions validation = getRangeContentMd5
+            ? new DownloadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
+            : null;
         try {
             return withContext(context ->
-                downloadStreamWithResponse(range, options, requestConditions, getRangeContentMd5, context));
+                downloadStreamWithResponse(range, options, requestConditions, validation, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1283,7 +1283,7 @@ public class BlobAsyncClientBase {
         DownloadRetryOptions options,
         BlobRequestConditions requestConditions) {
         try {
-            return withContext(context -> downloadStreamWithResponse(null, options, requestConditions, false, context)
+            return withContext(context -> downloadStreamWithResponse(null, options, requestConditions, null, context)
                 .flatMap(r -> BinaryData.fromFlux(r.getValue())
                     .map(data -> new BlobDownloadContentAsyncResponse(r.getRequest(), r.getStatusCode(), r.getHeaders(),
                         data, r.getDeserializedHeaders()))));
@@ -1293,14 +1293,19 @@ public class BlobAsyncClientBase {
     }
 
     Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
-        BlobRequestConditions requestConditions, boolean getRangeContentMd5, Context context) {
+        BlobRequestConditions requestConditions, DownloadTransferValidationOptions transferValidation, Context context) {
         BlobRange finalRange = range == null ? new BlobRange(0) : range;
-        Boolean getMD5 = getRangeContentMd5 ? getRangeContentMd5 : null;
+        //TODO is this always non-null?
+        DownloadTransferValidationOptions finalValidationOptions = transferValidation != null
+            ? transferValidation : getValidationOptions().getDownload();
+        DownloadChecksumRequest requestChecksum = new DownloadChecksumRequest(
+            finalValidationOptions.getChecksumAlgorithm());
         BlobRequestConditions finalRequestConditions =
             requestConditions == null ? new BlobRequestConditions() : requestConditions;
         DownloadRetryOptions finalOptions = (options == null) ? new DownloadRetryOptions() : options;
 
-        return downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(), getMD5, context)
+        Mono<BlobDownloadAsyncResponse> result = downloadRange(finalRange, finalRequestConditions, finalRequestConditions.getIfMatch(),
+            requestChecksum.requestMd5(), requestChecksum.requestCrc64(), context)
             .map(response -> {
                 String eTag = ModelHelper.getETag(response.getHeaders());
                 BlobsDownloadHeaders blobsDownloadHeaders =
@@ -1345,7 +1350,8 @@ public class BlobAsyncClientBase {
 
                     try {
                         return downloadRange(
-                            new BlobRange(initialOffset + offset, newCount), finalRequestConditions, eTag, getMD5, context);
+                            new BlobRange(initialOffset + offset, newCount), finalRequestConditions, eTag,
+                            requestChecksum.requestMd5(), requestChecksum.requestCrc64(), context);
                     } catch (Exception e) {
                         return Mono.error(e);
                     }
@@ -1353,12 +1359,27 @@ public class BlobAsyncClientBase {
                 return BlobDownloadAsyncResponseConstructorProxy.create(
                     response, onDownloadErrorResume, finalOptions);
             });
+
+        if (ChecksumUtils.shouldValidateResponse(finalValidationOptions)) {
+            result = result.flatMap(response ->
+                BinaryData.fromFlux(response.getValue(), /*length*/null, /*bufferContent*/true).flatMap(bData ->
+                    ChecksumUtils.checksumDataAsync(bData, finalValidationOptions.getChecksumAlgorithm())
+                ).map(tuple2 -> {
+                    BinaryData bData = tuple2.getT1();
+                    ChecksumValue checksum = tuple2.getT2();
+                    ChecksumUtils.assertChecksumMatch(checksum, response.getHeaders());
+                    return bData;
+                }).map(bData -> new BlobDownloadAsyncResponse(response.getRequest(), response.getStatusCode(),
+                    response.getHeaders(), bData.toFluxByteBuffer(), response.getDeserializedHeaders()))
+            );
+        }
+        return result;
     }
 
     private Mono<StreamResponse> downloadRange(BlobRange range, BlobRequestConditions requestConditions,
-        String eTag, Boolean getMD5, Context context) {
+        String eTag, Boolean getMD5, Boolean getCrc64, Context context) {
         return azureBlobStorage.getBlobs().downloadWithResponseAsync(containerName, blobName, snapshot, versionId, null,
-            range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, null, requestConditions.getIfModifiedSince(),
+            range.toHeaderValue(), requestConditions.getLeaseId(), getMD5, getCrc64, requestConditions.getIfModifiedSince(),
             requestConditions.getIfUnmodifiedSince(), eTag,
             requestConditions.getIfNoneMatch(), requestConditions.getTagsConditions(), null,
             customerProvidedKey, context);
