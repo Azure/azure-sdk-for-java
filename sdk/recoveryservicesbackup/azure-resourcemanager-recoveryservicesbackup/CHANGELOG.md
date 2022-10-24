@@ -15,22 +15,12 @@
 * `withVirtualMachineId(java.lang.String)` was removed
 * `withBackupManagementType(models.BackupManagementType)` was removed
 * `withHealthStatus(models.HealthStatus)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
 * `withProtectedItemDataId(java.lang.String)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
 * `withFriendlyName(java.lang.String)` was removed
 * `withLastBackupTime(java.time.OffsetDateTime)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
-* `withLastBackupTime(java.time.OffsetDateTime)` was removed
-* `withVirtualMachineId(java.lang.String)` was removed
-* `withFriendlyName(java.lang.String)` was removed
-* `withProtectedItemDataId(java.lang.String)` was removed
 
 #### `models.MabFileFolderProtectedItem` was modified
 
-* `withWorkloadType(models.DataSourceType)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
 * `withWorkloadType(models.DataSourceType)` was removed
 * `withBackupManagementType(models.BackupManagementType)` was removed
 
@@ -38,13 +28,7 @@
 
 * `withWorkloadType(models.DataSourceType)` was removed
 * `withBackupManagementType(models.BackupManagementType)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
 * `withFriendlyName(java.lang.String)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
-* `withFriendlyName(java.lang.String)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
-* `withProtectionStatus(java.lang.String)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
 * `withProtectionStatus(java.lang.String)` was removed
 
 #### `models.AzureVmWorkloadSapAseDatabaseProtectedItem` was modified
@@ -52,22 +36,14 @@
 * `withBackupManagementType(models.BackupManagementType)` was removed
 * `withProtectionStatus(java.lang.String)` was removed
 * `withWorkloadType(models.DataSourceType)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
-* `withProtectionStatus(java.lang.String)` was removed
-* `withFriendlyName(java.lang.String)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
 * `withFriendlyName(java.lang.String)` was removed
 
 #### `models.AzureIaaSvmProtectedItem` was modified
 
 * `withWorkloadType(models.DataSourceType)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
 * `withFriendlyName(java.lang.String)` was removed
 * `withLastBackupTime(java.time.OffsetDateTime)` was removed
 * `withHealthStatus(models.HealthStatus)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
 * `withBackupManagementType(models.BackupManagementType)` was removed
 * `withProtectedItemDataId(java.lang.String)` was removed
 * `withVirtualMachineId(java.lang.String)` was removed
@@ -78,12 +54,7 @@
 * `withFriendlyName(java.lang.String)` was removed
 * `withProtectionStatus(java.lang.String)` was removed
 * `withWorkloadType(models.DataSourceType)` was removed
-* `withFriendlyName(java.lang.String)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
 * `withProtectionStatus(java.lang.String)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
 
 #### `models.AzureVmWorkloadProtectedItem` was modified
 
@@ -91,8 +62,6 @@
 * `withProtectionStatus(java.lang.String)` was removed
 * `withBackupManagementType(models.BackupManagementType)` was removed
 * `withWorkloadType(models.DataSourceType)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
 
 #### `models.ProtectedItem` was modified
 
@@ -107,42 +76,26 @@
 * `withProtectedItemDataId(java.lang.String)` was removed
 * `withWorkloadType(models.DataSourceType)` was removed
 * `withHealthStatus(models.HealthStatus)` was removed
-* `withLastBackupTime(java.time.OffsetDateTime)` was removed
-* `withVirtualMachineId(java.lang.String)` was removed
-* `withProtectedItemDataId(java.lang.String)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
 * `withVirtualMachineId(java.lang.String)` was removed
 * `withFriendlyName(java.lang.String)` was removed
-* `withFriendlyName(java.lang.String)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
 
 #### `models.GenericProtectedItem` was modified
 
-* `withBackupManagementType(models.BackupManagementType)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
 * `withBackupManagementType(models.BackupManagementType)` was removed
 * `withWorkloadType(models.DataSourceType)` was removed
 
 #### `models.AzureFileshareProtectedItem` was modified
 
 * `withWorkloadType(models.DataSourceType)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
 * `withBackupManagementType(models.BackupManagementType)` was removed
 
 #### `models.AzureSqlProtectedItem` was modified
 
 * `withWorkloadType(models.DataSourceType)` was removed
 * `withBackupManagementType(models.BackupManagementType)` was removed
-* `withBackupManagementType(models.BackupManagementType)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
 
 #### `models.DpmProtectedItem` was modified
 
-* `withBackupManagementType(models.BackupManagementType)` was removed
-* `withWorkloadType(models.DataSourceType)` was removed
 * `withBackupManagementType(models.BackupManagementType)` was removed
 * `withWorkloadType(models.DataSourceType)` was removed
 
