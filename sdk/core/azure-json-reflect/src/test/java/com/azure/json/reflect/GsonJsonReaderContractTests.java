@@ -14,6 +14,6 @@ import java.io.IOException;
 public class GsonJsonReaderContractTests extends JsonReaderContractTests {
     @Override
     public JsonReader getJsonReader(String json) throws IOException {
-        return JsonProviderFactory.getGsonJsonProver().createReader(json);
+        return JsonProviderFactory.getGsonJsonProvider().createReader(json);
     }
 }

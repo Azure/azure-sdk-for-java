@@ -37,7 +37,7 @@ public class JsonProviderFactory {
         if (JacksonJsonProvider.INITIALIZED) {
             return getJacksonJsonProvider();
         } else if (GsonJsonProvider.INITIALIZED) {
-            return getGsonJsonProver();
+            return getGsonJsonProvider();
         }
 
         throw new IllegalStateException("No compatible versions of Jackson or Gson are present on the classpath.");
@@ -67,7 +67,7 @@ public class JsonProviderFactory {
      * @return An instance of {@link JsonProvider}.
      * @throws IllegalStateException If no compatible version of Gson is present on the classpath.
      */
-    public static synchronized JsonProvider getGsonJsonProver() {
+    public static synchronized JsonProvider getGsonJsonProvider() {
         if (!GsonJsonProvider.INITIALIZED) {
             throw new IllegalStateException("No compatible version of Gson is present on the classpath.");
         }

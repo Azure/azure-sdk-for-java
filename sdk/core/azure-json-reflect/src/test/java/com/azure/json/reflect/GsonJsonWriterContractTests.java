@@ -21,7 +21,7 @@ public class GsonJsonWriterContractTests extends JsonWriterContractTests {
     @BeforeEach
     public void beforeEach() throws IOException {
         this.outputStream = new ByteArrayOutputStream();
-        this.writer = JsonProviderFactory.getGsonJsonProver().createWriter(outputStream);
+        this.writer = JsonProviderFactory.getGsonJsonProvider().createWriter(outputStream);
     }
 
     @Override
