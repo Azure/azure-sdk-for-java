@@ -137,7 +137,7 @@ public class CommunicationIdentifierConverter {
     }
 
     private static CommunicationIdentifierModelKind extractKind(CommunicationIdentifierModel identifier) {
-        Objects.requireNonNull(identifier);
+        Objects.requireNonNull(identifier, "CommunicationIdentifierModel cannot be null.");
         if (identifier.getCommunicationUser() != null) {
             return CommunicationIdentifierModelKind.COMMUNICATION_USER;
         }

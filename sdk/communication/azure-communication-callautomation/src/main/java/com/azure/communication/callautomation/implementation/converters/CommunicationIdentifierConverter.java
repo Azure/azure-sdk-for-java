@@ -18,6 +18,7 @@ import com.azure.communication.common.UnknownIdentifier;
 
 import java.util.ArrayList;
 import java.util.Objects;
+
 /**
  * A converter between {@link CommunicationIdentifierModel} and {@link CommunicationIdentifier}.
  */
@@ -136,7 +137,7 @@ public class CommunicationIdentifierConverter {
     }
 
     private static CommunicationIdentifierModelKind extractKind(CommunicationIdentifierModel identifier) {
-        Objects.requireNonNull(identifier);
+        Objects.requireNonNull(identifier, "CommunicationIdentifierModel cannot be null.");
         if (identifier.getCommunicationUser() != null) {
             return CommunicationIdentifierModelKind.COMMUNICATION_USER;
         }
