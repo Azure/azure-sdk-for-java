@@ -19,7 +19,7 @@ import com.azure.json.JsonWriter;
  *
  * @author Jack Sandford
  */
-public class JsonProviderFactory {
+public final class JsonProviderFactory {
     private static JsonProvider jacksonJsonProvider = null;
     private static JsonProvider gsonJsonProvider = null;
 
