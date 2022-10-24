@@ -3,6 +3,7 @@
 
 package com.azure.spring.data.cosmos.repository.integration;
 
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.spring.data.cosmos.ReactiveIntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.ReactiveTeacher;
@@ -18,8 +19,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
+import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -67,4 +70,76 @@ public class ReactiveTeacherRepositoryIT {
         final Mono<Boolean> existLastNameMono = repository.existsByLastNameIsNull();
         StepVerifier.create(existLastNameMono).expectNext(false).expectComplete().verify();
     }
+    @Test
+    public void testFindAllItemsOnePage() {
+        ReactiveTeacher TEACHER_2 = new ReactiveTeacher("2", TEACHER_FIRST_NAME_1, DEPARTMENT_LAST_NAME_1);
+        ReactiveTeacher TEACHER_3 = new ReactiveTeacher("3", TEACHER_FIRST_NAME_1, DEPARTMENT_LAST_NAME_1);
+        ReactiveTeacher TEACHER_4 = new ReactiveTeacher("4", TEACHER_FIRST_NAME_1, DEPARTMENT_LAST_NAME_1);
+        repository.saveAll(Arrays.asList(TEACHER_2, TEACHER_3, TEACHER_4));
+
+        final CosmosPagedFlux<ReactiveTeacher> cosmosPagedFluxResult = repository.findAllByFirstName(TEACHER_FIRST_NAME_1);
+        List<ReactiveTeacher> results = cosmosPagedFluxResult.byPage().blockFirst().getResults();
+
+        assertThat(results.size()).isEqualTo(4);
+        assertThat(results).contains(TEACHER_1, TEACHER_2, TEACHER_3, TEACHER_4);
+    }
+
+    /*@Test
+    public void testFindAllWithPageablePageSize2() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2))).block();
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3))).block();
+        cosmosTemplate.insert(TEST_PERSON_4, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4))).block();
+
+        final CosmosPagedFlux<Person> cosmosPagedFluxResult = cosmosTemplate.findAll(Person.class, containerName);
+
+        int totalResultCount = 0;
+        List<Person> allResults = new ArrayList<>();
+        String continuationToken = null;
+        do {
+            Iterable<FeedResponse<Person>> feedResponseIterable = cosmosPagedFluxResult
+                .byPage(continuationToken, PAGE_SIZE_2).toIterable();
+            for (FeedResponse<Person> fr : feedResponseIterable) {
+                List<Person> results = fr.getResults();
+                for (Person person: results) {
+                    allResults.add(person);
+                }
+                assertThat(results.size()).isLessThanOrEqualTo(PAGE_SIZE_2);
+                totalResultCount += results.size();
+                continuationToken = fr.getContinuationToken();
+            }
+        } while (continuationToken != null);
+
+        assertThat(totalResultCount).isEqualTo(4);
+        assertThat(allResults).contains(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3, TEST_PERSON_4);
+    }
+
+    @Test
+    public void testFindAllWithPageablePageSize3() {
+        cosmosTemplate.insert(TEST_PERSON_2, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_2))).block();
+        cosmosTemplate.insert(TEST_PERSON_3, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_3))).block();
+        cosmosTemplate.insert(TEST_PERSON_4, new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4))).block();
+
+        final CosmosPagedFlux<Person> cosmosPagedFluxResult = cosmosTemplate.findAll(Person.class, containerName);
+
+        int totalResultCount = 0;
+        List<Person> allResults = new ArrayList<>();
+        String continuationToken = null;
+        do {
+            Iterable<FeedResponse<Person>> feedResponseIterable = cosmosPagedFluxResult
+                .byPage(continuationToken, PAGE_SIZE_3).toIterable();
+            for (FeedResponse<Person> fr : feedResponseIterable) {
+                List<Person> results = fr.getResults();
+                for (Person person: results) {
+                    allResults.add(person);
+                }
+                assertThat(results.size()).isLessThanOrEqualTo(PAGE_SIZE_3);
+                totalResultCount += results.size();
+                continuationToken = fr.getContinuationToken();
+            }
+        } while (continuationToken != null);
+
+        assertThat(totalResultCount).isEqualTo(4);
+        assertThat(allResults).contains(TEST_PERSON, TEST_PERSON_2, TEST_PERSON_3, TEST_PERSON_4);
+    }*/
+
 }

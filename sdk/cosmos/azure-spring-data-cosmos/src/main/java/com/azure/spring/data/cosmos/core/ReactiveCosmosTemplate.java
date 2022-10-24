@@ -4,7 +4,6 @@
 package com.azure.spring.data.cosmos.core;
 
 import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosAsyncDatabase;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
@@ -293,24 +292,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
     }
 
     @Override
-    public <T> CosmosPagedFlux<T> findAll(Class<T> domainType, String containerName) {
-        final CosmosQuery query =
-            new CosmosQuery(Criteria.getInstance(CriteriaType.ALL));
-
-        return paginationQuery(query, domainType, containerName);
-    }
-
-    @Override
-    public <T> CosmosPagedFlux<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName) {
+    public <T> CosmosPagedFlux<T> paginationQuery(CosmosQuery query, Class<T> domainType) {
         final SqlQuerySpec querySpec = new FindQuerySpecGenerator().generateCosmos(query);
         Optional<Object> partitionKeyValue = query.getPartitionKeyValue(domainType);
-        return paginationQuery(querySpec, domainType, containerName, partitionKeyValue);
-    }
-
-    private <T> CosmosPagedFlux<T> paginationQuery(SqlQuerySpec querySpec, Class<T> returnType, String containerName,
-                                        Optional<Object> partitionKeyValue) {
-        Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
-
         final CosmosQueryRequestOptions cosmosQueryRequestOptions = new CosmosQueryRequestOptions();
         cosmosQueryRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
         cosmosQueryRequestOptions.setMaxDegreeOfParallelism(this.maxDegreeOfParallelism);
@@ -319,8 +303,9 @@ public class ReactiveCosmosTemplate implements ReactiveCosmosOperations, Applica
             cosmosQueryRequestOptions.setPartitionKey(new PartitionKey(o));
         });
 
+        final String containerName = getContainerName(domainType);
         return cosmosAsyncClient.getDatabase(this.databaseName).getContainer(containerName)
-            .queryItems(querySpec, cosmosQueryRequestOptions, returnType);
+            .queryItems(querySpec, cosmosQueryRequestOptions, domainType);
     }
 
     /**

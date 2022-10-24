@@ -84,25 +84,14 @@ public interface ReactiveCosmosOperations {
     <T> Flux<T> findAll(PartitionKey partitionKey, Class<T> domainType);
 
     /**
-     * Find all items in a given container with partition key
-     *
-     * @param domainType    the domainType
-     * @param containerName the container name
-     * @param <T>           type of domainType
-     * @return results as Page
-     */
-    <T> CosmosPagedFlux<T> findAll(Class<T> domainType, String containerName);
-
-    /**
      * Pagination query
      *
      * @param query         the document query
      * @param domainType    type class
-     * @param containerName the container name
      * @param <T>           type class of domainType
      * @return results as Page
      */
-    <T> CosmosPagedFlux<T> paginationQuery(CosmosQuery query, Class<T> domainType, String containerName);
+    <T> CosmosPagedFlux<T> paginationQuery(CosmosQuery query, Class<T> domainType);
 
     /**
      * Find by id

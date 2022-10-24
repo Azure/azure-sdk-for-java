@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.data.cosmos.repository.query;
 
+import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosOperations;
 import com.azure.spring.data.cosmos.core.query.CosmosQuery;
 import org.springframework.data.repository.query.RepositoryQuery;
@@ -50,7 +51,7 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
         final String containerName =
             ((ReactiveCosmosEntityMetadata) method.getEntityInformation()).getContainerName();
 
-        final ReactiveCosmosQueryExecution execution = getExecution(accessor, processor.getReturnedType());
+        final ReactiveCosmosQueryExecution execution = getExecution(processor.getReturnedType());
         return execution.execute(query, processor.getReturnedType().getDomainType(), containerName);
     }
 
@@ -61,11 +62,11 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
      * @param returnedType The return type of the method
      * @return the execution type needed to handle the query
      */
-    protected ReactiveCosmosQueryExecution getExecution(ReactiveCosmosParameterAccessor accessor, ReturnedType returnedType) {
+    protected ReactiveCosmosQueryExecution getExecution(ReturnedType returnedType) {
         if (isDeleteQuery()) {
             return new ReactiveCosmosQueryExecution.DeleteExecution(operations);
-        } else if (isPageQuery()) {
-            return new ReactiveCosmosQueryExecution.PagedExecution(operations, accessor.getPageable());
+        } else if (isCosmosPageQuery()) {
+            return new ReactiveCosmosQueryExecution.PagedExecution(operations);
         } else if (isExistsQuery()) {
             return new ReactiveCosmosQueryExecution.ExistsExecution(operations);
         } else if (isCountQuery()) {
@@ -113,6 +114,10 @@ public abstract class AbstractReactiveCosmosQuery implements RepositoryQuery {
      */
     protected boolean isPageQuery() {
         return method.isPageQuery();
+    }
+
+    private boolean isCosmosPageQuery() {
+        return method.getMethod().getGenericReturnType().toString().startsWith("com.azure.cosmos.util.CosmosPagedFlux");
     }
 
     private boolean isReactiveSingleResultQuery() {

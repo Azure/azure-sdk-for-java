@@ -81,6 +81,10 @@ public class ReactiveCosmosQueryMethod extends QueryMethod {
         return annotatedQueryValue;
     }
 
+    public Method getMethod() {
+        return method;
+    }
+
     private Optional<String> findAnnotatedQuery(Method method) {
         return Optional.ofNullable(AnnotatedElementUtils.findMergedAnnotation(method, Query.class))
                    .map(Query::value)
