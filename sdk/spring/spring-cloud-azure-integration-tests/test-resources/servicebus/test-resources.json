@@ -121,7 +121,7 @@
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
+      "apiVersion": "2022-04-01",
       "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), parameters('baseName')))]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces/queues', variables('azureServiceBusNamespaceName'), 'que001')]",
@@ -147,7 +147,7 @@
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
+      "apiVersion": "2022-04-01",
       "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_1')))]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces/topics/subscriptions', variables('azureServiceBusNamespaceName_1'), 'topic1','topicSub') ]"
@@ -173,7 +173,7 @@
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
+      "apiVersion": "2022-04-01",
       "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_2')))]",
 
       "dependsOn": [
@@ -200,7 +200,7 @@
     },
     {
       "type": "Microsoft.Authorization/roleAssignments",
-      "apiVersion": "2020-10-01-preview",
+      "apiVersion": "2022-04-01",
       "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_3')))]",
       "dependsOn": [
         "[resourceId('Microsoft.ServiceBus/namespaces/queues', variables('azureServiceBusNamespaceName_3'), 'queue1')]"
