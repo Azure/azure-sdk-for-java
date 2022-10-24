@@ -982,7 +982,7 @@ public class DataLakeFileClient extends DataLakePathClient {
      * Integer leaseDuration = 15;
      *
      * DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions&#40;&#41;
-     *     .setRetainUncommittedData&#40;retainUncommittedData&#41;
+     *     .setUncommittedDataRetained&#40;retainUncommittedData&#41;
      *     .setClose&#40;close&#41;
      *     .setPathHttpHeaders&#40;httpHeaders&#41;
      *     .setRequestConditions&#40;requestConditions&#41;
