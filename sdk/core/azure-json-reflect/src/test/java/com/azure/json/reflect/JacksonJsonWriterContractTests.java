@@ -3,7 +3,6 @@
 
 package com.azure.json.reflect;
 
-import com.azure.json.JsonOptions;
 import com.azure.json.JsonWriter;
 import com.azure.json.contract.JsonWriterContractTests;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +21,7 @@ public class JacksonJsonWriterContractTests extends JsonWriterContractTests {
     @BeforeEach
     public void beforeEach() throws IOException {
         this.outputStream = new ByteArrayOutputStream();
-        this.writer = JsonFactory.getJacksonInstance().getJsonWriter(outputStream, new JsonOptions());
+        this.writer = JsonProviderFactory.getJacksonJsonProvider().createWriter(outputStream);
     }
 
     @Override
