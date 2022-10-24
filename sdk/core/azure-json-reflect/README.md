@@ -13,7 +13,7 @@ To use Azure Json Reflect a compatible version of Jackson or Gson must be presen
 ### Supported versions
 
 #### Jackson
-- Versions 2.9.4 and newer
+- Versions 2.10.0 and newer
 
 #### Gson
 - Versions 2.4 and newer
