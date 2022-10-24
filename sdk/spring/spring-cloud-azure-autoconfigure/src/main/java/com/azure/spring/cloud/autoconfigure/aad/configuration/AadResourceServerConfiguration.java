@@ -65,9 +65,10 @@ public class AadResourceServerConfiguration {
     @ConditionalOnMissingBean(JwtDecoder.class)
     public JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties) {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
-            aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
+                aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
+                aadAuthenticationProperties.getProfile().getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-            .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
+                .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
                 .restOperations(createRestTemplate(restTemplateBuilder))
                 .build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
@@ -106,7 +107,7 @@ public class AadResourceServerConfiguration {
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     public static class DefaultAadResourceServerWebSecurityConfigurerAdapter extends
-        AadResourceServerWebSecurityConfigurerAdapter {
+            AadResourceServerWebSecurityConfigurerAdapter {
 
         /**
          * configure

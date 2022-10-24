@@ -248,6 +248,13 @@
         "compilerArguments",
         "annotationProcessors"
       ]
+    },
+    {
+      "filename": "sdk/spring/CHANGELOG.md",
+      "words": [
+        "AADB",
+        "JPMS"
+      ]
     }
   ],
   "allowCompoundWords": false
