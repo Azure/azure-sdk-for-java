@@ -135,7 +135,7 @@
       "name": "retry",
       "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_1'))]",
       "dependsOn": [
-        "[resourceId('Microsoft.Authorization/roleAssignments', 'role']"
+        "[resourceId('Microsoft.Authorization/roleAssignments', 'role')]"
       ],
       "properties": {
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
