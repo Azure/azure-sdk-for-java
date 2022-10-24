@@ -41,8 +41,7 @@ public class ProtectionContainer {
     private BackupManagementType backupManagementType;
 
     /*
-     * Status of registration of the container with the Recovery Services
-     * Vault.
+     * Status of registration of the container with the Recovery Services Vault.
      */
     @JsonProperty(value = "registrationStatus")
     private String registrationStatus;
@@ -58,6 +57,10 @@ public class ProtectionContainer {
      */
     @JsonProperty(value = "protectableObjectType")
     private String protectableObjectType;
+
+    /** Creates an instance of ProtectionContainer class. */
+    public ProtectionContainer() {
+    }
 
     /**
      * Get the friendlyName property: Friendly name of the container.

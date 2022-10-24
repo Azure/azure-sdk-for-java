@@ -24,13 +24,13 @@ public final class JobsImpl implements Jobs {
         this.serviceManager = serviceManager;
     }
 
-    public void export(String vaultName, String resourceGroupName) {
-        this.serviceClient().export(vaultName, resourceGroupName);
-    }
-
     public Response<Void> exportWithResponse(
         String vaultName, String resourceGroupName, String filter, Context context) {
         return this.serviceClient().exportWithResponse(vaultName, resourceGroupName, filter, context);
+    }
+
+    public void export(String vaultName, String resourceGroupName) {
+        this.serviceClient().export(vaultName, resourceGroupName);
     }
 
     private JobsClient serviceClient() {

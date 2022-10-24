@@ -12,8 +12,7 @@ import java.util.List;
 @Fluent
 public final class AzureWorkloadContainerExtendedInfo {
     /*
-     * Host Os Name in case of Stand Alone and Cluster Name in case of
-     * distributed container.
+     * Host Os Name in case of Stand Alone and Cluster Name in case of distributed container.
      */
     @JsonProperty(value = "hostServerName")
     private String hostServerName;
@@ -29,6 +28,10 @@ public final class AzureWorkloadContainerExtendedInfo {
      */
     @JsonProperty(value = "nodesList")
     private List<DistributedNodesInfo> nodesList;
+
+    /** Creates an instance of AzureWorkloadContainerExtendedInfo class. */
+    public AzureWorkloadContainerExtendedInfo() {
+    }
 
     /**
      * Get the hostServerName property: Host Os Name in case of Stand Alone and Cluster Name in case of distributed

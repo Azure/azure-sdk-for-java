@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ResourceProvider GetOperationStatus. */
 public final class ResourceProviderGetOperationStatusSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupDataMove/BackupDataMoveOperationStatus_Get.json
      */
     /**
      * Sample code: Get OperationStatus.

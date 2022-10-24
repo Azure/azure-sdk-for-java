@@ -27,16 +27,6 @@ public final class ExportJobsOperationResultsImpl implements ExportJobsOperation
         this.serviceManager = serviceManager;
     }
 
-    public OperationResultInfoBaseResource get(String vaultName, String resourceGroupName, String operationId) {
-        OperationResultInfoBaseResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, operationId);
-        if (inner != null) {
-            return new OperationResultInfoBaseResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<OperationResultInfoBaseResource> getWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context) {
         Response<OperationResultInfoBaseResourceInner> inner =
@@ -47,6 +37,16 @@ public final class ExportJobsOperationResultsImpl implements ExportJobsOperation
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OperationResultInfoBaseResourceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OperationResultInfoBaseResource get(String vaultName, String resourceGroupName, String operationId) {
+        OperationResultInfoBaseResourceInner inner =
+            this.serviceClient().get(vaultName, resourceGroupName, operationId);
+        if (inner != null) {
+            return new OperationResultInfoBaseResourceImpl(inner, this.manager());
         } else {
             return null;
         }

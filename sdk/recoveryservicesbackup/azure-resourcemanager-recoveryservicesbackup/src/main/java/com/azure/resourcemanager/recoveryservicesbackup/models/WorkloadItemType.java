@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkloadItemType. */
+/** Workload item type of the item for which intent is to be set. */
 public final class WorkloadItemType extends ExpandableStringEnum<WorkloadItemType> {
     /** Static value Invalid for WorkloadItemType. */
     public static final WorkloadItemType INVALID = fromString("Invalid");
@@ -30,6 +30,9 @@ public final class WorkloadItemType extends ExpandableStringEnum<WorkloadItemTyp
 
     /** Static value SAPAseDatabase for WorkloadItemType. */
     public static final WorkloadItemType SAPASE_DATABASE = fromString("SAPAseDatabase");
+
+    /** Static value SAPHanaDBInstance for WorkloadItemType. */
+    public static final WorkloadItemType SAPHANA_DBINSTANCE = fromString("SAPHanaDBInstance");
 
     /**
      * Creates or finds a WorkloadItemType from its string representation.

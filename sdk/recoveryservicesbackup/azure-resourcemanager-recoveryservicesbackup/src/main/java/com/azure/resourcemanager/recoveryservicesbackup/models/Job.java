@@ -71,6 +71,10 @@ public class Job {
     @JsonProperty(value = "activityId")
     private String activityId;
 
+    /** Creates an instance of Job class. */
+    public Job() {
+    }
+
     /**
      * Get the entityFriendlyName property: Friendly name of the entity on which the current job is executing.
      *

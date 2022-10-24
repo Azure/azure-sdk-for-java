@@ -33,6 +33,10 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
     @JsonProperty(value = "recoveryPointExpiryTimeInUTC")
     private OffsetDateTime recoveryPointExpiryTimeInUtc;
 
+    /** Creates an instance of AzureWorkloadBackupRequest class. */
+    public AzureWorkloadBackupRequest() {
+    }
+
     /**
      * Get the backupType property: Type of backup, viz. Full, Differential, Log or CopyOnlyFull.
      *

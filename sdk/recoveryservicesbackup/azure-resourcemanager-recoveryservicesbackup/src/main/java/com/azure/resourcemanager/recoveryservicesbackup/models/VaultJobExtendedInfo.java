@@ -19,6 +19,10 @@ public final class VaultJobExtendedInfo {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> propertyBag;
 
+    /** Creates an instance of VaultJobExtendedInfo class. */
+    public VaultJobExtendedInfo() {
+    }
+
     /**
      * Get the propertyBag property: Job properties.
      *

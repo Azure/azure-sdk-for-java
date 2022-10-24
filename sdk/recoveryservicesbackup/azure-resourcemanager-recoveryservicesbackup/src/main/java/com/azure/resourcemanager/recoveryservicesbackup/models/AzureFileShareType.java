@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AzureFileShareType. */
+/** File Share type XSync or XSMB. */
 public final class AzureFileShareType extends ExpandableStringEnum<AzureFileShareType> {
     /** Static value Invalid for AzureFileShareType. */
     public static final AzureFileShareType INVALID = fromString("Invalid");

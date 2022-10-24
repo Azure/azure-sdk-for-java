@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SQLDataBase")
 @Fluent
 public final class AzureVmWorkloadSqlDatabaseWorkloadItem extends AzureVmWorkloadItem {
+    /** Creates an instance of AzureVmWorkloadSqlDatabaseWorkloadItem class. */
+    public AzureVmWorkloadSqlDatabaseWorkloadItem() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureVmWorkloadSqlDatabaseWorkloadItem withParentName(String parentName) {

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AcquireStorageAccountLock. */
+/** Whether storage account lock is to be acquired for this container or not. */
 public final class AcquireStorageAccountLock extends ExpandableStringEnum<AcquireStorageAccountLock> {
     /** Static value Acquire for AcquireStorageAccountLock. */
     public static final AcquireStorageAccountLock ACQUIRE = fromString("Acquire");
