@@ -5,7 +5,6 @@
             "placeholder": [
                 "secret=",
                 "123",
-                "1234567890",
                 "((***Redacted***by***CredScan***))",
                 "proxyPassword",
                 "pass",
@@ -57,6 +56,12 @@
                 "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/secp256keynew.pem"
             ],
             "_justification": "File contains private key used by test code."
+        },
+        {
+            "file": [
+                "sdk/storage/microsoft-azure-storage-blob/src/test/java/com/microsoft/azure/storage/FakeCredentialInTest.groovy"
+            ],
+            "_justification": "File contains fake key used by test code."
         }
     ]
 }

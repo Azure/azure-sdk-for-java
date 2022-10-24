@@ -267,7 +267,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withFirstName("John")
                     .withLastName("Doe")
                     .withEmailAddress("john.doe@contoso.com")
-                    .withPhone("1234567890");
+                    .withPhone("fakePhoneNumberPlaceholder");
 
         // Construct organization details
         List<AdministratorDetails> administratorsDetails = new ArrayList<AdministratorDetails>();
@@ -370,7 +370,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withFirstName("John")
                     .withLastName("Doe")
                     .withEmailAddress("john.doe@contoso.com")
-                    .withPhone("1234567890");
+                    .withPhone("fakePhoneNumberPlaceholder");
 
         // Construct organization details
         OrganizationDetails organizationDetails = new OrganizationDetails();
@@ -794,7 +794,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     .withFirstName("John")
                     .withLastName("Doe")
                     .withEmailAddress("john.doe@contoso.com")
-                    .withPhone("1234567890");
+                    .withPhone("fakePhoneNumberPlaceholder");
 
         // Construct organization details
         OrganizationDetails organizationDetails = new OrganizationDetails();
