@@ -135,7 +135,7 @@
       "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_1'), 'retry'))]",
       "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_1'))]",
       "dependsOn": [
-        "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_1')))]"
+        "[resourceId('Microsoft.ServiceBus/namespaces/topics/subscriptions', variables('azureServiceBusNamespaceName_1'), 'topic1','topicSub') ]"
       ],
       "properties": {
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
