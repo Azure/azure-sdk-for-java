@@ -26,7 +26,7 @@ public final class TransparentDataEncryptionsCreateOrUpdateSamples {
             .manager()
             .serviceClient()
             .getTransparentDataEncryptions()
-            .createOrUpdateWithResponse(
+            .createOrUpdate(
                 "securitytde-42-rg",
                 "securitytde-42",
                 "testdb",

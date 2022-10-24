@@ -1007,14 +1007,12 @@ public class SqlServerOperationsTests extends SqlServerTest {
         Assertions.assertNotNull(transparentDataEncryption.status());
 
         transparentDataEncryption = transparentDataEncryption.updateStatus(TransparentDataEncryptionState.ENABLED);
-        ResourceManagerUtils.sleep(Duration.ofMinutes(5));
 
         Assertions.assertNotNull(transparentDataEncryption);
         Assertions.assertEquals(TransparentDataEncryptionState.ENABLED, transparentDataEncryption.status());
 
         transparentDataEncryption =
             sqlDatabase.getTransparentDataEncryption().updateStatus(TransparentDataEncryptionState.DISABLED);
-        ResourceManagerUtils.sleep(Duration.ofMinutes(5));
 
         Assertions.assertNotNull(transparentDataEncryption);
         Assertions.assertEquals(TransparentDataEncryptionState.DISABLED, transparentDataEncryption.status());
