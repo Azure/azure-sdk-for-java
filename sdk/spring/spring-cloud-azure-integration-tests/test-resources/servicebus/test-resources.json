@@ -124,7 +124,8 @@
       "apiVersion": "2020-10-01-preview",
       "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), parameters('baseName')))]",
       "dependsOn": [
-        "[variables('azureServiceBusNamespaceName')]"
+        "[concat(variables('azureServiceBusNamespaceName'), '/errorHandler-in-0')]",
+        "[concat(variables('azureServiceBusNamespaceName'), '/que001')]
       ],
       "properties": {
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
@@ -150,7 +151,7 @@
       "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_1')))]",
       "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_1'))]",
       "dependsOn": [
-        "[variables('azureServiceBusNamespaceName_1')]"
+        "[concat(variables('azureServiceBusNamespaceName_1'), '/topic1/topicSub')]"
       ],
       "properties": {
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
@@ -176,7 +177,7 @@
       "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_2')))]",
       "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_2'))]",
       "dependsOn": [
-        "[variables('azureServiceBusNamespaceName_2')]"
+        "[concat(variables('azureServiceBusNamespaceName_2'), '/topic1/topicSub')]"
       ],
       "properties": {
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
@@ -202,7 +203,7 @@
       "name": "[guid(concat(variables('azureServiceBusDataOwnerRoleId'), variables('azureServiceBusNamespaceName_3')))]",
       "scope": "[concat('Microsoft.ServiceBus/namespaces', '/', variables('azureServiceBusNamespaceName_3'))]",
       "dependsOn": [
-        "[variables('azureServiceBusNamespaceName_3')]"
+        "[concat(variables('azureServiceBusNamespaceName_3'), '/queue1')]
       ],
       "properties": {
         "roleDefinitionId": "[variables('azureServiceBusDataOwnerRoleId')]",
