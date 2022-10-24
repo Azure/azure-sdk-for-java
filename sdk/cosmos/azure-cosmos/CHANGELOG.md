@@ -1,5 +1,15 @@
 ## Release History
 
+### 4.39.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 4.38.1 (2022-10-21)
 #### Other Changes
 * Updated test dependency of apache `commons-text` to version 1.10.0 - CVE-2022-42889 - See [PR 31674](https://github.com/Azure/azure-sdk-for-java/pull/31674)
