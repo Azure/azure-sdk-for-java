@@ -65,6 +65,7 @@ public class AadJwtClientAuthenticationParametersConverterTests {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void testAssertion() throws ParseException {
         RSAKey rsaJwk = spy(TestJwks.DEFAULT_RSA_JWK);
         given(this.jwkResolver.apply(any())).willReturn(rsaJwk);

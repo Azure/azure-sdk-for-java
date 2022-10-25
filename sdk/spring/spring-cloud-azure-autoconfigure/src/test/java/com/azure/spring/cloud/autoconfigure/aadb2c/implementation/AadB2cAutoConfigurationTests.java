@@ -22,11 +22,12 @@ import org.springframework.boot.autoconfigure.http.HttpMessageConvertersAutoConf
 import org.springframework.boot.autoconfigure.web.client.RestTemplateAutoConfiguration;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+import org.springframework.security.web.SecurityFilterChain;
 
 import java.util.Arrays;
 import java.util.HashSet;
@@ -282,23 +283,18 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
     }
 
     @EnableWebSecurity
-    public static class AadB2cTestWebSecurityConfiguration extends WebSecurityConfigurerAdapter {
+    public static class AadB2cTestWebSecurityConfiguration {
 
-        private final AadB2cOidcLoginConfigurer configurer;
-
-        AadB2cTestWebSecurityConfiguration(AadB2cOidcLoginConfigurer configurer) {
-            this.configurer = configurer;
-        }
-
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
+        @Bean
+        public SecurityFilterChain apiFilterChain(HttpSecurity http, AadB2cOidcLoginConfigurer configurer) throws Exception {
             // @formatter:off
             http
                 .authorizeRequests()
-                    .anyRequest().authenticated()
-                    .and()
+                .anyRequest().authenticated()
+                .and()
                 .apply(configurer);
             // @formatter:on
+            return http.build();
         }
     }
 }

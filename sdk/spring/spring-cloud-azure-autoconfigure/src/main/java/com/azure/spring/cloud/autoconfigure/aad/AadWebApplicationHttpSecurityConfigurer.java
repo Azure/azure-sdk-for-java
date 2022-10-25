@@ -77,26 +77,26 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
             ResolvableType.forClassWithGenerics(OAuth2UserService.class, OidcUserRequest.class, OidcUser.class));
         this.oidcUserService = oidcUserServiceProvider.getIfUnique();
         this.jwkResolvers = context.getBeanProvider(OAuth2ClientAuthenticationJwkResolver.class);
+
+        // @formatter:off
+        builder.oauth2Login()
+                    .authorizationEndpoint()
+                       .authorizationRequestResolver(requestResolver())
+                       .and()
+                    .tokenEndpoint()
+                       .accessTokenResponseClient(accessTokenResponseClient())
+                       .and()
+                    .userInfoEndpoint()
+                    .oidcUserService(oidcUserService)
+                        .and()
+                    .and()
+               .logout()
+                    .logoutSuccessHandler(oidcLogoutSuccessHandler());
+        // @formatter:off
     }
 
     @Override
     public void configure(HttpSecurity builder) throws Exception {
-        // @formatter:off
-        builder.oauth2Login()
-                    .authorizationEndpoint()
-                        .authorizationRequestResolver(requestResolver())
-                        .and()
-                    .tokenEndpoint()
-                        .accessTokenResponseClient(accessTokenResponseClient())
-                        .and()
-                    .userInfoEndpoint()
-                        .oidcUserService(oidcUserService)
-                        .and()
-                    .and()
-                .logout()
-                    .logoutSuccessHandler(oidcLogoutSuccessHandler());
-        // @formatter:off
-
         if (conditionalAccessFilter != null) {
             builder.addFilterAfter(conditionalAccessFilter, OAuth2AuthorizationRequestRedirectFilter.class);
         }

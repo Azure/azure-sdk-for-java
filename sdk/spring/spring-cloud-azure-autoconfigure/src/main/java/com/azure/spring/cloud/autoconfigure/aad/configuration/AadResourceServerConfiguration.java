@@ -9,6 +9,7 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadResourceServerProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -66,10 +67,9 @@ public class AadResourceServerConfiguration {
     @ConditionalOnMissingBean(JwtDecoder.class)
     public JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties) {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
-                aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
-                aadAuthenticationProperties.getProfile().getTenantId());
+            aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-                .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
+            .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
                 .restOperations(createRestTemplate(restTemplateBuilder))
                 .build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
@@ -116,7 +116,8 @@ public class AadResourceServerConfiguration {
          * @throws Exception Configuration failed
          */
         @Bean
-        SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        @ConditionalOnBean(AadResourceServerProperties.class)
+        SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
             http.apply(aadResourceServer());
             return http.build();
         }

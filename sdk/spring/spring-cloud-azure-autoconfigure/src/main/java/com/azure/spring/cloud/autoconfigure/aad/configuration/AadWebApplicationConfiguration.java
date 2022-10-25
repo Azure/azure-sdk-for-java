@@ -70,7 +70,7 @@ public class AadWebApplicationConfiguration {
          * @throws Exception Configuration failed
          */
         @Bean
-        SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        SecurityFilterChain webApplicationFilterChain(HttpSecurity http) throws Exception {
             http
                 .apply(aadWebApplication())
                     .and()

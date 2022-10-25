@@ -29,15 +29,10 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
         super.init(builder);
         ApplicationContext context = builder.getSharedObject(ApplicationContext.class);
         this.properties = context.getBean(AadResourceServerProperties.class);
-    }
-
-    @Override
-    public void configure(HttpSecurity builder) throws Exception {
-        super.configure(builder);
         // @formatter:off
         builder.oauth2ResourceServer()
-               .jwt()
-               .jwtAuthenticationConverter(jwtAuthenticationConverter());
+                   .jwt()
+                   .jwtAuthenticationConverter(jwtAuthenticationConverter());
         // @formatter:off
     }
 
