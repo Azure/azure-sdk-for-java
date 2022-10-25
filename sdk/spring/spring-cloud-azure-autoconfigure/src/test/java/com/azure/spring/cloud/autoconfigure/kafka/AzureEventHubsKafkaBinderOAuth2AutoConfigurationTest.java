@@ -68,7 +68,7 @@ class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
                     assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(BindingServiceProperties.class);
 
-                    testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS + ",value" );
+                    testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS + ",value");
                 });
     }
 

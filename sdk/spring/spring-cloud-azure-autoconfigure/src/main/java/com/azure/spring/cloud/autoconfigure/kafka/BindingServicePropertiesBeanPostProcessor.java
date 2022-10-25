@@ -77,8 +77,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
             ((Map<Object, Object>) value).forEach((k, v) -> flatten(
                 (propertyName != null ? propertyName + "." : "") + k, v,
                 flattenedProperties));
-        }
-        else {
+        } else {
             flattenedProperties.put(propertyName, value.toString());
         }
     }
