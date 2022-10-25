@@ -62,13 +62,13 @@ class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
     @Test
     void shouldConfigureWhenBinderNameSpecified() {
         this.contextRunner
-                .withPropertyValues("spring.cloud.stream.binders.kafka.environment.key=value")
+                .withPropertyValues("spring.cloud.stream.binders.kafka.environment.spring.main.sources=value")
                 .run(context -> {
                     assertThat(context).hasSingleBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(BindingServiceProperties.class);
 
-                    testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
+                    testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS + ",value" );
                 });
     }
 

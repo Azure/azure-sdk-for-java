@@ -4,6 +4,7 @@ package com.azure.spring.cloud.autoconfigure.kafka;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
+import org.springframework.cloud.stream.binder.DefaultBinderFactory;
 import org.springframework.cloud.stream.config.BinderProperties;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 
@@ -48,14 +49,37 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
     }
 
     private String buildKafkaBinderSources(BinderProperties binderProperties) {
+        Map<String, Object> flattenedProperties = new HashMap<>();
+        flatten(null, binderProperties.getEnvironment(), flattenedProperties);
+        
         StringBuilder sources = new StringBuilder(AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
-        if (binderProperties.getEnvironment().get(SPRING_MAIN_SOURCES_PROPERTY) != null) {
-            sources.append("," + binderProperties.getEnvironment().get(SPRING_MAIN_SOURCES_PROPERTY));
+        if (flattenedProperties.get(SPRING_MAIN_SOURCES_PROPERTY) != null) {
+            sources.append("," + flattenedProperties.get(SPRING_MAIN_SOURCES_PROPERTY));
         }
         return sources.toString();
     }
 
     private void configureBinderSources(BinderProperties binderProperties, String sources) {
         binderProperties.getEnvironment().put(SPRING_MAIN_SOURCES_PROPERTY, sources);
+    }
+
+    /**
+     * Ensures that nested properties are flattened (i.e., foo.bar=baz instead of
+     * foo={bar=baz}). Copied from {@link DefaultBinderFactory}.
+     * @param propertyName property name to flatten
+     * @param value value that contains the property name
+     * @param flattenedProperties map to which we'll add the falttened property
+     */
+    @SuppressWarnings("unchecked")
+    private void flatten(String propertyName, Object value,
+            Map<String, Object> flattenedProperties) {
+        if (value instanceof Map) {
+            ((Map<Object, Object>) value).forEach((k, v) -> flatten(
+                (propertyName != null ? propertyName + "." : "") + k, v,
+                flattenedProperties));
+        }
+        else {
+            flattenedProperties.put(propertyName, value.toString());
+        }
     }
 }
