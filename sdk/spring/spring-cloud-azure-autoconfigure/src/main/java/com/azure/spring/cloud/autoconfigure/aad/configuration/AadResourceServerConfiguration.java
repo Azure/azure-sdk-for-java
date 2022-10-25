@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 
-import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
@@ -33,6 +32,7 @@ import org.springframework.util.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.azure.spring.cloud.autoconfigure.aad.AadResourceServerHttpSecurityConfigurer.aadResourceServer;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
 /**
@@ -99,23 +99,6 @@ public class AadResourceServerConfiguration {
     }
 
     /**
-     * Default security configurer of the resource server for using AAD authentication and authorization.
-     */
-    static class DefaultAadResourceServerWebSecurityConfigurerAdapter extends AadResourceServerWebSecurityConfigurerAdapter {
-
-        /**
-         * Creates a new instance
-         *
-         * @param properties the {@link AadResourceServerProperties} to configure the OAuth2 clients
-         * @param httpSecurity the security builder to configure the SecurityFilterChain instance.
-         */
-        DefaultAadResourceServerWebSecurityConfigurerAdapter(AadResourceServerProperties properties,
-                                                                    HttpSecurity httpSecurity) {
-            super(properties, httpSecurity);
-        }
-    }
-
-    /**
      * Default security configuration of the resource server, user can write another configuration bean to override it.
      */
     @Configuration(proxyBeanMethods = false)
@@ -123,18 +106,18 @@ public class AadResourceServerConfiguration {
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     @ConditionalOnMissingBean(SecurityFilterChain.class)
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
-    public static class DefaultAadResourceServerConfiguration {
+    static class DefaultAadResourceServerConfiguration {
 
         /**
          * Create the {@link SecurityFilterChain} of the resource server instance for Spring Security Filter Chain.
-         * @param properties the {@link AadResourceServerProperties} to use
-         * @param httpSecurity the {@link HttpSecurity} to use
+         * @param http the {@link HttpSecurity} to use
          * @return the {@link SecurityFilterChain} instance
          * @throws Exception Configuration failed
          */
         @Bean
-        public SecurityFilterChain filterChain(AadResourceServerProperties properties, HttpSecurity httpSecurity) throws Exception {
-            return new DefaultAadResourceServerWebSecurityConfigurerAdapter(properties, httpSecurity).build();
+        SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+            http.apply(aadResourceServer());
+            return http.build();
         }
     }
 }

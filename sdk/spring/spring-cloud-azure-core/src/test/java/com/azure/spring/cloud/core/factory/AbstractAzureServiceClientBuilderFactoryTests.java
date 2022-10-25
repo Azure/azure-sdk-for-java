@@ -106,7 +106,7 @@ class AbstractAzureServiceClientBuilderFactoryTests {
     }
 
     @Test
-    void useConfiguration() {
+    void configurationShouldEffect() {
         System.setProperty(TestClientBuilder.TEST_CONFIGURATION_KEY, "custom");
         TestClientBuilderFactory factory = new TestClientBuilderFactory(new AzureTestProperties());
         TestClientBuilder builder = factory.build();

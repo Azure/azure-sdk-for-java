@@ -141,7 +141,7 @@ public final class AadJwtEncoder {
         }
     }
 
-    @SuppressWarnings("unchecked")
+    @SuppressWarnings({"unchecked", "deprecation"})
     private static JWSHeader convertHeader(Map<String, Object> headers) {
         JWSHeader.Builder builder = new JWSHeader.Builder(JWSAlgorithm.parse((String) headers.get("alg")));
         Map<String, Object> jwk = (Map<String, Object>) headers.get("jwk");
@@ -149,7 +149,7 @@ public final class AadJwtEncoder {
             try {
                 builder.jwk(JWK.parse(jwk));
             } catch (Exception ex) {
-                throw new     JwtException(String.format(ENCODING_ERROR_MESSAGE_TEMPLATE,
+                throw new JwtException(String.format(ENCODING_ERROR_MESSAGE_TEMPLATE,
                         "Unable to convert 'jku' JOSE header"), ex);
             }
         }

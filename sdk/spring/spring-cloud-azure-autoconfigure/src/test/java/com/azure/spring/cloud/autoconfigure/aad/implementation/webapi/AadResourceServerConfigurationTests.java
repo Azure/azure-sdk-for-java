@@ -70,14 +70,10 @@ class AadResourceServerConfigurationTests {
     }
 
     @Test
-    void testCreateWebSecurityConfigurerAdapter() {
+    void testResourceServerHttpSecurityConfigured() {
         resourceServerContextRunner()
             .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
-                AadResourceServerConfiguration.DefaultAadResourceServerConfiguration webSecurityConfigurerAdapter =
-                    context.getBean(AadResourceServerConfiguration.DefaultAadResourceServerConfiguration.class);
-                assertThat(webSecurityConfigurerAdapter).isNotNull();
-
                 SecurityFilterChain filterChain = context.getBean(SecurityFilterChain.class);
                 assertThat(filterChain).isNotNull();
             });

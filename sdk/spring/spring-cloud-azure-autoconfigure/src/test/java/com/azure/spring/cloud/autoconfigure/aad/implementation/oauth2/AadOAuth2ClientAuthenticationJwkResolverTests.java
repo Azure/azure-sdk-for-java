@@ -43,6 +43,7 @@ public class AadOAuth2ClientAuthenticationJwkResolverTests {
         assertNull(jwkResolver.resolve(clientRegistration(JWT_BEARER, NONE).build()));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     void jwkValue() {
         RSAKey rsaJwk = Mockito.spy(TestJwks.DEFAULT_RSA_JWK);
