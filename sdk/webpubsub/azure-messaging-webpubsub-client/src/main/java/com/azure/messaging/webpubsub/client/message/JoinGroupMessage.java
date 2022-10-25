@@ -1,24 +1,26 @@
-package com.azure.messaging.webpubsub.client.models;
+package com.azure.messaging.webpubsub.client.message;
 
 public class JoinGroupMessage extends WebPubSubMessage {
 
     private String type = "joinGroup";
     private String group;
-    private int ackId;
+    private Long ackId;
 
     public String getGroup() {
         return group;
     }
 
-    public void setGroup(String group) {
+    public JoinGroupMessage setGroup(String group) {
         this.group = group;
+        return this;
     }
 
-    public int getAckId() {
+    public Long getAckId() {
         return ackId;
     }
 
-    public void setAckId(int ackId) {
+    public JoinGroupMessage setAckId(Long ackId) {
         this.ackId = ackId;
+        return this;
     }
 }

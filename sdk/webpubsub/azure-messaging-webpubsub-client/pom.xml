@@ -55,10 +55,21 @@
       <artifactId>javax.websocket-api</artifactId>
       <version>1.1</version>  <!-- {x-version-update;javax.websocket:javax.websocket-api;external_dependency} -->
     </dependency>
+<!--    <dependency>-->
+<!--      <groupId>org.glassfish.tyrus</groupId>-->
+<!--      <artifactId>tyrus-client</artifactId>-->
+<!--      <version>1.16</version>  &lt;!&ndash; {x-version-update;org.glassfish.tyrus:tyrus-client;external_dependency} &ndash;&gt;-->
+<!--      <exclusions>-->
+<!--        <exclusion>-->
+<!--          <groupId>javax.websocket</groupId>-->
+<!--          <artifactId>javax.websocket-api</artifactId>-->
+<!--        </exclusion>-->
+<!--      </exclusions>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>org.glassfish.tyrus</groupId>
-      <artifactId>tyrus-client</artifactId>
-      <version>1.16</version>  <!-- {x-version-update;org.glassfish.tyrus:tyrus-client;external_dependency} -->
+      <artifactId>tyrus-container-grizzly-client</artifactId>
+      <version>1.16</version>
       <exclusions>
         <exclusion>
           <groupId>javax.websocket</groupId>

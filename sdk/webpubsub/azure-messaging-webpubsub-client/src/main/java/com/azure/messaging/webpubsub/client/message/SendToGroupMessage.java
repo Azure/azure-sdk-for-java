@@ -1,14 +1,14 @@
-package com.azure.messaging.webpubsub.client.models;
+package com.azure.messaging.webpubsub.client.message;
 
 import com.azure.core.util.BinaryData;
 
-public class SendToGroupMessage {
+public class SendToGroupMessage extends WebPubSubMessage {
 
     private String type = "sendToGroup";
 
     private String group;
 
-    private int ackId;
+    private Long ackId;
 
     private boolean noEcho = false;
 
@@ -20,39 +20,44 @@ public class SendToGroupMessage {
         return group;
     }
 
-    public void setGroup(String group) {
+    public SendToGroupMessage setGroup(String group) {
         this.group = group;
+        return this;
     }
 
-    public int getAckId() {
+    public Long getAckId() {
         return ackId;
     }
 
-    public void setAckId(int ackId) {
+    public SendToGroupMessage setAckId(Long ackId) {
         this.ackId = ackId;
+        return this;
     }
 
     public boolean isNoEcho() {
         return noEcho;
     }
 
-    public void setNoEcho(boolean noEcho) {
+    public SendToGroupMessage setNoEcho(boolean noEcho) {
         this.noEcho = noEcho;
+        return this;
     }
 
     public String getDataType() {
         return dataType;
     }
 
-    public void setDataType(String dataType) {
+    public SendToGroupMessage setDataType(String dataType) {
         this.dataType = dataType;
+        return this;
     }
 
     public BinaryData getData() {
         return data;
     }
 
-    public void setData(BinaryData data) {
+    public SendToGroupMessage setData(BinaryData data) {
         this.data = data;
+        return this;
     }
 }

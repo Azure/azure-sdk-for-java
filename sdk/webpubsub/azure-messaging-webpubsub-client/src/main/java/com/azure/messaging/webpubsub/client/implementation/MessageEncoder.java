@@ -3,30 +3,23 @@ package com.azure.messaging.webpubsub.client.implementation;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.messaging.webpubsub.client.message.WebPubSubMessage;
+import org.glassfish.tyrus.core.coder.CoderAdapter;
 
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
-import javax.websocket.EndpointConfig;
 import java.io.IOException;
 
-public class MessageEncoder implements Encoder.Text {
+public class MessageEncoder extends CoderAdapter implements Encoder.Text<WebPubSubMessage> {
 
     private final static SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
     @Override
-    public void init(EndpointConfig config) {
-
-    }
-
-    @Override
-    public void destroy() {
-
-    }
-
-    @Override
-    public String encode(Object object) throws EncodeException {
+    public String encode(WebPubSubMessage object) throws EncodeException {
         try {
-            return SERIALIZER_ADAPTER.serialize(object, SerializerEncoding.JSON);
+            String msg = SERIALIZER_ADAPTER.serialize(object, SerializerEncoding.JSON);
+            System.out.println("encode msg: " + msg);
+            return msg;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
