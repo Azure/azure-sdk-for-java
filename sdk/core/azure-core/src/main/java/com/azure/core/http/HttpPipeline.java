@@ -104,7 +104,7 @@ public final class HttpPipeline {
         return Mono.defer(() -> {
             HttpPipelineNextPolicy next =
                 new HttpPipelineNextPolicy(new HttpPipelineCallState(this, context));
-            return next.process().publishOn(Schedulers.boundedElastic());
+            return next.process();
         });
     }
 

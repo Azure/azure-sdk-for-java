@@ -66,8 +66,8 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
-
     private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClient.class);
+    private static final byte[] EMPTY_BYTES = new byte[0];
 
     private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
     private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
@@ -263,7 +263,7 @@ class NettyAsyncHttpClient implements HttpClient {
                 // Set up the body flux and dispose the connection once it has been received.
                 return reactorNettyConnection.inbound().receive().aggregate().asByteArray()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
-                    .switchIfEmpty(Mono.fromSupplier(() -> new byte[0]))
+                    .switchIfEmpty(Mono.just(EMPTY_BYTES))
                     .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
                         headersEagerlyConverted));
             } else {

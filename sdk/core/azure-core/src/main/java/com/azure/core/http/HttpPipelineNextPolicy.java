@@ -62,7 +62,8 @@ public class HttpPipelineNextPolicy {
             HttpPipelinePolicy nextPolicy = state.getNextPolicy();
             if (nextPolicy == null) {
                 return this.state.getPipeline().getHttpClient().send(
-                    this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext());
+                    this.state.getCallContext().getHttpRequest(), this.state.getCallContext().getContext())
+                    .publishOn(Schedulers.boundedElastic());
             } else {
                 return nextPolicy.process(this.state.getCallContext(), this);
             }
