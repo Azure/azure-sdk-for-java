@@ -2248,16 +2248,16 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             collection.getPartitionKey());
 
                         // create point reads
-                        var pointReads = singleItemPartitionRequestMap.values().size() > 0 ? createPointReadQuery(
+                        Mono<? extends List<FeedResponse<Document>>> pointReads = singleItemPartitionRequestMap.values().size() > 0 ? createPointReadOperations(
                             singleItemPartitionRequestMap,
                             resourceLink,
                             options,
                             klass)
-                            .collectList() : Mono.just(new ArrayList<FeedResponse<Document>>());
+                            .collectList() : Mono.just(new ArrayList<>());
 
 
                         // create the executable query
-                        var queries = rangeQueryMap.keySet().size() > 0 ? createReadManyQuery(
+                        Mono<? extends List<FeedResponse<Document>>> queries = rangeQueryMap.keySet().size() > 0 ? createReadManyQuery(
                             resourceLink,
                             new SqlQuerySpec(DUMMY_SQL_QUERY),
                             options,
@@ -2265,7 +2265,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             ResourceType.Document,
                             collection,
                             Collections.unmodifiableMap(rangeQueryMap))
-                            .collectList() : Mono.just(new ArrayList<FeedResponse<Document>>());
+                            .collectList() : Mono.just(new ArrayList<>());
 
                         // merge results from point reads and queries
                         return Flux.merge(pointReads, queries)
@@ -2293,7 +2293,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 }
                                 headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                     .toString(requestCharge));
-                                var aggregatedCosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
+                                CosmosDiagnostics aggregatedCosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
                                 BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedCosmosDiagnostics, aggregatedClientSideRequestStatistics);
                                 FeedResponse<T> frp = BridgeInternal
                                     .createFeedResponseWithQueryMetrics(finalList, headers, aggregatedQueryMetrics, null, false, false, aggregatedCosmosDiagnostics);
@@ -2435,7 +2435,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return executionContext.flatMap(IDocumentQueryExecutionContext<T>::executeAsync);
     }
 
-    private <T> Flux<FeedResponse<Document>> createPointReadQuery(
+    private <T> Flux<FeedResponse<Document>> createPointReadOperations(
         Map<PartitionKeyRange, CosmosItemIdentity> singleItemPartitionRequestMap,
         String resourceLink,
         CosmosQueryRequestOptions queryRequestOptions,
@@ -2443,12 +2443,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     ) {
         return Flux.fromIterable(singleItemPartitionRequestMap.values())
             .flatMap(item -> {
-                queryRequestOptions.setPartitionKey(item.getPartitionKey());
-                return this.readDocument(getDocumentLink(item.getId(), resourceLink), ModelBridgeInternal.toRequestOptions(queryRequestOptions));
+                CosmosQueryRequestOptions clonedQueryRequestOptions = ModelBridgeInternal.createQueryRequestOptions(queryRequestOptions);
+                clonedQueryRequestOptions.setPartitionKey(item.getPartitionKey());
+                return this.readDocument(getDocumentLink(item.getId(), resourceLink), ModelBridgeInternal.toRequestOptions(clonedQueryRequestOptions));
             })
             .flatMap(itemResponse -> Mono.just(ModelBridgeInternal.createCosmosAsyncItemResponse(itemResponse, klass, getItemDeserializer())))
             .flatMap(cosmosItemResponse -> {
-                var feedResponse = ModelBridgeInternal.createFeedResponse(new Document(cosmosItemResponse.getItem().toString()), cosmosItemResponse.getResponseHeaders());
+                FeedResponse<Document> feedResponse = ModelBridgeInternal.createFeedResponse(new Document(cosmosItemResponse.getItem().toString()), cosmosItemResponse.getResponseHeaders());
                 BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(), cosmosItemResponse.getDiagnostics());
                 return Mono.just(feedResponse);
             });

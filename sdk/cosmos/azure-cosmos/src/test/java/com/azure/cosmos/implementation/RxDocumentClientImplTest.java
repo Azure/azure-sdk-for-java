@@ -21,6 +21,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.models.*;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testng.annotations.BeforeTest;
@@ -76,10 +77,10 @@ public class RxDocumentClientImplTest {
     public void readMany() {
 
         // setup static method mocks
-        var httpClientMock = Mockito.mockStatic(HttpClient.class);
-        var partitionKeyInternalHelperMock = Mockito.mockStatic(PartitionKeyInternalHelper.class);
-        var documentQueryExecutionFactoryMock = Mockito.mockStatic(DocumentQueryExecutionContextFactory.class);
-        var observableHelperMock = Mockito.mockStatic(ObservableHelper.class);
+        MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class);
+        MockedStatic<PartitionKeyInternalHelper> partitionKeyInternalHelperMock = Mockito.mockStatic(PartitionKeyInternalHelper.class);
+        MockedStatic<DocumentQueryExecutionContextFactory> documentQueryExecutionFactoryMock = Mockito.mockStatic(DocumentQueryExecutionContextFactory.class);
+        MockedStatic<ObservableHelper> observableHelperMock = Mockito.mockStatic(ObservableHelper.class);
 
         PartitionKeyRange partitionKeyRange1 = new PartitionKeyRange()
             .setId(UUID.randomUUID().toString())
@@ -92,7 +93,7 @@ public class RxDocumentClientImplTest {
             .setMaxExclusive("CCC");
 
         // dummy partition key ranges
-        var partitionKeyRanges = Arrays.asList(partitionKeyRange1, partitionKeyRange2);
+        List<PartitionKeyRange> partitionKeyRanges = Arrays.asList(partitionKeyRange1, partitionKeyRange2);
 
 
         // set up mock behavior
@@ -160,15 +161,15 @@ public class RxDocumentClientImplTest {
         ReflectionTestUtils.setField(rxDocumentClient, "partitionKeyRangeCache", this.partitionKeyRangeCacheMock);
         ReflectionTestUtils.setField(rxDocumentClient, "resetSessionTokenRetryPolicy", this.resetSessionTokenRetryPolicyMock);
 
-        var cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
+        ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
 
         cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey("1"), "1"));
         cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey("2"), "2"));
         cosmosItemIdentities.add(new CosmosItemIdentity(new PartitionKey("3"), "3"));
 
-        var collectionLink = "";
-        var options = new CosmosQueryRequestOptions();
-        var klass = InternalObjectNode.class;
+        String collectionLink = "";
+        CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
+        Class<InternalObjectNode> klass = InternalObjectNode.class;
 
         StepVerifier.create(
                 rxDocumentClient.readMany(
@@ -213,9 +214,9 @@ public class RxDocumentClientImplTest {
     }
 
     private static Utils.ValueHolder<DocumentCollection> dummyCollectionObs() {
-        var partitionKeyDefinition = new PartitionKeyDefinition();
+        PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         partitionKeyDefinition.setPaths(List.of("/id"));
-        var collectionObs = new Utils.ValueHolder<DocumentCollection>();
+        Utils.ValueHolder<DocumentCollection> collectionObs = new Utils.ValueHolder<DocumentCollection>();
         collectionObs.v = new DocumentCollection();
         collectionObs.v.setPartitionKey(partitionKeyDefinition);
 
@@ -223,7 +224,7 @@ public class RxDocumentClientImplTest {
     }
 
     private static Utils.ValueHolder<CollectionRoutingMap> dummyCollectionRoutingMap(List<PartitionKeyRange> partitionKeyRanges) {
-        var routingMap = new Utils.ValueHolder<CollectionRoutingMap>();
+        Utils.ValueHolder<CollectionRoutingMap> routingMap = new Utils.ValueHolder<CollectionRoutingMap>();
         routingMap.v = new CollectionRoutingMap() {
             @Override
             public List<PartitionKeyRange> getOrderedPartitionKeyRanges() {
@@ -303,7 +304,7 @@ public class RxDocumentClientImplTest {
     private static ResourceResponse<Document> dummyResourceResponse() {
         String content = "{\"id\": \"1\"}";
 
-        var document = new Document(content);
+        Document document = new Document(content);
 
         String activityId = UUID.randomUUID().toString();
         Map<String, String> headers = new HashMap<>();

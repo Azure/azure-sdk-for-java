@@ -151,16 +151,16 @@ public class CosmosItemTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readMany() throws Exception {
-        var cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
-        var idSet = new HashSet<String>();
-        var numDocuments = 5;
+        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        Set<String> idSet = new HashSet<String>();
+        int numDocuments = 5;
 
         for (int i = 0; i < numDocuments; i++) {
-            var document = getDocumentDefinition(UUID.randomUUID().toString());
+            InternalObjectNode document = getDocumentDefinition(UUID.randomUUID().toString());
             container.createItem(document);
 
-            var partitionKey = new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(document, "mypk"));
-            var cosmosItemIdentity = new CosmosItemIdentity(partitionKey, document.getId());
+            PartitionKey partitionKey = new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(document, "mypk"));
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, document.getId());
             cosmosItemIdentities.add(cosmosItemIdentity);
             idSet.add(document.getId());
         }
@@ -172,7 +172,7 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(feedResponse.getResults().size()).isEqualTo(numDocuments);
 
         for (int i = 0; i < feedResponse.getResults().size(); i++) {
-            var fetchedResult = feedResponse.getResults().get(i);
+            InternalObjectNode fetchedResult = feedResponse.getResults().get(i);
             assertThat(idSet.contains(fetchedResult.getId())).isTrue();
         }
     }
@@ -180,18 +180,18 @@ public class CosmosItemTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyWithSamePartitionKey() throws Exception {
-        var partitionKeyValue = UUID.randomUUID().toString();
-        var cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
-        var idSet = new HashSet<String>();
-        var numDocuments = 5;
+        String partitionKeyValue = UUID.randomUUID().toString();
+        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        Set<String> idSet = new HashSet<>();
+        int numDocuments = 5;
 
         for (int i = 0; i < numDocuments; i++) {
-            var documentId = UUID.randomUUID().toString();
-            var document = getDocumentDefinition(documentId, partitionKeyValue);
+            String documentId = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(documentId, partitionKeyValue);
             container.createItem(document);
 
-            var partitionKey = new PartitionKey(partitionKeyValue);
-            var cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
+            PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
 
             cosmosItemIdentities.add(cosmosItemIdentity);
             idSet.add(documentId);
@@ -211,17 +211,17 @@ public class CosmosItemTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyWithPojo() throws Exception {
-        var cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
-        var idSet = new HashSet<String>();
-        var valSet = new HashSet<String>();
-        var numDocuments = 5;
+        List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        Set<String> idSet = new HashSet<>();
+        Set<String> valSet = new HashSet<>();
+        int numDocuments = 5;
 
         for (int i = 0; i < numDocuments; i++) {
             var document = new SampleType(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
             container.createItem(document);
 
-            var partitionKey = new PartitionKey(document.getMypk());
-            var cosmosItemIdentity = new CosmosItemIdentity(partitionKey, document.getId());
+            PartitionKey partitionKey = new PartitionKey(document.getMypk());
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, document.getId());
             cosmosItemIdentities.add(cosmosItemIdentity);
             idSet.add(document.getId());
             valSet.add(document.getVal());
@@ -242,18 +242,18 @@ public class CosmosItemTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readManyWithSingleTuple() throws Exception {
-        var partitionKeyValue = UUID.randomUUID().toString();
-        var cosmosItemIdentities = new ArrayList<CosmosItemIdentity>();
-        var idSet = new HashSet<String>();
-        var numDocuments = 5;
+        String partitionKeyValue = UUID.randomUUID().toString();
+        ArrayList<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
+        HashSet<String> idSet = new HashSet<String>();
+        int numDocuments = 5;
 
         for (int i = 0; i < numDocuments; i++) {
-            var documentId = UUID.randomUUID().toString();
-            var document = getDocumentDefinition(documentId, partitionKeyValue);
+            String documentId = UUID.randomUUID().toString();
+            ObjectNode document = getDocumentDefinition(documentId, partitionKeyValue);
             container.createItem(document);
 
-            var partitionKey = new PartitionKey(partitionKeyValue);
-            var cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
+            PartitionKey partitionKey = new PartitionKey(partitionKeyValue);
+            CosmosItemIdentity cosmosItemIdentity = new CosmosItemIdentity(partitionKey, documentId);
 
             cosmosItemIdentities.add(cosmosItemIdentity);
             idSet.add(documentId);
