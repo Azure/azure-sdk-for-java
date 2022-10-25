@@ -68,7 +68,7 @@ class HelperTest extends APISpec {
 
     def "URLParser"() {
         when:
-        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig=sD3fPKLnFKZUjnSV4qA%2FXoJOqsmDfNfxWcZ7kPtLc0I%3D"))
+        def parts = BlobUrlParts.parse(new URL("http://host/container/" + originalBlobName + "?snapshot=snapshot&sv=" + Constants.SAS_SERVICE_VERSION + "&sr=c&sp=r&sig=" + FakeCredentialInTest.fakeSignaturePlaceholder))
 
         then:
         parts.getScheme() == "http"

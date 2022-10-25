@@ -36,7 +36,7 @@ public class UsernamePasswordCredentialTest {
     @Test
     public void testValidUserCredential() throws Exception {
         // setup
-        String username = "fakeUserNamePlaceholder";
+        String username = "fakeNamePlaceholder";
         String password = "fakeCredentialPlaceholder";
         String token1 = "token1";
         String token2 = "token2";
@@ -105,7 +105,7 @@ public class UsernamePasswordCredentialTest {
     @Test
     public void testInvalidUserCredential() throws Exception {
         // setup
-        String username = "fakeUserNamePlaceholder";
+        String username = "fakeNamePlaceholder";
         String badPassword = "Password";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
 
@@ -146,7 +146,7 @@ public class UsernamePasswordCredentialTest {
     @Test
     public void testInvalidParameters() throws Exception {
         // setup
-        String username = "fakeUserNamePlaceholder";
+        String username = "fakeNamePlaceholder";
         String password = "fakeCredentialPlaceholder";
         String token1 = "token1";
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
@@ -184,7 +184,7 @@ public class UsernamePasswordCredentialTest {
     @Test
     public void testValidAuthenticate() throws Exception {
         // setup
-        String username = "fakeUserNamePlaceholder";
+        String username = "fakeNamePlaceholder";
         String password = "fakeCredentialPlaceholder";
         String token1 = "token1";
         TokenRequestContext request1 = new TokenRequestContext().addScopes("https://management.azure.com");
@@ -202,7 +202,7 @@ public class UsernamePasswordCredentialTest {
             StepVerifier.create(credential.authenticate(request1))
                 .expectNextMatches(authenticationRecord -> authenticationRecord.getAuthority()
                     .equals("http://login.microsoftonline.com")
-                    && authenticationRecord.getUsername().equals("fakeUserNamePlaceholder")
+                    && authenticationRecord.getUsername().equals("fakeNamePlaceholder")
                     && authenticationRecord.getHomeAccountId() != null)
                 .verifyComplete();
             Assert.assertNotNull(identityClientMock);
@@ -212,7 +212,7 @@ public class UsernamePasswordCredentialTest {
     @Test
     public void testAdditionalTenantNoImpact() {
         // setup
-        String username = "fakeUserNamePlaceholder";
+        String username = "fakeNamePlaceholder";
         String password = "fakeCredentialPlaceholder";
 
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
@@ -229,7 +229,7 @@ public class UsernamePasswordCredentialTest {
     @Test
     public void testInvalidMultiTenantAuth() {
         // setup
-        String username = "fakeUserNamePlaceholder";
+        String username = "fakeNamePlaceholder";
         String password = "fakeCredentialPlaceholder";
 
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
@@ -246,7 +246,7 @@ public class UsernamePasswordCredentialTest {
     @Test
     public void testValidMultiTenantAuth() {
         // setup
-        String username = "fakeUserNamePlaceholder";
+        String username = "fakeNamePlaceholder";
         String password = "fakeCredentialPlaceholder";
 
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
