@@ -7,21 +7,21 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Microsoft Defender settings for the security profile threat detection. */
+/** AzureBlob CSI Driver settings for the storage profile. */
 @Fluent
-public final class ManagedClusterSecurityProfileDefenderSecurityMonitoring {
+public final class ManagedClusterStorageProfileBlobCsiDriver {
     /*
-     * Whether to enable Defender threat detection
+     * Whether to enable AzureBlob CSI Driver. The default value is false.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of ManagedClusterSecurityProfileDefenderSecurityMonitoring class. */
-    public ManagedClusterSecurityProfileDefenderSecurityMonitoring() {
+    /** Creates an instance of ManagedClusterStorageProfileBlobCsiDriver class. */
+    public ManagedClusterStorageProfileBlobCsiDriver() {
     }
 
     /**
-     * Get the enabled property: Whether to enable Defender threat detection.
+     * Get the enabled property: Whether to enable AzureBlob CSI Driver. The default value is false.
      *
      * @return the enabled value.
      */
@@ -30,12 +30,12 @@ public final class ManagedClusterSecurityProfileDefenderSecurityMonitoring {
     }
 
     /**
-     * Set the enabled property: Whether to enable Defender threat detection.
+     * Set the enabled property: Whether to enable AzureBlob CSI Driver. The default value is false.
      *
      * @param enabled the enabled value to set.
-     * @return the ManagedClusterSecurityProfileDefenderSecurityMonitoring object itself.
+     * @return the ManagedClusterStorageProfileBlobCsiDriver object itself.
      */
-    public ManagedClusterSecurityProfileDefenderSecurityMonitoring withEnabled(Boolean enabled) {
+    public ManagedClusterStorageProfileBlobCsiDriver withEnabled(Boolean enabled) {
         this.enabled = enabled;
         return this;
     }
