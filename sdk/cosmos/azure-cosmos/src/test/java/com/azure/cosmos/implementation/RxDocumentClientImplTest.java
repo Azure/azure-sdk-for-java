@@ -35,6 +35,8 @@ import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
 
+import static org.assertj.core.api.Assertions.assertThat;
+
 public class RxDocumentClientImplTest {
 
     private URI serviceEndpointMock;
@@ -53,7 +55,7 @@ public class RxDocumentClientImplTest {
     private RxPartitionKeyRangeCache partitionKeyRangeCacheMock;
     private IRetryPolicyFactory resetSessionTokenRetryPolicyMock;
 
-    @BeforeTest
+    @BeforeTest(groups = "unit")
     public void setUp() {
         // create mocks
         this.serviceEndpointMock = Mockito.mock(URI.class);
@@ -82,32 +84,67 @@ public class RxDocumentClientImplTest {
         MockedStatic<DocumentQueryExecutionContextFactory> documentQueryExecutionFactoryMock = Mockito.mockStatic(DocumentQueryExecutionContextFactory.class);
         MockedStatic<ObservableHelper> observableHelperMock = Mockito.mockStatic(ObservableHelper.class);
 
-        PartitionKeyRange partitionKeyRange1 = new PartitionKeyRange()
+        // dummy values
+        PartitionKeyRange dummyPartitionKeyRange1 = new PartitionKeyRange()
             .setId(UUID.randomUUID().toString())
             .setMinInclusive("AA")
             .setMaxExclusive("FF");
 
-        PartitionKeyRange partitionKeyRange2 = new PartitionKeyRange()
+        PartitionKeyRange dummyPartitionKeyRange2 = new PartitionKeyRange()
             .setId(UUID.randomUUID().toString())
             .setMinInclusive("BB")
             .setMaxExclusive("CCC");
 
-        // dummy partition key ranges
-        List<PartitionKeyRange> partitionKeyRanges = Arrays.asList(partitionKeyRange1, partitionKeyRange2);
+        PartitionKeyRange dummyPartitionKeyRange3 = new PartitionKeyRange()
+            .setId(UUID.randomUUID().toString())
+            .setMinInclusive("DD")
+            .setMaxExclusive("FFF");
 
+        Duration dummyDuration = Duration.ZERO;
+        ProxyOptions dummyProxyOptions = new ProxyOptions(null, null);
+        int dummyInt = 1;
+
+        // dummy point read result
+        String pointReadResult = "{\"id\": \"1\"}";
+
+        // dummy query results
+        List<String> queryResults = new ArrayList<>();
+
+        queryResults.add("{\"id\": \"2\"}");
+        queryResults.add("{\"id\": \"3\"}");
+
+        // dummy headers
+        Map<String, String> headersForPointReads = new HashMap<>();
+
+        String activityIdPointRead = UUID.randomUUID().toString();
+        headersForPointReads.put(HttpConstants.HttpHeaders.ACTIVITY_ID, activityIdPointRead);
+        headersForPointReads.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, "1");
+
+        Map<String, String> headersForQueries = new HashMap<>();
+
+        String activityIdQuery = UUID.randomUUID().toString();
+        headersForQueries.put(HttpConstants.HttpHeaders.ACTIVITY_ID, activityIdQuery);
+        headersForQueries.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, "2.7");
+
+        // map effective partition key string to partition key range
+        Map<String, PartitionKeyRange> epksPartitionKeyRangeMap = new HashMap<>();
+
+        epksPartitionKeyRangeMap.put("AAA", dummyPartitionKeyRange1);
+        epksPartitionKeyRangeMap.put("BBB", dummyPartitionKeyRange2);
+        epksPartitionKeyRangeMap.put("CCC", dummyPartitionKeyRange3);
 
         // set up mock behavior
-        Mockito.when(this.connectionPolicyMock.getIdleHttpConnectionTimeout()).thenReturn(dummyDuration());
-        Mockito.when(this.connectionPolicyMock.getMaxConnectionPoolSize()).thenReturn(dummyInt());
-        Mockito.when(this.connectionPolicyMock.getProxy()).thenReturn(dummyProxyClass());
-        Mockito.when(this.connectionPolicyMock.getHttpNetworkRequestTimeout()).thenReturn(dummyDuration());
+        Mockito.when(this.connectionPolicyMock.getIdleHttpConnectionTimeout()).thenReturn(dummyDuration);
+        Mockito.when(this.connectionPolicyMock.getMaxConnectionPoolSize()).thenReturn(dummyInt);
+        Mockito.when(this.connectionPolicyMock.getProxy()).thenReturn(dummyProxyOptions);
+        Mockito.when(this.connectionPolicyMock.getHttpNetworkRequestTimeout()).thenReturn(dummyDuration);
 
         httpClientMock
             .when(() -> HttpClient.createFixed(Mockito.any(HttpClientConfig.class)))
             .thenReturn(dummyHttpClient());
         partitionKeyInternalHelperMock
             .when(() -> PartitionKeyInternalHelper.getEffectivePartitionKeyString(Mockito.any(), Mockito.any()))
-            .thenReturn("AAA", "BBB", "CCC");
+            .thenReturn("AAA", "BBB", "BBB");
         documentQueryExecutionFactoryMock
             .when(() -> DocumentQueryExecutionContextFactory.createReadManyQueryAsync(
                 Mockito.any(),
@@ -122,17 +159,17 @@ public class RxDocumentClientImplTest {
                 Mockito.any(),
                 Mockito.any()
             ))
-            .thenReturn(Flux.just(dummyExecutionContextForQuery()));
+            .thenReturn(Flux.just(dummyExecutionContextForQuery(queryResults, headersForQueries)));
         observableHelperMock
             .when(() -> ObservableHelper.inlineIfPossibleAsObs(Mockito.any(), Mockito.any()))
-            .thenReturn(Mono.just(dummyResourceResponse()));
+            .thenReturn(Mono.just(dummyResourceResponse(pointReadResult, headersForPointReads)));
 
         Mockito
             .when(this.collectionCacheMock.resolveCollectionAsync(Mockito.isNull(), Mockito.any(RxDocumentServiceRequest.class)))
             .thenReturn(Mono.just(dummyCollectionObs()));
         Mockito
             .when(this.partitionKeyRangeCacheMock.tryLookupAsync(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any()))
-            .thenReturn(Mono.just(dummyCollectionRoutingMap(partitionKeyRanges)));
+            .thenReturn(Mono.just(dummyCollectionRoutingMap(epksPartitionKeyRangeMap)));
 
         Mockito.when(this.resetSessionTokenRetryPolicyMock.getRequestPolicy()).thenReturn(dummyDocumentClientRetryPolicy());
 
@@ -178,21 +215,31 @@ public class RxDocumentClientImplTest {
                     options,
                     klass
                 )
-            ).expectNextCount(1)
+            )
+            .consumeNextWith(feedResponse -> {
+
+                int expectedResultSize = 3;
+                int expectedClientSideRequestStatisticsSize = 1;
+                double expectedRequestCharge = 3.7;
+
+                assertThat(feedResponse.getResults()).isNotNull();
+                assertThat(feedResponse.getResults().size()).isEqualTo(expectedResultSize);
+                assertThat(feedResponse.getRequestCharge()).isEqualTo(expectedRequestCharge);
+
+                assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics())).isNotNull();
+                assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics()).size()).isEqualTo(expectedClientSideRequestStatisticsSize);
+                assertThat(BridgeInternal.queryMetricsFromFeedResponse(feedResponse)).isNotNull();
+
+                List<InternalObjectNode> readManyResults = feedResponse.getResults();
+                Set<String> idSet = new HashSet<>(List.of("1", "2", "3"));
+
+                for (InternalObjectNode result : readManyResults) {
+                    assertThat(idSet.contains(result.getId())).isTrue();
+                }
+
+            })
             .expectComplete()
             .verify();
-    }
-
-    private static Duration dummyDuration() {
-        return Duration.ZERO;
-    }
-
-    private static int dummyInt() {
-        return Integer.MAX_VALUE;
-    }
-
-    private static ProxyOptions dummyProxyClass() {
-        return new ProxyOptions(null, null);
     }
 
     private static HttpClient dummyHttpClient() {
@@ -216,15 +263,15 @@ public class RxDocumentClientImplTest {
     private static Utils.ValueHolder<DocumentCollection> dummyCollectionObs() {
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
         partitionKeyDefinition.setPaths(List.of("/id"));
-        Utils.ValueHolder<DocumentCollection> collectionObs = new Utils.ValueHolder<DocumentCollection>();
+        Utils.ValueHolder<DocumentCollection> collectionObs = new Utils.ValueHolder<>();
         collectionObs.v = new DocumentCollection();
         collectionObs.v.setPartitionKey(partitionKeyDefinition);
 
         return collectionObs;
     }
 
-    private static Utils.ValueHolder<CollectionRoutingMap> dummyCollectionRoutingMap(List<PartitionKeyRange> partitionKeyRanges) {
-        Utils.ValueHolder<CollectionRoutingMap> routingMap = new Utils.ValueHolder<CollectionRoutingMap>();
+    private static Utils.ValueHolder<CollectionRoutingMap> dummyCollectionRoutingMap(Map<String, PartitionKeyRange> epksPartitionKeyRangeMap) {
+        Utils.ValueHolder<CollectionRoutingMap> routingMap = new Utils.ValueHolder<>();
         routingMap.v = new CollectionRoutingMap() {
             @Override
             public List<PartitionKeyRange> getOrderedPartitionKeyRanges() {
@@ -233,8 +280,7 @@ public class RxDocumentClientImplTest {
 
             @Override
             public PartitionKeyRange getRangeByEffectivePartitionKey(String effectivePartitionKeyValue) {
-                if ("AAA".equals(effectivePartitionKeyValue)) return partitionKeyRanges.get(0);
-                return partitionKeyRanges.get(1);
+                return epksPartitionKeyRangeMap.get(effectivePartitionKeyValue);
             }
 
             @Override
@@ -280,8 +326,9 @@ public class RxDocumentClientImplTest {
         return routingMap;
     }
 
-    private static <T> IDocumentQueryExecutionContext<T> dummyExecutionContextForQuery() {
-        return () -> Flux.just(ModelBridgeInternal.createFeedResponse(new ArrayList<>(), new HashMap<>()));
+    private static <T> IDocumentQueryExecutionContext<T> dummyExecutionContextForQuery(List<String> results, Map<String, String> headers) {
+        List<Document> documentResults = results.stream().map(Document::new).toList();
+        return () -> Flux.just((FeedResponse<T>) ModelBridgeInternal.createFeedResponse(documentResults, headers));
     }
 
     private static DocumentClientRetryPolicy dummyDocumentClientRetryPolicy() {
@@ -301,16 +348,7 @@ public class RxDocumentClientImplTest {
         };
     }
 
-    private static ResourceResponse<Document> dummyResourceResponse() {
-        String content = "{\"id\": \"1\"}";
-
-        Document document = new Document(content);
-
-        String activityId = UUID.randomUUID().toString();
-        Map<String, String> headers = new HashMap<>();
-        headers.put(HttpConstants.HttpHeaders.ACTIVITY_ID, activityId);
-        headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, "4.5");
-
+    private static ResourceResponse<Document> dummyResourceResponse(String content, Map<String, String> headers) {
 
         StoreResponse storeResponse = new StoreResponse(
             HttpResponseStatus.OK.code(),
