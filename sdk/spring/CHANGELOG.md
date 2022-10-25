@@ -1,6 +1,6 @@
 # Release History
 
-## 4.4.1 (Unreleased)
+## 4.4.1 (2022-10-25)
 
 #### Bugs Fixed
 - Fix bug: Put a value into Collections.emptyMap(). [#31190](https://github.com/Azure/azure-sdk-for-java/issues/31190).
