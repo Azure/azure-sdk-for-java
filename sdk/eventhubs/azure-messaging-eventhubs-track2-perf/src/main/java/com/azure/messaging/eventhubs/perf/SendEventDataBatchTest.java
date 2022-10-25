@@ -48,7 +48,6 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
             addEvents(batch, options.getCount());
             return producerAsync.send(batch).then(Mono.just(batch.getCount()));
         });
-
     }
 
     @Override
@@ -59,7 +58,6 @@ public class SendEventDataBatchTest extends ServiceTest<EventHubsOptions> {
         if (producerAsync != null) {
             producerAsync.close();
         }
-
         return super.cleanupAsync();
     }
 }

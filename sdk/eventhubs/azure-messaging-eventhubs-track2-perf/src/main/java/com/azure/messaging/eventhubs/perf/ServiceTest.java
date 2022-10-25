@@ -10,8 +10,8 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.perf.test.core.BatchPerfTest;
-import com.azure.perf.test.core.PerfStressTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayOutputStream;
@@ -36,6 +36,10 @@ abstract class ServiceTest<T extends EventHubsOptions> extends BatchPerfTest<T> 
      */
     ServiceTest(T options) {
         super(options);
+
+        Flux.fromIterable(new ArrayList<>(1))
+            .parallel()
+
 
         final InputStream randomInputStream = TestDataCreationHelper.createRandomInputStream(options.getSize());
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
@@ -100,7 +104,6 @@ abstract class ServiceTest<T extends EventHubsOptions> extends BatchPerfTest<T> 
         if (options.getTransportType() != null) {
             builder.transportType(options.getTransportType());
         }
-
         return builder;
     }
 
@@ -118,10 +121,8 @@ abstract class ServiceTest<T extends EventHubsOptions> extends BatchPerfTest<T> 
                     if (index < 0) {
                         break;
                     }
-
                     event = events.get(index);
                 }
-
                 return client.send(batch);
             }))
             .repeat(() -> number.get() > 0)
