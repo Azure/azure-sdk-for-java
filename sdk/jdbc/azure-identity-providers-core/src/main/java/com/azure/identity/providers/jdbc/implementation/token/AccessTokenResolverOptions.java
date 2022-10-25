@@ -8,6 +8,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 /**
@@ -15,7 +16,7 @@ import java.util.Properties;
  */
 public class AccessTokenResolverOptions {
     private static final ClientLogger LOGGER = new ClientLogger(AccessTokenResolverOptions.class);
-    private static final HashMap<String, String> OSS_RDBMS_SCOPE_MAP = new HashMap<String, String>() {
+    private static final Map<String, String> OSS_RDBMS_SCOPE_MAP = new HashMap<String, String>() {
         {
             put(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD,  "https://ossrdbms-aad.database.windows.net/.default");
             put(AzureAuthorityHosts.AZURE_CHINA, "https://ossrdbms-aad.database.chinacloudapi.cn/.default");

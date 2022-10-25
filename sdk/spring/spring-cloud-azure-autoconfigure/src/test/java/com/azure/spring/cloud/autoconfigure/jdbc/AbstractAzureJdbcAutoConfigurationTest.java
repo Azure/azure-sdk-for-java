@@ -3,8 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
+import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.SpringTokenCredentialProviderContextProvider;
 import org.junit.jupiter.api.Test;
@@ -19,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 abstract class AbstractAzureJdbcAutoConfigurationTest {
 
+    public static final String PUBLIC_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";
+
     abstract void pluginNotOnClassPath();
     abstract void wrongJdbcUrl();
     abstract void enhanceUrlWithDefaultCredential();
@@ -27,6 +31,7 @@ abstract class AbstractAzureJdbcAutoConfigurationTest {
     protected final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
         .withConfiguration(AutoConfigurations.of(AzureJdbcAutoConfiguration.class,
             AzureTokenCredentialAutoConfiguration.class,
+            AzureGlobalPropertiesAutoConfiguration.class,
             DataSourceAutoConfiguration.class));
 
     @Test

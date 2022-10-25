@@ -35,9 +35,9 @@ class AccessTokenResolverOptionsTest {
         properties.setProperty(AuthProperty.SCOPES.getPropertyKey(), "fake-scopes");
 
         AccessTokenResolverOptions accessTokenResolverOptions = new AccessTokenResolverOptions(properties);
-        assertEquals(accessTokenResolverOptions.getClaims(), "fake-claims");
+        assertEquals("fake-claims", accessTokenResolverOptions.getClaims());
         assertArrayEquals(new String[]{"fake-scopes"}, accessTokenResolverOptions.getScopes());
-        assertEquals(accessTokenResolverOptions.getTenantId(), "fake-tenant-id");
+        assertEquals("fake-tenant-id", accessTokenResolverOptions.getTenantId());
     }
 
     @ParameterizedTest

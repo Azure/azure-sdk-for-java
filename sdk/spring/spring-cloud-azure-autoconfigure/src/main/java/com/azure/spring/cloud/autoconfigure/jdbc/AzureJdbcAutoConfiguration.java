@@ -28,7 +28,6 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnBean(DataSourceProperties.class)
 @ConditionalOnClass(AzureAuthenticationTemplate.class)
 @AutoConfigureAfter(DataSourceAutoConfiguration.class)
-@Import(AzureGlobalPropertiesAutoConfiguration.class)
 public class AzureJdbcAutoConfiguration {
 
     @Bean

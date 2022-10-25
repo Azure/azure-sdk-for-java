@@ -30,6 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
 
     private static final String MYSQL_CONNECTION_STRING = "jdbc:mysql://host/database?enableSwitch1&property1=value1";
+    public static final String PUBLIC_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/";
 
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -75,7 +76,7 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
                     String expectedJdbcUrl = enhanceJdbcUrl(
                         DatabaseType.MYSQL,
                         MYSQL_CONNECTION_STRING,
-                        AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/",
+                        PUBLIC_AUTHORITY_HOST_STRING,
                         PropertyKey.connectionAttributes.getKeyName()  + "=_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
                         AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
                     );

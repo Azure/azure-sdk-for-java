@@ -69,7 +69,7 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
                     DatabaseType.POSTGRESQL,
                     false,
                     connectionString,
-                    AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/",
+                    PUBLIC_AUTHORITY_HOST_STRING,
                     POSTGRESQL_USER_AGENT,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
                 );
@@ -92,7 +92,7 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
                     DatabaseType.POSTGRESQL,
                     false,
                     connectionString,
-                    AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.com/",
+                    PUBLIC_AUTHORITY_HOST_STRING,
                     AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
                     POSTGRESQL_USER_AGENT
