@@ -235,7 +235,7 @@
     },
     "AZURE_MYSQL_ENDPOINT": {
       "type": "string",
-      "value": "[if(equals(resourceGroup().location, 'chinanorth3'), 'skipResource', reference(parameters('serverName')).fullyQualifiedDomainName)]"
+      "[if(or(not(equals(resourceGroup().location, variables('skipResourceRegion'))), greater(parameters('currentEpoch'), parameters('resourceStartTime'))), 'skipResource', reference(parameters('serverName')).fullyQualifiedDomainName))]"
     }
   }
 }
