@@ -11,7 +11,7 @@ param(
 )
 
 & "$PSScriptRoot\..\..\..\eng\scripts\Merge-Branch.ps1" `
-    -SourceBranch main `
+    -SourceBranch 'main' `
     -Theirs @('**') `
     -Ours @('sdk/spring', 'sdk/spring-experimental') `
     -Merge @('eng/versioning/*.txt')

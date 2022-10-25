@@ -37,20 +37,20 @@ function ErrorExit($exitCode) {
 
 # start a merge, but leave it open
 Write-Verbose "git merge $SourceBranch --no-ff --no-commit"
-git merge $SourceBranch --no-ff --no-commit
-if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
+git merge $SourceBranch --no-ff --no-commit | Tee-Object -Variable mergeOutput
+if ($LASTEXITCODE -and -not $mergeOutput.EndsWith('Automatic merge failed; fix conflicts and then commit the result.')) { ErrorExit $LASTEXITCODE }
 
 # update paths matching "theirs", except for "ours" and "merge", to the state in $SourceBranch
 if ($Theirs.Length) {
     Write-Verbose "git restore -s $SourceBranch --staged --worktree -- $theirIncludes $ourExcludes $mergeExcludes"
-    git restore -s $SourceBranch --staged --worktree -- $theirIncludes $ourExcludes $mergeExcludes
+    git restore -s $SourceBranch --staged --worktree --theirs -- $theirIncludes $ourExcludes $mergeExcludes
     if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
 }
 
 # update paths matching "ours", except for "merge", to their pre-merge state
 if ($Ours.Length) {
     Write-Verbose "git restore -s (git rev-parse HEAD) --staged --worktree -- $ourIncludes $mergeExcludes"
-    git restore -s (git rev-parse HEAD) --staged --worktree -- $ourIncludes $mergeExcludes
+    git restore -s (git rev-parse HEAD) --staged --worktree --theirs -- $ourIncludes $mergeExcludes
     if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
 }
 
