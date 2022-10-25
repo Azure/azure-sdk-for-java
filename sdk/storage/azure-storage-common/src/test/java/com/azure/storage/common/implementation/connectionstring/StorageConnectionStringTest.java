@@ -13,6 +13,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import static com.azure.storage.common.FakeCredentialInTest.FAKE_SIGNATURE_PLACEHOLDER;
 import static com.azure.storage.common.FakeCredentialInTest.WELL_KNOWN_ACCOUNT_KEY_VALUE;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -20,7 +21,7 @@ public class StorageConnectionStringTest {
     private final ClientLogger logger = new ClientLogger(StorageConnectionStringTest.class);
     private static final String ACCOUNT_NAME_VALUE = "contoso";
     private static final String SAS_TOKEN =
-            "sv=2015-07-08&sig=sD3fPKLnFKZUjnSV4qA%2FXoJOqsmDfNfxWcZ7kPtLc0I%3D&spr=https"
+            "sv=2015-07-08&sig=" + FAKE_SIGNATURE_PLACEHOLDER + "&spr=https"
                     + "&st=2016-04-12T03%3A24%3A31Z"
                     + "&se=2016-04-13T03%3A29%3A31Z&srt=s&ss=bf&sp=rwl";
     private static final String CHINA_CLOUD_ENDPOINT_SUFFIX = "core.chinacloudapi.cn";
