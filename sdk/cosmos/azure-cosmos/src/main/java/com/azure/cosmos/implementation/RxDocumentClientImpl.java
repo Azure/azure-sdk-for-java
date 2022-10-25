@@ -2274,6 +2274,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             // aggregating the result to construct a FeedResponse and aggregate RUs.
                             .map(feedList -> {
                                 List<T> finalList = new ArrayList<>();
+                                List<ClientSideRequestStatistics> aggregatedClientSideRequestStatistics = new ArrayList<>();
                                 HashMap<String, String> headers = new HashMap<>();
                                 ConcurrentMap<String, QueryMetrics> aggregatedQueryMetrics = new ConcurrentHashMap<>();
                                 double requestCharge = 0;
@@ -2284,7 +2285,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                         pageQueryMetrics.forEach(
                                             aggregatedQueryMetrics::putIfAbsent);
                                     }
-
+                                    aggregatedClientSideRequestStatistics.addAll(BridgeInternal.getClientSideRequestStatisticsList(page.getCosmosDiagnostics()));
                                     requestCharge += page.getRequestCharge();
                                     // TODO: this does double serialization: FIXME
                                     finalList.addAll(page.getResults().stream().map(document ->
@@ -2292,8 +2293,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 }
                                 headers.put(HttpConstants.HttpHeaders.REQUEST_CHARGE, Double
                                     .toString(requestCharge));
+                                var aggregatedCosmosDiagnostics = BridgeInternal.createCosmosDiagnostics(aggregatedQueryMetrics);
+                                BridgeInternal.addClientSideDiagnosticsToFeed(aggregatedCosmosDiagnostics, aggregatedClientSideRequestStatistics);
                                 FeedResponse<T> frp = BridgeInternal
-                                    .createFeedResponse(finalList, headers);
+                                    .createFeedResponseWithQueryMetrics(finalList, headers, aggregatedQueryMetrics, null, false, false, aggregatedCosmosDiagnostics);
                                 return frp;
                             });
                     });
@@ -2445,8 +2448,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             })
             .flatMap(itemResponse -> Mono.just(ModelBridgeInternal.createCosmosAsyncItemResponse(itemResponse, klass, getItemDeserializer())))
             .flatMap(cosmosItemResponse -> {
-                var document = new Document(cosmosItemResponse.getItem().toString());
-                var feedResponse = ModelBridgeInternal.createFeedResponse(document, cosmosItemResponse.getResponseHeaders());
+                var feedResponse = ModelBridgeInternal.createFeedResponse(new Document(cosmosItemResponse.getItem().toString()), cosmosItemResponse.getResponseHeaders());
+                BridgeInternal.addClientSideDiagnosticsToFeed(feedResponse.getCosmosDiagnostics(), cosmosItemResponse.getDiagnostics());
                 return Mono.just(feedResponse);
             });
     }

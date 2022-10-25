@@ -257,6 +257,11 @@ public final class BridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
+    public static void addClientSideDiagnosticsToFeed(CosmosDiagnostics cosmosDiagnosticsFromFeed, CosmosDiagnostics cosmosDiagnosticsFromResourceResponse) {
+        cosmosDiagnosticsFromFeed.clientSideRequestStatistics(cosmosDiagnosticsFromResourceResponse.clientSideRequestStatistics());
+    }
+
+    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <E extends CosmosException> E setRequestTimeline(E e, RequestTimeline requestTimeline) {
         e.setRequestTimeline(requestTimeline);
         return e;
