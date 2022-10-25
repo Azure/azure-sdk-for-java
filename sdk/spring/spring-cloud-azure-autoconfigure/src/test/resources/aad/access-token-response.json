@@ -1,0 +1,9 @@
+{
+  "token_type": "Bearer",
+  "scope": "openid profile email",
+  "expires_in": 5139,
+  "ext_expires_in": 5139,
+  "access_token": "test_access_token_value",
+  "refresh_token": "test_refresh_token_value",
+  "id_token": "test_id_token_value"
+}
