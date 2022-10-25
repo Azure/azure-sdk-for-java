@@ -76,9 +76,10 @@
         "description": "Geo-Redundant Backup setting"
       }
     },
-    "baseTime": {
-      "type": "string",
-      "defaultValue": "[utcNow('u')]"
+    // 2023-02-01 14:02:17
+    "resourceStartTime": {
+      "type": "int",
+      "defaultValue": 1675231337
     }
   },
   "variables": {
@@ -87,7 +88,7 @@
   },
   "resources": [
     {
-            "condition": "[or(startsWith(parameters('baseTime'),'1/1'),startsWith(parameters('baseTime'),'4/1'),startsWith(parameters('baseTime'),'7/1'),startsWith(parameters('baseTime'),'10/1'))]",
+      "condition": "[greater(dateTimeToEpoch(utcNow()), parameters('resourceStartTime'))]",
       "type": "Microsoft.DBforMySQL/servers",
       "apiVersion": "2017-12-01",
       "name": "[parameters('serverName')]",
@@ -116,7 +117,7 @@
       }
     },
     {
-      "condition": "[or(startsWith(parameters('baseTime'),'1/1'),startsWith(parameters('baseTime'),'4/1'),startsWith(parameters('baseTime'),'7/1'),startsWith(parameters('baseTime'),'10/1'))]",
+      "condition": "[greater(dateTimeToEpoch(utcNow()), parameters('resourceStartTime'))]",
       "type": "Microsoft.DBforMySQL/servers/administrators",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/ActiveDirectory')]",
@@ -131,7 +132,7 @@
       }
     },
     {
-      "condition": "[or(startsWith(parameters('baseTime'),'1/1'),startsWith(parameters('baseTime'),'4/1'),startsWith(parameters('baseTime'),'7/1'),startsWith(parameters('baseTime'),'10/1'))]",
+      "condition": "[greater(dateTimeToEpoch(utcNow()), parameters('resourceStartTime'))]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/audit_log_enabled')]",
@@ -144,7 +145,7 @@
       }
     },
     {
-      "condition": "[or(startsWith(parameters('baseTime'),'1/1'),startsWith(parameters('baseTime'),'4/1'),startsWith(parameters('baseTime'),'7/1'),startsWith(parameters('baseTime'),'10/1'))]",
+      "condition": "[greater(dateTimeToEpoch(utcNow()), parameters('resourceStartTime'))]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/gtid_mode')]",
@@ -157,7 +158,7 @@
       }
     },
     {
-      "condition": "[or(startsWith(parameters('baseTime'),'1/1'),startsWith(parameters('baseTime'),'4/1'),startsWith(parameters('baseTime'),'7/1'),startsWith(parameters('baseTime'),'10/1'))]",
+      "condition": "[greater(dateTimeToEpoch(utcNow()), parameters('resourceStartTime'))]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/init_connect')]",
@@ -169,7 +170,7 @@
       }
     },
     {
-      "condition": "[or(startsWith(parameters('baseTime'),'1/1'),startsWith(parameters('baseTime'),'4/1'),startsWith(parameters('baseTime'),'7/1'),startsWith(parameters('baseTime'),'10/1'))]",
+      "condition": "[greater(dateTimeToEpoch(utcNow()), parameters('resourceStartTime'))]",
       "type": "Microsoft.DBforMySQL/servers/databases",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/db')]",
@@ -182,7 +183,7 @@
       }
     },
     {
-      "condition": "[or(startsWith(parameters('baseTime'),'1/1'),startsWith(parameters('baseTime'),'4/1'),startsWith(parameters('baseTime'),'7/1'),startsWith(parameters('baseTime'),'10/1'))]",
+      "condition": "[greater(dateTimeToEpoch(utcNow()), parameters('resourceStartTime'))]",
       "type": "Microsoft.DBforMySQL/servers/firewallRules",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/AllowAll_2022-9-14_18-12-24')]",
@@ -195,7 +196,7 @@
       }
     },
     {
-      "condition": "[or(startsWith(parameters('baseTime'),'1/1'),startsWith(parameters('baseTime'),'4/1'),startsWith(parameters('baseTime'),'7/1'),startsWith(parameters('baseTime'),'10/1'))]",
+      "condition": "[greater(dateTimeToEpoch(utcNow()), parameters('resourceStartTime'))]",
       "type": "Microsoft.DBforMySQL/servers/securityAlertPolicies",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/Default')]",
@@ -226,7 +227,7 @@
     },
     "AZURE_MYSQL_IT_SKIPRUNNING": {
       "type": "string",
-      "value": "[if(or(startsWith(parameters('baseTime'),'1/1'),startsWith(parameters('baseTime'),'4/1'),startsWith(parameters('baseTime'),'7/1'),startsWith(parameters('baseTime'),'10/1')), 'notskip', 'skipRunning')]"
+      "value": "[if(greater(dateTimeToEpoch(utcNow()), parameters('resourceStartTime')), 'notskip', 'skipRunning')]"
     },
     "AZURE_MYSQL_ENDPOINT": {
       "type": "string",
