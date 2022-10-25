@@ -1239,12 +1239,10 @@ public class BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<BlobDownloadAsyncResponse> downloadStreamWithResponse(BlobRange range, DownloadRetryOptions options,
         BlobRequestConditions requestConditions, boolean getRangeContentMd5) {
-        DownloadTransferValidationOptions validation = getRangeContentMd5
-            ? new DownloadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
-            : null;
         try {
             return withContext(context ->
-                downloadStreamWithResponse(range, options, requestConditions, validation, context));
+                downloadStreamWithResponse(range, options, requestConditions,
+                    ChecksumUtils.requestMd5ToOptions(getRangeContentMd5), context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
@@ -1624,7 +1622,7 @@ public class BlobAsyncClientBase {
          */
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
             (range, conditions) -> this.downloadStreamWithResponse(range, downloadRetryOptions, conditions,
-                rangeGetContentMd5, context);
+                ChecksumUtils.requestMd5ToOptions(rangeGetContentMd5), context);
 
         return ChunkedDownloadUtils.downloadFirstChunk(finalRange, finalParallelTransferOptions, requestConditions,
             downloadFunc, true)

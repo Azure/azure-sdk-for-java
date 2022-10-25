@@ -90,4 +90,15 @@ public class ChecksumUtils {
             throw new RuntimeException("Checksum did not match calculated data.");
         }
     }
+
+    public static UploadTransferValidationOptions md5ToOptions(byte[] md5) {
+        return new UploadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
+            .setPrecalculatedChecksum(md5);
+    }
+
+    public static DownloadTransferValidationOptions requestMd5ToOptions(boolean requestMd5) {
+        return requestMd5
+            ? new DownloadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
+            : new DownloadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.None);
+    }
 }
