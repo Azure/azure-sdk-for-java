@@ -15,11 +15,9 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class FileProperty {
     /*
-     * Content length of the file. This value may not be up-to-date since an
-     * SMB client may have modified the file locally. The value of
-     * Content-Length may not reflect that fact until the handle is closed or
-     * the op-lock is broken. To retrieve current property values, call Get
-     * File Properties.
+     * Content length of the file. This value may not be up-to-date since an SMB client may have modified the file
+     * locally. The value of Content-Length may not reflect that fact until the handle is closed or the op-lock is
+     * broken. To retrieve current property values, call Get File Properties.
      */
     @JsonProperty(value = "Content-Length", required = true)
     private long contentLength;
@@ -59,6 +57,9 @@ public final class FileProperty {
      */
     @JsonProperty(value = "Etag")
     private String etag;
+
+    /** Creates an instance of FileProperty class. */
+    public FileProperty() {}
 
     /**
      * Get the contentLength property: Content length of the file. This value may not be up-to-date since an SMB client

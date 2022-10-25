@@ -18,6 +18,10 @@ public final class JobResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<JobResourceInner> value;
 
+    /** Creates an instance of JobResourceList class. */
+    public JobResourceList() {
+    }
+
     /**
      * Get the value property: List of resources.
      *

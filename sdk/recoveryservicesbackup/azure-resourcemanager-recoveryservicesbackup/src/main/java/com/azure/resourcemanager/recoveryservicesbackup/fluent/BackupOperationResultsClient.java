@@ -20,12 +20,14 @@ public interface BackupOperationResultsClient {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void get(String vaultName, String resourceGroupName, String operationId);
+    Response<Void> getWithResponse(String vaultName, String resourceGroupName, String operationId, Context context);
 
     /**
      * Provides the status of the delete operations such as deleting backed up item. Once the operation has started, the
@@ -36,12 +38,10 @@ public interface BackupOperationResultsClient {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> getWithResponse(String vaultName, String resourceGroupName, String operationId, Context context);
+    void get(String vaultName, String resourceGroupName, String operationId);
 }

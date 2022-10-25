@@ -31,6 +31,10 @@ public final class GenericContainerExtendedInfo {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> serviceEndpoints;
 
+    /** Creates an instance of GenericContainerExtendedInfo class. */
+    public GenericContainerExtendedInfo() {
+    }
+
     /**
      * Get the rawCertData property: Public key of container cert.
      *

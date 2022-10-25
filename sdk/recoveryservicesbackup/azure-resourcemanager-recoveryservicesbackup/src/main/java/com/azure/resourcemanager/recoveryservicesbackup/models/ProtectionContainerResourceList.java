@@ -18,6 +18,10 @@ public final class ProtectionContainerResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<ProtectionContainerResourceInner> value;
 
+    /** Creates an instance of ProtectionContainerResourceList class. */
+    public ProtectionContainerResourceList() {
+    }
+
     /**
      * Get the value property: List of resources.
      *

@@ -63,6 +63,9 @@ public final class BlobContainersSegment {
     @JsonProperty(value = "Containers")
     private ContainersWrapper blobContainerItems;
 
+    /** Creates an instance of BlobContainersSegment class. */
+    public BlobContainersSegment() {}
+
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
      *

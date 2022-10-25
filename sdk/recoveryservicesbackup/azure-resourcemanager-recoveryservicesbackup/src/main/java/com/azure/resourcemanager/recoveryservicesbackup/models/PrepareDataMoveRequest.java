@@ -43,6 +43,10 @@ public final class PrepareDataMoveRequest {
     @JsonProperty(value = "ignoreMoved")
     private Boolean ignoreMoved;
 
+    /** Creates an instance of PrepareDataMoveRequest class. */
+    public PrepareDataMoveRequest() {
+    }
+
     /**
      * Get the targetResourceId property: ARM Id of target vault.
      *

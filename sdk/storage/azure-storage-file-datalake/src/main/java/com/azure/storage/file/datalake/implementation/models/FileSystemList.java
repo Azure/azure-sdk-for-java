@@ -20,6 +20,9 @@ public final class FileSystemList {
     @JsonProperty(value = "filesystems")
     private List<FileSystem> filesystems = new ArrayList<>();
 
+    /** Creates an instance of FileSystemList class. */
+    public FileSystemList() {}
+
     /**
      * Get the filesystems property: The filesystems property.
      *

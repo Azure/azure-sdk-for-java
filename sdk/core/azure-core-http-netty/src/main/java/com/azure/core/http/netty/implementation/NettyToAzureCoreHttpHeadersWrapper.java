@@ -4,6 +4,7 @@
 package com.azure.core.http.netty.implementation;
 
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
@@ -44,50 +45,36 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
-    public HttpHeaders set(String name, String value) {
-        if (name == null) {
-            return this;
-        }
-
-        if (value == null) {
-            // our general contract in HttpHeaders is that a null value will result in any key with this name
-            // being removed.
-            remove(name);
-        } else {
-            nettyHeaders.set(name, value);
-        }
+    public HttpHeaders add(String name, String value) {
+        nettyHeaders.add(name, value);
         return this;
     }
 
     @Override
-    public HttpHeaders set(String name, List<String> values) {
-        if (name == null) {
-            return this;
-        }
+    public HttpHeaders add(HttpHeaderName name, String value) {
+        return add(name.getCaseSensitiveName(), value);
+    }
 
-        if (values == null) {
-            // our general contract in HttpHeaders is that a null value will result in any key with this name
-            // being removed.
-            remove(name);
-        } else {
-            nettyHeaders.set(name, values);
-        }
+    @Override
+    public HttpHeaders set(String name, String value) {
+        nettyHeaders.set(name, value);
         return this;
     }
 
-    public HttpHeaders add(String name, String value) {
-        if (name == null) {
-            return this;
-        }
+    @Override
+    public HttpHeaders set(HttpHeaderName name, String value) {
+        return set(name.getCaseSensitiveName(), value);
+    }
 
-        if (value == null) {
-            // our general contract in HttpHeaders is that a null value will result in any key with this name
-            // being removed.
-            remove(name);
-        } else {
-            nettyHeaders.add(name, value);
-        }
+    @Override
+    public HttpHeaders set(String name, List<String> values) {
+        nettyHeaders.set(name, values);
         return this;
+    }
+
+    @Override
+    public HttpHeaders set(HttpHeaderName name, List<String> values) {
+        return set(name.getCaseSensitiveName(), values);
     }
 
     @Override
@@ -101,22 +88,45 @@ public class NettyToAzureCoreHttpHeadersWrapper extends HttpHeaders {
     }
 
     @Override
+    public HttpHeader get(HttpHeaderName name) {
+        return get(name.getCaseSensitiveName());
+    }
+
+    @Override
     public HttpHeader remove(String name) {
         HttpHeader header = get(name);
-        nettyHeaders.remove(name);
+        if (header != null) {
+            nettyHeaders.remove(name);
+        }
+
         return header;
     }
 
     @Override
+    public HttpHeader remove(HttpHeaderName name) {
+        return remove(name.getCaseSensitiveName());
+    }
+
+    @Override
     public String getValue(String name) {
-        final HttpHeader header = get(name);
-        return (header == null) ? null : header.getValue();
+        List<String> values = nettyHeaders.getAll(name);
+        return CoreUtils.isNullOrEmpty(values) ? null : CoreUtils.stringJoin(",", values);
+    }
+
+    @Override
+    public String getValue(HttpHeaderName name) {
+        return getValue(name.getCaseSensitiveName());
     }
 
     @Override
     public String[] getValues(String name) {
-        final HttpHeader header = get(name);
-        return (header == null) ? null : header.getValues();
+        List<String> values = nettyHeaders.getAll(name);
+        return CoreUtils.isNullOrEmpty(values) ? null : values.toArray(new String[0]);
+    }
+
+    @Override
+    public String[] getValues(HttpHeaderName name) {
+        return getValues(name.getCaseSensitiveName());
     }
 
     @Override

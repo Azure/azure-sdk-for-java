@@ -777,7 +777,7 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         Map<String, DocumentField> localTaxInfoFields2 = localTaxInfoFieldsList.get(1).getValueAsMap();
 
         assertEquals(51f, localTaxInfoFields1.get("LocalIncomeTax").getValueAsDouble());
-        assertEquals("Cmberland Vly/ Mddl", localTaxInfoFields1.get("LocalityName").getValueAsString());
+        assertEquals("Cmberland Vly/Mddl", localTaxInfoFields1.get("LocalityName").getValueAsString());
         assertEquals(37160.56f, localTaxInfoFields1.get("LocalWagesTipsEtc").getValueAsDouble());
 
         assertEquals(594.54f, localTaxInfoFields2.get("LocalIncomeTax").getValueAsDouble());

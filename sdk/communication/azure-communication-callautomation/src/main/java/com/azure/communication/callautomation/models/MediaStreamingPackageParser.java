@@ -22,8 +22,8 @@ public class MediaStreamingPackageParser {
     /***
      * Parses a Media Streaming package from BinaryData.
      *
-     * @param json The MediaStreaming package as a BinaryData obejct.
-     * @throws RuntimeException Any exceptions occurs at runtime.
+     * @param json The MediaStreaming package as a BinaryData object.
+     * @throws RuntimeException Any exceptions occur at runtime.
      * @return a MediaStreamingPackageBase object.
      */
     public static MediaStreamingPackageBase parse(BinaryData json) {
@@ -34,7 +34,7 @@ public class MediaStreamingPackageParser {
      * Parses a Media Streaming package from byte array.
      *
      * @param receivedBytes The MediaStreaming package as a byte[].
-     * @throws RuntimeException Any exceptions occurs at runtime.
+     * @throws RuntimeException Any exceptions occur at runtime.
      * @return a MediaStreamingPackageBase object.
      */
     public static MediaStreamingPackageBase parse(byte[] receivedBytes) {
@@ -45,7 +45,7 @@ public class MediaStreamingPackageParser {
      * Parses a Media Streaming package from String.
      *
      * @param stringJson The MediaStreaming package as a String.
-     * @throws RuntimeException Any exceptions occurs at runtime.
+     * @throws RuntimeException Any exceptions occur at runtime.
      * @return a MediaStreamingPackageBase object.
      */
     public static MediaStreamingPackageBase parse(String stringJson) {

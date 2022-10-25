@@ -25,8 +25,7 @@ public final class GenericProtectedItem extends ProtectedItem {
     private String friendlyName;
 
     /*
-     * Indicates consistency of policy object and policy applied to this backup
-     * item.
+     * Indicates consistency of policy object and policy applied to this backup item.
      */
     @JsonProperty(value = "policyState")
     private String policyState;
@@ -44,8 +43,7 @@ public final class GenericProtectedItem extends ProtectedItem {
     private Long protectedItemId;
 
     /*
-     * Loosely coupled (type, value) associations (example - parent of a
-     * protected item)
+     * Loosely coupled (type, value) associations (example - parent of a protected item)
      */
     @JsonProperty(value = "sourceAssociations")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
@@ -56,6 +54,10 @@ public final class GenericProtectedItem extends ProtectedItem {
      */
     @JsonProperty(value = "fabricName")
     private String fabricName;
+
+    /** Creates an instance of GenericProtectedItem class. */
+    public GenericProtectedItem() {
+    }
 
     /**
      * Get the friendlyName property: Friendly name of the container.
@@ -181,20 +183,6 @@ public final class GenericProtectedItem extends ProtectedItem {
 
     /** {@inheritDoc} */
     @Override
-    public GenericProtectedItem withBackupManagementType(BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public GenericProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public GenericProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
@@ -288,6 +276,13 @@ public final class GenericProtectedItem extends ProtectedItem {
     @Override
     public GenericProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public GenericProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 
