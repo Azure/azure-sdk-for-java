@@ -126,7 +126,8 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                             return BridgeInternal.toFeedResponsePage(
                                 results,
                                 response.getResponseHeaders(),
-                                false);
+                                false,
+                                response.getCosmosDiagnostics());
                         });
                 });
         return feedResponseFlux.publishOn(this.scheduler);

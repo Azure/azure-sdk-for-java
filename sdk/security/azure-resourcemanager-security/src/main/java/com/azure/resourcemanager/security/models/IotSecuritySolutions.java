@@ -15,7 +15,7 @@ public interface IotSecuritySolutions {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IoTSecuritySolutionModel> list();
 
@@ -27,7 +27,7 @@ public interface IotSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IoTSecuritySolutionModel> list(String filter, Context context);
 
@@ -39,7 +39,7 @@ public interface IotSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IoTSecuritySolutionModel> listByResourceGroup(String resourceGroupName);
 
@@ -53,7 +53,7 @@ public interface IotSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of IoT Security solutions.
+     * @return list of IoT Security solutions as paginated response with {@link PagedIterable}.
      */
     PagedIterable<IoTSecuritySolutionModel> listByResourceGroup(
         String resourceGroupName, String filter, Context context);
@@ -81,7 +81,7 @@ public interface IotSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
     Response<IoTSecuritySolutionModel> getByResourceGroupWithResponse(
         String resourceGroupName, String solutionName, Context context);
@@ -108,7 +108,7 @@ public interface IotSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteWithResponse(String resourceGroupName, String solutionName, Context context);
 
@@ -119,7 +119,7 @@ public interface IotSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
     IoTSecuritySolutionModel getById(String id);
 
@@ -131,7 +131,7 @@ public interface IotSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Security solution configuration and resource information.
+     * @return ioT Security solution configuration and resource information along with {@link Response}.
      */
     Response<IoTSecuritySolutionModel> getByIdWithResponse(String id, Context context);
 
@@ -153,7 +153,7 @@ public interface IotSecuritySolutions {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     Response<Void> deleteByIdWithResponse(String id, Context context);
 

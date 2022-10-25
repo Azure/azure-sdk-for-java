@@ -5,20 +5,20 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the uri of a disk. */
 @Fluent
 public final class VirtualHardDisk {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHardDisk.class);
-
     /*
      * Specifies the virtual hard disk's uri.
      */
     @JsonProperty(value = "uri")
     private String uri;
+
+    /** Creates an instance of VirtualHardDisk class. */
+    public VirtualHardDisk() {
+    }
 
     /**
      * Get the uri property: Specifies the virtual hard disk's uri.

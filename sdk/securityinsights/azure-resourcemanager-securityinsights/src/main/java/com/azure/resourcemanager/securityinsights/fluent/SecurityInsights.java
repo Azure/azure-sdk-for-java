@@ -157,6 +157,13 @@ public interface SecurityInsights {
     EntityQueryTemplatesClient getEntityQueryTemplates();
 
     /**
+     * Gets the FileImportsClient object to access its operations.
+     *
+     * @return the FileImportsClient object.
+     */
+    FileImportsClient getFileImports();
+
+    /**
      * Gets the IncidentCommentsClient object to access its operations.
      *
      * @return the IncidentCommentsClient object.
@@ -190,6 +197,13 @@ public interface SecurityInsights {
      * @return the SentinelOnboardingStatesClient object.
      */
     SentinelOnboardingStatesClient getSentinelOnboardingStates();
+
+    /**
+     * Gets the SecurityMLAnalyticsSettingsClient object to access its operations.
+     *
+     * @return the SecurityMLAnalyticsSettingsClient object.
+     */
+    SecurityMLAnalyticsSettingsClient getSecurityMLAnalyticsSettings();
 
     /**
      * Gets the ProductSettingsClient object to access its operations.

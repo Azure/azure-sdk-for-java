@@ -5,32 +5,20 @@
 package com.azure.resourcemanager.security.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.models.ConnectableResource;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
 /** The resource whose properties describes the allowed traffic between Azure resources. */
-@JsonFlatten
 @Immutable
-public class AllowedConnectionsResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AllowedConnectionsResourceInner.class);
-
+public final class AllowedConnectionsResourceInner extends ProxyResource {
     /*
-     * The UTC time on which the allowed connections resource was calculated
+     * Describes the allowed traffic between Azure resources
      */
-    @JsonProperty(value = "properties.calculatedDateTime", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime calculatedDateTime;
-
-    /*
-     * List of connectable resources
-     */
-    @JsonProperty(value = "properties.connectableResources", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ConnectableResource> connectableResources;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private AllowedConnectionsResourceProperties innerProperties;
 
     /*
      * Location where the resource is stored
@@ -39,21 +27,12 @@ public class AllowedConnectionsResourceInner extends ProxyResource {
     private String location;
 
     /**
-     * Get the calculatedDateTime property: The UTC time on which the allowed connections resource was calculated.
+     * Get the innerProperties property: Describes the allowed traffic between Azure resources.
      *
-     * @return the calculatedDateTime value.
+     * @return the innerProperties value.
      */
-    public OffsetDateTime calculatedDateTime() {
-        return this.calculatedDateTime;
-    }
-
-    /**
-     * Get the connectableResources property: List of connectable resources.
-     *
-     * @return the connectableResources value.
-     */
-    public List<ConnectableResource> connectableResources() {
-        return this.connectableResources;
+    private AllowedConnectionsResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -66,13 +45,31 @@ public class AllowedConnectionsResourceInner extends ProxyResource {
     }
 
     /**
+     * Get the calculatedDateTime property: The UTC time on which the allowed connections resource was calculated.
+     *
+     * @return the calculatedDateTime value.
+     */
+    public OffsetDateTime calculatedDateTime() {
+        return this.innerProperties() == null ? null : this.innerProperties().calculatedDateTime();
+    }
+
+    /**
+     * Get the connectableResources property: List of connectable resources.
+     *
+     * @return the connectableResources value.
+     */
+    public List<ConnectableResource> connectableResources() {
+        return this.innerProperties() == null ? null : this.innerProperties().connectableResources();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (connectableResources() != null) {
-            connectableResources().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

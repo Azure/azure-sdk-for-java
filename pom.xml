@@ -62,6 +62,7 @@
     <module>sdk/deploymentmanager</module>
     <module>sdk/desktopvirtualization</module>
     <module>sdk/devcenter</module>
+    <module>sdk/devhub</module>
     <module>sdk/deviceprovisioningservices</module>
     <module>sdk/deviceupdate</module>
     <module>sdk/devspaces</module>
@@ -72,6 +73,7 @@
     <module>sdk/edgeorder</module>
     <module>sdk/education</module>
     <module>sdk/elastic</module>
+    <module>sdk/elasticsan</module>
     <module>sdk/eventgrid</module>
     <module>sdk/eventhubs</module>
     <module>sdk/extendedlocation</module>
@@ -84,12 +86,14 @@
     <module>sdk/healthbot</module>
     <module>sdk/healthcareapis</module>
     <module>sdk/hybridcompute</module>
+    <module>sdk/hybridcontainerservice</module>
     <module>sdk/hybridkubernetes</module>
     <module>sdk/hybridnetwork</module>
     <module>sdk/identity</module>
     <module>sdk/imagebuilder</module>
     <module>sdk/iotcentral</module>
     <module>sdk/iothub</module>
+    <module>sdk/jdbc</module>
     <module>sdk/keyvault</module>
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
@@ -144,6 +148,7 @@
     <module>sdk/scvmm</module>
     <module>sdk/search</module>
     <module>sdk/security</module>
+    <module>sdk/securitydevops</module>
     <module>sdk/securityinsights</module>
     <module>sdk/servicebus</module>
     <module>sdk/servicefabric</module>

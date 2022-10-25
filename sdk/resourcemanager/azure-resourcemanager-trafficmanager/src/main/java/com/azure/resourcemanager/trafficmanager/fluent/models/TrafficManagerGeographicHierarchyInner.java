@@ -5,25 +5,18 @@
 package com.azure.resourcemanager.trafficmanager.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.trafficmanager.models.Region;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Class representing the Geographic hierarchy used with the Geographic traffic routing method. */
-@JsonFlatten
 @Fluent
-public class TrafficManagerGeographicHierarchyInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TrafficManagerGeographicHierarchyInner.class);
-
+public final class TrafficManagerGeographicHierarchyInner extends ProxyResource {
     /*
-     * The region at the root of the hierarchy from all the regions in the
-     * hierarchy can be retrieved.
+     * The properties of the Geographic Hierarchy resource.
      */
-    @JsonProperty(value = "properties.geographicHierarchy")
-    private Region geographicHierarchy;
+    @JsonProperty(value = "properties")
+    private GeographicHierarchyProperties innerProperties;
 
     /*
      * Fully qualified resource Id for the resource. Ex -
@@ -44,26 +37,17 @@ public class TrafficManagerGeographicHierarchyInner extends ProxyResource {
     @JsonProperty(value = "type")
     private String type;
 
-    /**
-     * Get the geographicHierarchy property: The region at the root of the hierarchy from all the regions in the
-     * hierarchy can be retrieved.
-     *
-     * @return the geographicHierarchy value.
-     */
-    public Region geographicHierarchy() {
-        return this.geographicHierarchy;
+    /** Creates an instance of TrafficManagerGeographicHierarchyInner class. */
+    public TrafficManagerGeographicHierarchyInner() {
     }
 
     /**
-     * Set the geographicHierarchy property: The region at the root of the hierarchy from all the regions in the
-     * hierarchy can be retrieved.
+     * Get the innerProperties property: The properties of the Geographic Hierarchy resource.
      *
-     * @param geographicHierarchy the geographicHierarchy value to set.
-     * @return the TrafficManagerGeographicHierarchyInner object itself.
+     * @return the innerProperties value.
      */
-    public TrafficManagerGeographicHierarchyInner withGeographicHierarchy(Region geographicHierarchy) {
-        this.geographicHierarchy = geographicHierarchy;
-        return this;
+    private GeographicHierarchyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -129,13 +113,38 @@ public class TrafficManagerGeographicHierarchyInner extends ProxyResource {
     }
 
     /**
+     * Get the geographicHierarchy property: The region at the root of the hierarchy from all the regions in the
+     * hierarchy can be retrieved.
+     *
+     * @return the geographicHierarchy value.
+     */
+    public Region geographicHierarchy() {
+        return this.innerProperties() == null ? null : this.innerProperties().geographicHierarchy();
+    }
+
+    /**
+     * Set the geographicHierarchy property: The region at the root of the hierarchy from all the regions in the
+     * hierarchy can be retrieved.
+     *
+     * @param geographicHierarchy the geographicHierarchy value to set.
+     * @return the TrafficManagerGeographicHierarchyInner object itself.
+     */
+    public TrafficManagerGeographicHierarchyInner withGeographicHierarchy(Region geographicHierarchy) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new GeographicHierarchyProperties();
+        }
+        this.innerProperties().withGeographicHierarchy(geographicHierarchy);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (geographicHierarchy() != null) {
-            geographicHierarchy().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

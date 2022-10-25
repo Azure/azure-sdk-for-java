@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.hybridnetwork.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The image reference properties. */
 @Fluent
 public final class ImageReference {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageReference.class);
-
     /*
      * The image publisher.
      */
@@ -33,22 +29,23 @@ public final class ImageReference {
     private String sku;
 
     /*
-     * Specifies the version of the image used to create the virtual machine.
-     * The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and
-     * Build are decimal numbers. Specify 'latest' to use the latest version of
-     * an image available at deploy time. Even if you use 'latest', the VM
-     * image will not automatically update after deploy time even if a new
-     * version becomes available.
+     * Specifies the version of the image used to create the virtual machine. The allowed formats are Major.Minor.Build
+     * or 'latest'. Major, Minor, and Build are decimal numbers. Specify 'latest' to use the latest version of an image
+     * available at deploy time. Even if you use 'latest', the VM image will not automatically update after deploy time
+     * even if a new version becomes available.
      */
     @JsonProperty(value = "version")
     private String version;
 
     /*
-     * Specifies in decimal numbers, the exact version of image used to create
-     * the virtual machine.
+     * Specifies in decimal numbers, the exact version of image used to create the virtual machine.
      */
     @JsonProperty(value = "exactVersion")
     private String exactVersion;
+
+    /** Creates an instance of ImageReference class. */
+    public ImageReference() {
+    }
 
     /**
      * Get the publisher property: The image publisher.

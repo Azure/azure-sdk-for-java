@@ -11,7 +11,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 /**
  * The throughput control group config builder.
  */
-@Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class ThroughputControlGroupConfigBuilder {
     private static final boolean DEFAULT_CONTINUE_ON_INIT_ERROR = false;
     private String groupName;
@@ -41,7 +40,6 @@ public class ThroughputControlGroupConfigBuilder {
      * @param groupName The throughput control group name.
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
-    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder groupName(String groupName) {
         checkArgument(StringUtils.isNotEmpty(groupName), "Group name cannot be null nor empty");
 
@@ -74,7 +72,6 @@ public class ThroughputControlGroupConfigBuilder {
      * @param targetThroughput The target throughput for the control group.
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
-    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder targetThroughput(int targetThroughput) {
         checkArgument(targetThroughput > 0, "Target throughput should be greater than 0");
 
@@ -107,7 +104,6 @@ public class ThroughputControlGroupConfigBuilder {
      * @param targetThroughputThreshold The target throughput threshold for the control group.
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
-    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder targetThroughputThreshold(double targetThroughputThreshold) {
         checkArgument(targetThroughputThreshold > 0 && targetThroughputThreshold <= 1, "Target throughput threshold should between (0, 1]");
 
@@ -136,7 +132,6 @@ public class ThroughputControlGroupConfigBuilder {
      * @param aDefault The flag to indicate whether the throughput control group will be used by default.
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
-    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder defaultControlGroup(boolean aDefault) {
         this.isDefault = aDefault;
         return this;
@@ -149,7 +144,6 @@ public class ThroughputControlGroupConfigBuilder {
      * @param continueOnInitError The flag to indicate whether request is allowed to fall back to original request flow.
      * @return The {@link ThroughputControlGroupConfigBuilder}.
      */
-    @Beta(value = Beta.SinceVersion.V4_28_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfigBuilder continueOnInitError(boolean continueOnInitError) {
         this.continueOnInitError = continueOnInitError;
         return this;
@@ -160,7 +154,6 @@ public class ThroughputControlGroupConfigBuilder {
      *
      * @return A new {@link ThroughputControlGroupConfig}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ThroughputControlGroupConfig build() {
         if (StringUtils.isEmpty(this.groupName)) {
             throw new IllegalArgumentException("Group name cannot be null nor empty");

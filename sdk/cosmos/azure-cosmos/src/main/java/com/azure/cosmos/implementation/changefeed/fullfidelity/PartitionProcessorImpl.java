@@ -20,7 +20,7 @@ import com.azure.cosmos.implementation.changefeed.exceptions.LeaseLostException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundException;
 import com.azure.cosmos.implementation.changefeed.exceptions.PartitionSplitException;
 import com.azure.cosmos.implementation.changefeed.exceptions.TaskCancelledException;
-import com.azure.cosmos.implementation.changefeed.common.ChangeFeedProcessorItem;
+import com.azure.cosmos.models.ChangeFeedProcessorItem;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -67,7 +67,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
         ChangeFeedState state = settings.getStartState();
         this.options = ModelBridgeInternal.createChangeFeedRequestOptionsForChangeFeedState(state);
-        this.options.setMaxItemCount(settings.getMaxItemCount()).fullFidelity();
+        this.options.setMaxItemCount(settings.getMaxItemCount()).allVersionsAndDeletes();
     }
 
     @Override
@@ -127,14 +127,14 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         .doOnSuccess((Void) -> {
                             this.options =
                                 CosmosChangeFeedRequestOptions
-                                    .createForProcessingFromContinuation(continuationToken).fullFidelity();
+                                    .createForProcessingFromContinuation(continuationToken).allVersionsAndDeletes();
 
                             if (cancellationToken.isCancellationRequested()) throw new TaskCancelledException();
                         });
                 }
                 this.options =
                     CosmosChangeFeedRequestOptions
-                        .createForProcessingFromContinuation(continuationToken).fullFidelity();
+                        .createForProcessingFromContinuation(continuationToken).allVersionsAndDeletes();
 
                 if (cancellationToken.isCancellationRequested()) {
                     return Flux.error(new TaskCancelledException());

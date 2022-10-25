@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ScheduledFrequency. */
+/** The frequency of task execution. */
 public final class ScheduledFrequency extends ExpandableStringEnum<ScheduledFrequency> {
     /** Static value Daily for ScheduledFrequency. */
     public static final ScheduledFrequency DAILY = fromString("Daily");

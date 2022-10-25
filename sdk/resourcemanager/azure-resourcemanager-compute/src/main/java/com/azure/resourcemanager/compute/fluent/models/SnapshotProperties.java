@@ -109,6 +109,13 @@ public final class SnapshotProperties {
     private Boolean incremental;
 
     /*
+     * Incremental snapshots for a disk share an incremental snapshot family id. The Get Page Range Diff API can only
+     * be called on incremental snapshots with the same family id.
+     */
+    @JsonProperty(value = "incrementalSnapshotFamilyId", access = JsonProperty.Access.WRITE_ONLY)
+    private String incrementalSnapshotFamilyId;
+
+    /*
      * Encryption property can be used to encrypt data at rest with customer managed keys or platform managed keys.
      */
     @JsonProperty(value = "encryption")
@@ -382,6 +389,16 @@ public final class SnapshotProperties {
     public SnapshotProperties withIncremental(Boolean incremental) {
         this.incremental = incremental;
         return this;
+    }
+
+    /**
+     * Get the incrementalSnapshotFamilyId property: Incremental snapshots for a disk share an incremental snapshot
+     * family id. The Get Page Range Diff API can only be called on incremental snapshots with the same family id.
+     *
+     * @return the incrementalSnapshotFamilyId value.
+     */
+    public String incrementalSnapshotFamilyId() {
+        return this.incrementalSnapshotFamilyId;
     }
 
     /**

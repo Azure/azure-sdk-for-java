@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Kind. */
+/** The kind of content the metadata is for. */
 public final class Kind extends ExpandableStringEnum<Kind> {
     /** Static value DataConnector for Kind. */
     public static final Kind DATA_CONNECTOR = fromString("DataConnector");

@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallRuleGroup;
+import com.azure.resourcemanager.network.models.ApplicationGatewayTierTypes;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -37,6 +38,16 @@ public final class ApplicationGatewayFirewallRuleSetPropertiesFormat {
      */
     @JsonProperty(value = "ruleGroups", required = true)
     private List<ApplicationGatewayFirewallRuleGroup> ruleGroups;
+
+    /*
+     * Tier of an application gateway that support the rule set.
+     */
+    @JsonProperty(value = "tiers")
+    private List<ApplicationGatewayTierTypes> tiers;
+
+    /** Creates an instance of ApplicationGatewayFirewallRuleSetPropertiesFormat class. */
+    public ApplicationGatewayFirewallRuleSetPropertiesFormat() {
+    }
 
     /**
      * Get the provisioningState property: The provisioning state of the web application firewall rule set.
@@ -105,6 +116,26 @@ public final class ApplicationGatewayFirewallRuleSetPropertiesFormat {
     public ApplicationGatewayFirewallRuleSetPropertiesFormat withRuleGroups(
         List<ApplicationGatewayFirewallRuleGroup> ruleGroups) {
         this.ruleGroups = ruleGroups;
+        return this;
+    }
+
+    /**
+     * Get the tiers property: Tier of an application gateway that support the rule set.
+     *
+     * @return the tiers value.
+     */
+    public List<ApplicationGatewayTierTypes> tiers() {
+        return this.tiers;
+    }
+
+    /**
+     * Set the tiers property: Tier of an application gateway that support the rule set.
+     *
+     * @param tiers the tiers value to set.
+     * @return the ApplicationGatewayFirewallRuleSetPropertiesFormat object itself.
+     */
+    public ApplicationGatewayFirewallRuleSetPropertiesFormat withTiers(List<ApplicationGatewayTierTypes> tiers) {
+        this.tiers = tiers;
         return this;
     }
 

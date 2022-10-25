@@ -1,14 +1,26 @@
 # Release History
 
-## 2.19.0-beta.1 (Unreleased)
+## 2.20.0-beta.1 (Unreleased)
 
 ### Features Added
 
+- Introduced new top-level properties on the Public Ip Resource which allows customers to enable DDoS Protection as for a new feature called DDoS Per-IP SKU.
+
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed properties from Legacy Custom Policy Resource. The feature was never released to customer.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2022-05-01`.
+
+## 2.19.0 (2022-09-23)
+
+### Breaking Changes
+
+- Since `2.10.0` (`api-version`:`2021-05-01`), `PublicIpAddress` of `Basic` Sku no longer supported configuring with Availability Zone.
 
 ## 2.18.0 (2022-08-26)
 

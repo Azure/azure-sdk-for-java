@@ -2,16 +2,12 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 
-import java.util.Collections;
-import java.util.Map;
-
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.kafka.AzureEventHubsKafkaOAuth2AutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.kafka.AzureKafkaSpringCloudStreamConfiguration;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -23,14 +19,12 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.ProducerFactory;
 
+import java.util.Collections;
+import java.util.Map;
+
 import static com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfigurationTests.CONNECTION_STRING_FORMAT;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_JAAS_CONFIG_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH;
-import static com.azure.spring.cloud.autoconfigure.implementation.kafka.AzureKafkaAutoconfigurationUtils.SASL_MECHANISM_OAUTH;
 import static org.apache.kafka.clients.CommonClientConfigs.SECURITY_PROTOCOL_CONFIG;
 import static org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG;
-import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
-import static org.apache.kafka.common.config.SaslConfigs.SASL_LOGIN_CALLBACK_HANDLER_CLASS;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_MECHANISM;
 import static org.apache.kafka.common.security.auth.SecurityProtocol.SASL_SSL;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -77,35 +71,4 @@ class AzureEventHubsKafkaConfigurationTests {
                 .get(SASL_MECHANISM)).isEqualTo("PLAIN");
     }
 
-    @Test
-    void shouldConfigureSaslOAuth2WhenNotGivenConnectionString() {
-        contextRunner
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
-                    assertThat(context).hasSingleBean(AzureGlobalProperties.class);
-                    assertThat(context).doesNotHaveBean(KafkaPropertiesBeanPostProcessor.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
-                    assertThat(context).hasSingleBean(ConsumerFactory.class);
-                    assertThat(context).hasSingleBean(ProducerFactory.class);
-                    assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
-
-                    DefaultKafkaConsumerFactory<?, ?> consumerFactory = (DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class);
-                    assertSaslOAuth2Configured(consumerFactory.getConfigurationProperties());
-                    DefaultKafkaProducerFactory<?, ?> producerFactory = (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);
-                    assertSaslOAuth2Configured(producerFactory.getConfigurationProperties());
-                    KafkaBinderConfigurationProperties binderConfigurationProperties = context.getBean(KafkaBinderConfigurationProperties.class);
-                    assertSaslOAuth2Configured(binderConfigurationProperties.mergedConsumerConfiguration());
-                });
-    }
-
-    private void assertSaslOAuth2Configured(Map<String, ?> configurationProperties) {
-        assertThat(configurationProperties
-                .get(SECURITY_PROTOCOL_CONFIG)).isEqualTo(SASL_SSL.name());
-        assertThat(configurationProperties
-                .get(SASL_MECHANISM)).isEqualTo(SASL_MECHANISM_OAUTH);
-        assertThat(configurationProperties
-                .get(SASL_JAAS_CONFIG)).isEqualTo(SASL_JAAS_CONFIG_OAUTH);
-        assertThat(configurationProperties
-                .get(SASL_LOGIN_CALLBACK_HANDLER_CLASS)).isEqualTo(SASL_LOGIN_CALLBACK_HANDLER_CLASS_OAUTH);
-    }
 }

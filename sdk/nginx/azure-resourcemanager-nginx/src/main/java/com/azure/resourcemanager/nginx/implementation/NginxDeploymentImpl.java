@@ -99,7 +99,7 @@ public final class NginxDeploymentImpl implements NginxDeployment, NginxDeployme
             serviceManager
                 .serviceClient()
                 .getDeployments()
-                .create(resourceGroupName, deploymentName, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, deploymentName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -108,7 +108,7 @@ public final class NginxDeploymentImpl implements NginxDeployment, NginxDeployme
             serviceManager
                 .serviceClient()
                 .getDeployments()
-                .create(resourceGroupName, deploymentName, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, deploymentName, this.innerModel(), context);
         return this;
     }
 

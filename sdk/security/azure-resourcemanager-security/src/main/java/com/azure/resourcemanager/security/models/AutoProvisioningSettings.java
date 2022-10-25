@@ -15,7 +15,7 @@ public interface AutoProvisioningSettings {
      *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AutoProvisioningSetting> list();
 
@@ -26,7 +26,7 @@ public interface AutoProvisioningSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of all the auto provisioning settings response.
+     * @return list of all the auto provisioning settings response as paginated response with {@link PagedIterable}.
      */
     PagedIterable<AutoProvisioningSetting> list(Context context);
 
@@ -49,7 +49,7 @@ public interface AutoProvisioningSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting along with {@link Response}.
      */
     Response<AutoProvisioningSetting> getWithResponse(String settingName, Context context);
 
@@ -60,7 +60,7 @@ public interface AutoProvisioningSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting along with {@link Response}.
      */
     AutoProvisioningSetting getById(String id);
 
@@ -72,7 +72,7 @@ public interface AutoProvisioningSettings {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return auto provisioning setting.
+     * @return auto provisioning setting along with {@link Response}.
      */
     Response<AutoProvisioningSetting> getByIdWithResponse(String id, Context context);
 

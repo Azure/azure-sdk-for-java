@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RecommendationStatus. */
+/** The initial recommendation status of the machine group or machine. */
 public final class RecommendationStatus extends ExpandableStringEnum<RecommendationStatus> {
     /** Static value Recommended for RecommendationStatus. */
     public static final RecommendationStatus RECOMMENDED = fromString("Recommended");
@@ -33,7 +33,11 @@ public final class RecommendationStatus extends ExpandableStringEnum<Recommendat
         return fromString(name, RecommendationStatus.class);
     }
 
-    /** @return known RecommendationStatus values. */
+    /**
+     * Gets known RecommendationStatus values.
+     *
+     * @return known RecommendationStatus values.
+     */
     public static Collection<RecommendationStatus> values() {
         return values(RecommendationStatus.class);
     }

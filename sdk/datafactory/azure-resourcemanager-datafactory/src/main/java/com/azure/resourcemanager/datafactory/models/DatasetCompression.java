@@ -33,6 +33,10 @@ public final class DatasetCompression {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of DatasetCompression class. */
+    public DatasetCompression() {
+    }
+
     /**
      * Get the type property: Type of dataset compression. Type: string (or Expression with resultType string).
      *

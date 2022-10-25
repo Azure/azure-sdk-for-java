@@ -35,6 +35,10 @@ public final class ODataSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of ODataSource class. */
+    public ODataSource() {
+    }
+
     /**
      * Get the query property: OData query. For example, "$top=1". Type: string (or Expression with resultType string).
      *

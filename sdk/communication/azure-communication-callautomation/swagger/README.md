@@ -33,9 +33,9 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2022-04-07-preview
 require:
-    - https://github.com/richardcho-msft/azure-rest-api-specs/blob/dev-communication-CallingServer-2022-04-07-preview/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ac4677cd31042657c21bf40e0506c7c2752bbe70/specification/communication/data-plane/CallAutomation/readme.md
 java: true
-output-folder: ..\
+output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
 namespace: com.azure.communication.callautomation
 custom-types: ToneValue,OperationStatus,CallRecordingState,CallConnectionState,EventSubscriptionType,MediaType,RecordingChannelType,RecordingContentType,RecordingFormatType
@@ -143,19 +143,21 @@ directive:
     to: RecognizeOptionsInternal
     
 # Remove models
-- remove-model: AddParticipantsFailedEvent
-- remove-model: AddParticipantsSucceededEvent
-- remove-model: CallConnectedEvent
-- remove-model: CallDisconnectedEvent
-- remove-model: CallTransferAcceptedEvent
-- remove-model: CallTransferFailedEvent
-- remove-model: ParticipantsUpdatedEvent
-- remove-model: RecordingStateChangedEvent
+- remove-model: AddParticipantsFailed
+- remove-model: AddParticipantsSucceeded
+- remove-model: CallConnected
+- remove-model: CallDisconnected
+- remove-model: CallTransferAccepted
+- remove-model: CallTransferFailed
+- remove-model: ParticipantsUpdated
+- remove-model: RecordingStateChanged
 - remove-model: PlayCompleted
 - remove-model: PlayFailed
+- remove-model: PlayCanceled
 - remove-model: ResultInfo
 - remove-model: RecognizeCompleted
 - remove-model: RecognizeFailed
+- remove-model: RecognizeCanceled
 ```
 
 ### Rename RecordingChannelType to RecordingChannelInternal
@@ -292,6 +294,15 @@ directive:
   where: $.definitions.RecognitionType["x-ms-enum"]
   transform: >
     $.name = "RecognitionTypeInternal";
+```
+
+### Rename Tone to DtmfTone
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.Tone["x-ms-enum"]
+  transform: >
+    $.name = "DtmfTone";
 ```
 
 ### Rename DtmfOptions to DtmfOptionsInternal

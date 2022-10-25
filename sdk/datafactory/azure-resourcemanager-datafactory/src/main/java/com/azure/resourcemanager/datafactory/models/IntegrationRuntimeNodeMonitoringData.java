@@ -68,6 +68,10 @@ public final class IntegrationRuntimeNodeMonitoringData {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of IntegrationRuntimeNodeMonitoringData class. */
+    public IntegrationRuntimeNodeMonitoringData() {
+    }
+
     /**
      * Get the nodeName property: Name of the integration runtime node.
      *

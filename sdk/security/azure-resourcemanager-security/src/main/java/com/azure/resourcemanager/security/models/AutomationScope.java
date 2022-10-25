@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** A single automation scope. */
 @Fluent
 public final class AutomationScope {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AutomationScope.class);
-
     /*
      * The resources scope description.
      */
@@ -21,9 +17,8 @@ public final class AutomationScope {
     private String description;
 
     /*
-     * The resources scope path. Can be the subscription on which the
-     * automation is defined on or a resource group under that subscription
-     * (fully qualified Azure resource IDs).
+     * The resources scope path. Can be the subscription on which the automation is defined on or a resource group
+     * under that subscription (fully qualified Azure resource IDs).
      */
     @JsonProperty(value = "scopePath")
     private String scopePath;

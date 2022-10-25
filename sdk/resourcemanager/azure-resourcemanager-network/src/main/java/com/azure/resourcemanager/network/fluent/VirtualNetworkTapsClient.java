@@ -151,19 +151,6 @@ public interface VirtualNetworkTapsClient
      *
      * @param resourceGroupName The name of the resource group.
      * @param tapName The name of virtual network tap.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information about the specified virtual network tap.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkTapInner getByResourceGroup(String resourceGroupName, String tapName);
-
-    /**
-     * Gets information about the specified virtual network tap.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param tapName The name of virtual network tap.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -173,6 +160,19 @@ public interface VirtualNetworkTapsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualNetworkTapInner> getByResourceGroupWithResponse(
         String resourceGroupName, String tapName, Context context);
+
+    /**
+     * Gets information about the specified virtual network tap.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param tapName The name of virtual network tap.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information about the specified virtual network tap.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualNetworkTapInner getByResourceGroup(String resourceGroupName, String tapName);
 
     /**
      * Creates or updates a Virtual Network Tap.
@@ -315,20 +315,6 @@ public interface VirtualNetworkTapsClient
      * @param resourceGroupName The name of the resource group.
      * @param tapName The name of the tap.
      * @param tapParameters Parameters supplied to update VirtualNetworkTap tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return virtual Network Tap resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkTapInner updateTags(String resourceGroupName, String tapName, TagsObject tapParameters);
-
-    /**
-     * Updates an VirtualNetworkTap tags.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param tapName The name of the tap.
-     * @param tapParameters Parameters supplied to update VirtualNetworkTap tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -338,6 +324,20 @@ public interface VirtualNetworkTapsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<VirtualNetworkTapInner> updateTagsWithResponse(
         String resourceGroupName, String tapName, TagsObject tapParameters, Context context);
+
+    /**
+     * Updates an VirtualNetworkTap tags.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param tapName The name of the tap.
+     * @param tapParameters Parameters supplied to update VirtualNetworkTap tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return virtual Network Tap resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualNetworkTapInner updateTags(String resourceGroupName, String tapName, TagsObject tapParameters);
 
     /**
      * Gets all the VirtualNetworkTaps in a subscription.

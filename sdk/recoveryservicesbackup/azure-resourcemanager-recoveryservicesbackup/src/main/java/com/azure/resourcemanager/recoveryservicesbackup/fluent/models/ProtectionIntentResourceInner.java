@@ -25,6 +25,10 @@ public final class ProtectionIntentResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of ProtectionIntentResourceInner class. */
+    public ProtectionIntentResourceInner() {
+    }
+
     /**
      * Get the properties property: ProtectionIntentResource properties.
      *

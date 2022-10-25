@@ -38,7 +38,7 @@ public class TracerProviderTest {
         Context context = new Context("foo", "bar");
 
         ArgumentCaptor<StartSpanOptions> optionsCaptor = ArgumentCaptor.forClass(StartSpanOptions.class);
-        TracerProvider provider = new TracerProvider(tracerMock);
+        TracerProvider provider = new TracerProvider(tracerMock, false, false);
         provider.startSpan(methodName, instance, endpoint, context);
         verify(tracerMock, times(1)).start(eq(methodName), optionsCaptor.capture(), eq(context));
 
@@ -59,7 +59,7 @@ public class TracerProviderTest {
         reactor.util.context.Context reactorContext = TracerProvider.setContextInReactor(sdkContext);
 
         Tracer tracerMock = Mockito.mock(Tracer.class);
-        TracerProvider provider = new TracerProvider(tracerMock);
+        TracerProvider provider = new TracerProvider(tracerMock, false, false);
         provider.endSpan(Signal.complete(reactorContext), 200);
         verify(tracerMock, times(1)).end(eq(200), isNull(),  eq(sdkContext));
     }
@@ -70,7 +70,7 @@ public class TracerProviderTest {
         reactor.util.context.Context reactorContext = TracerProvider.setContextInReactor(sdkContext);
 
         Tracer tracerMock = Mockito.mock(Tracer.class);
-        TracerProvider provider = new TracerProvider(tracerMock);
+        TracerProvider provider = new TracerProvider(tracerMock, false, false);
         Exception ex = new Exception("foo");
         provider.endSpan(Signal.error(ex, reactorContext), 500);
         verify(tracerMock, times(1)).end(eq(500), eq(ex),  eq(sdkContext));
@@ -82,7 +82,7 @@ public class TracerProviderTest {
         reactor.util.context.Context reactorContext = TracerProvider.setContextInReactor(sdkContext);
 
         Tracer tracerMock = Mockito.mock(Tracer.class);
-        TracerProvider provider = new TracerProvider(tracerMock);
+        TracerProvider provider = new TracerProvider(tracerMock, false, false);
         Exception ex = new ServiceUnavailableException();
         provider.endSpan(Signal.error(ex, reactorContext), -1);
         verify(tracerMock, times(1)).end(eq(503), eq(ex),  eq(sdkContext));
@@ -95,7 +95,7 @@ public class TracerProviderTest {
         CosmosResponse<?> response = Mockito.mock(CosmosResponse.class);
         Context sdkContext = new Context("span", new Object());
 
-        TracerProvider provider = new TracerProvider(tracerMock);
+        TracerProvider provider = new TracerProvider(tracerMock, false, false);
         AtomicBoolean closed = new AtomicBoolean(false);
         when(tracerMock.start(anyString(), any(StartSpanOptions.class), any(Context.class))).thenReturn(sdkContext);
         when(tracerMock.makeSpanCurrent(any())).thenReturn(() -> closed.set(true));
@@ -119,7 +119,7 @@ public class TracerProviderTest {
         Tracer tracerMock = Mockito.mock(Tracer.class);
 
         CosmosResponse<?> response = Mockito.mock(CosmosResponse.class);
-        TracerProvider provider = new TracerProvider(tracerMock);
+        TracerProvider provider = new TracerProvider(tracerMock, false, false);
         AtomicBoolean closed = new AtomicBoolean(false);
         when(tracerMock.start(anyString(), any(StartSpanOptions.class), any(Context.class))).thenReturn(Context.NONE);
         when(tracerMock.makeSpanCurrent(any())).thenReturn(() -> closed.set(true));
@@ -155,7 +155,7 @@ public class TracerProviderTest {
         CosmosResponse<?> response = Mockito.mock(CosmosResponse.class);
         Context sdkContext = new Context("span", new Object());
 
-        TracerProvider provider = new TracerProvider(tracerMock);
+        TracerProvider provider = new TracerProvider(tracerMock, false, false);
         AtomicBoolean closed = new AtomicBoolean(false);
         when(tracerMock.makeSpanCurrent(any())).thenReturn(() -> closed.set(true));
 

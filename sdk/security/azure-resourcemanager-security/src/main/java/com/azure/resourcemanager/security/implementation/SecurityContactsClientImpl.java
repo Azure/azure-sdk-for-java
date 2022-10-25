@@ -12,7 +12,6 @@ import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
-import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
@@ -29,7 +28,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.SecurityContactsClient;
 import com.azure.resourcemanager.security.fluent.models.SecurityContactInner;
 import com.azure.resourcemanager.security.models.SecurityContactList;
@@ -37,8 +35,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SecurityContactsClient. */
 public final class SecurityContactsClientImpl implements SecurityContactsClient {
-    private final ClientLogger logger = new ClientLogger(SecurityContactsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SecurityContactsService service;
 
@@ -88,7 +84,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
 
         @Headers({"Content-Type: application/json"})
         @Put("/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SecurityContactInner>> create(
             @HostParam("$host") String endpoint,
@@ -101,26 +97,13 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
 
         @Headers({"Content-Type: application/json"})
         @Delete("/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}")
-        @ExpectedResponses({204})
+        @ExpectedResponses({200, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Void>> delete(
             @HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("securityContactName") String securityContactName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch("/subscriptions/{subscriptionId}/providers/Microsoft.Security/securityContacts/{securityContactName}")
-        @ExpectedResponses({200})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SecurityContactInner>> update(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("securityContactName") String securityContactName,
-            @BodyParam("application/json") SecurityContactInner securityContact,
             @HeaderParam("Accept") String accept,
             Context context);
 
@@ -136,11 +119,12 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * List all security contact configurations for the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityContactInner>> listSinglePageAsync() {
@@ -156,7 +140,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-08-01-preview";
+        final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -176,13 +160,14 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * List all security contact configurations for the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityContactInner>> listSinglePageAsync(Context context) {
@@ -198,7 +183,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2017-08-01-preview";
+        final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -215,11 +200,11 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * List all security contact configurations for the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityContactInner> listAsync() {
@@ -227,13 +212,13 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * List all security contact configurations for the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecurityContactInner> listAsync(Context context) {
@@ -242,11 +227,11 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * List all security contact configurations for the subscription.
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityContactInner> list() {
@@ -254,13 +239,13 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * List all security contact configurations for the subscription.
      *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecurityContactInner> list(Context context) {
@@ -268,13 +253,14 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Get Default Security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return default Security contact configurations for the subscription along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityContactInner>> getWithResponseAsync(String securityContactName) {
@@ -294,7 +280,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter securityContactName is required and cannot be null."));
         }
-        final String apiVersion = "2017-08-01-preview";
+        final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -311,14 +297,15 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Get Default Security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return default Security contact configurations for the subscription along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityContactInner>> getWithResponseAsync(String securityContactName, Context context) {
@@ -338,7 +325,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter securityContactName is required and cannot be null."));
         }
-        final String apiVersion = "2017-08-01-preview";
+        final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -352,35 +339,27 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Get Default Security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return default Security contact configurations for the subscription on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SecurityContactInner> getAsync(String securityContactName) {
-        return getWithResponseAsync(securityContactName)
-            .flatMap(
-                (Response<SecurityContactInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getWithResponseAsync(securityContactName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Get Default Security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return default Security contact configurations for the subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityContactInner get(String securityContactName) {
@@ -388,14 +367,14 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Get Default Security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return default Security contact configurations for the subscription along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityContactInner> getWithResponse(String securityContactName, Context context) {
@@ -403,14 +382,15 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Create security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param securityContact Security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details and configurations for notifications coming from Microsoft Defender for Cloud along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityContactInner>> createWithResponseAsync(
@@ -437,7 +417,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
         } else {
             securityContact.validate();
         }
-        final String apiVersion = "2017-08-01-preview";
+        final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -455,7 +435,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Create security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param securityContact Security contact object.
@@ -463,7 +443,8 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details and configurations for notifications coming from Microsoft Defender for Cloud along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SecurityContactInner>> createWithResponseAsync(
@@ -490,7 +471,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
         } else {
             securityContact.validate();
         }
-        final String apiVersion = "2017-08-01-preview";
+        final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -505,37 +486,31 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Create security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param securityContact Security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details and configurations for notifications coming from Microsoft Defender for Cloud on
+     *     successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SecurityContactInner> createAsync(String securityContactName, SecurityContactInner securityContact) {
         return createWithResponseAsync(securityContactName, securityContact)
-            .flatMap(
-                (Response<SecurityContactInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Create security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param securityContact Security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details and configurations for notifications coming from Microsoft Defender for Cloud.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecurityContactInner create(String securityContactName, SecurityContactInner securityContact) {
@@ -543,7 +518,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Create security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param securityContact Security contact object.
@@ -551,7 +526,8 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
+     * @return contact details and configurations for notifications coming from Microsoft Defender for Cloud along with
+     *     {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecurityContactInner> createWithResponse(
@@ -560,13 +536,13 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Delete security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String securityContactName) {
@@ -586,7 +562,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter securityContactName is required and cannot be null."));
         }
-        final String apiVersion = "2017-08-01-preview";
+        final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -603,14 +579,14 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Delete security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String securityContactName, Context context) {
@@ -630,7 +606,7 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
             return Mono
                 .error(new IllegalArgumentException("Parameter securityContactName is required and cannot be null."));
         }
-        final String apiVersion = "2017-08-01-preview";
+        final String apiVersion = "2020-01-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
@@ -644,21 +620,21 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Delete security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String securityContactName) {
-        return deleteWithResponseAsync(securityContactName).flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(securityContactName).flatMap(ignored -> Mono.empty());
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Delete security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -671,14 +647,14 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
+     * Delete security contact configurations for the subscription.
      *
      * @param securityContactName Name of the security contact object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteWithResponse(String securityContactName, Context context) {
@@ -686,170 +662,15 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     }
 
     /**
-     * Security contact configurations for the subscription.
-     *
-     * @param securityContactName Name of the security contact object.
-     * @param securityContact Security contact object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityContactInner>> updateWithResponseAsync(
-        String securityContactName, SecurityContactInner securityContact) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (securityContactName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter securityContactName is required and cannot be null."));
-        }
-        if (securityContact == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter securityContact is required and cannot be null."));
-        } else {
-            securityContact.validate();
-        }
-        final String apiVersion = "2017-08-01-preview";
-        final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            apiVersion,
-                            this.client.getSubscriptionId(),
-                            securityContactName,
-                            securityContact,
-                            accept,
-                            context))
-            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Security contact configurations for the subscription.
-     *
-     * @param securityContactName Name of the security contact object.
-     * @param securityContact Security contact object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SecurityContactInner>> updateWithResponseAsync(
-        String securityContactName, SecurityContactInner securityContact, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (securityContactName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter securityContactName is required and cannot be null."));
-        }
-        if (securityContact == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter securityContact is required and cannot be null."));
-        } else {
-            securityContact.validate();
-        }
-        final String apiVersion = "2017-08-01-preview";
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                apiVersion,
-                this.client.getSubscriptionId(),
-                securityContactName,
-                securityContact,
-                accept,
-                context);
-    }
-
-    /**
-     * Security contact configurations for the subscription.
-     *
-     * @param securityContactName Name of the security contact object.
-     * @param securityContact Security contact object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SecurityContactInner> updateAsync(String securityContactName, SecurityContactInner securityContact) {
-        return updateWithResponseAsync(securityContactName, securityContact)
-            .flatMap(
-                (Response<SecurityContactInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Security contact configurations for the subscription.
-     *
-     * @param securityContactName Name of the security contact object.
-     * @param securityContact Security contact object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public SecurityContactInner update(String securityContactName, SecurityContactInner securityContact) {
-        return updateAsync(securityContactName, securityContact).block();
-    }
-
-    /**
-     * Security contact configurations for the subscription.
-     *
-     * @param securityContactName Name of the security contact object.
-     * @param securityContact Security contact object.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return contact details for security issues.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecurityContactInner> updateWithResponse(
-        String securityContactName, SecurityContactInner securityContact, Context context) {
-        return updateWithResponseAsync(securityContactName, securityContact, context).block();
-    }
-
-    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityContactInner>> listNextSinglePageAsync(String nextLink) {
@@ -880,12 +701,14 @@ public final class SecurityContactsClientImpl implements SecurityContactsClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security contacts response.
+     * @return list of security contacts response along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecurityContactInner>> listNextSinglePageAsync(String nextLink, Context context) {

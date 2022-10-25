@@ -55,6 +55,10 @@ public final class FileShareDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
+    /** Creates an instance of FileShareDatasetTypeProperties class. */
+    public FileShareDatasetTypeProperties() {
+    }
+
     /**
      * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
      * string).

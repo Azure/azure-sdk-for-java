@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Metadata Delete. */
 public final class MetadataDeleteSamples {
     /*
-     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-01-01-preview/examples/metadata/DeleteMetadata.json
+     * x-ms-original-file: specification/securityinsights/resource-manager/Microsoft.SecurityInsights/preview/2022-09-01-preview/examples/metadata/DeleteMetadata.json
      */
     /**
      * Sample code: Delete metadata.

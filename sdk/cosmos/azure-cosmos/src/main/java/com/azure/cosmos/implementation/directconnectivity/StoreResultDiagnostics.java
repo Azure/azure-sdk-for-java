@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.Exceptions;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
@@ -35,20 +36,23 @@ public class StoreResultDiagnostics {
     private boolean isGoneException;
     private boolean isNotFoundException;
     private boolean isInvalidPartitionException;
-    private final String storePhysicalAddressAsString;
+    private final Uri storePhysicalAddress;
     private boolean isThroughputControlRequestRateTooLargeException;
     private final Double backendLatencyInMs;
 
     //  StoreResponse and CosmosException fields
     private StoreResponseDiagnostics storeResponseDiagnostics;
 
-    public static StoreResultDiagnostics createStoreResultDiagnostics(StoreResult storeResult) {
+    public static StoreResultDiagnostics createStoreResultDiagnostics(
+        StoreResult storeResult,
+        RxDocumentServiceRequest request) {
+
         if (storeResult == null) {
             return null;
         } else if (storeResult.getStoreResponse() != null) {
-            return new StoreResultDiagnostics(storeResult, storeResult.getStoreResponse());
+            return new StoreResultDiagnostics(storeResult, storeResult.getStoreResponse(), request);
         } else {
-            return new StoreResultDiagnostics(storeResult, storeResult.getException());
+            return new StoreResultDiagnostics(storeResult, storeResult.getException(), request);
         }
     }
 
@@ -58,25 +62,29 @@ public class StoreResultDiagnostics {
         this.currentReplicaSetSize = storeResult.currentReplicaSetSize;
         this.currentWriteQuorum = storeResult.currentWriteQuorum;
         this.isValid = storeResult.isValid;
-        this.storePhysicalAddressAsString = storeResult.storePhysicalAddress != null ? storeResult.storePhysicalAddress.getURIAsString() : null;
+        this.storePhysicalAddress = storeResult.storePhysicalAddress != null ? storeResult.storePhysicalAddress : null;
         this.globalCommittedLSN = storeResult.globalCommittedLSN;
         this.numberOfReadRegions = storeResult.numberOfReadRegions;
         this.itemLSN = storeResult.itemLSN;
         this.backendLatencyInMs = storeResult.backendLatencyInMs;
     }
 
-    private StoreResultDiagnostics(StoreResult storeResult, CosmosException e) {
+    private StoreResultDiagnostics(StoreResult storeResult, CosmosException e, RxDocumentServiceRequest request) {
         this(storeResult);
         this.isGoneException = Exceptions.isGone(e);
         this.isNotFoundException = Exceptions.isNotFound(e);
         this.isInvalidPartitionException = Exceptions.isNameCacheStale(e);
         this.isThroughputControlRequestRateTooLargeException = Exceptions.isThroughputControlRequestRateTooLargeException(e);
-        this.storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(e);
+        this.storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(e, request);
     }
 
-    private StoreResultDiagnostics(StoreResult storeResult, StoreResponse storeResponse) {
+    private StoreResultDiagnostics(
+        StoreResult storeResult,
+        StoreResponse storeResponse,
+        RxDocumentServiceRequest request) {
+
         this(storeResult);
-        this.storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(storeResponse);
+        this.storeResponseDiagnostics = StoreResponseDiagnostics.createStoreResponseDiagnostics(storeResponse, request);
     }
 
     public long getLsn() {
@@ -124,7 +132,19 @@ public class StoreResultDiagnostics {
     }
 
     public String getStorePhysicalAddressAsString() {
-        return storePhysicalAddressAsString;
+        return storePhysicalAddress != null ? storePhysicalAddress.getURIAsString() : null;
+    }
+
+    public String getStorePhysicalAddressEscapedAuthority() {
+        return storePhysicalAddress != null
+            ? String.format("%s_%d", storePhysicalAddress.getURI().getHost(), storePhysicalAddress.getURI().getPort())
+            : null;
+    }
+
+    public String getStorePhysicalAddressEscapedPath() {
+        return storePhysicalAddress != null
+            ? storePhysicalAddress.getURI().getPath()
+            : null;
     }
 
     public boolean isThroughputControlRequestRateTooLargeException() {
@@ -152,7 +172,9 @@ public class StoreResultDiagnostics {
                               SerializerProvider serializerProvider) throws IOException {
             StoreResponseDiagnostics storeResponseDiagnostics = storeResultDiagnostics.getStoreResponseDiagnostics();
             jsonGenerator.writeStartObject();
-            jsonGenerator.writeStringField("storePhysicalAddress", storeResultDiagnostics.storePhysicalAddressAsString);
+            jsonGenerator.writeStringField(
+                    "storePhysicalAddress",
+                    storeResultDiagnostics.storePhysicalAddress == null ? null : storeResultDiagnostics.storePhysicalAddress.getURIAsString());
             jsonGenerator.writeNumberField("lsn", storeResultDiagnostics.lsn);
             jsonGenerator.writeNumberField("globalCommittedLsn", storeResultDiagnostics.globalCommittedLSN);
             jsonGenerator.writeStringField("partitionKeyRangeId", storeResponseDiagnostics.getPartitionKeyRangeId());

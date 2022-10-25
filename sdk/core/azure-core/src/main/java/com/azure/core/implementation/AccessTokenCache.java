@@ -60,7 +60,8 @@ public final class AccessTokenCache {
     public Mono<AccessToken> getToken(TokenRequestContext tokenRequestContext, boolean checkToForceFetchToken) {
         return Mono.defer(retrieveToken(tokenRequestContext, checkToForceFetchToken))
             // Keep resubscribing as long as Mono.defer [token acquisition] emits empty().
-            .repeatWhenEmpty((Flux<Long> longFlux) -> longFlux.concatMap(ignored -> Flux.just(true)));
+            .repeatWhenEmpty((Flux<Long> longFlux) ->
+                longFlux.concatMap(ignored -> Flux.just(true).delayElements(Duration.ofMillis(500))));
     }
 
     /**

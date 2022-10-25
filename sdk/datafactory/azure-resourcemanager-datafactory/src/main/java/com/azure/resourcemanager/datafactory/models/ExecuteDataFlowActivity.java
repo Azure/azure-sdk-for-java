@@ -23,6 +23,10 @@ public final class ExecuteDataFlowActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private ExecuteDataFlowActivityTypeProperties innerTypeProperties = new ExecuteDataFlowActivityTypeProperties();
 
+    /** Creates an instance of ExecuteDataFlowActivity class. */
+    public ExecuteDataFlowActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: Execute data flow activity properties.
      *

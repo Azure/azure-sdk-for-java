@@ -38,6 +38,10 @@ public final class VpnServerConfigurationPolicyGroupInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of VpnServerConfigurationPolicyGroupInner class. */
+    public VpnServerConfigurationPolicyGroupInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the VpnServerConfigurationPolicyGroup.
      *

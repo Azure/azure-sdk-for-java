@@ -6,16 +6,12 @@ package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The JitNetworkAccessPolicyInitiateVirtualMachine model. */
 @Fluent
 public final class JitNetworkAccessPolicyInitiateVirtualMachine {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(JitNetworkAccessPolicyInitiateVirtualMachine.class);
-
     /*
      * Resource ID of the virtual machine that is linked to this policy
      */
@@ -75,13 +71,13 @@ public final class JitNetworkAccessPolicyInitiateVirtualMachine {
      */
     public void validate() {
         if (id() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property id in model JitNetworkAccessPolicyInitiateVirtualMachine"));
         }
         if (ports() == null) {
-            throw logger
+            throw LOGGER
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property ports in model JitNetworkAccessPolicyInitiateVirtualMachine"));
@@ -89,4 +85,6 @@ public final class JitNetworkAccessPolicyInitiateVirtualMachine {
             ports().forEach(e -> e.validate());
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(JitNetworkAccessPolicyInitiateVirtualMachine.class);
 }

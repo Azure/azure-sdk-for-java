@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Represents a summary of the alerts of the machine group. */
 @Fluent
 public final class AdaptiveApplicationControlIssueSummary {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AdaptiveApplicationControlIssueSummary.class);
-
     /*
      * An alert that machines within a group can have
      */

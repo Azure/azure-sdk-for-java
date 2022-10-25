@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for IncidentSeverity. */
+/** The severity of the incident. */
 public final class IncidentSeverity extends ExpandableStringEnum<IncidentSeverity> {
     /** Static value High for IncidentSeverity. */
     public static final IncidentSeverity HIGH = fromString("High");

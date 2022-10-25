@@ -5,10 +5,8 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
-import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.security.fluent.models.AlertSyncSettingProperties;
 import com.azure.resourcemanager.security.fluent.models.SettingInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -16,16 +14,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /** Represents an alert sync setting. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
 @JsonTypeName("AlertSyncSettings")
-@JsonFlatten
 @Fluent
-public class AlertSyncSettings extends SettingInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(AlertSyncSettings.class);
-
+public final class AlertSyncSettings extends SettingInner {
     /*
-     * Is the alert sync setting enabled
+     * Alert sync setting data
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
+    @JsonProperty(value = "properties")
+    private AlertSyncSettingProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: Alert sync setting data.
+     *
+     * @return the innerProperties value.
+     */
+    private AlertSyncSettingProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the enabled property: Is the alert sync setting enabled.
@@ -33,7 +37,7 @@ public class AlertSyncSettings extends SettingInner {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -43,7 +47,10 @@ public class AlertSyncSettings extends SettingInner {
      * @return the AlertSyncSettings object itself.
      */
     public AlertSyncSettings withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AlertSyncSettingProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -55,5 +62,8 @@ public class AlertSyncSettings extends SettingInner {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

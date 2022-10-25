@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.security.fluent.SecureScoreControlDefinitionsClient;
 import com.azure.resourcemanager.security.fluent.models.SecureScoreControlDefinitionItemInner;
 import com.azure.resourcemanager.security.models.SecureScoreControlDefinitionList;
@@ -33,8 +32,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in SecureScoreControlDefinitionsClient. */
 public final class SecureScoreControlDefinitionsClientImpl implements SecureScoreControlDefinitionsClient {
-    private final ClientLogger logger = new ClientLogger(SecureScoreControlDefinitionsClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final SecureScoreControlDefinitionsService service;
 
@@ -110,7 +107,8 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDefinitionItemInner>> listSinglePageAsync() {
@@ -143,7 +141,8 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDefinitionItemInner>> listSinglePageAsync(Context context) {
@@ -174,7 +173,7 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreControlDefinitionItemInner> listAsync() {
@@ -188,7 +187,7 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreControlDefinitionItemInner> listAsync(Context context) {
@@ -201,7 +200,7 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDefinitionItemInner> list() {
@@ -215,7 +214,7 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDefinitionItemInner> list(Context context) {
@@ -227,7 +226,8 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDefinitionItemInner>> listBySubscriptionSinglePageAsync() {
@@ -270,7 +270,8 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDefinitionItemInner>> listBySubscriptionSinglePageAsync(
@@ -308,7 +309,7 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreControlDefinitionItemInner> listBySubscriptionAsync() {
@@ -323,7 +324,7 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SecureScoreControlDefinitionItemInner> listBySubscriptionAsync(Context context) {
@@ -337,7 +338,7 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDefinitionItemInner> listBySubscription() {
@@ -351,7 +352,7 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecureScoreControlDefinitionItemInner> listBySubscription(Context context) {
@@ -361,11 +362,13 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDefinitionItemInner>> listNextSinglePageAsync(String nextLink) {
@@ -396,12 +399,14 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDefinitionItemInner>> listNextSinglePageAsync(
@@ -433,11 +438,13 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDefinitionItemInner>> listBySubscriptionNextSinglePageAsync(
@@ -470,12 +477,14 @@ public final class SecureScoreControlDefinitionsClientImpl implements SecureScor
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of security controls definition.
+     * @return list of security controls definition along with {@link PagedResponse} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SecureScoreControlDefinitionItemInner>> listBySubscriptionNextSinglePageAsync(

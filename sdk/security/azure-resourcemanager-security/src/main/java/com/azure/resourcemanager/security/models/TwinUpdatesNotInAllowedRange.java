@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.security.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.Duration;
@@ -16,8 +14,6 @@ import java.time.Duration;
 @JsonTypeName("TwinUpdatesNotInAllowedRange")
 @Fluent
 public final class TwinUpdatesNotInAllowedRange extends TimeWindowCustomAlertRule {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(TwinUpdatesNotInAllowedRange.class);
-
     /** {@inheritDoc} */
     @Override
     public TwinUpdatesNotInAllowedRange withTimeWindowSize(Duration timeWindowSize) {

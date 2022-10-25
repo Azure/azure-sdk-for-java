@@ -42,8 +42,7 @@ public final class CodelessConnectorPollingRequestProperties {
     private String queryTimeFormat;
 
     /*
-     * Describe the amount of time we should try and poll the data in case of
-     * failure
+     * Describe the amount of time we should try and poll the data in case of failure
      */
     @JsonProperty(value = "retryCount")
     private Integer retryCount;
@@ -67,8 +66,7 @@ public final class CodelessConnectorPollingRequestProperties {
     private Object queryParameters;
 
     /*
-     * For advanced scenarios for example user name/password embedded in nested
-     * JSON payload
+     * For advanced scenarios for example user name/password embedded in nested JSON payload
      */
     @JsonProperty(value = "queryParametersTemplate")
     private String queryParametersTemplate;

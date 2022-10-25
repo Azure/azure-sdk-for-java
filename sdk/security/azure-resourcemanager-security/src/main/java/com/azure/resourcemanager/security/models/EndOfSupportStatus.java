@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EndOfSupportStatus. */
+/** End of support status. */
 public final class EndOfSupportStatus extends ExpandableStringEnum<EndOfSupportStatus> {
     /** Static value None for EndOfSupportStatus. */
     public static final EndOfSupportStatus NONE = fromString("None");
@@ -37,7 +37,11 @@ public final class EndOfSupportStatus extends ExpandableStringEnum<EndOfSupportS
         return fromString(name, EndOfSupportStatus.class);
     }
 
-    /** @return known EndOfSupportStatus values. */
+    /**
+     * Gets known EndOfSupportStatus values.
+     *
+     * @return known EndOfSupportStatus values.
+     */
     public static Collection<EndOfSupportStatus> values() {
         return values(EndOfSupportStatus.class);
     }

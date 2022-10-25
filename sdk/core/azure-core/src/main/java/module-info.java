@@ -11,6 +11,7 @@ module com.azure.core {
     requires transitive com.fasterxml.jackson.databind;
 
     requires com.fasterxml.jackson.dataformat.xml;
+    requires java.xml;
     requires transitive com.fasterxml.jackson.datatype.jsr310;
 
     // public API surface area

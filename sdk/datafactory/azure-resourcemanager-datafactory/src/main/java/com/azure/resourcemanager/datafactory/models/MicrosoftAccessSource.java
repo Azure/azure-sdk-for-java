@@ -27,6 +27,10 @@ public final class MicrosoftAccessSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of MicrosoftAccessSource class. */
+    public MicrosoftAccessSource() {
+    }
+
     /**
      * Get the query property: Database query. Type: string (or Expression with resultType string).
      *

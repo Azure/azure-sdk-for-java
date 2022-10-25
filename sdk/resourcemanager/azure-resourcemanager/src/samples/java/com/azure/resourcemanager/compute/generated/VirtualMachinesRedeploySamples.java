@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for VirtualMachines Redeploy. */
 public final class VirtualMachinesRedeploySamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachines_Redeploy_MinimumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_Redeploy_MinimumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_Redeploy_MinimumSet_Gen.
@@ -26,7 +26,7 @@ public final class VirtualMachinesRedeploySamples {
     }
 
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-03-01/examples/virtualMachineExamples/VirtualMachines_Redeploy_MaximumSet_Gen.json
+     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2022-08-01/examples/virtualMachineExamples/VirtualMachines_Redeploy_MaximumSet_Gen.json
      */
     /**
      * Sample code: VirtualMachines_Redeploy_MaximumSet_Gen.

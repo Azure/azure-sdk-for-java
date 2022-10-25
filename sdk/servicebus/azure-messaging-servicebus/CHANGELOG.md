@@ -1,6 +1,6 @@
 # Release History
 
-## 7.12.0-beta.1 (Unreleased)
+## 7.13.0-beta.1 (Unreleased)
 
 ### Features Added
 - Added rule manager client to manage rules for ServiceBus subscription with listen claims. ([#27711](https://github.com/Azure/azure-sdk-for-java/issues/27711))
@@ -11,6 +11,14 @@
 
 ### Other Changes
 
+## 7.12.0 (2022-10-20)
+- Enabled distributed tracing for producer and missing sender operations. ([#30508](https://github.com/Azure/azure-sdk-for-java/pull/30508))
+- Enabled metrics to track number of sent messages, receiver lag, settlement calls ([#31283](https://github.com/Azure/azure-sdk-for-java/pull/31283))
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to `1.33.0`.
+- Upgraded `azure-core-amqp` from `2.7.1` to `2.7.2`.
+- Upgraded `azure-identity` from `1.5.5` to `1.6.1`.
 ## 7.11.0 (2022-09-19)
 
 ### Features Added

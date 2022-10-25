@@ -23,6 +23,10 @@ public final class JiraObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of JiraObjectDataset class. */
+    public JiraObjectDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

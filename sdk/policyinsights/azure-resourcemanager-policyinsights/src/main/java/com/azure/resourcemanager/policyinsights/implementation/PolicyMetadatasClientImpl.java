@@ -25,7 +25,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.policyinsights.fluent.PolicyMetadatasClient;
 import com.azure.resourcemanager.policyinsights.fluent.models.PolicyMetadataInner;
 import com.azure.resourcemanager.policyinsights.fluent.models.SlimPolicyMetadataInner;
@@ -34,8 +33,6 @@ import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in PolicyMetadatasClient. */
 public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
-    private final ClientLogger logger = new ClientLogger(PolicyMetadatasClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final PolicyMetadatasService service;
 
@@ -100,7 +97,7 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy metadata resource.
+     * @return policy metadata resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyMetadataInner>> getResourceWithResponseAsync(String resourceName) {
@@ -129,7 +126,7 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy metadata resource.
+     * @return policy metadata resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PolicyMetadataInner>> getResourceWithResponseAsync(String resourceName, Context context) {
@@ -155,19 +152,26 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy metadata resource.
+     * @return policy metadata resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PolicyMetadataInner> getResourceAsync(String resourceName) {
-        return getResourceWithResponseAsync(resourceName)
-            .flatMap(
-                (Response<PolicyMetadataInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return getResourceWithResponseAsync(resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get policy metadata resource.
+     *
+     * @param resourceName The name of the policy metadata resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return policy metadata resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyMetadataInner> getResourceWithResponse(String resourceName, Context context) {
+        return getResourceWithResponseAsync(resourceName, context).block();
     }
 
     /**
@@ -181,22 +185,7 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PolicyMetadataInner getResource(String resourceName) {
-        return getResourceAsync(resourceName).block();
-    }
-
-    /**
-     * Get policy metadata resource.
-     *
-     * @param resourceName The name of the policy metadata resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return policy metadata resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyMetadataInner> getResourceWithResponse(String resourceName, Context context) {
-        return getResourceWithResponseAsync(resourceName, context).block();
+        return getResourceWithResponse(resourceName, Context.NONE).getValue();
     }
 
     /**
@@ -206,7 +195,8 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the policy metadata resources.
+     * @return a list of the policy metadata resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SlimPolicyMetadataInner>> listSinglePageAsync(Integer top) {
@@ -240,7 +230,8 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the policy metadata resources.
+     * @return a list of the policy metadata resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SlimPolicyMetadataInner>> listSinglePageAsync(Integer top, Context context) {
@@ -273,7 +264,7 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the policy metadata resources.
+     * @return a list of the policy metadata resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SlimPolicyMetadataInner> listAsync(Integer top) {
@@ -285,7 +276,7 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the policy metadata resources.
+     * @return a list of the policy metadata resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SlimPolicyMetadataInner> listAsync() {
@@ -301,7 +292,7 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the policy metadata resources.
+     * @return a list of the policy metadata resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SlimPolicyMetadataInner> listAsync(Integer top, Context context) {
@@ -314,7 +305,7 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the policy metadata resources.
+     * @return a list of the policy metadata resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SlimPolicyMetadataInner> list() {
@@ -330,7 +321,7 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of the policy metadata resources.
+     * @return a list of the policy metadata resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SlimPolicyMetadataInner> list(Integer top, Context context) {
@@ -340,11 +331,13 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of policy metadata resources.
+     * @return collection of policy metadata resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SlimPolicyMetadataInner>> listNextSinglePageAsync(String nextLink) {
@@ -375,12 +368,14 @@ public final class PolicyMetadatasClientImpl implements PolicyMetadatasClient {
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of policy metadata resources.
+     * @return collection of policy metadata resources along with {@link PagedResponse} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SlimPolicyMetadataInner>> listNextSinglePageAsync(String nextLink, Context context) {

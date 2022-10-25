@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Direction. */
+/** The rule's direction. */
 public final class Direction extends ExpandableStringEnum<Direction> {
     /** Static value Inbound for Direction. */
     public static final Direction INBOUND = fromString("Inbound");
@@ -27,7 +27,11 @@ public final class Direction extends ExpandableStringEnum<Direction> {
         return fromString(name, Direction.class);
     }
 
-    /** @return known Direction values. */
+    /**
+     * Gets known Direction values.
+     *
+     * @return known Direction values.
+     */
     public static Collection<Direction> values() {
         return values(Direction.class);
     }

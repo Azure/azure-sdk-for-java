@@ -4,25 +4,38 @@
 
 package com.azure.resourcemanager.securityinsights.fluent.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.securityinsights.models.EntityProviders;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.List;
 
 /** EntityAnalytics property bag. */
-@Immutable
+@Fluent
 public final class EntityAnalyticsProperties {
     /*
-     * Determines whether the setting is enable or disabled.
+     * The relevant entity providers that are synced
      */
-    @JsonProperty(value = "isEnabled", access = JsonProperty.Access.WRITE_ONLY)
-    private Boolean isEnabled;
+    @JsonProperty(value = "entityProviders")
+    private List<EntityProviders> entityProviders;
 
     /**
-     * Get the isEnabled property: Determines whether the setting is enable or disabled.
+     * Get the entityProviders property: The relevant entity providers that are synced.
      *
-     * @return the isEnabled value.
+     * @return the entityProviders value.
      */
-    public Boolean isEnabled() {
-        return this.isEnabled;
+    public List<EntityProviders> entityProviders() {
+        return this.entityProviders;
+    }
+
+    /**
+     * Set the entityProviders property: The relevant entity providers that are synced.
+     *
+     * @param entityProviders the entityProviders value to set.
+     * @return the EntityAnalyticsProperties object itself.
+     */
+    public EntityAnalyticsProperties withEntityProviders(List<EntityProviders> entityProviders) {
+        this.entityProviders = entityProviders;
+        return this;
     }
 
     /**

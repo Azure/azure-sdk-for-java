@@ -22,6 +22,10 @@ public final class DWCopyCommandDefaultValue {
     @JsonProperty(value = "defaultValue")
     private Object defaultValue;
 
+    /** Creates an instance of DWCopyCommandDefaultValue class. */
+    public DWCopyCommandDefaultValue() {
+    }
+
     /**
      * Get the columnName property: Column name. Type: object (or Expression with resultType string).
      *

@@ -110,15 +110,15 @@ public class JdkHttpClientTests {
     }
 
     @Test
-    public void testBufferResponseSync() throws IOException {
-        HttpClient client = new JdkAsyncHttpClientBuilder().build();
+    public void testBufferResponseSync() {
+        HttpClient client = new JdkHttpClientBuilder().build();
         HttpResponse response = doRequestSync(client, "/long").buffer();
         Assertions.assertArrayEquals(LONG_BODY, response.getBodyAsBinaryData().toBytes());
     }
 
     @Test
     public void testBufferedResponseSync() {
-        HttpClient client = new JdkAsyncHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/long"));
         HttpResponse response = client.sendSync(request, new Context("azure-eagerly-read-response", true));
         Assertions.assertArrayEquals(LONG_BODY, response.getBodyAsBinaryData().toBytes());
@@ -146,7 +146,7 @@ public class JdkHttpClientTests {
 
     @Test
     public void testMultipleGetBodyBytesSync() {
-        HttpClient client = new JdkAsyncHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
         HttpResponse response = doRequestSync(client, "/short");
         Mono<byte[]> responseBody = response.getBodyAsByteArray();
 
@@ -168,7 +168,7 @@ public class JdkHttpClientTests {
     @Test
     @Timeout(20)
     public void testMultipleGetBinaryDataSync() {
-        HttpClient client = new JdkAsyncHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
         HttpResponse response = doRequestSync(client, "/short");
 
         Assertions.assertArrayEquals(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
@@ -190,7 +190,7 @@ public class JdkHttpClientTests {
     @Test
     @Timeout(20)
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500ReturnedSync() {
-        HttpClient client = new JdkAsyncHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
         HttpResponse response = doRequestSync(client, "/error");
         assertEquals(500, response.getStatusCode());
         assertEquals("error", response.getBodyAsString().block());
@@ -364,7 +364,7 @@ public class JdkHttpClientTests {
 
     @Test
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
-        HttpClient client = new JdkAsyncHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
 
@@ -374,7 +374,7 @@ public class JdkHttpClientTests {
 
     @Test
     public void testServerShutsDownSocketShouldPushErrorToContentSync() {
-        HttpClient client = new JdkAsyncHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
 
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, "/connectionClose"));
         assertThrows(UncheckedIOException.class, () -> client.sendSync(request, Context.NONE));
@@ -425,7 +425,7 @@ public class JdkHttpClientTests {
     }
 
     private Mono<HttpResponse> getResponse(String path) {
-        HttpClient client = new JdkAsyncHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
         return doRequest(client, path);
     }
 
@@ -449,14 +449,14 @@ public class JdkHttpClientTests {
     }
 
     private void checkBodyReceived(byte[] expectedBody, String path) {
-        HttpClient client = new JdkAsyncHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
         StepVerifier.create(doRequest(client, path).flatMap(HttpResponse::getBodyAsByteArray))
             .assertNext(bytes -> Assertions.assertArrayEquals(expectedBody, bytes))
             .verifyComplete();
     }
 
     private void checkBodyReceivedSync(byte[] expectedBody, String path) throws IOException {
-        HttpClient client = new JdkAsyncHttpClientBuilder().build();
+        HttpClient client = new JdkHttpClientBuilder().build();
         HttpResponse response = doRequestSync(client, path);
         ByteArrayOutputStream outStream = new ByteArrayOutputStream();
         WritableByteChannel body = Channels.newChannel(outStream);

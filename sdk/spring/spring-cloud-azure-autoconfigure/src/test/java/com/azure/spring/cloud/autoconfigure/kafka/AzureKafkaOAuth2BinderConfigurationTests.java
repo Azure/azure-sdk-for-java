@@ -2,20 +2,22 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.kafka;
 
-import java.util.Map;
-
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
 import org.junit.jupiter.api.Test;
-
+import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
-import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.stream.binder.kafka.KafkaMessageChannelBinder;
 import org.springframework.cloud.stream.binder.kafka.config.KafkaBinderConfiguration;
 import org.springframework.cloud.stream.binder.kafka.properties.KafkaBinderConfigurationProperties;
 import org.springframework.cloud.stream.binder.kafka.provisioning.KafkaTopicProvisioner;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,22 +25,34 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests {
 
+    private static final String SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX = "spring.cloud.stream.kafka.binder.configuration.";
+    private static final String SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX = "spring.cloud.stream.kafka.binder.consumer-properties.";
+
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+            .withPropertyValues("spring.cloud.stream.kafka.binder.brokers=myehnamespace.servicebus.windows.net:9093")
+            .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class,
+                    AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class,
+                    KafkaAutoConfiguration.class, AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
+
+    @Override
+    protected ApplicationContextRunner getContextRunner() {
+        return this.contextRunner;
+    }
+
     @Test
     void shouldNotConfigureBPPWithoutKafkaMessageChannelBinder() {
         this.contextRunner
-                .withUserConfiguration(KafkaAutoConfiguration.class)
-                .withClassLoader(new FilteredClassLoader(KafkaMessageChannelBinder.class))
-                .run(context -> {
-                    assertThat(context)
-                            .doesNotHaveBean(AzureKafkaSpringCloudStreamConfiguration.class);
-                    assertThat(context).doesNotHaveBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
-                });
+            .withClassLoader(new FilteredClassLoader(KafkaMessageChannelBinder.class))
+            .run(context -> {
+                assertThat(context)
+                        .doesNotHaveBean(AzureKafkaSpringCloudStreamConfiguration.class);
+                assertThat(context).doesNotHaveBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
+            });
     }
 
     @Test
     void testNotBindKafkaBinderProperties() {
         this.contextRunner
-                .withUserConfiguration(KafkaBinderConfiguration.class)
                 .withPropertyValues(
                         SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-client-id",
                         SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id"
@@ -60,7 +74,6 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     @SuppressWarnings("unchecked")
     void testBindKafkaBinderProperties() {
         this.contextRunner
-                .withUserConfiguration(KafkaBinderConfiguration.class)
                 .withPropertyValues(
                         SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-client-id",
                         SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id",
@@ -82,54 +95,26 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                     KafkaTopicProvisioner kafkaTopicProvisioner = context.getBean(KafkaTopicProvisioner.class);
                     Map<String, Object> adminClientProperties = (Map<String, Object>) ReflectionTestUtils.getField(kafkaTopicProvisioner,
                             "adminClientProperties");
-                    testOAuthKafkaPropertiesBind(adminClientProperties);
+                    shouldConfigureOAuthProperties(adminClientProperties);
 
                     Map<String, Object> consumerConfiguration = kafkaProperties.mergedConsumerConfiguration();
                     assertEquals("cloud-consumer-client-id", consumerConfiguration.get(CLIENT_ID));
-                    testOAuthKafkaPropertiesBind(consumerConfiguration);
+                    shouldConfigureOAuthProperties(consumerConfiguration);
 
                     Map<String, Object> producerConfiguration = kafkaProperties.mergedProducerConfiguration();
                     assertEquals("kafka-producer-client-id", producerConfiguration.get(CLIENT_ID));
-                    testOAuthKafkaPropertiesBind(producerConfiguration);
+                    shouldConfigureOAuthProperties(producerConfiguration);
                 });
     }
 
     @Override
-    protected ApplicationContextRunner configureCustomConfiguration() {
-        return this.contextRunner.withUserConfiguration(KafkaBinderConfiguration.class);
+    protected Map<String, Object> getConsumerProperties(ApplicationContext context) {
+        return context.getBean(KafkaBinderConfigurationProperties.class).mergedConsumerConfiguration();
     }
 
     @Override
-    protected void assertBootPropertiesConfigureCorrectly(AssertableApplicationContext context) {
-        assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
-        assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
-        assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
-
-        KafkaBinderConfigurationProperties kafkaProperties = context.getBean(KafkaBinderConfigurationProperties.class);
-
-        Map<String, Object> consumerConfiguration = kafkaProperties.mergedConsumerConfiguration();
-        assertEquals("kafka-client-id", consumerConfiguration.get(CLIENT_ID));
-        testOAuthKafkaPropertiesBind(consumerConfiguration);
-
-        Map<String, Object> producerConfiguration = kafkaProperties.mergedProducerConfiguration();
-        assertEquals("kafka-producer-client-id", producerConfiguration.get(CLIENT_ID));
-        testOAuthKafkaPropertiesBind(producerConfiguration);
+    protected Map<String, Object> getProducerProperties(ApplicationContext context) {
+        return context.getBean(KafkaBinderConfigurationProperties.class).mergedProducerConfiguration();
     }
 
-    @Override
-    protected void assertGlobalPropertiesConfigureCorrectly(AssertableApplicationContext context) {
-        assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
-        assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
-        assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
-
-        KafkaBinderConfigurationProperties kafkaProperties = context.getBean(KafkaBinderConfigurationProperties.class);
-
-        Map<String, Object> consumerConfiguration = kafkaProperties.mergedConsumerConfiguration();
-        assertEquals("azure-client-id", consumerConfiguration.get(CLIENT_ID));
-        testOAuthKafkaPropertiesBind(consumerConfiguration);
-
-        Map<String, Object> producerConfiguration = kafkaProperties.mergedProducerConfiguration();
-        assertEquals("azure-client-id", producerConfiguration.get(CLIENT_ID));
-        testOAuthKafkaPropertiesBind(producerConfiguration);
-    }
 }

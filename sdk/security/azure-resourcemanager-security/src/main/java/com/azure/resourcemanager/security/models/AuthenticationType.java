@@ -8,7 +8,10 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AuthenticationType. */
+/**
+ * Connect to your cloud account, for AWS use either account credentials or role-based authentication. For GCP use
+ * account organization credentials.
+ */
 public final class AuthenticationType extends ExpandableStringEnum<AuthenticationType> {
     /** Static value awsCreds for AuthenticationType. */
     public static final AuthenticationType AWS_CREDS = fromString("awsCreds");
@@ -30,7 +33,11 @@ public final class AuthenticationType extends ExpandableStringEnum<Authenticatio
         return fromString(name, AuthenticationType.class);
     }
 
-    /** @return known AuthenticationType values. */
+    /**
+     * Gets known AuthenticationType values.
+     *
+     * @return known AuthenticationType values.
+     */
     public static Collection<AuthenticationType> values() {
         return values(AuthenticationType.class);
     }

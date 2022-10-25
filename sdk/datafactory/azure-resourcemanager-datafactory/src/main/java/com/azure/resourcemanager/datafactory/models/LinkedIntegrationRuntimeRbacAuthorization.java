@@ -27,6 +27,10 @@ public final class LinkedIntegrationRuntimeRbacAuthorization extends LinkedInteg
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
+    /** Creates an instance of LinkedIntegrationRuntimeRbacAuthorization class. */
+    public LinkedIntegrationRuntimeRbacAuthorization() {
+    }
+
     /**
      * Get the resourceId property: The resource identifier of the integration runtime to be shared.
      *

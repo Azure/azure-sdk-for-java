@@ -6,6 +6,7 @@ package com.azure.core.http.jdk.httpclient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.HttpClientOptions;
 
 /**
  * An {@link HttpClientProvider} that provides an implementation of HttpClient based on native JDK HttpClient.
@@ -20,7 +21,7 @@ public final class JdkHttpClientProvider implements HttpClientProvider {
 
     // Enum Singleton Pattern
     private enum GlobalJdkAsyncHttpClient {
-        HTTP_CLIENT(new JdkAsyncHttpClientBuilder().build());
+        HTTP_CLIENT(new JdkHttpClientBuilder().build());
 
         private final HttpClient httpClient;
 
@@ -50,6 +51,20 @@ public final class JdkHttpClientProvider implements HttpClientProvider {
         if (enableHttpClientSharing) {
             return GlobalJdkAsyncHttpClient.HTTP_CLIENT.getHttpClient();
         }
-        return new JdkAsyncHttpClientBuilder().build();
+        return new JdkHttpClientBuilder().build();
+    }
+
+    @Override
+    public HttpClient createInstance(HttpClientOptions clientOptions) {
+        if (clientOptions == null) {
+            return createInstance();
+        }
+
+        JdkHttpClientBuilder builder = new JdkHttpClientBuilder();
+        builder = builder.proxy(clientOptions.getProxyOptions())
+            .configuration(clientOptions.getConfiguration())
+            .connectionTimeout(clientOptions.getConnectTimeout());
+
+        return builder.build();
     }
 }

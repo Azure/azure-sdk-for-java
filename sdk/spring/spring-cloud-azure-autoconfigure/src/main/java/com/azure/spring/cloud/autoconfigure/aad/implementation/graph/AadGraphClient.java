@@ -15,22 +15,21 @@ import com.microsoft.aad.msal4j.IClientCredential;
 import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.OnBehalfOfParameters;
 import com.microsoft.aad.msal4j.UserAssertion;
-import com.nimbusds.oauth2.sdk.http.HTTPResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.web.client.RestOperations;
 
 import javax.naming.ServiceUnavailableException;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Optional;
@@ -39,6 +38,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants.DEFAULT_AUTHORITY_SET;
 
 
@@ -56,6 +56,7 @@ public class AadGraphClient {
     private final String clientSecret;
     private final AadAuthorizationServerEndpoints endpoints;
     private final AadAuthenticationProperties aadAuthenticationProperties;
+    private RestOperations operations;
 
     /**
      * Creates a new instance of {@link AadGraphClient}.
@@ -68,41 +69,32 @@ public class AadGraphClient {
     public AadGraphClient(String clientId,
                           String clientSecret,
                           AadAuthenticationProperties aadAuthenticationProperties,
-                          AadAuthorizationServerEndpoints endpoints) {
+                          AadAuthorizationServerEndpoints endpoints,
+                          RestTemplateBuilder restTemplateBuilder) {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.aadAuthenticationProperties = aadAuthenticationProperties;
         this.endpoints = endpoints;
+        this.operations = createRestTemplate(restTemplateBuilder);
+    }
+
+    void setRestOperations(RestOperations operations) {
+        this.operations = operations;
     }
 
     private String getUserMemberships(String accessToken, String urlString) throws IOException {
-        URL url = new URL(urlString);
-        final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-
-        connection.setRequestMethod(HttpMethod.GET.toString());
-        connection.setRequestProperty(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
-        connection.setRequestProperty(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-        connection.setRequestProperty(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
-
-        final String responseInJson = getResponseString(connection);
-        final int responseCode = connection.getResponseCode();
-        if (responseCode == HTTPResponse.SC_OK) {
-            return responseInJson;
+        HttpHeaders headers = new HttpHeaders();
+        headers.set(HttpHeaders.AUTHORIZATION, String.format("Bearer %s", accessToken));
+        headers.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        headers.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE);
+        HttpEntity<String> entity = new HttpEntity<>(headers);
+        ResponseEntity<String> response = operations.exchange(urlString, HttpMethod.GET, entity, String.class);
+        String responseInJson = response.getBody();
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return response.getBody();
         } else {
             throw new IllegalStateException(
-                "Response is not " + HTTPResponse.SC_OK + ", response json: " + responseInJson);
-        }
-    }
-
-    private static String getResponseString(HttpURLConnection connection) throws IOException {
-        try (BufferedReader reader = new BufferedReader(
-            new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
-            final StringBuilder stringBuffer = new StringBuilder();
-            String line;
-            while ((line = reader.readLine()) != null) {
-                stringBuffer.append(line);
-            }
-            return stringBuffer.toString();
+                    "Response is not " + HttpStatus.OK + ", response json: " + responseInJson);
         }
     }
 

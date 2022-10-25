@@ -36,6 +36,10 @@ public final class VpnConnectionInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of VpnConnectionInner class. */
+    public VpnConnectionInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the VPN connection.
      *

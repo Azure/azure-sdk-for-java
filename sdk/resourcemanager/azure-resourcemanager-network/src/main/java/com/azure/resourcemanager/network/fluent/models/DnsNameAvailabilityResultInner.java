@@ -16,6 +16,10 @@ public final class DnsNameAvailabilityResultInner {
     @JsonProperty(value = "available")
     private Boolean available;
 
+    /** Creates an instance of DnsNameAvailabilityResultInner class. */
+    public DnsNameAvailabilityResultInner() {
+    }
+
     /**
      * Get the available property: Domain availability (True/False).
      *

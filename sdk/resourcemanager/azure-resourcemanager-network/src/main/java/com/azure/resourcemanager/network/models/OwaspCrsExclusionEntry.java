@@ -38,6 +38,10 @@ public final class OwaspCrsExclusionEntry {
     @JsonProperty(value = "exclusionManagedRuleSets")
     private List<ExclusionManagedRuleSet> exclusionManagedRuleSets;
 
+    /** Creates an instance of OwaspCrsExclusionEntry class. */
+    public OwaspCrsExclusionEntry() {
+    }
+
     /**
      * Get the matchVariable property: The variable to be excluded.
      *

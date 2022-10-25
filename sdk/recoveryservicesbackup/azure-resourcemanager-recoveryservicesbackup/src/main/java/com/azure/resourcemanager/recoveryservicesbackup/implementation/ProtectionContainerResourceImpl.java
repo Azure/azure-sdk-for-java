@@ -174,14 +174,14 @@ public final class ProtectionContainerResourceImpl
         return this;
     }
 
-    public void inquire() {
-        serviceManager.protectionContainers().inquire(vaultName, resourceGroupName, fabricName, containerName);
-    }
-
     public Response<Void> inquireWithResponse(String filter, Context context) {
         return serviceManager
             .protectionContainers()
             .inquireWithResponse(vaultName, resourceGroupName, fabricName, containerName, filter, context);
+    }
+
+    public void inquire() {
+        serviceManager.protectionContainers().inquire(vaultName, resourceGroupName, fabricName, containerName);
     }
 
     public ProtectionContainerResourceImpl withRegion(Region location) {

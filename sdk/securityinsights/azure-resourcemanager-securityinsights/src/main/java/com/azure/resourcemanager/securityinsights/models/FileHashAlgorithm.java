@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FileHashAlgorithm. */
+/** The hash algorithm type. */
 public final class FileHashAlgorithm extends ExpandableStringEnum<FileHashAlgorithm> {
     /** Static value Unknown for FileHashAlgorithm. */
     public static final FileHashAlgorithm UNKNOWN = fromString("Unknown");

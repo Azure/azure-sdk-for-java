@@ -11,7 +11,7 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
-import com.azure.cosmos.implementation.ClientTelemetryConfig;
+import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
@@ -186,8 +186,8 @@ public class ReflectionUtils {
         return get(ConnectionPolicy.class, cosmosClientBuilder, "connectionPolicy");
     }
 
-    public static ClientTelemetryConfig getClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder){
-        return get(ClientTelemetryConfig.class, cosmosClientBuilder, "clientTelemetryConfig");
+    public static CosmosClientTelemetryConfig getClientTelemetryConfig(CosmosClientBuilder cosmosClientBuilder){
+        return get(CosmosClientTelemetryConfig.class, cosmosClientBuilder, "clientTelemetryConfig");
     }
 
     public static void buildConnectionPolicy(CosmosClientBuilder cosmosClientBuilder) {
@@ -365,8 +365,7 @@ public class ReflectionUtils {
         try {
             Field field = GatewayAddressCache.class.getDeclaredField(fieldName);
             field.setAccessible(true);
-            FieldUtils.removeFinalModifier(field, true);
-            FieldUtils.writeField(field, (Object)null, newDuration, true);
+            FieldUtils.writeStaticField(field, newDuration, true);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

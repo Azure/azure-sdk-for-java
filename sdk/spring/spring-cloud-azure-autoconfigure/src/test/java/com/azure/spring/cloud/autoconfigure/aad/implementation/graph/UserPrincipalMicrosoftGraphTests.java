@@ -8,13 +8,19 @@ import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProp
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.tomakehurst.wiremock.junit5.WireMockTest;
 import com.nimbusds.jose.JWSObject;
 import com.nimbusds.jwt.JWTClaimsSet;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
+import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.test.web.client.ExpectedCount;
+import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.util.StringUtils;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,6 +28,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.net.URI;
 import java.nio.file.Files;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -29,25 +36,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
-import static com.github.tomakehurst.wiremock.client.WireMock.equalTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.get;
-import static com.github.tomakehurst.wiremock.client.WireMock.getRequestedFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
-import static com.github.tomakehurst.wiremock.client.WireMock.verify;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.http.HttpHeaders.ACCEPT;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@WireMockTest(httpPort = 8080)
 class UserPrincipalMicrosoftGraphTests {
+
+    private static final String MOCK_MICROSOFT_GRAPH_ENDPOINT = "http://localhost:8080/";
 
     private String clientId;
     private String clientSecret;
@@ -75,7 +78,7 @@ class UserPrincipalMicrosoftGraphTests {
     void setup() {
         accessToken = MicrosoftGraphConstants.BEARER_TOKEN;
         properties = new AadAuthenticationProperties();
-        properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint("http://localhost:8080/");
+        properties.getProfile().getEnvironment().setMicrosoftGraphEndpoint(MOCK_MICROSOFT_GRAPH_ENDPOINT);
         endpoints = new AadAuthorizationServerEndpoints(properties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), properties.getProfile().getTenantId());
         clientId = "client";
         clientSecret = "pass";
@@ -84,23 +87,25 @@ class UserPrincipalMicrosoftGraphTests {
     @Test
     void getGroups() throws Exception {
         properties.getUserGroup().setAllowedGroupNames(Arrays.asList("group1", "group2", "group3"));
-        AadGraphClient graphClientMock = new AadGraphClient(clientId, clientSecret, properties,
-            endpoints);
-        stubFor(get(urlEqualTo("/v1.0/me/memberOf"))
-            .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE))
-            .willReturn(aResponse()
-                .withStatus(200)
-                .withHeader(CONTENT_TYPE, APPLICATION_JSON_VALUE)
-                .withBody(userGroupsJson)));
 
-        Set<String> groups = graphClientMock.getGroups(MicrosoftGraphConstants.BEARER_TOKEN);
+        RestTemplate template = new RestTemplate();
+        AadGraphClient client = new AadGraphClient(clientId, clientSecret, properties, endpoints, new RestTemplateBuilder());
+        client.setRestOperations(template);
+
+        MockRestServiceServer mockServer = MockRestServiceServer.createServer(template);
+        mockServer
+                .expect(ExpectedCount.once(), requestTo(new URI(MOCK_MICROSOFT_GRAPH_ENDPOINT + "v1.0/me/memberOf")))
+                .andExpect(method(HttpMethod.GET))
+                .andExpect(header(ACCEPT, APPLICATION_JSON_VALUE))
+                .andExpect(header(AUTHORIZATION, String.format("Bearer %s", accessToken)))
+                .andRespond(withStatus(HttpStatus.OK).contentType(MediaType.APPLICATION_JSON).body(userGroupsJson));
+
+        Set<String> groups = client.getGroups(MicrosoftGraphConstants.BEARER_TOKEN);
         assertThat(groups)
             .isNotEmpty()
             .containsExactlyInAnyOrder("group1", "group2", "group3");
 
-        verify(getRequestedFor(urlMatching("/v1.0/me/memberOf"))
-            .withHeader(AUTHORIZATION, equalTo(String.format("Bearer %s", accessToken)))
-            .withHeader(ACCEPT, equalTo(APPLICATION_JSON_VALUE)));
+        mockServer.verify();
     }
 
     @Test

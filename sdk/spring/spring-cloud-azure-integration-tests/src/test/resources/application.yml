@@ -15,6 +15,8 @@ spring:
         domain-name: ${AZURE_SERVICE_BUS_DOMAIN_NAME}
       servicebus:
         domain-name: ${AZURE_SERVICE_BUS_DOMAIN_NAME}
+  datasource:
+    url: jdbc:h2:mem:test # used by DataSourceAutoConfiguration
 logging:
   level:
     com.azure:

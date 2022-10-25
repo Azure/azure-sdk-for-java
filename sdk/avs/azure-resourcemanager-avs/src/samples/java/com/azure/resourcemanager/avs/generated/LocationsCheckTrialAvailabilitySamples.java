@@ -5,11 +5,12 @@
 package com.azure.resourcemanager.avs.generated;
 
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.avs.models.Sku;
 
 /** Samples for Locations CheckTrialAvailability. */
 public final class LocationsCheckTrialAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/Locations_CheckTrialAvailability.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Locations_CheckTrialAvailability.json
      */
     /**
      * Sample code: Locations_CheckTrialAvailability.
@@ -17,6 +18,18 @@ public final class LocationsCheckTrialAvailabilitySamples {
      * @param manager Entry point to AvsManager.
      */
     public static void locationsCheckTrialAvailability(com.azure.resourcemanager.avs.AvsManager manager) {
-        manager.locations().checkTrialAvailabilityWithResponse("eastus", Context.NONE);
+        manager.locations().checkTrialAvailabilityWithResponse("eastus", null, Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/Locations_CheckTrialAvailabilityWithSku.json
+     */
+    /**
+     * Sample code: Locations_CheckTrialAvailabilityWithSku.
+     *
+     * @param manager Entry point to AvsManager.
+     */
+    public static void locationsCheckTrialAvailabilityWithSku(com.azure.resourcemanager.avs.AvsManager manager) {
+        manager.locations().checkTrialAvailabilityWithResponse("eastus", new Sku().withName("avs52t"), Context.NONE);
     }
 }
