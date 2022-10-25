@@ -9,15 +9,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The update settings request object. */
 @Fluent
-public final class UpdateSettingsRequest {
+public final class UpdateSettingRequest {
     /*
      * The value of the pool setting.
      */
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of UpdateSettingsRequest class. */
-    public UpdateSettingsRequest() {}
+    /** Creates an instance of UpdateSettingRequest class. */
+    public UpdateSettingRequest() {}
 
     /**
      * Get the value property: The value of the pool setting.
@@ -32,9 +32,9 @@ public final class UpdateSettingsRequest {
      * Set the value property: The value of the pool setting.
      *
      * @param value the value value to set.
-     * @return the UpdateSettingsRequest object itself.
+     * @return the UpdateSettingRequest object itself.
      */
-    public UpdateSettingsRequest setValue(String value) {
+    public UpdateSettingRequest setValue(String value) {
         this.value = value;
         return this;
     }
