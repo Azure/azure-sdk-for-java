@@ -33,7 +33,7 @@ import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPrope
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_CONNECTION_ATTRIBUTES_KV_DELIMITER;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES;
 import static com.azure.spring.cloud.autoconfigure.implementation.jdbc.JdbcPropertyConstants.POSTGRESQL_PROPERTY_NAME_APPLICATION_NAME;
-import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
+import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.copyPropertiesIgnoreTargetNonNull;
 import static com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider.PASSWORDLESS_TOKEN_CREDENTIAL_BEAN_NAME;
 
 
@@ -48,11 +48,6 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
 
     private GenericApplicationContext applicationContext;
     private Environment environment;
-    private final AzureGlobalProperties azureGlobalProperties;
-
-    JdbcPropertiesBeanPostProcessor(AzureGlobalProperties azureGlobalProperties) {
-        this.azureGlobalProperties = azureGlobalProperties;
-    }
 
     @Override
     public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
@@ -153,16 +148,11 @@ class JdbcPropertiesBeanPostProcessor implements BeanPostProcessor, EnvironmentA
     }
 
     private AzurePasswordlessProperties buildAzureProperties() {
-        AzurePasswordlessProperties result = new AzurePasswordlessProperties();
-        copyPropertiesIgnoreNull(azureGlobalProperties.getProfile(), result.getProfile());
-        copyPropertiesIgnoreNull(azureGlobalProperties.getCredential(), result.getCredential());
+        AzureGlobalProperties azureGlobalProperties = applicationContext.getBean(AzureGlobalProperties.class);
         AzurePasswordlessProperties azurePasswordlessProperties = Binder.get(environment)
                 .bindOrCreate(SPRING_CLOUD_AZURE_DATASOURCE_PREFIX, AzurePasswordlessProperties.class);
-        copyPropertiesIgnoreNull(azurePasswordlessProperties.getProfile(), result.getProfile());
-        copyPropertiesIgnoreNull(azurePasswordlessProperties.getCredential(), result.getCredential());
-        copyPropertiesIgnoreNull(azurePasswordlessProperties.getClient(), result.getClient());
-        copyPropertiesIgnoreNull(azurePasswordlessProperties.getProxy(), result.getProfile());
-        result.setPasswordlessEnabled(azurePasswordlessProperties.isPasswordlessEnabled());
-        return result;
+        copyPropertiesIgnoreTargetNonNull(azureGlobalProperties.getProfile(), azurePasswordlessProperties.getProfile());
+        copyPropertiesIgnoreTargetNonNull(azureGlobalProperties.getCredential(), azurePasswordlessProperties.getCredential());
+        return azurePasswordlessProperties;
     }
 }

@@ -47,7 +47,8 @@ class JdbcPropertiesBeanPostProcessorTest {
         when(this.azureGlobalProperties.getProfile()).thenReturn(new AzureProfileConfigurationProperties());
         when(this.azureGlobalProperties.getCredential()).thenReturn(new TokenCredentialConfigurationProperties());
         when(this.applicationContext.getBean(AzureTokenCredentialResolver.class)).thenReturn(new AzureTokenCredentialResolver());
-        this.jdbcPropertiesBeanPostProcessor = new JdbcPropertiesBeanPostProcessor(azureGlobalProperties);
+        when(this.applicationContext.getBean(AzureGlobalProperties.class)).thenReturn(azureGlobalProperties);
+        this.jdbcPropertiesBeanPostProcessor = new JdbcPropertiesBeanPostProcessor();
         jdbcPropertiesBeanPostProcessor.setEnvironment(this.mockEnvironment);
         jdbcPropertiesBeanPostProcessor.setApplicationContext(this.applicationContext);
     }
