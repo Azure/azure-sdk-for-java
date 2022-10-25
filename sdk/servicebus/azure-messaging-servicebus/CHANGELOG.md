@@ -1,15 +1,9 @@
 # Release History
 
-## 7.13.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 7.12.1 (2022-10-25)
 
 ### Bugs Fixed
 - Fixing `listQueues`, `listTopics`, `listRules`, `listSubscriptions`, `createQueue` and `createSubscriptionWithResponse` in `ServiceBusAdministrationClient` class. ([#31712](https://github.com/Azure/azure-sdk-for-java/issues/31712))
-### Other Changes
-
 ## 7.12.0 (2022-10-20)
 - Enabled distributed tracing for producer and missing sender operations. ([#30508](https://github.com/Azure/azure-sdk-for-java/pull/30508))
 - Enabled metrics to track number of sent messages, receiver lag, settlement calls ([#31283](https://github.com/Azure/azure-sdk-for-java/pull/31283))
