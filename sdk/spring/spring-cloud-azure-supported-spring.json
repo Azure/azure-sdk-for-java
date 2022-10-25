@@ -11,7 +11,7 @@
     "current" : false,
     "releaseStatus" : "PRERELEASE",
     "snapshot" : false,
-    "supportStatus" : null,
+    "supportStatus" : "TODO",
     "spring-boot-version" : "3.0.0-RC1",
     "spring-cloud-version" : "2022.0.0-M5"
   },
