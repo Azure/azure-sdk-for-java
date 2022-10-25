@@ -9,12 +9,13 @@ public class ChecksumValue {
 
     public ChecksumValue(byte[] checksum, StorageChecksumAlgorithm algorithm) {
         switch (algorithm) {
-            case MD5, StorageCrc64 -> {}
-            default -> {
+            case MD5:
+            case StorageCrc64:
+                break;
+            default:
                 if (checksum != null) {
                     throw new IllegalArgumentException("UploadChecksumValue does not support the given algorithm.");
                 }
-            }
         }
         this.checksum = checksum;
         this.algorithm = algorithm;

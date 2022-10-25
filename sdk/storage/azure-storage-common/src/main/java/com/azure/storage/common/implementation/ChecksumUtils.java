@@ -28,17 +28,16 @@ public class ChecksumUtils {
 
     public static Checksum initializeChecksum(StorageChecksumAlgorithm algorithm) {
         switch (resolveAuto(algorithm)) {
-            case MD5 -> {
+            case MD5:
                 try {
                     return MessageDigestChecksum.create(MessageDigest.getInstance("MD5"));
                 } catch (NoSuchAlgorithmException e) {
                     throw new RuntimeException(e);
                 }
-            }
-            case StorageCrc64 -> {
+            case StorageCrc64:
                 return StorageCrc64Checksum.create();
-            }
-            default -> throw new IllegalArgumentException("Could not initialize given algorithm.");
+            default:
+                throw new IllegalArgumentException("Could not initialize given algorithm.");
         }
     }
 
@@ -80,9 +79,14 @@ public class ChecksumUtils {
         }
         String responseChecksumBase64;
         switch (resolveAuto(checksumValue.getAlgorithm())) {
-            case MD5 -> responseChecksumBase64 = responseHeaders.getValue("Content-MD5");
-            case StorageCrc64 -> responseChecksumBase64 = responseHeaders.getValue("x-ms-content-crc64");
-            default -> throw new IllegalArgumentException("Checksum algorithm unrecognized.");
+            case MD5:
+                responseChecksumBase64 = responseHeaders.getValue("Content-MD5");
+                break;
+            case StorageCrc64:
+                responseChecksumBase64 = responseHeaders.getValue("x-ms-content-crc64");
+                break;
+            default:
+                throw new IllegalArgumentException("Checksum algorithm unrecognized.");
         }
         byte[] responseChecksum = Base64.getDecoder().decode(responseChecksumBase64);
         byte[] calculatedChecksum = checksumValue.getChecksum();

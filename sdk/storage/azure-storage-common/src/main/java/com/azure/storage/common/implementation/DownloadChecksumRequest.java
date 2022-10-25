@@ -14,18 +14,17 @@ public class DownloadChecksumRequest {
         }
         else {
             switch (algorithm) {
-                case MD5 -> {
+                case MD5:
                     md5 = true;
                     crc64 = null;
-                }
-                case StorageCrc64 -> {
+                    break;
+                case StorageCrc64:
                     crc64 = true;
                     md5 = null;
-                }
-                default -> {
+                    break;
+                default:
                     throw new IllegalArgumentException(
                         "DownloadChecksumRequest does not support the given algorithm.");
-                }
             }
         }
     }

@@ -640,7 +640,7 @@ public class StorageCrc64Calculator {
             long uCrc1 = 0;
             long uCrc2 = 0;
             long uCrc3 = 0;
-            int pLast = pData + (int)uStop - 32;
+            int pLast = pData + uStop - 32;
             uSize -= uStop;
             uCrc0 = uCrc;
 
