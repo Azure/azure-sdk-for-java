@@ -31,6 +31,7 @@ import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
+import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.handler.stream.ChunkedNioFile;
@@ -261,7 +262,7 @@ class NettyAsyncHttpClient implements HttpClient {
              * If the response is being eagerly read into memory the flag for buffer copying can be ignored as the
              * response MUST be deeply copied to ensure it can safely be used downstream.
              */
-            if (eagerlyReadResponse) {
+            if (eagerlyReadResponse || responseHasSmallBody(reactorNettyResponse)) {
                 // Set up the body flux and dispose the connection once it has been received.
                 return FluxUtil.collectBytesFromNetworkResponse(
                         reactorNettyConnection.inbound().receive().asByteBuffer(),
@@ -274,6 +275,21 @@ class NettyAsyncHttpClient implements HttpClient {
                     disableBufferCopy, headersEagerlyConverted));
             }
         };
+    }
+
+    private static boolean responseHasSmallBody(HttpClientResponse nettyResponse) {
+        String contentLength = nettyResponse.responseHeaders().get(HttpHeaderNames.CONTENT_LENGTH);
+
+        if (contentLength == null) {
+            return false;
+        }
+
+        try {
+            // Arbitrary choice where if the response is smaller than or equal to 32KB it is considered a small body.
+            return 32768 >= Long.parseLong(contentLength);
+        } catch (NumberFormatException ex) {
+            return false;
+        }
     }
 
     /*
