@@ -14,6 +14,10 @@ import java.time.OffsetDateTime;
 @JsonTypeName("VMAppContainer")
 @Fluent
 public final class AzureVMAppContainerProtectionContainer extends AzureWorkloadContainer {
+    /** Creates an instance of AzureVMAppContainerProtectionContainer class. */
+    public AzureVMAppContainerProtectionContainer() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureVMAppContainerProtectionContainer withSourceResourceId(String sourceResourceId) {

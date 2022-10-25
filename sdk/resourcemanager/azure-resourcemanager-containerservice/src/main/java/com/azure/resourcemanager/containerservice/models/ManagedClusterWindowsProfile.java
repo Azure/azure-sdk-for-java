@@ -52,6 +52,10 @@ public final class ManagedClusterWindowsProfile {
     @JsonProperty(value = "gmsaProfile")
     private WindowsGmsaProfile gmsaProfile;
 
+    /** Creates an instance of ManagedClusterWindowsProfile class. */
+    public ManagedClusterWindowsProfile() {
+    }
+
     /**
      * Get the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt;
      * **Restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user",

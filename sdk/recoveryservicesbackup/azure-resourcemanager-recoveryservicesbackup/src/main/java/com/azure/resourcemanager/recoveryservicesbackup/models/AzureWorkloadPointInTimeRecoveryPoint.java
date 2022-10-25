@@ -33,6 +33,10 @@ public class AzureWorkloadPointInTimeRecoveryPoint extends AzureWorkloadRecovery
     @JsonProperty(value = "timeRanges")
     private List<PointInTimeRange> timeRanges;
 
+    /** Creates an instance of AzureWorkloadPointInTimeRecoveryPoint class. */
+    public AzureWorkloadPointInTimeRecoveryPoint() {
+    }
+
     /**
      * Get the timeRanges property: List of log ranges.
      *

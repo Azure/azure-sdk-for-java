@@ -30,6 +30,7 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
     private String roleDefinitionId;
     private String roleName;
     private String scope;
+    private String description;
     private final ClientLogger logger = new ClientLogger(RoleAssignmentImpl.class);
 
     RoleAssignmentImpl(String name, RoleAssignmentInner innerObject, AuthorizationManager manager) {
@@ -78,7 +79,8 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
                     new RoleAssignmentCreateParameters()
                         .withProperties(new RoleAssignmentProperties()
                             .withPrincipalId(objectId)
-                            .withRoleDefinitionId(roleDefinitionId)))
+                            .withRoleDefinitionId(roleDefinitionId)
+                            .withDescription(description)))
             .flatMap(
                 roleAssignmentPropertiesInner ->
                     manager()
@@ -113,6 +115,11 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
     @Override
     public String condition() {
         return innerModel().properties().condition();
+    }
+
+    @Override
+    public String description() {
+        return innerModel().properties().description();
     }
 
     @Override
@@ -184,6 +191,11 @@ class RoleAssignmentImpl extends CreatableImpl<RoleAssignment, RoleAssignmentInn
         return withScope("/subscriptions/" + subscriptionId);
     }
 
+    @Override
+    public RoleAssignmentImpl withDescription(String description) {
+        this.description = description;
+        return this;
+    }
     @Override
     public String id() {
         return innerModel().id();

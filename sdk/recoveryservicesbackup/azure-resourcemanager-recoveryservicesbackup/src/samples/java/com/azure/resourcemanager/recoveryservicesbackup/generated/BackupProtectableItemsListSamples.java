@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BackupProtectableItems List. */
 public final class BackupProtectableItemsListSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/BackupProtectableItems_List.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/BackupProtectableItems_List.json
      */
     /**
      * Sample code: List protectable items with backupManagementType filter as AzureIaasVm.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ProtectionContainerRefreshOperationResults Get. */
 public final class ProtectionContainerRefreshOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/Common/RefreshContainers_OperationResults.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/Common/RefreshContainers_OperationResults.json
      */
     /**
      * Sample code: Azure Vm Discovery Operation Result.
