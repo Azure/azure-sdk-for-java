@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionAtRestType. */
+/** Encryption At Rest Type. */
 public final class EncryptionAtRestType extends ExpandableStringEnum<EncryptionAtRestType> {
     /** Static value Invalid for EncryptionAtRestType. */
     public static final EncryptionAtRestType INVALID = fromString("Invalid");

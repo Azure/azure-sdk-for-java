@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProtectedItemHealthStatus. */
+/** Health status of the backup item, evaluated based on last heartbeat received. */
 public final class ProtectedItemHealthStatus extends ExpandableStringEnum<ProtectedItemHealthStatus> {
     /** Static value Invalid for ProtectedItemHealthStatus. */
     public static final ProtectedItemHealthStatus INVALID = fromString("Invalid");

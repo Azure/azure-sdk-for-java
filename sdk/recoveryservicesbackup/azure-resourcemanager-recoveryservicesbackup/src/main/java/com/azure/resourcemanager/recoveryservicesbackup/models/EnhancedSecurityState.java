@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EnhancedSecurityState. */
+/** Enabled or Disabled. */
 public final class EnhancedSecurityState extends ExpandableStringEnum<EnhancedSecurityState> {
     /** Static value Invalid for EnhancedSecurityState. */
     public static final EnhancedSecurityState INVALID = fromString("Invalid");
