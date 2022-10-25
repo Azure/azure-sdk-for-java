@@ -67,6 +67,9 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl.controller=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.throughputControl.controller.request=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed.pkversion=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.changefeed.epkversion=ALL-UNNAMED
     </javaModulesSurefireArgLine>
 
     <!-- Prevents Checkstyle validating implementation files. -->
