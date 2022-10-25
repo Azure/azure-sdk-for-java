@@ -31,7 +31,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.Setting;
 import com.azure.security.keyvault.administration.implementation.models.SettingsListResult;
-import com.azure.security.keyvault.administration.implementation.models.UpdateSettingsRequest;
+import com.azure.security.keyvault.administration.implementation.models.UpdateSettingRequest;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the KeyVaultSettingsClient type. */
@@ -80,7 +80,7 @@ public final class KeyVaultSettingsClientImpl {
      *
      * @param apiVersion Api Version.
      */
-    public KeyVaultSettingsClientImpl(String apiVersion) {
+    KeyVaultSettingsClientImpl(String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -95,7 +95,7 @@ public final class KeyVaultSettingsClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param apiVersion Api Version.
      */
-    public KeyVaultSettingsClientImpl(HttpPipeline httpPipeline, String apiVersion) {
+    KeyVaultSettingsClientImpl(HttpPipeline httpPipeline, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), apiVersion);
     }
 
@@ -106,8 +106,7 @@ public final class KeyVaultSettingsClientImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param apiVersion Api Version.
      */
-    public KeyVaultSettingsClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion) {
+    KeyVaultSettingsClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.apiVersion = apiVersion;
@@ -125,11 +124,11 @@ public final class KeyVaultSettingsClientImpl {
         @Patch("/settings/{setting-name}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(KeyVaultErrorException.class)
-        Mono<Response<Setting>> createOrUpdateSetting(
+        Mono<Response<Setting>> updateSetting(
                 @HostParam("vaultBaseUrl") String vaultBaseUrl,
                 @PathParam("setting-name") String settingName,
                 @QueryParam("api-version") String apiVersion,
-                @BodyParam("application/json") UpdateSettingsRequest parameters,
+                @BodyParam("application/json") UpdateSettingRequest parameters,
                 @HeaderParam("Accept") String accept,
                 Context context);
 
@@ -167,14 +166,14 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Setting>> createOrUpdateSettingWithResponseAsync(
+    public Mono<Response<Setting>> updateSettingWithResponseAsync(
             String vaultBaseUrl, String settingName, String value) {
         final String accept = "application/json";
-        UpdateSettingsRequest parameters = new UpdateSettingsRequest();
+        UpdateSettingRequest parameters = new UpdateSettingRequest();
         parameters.setValue(value);
         return FluxUtil.withContext(
                 context ->
-                        service.createOrUpdateSetting(
+                        service.updateSetting(
                                 vaultBaseUrl, settingName, this.getApiVersion(), parameters, accept, context));
     }
 
@@ -193,13 +192,12 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Setting>> createOrUpdateSettingWithResponseAsync(
+    public Mono<Response<Setting>> updateSettingWithResponseAsync(
             String vaultBaseUrl, String settingName, String value, Context context) {
         final String accept = "application/json";
-        UpdateSettingsRequest parameters = new UpdateSettingsRequest();
+        UpdateSettingRequest parameters = new UpdateSettingRequest();
         parameters.setValue(value);
-        return service.createOrUpdateSetting(
-                vaultBaseUrl, settingName, this.getApiVersion(), parameters, accept, context);
+        return service.updateSetting(vaultBaseUrl, settingName, this.getApiVersion(), parameters, accept, context);
     }
 
     /**
@@ -216,8 +214,8 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Setting> createOrUpdateSettingAsync(String vaultBaseUrl, String settingName, String value) {
-        return createOrUpdateSettingWithResponseAsync(vaultBaseUrl, settingName, value)
+    public Mono<Setting> updateSettingAsync(String vaultBaseUrl, String settingName, String value) {
+        return updateSettingWithResponseAsync(vaultBaseUrl, settingName, value)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -236,9 +234,8 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Setting> createOrUpdateSettingAsync(
-            String vaultBaseUrl, String settingName, String value, Context context) {
-        return createOrUpdateSettingWithResponseAsync(vaultBaseUrl, settingName, value, context)
+    public Mono<Setting> updateSettingAsync(String vaultBaseUrl, String settingName, String value, Context context) {
+        return updateSettingWithResponseAsync(vaultBaseUrl, settingName, value, context)
                 .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -257,9 +254,9 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Setting> createOrUpdateSettingWithResponse(
+    public Response<Setting> updateSettingWithResponse(
             String vaultBaseUrl, String settingName, String value, Context context) {
-        return createOrUpdateSettingWithResponseAsync(vaultBaseUrl, settingName, value, context).block();
+        return updateSettingWithResponseAsync(vaultBaseUrl, settingName, value, context).block();
     }
 
     /**
@@ -276,14 +273,14 @@ public final class KeyVaultSettingsClientImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Setting createOrUpdateSetting(String vaultBaseUrl, String settingName, String value) {
-        return createOrUpdateSettingWithResponse(vaultBaseUrl, settingName, value, Context.NONE).getValue();
+    public Setting updateSetting(String vaultBaseUrl, String settingName, String value) {
+        return updateSettingWithResponse(vaultBaseUrl, settingName, value, Context.NONE).getValue();
     }
 
     /**
-     * Get specified account setting value.
+     * Get specified account setting object.
      *
-     * <p>Retrieves the value of a specified, value account setting.
+     * <p>Retrieves the setting object of a specified setting name.
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param settingName The name of the account setting. Must be a valid settings option.
@@ -300,9 +297,9 @@ public final class KeyVaultSettingsClientImpl {
     }
 
     /**
-     * Get specified account setting value.
+     * Get specified account setting object.
      *
-     * <p>Retrieves the value of a specified, value account setting.
+     * <p>Retrieves the setting object of a specified setting name.
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param settingName The name of the account setting. Must be a valid settings option.
@@ -320,9 +317,9 @@ public final class KeyVaultSettingsClientImpl {
     }
 
     /**
-     * Get specified account setting value.
+     * Get specified account setting object.
      *
-     * <p>Retrieves the value of a specified, value account setting.
+     * <p>Retrieves the setting object of a specified setting name.
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param settingName The name of the account setting. Must be a valid settings option.
@@ -337,9 +334,9 @@ public final class KeyVaultSettingsClientImpl {
     }
 
     /**
-     * Get specified account setting value.
+     * Get specified account setting object.
      *
-     * <p>Retrieves the value of a specified, value account setting.
+     * <p>Retrieves the setting object of a specified setting name.
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param settingName The name of the account setting. Must be a valid settings option.
@@ -356,9 +353,9 @@ public final class KeyVaultSettingsClientImpl {
     }
 
     /**
-     * Get specified account setting value.
+     * Get specified account setting object.
      *
-     * <p>Retrieves the value of a specified, value account setting.
+     * <p>Retrieves the setting object of a specified setting name.
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param settingName The name of the account setting. Must be a valid settings option.
@@ -374,9 +371,9 @@ public final class KeyVaultSettingsClientImpl {
     }
 
     /**
-     * Get specified account setting value.
+     * Get specified account setting object.
      *
-     * <p>Retrieves the value of a specified, value account setting.
+     * <p>Retrieves the setting object of a specified setting name.
      *
      * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
      * @param settingName The name of the account setting. Must be a valid settings option.

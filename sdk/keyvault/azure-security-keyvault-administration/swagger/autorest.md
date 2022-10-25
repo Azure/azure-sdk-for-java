@@ -75,14 +75,7 @@ sync-methods: none
 These settings apply only when `--tag=settings` is specified on the command line.
 
 ``` yaml $(tag) == 'settings'
-input-file: https://github.com/Azure/azure-rest-api-specs/tree/fead0dec636e7554fb8401370418085136d4f052/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/settings.json
+input-file: https://github.com/Azure/azure-rest-api-specs/tree/d78681a9d322bbd8d33ecaad7e6aaa2d513513b4/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.4-preview.1/settings.json
 title: KeyVaultSettingsClient
 sync-methods: all
-directive:
-- rename-operation:
-    from: UpdateSettings
-    to: CreateOrUpdateSetting
-- rename-operation:
-    from: GetSettingValue
-    to: GetSetting
 ```
