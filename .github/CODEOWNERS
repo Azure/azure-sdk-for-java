@@ -43,6 +43,9 @@
 # PRLabel: %Batch
 /sdk/batch/                                         @gingi @paterasMSFT @dpwatrous
 
+# PRLabel: %Communication
+/sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
+
 # PRLabel: %Communication - Calling Server
 /sdk/communication/sdk/communication/azure-communication-callingserver/ @minwoolee-msft
 
@@ -69,9 +72,6 @@
 
 # PRLabel: %Communication - Resource Manager
 /sdk/communication/sdk/communication/azure-resourcemanager-communication/
-
-# PRLabel: %Communication
-/sdk/communication/                                 @JianpingChen @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Container Registry
 /sdk/containerregistry/                             @lmolkova @alzimmermsft
