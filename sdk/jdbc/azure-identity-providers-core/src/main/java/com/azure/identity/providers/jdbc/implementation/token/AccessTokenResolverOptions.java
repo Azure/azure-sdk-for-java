@@ -44,13 +44,14 @@ public class AccessTokenResolverOptions {
 
     private String getDefaultScope(Properties properties) {
         String ossrdbmsScope = OSS_RDBMS_SCOPE_MAP.get(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
-        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+        String authorityHost = AuthProperty.AUTHORITY_HOST.get(properties);
+        if (AzureAuthorityHosts.AZURE_PUBLIC_CLOUD.startsWith(authorityHost)) {
             ossrdbmsScope = OSS_RDBMS_SCOPE_MAP.get(AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
-        } else if (AzureAuthorityHosts.AZURE_CHINA.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+        } else if (AzureAuthorityHosts.AZURE_CHINA.startsWith(authorityHost)) {
             ossrdbmsScope = OSS_RDBMS_SCOPE_MAP.get(AzureAuthorityHosts.AZURE_CHINA);
-        } else if (AzureAuthorityHosts.AZURE_GERMANY.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+        } else if (AzureAuthorityHosts.AZURE_GERMANY.startsWith(authorityHost)) {
             ossrdbmsScope = OSS_RDBMS_SCOPE_MAP.get(AzureAuthorityHosts.AZURE_GERMANY);
-        } else if (AzureAuthorityHosts.AZURE_GOVERNMENT.startsWith(AuthProperty.AUTHORITY_HOST.get(properties))) {
+        } else if (AzureAuthorityHosts.AZURE_GOVERNMENT.startsWith(authorityHost)) {
             ossrdbmsScope = OSS_RDBMS_SCOPE_MAP.get(AzureAuthorityHosts.AZURE_GOVERNMENT);
         }
         LOGGER.info("Ossrdbms scope set to ", ossrdbmsScope);

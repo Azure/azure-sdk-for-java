@@ -36,7 +36,7 @@ class AccessTokenResolverOptionsTest {
 
         AccessTokenResolverOptions accessTokenResolverOptions = new AccessTokenResolverOptions(properties);
         assertEquals(accessTokenResolverOptions.getClaims(), "fake-claims");
-        assertArrayEquals(accessTokenResolverOptions.getScopes(), new String[]{"fake-scopes"});
+        assertArrayEquals(new String[]{"fake-scopes"}, accessTokenResolverOptions.getScopes());
         assertEquals(accessTokenResolverOptions.getTenantId(), "fake-tenant-id");
     }
 
@@ -46,7 +46,7 @@ class AccessTokenResolverOptionsTest {
         Properties properties = new Properties();
         AuthProperty.AUTHORITY_HOST.setProperty(properties, authorityHost);
         AccessTokenResolverOptions accessTokenResolverOptions = new AccessTokenResolverOptions(properties);
-        assertArrayEquals(accessTokenResolverOptions.getScopes(), new String[]{scope});
+        assertArrayEquals(new String[]{scope}, accessTokenResolverOptions.getScopes());
     }
 
     private static Stream<Arguments> provideAuthorityHostScopeMap() {
