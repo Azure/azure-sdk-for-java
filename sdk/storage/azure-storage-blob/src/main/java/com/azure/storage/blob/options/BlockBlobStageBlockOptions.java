@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.UploadTransferValidationOptions;
+import com.azure.storage.common.implementation.ChecksumUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 
 /**
@@ -84,8 +85,7 @@ public final class BlockBlobStageBlockOptions {
      * @return The updated options
      */
     public BlockBlobStageBlockOptions setContentMd5(byte[] contentMd5) {
-        this.transferValidation = new UploadTransferValidationOptions()
-            .setChecksumAlgorithm(StorageChecksumAlgorithm.MD5).setPrecalculatedChecksum(CoreUtils.clone(contentMd5));
+        this.transferValidation = ChecksumUtils.md5ToOptions(contentMd5);
         return this;
     }
 

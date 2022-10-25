@@ -2,6 +2,7 @@ package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.DownloadTransferValidationOptions;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.UploadTransferValidationOptions;
@@ -93,7 +94,7 @@ public class ChecksumUtils {
 
     public static UploadTransferValidationOptions md5ToOptions(byte[] md5) {
         return new UploadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
-            .setPrecalculatedChecksum(md5);
+            .setPrecalculatedChecksum(CoreUtils.clone(md5));
     }
 
     public static DownloadTransferValidationOptions requestMd5ToOptions(boolean requestMd5) {

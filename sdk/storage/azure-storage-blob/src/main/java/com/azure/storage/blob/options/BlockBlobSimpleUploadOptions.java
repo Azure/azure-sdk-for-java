@@ -11,6 +11,7 @@ import com.azure.storage.blob.models.BlobImmutabilityPolicy;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.common.StorageChecksumAlgorithm;
 import com.azure.storage.common.UploadTransferValidationOptions;
+import com.azure.storage.common.implementation.ChecksumUtils;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 
@@ -192,8 +193,7 @@ public class BlockBlobSimpleUploadOptions {
      * @return The updated options
      */
     public BlockBlobSimpleUploadOptions setContentMd5(byte[] contentMd5) {
-        this.transferValidation = new UploadTransferValidationOptions()
-            .setChecksumAlgorithm(StorageChecksumAlgorithm.MD5).setPrecalculatedChecksum(CoreUtils.clone(contentMd5));
+        this.transferValidation = ChecksumUtils.md5ToOptions(contentMd5);
         return this;
     }
 

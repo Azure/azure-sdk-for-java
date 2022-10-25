@@ -714,13 +714,9 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> stageBlockWithResponse(String base64BlockId, Flux<ByteBuffer> data, long length,
         byte[] contentMd5, String leaseId) {
-        UploadTransferValidationOptions validation = contentMd5 != null
-            ? new UploadTransferValidationOptions().setChecksumAlgorithm(StorageChecksumAlgorithm.MD5)
-                .setPrecalculatedChecksum(contentMd5)
-            : null;
         try {
             return withContext(context -> stageBlockWithResponse(base64BlockId, data, length,
-                validation, leaseId, context));
+                ChecksumUtils.md5ToOptions(contentMd5), leaseId, context));
         } catch (RuntimeException ex) {
             return monoError(LOGGER, ex);
         }
