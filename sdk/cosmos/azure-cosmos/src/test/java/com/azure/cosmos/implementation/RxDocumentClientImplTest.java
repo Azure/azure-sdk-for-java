@@ -35,6 +35,7 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -328,7 +329,7 @@ public class RxDocumentClientImplTest {
     }
 
     private static <T> IDocumentQueryExecutionContext<T> dummyExecutionContextForQuery(List<String> results, Map<String, String> headers) {
-        List<Document> documentResults = results.stream().map(Document::new).toList();
+        List<Document> documentResults = results.stream().map(str -> new Document(str)).collect(Collectors.toList());
         return () -> Flux.just((FeedResponse<T>) ModelBridgeInternal.createFeedResponse(documentResults, headers));
     }
 
