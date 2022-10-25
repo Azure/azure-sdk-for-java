@@ -2,6 +2,9 @@
 
 ## 4.4.1 (2022-10-25)
 
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
 #### Bugs Fixed
 - Fix bug: Put a value into Collections.emptyMap(). [#31190](https://github.com/Azure/azure-sdk-for-java/issues/31190).
 - Fix bug: RestTemplate used to get access token should only contain 2 converters. [#31482](https://github.com/Azure/azure-sdk-for-java/issues/31482).
