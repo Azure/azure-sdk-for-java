@@ -7,7 +7,6 @@ import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.implementation.http.HttpPipelineCallState;
 import com.azure.core.util.Context;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 import java.util.Objects;
