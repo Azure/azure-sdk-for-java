@@ -32,6 +32,7 @@ class JdbcPropertiesBeanPostProcessorTest {
     private static final String MYSQL_CONNECTION_STRING = "jdbc:mysql://host/database?enableSwitch1&property1=value1";
     private static final String POSTGRESQL_CONNECTION_STRING = "jdbc:postgresql://host/database?enableSwitch1&property1=value1";
     private static final String PASSWORD = "password";
+    private static final String US_AUTHORITY_HOST_STRING = AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.us/";
 
     private MockEnvironment mockEnvironment;
 
@@ -117,7 +118,7 @@ class JdbcPropertiesBeanPostProcessorTest {
                 MYSQL_CONNECTION_STRING,
                 PropertyKey.connectionAttributes.getKeyName()  + "=_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
                 AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
-                AuthProperty.AUTHORITY_HOST.getPropertyKey() + "=" + "https://login.microsoftonline.us/"
+                US_AUTHORITY_HOST_STRING
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());

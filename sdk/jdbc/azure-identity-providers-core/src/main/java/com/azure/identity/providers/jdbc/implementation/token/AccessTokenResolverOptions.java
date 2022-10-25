@@ -55,7 +55,7 @@ public class AccessTokenResolverOptions {
         } else if (AzureAuthorityHosts.AZURE_GOVERNMENT.startsWith(authorityHost)) {
             ossrdbmsScope = OSS_RDBMS_SCOPE_MAP.get(AzureAuthorityHosts.AZURE_GOVERNMENT);
         }
-        LOGGER.info("Ossrdbms scope set to ", ossrdbmsScope);
+        LOGGER.info("Ossrdbms scope set to {}.", ossrdbmsScope);
         return ossrdbmsScope;
     }
 
