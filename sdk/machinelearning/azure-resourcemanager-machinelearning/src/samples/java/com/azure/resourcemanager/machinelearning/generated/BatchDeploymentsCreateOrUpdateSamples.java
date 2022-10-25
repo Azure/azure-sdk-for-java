@@ -6,15 +6,15 @@ package com.azure.resourcemanager.machinelearning.generated;
 
 import com.azure.core.management.serializer.SerializerFactory;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.machinelearning.models.BatchDeploymentDetails;
+import com.azure.resourcemanager.machinelearning.models.BatchDeploymentProperties;
 import com.azure.resourcemanager.machinelearning.models.BatchLoggingLevel;
 import com.azure.resourcemanager.machinelearning.models.BatchOutputAction;
 import com.azure.resourcemanager.machinelearning.models.BatchRetrySettings;
 import com.azure.resourcemanager.machinelearning.models.CodeConfiguration;
+import com.azure.resourcemanager.machinelearning.models.DeploymentResourceConfiguration;
 import com.azure.resourcemanager.machinelearning.models.IdAssetReference;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.machinelearning.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.machinelearning.models.ResourceConfiguration;
 import com.azure.resourcemanager.machinelearning.models.Sku;
 import com.azure.resourcemanager.machinelearning.models.SkuTier;
 import com.azure.resourcemanager.machinelearning.models.UserAssignedIdentity;
@@ -26,7 +26,7 @@ import java.util.Map;
 /** Samples for BatchDeployments CreateOrUpdate. */
 public final class BatchDeploymentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/BatchDeployment/createOrUpdate.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/BatchDeployment/createOrUpdate.json
      */
     /**
      * Sample code: CreateOrUpdate Batch Deployment.
@@ -41,7 +41,7 @@ public final class BatchDeploymentsCreateOrUpdateSamples {
             .withRegion("string")
             .withExistingBatchEndpoint("test-rg", "my-aml-workspace", "testEndpointName")
             .withProperties(
-                new BatchDeploymentDetails()
+                new BatchDeploymentProperties()
                     .withCodeConfiguration(new CodeConfiguration().withCodeId("string").withScoringScript("string"))
                     .withDescription("string")
                     .withEnvironmentId("string")
@@ -56,7 +56,7 @@ public final class BatchDeploymentsCreateOrUpdateSamples {
                     .withOutputAction(BatchOutputAction.SUMMARY_ONLY)
                     .withOutputFileName("string")
                     .withResources(
-                        new ResourceConfiguration()
+                        new DeploymentResourceConfiguration()
                             .withInstanceCount(1)
                             .withInstanceType("string")
                             .withProperties(

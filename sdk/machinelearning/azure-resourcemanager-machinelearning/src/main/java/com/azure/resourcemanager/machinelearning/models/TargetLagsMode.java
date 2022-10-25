@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TargetLagsMode. */
+/** Target lags selection modes. */
 public final class TargetLagsMode extends ExpandableStringEnum<TargetLagsMode> {
     /** Static value Auto for TargetLagsMode. */
     public static final TargetLagsMode AUTO = fromString("Auto");

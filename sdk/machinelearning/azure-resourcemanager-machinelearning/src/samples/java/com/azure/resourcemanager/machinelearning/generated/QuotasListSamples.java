@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Quotas List. */
 public final class QuotasListSamples {
     /*
-     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/preview/2022-02-01-preview/examples/Quota/list.json
+     * x-ms-original-file: specification/machinelearningservices/resource-manager/Microsoft.MachineLearningServices/stable/2022-10-01/examples/Quota/list.json
      */
     /**
      * Sample code: List workspace quotas by VMFamily.
