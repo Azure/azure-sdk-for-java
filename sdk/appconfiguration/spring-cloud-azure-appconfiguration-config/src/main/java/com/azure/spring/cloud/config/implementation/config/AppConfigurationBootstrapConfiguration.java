@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.config.AppConfigurationCredentialProvider;
 import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
 import com.azure.spring.cloud.config.KeyVaultCredentialProvider;
@@ -103,15 +104,16 @@ public class AppConfigurationBootstrapConfiguration {
     @Bean
     @ConditionalOnMissingBean
     AppConfigurationReplicaClientsBuilder replicaClientBuilder(AppConfigurationProperties properties,
-        AppConfigurationProviderProperties appProperties) {
+        AppConfigurationProviderProperties appProperties, AzureAppConfigurationProperties globalProperties) {
 
         AppConfigurationReplicaClientsBuilder clientBuilder = new AppConfigurationReplicaClientsBuilder(
-            appProperties.getMaxRetries());
+            appProperties.getMaxRetries(), globalProperties);
 
         clientBuilder.setTokenCredentialProvider(
             context.getBeanProvider(AppConfigurationCredentialProvider.class).getIfAvailable());
         clientBuilder
-            .setClientProvider(context.getBeanProvider(ConfigurationClientBuilderSetup.class).getIfAvailable());
+            .setClientProvider(context.getBeanProvider(ConfigurationClientBuilderSetup.class)
+                .getIfAvailable());
         clientBuilder.setClientId(properties.getClientId());
 
         KeyVaultCredentialProvider keyVaultCredentialProvider = context

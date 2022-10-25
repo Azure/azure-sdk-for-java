@@ -53,6 +53,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
 
     /**
      * Loads all Azure App Configuration Property Sources configured.
+     * 
      * @param properties Configurations for stores to be loaded.
      * @param appProperties Configurations for the library.
      * @param clientFactory factory for creating clients for connecting to Azure App Configuration.
@@ -120,8 +121,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                         continue;
                     }
 
-                    // Reverse in order to add Profile specific properties earlier, and last profile
-                    // comes first
+                    // Reverse in order to add Profile specific properties earlier, and last profile comes first
                     try {
                         List<AppConfigurationPropertySource> sources = create(client, configStore, profiles);
                         sourceList.addAll(sources);
@@ -181,18 +181,14 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             if (watchKeysFeatures.size() > 0) {
                 newState.setStateFeatureFlag(configStore.getEndpoint(), watchKeysFeatures,
                     monitoring.getFeatureFlagRefreshInterval());
-                newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true);
-            } else {
-                newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false);
             }
 
             newState.setState(configStore.getEndpoint(), watchKeysSettings,
                 monitoring.getRefreshInterval());
-            newState.setLoadState(configStore.getEndpoint(), true);
-        } else {
-            newState.setLoadState(configStore.getEndpoint(), false);
-            newState.setLoadStateFeatureFlag(configStore.getEndpoint(), false);
         }
+        newState.setLoadState(configStore.getEndpoint(), true, configStore.isFailFast());
+        newState.setLoadStateFeatureFlag(configStore.getEndpoint(), true, configStore.isFailFast());
+
     }
 
     private List<ConfigurationSetting> getWatchKeys(AppConfigurationReplicaClient client,
@@ -246,7 +242,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         } else {
             LOGGER.warn(
                 "Unable to load configuration from Azure AppConfiguration store " + configStore.getEndpoint() + ".", e);
-            newState.setLoadState(configStore.getEndpoint(), false);
+            newState.setLoadState(configStore.getEndpoint(), false, configStore.isFailFast());
         }
         return newState;
     }

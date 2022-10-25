@@ -20,10 +20,12 @@ import com.azure.core.http.policy.ExponentialBackoff;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
+import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.config.AppConfigurationCredentialProvider;
 import com.azure.spring.cloud.config.ConfigurationClientBuilderSetup;
 import com.azure.spring.cloud.config.implementation.pipline.policies.BaseAppConfigurationPolicy;
 import com.azure.spring.cloud.config.implementation.properties.ConfigStore;
+import com.azure.spring.cloud.service.implementation.appconfiguration.ConfigurationClientBuilderFactory;
 
 public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
@@ -63,12 +65,16 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     private final int maxRetries;
 
-    public AppConfigurationReplicaClientsBuilder(int maxRetries) {
+    private AzureAppConfigurationProperties globalProperties;
+
+    public AppConfigurationReplicaClientsBuilder(int maxRetries, AzureAppConfigurationProperties globalProperties) {
         this.maxRetries = maxRetries;
+        this.globalProperties = globalProperties;
     }
 
     /**
      * Given a connection string, returns the endpoint inside of it.
+     * 
      * @param connectionString connection string to app configuration
      * @return endpoint
      * @throws IllegalStateException when connection string isn't valid.
@@ -125,6 +131,7 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
 
     /**
      * Builds all the clients for a connection.
+     * 
      * @throws IllegalArgumentException when more than 1 connection method is given.
      */
     List<AppConfigurationReplicaClient> buildClients(ConfigStore configStore) {
@@ -200,7 +207,8 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
                 .clientId(clientId);
             builder.credential(micBuilder.build());
         } else {
-            // System Assigned Identity. Needs to be checked last as all of the above should have an Endpoint.
+            // System Assigned Identity. Needs to be checked last as all of the above should
+            // have an Endpoint.
             LOGGER.debug("Connecting to " + endpoint
                 + " using Azure System Assigned Identity or Azure User Assigned Identity.");
             ManagedIdentityCredentialBuilder micBuilder = new ManagedIdentityCredentialBuilder();
@@ -231,6 +239,10 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
         builder.addPolicy(new BaseAppConfigurationPolicy(isDev, isKeyVaultConfigured, replicaCount))
             .retryPolicy(new RetryPolicy(retryPolicy));
 
+        if (globalProperties != null) {
+            ConfigurationClientBuilderFactory factory = new ConfigurationClientBuilderFactory(globalProperties);
+        }
+
         if (clientProvider != null) {
             clientProvider.setup(builder, endpoint);
         }
@@ -247,4 +259,5 @@ public class AppConfigurationReplicaClientsBuilder implements EnvironmentAware {
             }
         }
     }
+
 }

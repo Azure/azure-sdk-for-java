@@ -128,17 +128,23 @@ final class StateHolder {
     /**
      * @param originEndpoint the configuration store connected to.
      * @param loaded true if the configuration store was loaded.
+     * @param failFast application started after it failed to load from a store.
      */
-    void setLoadState(String originEndpoint, Boolean loaded) {
-        loadState.put(originEndpoint, loaded);
+    void setLoadState(String originEndpoint, Boolean loaded, Boolean failFast) {
+        if (loaded || !failFast) {
+            loadState.put(originEndpoint, true);
+        } else {
+            loadState.put(originEndpoint, false);
+        }
     }
 
     /**
      * @param originEndpoint the configuration store connected to.
      * @param loaded true if the configuration store was loaded and uses feature flags.
+     * @param failFast application started after it failed to load from a store.
      */
-    void setLoadStateFeatureFlag(String originEndpoint, Boolean loaded) {
-        setLoadState(originEndpoint + FEATURE_ENDPOINT, loaded);
+    void setLoadStateFeatureFlag(String originEndpoint, Boolean loaded, Boolean failFast) {
+        setLoadState(originEndpoint + FEATURE_ENDPOINT, loaded, failFast);
     }
 
     /**
