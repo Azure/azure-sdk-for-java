@@ -232,7 +232,7 @@ public class RxDocumentClientImplTest {
                 assertThat(BridgeInternal.queryMetricsFromFeedResponse(feedResponse)).isNotNull();
 
                 List<InternalObjectNode> readManyResults = feedResponse.getResults();
-                Set<String> idSet = new HashSet<>(List.of("1", "2", "3"));
+                Set<String> idSet = new HashSet<>(Arrays.asList("1", "2", "3"));
 
                 for (InternalObjectNode result : readManyResults) {
                     assertThat(idSet.contains(result.getId())).isTrue();
@@ -263,7 +263,7 @@ public class RxDocumentClientImplTest {
 
     private static Utils.ValueHolder<DocumentCollection> dummyCollectionObs() {
         PartitionKeyDefinition partitionKeyDefinition = new PartitionKeyDefinition();
-        partitionKeyDefinition.setPaths(List.of("/id"));
+        partitionKeyDefinition.setPaths(Arrays.asList("/id"));
         Utils.ValueHolder<DocumentCollection> collectionObs = new Utils.ValueHolder<>();
         collectionObs.v = new DocumentCollection();
         collectionObs.v.setPartitionKey(partitionKeyDefinition);

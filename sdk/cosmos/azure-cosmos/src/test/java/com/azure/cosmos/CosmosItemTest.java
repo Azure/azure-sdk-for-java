@@ -222,7 +222,7 @@ public class CosmosItemTest extends TestSuiteBase {
         int numDocuments = 5;
 
         for (int i = 0; i < numDocuments; i++) {
-            var document = new SampleType(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
+            SampleType document = new SampleType(UUID.randomUUID().toString(), UUID.randomUUID().toString(), UUID.randomUUID().toString());
             container.createItem(document);
 
             PartitionKey partitionKey = new PartitionKey(document.getMypk());
@@ -241,7 +241,7 @@ public class CosmosItemTest extends TestSuiteBase {
         assertThat(BridgeInternal.getClientSideRequestStatisticsList(feedResponse.getCosmosDiagnostics()).size()).isGreaterThan(1);
 
         for (int i = 0; i < feedResponse.getResults().size(); i++) {
-            var fetchedResult = feedResponse.getResults().get(i);
+            SampleType fetchedResult = feedResponse.getResults().get(i);
             assertThat(idSet.contains(fetchedResult.getId())).isTrue();
             assertThat(valSet.contains(fetchedResult.getVal())).isTrue();
         }
@@ -267,7 +267,7 @@ public class CosmosItemTest extends TestSuiteBase {
         }
 
         for (int i = 0; i < numDocuments; i++) {
-            FeedResponse<InternalObjectNode> feedResponse = container.readMany(List.of(cosmosItemIdentities.get(i)), InternalObjectNode.class);
+            FeedResponse<InternalObjectNode> feedResponse = container.readMany(Arrays.asList(cosmosItemIdentities.get(i)), InternalObjectNode.class);
 
             assertThat(feedResponse).isNotNull();
             assertThat(feedResponse.getResults()).isNotNull();
