@@ -3,14 +3,14 @@
   <if condition='isDefined("DEBUG_SHARE")'>
     <then>
       <appender name="RollingFile" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>${DEBUG_SHARE}/java-eventhubs-stress-test.log</file>
+        <file>${DEBUG_SHARE}/java-eventhubs-stress-test-${CONTAINER_NAME:-container}.log</file>
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
           <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
         </encoder>
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
           <!-- daily rollover and gzip logs -->
-          <fileNamePattern>${DEBUG_SHARE}/archived/java-eventhubs-stress-test-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+          <fileNamePattern>${DEBUG_SHARE}/archived/java-eventhubs-stress-test-${CONTAINER_NAME:-container}-%d{yyyy-MM-dd}.log</fileNamePattern>
         </rollingPolicy>
       </appender>
 
