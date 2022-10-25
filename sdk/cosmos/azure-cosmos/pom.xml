@@ -44,6 +44,9 @@ Licensed under the MIT License.
       --add-opens com.azure.cosmos/com.azure.cosmos.rx=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.rx=com.fasterxml.jackson.databind
       --add-opens com.azure.cosmos/com.azure.cosmos.rx.proxy=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.rx.changefeed=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.rx.changefeed.pkversion=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.rx.changefeed.epkversion=ALL-UNNAMED
 
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation=ALL-UNNAMED
       --add-opens com.azure.cosmos/com.azure.cosmos.implementation.batch=ALL-UNNAMED
