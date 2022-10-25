@@ -24,6 +24,7 @@ import io.netty.handler.codec.http.HttpResponseStatus;
 import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.springframework.test.util.ReflectionTestUtils;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Flux;
@@ -55,7 +56,7 @@ public class RxDocumentClientImplTest {
     private RxPartitionKeyRangeCache partitionKeyRangeCacheMock;
     private IRetryPolicyFactory resetSessionTokenRetryPolicyMock;
 
-    @BeforeTest(groups = "unit")
+    @BeforeClass(groups = "unit")
     public void setUp() {
         // create mocks
         this.serviceEndpointMock = Mockito.mock(URI.class);
