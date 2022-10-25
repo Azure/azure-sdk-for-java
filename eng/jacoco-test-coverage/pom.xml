@@ -232,6 +232,11 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
+      <artifactId>azure-json-reflect</artifactId>
+      <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-json-reflect;current} -->
+    </dependency>
+    <dependency>
+      <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventgrid</artifactId>
       <version>4.13.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventgrid;current} -->
     </dependency>
