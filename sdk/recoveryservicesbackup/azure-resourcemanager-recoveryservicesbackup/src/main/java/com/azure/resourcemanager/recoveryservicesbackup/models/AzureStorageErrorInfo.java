@@ -29,6 +29,10 @@ public final class AzureStorageErrorInfo {
     @JsonProperty(value = "recommendations")
     private List<String> recommendations;
 
+    /** Creates an instance of AzureStorageErrorInfo class. */
+    public AzureStorageErrorInfo() {
+    }
+
     /**
      * Get the errorCode property: Error code.
      *

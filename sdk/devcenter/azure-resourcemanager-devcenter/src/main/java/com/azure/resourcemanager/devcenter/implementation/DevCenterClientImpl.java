@@ -35,6 +35,7 @@ import com.azure.resourcemanager.devcenter.fluent.NetworkConnectionsClient;
 import com.azure.resourcemanager.devcenter.fluent.OperationStatusesClient;
 import com.azure.resourcemanager.devcenter.fluent.OperationsClient;
 import com.azure.resourcemanager.devcenter.fluent.PoolsClient;
+import com.azure.resourcemanager.devcenter.fluent.ProjectAllowedEnvironmentTypesClient;
 import com.azure.resourcemanager.devcenter.fluent.ProjectEnvironmentTypesClient;
 import com.azure.resourcemanager.devcenter.fluent.ProjectsClient;
 import com.azure.resourcemanager.devcenter.fluent.SchedulesClient;
@@ -224,6 +225,18 @@ public final class DevCenterClientImpl implements DevCenterClient {
         return this.environmentTypes;
     }
 
+    /** The ProjectAllowedEnvironmentTypesClient object to access its operations. */
+    private final ProjectAllowedEnvironmentTypesClient projectAllowedEnvironmentTypes;
+
+    /**
+     * Gets the ProjectAllowedEnvironmentTypesClient object to access its operations.
+     *
+     * @return the ProjectAllowedEnvironmentTypesClient object.
+     */
+    public ProjectAllowedEnvironmentTypesClient getProjectAllowedEnvironmentTypes() {
+        return this.projectAllowedEnvironmentTypes;
+    }
+
     /** The ProjectEnvironmentTypesClient object to access its operations. */
     private final ProjectEnvironmentTypesClient projectEnvironmentTypes;
 
@@ -355,7 +368,7 @@ public final class DevCenterClientImpl implements DevCenterClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2022-08-01-preview";
+        this.apiVersion = "2022-09-01-preview";
         this.devCenters = new DevCentersClientImpl(this);
         this.projects = new ProjectsClientImpl(this);
         this.attachedNetworks = new AttachedNetworksClientImpl(this);
@@ -364,6 +377,7 @@ public final class DevCenterClientImpl implements DevCenterClient {
         this.imageVersions = new ImageVersionsClientImpl(this);
         this.catalogs = new CatalogsClientImpl(this);
         this.environmentTypes = new EnvironmentTypesClientImpl(this);
+        this.projectAllowedEnvironmentTypes = new ProjectAllowedEnvironmentTypesClientImpl(this);
         this.projectEnvironmentTypes = new ProjectEnvironmentTypesClientImpl(this);
         this.devBoxDefinitions = new DevBoxDefinitionsClientImpl(this);
         this.operations = new OperationsClientImpl(this);

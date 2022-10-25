@@ -4,10 +4,12 @@
 
 package com.azure.resourcemanager.appcontainers.models;
 
+import com.azure.core.http.rest.Response;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.appcontainers.fluent.models.ManagedEnvironmentInner;
+import java.util.List;
 import java.util.Map;
 
 /** An immutable client-side representation of ManagedEnvironment. */
@@ -46,6 +48,13 @@ public interface ManagedEnvironment {
      * @return the tags value.
      */
     Map<String, String> tags();
+
+    /**
+     * Gets the sku property: SKU properties of the Environment.
+     *
+     * @return the sku value.
+     */
+    EnvironmentSkuProperties sku();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
@@ -121,6 +130,27 @@ public interface ManagedEnvironment {
     Boolean zoneRedundant();
 
     /**
+     * Gets the customDomainConfiguration property: Custom domain configuration for the environment.
+     *
+     * @return the customDomainConfiguration value.
+     */
+    CustomDomainConfiguration customDomainConfiguration();
+
+    /**
+     * Gets the eventStreamEndpoint property: The endpoint of the eventstream of the Environment.
+     *
+     * @return the eventStreamEndpoint value.
+     */
+    String eventStreamEndpoint();
+
+    /**
+     * Gets the workloadProfiles property: Workload profiles configured for the Managed Environment.
+     *
+     * @return the workloadProfiles value.
+     */
+    List<WorkloadProfile> workloadProfiles();
+
+    /**
      * Gets the region of the resource.
      *
      * @return the region of the resource.
@@ -194,11 +224,14 @@ public interface ManagedEnvironment {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithSku,
                 DefinitionStages.WithDaprAIInstrumentationKey,
                 DefinitionStages.WithDaprAIConnectionString,
                 DefinitionStages.WithVnetConfiguration,
                 DefinitionStages.WithAppLogsConfiguration,
-                DefinitionStages.WithZoneRedundant {
+                DefinitionStages.WithZoneRedundant,
+                DefinitionStages.WithCustomDomainConfiguration,
+                DefinitionStages.WithWorkloadProfiles {
             /**
              * Executes the create request.
              *
@@ -223,6 +256,16 @@ public interface ManagedEnvironment {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the ManagedEnvironment definition allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: SKU properties of the Environment..
+             *
+             * @param sku SKU properties of the Environment.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(EnvironmentSkuProperties sku);
         }
         /** The stage of the ManagedEnvironment definition allowing to specify daprAIInstrumentationKey. */
         interface WithDaprAIInstrumentationKey {
@@ -280,6 +323,26 @@ public interface ManagedEnvironment {
              */
             WithCreate withZoneRedundant(Boolean zoneRedundant);
         }
+        /** The stage of the ManagedEnvironment definition allowing to specify customDomainConfiguration. */
+        interface WithCustomDomainConfiguration {
+            /**
+             * Specifies the customDomainConfiguration property: Custom domain configuration for the environment.
+             *
+             * @param customDomainConfiguration Custom domain configuration for the environment.
+             * @return the next definition stage.
+             */
+            WithCreate withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration);
+        }
+        /** The stage of the ManagedEnvironment definition allowing to specify workloadProfiles. */
+        interface WithWorkloadProfiles {
+            /**
+             * Specifies the workloadProfiles property: Workload profiles configured for the Managed Environment..
+             *
+             * @param workloadProfiles Workload profiles configured for the Managed Environment.
+             * @return the next definition stage.
+             */
+            WithCreate withWorkloadProfiles(List<WorkloadProfile> workloadProfiles);
+        }
     }
     /**
      * Begins update for the ManagedEnvironment resource.
@@ -290,7 +353,14 @@ public interface ManagedEnvironment {
 
     /** The template for ManagedEnvironment update. */
     interface Update
-        extends UpdateStages.WithTags, UpdateStages.WithVnetConfiguration, UpdateStages.WithAppLogsConfiguration {
+        extends UpdateStages.WithTags,
+            UpdateStages.WithSku,
+            UpdateStages.WithDaprAIInstrumentationKey,
+            UpdateStages.WithDaprAIConnectionString,
+            UpdateStages.WithVnetConfiguration,
+            UpdateStages.WithAppLogsConfiguration,
+            UpdateStages.WithCustomDomainConfiguration,
+            UpdateStages.WithWorkloadProfiles {
         /**
          * Executes the update request.
          *
@@ -318,6 +388,40 @@ public interface ManagedEnvironment {
              */
             Update withTags(Map<String, String> tags);
         }
+        /** The stage of the ManagedEnvironment update allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: SKU properties of the Environment..
+             *
+             * @param sku SKU properties of the Environment.
+             * @return the next definition stage.
+             */
+            Update withSku(EnvironmentSkuProperties sku);
+        }
+        /** The stage of the ManagedEnvironment update allowing to specify daprAIInstrumentationKey. */
+        interface WithDaprAIInstrumentationKey {
+            /**
+             * Specifies the daprAIInstrumentationKey property: Azure Monitor instrumentation key used by Dapr to export
+             * Service to Service communication telemetry.
+             *
+             * @param daprAIInstrumentationKey Azure Monitor instrumentation key used by Dapr to export Service to
+             *     Service communication telemetry.
+             * @return the next definition stage.
+             */
+            Update withDaprAIInstrumentationKey(String daprAIInstrumentationKey);
+        }
+        /** The stage of the ManagedEnvironment update allowing to specify daprAIConnectionString. */
+        interface WithDaprAIConnectionString {
+            /**
+             * Specifies the daprAIConnectionString property: Application Insights connection string used by Dapr to
+             * export Service to Service communication telemetry.
+             *
+             * @param daprAIConnectionString Application Insights connection string used by Dapr to export Service to
+             *     Service communication telemetry.
+             * @return the next definition stage.
+             */
+            Update withDaprAIConnectionString(String daprAIConnectionString);
+        }
         /** The stage of the ManagedEnvironment update allowing to specify vnetConfiguration. */
         interface WithVnetConfiguration {
             /**
@@ -340,6 +444,26 @@ public interface ManagedEnvironment {
              */
             Update withAppLogsConfiguration(AppLogsConfiguration appLogsConfiguration);
         }
+        /** The stage of the ManagedEnvironment update allowing to specify customDomainConfiguration. */
+        interface WithCustomDomainConfiguration {
+            /**
+             * Specifies the customDomainConfiguration property: Custom domain configuration for the environment.
+             *
+             * @param customDomainConfiguration Custom domain configuration for the environment.
+             * @return the next definition stage.
+             */
+            Update withCustomDomainConfiguration(CustomDomainConfiguration customDomainConfiguration);
+        }
+        /** The stage of the ManagedEnvironment update allowing to specify workloadProfiles. */
+        interface WithWorkloadProfiles {
+            /**
+             * Specifies the workloadProfiles property: Workload profiles configured for the Managed Environment..
+             *
+             * @param workloadProfiles Workload profiles configured for the Managed Environment.
+             * @return the next definition stage.
+             */
+            Update withWorkloadProfiles(List<WorkloadProfile> workloadProfiles);
+        }
     }
     /**
      * Refreshes the resource to sync with Azure.
@@ -355,4 +479,30 @@ public interface ManagedEnvironment {
      * @return the refreshed resource.
      */
     ManagedEnvironment refresh(Context context);
+
+    /**
+     * Get auth token for a managed environment
+     *
+     * <p>Checks if resource name is available.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return environment Auth Token along with {@link Response}.
+     */
+    Response<EnvironmentAuthToken> getAuthTokenWithResponse(Context context);
+
+    /**
+     * Get auth token for a managed environment
+     *
+     * <p>Checks if resource name is available.
+     *
+     * @throws com.azure.resourcemanager.appcontainers.models.DefaultErrorResponseErrorException thrown if the request
+     *     is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return environment Auth Token.
+     */
+    EnvironmentAuthToken getAuthToken();
 }

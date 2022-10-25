@@ -23,6 +23,10 @@ public final class GatewayCustomBgpIpAddressIpConfiguration {
     @JsonProperty(value = "customBgpIpAddress", required = true)
     private String customBgpIpAddress;
 
+    /** Creates an instance of GatewayCustomBgpIpAddressIpConfiguration class. */
+    public GatewayCustomBgpIpAddressIpConfiguration() {
+    }
+
     /**
      * Get the ipConfigurationId property: The IpconfigurationId of ipconfiguration which belongs to gateway.
      *

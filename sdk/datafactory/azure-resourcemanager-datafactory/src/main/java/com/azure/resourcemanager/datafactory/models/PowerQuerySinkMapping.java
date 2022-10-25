@@ -23,6 +23,10 @@ public final class PowerQuerySinkMapping {
     @JsonProperty(value = "dataflowSinks")
     private List<PowerQuerySink> dataflowSinks;
 
+    /** Creates an instance of PowerQuerySinkMapping class. */
+    public PowerQuerySinkMapping() {
+    }
+
     /**
      * Get the queryName property: Name of the query in Power Query mashup document.
      *

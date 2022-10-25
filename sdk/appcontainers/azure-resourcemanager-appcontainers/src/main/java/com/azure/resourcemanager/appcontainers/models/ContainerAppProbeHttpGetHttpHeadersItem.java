@@ -23,6 +23,10 @@ public final class ContainerAppProbeHttpGetHttpHeadersItem {
     @JsonProperty(value = "value", required = true)
     private String value;
 
+    /** Creates an instance of ContainerAppProbeHttpGetHttpHeadersItem class. */
+    public ContainerAppProbeHttpGetHttpHeadersItem() {
+    }
+
     /**
      * Get the name property: The header field name.
      *

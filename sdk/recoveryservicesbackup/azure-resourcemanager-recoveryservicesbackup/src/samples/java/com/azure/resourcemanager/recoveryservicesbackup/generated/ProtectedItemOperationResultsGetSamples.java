@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ProtectedItemOperationResults Get. */
 public final class ProtectedItemOperationResultsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/ProtectedItemOperationResults.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/ProtectedItemOperationResults.json
      */
     /**
      * Sample code: Get Operation Results of Protected Vm.

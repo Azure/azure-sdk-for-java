@@ -25,6 +25,10 @@ public final class SapCloudForCustomerResourceDataset extends Dataset {
     private SapCloudForCustomerResourceDatasetTypeProperties innerTypeProperties =
         new SapCloudForCustomerResourceDatasetTypeProperties();
 
+    /** Creates an instance of SapCloudForCustomerResourceDataset class. */
+    public SapCloudForCustomerResourceDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: SAP Cloud For Customer OData resource dataset properties.
      *

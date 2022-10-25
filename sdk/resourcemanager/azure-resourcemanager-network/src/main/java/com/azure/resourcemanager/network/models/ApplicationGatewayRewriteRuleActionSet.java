@@ -29,6 +29,10 @@ public final class ApplicationGatewayRewriteRuleActionSet {
     @JsonProperty(value = "urlConfiguration")
     private ApplicationGatewayUrlConfiguration urlConfiguration;
 
+    /** Creates an instance of ApplicationGatewayRewriteRuleActionSet class. */
+    public ApplicationGatewayRewriteRuleActionSet() {
+    }
+
     /**
      * Get the requestHeaderConfigurations property: Request Header Actions in the Action Set.
      *

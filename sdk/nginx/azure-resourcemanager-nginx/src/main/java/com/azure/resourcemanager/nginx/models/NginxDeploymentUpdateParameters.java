@@ -43,6 +43,10 @@ public final class NginxDeploymentUpdateParameters {
     @JsonProperty(value = "properties")
     private NginxDeploymentUpdateProperties properties;
 
+    /** Creates an instance of NginxDeploymentUpdateParameters class. */
+    public NginxDeploymentUpdateParameters() {
+    }
+
     /**
      * Get the identity property: The identity property.
      *

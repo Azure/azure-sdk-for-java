@@ -23,6 +23,10 @@ public final class VpnClientRevokedCertificatePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of VpnClientRevokedCertificatePropertiesFormat class. */
+    public VpnClientRevokedCertificatePropertiesFormat() {
+    }
+
     /**
      * Get the thumbprint property: The revoked VPN client certificate thumbprint.
      *

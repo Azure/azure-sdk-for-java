@@ -24,6 +24,10 @@ public final class TwilioLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private TwilioLinkedServiceTypeProperties innerTypeProperties = new TwilioLinkedServiceTypeProperties();
 
+    /** Creates an instance of TwilioLinkedService class. */
+    public TwilioLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Twilio linked service properties.
      *

@@ -28,6 +28,10 @@ public final class GoogleBigQueryDatasetTypeProperties {
     @JsonProperty(value = "dataset")
     private Object dataset;
 
+    /** Creates an instance of GoogleBigQueryDatasetTypeProperties class. */
+    public GoogleBigQueryDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using database + table properties
      * instead.

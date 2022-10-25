@@ -36,6 +36,10 @@ public final class BastionHostIpConfiguration extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of BastionHostIpConfiguration class. */
+    public BastionHostIpConfiguration() {
+    }
+
     /**
      * Get the innerProperties property: Represents the ip configuration associated with the resource.
      *

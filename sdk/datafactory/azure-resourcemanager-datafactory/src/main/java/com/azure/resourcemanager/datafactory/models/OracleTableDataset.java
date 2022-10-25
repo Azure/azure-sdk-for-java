@@ -23,6 +23,10 @@ public final class OracleTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private OracleTableDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of OracleTableDataset class. */
+    public OracleTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: On-premises Oracle dataset properties.
      *

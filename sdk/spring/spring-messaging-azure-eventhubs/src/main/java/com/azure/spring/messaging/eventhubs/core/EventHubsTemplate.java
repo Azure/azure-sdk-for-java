@@ -146,8 +146,7 @@ public class EventHubsTemplate implements SendOperation {
         .block();
 
         final EventDataBatch batch = currentBatch.getAndSet(null);
-        return producer.send(batch)
-                .doFinally(s -> producer.close());
+        return producer.send(batch);
     }
 
     private CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier) {

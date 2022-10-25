@@ -17,6 +17,10 @@ public final class SsisExecutionParameter {
     @JsonProperty(value = "value", required = true)
     private Object value;
 
+    /** Creates an instance of SsisExecutionParameter class. */
+    public SsisExecutionParameter() {
+    }
+
     /**
      * Get the value property: SSIS package execution parameter value. Type: string (or Expression with resultType
      * string).

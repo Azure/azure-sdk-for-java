@@ -18,6 +18,10 @@ public final class DevBoxDefinitionUpdate extends TrackedResourceUpdate {
     @JsonProperty(value = "properties")
     private DevBoxDefinitionUpdateProperties innerProperties;
 
+    /** Creates an instance of DevBoxDefinitionUpdate class. */
+    public DevBoxDefinitionUpdate() {
+    }
+
     /**
      * Get the innerProperties property: Properties of a Dev Box definition to be updated.
      *

@@ -27,6 +27,10 @@ public final class ScheduleInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of ScheduleInner class. */
+    public ScheduleInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of a Schedule resource.
      *

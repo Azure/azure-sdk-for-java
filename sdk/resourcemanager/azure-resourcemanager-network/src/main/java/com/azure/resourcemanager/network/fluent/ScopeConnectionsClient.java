@@ -60,25 +60,6 @@ public interface ScopeConnectionsClient {
      * @param networkManagerName The name of the network manager.
      * @param scopeConnectionName Name for the cross-tenant connection.
      * @param parameters Scope connection to be created/updated.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Scope Connections resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ScopeConnectionInner createOrUpdate(
-        String resourceGroupName,
-        String networkManagerName,
-        String scopeConnectionName,
-        ScopeConnectionInner parameters);
-
-    /**
-     * Creates or updates scope connection from Network Manager.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
-     * @param parameters Scope connection to be created/updated.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,6 +73,25 @@ public interface ScopeConnectionsClient {
         String scopeConnectionName,
         ScopeConnectionInner parameters,
         Context context);
+
+    /**
+     * Creates or updates scope connection from Network Manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param scopeConnectionName Name for the cross-tenant connection.
+     * @param parameters Scope connection to be created/updated.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the Scope Connections resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScopeConnectionInner createOrUpdate(
+        String resourceGroupName,
+        String networkManagerName,
+        String scopeConnectionName,
+        ScopeConnectionInner parameters);
 
     /**
      * Get specified scope connection created by this Network Manager.
@@ -130,20 +130,6 @@ public interface ScopeConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param scopeConnectionName Name for the cross-tenant connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specified scope connection created by this Network Manager.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ScopeConnectionInner get(String resourceGroupName, String networkManagerName, String scopeConnectionName);
-
-    /**
-     * Get specified scope connection created by this Network Manager.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -153,6 +139,20 @@ public interface ScopeConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<ScopeConnectionInner> getWithResponse(
         String resourceGroupName, String networkManagerName, String scopeConnectionName, Context context);
+
+    /**
+     * Get specified scope connection created by this Network Manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param scopeConnectionName Name for the cross-tenant connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specified scope connection created by this Network Manager.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ScopeConnectionInner get(String resourceGroupName, String networkManagerName, String scopeConnectionName);
 
     /**
      * Delete the pending scope connection created by this network manager.
@@ -189,19 +189,6 @@ public interface ScopeConnectionsClient {
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param scopeConnectionName Name for the cross-tenant connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String networkManagerName, String scopeConnectionName);
-
-    /**
-     * Delete the pending scope connection created by this network manager.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param networkManagerName The name of the network manager.
-     * @param scopeConnectionName Name for the cross-tenant connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -211,6 +198,19 @@ public interface ScopeConnectionsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<Void> deleteWithResponse(
         String resourceGroupName, String networkManagerName, String scopeConnectionName, Context context);
+
+    /**
+     * Delete the pending scope connection created by this network manager.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkManagerName The name of the network manager.
+     * @param scopeConnectionName Name for the cross-tenant connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String networkManagerName, String scopeConnectionName);
 
     /**
      * List all scope connections created by this network manager.

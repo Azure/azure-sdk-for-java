@@ -34,10 +34,10 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.ServiceBusServiceVersion;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImplBuilder;
+import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImplBuilder;
-import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.implementation.ServiceBusTokenCredentialHttpPolicy;
 
@@ -146,6 +146,12 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
+        final ServiceBusManagementClientImpl client = getServiceBusManagementClient();
+
+        return new ServiceBusAdministrationAsyncClient(client, serializer);
+    }
+
+    private ServiceBusManagementClientImpl getServiceBusManagementClient() {
         if (endpoint == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'endpoint' cannot be null."));
         }
@@ -160,8 +166,7 @@ public final class ServiceBusAdministrationClientBuilder implements
             .endpoint(endpoint)
             .apiVersion(apiVersion.getVersion())
             .buildClient();
-
-        return new ServiceBusAdministrationAsyncClient(client, serializer);
+        return client;
     }
 
     /**
@@ -182,7 +187,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationClient buildClient() {
-        return new ServiceBusAdministrationClient(buildAsyncClient());
+        return new ServiceBusAdministrationClient(getServiceBusManagementClient(), serializer);
     }
 
     /**

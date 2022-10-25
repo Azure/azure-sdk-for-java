@@ -37,7 +37,7 @@
         "Maven": {
           "ArtifactId": "commons-text",
           "GroupId": "org.apache.commons",
-          "Version": "1.6"
+          "Version": "1.10.0"
         }
       }
     },

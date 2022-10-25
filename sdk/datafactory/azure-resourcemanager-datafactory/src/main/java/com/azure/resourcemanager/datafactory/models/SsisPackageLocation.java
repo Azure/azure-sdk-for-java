@@ -30,6 +30,10 @@ public final class SsisPackageLocation {
     @JsonProperty(value = "typeProperties")
     private SsisPackageLocationTypeProperties innerTypeProperties;
 
+    /** Creates an instance of SsisPackageLocation class. */
+    public SsisPackageLocation() {
+    }
+
     /**
      * Get the packagePath property: The SSIS package path. Type: string (or Expression with resultType string).
      *

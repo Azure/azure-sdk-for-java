@@ -22,6 +22,10 @@ public final class RetentionPolicyParameters {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of RetentionPolicyParameters class. */
+    public RetentionPolicyParameters() {
+    }
+
     /**
      * Get the days property: Number of days to retain flow log records.
      *

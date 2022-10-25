@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.devcenter.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.devcenter.fluent.models.ImageInner;
 import com.azure.resourcemanager.devcenter.models.Image;
 import com.azure.resourcemanager.devcenter.models.RecommendedMachineConfiguration;
@@ -28,6 +29,10 @@ public final class ImageImpl implements Image {
 
     public String type() {
         return this.innerModel().type();
+    }
+
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public String description() {

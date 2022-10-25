@@ -23,6 +23,10 @@ public final class ExcelDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private ExcelDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of ExcelDataset class. */
+    public ExcelDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Excel dataset properties.
      *

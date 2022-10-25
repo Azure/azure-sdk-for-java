@@ -47,6 +47,10 @@ public final class LoadBalancerInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of LoadBalancerInner class. */
+    public LoadBalancerInner() {
+    }
+
     /**
      * Get the extendedLocation property: The extended location of the load balancer.
      *

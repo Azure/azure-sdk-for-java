@@ -22,6 +22,10 @@ public final class AzureFirewallApplicationRuleProtocol {
     @JsonProperty(value = "port")
     private Integer port;
 
+    /** Creates an instance of AzureFirewallApplicationRuleProtocol class. */
+    public AzureFirewallApplicationRuleProtocol() {
+    }
+
     /**
      * Get the protocolType property: Protocol type.
      *

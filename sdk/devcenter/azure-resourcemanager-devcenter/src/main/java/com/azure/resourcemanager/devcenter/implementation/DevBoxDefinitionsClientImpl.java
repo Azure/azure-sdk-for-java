@@ -540,22 +540,6 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
      * @param devBoxDefinitionName The name of the Dev Box definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Dev Box definition.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DevBoxDefinitionInner get(String resourceGroupName, String devCenterName, String devBoxDefinitionName) {
-        return getAsync(resourceGroupName, devCenterName, devBoxDefinitionName).block();
-    }
-
-    /**
-     * Gets a Dev Box definition.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -566,6 +550,22 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     public Response<DevBoxDefinitionInner> getWithResponse(
         String resourceGroupName, String devCenterName, String devBoxDefinitionName, Context context) {
         return getWithResponseAsync(resourceGroupName, devCenterName, devBoxDefinitionName, context).block();
+    }
+
+    /**
+     * Gets a Dev Box definition.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param devBoxDefinitionName The name of the Dev Box definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Dev Box definition.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DevBoxDefinitionInner get(String resourceGroupName, String devCenterName, String devBoxDefinitionName) {
+        return getWithResponse(resourceGroupName, devCenterName, devBoxDefinitionName, Context.NONE).getValue();
     }
 
     /**
@@ -1783,23 +1783,6 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param projectName The name of the project.
      * @param devBoxDefinitionName The name of the Dev Box definition.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Dev Box definition configured for a project.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DevBoxDefinitionInner getByProject(
-        String resourceGroupName, String projectName, String devBoxDefinitionName) {
-        return getByProjectAsync(resourceGroupName, projectName, devBoxDefinitionName).block();
-    }
-
-    /**
-     * Gets a Dev Box definition configured for a project.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param projectName The name of the project.
-     * @param devBoxDefinitionName The name of the Dev Box definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1813,9 +1796,27 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     }
 
     /**
+     * Gets a Dev Box definition configured for a project.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param projectName The name of the project.
+     * @param devBoxDefinitionName The name of the Dev Box definition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Dev Box definition configured for a project.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DevBoxDefinitionInner getByProject(
+        String resourceGroupName, String projectName, String devBoxDefinitionName) {
+        return getByProjectWithResponse(resourceGroupName, projectName, devBoxDefinitionName, Context.NONE).getValue();
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1851,7 +1852,8 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1889,7 +1891,8 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1925,7 +1928,8 @@ public final class DevBoxDefinitionsClientImpl implements DevBoxDefinitionsClien
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

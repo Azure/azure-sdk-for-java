@@ -22,6 +22,10 @@ public final class Capability {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
+    /** Creates an instance of Capability class. */
+    public Capability() {
+    }
+
     /**
      * Get the name property: Name of the capability.
      *

@@ -24,6 +24,10 @@ public final class AzureMariaDBLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureMariaDBLinkedServiceTypeProperties innerTypeProperties = new AzureMariaDBLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureMariaDBLinkedService class. */
+    public AzureMariaDBLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Database for MariaDB linked service properties.
      *

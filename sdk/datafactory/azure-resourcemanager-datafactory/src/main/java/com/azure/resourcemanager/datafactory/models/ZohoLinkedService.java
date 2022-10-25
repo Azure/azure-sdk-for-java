@@ -24,6 +24,10 @@ public final class ZohoLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ZohoLinkedServiceTypeProperties innerTypeProperties = new ZohoLinkedServiceTypeProperties();
 
+    /** Creates an instance of ZohoLinkedService class. */
+    public ZohoLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Zoho server linked service properties.
      *

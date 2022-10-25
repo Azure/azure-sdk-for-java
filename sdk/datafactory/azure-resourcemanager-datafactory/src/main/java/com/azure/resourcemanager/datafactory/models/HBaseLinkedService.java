@@ -24,6 +24,10 @@ public final class HBaseLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private HBaseLinkedServiceTypeProperties innerTypeProperties = new HBaseLinkedServiceTypeProperties();
 
+    /** Creates an instance of HBaseLinkedService class. */
+    public HBaseLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: HBase server linked service properties.
      *

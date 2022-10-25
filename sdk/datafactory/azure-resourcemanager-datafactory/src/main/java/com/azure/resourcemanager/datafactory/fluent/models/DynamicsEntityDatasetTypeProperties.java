@@ -16,6 +16,10 @@ public final class DynamicsEntityDatasetTypeProperties {
     @JsonProperty(value = "entityName")
     private Object entityName;
 
+    /** Creates an instance of DynamicsEntityDatasetTypeProperties class. */
+    public DynamicsEntityDatasetTypeProperties() {
+    }
+
     /**
      * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
      *

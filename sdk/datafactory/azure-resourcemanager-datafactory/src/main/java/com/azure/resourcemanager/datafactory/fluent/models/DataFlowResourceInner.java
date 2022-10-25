@@ -37,6 +37,10 @@ public final class DataFlowResourceInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of DataFlowResourceInner class. */
+    public DataFlowResourceInner() {
+    }
+
     /**
      * Get the properties property: Data flow properties.
      *

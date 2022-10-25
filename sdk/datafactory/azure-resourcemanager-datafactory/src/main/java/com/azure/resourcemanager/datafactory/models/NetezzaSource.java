@@ -33,6 +33,10 @@ public final class NetezzaSource extends TabularSource {
     @JsonProperty(value = "partitionSettings")
     private NetezzaPartitionSettings partitionSettings;
 
+    /** Creates an instance of NetezzaSource class. */
+    public NetezzaSource() {
+    }
+
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).

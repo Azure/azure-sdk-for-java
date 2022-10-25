@@ -38,6 +38,7 @@
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
 
       --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates=ALL-UNNAMED
+      --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates.implementation=ALL-UNNAMED
       --add-opens com.azure.security.keyvault.certificates/com.azure.security.keyvault.certificates.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
@@ -109,7 +110,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.6.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.6.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
