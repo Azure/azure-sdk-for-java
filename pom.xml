@@ -18,6 +18,7 @@
     <module>sdk/anomalydetector</module>
     <module>sdk/aot</module>
     <module>sdk/apimanagement</module>
+    <module>sdk/appcomplianceautomation</module>
     <module>sdk/appconfiguration</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
