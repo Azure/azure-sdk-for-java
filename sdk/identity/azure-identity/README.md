@@ -259,7 +259,7 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 ## Credential classes
 
 ### Authenticate Azure-hosted applications
-        
+
 <table style="border: 1px; width: 100%;">
   <caption>Authenticate Azure-hosted applications</caption>
   <thead>
@@ -293,10 +293,9 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
   </tbody>
 </table>
 
-### Authenticating service principals
+### Authenticate service principals
 
 <table style="border: 1px; width: 100%;">
-  <caption>Authenticating service principals</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -327,10 +326,9 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
   </tbody>
 </table>
 
-### Authenticating users
+### Authenticate users
 
 <table style="border: 1px; width: 100%;">
-  <caption>Authenticate users</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -373,10 +371,9 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
   </tbody>
 </table>
 
-### Authenticating via development tools
+### Authenticate via development tools
 
 <table style="border: 1px; width: 100%;">
-  <caption>Authenticating via development tools</caption>
   <thead>
     <tr>
       <th>credential class</th>
