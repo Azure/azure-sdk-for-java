@@ -121,7 +121,7 @@ Licensed under the MIT License.
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-text</artifactId>
       <scope>test</scope>
-      <version>1.6</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
+      <version>1.10.0</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
     </dependency>
 
     <dependency>

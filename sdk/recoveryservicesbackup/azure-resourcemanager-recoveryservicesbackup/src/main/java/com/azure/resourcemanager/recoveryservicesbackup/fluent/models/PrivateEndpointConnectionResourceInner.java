@@ -25,6 +25,10 @@ public final class PrivateEndpointConnectionResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of PrivateEndpointConnectionResourceInner class. */
+    public PrivateEndpointConnectionResourceInner() {
+    }
+
     /**
      * Get the properties property: PrivateEndpointConnectionResource properties.
      *

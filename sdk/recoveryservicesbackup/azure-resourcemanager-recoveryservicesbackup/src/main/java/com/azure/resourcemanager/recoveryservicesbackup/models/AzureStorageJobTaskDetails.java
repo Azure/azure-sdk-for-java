@@ -22,6 +22,10 @@ public final class AzureStorageJobTaskDetails {
     @JsonProperty(value = "status")
     private String status;
 
+    /** Creates an instance of AzureStorageJobTaskDetails class. */
+    public AzureStorageJobTaskDetails() {
+    }
+
     /**
      * Get the taskId property: The task display name.
      *

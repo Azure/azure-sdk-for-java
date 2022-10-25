@@ -38,6 +38,10 @@ public final class LongTermRetentionPolicy extends RetentionPolicy {
     @JsonProperty(value = "yearlySchedule")
     private YearlyRetentionSchedule yearlySchedule;
 
+    /** Creates an instance of LongTermRetentionPolicy class. */
+    public LongTermRetentionPolicy() {
+    }
+
     /**
      * Get the dailySchedule property: Daily retention schedule of the protection policy.
      *
