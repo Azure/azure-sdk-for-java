@@ -26,7 +26,7 @@ public final class JavaDocCodeSnippets {
     private String tenantId = System.getenv("AZURE_TENANT_ID");
     private String clientId = System.getenv("AZURE_CLIENT_ID");
     private String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
-    private String username = "sampleuser";
+    private String username = "fakeUserNamePlaceholder";
     private String password = "fakeCredentialPlaceholder";
 
     /**

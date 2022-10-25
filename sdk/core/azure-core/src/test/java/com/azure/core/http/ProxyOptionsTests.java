@@ -41,7 +41,7 @@ public class ProxyOptionsTests {
     private static final String HTTP = "http";
 
     private static final String PROXY_HOST = "localhost";
-    private static final String PROXY_USER = "user";
+    private static final String PROXY_USER = "fakeProxyUserPlaceholder";
     private static final String PROXY_PASSWORD = "fakeCredentialPlaceholder";
     private static final String NON_PROXY_HOSTS = "notlocalhost";
 

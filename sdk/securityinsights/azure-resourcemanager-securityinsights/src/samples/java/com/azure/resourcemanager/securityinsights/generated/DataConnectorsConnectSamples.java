@@ -67,7 +67,7 @@ public final class DataConnectorsConnectSamples {
                 "316ec55e-7138-4d63-ab18-90c8a60fd1c8",
                 new DataConnectorConnectBody()
                     .withKind(ConnectAuthKind.APIKEY)
-                    .withApiKey("123456789")
+                    .withApiKey("fakeKeyPlaceholder")
                     .withRequestConfigUserInputValues(
                         Arrays
                             .asList(

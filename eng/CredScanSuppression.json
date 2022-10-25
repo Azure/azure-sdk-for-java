@@ -24,6 +24,13 @@
             "_justification": "Javadoc in azure-resourcemanager"
         },
         {
+            "placeholder": [
+                "h2AllowImplicitFlow",
+                "h2Permissions"
+            ],
+            "_justification": "Javadoc in azure resourcemanagerhybrid"
+        },
+        {
             "file":[
                 "eng/common/testproxy/dotnet-devcert.pfx",
                 "sdk/cosmos/azure-cosmos/src/test/resources/server.jks",
