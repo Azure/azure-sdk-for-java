@@ -55,7 +55,7 @@ public final class SqlVirtualMachinePropertiesTests {
         Assertions.assertEquals("o", model.sqlVirtualMachineGroupResourceId());
         Assertions.assertEquals("fakeBootstrapCredentialPlaceholder", model.wsfcDomainCredentials().clusterBootstrapAccountPassword());
         Assertions.assertEquals("fakeOperatorCredentialPlaceholder", model.wsfcDomainCredentials().clusterOperatorAccountPassword());
-        Assertions.assertEquals("i", model.wsfcDomainCredentials().sqlServiceAccountPassword());
+        Assertions.assertEquals("fakeSqlServiceAccountPasswordPlaceholder", model.wsfcDomainCredentials().sqlServiceAccountPassword());
         Assertions.assertEquals("xhqyudxorrqnb", model.wsfcStaticIp());
         Assertions.assertEquals(true, model.autoPatchingSettings().enable());
         Assertions.assertEquals(DayOfWeek.SUNDAY, model.autoPatchingSettings().dayOfWeek());
@@ -293,7 +293,7 @@ public final class SqlVirtualMachinePropertiesTests {
         Assertions.assertEquals("o", model.sqlVirtualMachineGroupResourceId());
         Assertions.assertEquals("fakeBootstrapCredentialPlaceholder", model.wsfcDomainCredentials().clusterBootstrapAccountPassword());
         Assertions.assertEquals("fakeOperatorCredentialPlaceholder", model.wsfcDomainCredentials().clusterOperatorAccountPassword());
-        Assertions.assertEquals("i", model.wsfcDomainCredentials().sqlServiceAccountPassword());
+        Assertions.assertEquals("fakeSqlServiceAccountPasswordPlaceholder", model.wsfcDomainCredentials().sqlServiceAccountPassword());
         Assertions.assertEquals("xhqyudxorrqnb", model.wsfcStaticIp());
         Assertions.assertEquals(true, model.autoPatchingSettings().enable());
         Assertions.assertEquals(DayOfWeek.SUNDAY, model.autoPatchingSettings().dayOfWeek());

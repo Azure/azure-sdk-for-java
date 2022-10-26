@@ -65,15 +65,15 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
         String endpoint = "https://httpbin.org/post";
         String description = "alert_us!";
         String externalLink = "https://github.com/Azure/azure-sdk-for-java/wiki";
-        String userName = "fakeNamePlaceholder";
-        String password = "fakeCredentialPlaceholder";
+        String fakeUserNamePlaceholder = "fakeUserNamePlaceholder";
+        String fakePasswordPlaceholder = "fakeCredentialPlaceholder";
         HttpHeaders httpHeaders = new HttpHeaders()
             .put("x-contoso-id", "123")
             .put("x-contoso-name", "contoso");
         WebNotificationHook hook = new WebNotificationHook(name, endpoint)
             .setDescription(description)
             .setExternalLink(externalLink)
-            .setUserCredentials(userName, password)
+            .setUserCredentials(fakeUserNamePlaceholder, fakePasswordPlaceholder)
             .setHttpHeaders(httpHeaders);
     }
 

@@ -28,7 +28,7 @@
         "description": "Database administrator login name"
       }
     },
-    "administratorLoginPassword": {
+    "administratorLoginPwd": {
       "type": "secureString",
       "defaultValue": "1MySqlTestpw&",
       "minLength": 8,

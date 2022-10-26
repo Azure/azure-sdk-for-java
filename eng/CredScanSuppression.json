@@ -9,6 +9,14 @@
             "_justification": "Secret used by test code, it is fake."
         },
         {
+            "placeholder": [
+              "username",
+              "-----BEGIN PRIVATE KEY-----",
+              "administratorLoginPassword"
+            ],
+            "_justification": "Well known names."
+        },
+        {
             "placeholder": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
             "_justification": "SHA-256 encrypted random data generated at test time."
         },
