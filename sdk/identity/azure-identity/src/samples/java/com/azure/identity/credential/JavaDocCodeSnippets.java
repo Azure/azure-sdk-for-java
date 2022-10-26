@@ -26,7 +26,7 @@ public final class JavaDocCodeSnippets {
     private String tenantId = System.getenv("AZURE_TENANT_ID");
     private String clientId = System.getenv("AZURE_CLIENT_ID");
     private String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
-    private String fakeUserNamePlaceholder = "fakeNamePlaceholder";
+    private String username = "username";
     private String fakePasswordPlaceholder = "fakeCredentialPlaceholder";
 
     /**
@@ -80,7 +80,7 @@ public final class JavaDocCodeSnippets {
         // BEGIN: com.azure.identity.credential.chainedtokencredential.construct
         UsernamePasswordCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder()
             .clientId(clientId)
-            .username(fakeUserNamePlaceholder)
+            .username(username)
             .password(fakePasswordPlaceholder)
             .build();
         InteractiveBrowserCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder()
