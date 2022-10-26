@@ -176,7 +176,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public QueueProperties createQueue(String queueName) {
-        return createQueue(queueName, null);
+        return createQueue(queueName, new CreateQueueOptions());
     }
 
     /**
@@ -216,7 +216,7 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<QueueProperties> createQueueWithResponse(String queueName, CreateQueueOptions queueOptions,
                                                              Context context) {
-        validateTopicName(queueName);
+        validateQueueName(queueName);
         if (queueOptions == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'queueOptions' cannot be null."));
         }
@@ -417,7 +417,7 @@ public final class ServiceBusAdministrationClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TopicProperties createTopic(String topicName) {
-        return createTopic(topicName, null);
+        return createTopic(topicName, new CreateTopicOptions());
     }
 
     /**
@@ -1143,7 +1143,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response =
             managementClient.listEntitiesSyncWithResponse(QUEUES_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context));
-        final QueueDescriptionFeed feed = deserialize(response, QueueDescriptionFeed.class);
+        final QueueDescriptionFeed feed = deserialize(response.getValue(), QueueDescriptionFeed.class);
         if (feed == null) {
             LOGGER.warning("Could not deserialize QueueDescriptionFeed. skip {}, top: {}", skip,
                 NUMBER_OF_ELEMENTS);
@@ -1209,7 +1209,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response =
             managementClient.listRulesSyncWithResponse(topicName, subscriptionName, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context));
-        final RuleDescriptionFeed feed = deserialize(response, RuleDescriptionFeed.class);
+        final RuleDescriptionFeed feed = deserialize(response.getValue(), RuleDescriptionFeed.class);
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize RuleDescriptionFeed. skip {}, top: {}", skip,
@@ -1274,7 +1274,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response =
             managementClient.listSubscriptionsSyncWithResponse(topicName, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context));
-        final SubscriptionDescriptionFeed feed = deserialize(response, SubscriptionDescriptionFeed.class);
+        final SubscriptionDescriptionFeed feed = deserialize(response.getValue(), SubscriptionDescriptionFeed.class);
 
         if (feed == null) {
             LOGGER.warning("Could not deserialize SubscriptionDescriptionFeed. skip {}, top: {}", skip,
@@ -1335,7 +1335,7 @@ public final class ServiceBusAdministrationClient {
         final Response<Object> response =
             managementClient.listEntitiesSyncWithResponse(TOPICS_ENTITY_TYPE, skip, NUMBER_OF_ELEMENTS,
                 enableSyncContext(context));
-        final TopicDescriptionFeed feed = deserialize(response, TopicDescriptionFeed.class);
+        final TopicDescriptionFeed feed = deserialize(response.getValue(), TopicDescriptionFeed.class);
         if (feed == null) {
             LOGGER.warning("Could not deserialize TopicDescriptionFeed. skip {}, top: {}", skip,
                 NUMBER_OF_ELEMENTS);

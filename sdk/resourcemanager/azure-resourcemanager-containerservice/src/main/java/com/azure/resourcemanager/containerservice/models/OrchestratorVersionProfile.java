@@ -42,6 +42,10 @@ public final class OrchestratorVersionProfile {
     @JsonProperty(value = "upgrades")
     private List<OrchestratorProfile> upgrades;
 
+    /** Creates an instance of OrchestratorVersionProfile class. */
+    public OrchestratorVersionProfile() {
+    }
+
     /**
      * Get the orchestratorType property: Orchestrator type.
      *

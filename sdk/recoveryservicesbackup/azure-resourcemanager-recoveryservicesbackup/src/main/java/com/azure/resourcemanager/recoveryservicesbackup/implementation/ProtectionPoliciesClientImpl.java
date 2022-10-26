@@ -241,23 +241,6 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy information to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionPolicyResourceInner get(String vaultName, String resourceGroupName, String policyName) {
-        return getAsync(vaultName, resourceGroupName, policyName).block();
-    }
-
-    /**
-     * Provides the details of the backup policies associated to Recovery Services Vault. This is an asynchronous
-     * operation. Status of the operation can be fetched using GetPolicyOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param policyName Backup policy information to be fetched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -268,6 +251,23 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
     public Response<ProtectionPolicyResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, String policyName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, policyName, context).block();
+    }
+
+    /**
+     * Provides the details of the backup policies associated to Recovery Services Vault. This is an asynchronous
+     * operation. Status of the operation can be fetched using GetPolicyOperationResult API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param policyName Backup policy information to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for backup policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProtectionPolicyResourceInner get(String vaultName, String resourceGroupName, String policyName) {
+        return getWithResponse(vaultName, resourceGroupName, policyName, Context.NONE).getValue();
     }
 
     /**
@@ -422,25 +422,6 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy to be created.
      * @param parameters resource backup policy.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup policy.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectionPolicyResourceInner createOrUpdate(
-        String vaultName, String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters) {
-        return createOrUpdateAsync(vaultName, resourceGroupName, policyName, parameters).block();
-    }
-
-    /**
-     * Creates or modifies a backup policy. This is an asynchronous operation. Status of the operation can be fetched
-     * using GetPolicyOperationResult API.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param policyName Backup policy to be created.
-     * @param parameters resource backup policy.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -455,6 +436,26 @@ public final class ProtectionPoliciesClientImpl implements ProtectionPoliciesCli
         ProtectionPolicyResourceInner parameters,
         Context context) {
         return createOrUpdateWithResponseAsync(vaultName, resourceGroupName, policyName, parameters, context).block();
+    }
+
+    /**
+     * Creates or modifies a backup policy. This is an asynchronous operation. Status of the operation can be fetched
+     * using GetPolicyOperationResult API.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param policyName Backup policy to be created.
+     * @param parameters resource backup policy.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for backup policy.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProtectionPolicyResourceInner createOrUpdate(
+        String vaultName, String resourceGroupName, String policyName, ProtectionPolicyResourceInner parameters) {
+        return createOrUpdateWithResponse(vaultName, resourceGroupName, policyName, parameters, Context.NONE)
+            .getValue();
     }
 
     /**

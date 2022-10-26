@@ -10,6 +10,14 @@
 
 ### Other Changes
 
+## 1.0.1 (2022-10-24)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
+- Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
+
 ## 1.0.0 (2022-09-09)
 This is the first stable release for the Device Update for IoT Hub client library.
 

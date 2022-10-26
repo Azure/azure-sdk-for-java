@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BackupResourceEncryptionConfigs Get. */
 public final class BackupResourceEncryptionConfigsGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/BackupResourceEncryptionConfig_Get.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/BackupResourceEncryptionConfig_Get.json
      */
     /**
      * Sample code: Get Vault Encryption Configuration.

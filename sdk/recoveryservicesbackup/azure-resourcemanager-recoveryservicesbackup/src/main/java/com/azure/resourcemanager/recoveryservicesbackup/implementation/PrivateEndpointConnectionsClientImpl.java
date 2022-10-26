@@ -245,23 +245,6 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return private Endpoint Connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateEndpointConnectionResourceInner get(
-        String vaultName, String resourceGroupName, String privateEndpointConnectionName) {
-        return getAsync(vaultName, resourceGroupName, privateEndpointConnectionName).block();
-    }
-
-    /**
-     * Get Private Endpoint Connection. This call is made by Backup Admin.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param privateEndpointConnectionName The name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -272,6 +255,23 @@ public final class PrivateEndpointConnectionsClientImpl implements PrivateEndpoi
     public Response<PrivateEndpointConnectionResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, String privateEndpointConnectionName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, privateEndpointConnectionName, context).block();
+    }
+
+    /**
+     * Get Private Endpoint Connection. This call is made by Backup Admin.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param privateEndpointConnectionName The name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return private Endpoint Connection.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateEndpointConnectionResourceInner get(
+        String vaultName, String resourceGroupName, String privateEndpointConnectionName) {
+        return getWithResponse(vaultName, resourceGroupName, privateEndpointConnectionName, Context.NONE).getValue();
     }
 
     /**

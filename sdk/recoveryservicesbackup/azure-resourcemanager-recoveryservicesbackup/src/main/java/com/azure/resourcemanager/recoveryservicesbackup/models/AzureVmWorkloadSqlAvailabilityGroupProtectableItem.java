@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SQLAvailabilityGroupContainer")
 @Fluent
 public final class AzureVmWorkloadSqlAvailabilityGroupProtectableItem extends AzureVmWorkloadProtectableItem {
+    /** Creates an instance of AzureVmWorkloadSqlAvailabilityGroupProtectableItem class. */
+    public AzureVmWorkloadSqlAvailabilityGroupProtectableItem() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureVmWorkloadSqlAvailabilityGroupProtectableItem withParentName(String parentName) {
