@@ -27,6 +27,10 @@ public final class ParquetSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
+    /** Creates an instance of ParquetSource class. */
+    public ParquetSource() {
+    }
+
     /**
      * Get the storeSettings property: Parquet store settings.
      *

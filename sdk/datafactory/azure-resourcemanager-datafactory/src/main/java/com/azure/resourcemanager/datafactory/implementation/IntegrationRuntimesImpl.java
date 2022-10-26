@@ -54,16 +54,6 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         return Utils.mapPage(inner, inner1 -> new IntegrationRuntimeResourceImpl(inner1, this.manager()));
     }
 
-    public IntegrationRuntimeResource get(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        IntegrationRuntimeResourceInner inner =
-            this.serviceClient().get(resourceGroupName, factoryName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<IntegrationRuntimeResource> getWithResponse(
         String resourceGroupName,
         String factoryName,
@@ -85,8 +75,14 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
     }
 
-    public void delete(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, integrationRuntimeName);
+    public IntegrationRuntimeResource get(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        IntegrationRuntimeResourceInner inner =
+            this.serviceClient().get(resourceGroupName, factoryName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -94,15 +90,8 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, integrationRuntimeName, context);
     }
 
-    public IntegrationRuntimeStatusResponse getStatus(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        IntegrationRuntimeStatusResponseInner inner =
-            this.serviceClient().getStatus(resourceGroupName, factoryName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeStatusResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        this.serviceClient().delete(resourceGroupName, factoryName, integrationRuntimeName);
     }
 
     public Response<IntegrationRuntimeStatusResponse> getStatusWithResponse(
@@ -120,14 +109,12 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
     }
 
-    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse listOutboundNetworkDependenciesEndpoints(
+    public IntegrationRuntimeStatusResponse getStatus(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner inner =
-            this
-                .serviceClient()
-                .listOutboundNetworkDependenciesEndpoints(resourceGroupName, factoryName, integrationRuntimeName);
+        IntegrationRuntimeStatusResponseInner inner =
+            this.serviceClient().getStatus(resourceGroupName, factoryName, integrationRuntimeName);
         if (inner != null) {
-            return new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(inner, this.manager());
+            return new IntegrationRuntimeStatusResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -153,12 +140,14 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
     }
 
-    public IntegrationRuntimeConnectionInfo getConnectionInfo(
+    public IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponse listOutboundNetworkDependenciesEndpoints(
         String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        IntegrationRuntimeConnectionInfoInner inner =
-            this.serviceClient().getConnectionInfo(resourceGroupName, factoryName, integrationRuntimeName);
+        IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseInner inner =
+            this
+                .serviceClient()
+                .listOutboundNetworkDependenciesEndpoints(resourceGroupName, factoryName, integrationRuntimeName);
         if (inner != null) {
-            return new IntegrationRuntimeConnectionInfoImpl(inner, this.manager());
+            return new IntegrationRuntimeOutboundNetworkDependenciesEndpointsResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -181,17 +170,12 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
     }
 
-    public IntegrationRuntimeAuthKeys regenerateAuthKey(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
-        IntegrationRuntimeAuthKeysInner inner =
-            this
-                .serviceClient()
-                .regenerateAuthKey(resourceGroupName, factoryName, integrationRuntimeName, regenerateKeyParameters);
+    public IntegrationRuntimeConnectionInfo getConnectionInfo(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        IntegrationRuntimeConnectionInfoInner inner =
+            this.serviceClient().getConnectionInfo(resourceGroupName, factoryName, integrationRuntimeName);
         if (inner != null) {
-            return new IntegrationRuntimeAuthKeysImpl(inner, this.manager());
+            return new IntegrationRuntimeConnectionInfoImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -219,10 +203,15 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
     }
 
-    public IntegrationRuntimeAuthKeys listAuthKeys(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+    public IntegrationRuntimeAuthKeys regenerateAuthKey(
+        String resourceGroupName,
+        String factoryName,
+        String integrationRuntimeName,
+        IntegrationRuntimeRegenerateKeyParameters regenerateKeyParameters) {
         IntegrationRuntimeAuthKeysInner inner =
-            this.serviceClient().listAuthKeys(resourceGroupName, factoryName, integrationRuntimeName);
+            this
+                .serviceClient()
+                .regenerateAuthKey(resourceGroupName, factoryName, integrationRuntimeName, regenerateKeyParameters);
         if (inner != null) {
             return new IntegrationRuntimeAuthKeysImpl(inner, this.manager());
         } else {
@@ -242,6 +231,17 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IntegrationRuntimeAuthKeysImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeAuthKeys listAuthKeys(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        IntegrationRuntimeAuthKeysInner inner =
+            this.serviceClient().listAuthKeys(resourceGroupName, factoryName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeAuthKeysImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -277,10 +277,6 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         this.serviceClient().stop(resourceGroupName, factoryName, integrationRuntimeName, context);
     }
 
-    public void syncCredentials(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        this.serviceClient().syncCredentials(resourceGroupName, factoryName, integrationRuntimeName);
-    }
-
     public Response<Void> syncCredentialsWithResponse(
         String resourceGroupName, String factoryName, String integrationRuntimeName, Context context) {
         return this
@@ -288,15 +284,8 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
             .syncCredentialsWithResponse(resourceGroupName, factoryName, integrationRuntimeName, context);
     }
 
-    public IntegrationRuntimeMonitoringData getMonitoringData(
-        String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        IntegrationRuntimeMonitoringDataInner inner =
-            this.serviceClient().getMonitoringData(resourceGroupName, factoryName, integrationRuntimeName);
-        if (inner != null) {
-            return new IntegrationRuntimeMonitoringDataImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void syncCredentials(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        this.serviceClient().syncCredentials(resourceGroupName, factoryName, integrationRuntimeName);
     }
 
     public Response<IntegrationRuntimeMonitoringData> getMonitoringDataWithResponse(
@@ -316,8 +305,15 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
         }
     }
 
-    public void upgrade(String resourceGroupName, String factoryName, String integrationRuntimeName) {
-        this.serviceClient().upgrade(resourceGroupName, factoryName, integrationRuntimeName);
+    public IntegrationRuntimeMonitoringData getMonitoringData(
+        String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        IntegrationRuntimeMonitoringDataInner inner =
+            this.serviceClient().getMonitoringData(resourceGroupName, factoryName, integrationRuntimeName);
+        if (inner != null) {
+            return new IntegrationRuntimeMonitoringDataImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> upgradeWithResponse(
@@ -327,14 +323,8 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
             .upgradeWithResponse(resourceGroupName, factoryName, integrationRuntimeName, context);
     }
 
-    public void removeLinks(
-        String resourceGroupName,
-        String factoryName,
-        String integrationRuntimeName,
-        LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest) {
-        this
-            .serviceClient()
-            .removeLinks(resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest);
+    public void upgrade(String resourceGroupName, String factoryName, String integrationRuntimeName) {
+        this.serviceClient().upgrade(resourceGroupName, factoryName, integrationRuntimeName);
     }
 
     public Response<Void> removeLinksWithResponse(
@@ -349,21 +339,14 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
                 resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest, context);
     }
 
-    public IntegrationRuntimeStatusResponse createLinkedIntegrationRuntime(
+    public void removeLinks(
         String resourceGroupName,
         String factoryName,
         String integrationRuntimeName,
-        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest) {
-        IntegrationRuntimeStatusResponseInner inner =
-            this
-                .serviceClient()
-                .createLinkedIntegrationRuntime(
-                    resourceGroupName, factoryName, integrationRuntimeName, createLinkedIntegrationRuntimeRequest);
-        if (inner != null) {
-            return new IntegrationRuntimeStatusResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+        LinkedIntegrationRuntimeRequest linkedIntegrationRuntimeRequest) {
+        this
+            .serviceClient()
+            .removeLinks(resourceGroupName, factoryName, integrationRuntimeName, linkedIntegrationRuntimeRequest);
     }
 
     public Response<IntegrationRuntimeStatusResponse> createLinkedIntegrationRuntimeWithResponse(
@@ -387,6 +370,23 @@ public final class IntegrationRuntimesImpl implements IntegrationRuntimes {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new IntegrationRuntimeStatusResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public IntegrationRuntimeStatusResponse createLinkedIntegrationRuntime(
+        String resourceGroupName,
+        String factoryName,
+        String integrationRuntimeName,
+        CreateLinkedIntegrationRuntimeRequest createLinkedIntegrationRuntimeRequest) {
+        IntegrationRuntimeStatusResponseInner inner =
+            this
+                .serviceClient()
+                .createLinkedIntegrationRuntime(
+                    resourceGroupName, factoryName, integrationRuntimeName, createLinkedIntegrationRuntimeRequest);
+        if (inner != null) {
+            return new IntegrationRuntimeStatusResponseImpl(inner, this.manager());
         } else {
             return null;
         }

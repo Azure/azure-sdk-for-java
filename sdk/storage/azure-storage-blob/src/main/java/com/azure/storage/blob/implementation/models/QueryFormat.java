@@ -19,8 +19,7 @@ public final class QueryFormat {
     private QueryFormatType type;
 
     /*
-     * Groups the settings used for interpreting the blob data if the blob is
-     * delimited text formatted.
+     * Groups the settings used for interpreting the blob data if the blob is delimited text formatted.
      */
     @JsonProperty(value = "DelimitedTextConfiguration")
     private DelimitedTextConfiguration delimitedTextConfiguration;
@@ -32,8 +31,7 @@ public final class QueryFormat {
     private JsonTextConfiguration jsonTextConfiguration;
 
     /*
-     * Groups the settings used for formatting the response if the response
-     * should be Arrow formatted.
+     * Groups the settings used for formatting the response if the response should be Arrow formatted.
      */
     @JsonProperty(value = "ArrowConfiguration")
     private ArrowConfiguration arrowConfiguration;
@@ -43,6 +41,9 @@ public final class QueryFormat {
      */
     @JsonProperty(value = "ParquetTextConfiguration")
     private Object parquetTextConfiguration;
+
+    /** Creates an instance of QueryFormat class. */
+    public QueryFormat() {}
 
     /**
      * Get the type property: The quick query format type.

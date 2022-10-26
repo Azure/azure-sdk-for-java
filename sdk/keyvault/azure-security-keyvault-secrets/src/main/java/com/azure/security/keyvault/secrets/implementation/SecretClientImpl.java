@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.core.util.polling.DefaultSyncPoller;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.polling.PollResponse;
@@ -589,7 +588,7 @@ public class SecretClientImpl {
     }
 
     public SyncPoller<DeletedSecret, Void> beginDeleteSecret(String name, Context context) {
-        return new DefaultSyncPoller<>(getDefaultPollingInterval(),
+        return SyncPoller.createPoller(getDefaultPollingInterval(),
             cxt -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, activationOperation(name, context).apply(cxt)),
             createPollOperation(name, context),
             (pollingContext, firstResponse) -> null,

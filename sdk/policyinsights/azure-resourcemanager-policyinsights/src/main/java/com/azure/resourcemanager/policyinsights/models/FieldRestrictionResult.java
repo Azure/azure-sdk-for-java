@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for FieldRestrictionResult. */
+/** The type of restriction that is imposed on the field. */
 public final class FieldRestrictionResult extends ExpandableStringEnum<FieldRestrictionResult> {
     /** Static value Required for FieldRestrictionResult. */
     public static final FieldRestrictionResult REQUIRED = fromString("Required");
@@ -30,7 +30,11 @@ public final class FieldRestrictionResult extends ExpandableStringEnum<FieldRest
         return fromString(name, FieldRestrictionResult.class);
     }
 
-    /** @return known FieldRestrictionResult values. */
+    /**
+     * Gets known FieldRestrictionResult values.
+     *
+     * @return known FieldRestrictionResult values.
+     */
     public static Collection<FieldRestrictionResult> values() {
         return values(FieldRestrictionResult.class);
     }

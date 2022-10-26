@@ -29,6 +29,10 @@ public final class RedeemRequest {
     @JsonProperty(value = "lastName", required = true)
     private String lastName;
 
+    /** Creates an instance of RedeemRequest class. */
+    public RedeemRequest() {
+    }
+
     /**
      * Get the redeemCode property: redeem code.
      *

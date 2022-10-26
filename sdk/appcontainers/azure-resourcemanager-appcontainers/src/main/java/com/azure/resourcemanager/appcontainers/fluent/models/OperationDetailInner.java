@@ -35,6 +35,10 @@ public final class OperationDetailInner {
     @JsonProperty(value = "origin")
     private String origin;
 
+    /** Creates an instance of OperationDetailInner class. */
+    public OperationDetailInner() {
+    }
+
     /**
      * Get the name property: Name of the operation.
      *

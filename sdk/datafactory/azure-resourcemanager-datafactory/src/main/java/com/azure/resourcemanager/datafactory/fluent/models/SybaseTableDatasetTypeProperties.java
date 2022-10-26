@@ -16,6 +16,10 @@ public final class SybaseTableDatasetTypeProperties {
     @JsonProperty(value = "tableName")
     private Object tableName;
 
+    /** Creates an instance of SybaseTableDatasetTypeProperties class. */
+    public SybaseTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: The Sybase table name. Type: string (or Expression with resultType string).
      *

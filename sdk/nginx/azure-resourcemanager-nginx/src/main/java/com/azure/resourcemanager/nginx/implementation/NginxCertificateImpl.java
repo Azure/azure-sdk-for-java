@@ -13,16 +13,11 @@ import com.azure.resourcemanager.nginx.models.NginxCertificateProperties;
 import java.util.Collections;
 import java.util.Map;
 
-public final class NginxCertificateImpl implements NginxCertificate, NginxCertificate.Definition {
+public final class NginxCertificateImpl
+    implements NginxCertificate, NginxCertificate.Definition, NginxCertificate.Update {
     private NginxCertificateInner innerObject;
 
     private final com.azure.resourcemanager.nginx.NginxManager serviceManager;
-
-    NginxCertificateImpl(
-        NginxCertificateInner innerObject, com.azure.resourcemanager.nginx.NginxManager serviceManager) {
-        this.innerObject = innerObject;
-        this.serviceManager = serviceManager;
-    }
 
     public String id() {
         return this.innerModel().id();
@@ -65,6 +60,10 @@ public final class NginxCertificateImpl implements NginxCertificate, NginxCertif
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public NginxCertificateInner innerModel() {
         return this.innerObject;
     }
@@ -90,7 +89,7 @@ public final class NginxCertificateImpl implements NginxCertificate, NginxCertif
             serviceManager
                 .serviceClient()
                 .getCertificates()
-                .create(resourceGroupName, deploymentName, certificateName, this.innerModel(), Context.NONE);
+                .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), Context.NONE);
         return this;
     }
 
@@ -99,7 +98,7 @@ public final class NginxCertificateImpl implements NginxCertificate, NginxCertif
             serviceManager
                 .serviceClient()
                 .getCertificates()
-                .create(resourceGroupName, deploymentName, certificateName, this.innerModel(), context);
+                .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), context);
         return this;
     }
 
@@ -107,6 +106,37 @@ public final class NginxCertificateImpl implements NginxCertificate, NginxCertif
         this.innerObject = new NginxCertificateInner();
         this.serviceManager = serviceManager;
         this.certificateName = name;
+    }
+
+    public NginxCertificateImpl update() {
+        return this;
+    }
+
+    public NginxCertificate apply() {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getCertificates()
+                .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), Context.NONE);
+        return this;
+    }
+
+    public NginxCertificate apply(Context context) {
+        this.innerObject =
+            serviceManager
+                .serviceClient()
+                .getCertificates()
+                .createOrUpdate(resourceGroupName, deploymentName, certificateName, this.innerModel(), context);
+        return this;
+    }
+
+    NginxCertificateImpl(
+        NginxCertificateInner innerObject, com.azure.resourcemanager.nginx.NginxManager serviceManager) {
+        this.innerObject = innerObject;
+        this.serviceManager = serviceManager;
+        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.deploymentName = Utils.getValueFromIdByName(innerObject.id(), "nginxDeployments");
+        this.certificateName = Utils.getValueFromIdByName(innerObject.id(), "certificates");
     }
 
     public NginxCertificate refresh() {

@@ -23,6 +23,10 @@ public final class GlobalParameterSpecification {
     @JsonProperty(value = "value", required = true)
     private Object value;
 
+    /** Creates an instance of GlobalParameterSpecification class. */
+    public GlobalParameterSpecification() {
+    }
+
     /**
      * Get the type property: Global Parameter type.
      *

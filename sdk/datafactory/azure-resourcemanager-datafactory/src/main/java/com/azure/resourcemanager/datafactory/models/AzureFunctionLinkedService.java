@@ -25,6 +25,10 @@ public final class AzureFunctionLinkedService extends LinkedService {
     private AzureFunctionLinkedServiceTypeProperties innerTypeProperties =
         new AzureFunctionLinkedServiceTypeProperties();
 
+    /** Creates an instance of AzureFunctionLinkedService class. */
+    public AzureFunctionLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Azure Function linked service properties.
      *

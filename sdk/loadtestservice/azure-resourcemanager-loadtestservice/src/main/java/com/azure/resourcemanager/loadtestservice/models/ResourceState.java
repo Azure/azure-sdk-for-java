@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceState. */
+/** Resources provisioning states. */
 public final class ResourceState extends ExpandableStringEnum<ResourceState> {
     /** Static value Succeeded for ResourceState. */
     public static final ResourceState SUCCEEDED = fromString("Succeeded");
@@ -33,7 +33,11 @@ public final class ResourceState extends ExpandableStringEnum<ResourceState> {
         return fromString(name, ResourceState.class);
     }
 
-    /** @return known ResourceState values. */
+    /**
+     * Gets known ResourceState values.
+     *
+     * @return known ResourceState values.
+     */
     public static Collection<ResourceState> values() {
         return values(ResourceState.class);
     }

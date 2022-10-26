@@ -37,6 +37,10 @@ public final class RouteInner extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
+    /** Creates an instance of RouteInner class. */
+    public RouteInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the route.
      *

@@ -20,6 +20,10 @@ public final class SalesforceMarketingCloudSource extends TabularSource {
     @JsonProperty(value = "query")
     private Object query;
 
+    /** Creates an instance of SalesforceMarketingCloudSource class. */
+    public SalesforceMarketingCloudSource() {
+    }
+
     /**
      * Get the query property: A query to retrieve data from source. Type: string (or Expression with resultType
      * string).

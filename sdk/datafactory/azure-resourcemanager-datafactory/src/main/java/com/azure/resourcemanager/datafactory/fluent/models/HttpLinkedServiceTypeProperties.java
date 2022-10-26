@@ -75,6 +75,10 @@ public final class HttpLinkedServiceTypeProperties {
     @JsonProperty(value = "enableServerCertificateValidation")
     private Object enableServerCertificateValidation;
 
+    /** Creates an instance of HttpLinkedServiceTypeProperties class. */
+    public HttpLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the url property: The base URL of the HTTP endpoint, e.g. https://www.microsoft.com. Type: string (or
      * Expression with resultType string).

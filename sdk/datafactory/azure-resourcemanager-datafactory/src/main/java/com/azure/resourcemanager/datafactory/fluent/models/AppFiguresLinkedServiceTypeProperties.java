@@ -30,6 +30,10 @@ public final class AppFiguresLinkedServiceTypeProperties {
     @JsonProperty(value = "clientKey", required = true)
     private SecretBase clientKey;
 
+    /** Creates an instance of AppFiguresLinkedServiceTypeProperties class. */
+    public AppFiguresLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the username property: The username of the Appfigures source.
      *

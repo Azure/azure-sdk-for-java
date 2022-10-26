@@ -24,6 +24,10 @@ public final class ScheduleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of ScheduleListResult class. */
+    public ScheduleListResult() {
+    }
+
     /**
      * Get the value property: Current page of results.
      *

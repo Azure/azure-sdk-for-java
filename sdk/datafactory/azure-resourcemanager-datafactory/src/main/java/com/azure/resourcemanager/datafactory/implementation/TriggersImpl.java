@@ -43,17 +43,6 @@ public final class TriggersImpl implements Triggers {
         return Utils.mapPage(inner, inner1 -> new TriggerResourceImpl(inner1, this.manager()));
     }
 
-    public TriggerQueryResponse queryByFactory(
-        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters) {
-        TriggerQueryResponseInner inner =
-            this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
-        if (inner != null) {
-            return new TriggerQueryResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TriggerQueryResponse> queryByFactoryWithResponse(
         String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters, Context context) {
         Response<TriggerQueryResponseInner> inner =
@@ -69,10 +58,12 @@ public final class TriggersImpl implements Triggers {
         }
     }
 
-    public TriggerResource get(String resourceGroupName, String factoryName, String triggerName) {
-        TriggerResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, triggerName);
+    public TriggerQueryResponse queryByFactory(
+        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters) {
+        TriggerQueryResponseInner inner =
+            this.serviceClient().queryByFactory(resourceGroupName, factoryName, filterParameters);
         if (inner != null) {
-            return new TriggerResourceImpl(inner, this.manager());
+            return new TriggerQueryResponseImpl(inner, this.manager());
         } else {
             return null;
         }
@@ -93,13 +84,22 @@ public final class TriggersImpl implements Triggers {
         }
     }
 
-    public void delete(String resourceGroupName, String factoryName, String triggerName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, triggerName);
+    public TriggerResource get(String resourceGroupName, String factoryName, String triggerName) {
+        TriggerResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, triggerName);
+        if (inner != null) {
+            return new TriggerResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, triggerName, context);
+    }
+
+    public void delete(String resourceGroupName, String factoryName, String triggerName) {
+        this.serviceClient().delete(resourceGroupName, factoryName, triggerName);
     }
 
     public TriggerSubscriptionOperationStatus subscribeToEvents(
@@ -124,17 +124,6 @@ public final class TriggersImpl implements Triggers {
         }
     }
 
-    public TriggerSubscriptionOperationStatus getEventSubscriptionStatus(
-        String resourceGroupName, String factoryName, String triggerName) {
-        TriggerSubscriptionOperationStatusInner inner =
-            this.serviceClient().getEventSubscriptionStatus(resourceGroupName, factoryName, triggerName);
-        if (inner != null) {
-            return new TriggerSubscriptionOperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(
         String resourceGroupName, String factoryName, String triggerName, Context context) {
         Response<TriggerSubscriptionOperationStatusInner> inner =
@@ -147,6 +136,17 @@ public final class TriggersImpl implements Triggers {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new TriggerSubscriptionOperationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public TriggerSubscriptionOperationStatus getEventSubscriptionStatus(
+        String resourceGroupName, String factoryName, String triggerName) {
+        TriggerSubscriptionOperationStatusInner inner =
+            this.serviceClient().getEventSubscriptionStatus(resourceGroupName, factoryName, triggerName);
+        if (inner != null) {
+            return new TriggerSubscriptionOperationStatusImpl(inner, this.manager());
         } else {
             return null;
         }

@@ -141,10 +141,14 @@ public class ClientMetricsTest extends BatchTestBase {
             List<Measurement> measurements = new ArrayList<>();
             requestLatencyMeter.measure().forEach(measurements::add);
 
-            assertThat(measurements.size() == 1);
-            assertThat(measurements.get(0).getValue() == 600);
+            assertThat(measurements.size()).isEqualTo(3);
 
-
+            assertThat(measurements.get(0).getStatistic().getTagValueRepresentation()).isEqualTo("count");
+            assertThat(measurements.get(0).getValue()).isEqualTo(1);
+            assertThat(measurements.get(1).getStatistic().getTagValueRepresentation()).isEqualTo("total");
+            assertThat(measurements.get(1).getValue()).isEqualTo(600 * 1000); // transform into milliseconds
+            assertThat(measurements.get(2).getStatistic().getTagValueRepresentation()).isEqualTo("max");
+            assertThat(measurements.get(2).getValue()).isEqualTo(600 * 1000); // transform into milliseconds
         } finally {
             this.afterTest();
         }
@@ -165,14 +169,19 @@ public class ClientMetricsTest extends BatchTestBase {
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "201"),
-                Tag.of(TagName.RequestStatusCode.toString(), "201/0")
+                Tag.of(TagName.RequestStatusCode.toString(), "201/0"),
+                1,
+                100
             );
 
             this.validateMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/Create"),
-                Tag.of(TagName.RequestOperationType.toString(), "Document/Create")
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Create"),
+                1,
+                100
             );
+
         } finally {
             this.afterTest();
         }
@@ -193,13 +202,17 @@ public class ClientMetricsTest extends BatchTestBase {
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
-                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                1,
+                50
             );
 
             this.validateMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/Read"),
-                Tag.of(TagName.RequestOperationType.toString(), "Document/Read")
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Read"),
+                1,
+                50
             );
 
             Tag queryPlanTag = Tag.of(TagName.RequestOperationType.toString(), "DocumentCollection_QueryPlan");
@@ -231,13 +244,17 @@ public class ClientMetricsTest extends BatchTestBase {
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
-                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                1,
+                100
             );
 
             this.validateMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/Replace"),
-                Tag.of(TagName.RequestOperationType.toString(), "Document/Replace")
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Replace"),
+                1,
+                100
             );
         } finally {
             this.afterTest();
@@ -259,13 +276,17 @@ public class ClientMetricsTest extends BatchTestBase {
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "204"),
-                Tag.of(TagName.RequestStatusCode.toString(), "204/0")
+                Tag.of(TagName.RequestStatusCode.toString(), "204/0"),
+                1,
+                100
             );
 
             this.validateMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/Delete"),
-                Tag.of(TagName.RequestOperationType.toString(), "Document/Delete")
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Delete"),
+                1,
+                100
             );
         } finally {
             this.afterTest();
@@ -287,13 +308,17 @@ public class ClientMetricsTest extends BatchTestBase {
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
-                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                1,
+                100
             );
 
             this.validateMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/ReadFeed/readAllItems." + container.getId()),
-                Tag.of(TagName.RequestOperationType.toString(), "Document/Query")
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
+                1,
+                100
             );
 
             this.validateItemCountMetrics(
@@ -337,13 +362,17 @@ public class ClientMetricsTest extends BatchTestBase {
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
-                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                1,
+                10000
             );
 
             this.validateMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/Query/queryItems." + container.getId()),
-                Tag.of(TagName.RequestOperationType.toString(), "Document/Query")
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Query"),
+                1,
+                10000
             );
 
             this.validateItemCountMetrics(
@@ -411,13 +440,17 @@ public class ClientMetricsTest extends BatchTestBase {
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
-                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                1,
+                100
             );
 
             this.validateMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/Patch"),
-                Tag.of(TagName.RequestOperationType.toString(), "Document/Patch")
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Patch"),
+                1,
+                100
             );
         } finally {
             this.afterTest();
@@ -461,13 +494,17 @@ public class ClientMetricsTest extends BatchTestBase {
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
-                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                1,
+                100
             );
 
             this.validateMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/Batch"),
-                Tag.of(TagName.RequestOperationType.toString(), "Document/Batch")
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Batch"),
+                1,
+                100
             );
         } finally {
             this.afterTest();
@@ -519,13 +556,17 @@ public class ClientMetricsTest extends BatchTestBase {
 
             this.validateMetrics(
                 Tag.of(TagName.OperationStatusCode.toString(), "200"),
-                Tag.of(TagName.RequestStatusCode.toString(), "200/0")
+                Tag.of(TagName.RequestStatusCode.toString(), "200/0"),
+                1,
+                100
             );
 
             this.validateMetrics(
                 Tag.of(
                     TagName.Operation.toString(), "Document/Batch"),
-                Tag.of(TagName.RequestOperationType.toString(), "Document/Batch")
+                Tag.of(TagName.RequestOperationType.toString(), "Document/Batch"),
+                1,
+                100
             );
         } finally {
             this.afterTest();
@@ -552,10 +593,11 @@ public class ClientMetricsTest extends BatchTestBase {
             .isEqualTo(containerProperties.getId());
     }
 
-    private void validateMetrics() {
+    private void validateMetrics(int minRu, int maxRu) {
         this.assertMetrics("cosmos.client.op.latency", true);
         this.assertMetrics("cosmos.client.op.calls", true);
-        this.assertMetrics("cosmos.client.op.RUs", true);
+        Meter reportedOpRequestCharge = this.assertMetrics("cosmos.client.op.RUs", true);
+        validateReasonableRUs(reportedOpRequestCharge, minRu, maxRu);
         this.assertMetrics("cosmos.client.op.regionsContacted", true);
         this.assertMetrics(
             "cosmos.client.op.regionsContacted",
@@ -570,7 +612,9 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.RegionName.toString(), this.preferredRegion));
             this.assertMetrics("cosmos.client.req.rntbd.backendLatency", true);
             this.assertMetrics("cosmos.client.req.rntbd.requests", true);
-            this.assertMetrics("cosmos.client.req.rntbd.RUs", true);
+            Meter reportedRntbdRequestCharge =
+                this.assertMetrics("cosmos.client.req.rntbd.RUs", true);
+            validateReasonableRUs(reportedRntbdRequestCharge, minRu, maxRu);
             this.assertMetrics("cosmos.client.req.rntbd.timeline", true);
         } else {
             this.assertMetrics("cosmos.client.req.gw.latency", true);
@@ -580,7 +624,9 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.RegionName.toString(), this.preferredRegion));
             this.assertMetrics("cosmos.client.req.gw.backendLatency", false);
             this.assertMetrics("cosmos.client.req.gw.requests", true);
-            this.assertMetrics("cosmos.client.req.gw.RUs", true);
+            Meter reportedGatewayRequestCharge =
+                this.assertMetrics("cosmos.client.req.gw.RUs", true);
+            validateReasonableRUs(reportedGatewayRequestCharge, minRu, maxRu);
             this.assertMetrics("cosmos.client.req.gw.timeline", true);
             this.assertMetrics("cosmos.client.req.rntbd", false);
         }
@@ -591,10 +637,23 @@ public class ClientMetricsTest extends BatchTestBase {
         this.assertMetrics("cosmos.client.op.actualItemCount", true, expectedOperationTag);
     }
 
-    private void validateMetrics(Tag expectedOperationTag, Tag expectedRequestTag) {
+    private void validateReasonableRUs(Meter reportedRequestChargeMeter, int expectedMinRu, int expectedMaxRu) {
+        List<Measurement> measurements = new ArrayList<>();
+        reportedRequestChargeMeter.measure().forEach(measurements::add);
+
+        assertThat(measurements.size()).isGreaterThan(0);
+        for (int i = 0; i < measurements.size(); i++) {
+            assertThat(measurements.get(i).getValue()).isGreaterThanOrEqualTo(expectedMinRu);
+            assertThat(measurements.get(i).getValue()).isLessThanOrEqualTo(expectedMaxRu);
+        }
+    }
+    private void validateMetrics(Tag expectedOperationTag, Tag expectedRequestTag, int minRu, int maxRu) {
         this.assertMetrics("cosmos.client.op.latency", true, expectedOperationTag);
         this.assertMetrics("cosmos.client.op.calls", true, expectedOperationTag);
-        this.assertMetrics("cosmos.client.op.RUs", true, expectedOperationTag);
+        Meter reportedOpRequestCharge = this.assertMetrics(
+            "cosmos.client.op.RUs", true, expectedOperationTag);
+        validateReasonableRUs(reportedOpRequestCharge, minRu, maxRu);
+
         this.assertMetrics("cosmos.client.op.regionsContacted", true, expectedOperationTag);
 
         this.assertMetrics(
@@ -610,7 +669,9 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.RegionName.toString(), this.preferredRegion));
             this.assertMetrics("cosmos.client.req.rntbd.backendLatency", true, expectedRequestTag);
             this.assertMetrics("cosmos.client.req.rntbd.requests", true, expectedRequestTag);
-            this.assertMetrics("cosmos.client.req.rntbd.RUs", true, expectedRequestTag);
+            Meter reportedRntbdRequestCharge =
+                this.assertMetrics("cosmos.client.req.rntbd.RUs", true, expectedRequestTag);
+            validateReasonableRUs(reportedRntbdRequestCharge, minRu, maxRu);
             this.assertMetrics("cosmos.client.req.rntbd.timeline", true, expectedRequestTag);
         } else {
             this.assertMetrics("cosmos.client.req.gw.latency", true, expectedRequestTag);
@@ -620,7 +681,9 @@ public class ClientMetricsTest extends BatchTestBase {
                 Tag.of(TagName.RegionName.toString(), this.preferredRegion));
             this.assertMetrics("cosmos.client.req.gw.backendLatency", false, expectedRequestTag);
             this.assertMetrics("cosmos.client.req.gw.requests", true, expectedRequestTag);
-            this.assertMetrics("cosmos.client.req.gw.RUs", true, expectedRequestTag);
+            Meter reportedGatewayRequestCharge =
+                this.assertMetrics("cosmos.client.req.gw.RUs", true, expectedRequestTag);
+            validateReasonableRUs(reportedGatewayRequestCharge, minRu, maxRu);
             this.assertMetrics("cosmos.client.req.gw.timeline", true, expectedRequestTag);
             this.assertMetrics("cosmos.client.req.rntbd", false);
         }
