@@ -140,7 +140,7 @@ public final class KeyVaultSettingsClient {
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public KeyVaultSettingsListResult lisSettings() {
+    public KeyVaultSettingsListResult listSettings() {
         List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
         this.implClient.getSettings(vaultUrl).getValue()
@@ -158,7 +158,7 @@ public final class KeyVaultSettingsClient {
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<KeyVaultSettingsListResult> lisSettingsWithResponse(Context context) {
+    public Response<KeyVaultSettingsListResult> listSettingsWithResponse(Context context) {
         Response<SettingsListResult> response = this.implClient.getSettingsWithResponse(vaultUrl, context);
         List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
