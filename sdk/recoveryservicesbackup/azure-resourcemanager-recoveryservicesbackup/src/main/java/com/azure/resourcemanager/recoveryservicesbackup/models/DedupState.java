@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DedupState. */
+/** Vault Dedup state. */
 public final class DedupState extends ExpandableStringEnum<DedupState> {
     /** Static value Invalid for DedupState. */
     public static final DedupState INVALID = fromString("Invalid");

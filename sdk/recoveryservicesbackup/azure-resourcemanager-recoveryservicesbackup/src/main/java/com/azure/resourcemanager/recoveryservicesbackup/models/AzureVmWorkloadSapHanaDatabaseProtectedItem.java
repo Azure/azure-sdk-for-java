@@ -16,11 +16,8 @@ import java.util.Map;
 @JsonTypeName("AzureVmWorkloadSAPHanaDatabase")
 @Fluent
 public final class AzureVmWorkloadSapHanaDatabaseProtectedItem extends AzureVmWorkloadProtectedItem {
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadSapHanaDatabaseProtectedItem withFriendlyName(String friendlyName) {
-        super.withFriendlyName(friendlyName);
-        return this;
+    /** Creates an instance of AzureVmWorkloadSapHanaDatabaseProtectedItem class. */
+    public AzureVmWorkloadSapHanaDatabaseProtectedItem() {
     }
 
     /** {@inheritDoc} */
@@ -41,13 +38,6 @@ public final class AzureVmWorkloadSapHanaDatabaseProtectedItem extends AzureVmWo
     @Override
     public AzureVmWorkloadSapHanaDatabaseProtectedItem withParentType(String parentType) {
         super.withParentType(parentType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadSapHanaDatabaseProtectedItem withProtectionStatus(String protectionStatus) {
-        super.withProtectionStatus(protectionStatus);
         return this;
     }
 
@@ -107,21 +97,6 @@ public final class AzureVmWorkloadSapHanaDatabaseProtectedItem extends AzureVmWo
     public AzureVmWorkloadSapHanaDatabaseProtectedItem withKpisHealths(
         Map<String, KpiResourceHealthDetails> kpisHealths) {
         super.withKpisHealths(kpisHealths);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadSapHanaDatabaseProtectedItem withBackupManagementType(
-        BackupManagementType backupManagementType) {
-        super.withBackupManagementType(backupManagementType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AzureVmWorkloadSapHanaDatabaseProtectedItem withWorkloadType(DataSourceType workloadType) {
-        super.withWorkloadType(workloadType);
         return this;
     }
 
@@ -225,6 +200,14 @@ public final class AzureVmWorkloadSapHanaDatabaseProtectedItem extends AzureVmWo
     @Override
     public AzureVmWorkloadSapHanaDatabaseProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public AzureVmWorkloadSapHanaDatabaseProtectedItem withSoftDeleteRetentionPeriod(
+        Integer softDeleteRetentionPeriod) {
+        super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
         return this;
     }
 

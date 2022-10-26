@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for RestoreRequestType. */
+/** Restore Type (FullShareRestore or ItemLevelRestore). */
 public final class RestoreRequestType extends ExpandableStringEnum<RestoreRequestType> {
     /** Static value Invalid for RestoreRequestType. */
     public static final RestoreRequestType INVALID = fromString("Invalid");

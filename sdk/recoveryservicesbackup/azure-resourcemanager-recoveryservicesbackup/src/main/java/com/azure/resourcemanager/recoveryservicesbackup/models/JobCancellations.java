@@ -16,11 +16,13 @@ public interface JobCancellations {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job to cancel.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
-    void trigger(String vaultName, String resourceGroupName, String jobName);
+    Response<Void> triggerWithResponse(String vaultName, String resourceGroupName, String jobName, Context context);
 
     /**
      * Cancels a job. This is an asynchronous operation. To know the status of the cancellation, call
@@ -29,11 +31,9 @@ public interface JobCancellations {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job to cancel.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> triggerWithResponse(String vaultName, String resourceGroupName, String jobName, Context context);
+    void trigger(String vaultName, String resourceGroupName, String jobName);
 }
