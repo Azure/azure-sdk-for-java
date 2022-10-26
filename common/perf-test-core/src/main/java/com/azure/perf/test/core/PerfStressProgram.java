@@ -259,7 +259,7 @@ public class PerfStressProgram {
                             sink.complete();
                         }
                     })
-                    .parallel()
+                    .parallel(Schedulers.DEFAULT_POOL_SIZE, parallel)
                     .runOn(Schedulers.parallel())
                     .flatMap(test -> test.runTestAsync()
                         .doOnNext(v -> {
