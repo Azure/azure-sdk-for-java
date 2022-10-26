@@ -66,7 +66,8 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
      */
     private Filter conditionalAccessFilter;
 
-    @Override public void init(HttpSecurity builder)throws Exception {
+    @Override
+    public void init(HttpSecurity builder)throws Exception {
         super.init(builder);
         ApplicationContext context = builder.getSharedObject(ApplicationContext.class);
 
