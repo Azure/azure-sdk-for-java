@@ -38,15 +38,6 @@ public final class CertificatesImpl implements Certificates {
         return Utils.mapPage(inner, inner1 -> new CertificateImpl(inner1, this.manager()));
     }
 
-    public Certificate get(String resourceGroupName, String environmentName, String certificateName) {
-        CertificateInner inner = this.serviceClient().get(resourceGroupName, environmentName, certificateName);
-        if (inner != null) {
-            return new CertificateImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<Certificate> getWithResponse(
         String resourceGroupName, String environmentName, String certificateName, Context context) {
         Response<CertificateInner> inner =
@@ -62,13 +53,22 @@ public final class CertificatesImpl implements Certificates {
         }
     }
 
-    public void delete(String resourceGroupName, String environmentName, String certificateName) {
-        this.serviceClient().delete(resourceGroupName, environmentName, certificateName);
+    public Certificate get(String resourceGroupName, String environmentName, String certificateName) {
+        CertificateInner inner = this.serviceClient().get(resourceGroupName, environmentName, certificateName);
+        if (inner != null) {
+            return new CertificateImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
         String resourceGroupName, String environmentName, String certificateName, Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, environmentName, certificateName, context);
+    }
+
+    public void delete(String resourceGroupName, String environmentName, String certificateName) {
+        this.serviceClient().delete(resourceGroupName, environmentName, certificateName);
     }
 
     public Certificate getById(String id) {

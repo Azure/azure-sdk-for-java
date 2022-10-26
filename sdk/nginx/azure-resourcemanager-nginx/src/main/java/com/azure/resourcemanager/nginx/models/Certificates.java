@@ -16,19 +16,6 @@ public interface Certificates {
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of targeted Nginx deployment.
      * @param certificateName The name of certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a certificate of given Nginx deployment.
-     */
-    NginxCertificate get(String resourceGroupName, String deploymentName, String certificateName);
-
-    /**
-     * Get a certificate of given Nginx deployment.
-     *
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param deploymentName The name of targeted Nginx deployment.
-     * @param certificateName The name of certificate.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,6 +24,19 @@ public interface Certificates {
      */
     Response<NginxCertificate> getWithResponse(
         String resourceGroupName, String deploymentName, String certificateName, Context context);
+
+    /**
+     * Get a certificate of given Nginx deployment.
+     *
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param deploymentName The name of targeted Nginx deployment.
+     * @param certificateName The name of certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a certificate of given Nginx deployment.
+     */
+    NginxCertificate get(String resourceGroupName, String deploymentName, String certificateName);
 
     /**
      * Deletes a certificate from the nginx deployment.

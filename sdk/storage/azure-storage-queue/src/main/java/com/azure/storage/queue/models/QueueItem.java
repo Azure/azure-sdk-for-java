@@ -25,6 +25,9 @@ public final class QueueItem {
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
+    /** Creates an instance of QueueItem class. */
+    public QueueItem() {}
+
     /**
      * Get the name property: The name of the Queue.
      *

@@ -22,6 +22,10 @@ public final class Day {
     @JsonProperty(value = "isLast")
     private Boolean isLast;
 
+    /** Creates an instance of Day class. */
+    public Day() {
+    }
+
     /**
      * Get the date property: Date of the month.
      *

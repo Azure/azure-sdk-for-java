@@ -24,6 +24,10 @@ public final class LoadBalancerListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
+    /** Creates an instance of LoadBalancerListResult class. */
+    public LoadBalancerListResult() {
+    }
+
     /**
      * Get the value property: A list of load balancers in a resource group.
      *

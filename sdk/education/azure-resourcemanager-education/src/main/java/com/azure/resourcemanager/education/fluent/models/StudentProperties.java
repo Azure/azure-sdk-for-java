@@ -80,6 +80,10 @@ public final class StudentProperties {
     @JsonProperty(value = "subscriptionInviteLastSentDate")
     private OffsetDateTime subscriptionInviteLastSentDate;
 
+    /** Creates an instance of StudentProperties class. */
+    public StudentProperties() {
+    }
+
     /**
      * Get the firstName property: First Name.
      *

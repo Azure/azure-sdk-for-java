@@ -42,6 +42,10 @@ public final class DelimitedTextWriteSettings extends FormatWriteSettings {
     @JsonProperty(value = "fileNamePrefix")
     private Object fileNamePrefix;
 
+    /** Creates an instance of DelimitedTextWriteSettings class. */
+    public DelimitedTextWriteSettings() {
+    }
+
     /**
      * Get the quoteAllText property: Indicates whether string values should always be enclosed with quotes. Type:
      * boolean (or Expression with resultType boolean).

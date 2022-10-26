@@ -24,6 +24,10 @@ public final class BgpServiceCommunityListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of BgpServiceCommunityListResult class. */
+    public BgpServiceCommunityListResult() {
+    }
+
     /**
      * Get the value property: A list of service community resources.
      *

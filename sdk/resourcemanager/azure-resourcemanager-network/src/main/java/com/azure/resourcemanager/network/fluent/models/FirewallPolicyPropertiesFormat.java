@@ -113,6 +113,10 @@ public final class FirewallPolicyPropertiesFormat {
     @JsonProperty(value = "sku")
     private FirewallPolicySku sku;
 
+    /** Creates an instance of FirewallPolicyPropertiesFormat class. */
+    public FirewallPolicyPropertiesFormat() {
+    }
+
     /**
      * Get the ruleCollectionGroups property: List of references to FirewallPolicyRuleCollectionGroups.
      *

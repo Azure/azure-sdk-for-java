@@ -11,7 +11,7 @@
 # This script can be run locally from the root of the repo:
 # .\eng\scripts\Merge-Branch.ps1 -SourceBranch 'main' -Theirs '**' -Ours 'sdk/template' -Merge 'sdk/template/ci.yml', '**/README.md'
 #
-# This would merge main into the local branch, making the working folder look like main. It not overwrite sdk\template.
+# This would merge main into the local branch, making the working folder look like main. It will not overwrite sdk\template.
 # Changes in sdk\template\ci.yml and readme.md files would be merged, not excluded or overwritten.
 
 [CmdLetBinding()]
@@ -22,6 +22,18 @@ param(
     [string[]]$Merge # paths to merge or overwrite
 )
 
+# Pathspec glossary entry: https://git-scm.com/docs/gitglossary#Documentation/gitglossary.txt-aiddefpathspecapathspec
+#
+# - They're space separeted strings that match file paths in the repository
+# - They're repository paths, not filesystem paths and are slash direction sensitive.
+# - They support "magic words" between parenthesis that control how the following path matches files:
+#   - top: treat the path a top level / repository rooted
+#   - glob: treat wildcards using glob patterns
+#       /*/ == single wildcarded directory level
+#       /**/ == all subdirectories, recursive
+#   - exclude: after processing other pathspecs, remove any path matching this pathspec from the results
+
+# Apply git pathspec magic to the paths
 $theirIncludes = @($Theirs | ForEach-Object { ":(top,glob)$_" })
 $ourIncludes = @($Ours | ForEach-Object { ":(top,glob)$_" })
 $mergeExcludes = @($Merge | ForEach-Object { ":(top,glob,exclude)$_" })
@@ -42,14 +54,14 @@ if ($LASTEXITCODE -and -not $mergeOutput.EndsWith('Automatic merge failed; fix c
 
 # update paths matching "theirs", except for "ours" and "merge", to the state in $SourceBranch
 if ($Theirs.Length) {
-    Write-Verbose "git restore -s $SourceBranch --staged --worktree -- $theirIncludes $ourExcludes $mergeExcludes"
+    Write-Verbose "git restore -s $SourceBranch --staged --worktree --theirs -- $theirIncludes $ourExcludes $mergeExcludes"
     git restore -s $SourceBranch --staged --worktree --theirs -- $theirIncludes $ourExcludes $mergeExcludes
     if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
 }
 
 # update paths matching "ours", except for "merge", to their pre-merge state
 if ($Ours.Length) {
-    Write-Verbose "git restore -s (git rev-parse HEAD) --staged --worktree -- $ourIncludes $mergeExcludes"
+    Write-Verbose "git restore -s (git rev-parse HEAD) --staged --worktree --theirs -- $ourIncludes $mergeExcludes"
     git restore -s (git rev-parse HEAD) --staged --worktree --theirs -- $ourIncludes $mergeExcludes
     if ($LASTEXITCODE) { ErrorExit $LASTEXITCODE }
 }

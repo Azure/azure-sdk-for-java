@@ -42,6 +42,10 @@ public final class NetworkVirtualApplianceInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of NetworkVirtualApplianceInner class. */
+    public NetworkVirtualApplianceInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Network Virtual Appliance.
      *

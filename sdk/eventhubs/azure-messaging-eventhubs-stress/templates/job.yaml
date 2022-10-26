@@ -1,0 +1,33 @@
+{{- include "stress-test-addons.deploy-job-template.from-pod" (list . "stress.java-eventhubs") -}}
+{{- define "stress.java-eventhubs" -}}
+metadata:
+  labels:
+    testInstance: "eventhubs-{{ .Release.Name }}-{{ .Release.Revision }}"
+    testName: eventhubs-stress-test
+    chaos: "true"
+spec:
+  containers:
+    - name: sender
+      image: {{ .Values.image }}
+      imagePullPolicy: Always
+      command: ['sh', '-c']
+      args:
+        - |
+          set -a &&
+          source $ENV_FILE &&
+          java "org.springframework.boot.loader.JarLauncher" \
+          --TEST_CLASS=EventSender
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+    - name: receiver
+      image: {{ .Values.image }}
+      imagePullPolicy: Always
+      command: ['sh', '-c']
+      args:
+        - |
+            set -a &&
+            source $ENV_FILE &&
+            java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
+            "org.springframework.boot.loader.JarLauncher" \
+            --TEST_CLASS=EventProcessor
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
+{{- end -}}

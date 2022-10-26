@@ -1,0 +1,47 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/securitydevops/ci.yml
+      - sdk/securitydevops/azure-resourcemanager-securitydevops/
+    exclude:
+      - sdk/securitydevops/pom.xml
+      - sdk/securitydevops/azure-resourcemanager-securitydevops/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/securitydevops/ci.yml
+      - sdk/securitydevops/azure-resourcemanager-securitydevops/
+    exclude:
+      - sdk/securitydevops/pom.xml
+      - sdk/securitydevops/azure-resourcemanager-securitydevops/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagersecuritydevops
+    displayName: azure-resourcemanager-securitydevops
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: securitydevops
+    EnableBatchRelease: true
+    Artifacts:
+      - name: azure-resourcemanager-securitydevops
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagersecuritydevops
+        releaseInBatch: ${{ parameters.release_azureresourcemanagersecuritydevops }}

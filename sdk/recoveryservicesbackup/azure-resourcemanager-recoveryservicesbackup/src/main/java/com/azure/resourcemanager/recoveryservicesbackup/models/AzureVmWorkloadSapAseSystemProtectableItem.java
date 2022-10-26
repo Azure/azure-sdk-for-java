@@ -13,6 +13,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("SAPAseSystem")
 @Fluent
 public final class AzureVmWorkloadSapAseSystemProtectableItem extends AzureVmWorkloadProtectableItem {
+    /** Creates an instance of AzureVmWorkloadSapAseSystemProtectableItem class. */
+    public AzureVmWorkloadSapAseSystemProtectableItem() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureVmWorkloadSapAseSystemProtectableItem withParentName(String parentName) {

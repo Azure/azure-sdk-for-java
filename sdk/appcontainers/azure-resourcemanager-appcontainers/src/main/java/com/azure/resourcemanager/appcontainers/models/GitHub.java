@@ -11,15 +11,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class GitHub {
     /*
-     * <code>false</code> if the GitHub provider should not be enabled despite
-     * the set registration; otherwise, <code>true</code>.
+     * <code>false</code> if the GitHub provider should not be enabled despite the set registration; otherwise,
+     * <code>true</code>.
      */
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
     /*
-     * The configuration settings of the app registration for the GitHub
-     * provider.
+     * The configuration settings of the app registration for the GitHub provider.
      */
     @JsonProperty(value = "registration")
     private ClientRegistration registration;
@@ -29,6 +28,10 @@ public final class GitHub {
      */
     @JsonProperty(value = "login")
     private LoginScopes login;
+
+    /** Creates an instance of GitHub class. */
+    public GitHub() {
+    }
 
     /**
      * Get the enabled property: &lt;code&gt;false&lt;/code&gt; if the GitHub provider should not be enabled despite the

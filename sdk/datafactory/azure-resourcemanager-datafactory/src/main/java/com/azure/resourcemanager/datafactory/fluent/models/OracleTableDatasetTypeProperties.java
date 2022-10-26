@@ -28,6 +28,10 @@ public final class OracleTableDatasetTypeProperties {
     @JsonProperty(value = "table")
     private Object table;
 
+    /** Creates an instance of OracleTableDatasetTypeProperties class. */
+    public OracleTableDatasetTypeProperties() {
+    }
+
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.

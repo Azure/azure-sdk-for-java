@@ -22,6 +22,10 @@ public final class ResourceGuardOperationDetail {
     @JsonProperty(value = "defaultResourceRequest")
     private String defaultResourceRequest;
 
+    /** Creates an instance of ResourceGuardOperationDetail class. */
+    public ResourceGuardOperationDetail() {
+    }
+
     /**
      * Get the vaultCriticalOperation property: The vaultCriticalOperation property.
      *

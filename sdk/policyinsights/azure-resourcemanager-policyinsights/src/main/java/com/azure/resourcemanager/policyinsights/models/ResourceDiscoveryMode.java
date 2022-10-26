@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ResourceDiscoveryMode. */
+/** The way resources to remediate are discovered. Defaults to ExistingNonCompliant if not specified. */
 public final class ResourceDiscoveryMode extends ExpandableStringEnum<ResourceDiscoveryMode> {
     /** Static value ExistingNonCompliant for ResourceDiscoveryMode. */
     public static final ResourceDiscoveryMode EXISTING_NON_COMPLIANT = fromString("ExistingNonCompliant");
@@ -27,7 +27,11 @@ public final class ResourceDiscoveryMode extends ExpandableStringEnum<ResourceDi
         return fromString(name, ResourceDiscoveryMode.class);
     }
 
-    /** @return known ResourceDiscoveryMode values. */
+    /**
+     * Gets known ResourceDiscoveryMode values.
+     *
+     * @return known ResourceDiscoveryMode values.
+     */
     public static Collection<ResourceDiscoveryMode> values() {
         return values(ResourceDiscoveryMode.class);
     }

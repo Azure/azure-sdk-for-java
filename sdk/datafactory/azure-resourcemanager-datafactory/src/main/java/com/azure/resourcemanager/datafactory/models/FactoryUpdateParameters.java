@@ -32,6 +32,10 @@ public final class FactoryUpdateParameters {
     @JsonProperty(value = "properties")
     private FactoryUpdateProperties innerProperties;
 
+    /** Creates an instance of FactoryUpdateParameters class. */
+    public FactoryUpdateParameters() {
+    }
+
     /**
      * Get the tags property: The resource tags.
      *

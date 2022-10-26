@@ -17,6 +17,10 @@ public class ChildResource extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of ChildResource class. */
+    public ChildResource() {
+    }
+
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *

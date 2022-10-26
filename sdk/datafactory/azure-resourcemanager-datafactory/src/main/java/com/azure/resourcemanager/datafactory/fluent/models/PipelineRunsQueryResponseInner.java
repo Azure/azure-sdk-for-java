@@ -24,6 +24,10 @@ public final class PipelineRunsQueryResponseInner {
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
+    /** Creates an instance of PipelineRunsQueryResponseInner class. */
+    public PipelineRunsQueryResponseInner() {
+    }
+
     /**
      * Get the value property: List of pipeline runs.
      *

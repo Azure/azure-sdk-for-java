@@ -23,6 +23,10 @@ public final class MariaDBTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private GenericDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of MariaDBTableDataset class. */
+    public MariaDBTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

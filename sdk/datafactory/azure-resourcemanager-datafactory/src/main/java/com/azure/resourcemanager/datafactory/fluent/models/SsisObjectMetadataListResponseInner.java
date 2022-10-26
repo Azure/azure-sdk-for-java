@@ -24,6 +24,10 @@ public final class SsisObjectMetadataListResponseInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of SsisObjectMetadataListResponseInner class. */
+    public SsisObjectMetadataListResponseInner() {
+    }
+
     /**
      * Get the value property: List of SSIS object metadata.
      *

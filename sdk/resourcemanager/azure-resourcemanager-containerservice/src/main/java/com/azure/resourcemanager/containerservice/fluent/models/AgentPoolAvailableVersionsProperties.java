@@ -18,6 +18,10 @@ public final class AgentPoolAvailableVersionsProperties {
     @JsonProperty(value = "agentPoolVersions")
     private List<AgentPoolAvailableVersionsPropertiesAgentPoolVersionsItem> agentPoolVersions;
 
+    /** Creates an instance of AgentPoolAvailableVersionsProperties class. */
+    public AgentPoolAvailableVersionsProperties() {
+    }
+
     /**
      * Get the agentPoolVersions property: List of versions available for agent pool.
      *

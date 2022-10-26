@@ -41,6 +41,10 @@ public final class LinkedIntegrationRuntime {
     @JsonProperty(value = "createTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createTime;
 
+    /** Creates an instance of LinkedIntegrationRuntime class. */
+    public LinkedIntegrationRuntime() {
+    }
+
     /**
      * Get the name property: The name of the linked integration runtime.
      *

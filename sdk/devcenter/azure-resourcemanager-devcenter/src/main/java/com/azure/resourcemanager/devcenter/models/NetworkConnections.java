@@ -60,18 +60,6 @@ public interface NetworkConnections {
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a network connection resource.
-     */
-    NetworkConnection getByResourceGroup(String resourceGroupName, String networkConnectionName);
-
-    /**
-     * Gets a network connection resource.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -80,6 +68,18 @@ public interface NetworkConnections {
      */
     Response<NetworkConnection> getByResourceGroupWithResponse(
         String resourceGroupName, String networkConnectionName, Context context);
+
+    /**
+     * Gets a network connection resource.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a network connection resource.
+     */
+    NetworkConnection getByResourceGroup(String resourceGroupName, String networkConnectionName);
 
     /**
      * Deletes a Network Connections resource.
@@ -136,18 +136,6 @@ public interface NetworkConnections {
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return health check status details.
-     */
-    HealthCheckStatusDetails getHealthDetails(String resourceGroupName, String networkConnectionName);
-
-    /**
-     * Gets health check status details.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -158,16 +146,16 @@ public interface NetworkConnections {
         String resourceGroupName, String networkConnectionName, Context context);
 
     /**
-     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
-     * health check details.
+     * Gets health check status details.
      *
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return health check status details.
      */
-    void runHealthChecks(String resourceGroupName, String networkConnectionName);
+    HealthCheckStatusDetails getHealthDetails(String resourceGroupName, String networkConnectionName);
 
     /**
      * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
@@ -182,6 +170,18 @@ public interface NetworkConnections {
      * @return the {@link Response}.
      */
     Response<Void> runHealthChecksWithResponse(String resourceGroupName, String networkConnectionName, Context context);
+
+    /**
+     * Triggers a new health check run. The execution and health check result can be tracked via the network Connection
+     * health check details.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param networkConnectionName Name of the Network Connection that can be applied to a Pool.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void runHealthChecks(String resourceGroupName, String networkConnectionName);
 
     /**
      * Gets a network connection resource.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.DataSourceType;
 /** Samples for BackupStatus Get. */
 public final class BackupStatusGetSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/stable/2022-02-01/examples/AzureIaasVm/GetBackupStatus.json
+     * x-ms-original-file: specification/recoveryservicesbackup/resource-manager/Microsoft.RecoveryServices/preview/2022-09-01-preview/examples/AzureIaasVm/GetBackupStatus.json
      */
     /**
      * Sample code: Get Azure Virtual Machine Backup Status.

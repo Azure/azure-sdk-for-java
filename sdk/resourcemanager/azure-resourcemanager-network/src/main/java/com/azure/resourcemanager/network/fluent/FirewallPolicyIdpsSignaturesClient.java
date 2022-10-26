@@ -49,20 +49,6 @@ public interface FirewallPolicyIdpsSignaturesClient {
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Will describe the query to run against the IDPS signatures DB.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query result.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    QueryResultsInner list(String resourceGroupName, String firewallPolicyName, IdpsQueryObject parameters);
-
-    /**
-     * Retrieves the current status of IDPS signatures for the relevant policy.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param firewallPolicyName The name of the Firewall Policy.
-     * @param parameters Will describe the query to run against the IDPS signatures DB.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,4 +58,18 @@ public interface FirewallPolicyIdpsSignaturesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<QueryResultsInner> listWithResponse(
         String resourceGroupName, String firewallPolicyName, IdpsQueryObject parameters, Context context);
+
+    /**
+     * Retrieves the current status of IDPS signatures for the relevant policy.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param firewallPolicyName The name of the Firewall Policy.
+     * @param parameters Will describe the query to run against the IDPS signatures DB.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return query result.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    QueryResultsInner list(String resourceGroupName, String firewallPolicyName, IdpsQueryObject parameters);
 }

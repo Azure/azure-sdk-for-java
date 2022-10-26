@@ -25,6 +25,10 @@ public final class RunQueryOrderBy {
     @JsonProperty(value = "order", required = true)
     private RunQueryOrder order;
 
+    /** Creates an instance of RunQueryOrderBy class. */
+    public RunQueryOrderBy() {
+    }
+
     /**
      * Get the orderBy property: Parameter name to be used for order by. The allowed parameters to order by for pipeline
      * runs are PipelineName, RunStart, RunEnd and Status; for activity runs are ActivityName, ActivityRunStart,

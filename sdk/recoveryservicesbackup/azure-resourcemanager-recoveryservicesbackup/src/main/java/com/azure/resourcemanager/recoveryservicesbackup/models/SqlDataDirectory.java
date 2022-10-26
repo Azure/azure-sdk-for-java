@@ -28,6 +28,10 @@ public final class SqlDataDirectory {
     @JsonProperty(value = "logicalName")
     private String logicalName;
 
+    /** Creates an instance of SqlDataDirectory class. */
+    public SqlDataDirectory() {
+    }
+
     /**
      * Get the type property: Type of data directory mapping.
      *

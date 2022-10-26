@@ -28,6 +28,10 @@ public final class AadAuthenticationParameters {
     @JsonProperty(value = "aadIssuer")
     private String aadIssuer;
 
+    /** Creates an instance of AadAuthenticationParameters class. */
+    public AadAuthenticationParameters() {
+    }
+
     /**
      * Get the aadTenant property: AAD Vpn authentication parameter AAD tenant.
      *

@@ -8,7 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CallConnectionPropertiesInternal model. */
+/** Properties of a call connection. */
 @Fluent
 public final class CallConnectionPropertiesInternal {
     /*
@@ -24,7 +24,7 @@ public final class CallConnectionPropertiesInternal {
     private String serverCallId;
 
     /*
-     * The source of the call.
+     * The source of the call, which is the caller.
      */
     @JsonProperty(value = "source")
     private CallSourceInternal source;
@@ -40,12 +40,6 @@ public final class CallConnectionPropertiesInternal {
      */
     @JsonProperty(value = "callConnectionState")
     private CallConnectionStateModelInternal callConnectionState;
-
-    /*
-     * The subject.
-     */
-    @JsonProperty(value = "subject")
-    private String subject;
 
     /*
      * The callback URI.
@@ -100,7 +94,7 @@ public final class CallConnectionPropertiesInternal {
     }
 
     /**
-     * Get the source property: The source of the call.
+     * Get the source property: The source of the call, which is the caller.
      *
      * @return the source value.
      */
@@ -109,7 +103,7 @@ public final class CallConnectionPropertiesInternal {
     }
 
     /**
-     * Set the source property: The source of the call.
+     * Set the source property: The source of the call, which is the caller.
      *
      * @param source the source value to set.
      * @return the CallConnectionPropertiesInternal object itself.
@@ -157,26 +151,6 @@ public final class CallConnectionPropertiesInternal {
     public CallConnectionPropertiesInternal setCallConnectionState(
             CallConnectionStateModelInternal callConnectionState) {
         this.callConnectionState = callConnectionState;
-        return this;
-    }
-
-    /**
-     * Get the subject property: The subject.
-     *
-     * @return the subject value.
-     */
-    public String getSubject() {
-        return this.subject;
-    }
-
-    /**
-     * Set the subject property: The subject.
-     *
-     * @param subject the subject value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setSubject(String subject) {
-        this.subject = subject;
         return this;
     }
 

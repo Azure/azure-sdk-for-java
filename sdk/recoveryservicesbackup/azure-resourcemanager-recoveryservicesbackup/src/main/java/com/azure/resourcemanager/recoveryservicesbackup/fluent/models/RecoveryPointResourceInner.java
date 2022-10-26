@@ -25,6 +25,10 @@ public final class RecoveryPointResourceInner extends Resource {
     @JsonProperty(value = "eTag")
     private String etag;
 
+    /** Creates an instance of RecoveryPointResourceInner class. */
+    public RecoveryPointResourceInner() {
+    }
+
     /**
      * Get the properties property: RecoveryPointResource properties.
      *

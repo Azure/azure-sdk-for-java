@@ -434,13 +434,10 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                                                FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
         damagedPdfDataRunner((data, dataLength) -> {
-            HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
+            assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeContent(toFluxByteBuffer(data), dataLength)
                     .setPollInterval(durationTestMode)
                     .getSyncPoller().getFinalResult());
-            FormRecognizerErrorInformation errorInformation =
-                (FormRecognizerErrorInformation) errorResponseException.getValue();
-            assertEquals(INVALID_IMAGE_ERROR_CODE, errorInformation.getErrorCode());
         });
     }
 

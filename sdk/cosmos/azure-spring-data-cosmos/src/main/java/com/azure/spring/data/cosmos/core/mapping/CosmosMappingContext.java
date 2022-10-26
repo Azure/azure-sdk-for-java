@@ -18,6 +18,13 @@ public class CosmosMappingContext
 
     private ApplicationContext context;
 
+    /**
+     * Construct a {@link CosmosMappingContext} instance, with the {@link CosmosSimpleTypes} as simple type holder.
+     */
+    public CosmosMappingContext() {
+        setSimpleTypeHolder(CosmosSimpleTypes.HOLDER);
+    }
+
     @Override
     protected <T> BasicCosmosPersistentEntity<T> createPersistentEntity(TypeInformation<T> typeInformation) {
         final BasicCosmosPersistentEntity<T> entity = new BasicCosmosPersistentEntity<>(typeInformation);

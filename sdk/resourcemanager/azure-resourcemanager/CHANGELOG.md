@@ -1,14 +1,16 @@
 # Release History
 
-## 2.20.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 2.20.0 (2022-10-26)
 
 ### Bugs Fixed
 
+- Fixed bug that `ProviderRegistrationPolicy` does not work.
+
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.19.0 (2022-09-23)
 

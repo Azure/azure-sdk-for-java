@@ -27,6 +27,10 @@ public final class NetworkGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
+    /** Creates an instance of NetworkGroupListResult class. */
+    public NetworkGroupListResult() {
+    }
+
     /**
      * Get the value property: Gets a page of NetworkGroup.
      *

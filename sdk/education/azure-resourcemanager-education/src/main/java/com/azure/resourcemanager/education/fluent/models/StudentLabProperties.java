@@ -26,8 +26,7 @@ public final class StudentLabProperties {
     private String description;
 
     /*
-     * Date the lab will expire and by default will be the expiration date for
-     * each student in this lab
+     * Date the lab will expire and by default will be the expiration date for each student in this lab
      */
     @JsonProperty(value = "expirationDate", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime expirationDate;
@@ -68,6 +67,10 @@ public final class StudentLabProperties {
      */
     @JsonProperty(value = "labScope", access = JsonProperty.Access.WRITE_ONLY)
     private String labScope;
+
+    /** Creates an instance of StudentLabProperties class. */
+    public StudentLabProperties() {
+    }
 
     /**
      * Get the displayName property: Student lab Display Name.
