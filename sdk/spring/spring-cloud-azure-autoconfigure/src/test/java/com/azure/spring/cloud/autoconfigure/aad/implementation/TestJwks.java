@@ -27,6 +27,7 @@ public final class TestJwks {
     private TestJwks() {
     }
 
+    @SuppressWarnings("deprecation")
     public static RSAKey.Builder jwk(RSAPublicKey publicKey, RSAPrivateKey privateKey, X509Certificate cert) {
         // @formatter:off
         try {

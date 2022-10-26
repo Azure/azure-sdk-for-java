@@ -59,6 +59,7 @@ public class AadOAuth2ClientAuthenticationJwkResolver implements OAuth2ClientAut
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public JWK resolve(ClientRegistration clientRegistration) {
         if (ClientAuthenticationMethod.PRIVATE_KEY_JWT.equals(clientRegistration.getClientAuthenticationMethod())) {
             try (FileInputStream inputStream = new FileInputStream(clientCertificatePath)) {

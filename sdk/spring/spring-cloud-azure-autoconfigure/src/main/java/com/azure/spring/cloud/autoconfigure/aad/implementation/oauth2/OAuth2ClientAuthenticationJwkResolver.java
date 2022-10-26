@@ -15,7 +15,7 @@ public interface OAuth2ClientAuthenticationJwkResolver {
 
     /**
      * @param clientRegistration the client registration.
-     * @return a a {@link JWK}.
+     * @return a {@link JWK}.
      */
     JWK resolve(ClientRegistration clientRegistration);
 }

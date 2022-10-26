@@ -68,6 +68,7 @@ public final class AadJwtClientAuthenticationParametersConverter<T extends Abstr
     }
 
     @Override
+    @SuppressWarnings("deprecation")
     public MultiValueMap<String, String> convert(T authorizationGrantRequest) {
         Assert.notNull(authorizationGrantRequest, "authorizationGrantRequest cannot be null");
 

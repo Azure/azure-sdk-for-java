@@ -3,12 +3,13 @@
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
 
-import com.azure.spring.cloud.autoconfigure.aad.AadResourceServerWebSecurityConfigurerAdapter;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AadJwtClaimNames;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AadJwtIssuerValidator;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationServerEndpoints;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AadResourceServerProperties;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -18,7 +19,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.core.OAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -27,11 +27,13 @@ import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 import org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.azure.spring.cloud.autoconfigure.aad.AadResourceServerHttpSecurityConfigurer.aadResourceServer;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createRestTemplate;
 
 /**
@@ -65,10 +67,9 @@ public class AadResourceServerConfiguration {
     @ConditionalOnMissingBean(JwtDecoder.class)
     public JwtDecoder jwtDecoder(AadAuthenticationProperties aadAuthenticationProperties) {
         AadAuthorizationServerEndpoints identityEndpoints = new AadAuthorizationServerEndpoints(
-                aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(),
-                aadAuthenticationProperties.getProfile().getTenantId());
+            aadAuthenticationProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint(), aadAuthenticationProperties.getProfile().getTenantId());
         NimbusJwtDecoder nimbusJwtDecoder = NimbusJwtDecoder
-                .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
+            .withJwkSetUri(identityEndpoints.getJwkSetEndpoint())
                 .restOperations(createRestTemplate(restTemplateBuilder))
                 .build();
         List<OAuth2TokenValidator<Jwt>> validators = createDefaultValidator(aadAuthenticationProperties);
@@ -99,26 +100,25 @@ public class AadResourceServerConfiguration {
     }
 
     /**
-     * Default configuration class for using AAD authentication and authorization. User can write another configuration
-     * bean to override it.
+     * Default security configuration of the resource server, user can write another configuration bean to override it.
      */
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
+    @ConditionalOnMissingBean(SecurityFilterChain.class)
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
-    public static class DefaultAadResourceServerWebSecurityConfigurerAdapter extends
-            AadResourceServerWebSecurityConfigurerAdapter {
+    static class DefaultAadResourceServerConfiguration {
 
         /**
-         * configure
-         *
+         * Create the {@link SecurityFilterChain} of the resource server instance for Spring Security Filter Chain.
          * @param http the {@link HttpSecurity} to use
+         * @return the {@link SecurityFilterChain} instance
          * @throws Exception Configuration failed
-         *
          */
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            super.configure(http);
+        @Bean
+        @ConditionalOnBean(AadResourceServerProperties.class)
+        SecurityFilterChain defaultAadResourceServerFilterChain(HttpSecurity http) throws Exception {
+            http.apply(aadResourceServer());
+            return http.build();
         }
     }
 }

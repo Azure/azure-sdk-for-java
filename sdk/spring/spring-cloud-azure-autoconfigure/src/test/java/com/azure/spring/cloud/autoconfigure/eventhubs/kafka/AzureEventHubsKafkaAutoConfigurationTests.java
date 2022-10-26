@@ -27,6 +27,7 @@ import static org.apache.kafka.common.security.auth.SecurityProtocol.SASL_SSL;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+@SuppressWarnings("deprecation")
 class AzureEventHubsKafkaAutoConfigurationTests {
 
     static final String CONNECTION_STRING_FORMAT =

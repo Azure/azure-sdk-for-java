@@ -31,6 +31,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureEventHubsKafkaConfigurationTests {
 
+    @SuppressWarnings("deprecation")
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class, AzureEventHubsKafkaAutoConfiguration.class,
                     AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class,

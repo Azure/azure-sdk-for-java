@@ -50,9 +50,6 @@ final class StdConverters {
             if (AuthorizationGrantType.CLIENT_CREDENTIALS.getValue().equalsIgnoreCase(value)) {
                 return AuthorizationGrantType.CLIENT_CREDENTIALS;
             }
-            if (AuthorizationGrantType.PASSWORD.getValue().equalsIgnoreCase(value)) {
-                return AuthorizationGrantType.PASSWORD;
-            }
             if (AuthorizationGrantType.JWT_BEARER.getValue().equalsIgnoreCase(value)
                 || ON_BEHALF_OF.getValue().equalsIgnoreCase(value)) {
                 return AuthorizationGrantType.JWT_BEARER;

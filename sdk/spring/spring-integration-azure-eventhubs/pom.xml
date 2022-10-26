@@ -32,6 +32,10 @@
     <system>GitHub</system>
     <url>https://github.com/Azure/azure-sdk-for-java/issues</url>
   </issueManagement>
+  <properties>
+    <!-- Set this to an empty value to enable the compiler to fail on usage of deprecated APIs. -->
+    <compiler.failondeprecatedstatus></compiler.failondeprecatedstatus>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>

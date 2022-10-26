@@ -39,10 +39,6 @@ parameters:
   displayName: 'spring-cloud-azure-resourcemanager'
   type: boolean
   default: true
-- name: release_springcloudazuretracesleuth
-  displayName: 'spring-cloud-azure-trace-sleuth'
-  type: boolean
-  default: true
 - name: release_springmessagingazure
   displayName: 'spring-messaging-azure'
   type: boolean
@@ -217,12 +213,6 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazureresourcemanager }}
-      - name: spring-cloud-azure-trace-sleuth
-        groupId: com.azure.spring
-        safeName: springcloudazuretracesleuth
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
-        releaseInBatch: ${{ parameters.release_springcloudazuretracesleuth }}
       - name: spring-messaging-azure
         groupId: com.azure.spring
         safeName: springmessagingazure

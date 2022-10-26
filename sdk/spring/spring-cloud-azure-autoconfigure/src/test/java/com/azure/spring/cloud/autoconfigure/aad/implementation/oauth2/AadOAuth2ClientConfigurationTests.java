@@ -193,6 +193,7 @@ class AadOAuth2ClientConfigurationTests {
     }
 
     @Test
+    @SuppressWarnings("deprecation")
     void customConverterInJwtBearerOAuth2AuthorizedClientProviderWhenUsingPrivateKeyJwtMethod() {
         RSAKey rsaJwk = spy(TestJwks.DEFAULT_RSA_JWK);
         OAuth2ClientAuthenticationJwkResolver jwkResolver = spy(new TestOAuth2ClientAuthenticationJwkResolver(rsaJwk));

@@ -10,6 +10,7 @@ import org.springframework.util.concurrent.ListenableFutureCallback;
 /**
  *
  */
+@SuppressWarnings("deprecation")
 public class InstrumentationSendCallback implements ListenableFutureCallback<Void> {
 
     private final InstrumentationManager instrumentationManager;

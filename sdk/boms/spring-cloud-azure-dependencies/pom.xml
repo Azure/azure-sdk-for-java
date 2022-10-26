@@ -225,14 +225,6 @@
         <version>${project.version}</version>
       </dependency>
 
-      <!-- Tracing -->
-      <dependency>
-        <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-trace-sleuth</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-
-
       <!-- Spring Integration Azure-->
       <dependency>
         <groupId>com.azure.spring</groupId>

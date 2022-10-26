@@ -9,10 +9,12 @@ import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2A
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
 import jakarta.servlet.Filter;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.context.ApplicationContext;
+import org.springframework.core.ResolvableType;
+import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AccessTokenResponseClient;
 import org.springframework.security.oauth2.client.endpoint.OAuth2AuthorizationCodeGrantRequest;
@@ -29,84 +31,97 @@ import org.springframework.util.StringUtils;
 import static com.azure.spring.cloud.autoconfigure.aad.implementation.AadRestTemplateCreator.createOAuth2AccessTokenResponseClientRestTemplate;
 
 /**
- * Abstract configuration class, used to make AzureClientRegistrationRepository and AuthzCodeGrantRequestEntityConverter
- * take effect.
- *
- * @see WebSecurityConfigurerAdapter
+ * HTTP security configurer class for Azure Active Directory Web application scenario, used to
+ * make Azure client registration repository and OAuth2 request entity converter take effect.
  */
-public abstract class AadWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigurer<AadWebApplicationHttpSecurityConfigurer, HttpSecurity> {
 
     /**
      * A repository for OAuth 2.0 / OpenID Connect 1.0 ClientRegistration(s).
      */
-    @Autowired
     protected ClientRegistrationRepository repo;
-
 
     /**
      * restTemplateBuilder bean used to create RestTemplate for Azure AD related http request.
      */
-    @Autowired
     protected RestTemplateBuilder restTemplateBuilder;
 
     /**
      * OIDC user service.
      */
-    @Autowired
     protected OAuth2UserService<OidcUserRequest, OidcUser> oidcUserService;
 
     /**
      * AAD authentication properties
      */
-    @Autowired
     protected AadAuthenticationProperties properties;
 
     /**
      * JWK resolver implementation for client authentication.
      */
-    @Autowired
     protected ObjectProvider<OAuth2ClientAuthenticationJwkResolver> jwkResolvers;
 
     /**
-     * configure
-     *
-     * @param http the {@link HttpSecurity} to use
-     * @throws Exception Configuration failed
-     *
+     * Conditional access filter, it's optional configuration.
      */
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        // @formatter:off
-        http.oauth2Login()
-                .authorizationEndpoint()
-                    .authorizationRequestResolver(requestResolver())
-                    .and()
-                .tokenEndpoint()
-                    .accessTokenResponseClient(accessTokenResponseClient())
-                    .and()
-                .userInfoEndpoint()
-                    .oidcUserService(oidcUserService)
-                    .and()
-                .and()
-            .logout()
-                .logoutSuccessHandler(oidcLogoutSuccessHandler());
-        // @formatter:off
+    private Filter conditionalAccessFilter;
 
-        Filter conditionalAccessFilter = conditionalAccessFilter();
+    @Override
+    public void init(HttpSecurity builder)throws Exception {
+        super.init(builder);
+        ApplicationContext context = builder.getSharedObject(ApplicationContext.class);
+
+        this.repo = context.getBean(ClientRegistrationRepository.class);
+        this.properties = context.getBean(AadAuthenticationProperties.class);
+        this.restTemplateBuilder = context.getBean(RestTemplateBuilder.class);
+
+        ObjectProvider<OAuth2UserService<OidcUserRequest, OidcUser>> oidcUserServiceProvider = context.getBeanProvider(
+            ResolvableType.forClassWithGenerics(OAuth2UserService.class, OidcUserRequest.class, OidcUser.class));
+        this.oidcUserService = oidcUserServiceProvider.getIfUnique();
+        this.jwkResolvers = context.getBeanProvider(OAuth2ClientAuthenticationJwkResolver.class);
+
+        // @formatter:off
+        builder.oauth2Login()
+                    .authorizationEndpoint()
+                       .authorizationRequestResolver(requestResolver())
+                       .and()
+                    .tokenEndpoint()
+                       .accessTokenResponseClient(accessTokenResponseClient())
+                       .and()
+                    .userInfoEndpoint()
+                    .oidcUserService(oidcUserService)
+                        .and()
+                    .and()
+               .logout()
+                    .logoutSuccessHandler(oidcLogoutSuccessHandler());
+        // @formatter:off
+    }
+
+    @Override
+    public void configure(HttpSecurity builder) throws Exception {
         if (conditionalAccessFilter != null) {
-            http.addFilterAfter(conditionalAccessFilter, OAuth2AuthorizationRequestRedirectFilter.class);
+            builder.addFilterAfter(conditionalAccessFilter, OAuth2AuthorizationRequestRedirectFilter.class);
         }
     }
 
     /**
-     * Return the filter to handle conditional access exception.
-     * No conditional access filter is provided by default.
+     * Default configuer for Web Application with Azure AD.
+     * @return the configuer instance to customize the {@link SecurityConfigurer}
+     */
+    public static AadWebApplicationHttpSecurityConfigurer aadWebApplication() {
+        return new AadWebApplicationHttpSecurityConfigurer();
+    }
+
+    /**
+     * Return the filter to handle conditional access exception. No conditional access filter is provided by default.
+     * @param conditionalAccessFilter the conditional access filter
      * @see <a href="https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.0.0/aad/spring-cloud-azure-starter-active-directory/web-client-access-resource-server/aad-web-application/src/main/java/com/azure/spring/sample/aad/security/AadConditionalAccessFilter.java">Sample for AAD conditional access filter</a>
      * @see <a href="https://microsoft.github.io/spring-cloud-azure/4.0.0/4.0.0/reference/html/index.html#support-conditional-access-in-web-application">reference doc</a>
      * @return a filter that handles conditional access exception.
      */
-    protected Filter conditionalAccessFilter() {
-        return null;
+    public AadWebApplicationHttpSecurityConfigurer conditionalAccessFilter(Filter conditionalAccessFilter) {
+        this.conditionalAccessFilter = conditionalAccessFilter;
+        return this;
     }
 
     /**

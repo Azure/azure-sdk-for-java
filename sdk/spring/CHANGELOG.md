@@ -11,6 +11,25 @@ Upgrade Spring Boot dependencies version to 3.0.0-M5 and Spring Cloud dependenci
 - Fix bug: NimbusJwtDecoder still uses `RestTemplate()` instead `RestTemplateBuilder` [#31233](https://github.com/Azure/azure-sdk-for-java/issues/31233)
 - Fix bug: Proxy setting not work in Azure AD B2C web application [31593](https://github.com/Azure/azure-sdk-for-java/issues/31593)
 
+#### Breaking Changes
+- Delete the artifact `spring-cloud-azure-trace-sleuth`.
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Breaking Changes
+- Delete the class `com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadOAuth2AuthenticatedPrincipal`.
+- Delete the class `com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadOboOAuth2AuthorizedClientProvider`.
+- Delete the class `com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType`.
+- Delete the class `com.azure.spring.cloud.autoconfigure.aad.AadJwtBearerTokenAuthenticationConverter`.
+- Delete the `AuthorizationGrantType.PASSWORD` support.
+- Delete the auto configuration for Spring Cloud Sleuth support.
+- Use the `com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier#DefaultJWTClaimsVerifier(com.nimbusds.jwt.JWTClaimsSet, java.util.Set<java.lang.String>)` instead of `com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier#DefaultJWTClaimsVerifier()`.
+- Use the `org.springframework.http.ResponseEntity#getStatusCode` instead of `org.springframework.http.ResponseEntity#getStatusCodeValue`.
+- Use the `com.azure.core.util.ConfigurationBuilder#ConfigurationBuilder()` instead the default constructor method `com.azure.core.util.Configuration#Configuration()`.
+- Use an abstract configurer `AbstractHttpConfigurer` instead of `org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter`.
+
+
 ## 6.0.0-beta.2 (2022-09-30)
 Upgrade Spring Boot dependencies version to 3.0.0-M4 and Spring Cloud dependencies version to 2022.0.0-M4.
 

@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.configuration;
 
-import com.azure.spring.cloud.autoconfigure.aad.AadWebSecurityConfigurerAdapter;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.WebApplicationCondition;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AadOAuth2UserService;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthenticationProperties;
@@ -16,10 +15,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.oauth2.client.oidc.userinfo.OidcUserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.web.SecurityFilterChain;
+
+import static com.azure.spring.cloud.autoconfigure.aad.AadWebApplicationHttpSecurityConfigurer.aadWebApplication;
 
 /**
  * Configure the necessary beans used for Azure AD authentication and authorization.
@@ -53,26 +54,29 @@ public class AadWebApplicationConfiguration {
     }
 
     /**
-     * Sample configuration to make AzureActiveDirectoryOAuth2UserService take effect.
+     * The default security configuration of the web application, user can write another configuration bean to override it.
      */
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
-    @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
+    @ConditionalOnMissingBean(SecurityFilterChain.class)
     @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
-    public static class DefaultAadWebSecurityConfigurerAdapter extends AadWebSecurityConfigurerAdapter {
+    static class DefaultAadWebSecurityConfiguration {
 
         /**
-         * configure
-         *
+         * Create the {@link SecurityFilterChain} instance of the web application for Spring Security Filter Chain.
          * @param http the {@link HttpSecurity} to use
+         * @return the {@link SecurityFilterChain} instance
          * @throws Exception Configuration failed
          */
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-            super.configure(http);
-            http.authorizeRequests()
-                .antMatchers("/login").permitAll()
-                .anyRequest().authenticated();
+        @Bean
+        SecurityFilterChain defaultAadWebApplicationFilterChain(HttpSecurity http) throws Exception {
+            http
+                .apply(aadWebApplication())
+                    .and()
+                .authorizeRequests()
+                    .antMatchers("/login").permitAll()
+                    .anyRequest().authenticated();
+            return http.build();
         }
     }
 }
