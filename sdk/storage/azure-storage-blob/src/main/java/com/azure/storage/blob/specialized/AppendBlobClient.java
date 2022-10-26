@@ -13,22 +13,21 @@ import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobClientBuilder;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.models.CustomerProvidedKey;
-import com.azure.storage.blob.options.AppendBlobCreateOptions;
 import com.azure.storage.blob.models.AppendBlobItem;
 import com.azure.storage.blob.models.AppendBlobRequestConditions;
 import com.azure.storage.blob.models.BlobHttpHeaders;
 import com.azure.storage.blob.models.BlobRange;
 import com.azure.storage.blob.models.BlobRequestConditions;
 import com.azure.storage.blob.models.BlobStorageException;
-import com.azure.storage.blob.options.AppendBlobSealOptions;
+import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
+import com.azure.storage.blob.options.AppendBlobCreateOptions;
+import com.azure.storage.blob.options.AppendBlobSealOptions;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.io.InputStream;
 import java.nio.ByteBuffer;
@@ -370,8 +369,8 @@ public final class AppendBlobClient extends BlobClientBase {
         AppendBlobRequestConditions appendBlobRequestConditions, Duration timeout, Context context) {
         Objects.requireNonNull(data, "'data' cannot be null.");
         Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length, MAX_APPEND_BLOCK_BYTES, true);
-        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(
-            fbb.subscribeOn(Schedulers.boundedElastic()), length, contentMd5, appendBlobRequestConditions, context);
+        Mono<Response<AppendBlobItem>> response = appendBlobAsyncClient.appendBlockWithResponse(fbb, length, contentMd5,
+            appendBlobRequestConditions, context);
         return StorageImplUtils.blockWithOptionalTimeout(response, timeout);
     }
 
