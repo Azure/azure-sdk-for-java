@@ -66,6 +66,7 @@
             <bannedDependencies>
               <includes>
                 <include>mysql:mysql-connector-java:[8.0.31]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
+                <include>com.mysql:mysql-connector-j:[8.0.31]</include>
               </includes>
             </bannedDependencies>
           </rules>
