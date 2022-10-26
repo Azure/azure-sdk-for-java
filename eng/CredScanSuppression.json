@@ -67,6 +67,12 @@
                 "sdk/storage/microsoft-azure-storage-blob/src/test/java/com/microsoft/azure/storage/FakeCredentialInTest.groovy"
             ],
             "_justification": "File contains fake key used by test code."
+        },
+        {
+            "file": [
+              "sdk/resourcemanager/azure-resourcemanager/src/test/resources/session-records/AzureResourceManagerTests.testDeployments.json"
+            ],
+            "_justification": "File contains general fake key used by test code."
         }
     ]
 }
