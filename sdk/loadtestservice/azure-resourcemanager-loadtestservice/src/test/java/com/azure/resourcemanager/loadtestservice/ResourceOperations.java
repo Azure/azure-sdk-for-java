@@ -8,47 +8,43 @@ import com.azure.resourcemanager.loadtestservice.models.LoadTestResource;
 import com.azure.resourcemanager.loadtestservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.loadtestservice.models.ManagedServiceIdentityType;
 
-public class ResourceOperations{
+public class ResourceOperations {
 
-    private String Location;
-    private String ResourceGroupName;
-    private String LoadTestResourceName;
+    private String location;
+    private String resourceGroupName;
+    private String loadTestResourceName;
 
     public ResourceOperations(String location, String resourceGroupName, String loadTestResourceName) {
-        Location = location;
-        ResourceGroupName = resourceGroupName;
-        LoadTestResourceName = loadTestResourceName;
+        this.location = location;
+        this.resourceGroupName = resourceGroupName;
+        this.loadTestResourceName = loadTestResourceName;
     }
 
-    public void Create(LoadTestManager manager) {
-        // Create a load test resource
+    public void create(LoadTestManager manager) {
         LoadTestResource resource = manager
-        .loadTests()
-        .define(LoadTestResourceName)
-        .withRegion(Location)
-        .withExistingResourceGroup(ResourceGroupName)
-        .withDescription("This is new load test resource")
-        .create();
+            .loadTests()
+            .define(loadTestResourceName)
+            .withRegion(location)
+            .withExistingResourceGroup(resourceGroupName)
+            .withDescription("This is new load test resource")
+            .create();
 
-        // Validate the fields
-        Assertions.assertEquals(LoadTestResourceName, resource.name());
-        Assertions.assertEquals(Location, resource.regionName());
-        Assertions.assertEquals(ResourceGroupName, resource.resourceGroupName());
+        Assertions.assertEquals(loadTestResourceName, resource.name());
+        Assertions.assertEquals(location, resource.regionName());
+        Assertions.assertEquals(resourceGroupName, resource.resourceGroupName());
         Assertions.assertEquals("This is new load test resource", resource.description());
         Assertions.assertNotNull(resource.id());
         Assertions.assertEquals("Succeeded", resource.provisioningState().toString());
     }
 
-    public void Update(LoadTestManager manager) {
-        // Update the load test resource
-        LoadTestResource resourcePreUpdate = GetResource(manager);
-        resourcePreUpdate
-        .update()
-        .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
-        .apply();
-        LoadTestResource resourcePostUpdate = GetResource(manager);
-
-        // Validate the fields
+    public void update(LoadTestManager manager) {
+        LoadTestResource resourcePreUpdate = getResource(manager);
+        
+        LoadTestResource resourcePostUpdate = resourcePreUpdate
+            .update()
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED))
+            .apply();
+        
         Assertions.assertEquals(resourcePreUpdate.name(), resourcePostUpdate.name());
         Assertions.assertEquals(resourcePreUpdate.regionName(), resourcePostUpdate.regionName());
         Assertions.assertEquals(resourcePreUpdate.resourceGroupName(), resourcePostUpdate.resourceGroupName());
@@ -58,31 +54,27 @@ public class ResourceOperations{
         Assertions.assertEquals("Succeeded", resourcePostUpdate.provisioningState().toString());
     }
 
-    private LoadTestResource GetResource(LoadTestManager manager) {
-        // Get the load test resource
+    private LoadTestResource getResource(LoadTestManager manager) {
         LoadTestResource resource = manager
-        .loadTests().getByResourceGroup(ResourceGroupName, LoadTestResourceName);
+            .loadTests()
+            .getByResourceGroup(resourceGroupName, loadTestResourceName);
         return resource;
     }
 
-    public void Get(LoadTestManager manager) {
-        // Get the load test resource
-        LoadTestResource resource = GetResource(manager);
+    public void get(LoadTestManager manager) {
+        LoadTestResource resource = getResource(manager);
 
-        // Validate the fields
-        Assertions.assertEquals(LoadTestResourceName, resource.name());
-        Assertions.assertEquals(Location, resource.regionName());
-        Assertions.assertEquals(ResourceGroupName, resource.resourceGroupName());
+        Assertions.assertEquals(loadTestResourceName, resource.name());
+        Assertions.assertEquals(location, resource.regionName());
+        Assertions.assertEquals(resourceGroupName, resource.resourceGroupName());
         Assertions.assertEquals("This is new load test resource", resource.description());
         Assertions.assertNotNull(resource.id());
         Assertions.assertEquals("Succeeded", resource.provisioningState().toString());
     }
 
-    public void Delete(LoadTestManager manager) {
-        // Delete the load test resource
+    public void delete(LoadTestManager manager) {
         manager
-        .loadTests()
-        .deleteByResourceGroup(ResourceGroupName, LoadTestResourceName);
+            .loadTests()
+            .deleteByResourceGroup(resourceGroupName, loadTestResourceName);
     }
-
 }

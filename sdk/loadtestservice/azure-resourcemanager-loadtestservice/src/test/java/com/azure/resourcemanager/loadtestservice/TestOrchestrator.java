@@ -11,54 +11,52 @@ import com.azure.core.util.Configuration;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-
 import java.util.Random;
 import org.junit.jupiter.api.Test;
 
 public class TestOrchestrator extends TestBase {
 
     private static final Random RANDOM = new Random();
-    private static final Region Location = Region.US_WEST2;
-    private static final String LoadTestResourceName = "loadtest-resource"+RANDOM.nextInt(1000);
-    private static final String QuotaBucketName = "maxEngineInstancesPerTestRun";
+    private static final Region LOCATION = Region.US_WEST2;
+    private static final String RESOURCE_NAME = "loadtest-resource" + RANDOM.nextInt(1000);
+    private static final String QUOTA_BUCKET_NAME = "maxEngineInstancesPerTestRun";
 
-    private DefaultAzureCredential Credential;
-    private AzureProfile Profile;
-    private LoadTestManager LoadTestsManager;
-    private String ResourceGroupName;
+    private DefaultAzureCredential credential;
+    private AzureProfile profile;
+    private LoadTestManager loadTestManager;
+    private String resourceGroupName;
 
-    public void SetupCredential(){
-        Credential = new DefaultAzureCredentialBuilder().build();
+    public void setupCredential() {
+        credential = new DefaultAzureCredentialBuilder().build();
     }
 
-    public void SetupProfile(){
-        Profile = new AzureProfile(AzureEnvironment.AZURE);
+    public void setupProfile() {
+        profile = new AzureProfile(AzureEnvironment.AZURE);
     }
 
-    public void PrepareTests(){
-        SetupCredential();
-        SetupProfile();
-        ResourceGroupName = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
-
-        LoadTestsManager = LoadTestManager
-        .configure()
-        .authenticate(Credential, Profile);
+    public void prepareTests() {
+        setupCredential();
+        setupProfile();
+        resourceGroupName = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
+        loadTestManager = LoadTestManager
+            .configure()
+            .authenticate(credential, profile);
     }
 
     @Test
     @DoNotRecord(skipInPlayback = true)
-    public void StartTest() {
-        PrepareTests();
+    public void startTest() {
+        prepareTests();
 
-        ResourceOperations resourceOperations = new ResourceOperations(Location.toString(), ResourceGroupName, LoadTestResourceName);
-        resourceOperations.Create(LoadTestsManager);
-        resourceOperations.Get(LoadTestsManager);
-        resourceOperations.Update(LoadTestsManager);
-        resourceOperations.Delete(LoadTestsManager);
+        ResourceOperations resourceOperations = new ResourceOperations(LOCATION.toString(), resourceGroupName, RESOURCE_NAME);
+        resourceOperations.create(loadTestManager);
+        resourceOperations.get(loadTestManager);
+        resourceOperations.update(loadTestManager);
+        resourceOperations.delete(loadTestManager);
 
-        QuotaOperations quotaOperations = new QuotaOperations(Location.toString(), QuotaBucketName);
-        quotaOperations.ListBuckets(LoadTestsManager);
-        quotaOperations.GetBucket(LoadTestsManager);
-        quotaOperations.CheckAvailability(LoadTestsManager);
+        QuotaOperations quotaOperations = new QuotaOperations(LOCATION.toString(), QUOTA_BUCKET_NAME);
+        quotaOperations.listBuckets(loadTestManager);
+        quotaOperations.getBucket(loadTestManager);
+        quotaOperations.checkAvailability(loadTestManager);
     }
 }
