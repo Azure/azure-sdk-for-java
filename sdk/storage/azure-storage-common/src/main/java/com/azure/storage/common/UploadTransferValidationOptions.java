@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common;
 
 /**
@@ -24,6 +27,7 @@ public class UploadTransferValidationOptions {
     /**
      * Sets the identifier of the checksum algorithm to use.
      * @param checksumAlgorithm Checksum algorithm ID.
+     * @return The updated options
      */
     public UploadTransferValidationOptions setChecksumAlgorithm(StorageChecksumAlgorithm checksumAlgorithm) {
         this.checksumAlgorithm = checksumAlgorithm;
@@ -47,6 +51,7 @@ public class UploadTransferValidationOptions {
      * value, and will throw if one is provided. Please check documentation on specific
      * APIs for whether this can be used.
      * @param precalculatedChecksum the checksum value.
+     * @return The updated options
      */
     public UploadTransferValidationOptions setPrecalculatedChecksum(byte[] precalculatedChecksum) {
         this.precalculatedChecksum = precalculatedChecksum;

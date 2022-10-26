@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common.implementation;
 
 import com.azure.core.http.HttpHeaders;
@@ -43,8 +46,8 @@ public class ChecksumUtils {
 
     public static Mono<Tuple2<BinaryData, ChecksumValue>> checksumDataAsync(BinaryData data,
         UploadTransferValidationOptions validationOptions) {
-        boolean checksumCalculationNeeded = isAlgorithmSelected(validationOptions.getChecksumAlgorithm()) &&
-            validationOptions.getPrecalculatedChecksum() == null;
+        boolean checksumCalculationNeeded = isAlgorithmSelected(validationOptions.getChecksumAlgorithm())
+            && validationOptions.getPrecalculatedChecksum() == null;
 
         if (!checksumCalculationNeeded) {
             return Mono.just(Tuples.of(data, new ChecksumValue(validationOptions)));

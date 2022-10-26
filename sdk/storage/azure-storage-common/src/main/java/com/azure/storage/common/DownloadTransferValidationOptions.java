@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.storage.common;
 
 import java.util.Objects;
@@ -26,6 +29,7 @@ public class DownloadTransferValidationOptions {
     /**
      * Sets the identifier of the checksum algorithm to use.
      * @param checksumAlgorithm Checksum algorithm ID.
+     * @return The updated options
      */
     public DownloadTransferValidationOptions setChecksumAlgorithm(StorageChecksumAlgorithm checksumAlgorithm) {
         Objects.requireNonNull(checksumAlgorithm, "'checksumAlgorithm' cannot be null.");
@@ -50,6 +54,7 @@ public class DownloadTransferValidationOptions {
      * the caller. If set to false, caller is responsible for extracting the hash out of the
      * {@link com.azure.core.http.rest.Response} and validating the hash themselves.
      * @param  autoValidateChecksum Behavior flag.
+     * @return The updated options
      */
     public DownloadTransferValidationOptions setAutoValidateChecksum(boolean autoValidateChecksum) {
         this.autoValidateChecksum = autoValidateChecksum;
