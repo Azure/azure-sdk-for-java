@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.administration.models;
 
 import com.azure.core.annotation.Immutable;
+import com.azure.core.util.logging.ClientLogger;
 
 /**
  * The {@link KeyVaultSetting} model.
@@ -11,8 +12,9 @@ import com.azure.core.annotation.Immutable;
 @Immutable
 public final class KeyVaultSetting {
     private final String name;
-    private final String value;
+    private final Object value;
     private final KeyVaultSettingType type;
+    private final ClientLogger logger = new ClientLogger(KeyVaultSetting.class);
 
     /**
      * Creates a new {@link KeyVaultSetting setting} with the specified details.
@@ -23,8 +25,13 @@ public final class KeyVaultSetting {
      */
     public KeyVaultSetting(String name, String value, KeyVaultSettingType type) {
         this.name = name;
-        this.value = value;
         this.type = type;
+
+        if (type == KeyVaultSettingType.BOOLEAN) {
+            this.value = Boolean.valueOf(value);
+        } else {
+            this.value = value;
+        }
     }
 
     /**
@@ -41,8 +48,14 @@ public final class KeyVaultSetting {
      *
      * @return The value of the {@link KeyVaultSetting}.
      */
-    public String getValue() {
-        return this.value;
+    public Boolean asBoolean() {
+        if (type != KeyVaultSettingType.BOOLEAN) {
+            throw logger.logExceptionAsError(
+                new UnsupportedOperationException(String.format("Cannot get setting value as %s from setting value of "
+                    + "type %s", KeyVaultSettingType.BOOLEAN, this.getType())));
+        }
+
+        return (Boolean) this.value;
     }
 
     /**
