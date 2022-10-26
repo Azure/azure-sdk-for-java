@@ -7,10 +7,10 @@ import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.Region;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.test.TestBase;
+import com.azure.core.util.Configuration;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.resourcemanager.resources.ResourceManager;
 
 import java.util.Random;
 import org.junit.jupiter.api.Test;
@@ -19,13 +19,13 @@ public class TestOrchestrator extends TestBase {
 
     private static final Random RANDOM = new Random();
     private static final Region Location = Region.US_WEST2;
-    private static final String ResourceGroupName = "az-java-sdk-"+RANDOM.nextInt(1000);
     private static final String LoadTestResourceName = "loadtest-resource"+RANDOM.nextInt(1000);
     private static final String QuotaBucketName = "maxEngineInstancesPerTestRun";
 
     private DefaultAzureCredential Credential;
     private AzureProfile Profile;
     private LoadTestManager LoadTestsManager;
+    private String ResourceGroupName;
 
     public void SetupCredential(){
         Credential = new DefaultAzureCredentialBuilder().build();
@@ -38,26 +38,11 @@ public class TestOrchestrator extends TestBase {
     public void PrepareTests(){
         SetupCredential();
         SetupProfile();
+        ResourceGroupName = Configuration.getGlobalConfiguration().get("AZURE_RESOURCE_GROUP_NAME");
 
         LoadTestsManager = LoadTestManager
         .configure()
         .authenticate(Credential, Profile);
-        
-        ResourceManager
-        .authenticate(Credential, Profile)
-        .withDefaultSubscription()
-        .resourceGroups()
-        .define(ResourceGroupName)
-        .withRegion(Location.toString())
-        .create();
-    }
-
-    public void CleanupTests(){
-        ResourceManager
-        .authenticate(Credential, Profile)
-        .withDefaultSubscription()
-        .resourceGroups()
-        .beginDeleteByName(ResourceGroupName);
     }
 
     @Test
@@ -75,7 +60,5 @@ public class TestOrchestrator extends TestBase {
         quotaOperations.ListBuckets(LoadTestsManager);
         quotaOperations.GetBucket(LoadTestsManager);
         quotaOperations.CheckAvailability(LoadTestsManager);
-
-        CleanupTests();
     }
 }
