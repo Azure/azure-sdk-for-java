@@ -20,6 +20,10 @@ public final class OperationStatusProvisionIlrExtendedInfo extends OperationStat
     @JsonProperty(value = "recoveryTarget")
     private InstantItemRecoveryTarget recoveryTarget;
 
+    /** Creates an instance of OperationStatusProvisionIlrExtendedInfo class. */
+    public OperationStatusProvisionIlrExtendedInfo() {
+    }
+
     /**
      * Get the recoveryTarget property: Target details for file / folder restore.
      *

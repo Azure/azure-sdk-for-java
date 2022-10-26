@@ -7,7 +7,7 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for HttpStatusCode. */
+/** HTTP Status Code of the operation. */
 public enum HttpStatusCode {
     /** Enum value Continue. */
     CONTINUE("Continue"),
@@ -165,6 +165,9 @@ public enum HttpStatusCode {
      */
     @JsonCreator
     public static HttpStatusCode fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         HttpStatusCode[] items = HttpStatusCode.values();
         for (HttpStatusCode item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -174,6 +177,7 @@ public enum HttpStatusCode {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

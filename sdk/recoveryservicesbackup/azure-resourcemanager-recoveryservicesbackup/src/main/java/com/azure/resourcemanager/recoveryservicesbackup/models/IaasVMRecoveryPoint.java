@@ -49,8 +49,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     private Boolean isSourceVMEncrypted;
 
     /*
-     * Required details for recovering an encrypted VM. Applicable only when
-     * IsSourceVMEncrypted is true.
+     * Required details for recovering an encrypted VM. Applicable only when IsSourceVMEncrypted is true.
      */
     @JsonProperty(value = "keyAndSecret")
     private KeyAndSecretDetails keyAndSecret;
@@ -98,8 +97,7 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     private RecoveryPointDiskConfiguration recoveryPointDiskConfiguration;
 
     /*
-     * Identifies the zone of the VM at the time of backup. Applicable only for
-     * zone-pinned Vms
+     * Identifies the zone of the VM at the time of backup. Applicable only for zone-pinned Vms
      */
     @JsonProperty(value = "zones")
     private List<String> zones;
@@ -110,6 +108,10 @@ public final class IaasVMRecoveryPoint extends RecoveryPoint {
     @JsonProperty(value = "recoveryPointMoveReadinessInfo")
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo;
+
+    /** Creates an instance of IaasVMRecoveryPoint class. */
+    public IaasVMRecoveryPoint() {
+    }
 
     /**
      * Get the recoveryPointType property: Type of the backup copy.

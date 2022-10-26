@@ -21,6 +21,10 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 })
 @Immutable
 public class OpenShiftManagedClusterBaseIdentityProvider {
+    /** Creates an instance of OpenShiftManagedClusterBaseIdentityProvider class. */
+    public OpenShiftManagedClusterBaseIdentityProvider() {
+    }
+
     /**
      * Validates the instance.
      *

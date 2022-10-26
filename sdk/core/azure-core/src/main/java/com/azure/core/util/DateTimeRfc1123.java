@@ -83,7 +83,7 @@ public final class DateTimeRfc1123 {
             return OffsetDateTime.of(
                 LocalDateTime.of(
                     parseInt(date, 12, 16),  // year
-                    parseMonth(date),     // month
+                    parseMonth(date),        // month
                     parseInt(date, 5, 7),    // dayOfMonth
                     parseInt(date, 17, 19),  // hour
                     parseInt(date, 20, 22),  // minute
@@ -120,14 +120,15 @@ public final class DateTimeRfc1123 {
     }
 
     /**
-     * Parses the specified month substring of date time to a number value, '1' represents the month of January, '12'
-     * represents the month of December.
+     * Parses the specified month substring of date time to a {@link Month}.
+     * <p>
+     * Previously this was implemented to return the integer representing the month ({@code 1-12}) but using an integer
+     * to create {@link LocalDateTime} incurs a range validation check. Now this is implemented to return {@link Month}
+     * which removes the range validation check.
      *
      * @param date The date time string in RFC1123 format.
-     * @return The number value which represents the month of year. '1' represents the month of January, '12' represents
-     * the month of December.
-     * @throws IllegalArgumentException if the given character is not recognized in the pattern of Month. such as
-     * 'Jan'.
+     * @return The {@link Month} value which represents the month of year.
+     * @throws IllegalArgumentException if the given character is not recognized in the pattern of Month. such as 'Jan'.
      * @throws IndexOutOfBoundsException if the {@code beginIndex} is negative, or beginIndex is larger than length of
      * {@code date}.
      */
@@ -136,35 +137,35 @@ public final class DateTimeRfc1123 {
             case 'J':
                 // Jan, Jun, Jul
                 switch (date.charAt(9)) {
-                    case 'a': return Month.JANUARY; // Jan
+                    case 'a': return Month.JANUARY;
                     case 'u':
                         switch (date.charAt(10)) {
-                            case 'n': return Month.JUNE; // Jun
-                            case 'l': return Month.JULY; // Jul
+                            case 'n': return Month.JUNE;
+                            case 'l': return Month.JULY;
                             default: throw LOGGER.logExceptionAsError(
                                 new IllegalArgumentException("Unknown month " + date));
                         }
                     default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
-            case 'F': return Month.FEBRUARY; // Feb
+            case 'F': return Month.FEBRUARY;
             case 'M':
                 // Mar, May
                 switch (date.charAt(10)) {
-                    case 'r': return Month.MARCH; // Mar
-                    case 'y': return Month.MAY; // May
+                    case 'r': return Month.MARCH;
+                    case 'y': return Month.MAY;
                     default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
             case 'A':
                 // Apr, Aug
                 switch (date.charAt(10)) {
-                    case 'r': return Month.APRIL; // Apr
-                    case 'g': return Month.AUGUST; // Aug
+                    case 'r': return Month.APRIL;
+                    case 'g': return Month.AUGUST;
                     default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
                 }
-            case 'S': return Month.SEPTEMBER; //Sep
-            case 'O': return Month.OCTOBER; // Oct
-            case 'N': return Month.NOVEMBER; // Nov
-            case 'D': return Month.DECEMBER; // Dec
+            case 'S': return Month.SEPTEMBER;
+            case 'O': return Month.OCTOBER;
+            case 'N': return Month.NOVEMBER;
+            case 'D': return Month.DECEMBER;
             default: throw LOGGER.logExceptionAsError(new IllegalArgumentException("Unknown month " + date));
         }
     }

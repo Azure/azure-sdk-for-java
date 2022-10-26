@@ -18,12 +18,16 @@ import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 
 import java.net.URL;
 import java.text.Collator;
+import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
-import java.util.TreeMap;
+
+import static com.azure.storage.common.Utility.urlDecode;
 
 /**
  * SharedKey credential policy that is put into a header to authorize requests.
@@ -202,12 +206,9 @@ public final class StorageSharedKeyCredential {
         return header == null ? "" : header.getValue();
     }
 
-    private String getAdditionalXmsHeaders(HttpHeaders headers) {
-        // Add only headers that begin with 'x-ms-'
-        Map<String, String> sortedXmsHeaders = new TreeMap<>(
-            /* Culture-sensitive word sort */
-            Collator.getInstance(Locale.ROOT)
-        );
+    @SuppressWarnings("unchecked")
+    private static String getAdditionalXmsHeaders(HttpHeaders headers) {
+        List<Map.Entry<String, String>> xmsHeaders = new ArrayList<>();
 
         int stringBuilderSize = 0;
         for (HttpHeader header : headers) {
@@ -219,24 +220,27 @@ public final class StorageSharedKeyCredential {
             String headerValue = header.getValue();
             stringBuilderSize += headerName.length() + headerValue.length();
 
-            sortedXmsHeaders.put(headerName.toLowerCase(Locale.ROOT), headerValue);
+            xmsHeaders.add(new AbstractMap.SimpleEntry<>(headerName.toLowerCase(Locale.ROOT), headerValue));
         }
 
-        if (sortedXmsHeaders.isEmpty()) {
+        if (xmsHeaders.isEmpty()) {
             return "";
         }
 
         final StringBuilder canonicalizedHeaders = new StringBuilder(
-            stringBuilderSize + (2 * sortedXmsHeaders.size()) - 1);
+            stringBuilderSize + (2 * xmsHeaders.size()) - 1);
 
-        sortedXmsHeaders.forEach((name, value) -> {
+        Map.Entry<String, String>[] sortedXmsHeaders = xmsHeaders.toArray(new Map.Entry[0]);
+        Arrays.sort(sortedXmsHeaders, Map.Entry.comparingByKey(Collator.getInstance(Locale.ROOT)));
+
+        for (Map.Entry<String, String> xmsHeader : sortedXmsHeaders) {
             if (canonicalizedHeaders.length() > 0) {
                 canonicalizedHeaders.append('\n');
             }
-            canonicalizedHeaders.append(name)
+            canonicalizedHeaders.append(xmsHeader.getKey())
                 .append(':')
-                .append(value);
-        });
+                .append(xmsHeader.getKey());
+        }
 
         return canonicalizedHeaders.toString();
     }
@@ -261,12 +265,12 @@ public final class StorageSharedKeyCredential {
 
         // The URL object's query field doesn't include the '?'. The QueryStringDecoder expects it.
         // The Map returned is already sorted with all keys lower cased.
-        Map<String, String[]> queryParams = StorageImplUtils.parseQueryStringSplitValues(requestURL.getQuery());
+        Map.Entry<String, String[]>[] queryParams = parseQueryStringSplitValues(requestURL.getQuery());
 
-        for (Map.Entry<String, String[]> queryParam : queryParams.entrySet()) {
+        for (Map.Entry<String, String[]> queryParam : queryParams) {
             String[] queryParamValues = queryParam.getValue();
             Arrays.sort(queryParamValues);
-            String queryParamValuesStr = String.join(",", queryParamValues);
+            String queryParamValuesStr = CoreUtils.stringJoin(",", Arrays.asList(queryParamValues));
             canonicalizedResource.append('\n')
                 .append(queryParam.getKey())
                 .append(':')
@@ -275,6 +279,36 @@ public final class StorageSharedKeyCredential {
 
         // append to main string builder the join of completed params with new line
         return canonicalizedResource.toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Map.Entry<String, String[]>[] parseQueryStringSplitValues(final String queryString) {
+        // We need to first split by comma and then decode each piece since we don't want to confuse legitimate separate
+        // query values from query values that container a comma.
+        // Example 1: prefix=a%2cb => prefix={decode(a%2cb)} => prefix={"a,b"}
+        // Example 2: prefix=a,b => prefix={decode(a),decode(b)} => prefix={"a", "b"}
+        List<Map.Entry<String, String[]>> pieces = new ArrayList<>();
+
+        if (CoreUtils.isNullOrEmpty(queryString)) {
+            return new Map.Entry[0];
+        }
+
+        for (String kvp : queryString.split("&")) {
+            int equalIndex = kvp.indexOf('=');
+            String key = urlDecode(kvp.substring(0, equalIndex).toLowerCase(Locale.ROOT));
+
+            String[] value = kvp.substring(equalIndex + 1).split(",");
+            for (int i = 0; i < value.length; i++) {
+                value[i] = urlDecode(value[i]);
+            }
+
+            pieces.add(new AbstractMap.SimpleEntry<>(key, value));
+        }
+
+        Map.Entry<String, String[]>[] sortedPieces = pieces.toArray(new Map.Entry[0]);
+        Arrays.sort(sortedPieces, Map.Entry.comparingByKey(Collator.getInstance(Locale.ROOT)));
+
+        return sortedPieces;
     }
 
     /**
