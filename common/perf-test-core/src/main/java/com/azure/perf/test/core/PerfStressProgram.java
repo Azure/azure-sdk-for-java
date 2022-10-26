@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -35,8 +36,8 @@ public class PerfStressProgram {
     }
 
     private static double getOperationsPerSecond(PerfTestBase<?>[] tests) {
-        return IntStream.range(0, tests.length)
-            .mapToDouble(i -> tests[i].getCompletedOperations() / (((double) tests[i].lastCompletionNanoTime) / NANOSECONDS_PER_SECOND))
+        return Arrays.stream(tests)
+            .mapToDouble(test -> test.getCompletedOperations() / (((double) test.lastCompletionNanoTime) / NANOSECONDS_PER_SECOND))
             .sum();
     }
 
@@ -45,7 +46,6 @@ public class PerfStressProgram {
      *
      * @param classes the performance test classes to execute.
      * @param args the command line arguments ro run performance tests with.
-     *
      * @throws RuntimeException if the execution fails.
      */
     public static void run(Class<?>[] classes, String[] args) {
@@ -69,7 +69,7 @@ public class PerfStressProgram {
             try {
                 return c.getConstructors()[0].getParameterTypes()[0].getConstructors()[0].newInstance();
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | SecurityException e) {
+                     | InvocationTargetException | SecurityException e) {
                 throw new RuntimeException(e);
             }
         }).toArray(i -> new PerfStressOptions[i]);
@@ -102,7 +102,6 @@ public class PerfStressProgram {
      *
      * @param testClass the performance test class to execute.
      * @param options the configuration ro run performance test with.
-     *
      * @throws RuntimeException if the execution fails.
      */
     public static void run(Class<?> testClass, PerfStressOptions options) {
@@ -127,7 +126,7 @@ public class PerfStressProgram {
             try {
                 tests[i] = (PerfTestBase<?>) testClass.getConstructor(options.getClass()).newInstance(options);
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | SecurityException | NoSuchMethodException e) {
+                     | InvocationTargetException | SecurityException | NoSuchMethodException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -187,7 +186,7 @@ public class PerfStressProgram {
                     if (!options.isNoCleanup()) {
                         cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
 
-                        Flux.just(tests).flatMap(t -> t.cleanupAsync()).blockLast();
+                        Flux.just(tests).flatMap(PerfTestBase::cleanupAsync).blockLast();
                     }
                 }
             }
@@ -214,13 +213,10 @@ public class PerfStressProgram {
      * @param parallel the number of parallel threads to run the performance test on.
      * @param durationSeconds the duration for which performance test should be run on.
      * @param title the title of the performance tests.
-     *
      * @throws RuntimeException if the execution fails.
      * @throws IllegalStateException if zero operations completed of the performance test.
      */
     public static void runTests(PerfTestBase<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
-
-        long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
         int[] lastCompleted = new int[]{0};
         Disposable progressStatus = printStatus(
@@ -232,6 +228,8 @@ public class PerfStressProgram {
                 lastCompleted[0] = totalCompleted;
                 return String.format("%d\t\t%d\t\t%.2f", currentCompleted, totalCompleted, averageCompleted);
             }, true, true);
+
+        long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
         try {
             if (sync) {
@@ -250,10 +248,24 @@ public class PerfStressProgram {
                     System.exit(1);
                 });
 
-                Flux.range(0, parallel)
+                long startNanoTime = System.nanoTime();
+                AtomicLong count = new AtomicLong();
+                Flux.<ApiPerfTestBase<?>>generate(sink -> {
+                        // Continue emitting tests until the end time is reached.
+                        if (System.nanoTime() < endNanoTime) {
+                            ApiPerfTestBase<?> test = (ApiPerfTestBase<?>) tests[(int) (count.getAndIncrement() % parallel)];
+                            sink.next(test);
+                        } else {
+                            sink.complete();
+                        }
+                    })
                     .parallel()
-                    .runOn(Schedulers.boundedElastic())
-                    .flatMap(i -> tests[i].runAllAsync(endNanoTime))
+                    .runOn(Schedulers.parallel())
+                    .flatMap(test -> test.runTestAsync()
+                        .doOnNext(v -> {
+                            test.lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+                            test.completedOperations += v;
+                        }))
                     .then()
                     .block();
             }

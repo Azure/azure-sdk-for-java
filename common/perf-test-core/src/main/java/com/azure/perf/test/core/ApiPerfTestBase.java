@@ -36,7 +36,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     private final URI testProxy;
     private final TestProxyPolicy testProxyPolicy;
     private String recordingId;
-    private long completedOperations;
+    long completedOperations;
 
 
     // Derived classes should use the ConfigureClientBuilder() method by default.  If a ClientBuilder does not

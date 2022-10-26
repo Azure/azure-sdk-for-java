@@ -72,7 +72,6 @@ public class AsyncRestProxy extends RestProxyBase {
 
         Context finalContext = context;
         final Mono<HttpResponse> asyncResponse = RestProxyUtils.validateLengthAsync(request)
-            .publishOn(Schedulers.boundedElastic())
             .flatMap(r -> send(r, finalContext));
 
         Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse = this.decoder
