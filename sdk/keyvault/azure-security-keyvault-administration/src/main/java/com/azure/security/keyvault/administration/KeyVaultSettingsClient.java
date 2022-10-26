@@ -15,6 +15,7 @@ import com.azure.security.keyvault.administration.implementation.models.KeyVault
 import com.azure.security.keyvault.administration.implementation.models.Setting;
 import com.azure.security.keyvault.administration.implementation.models.SettingsListResult;
 import com.azure.security.keyvault.administration.models.KeyVaultSetting;
+import com.azure.security.keyvault.administration.models.KeyVaultSettingsListResult;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -133,36 +134,37 @@ public final class KeyVaultSettingsClient {
     /**
      * List the account's settings.
      *
-     * @return The list of {@link KeyVaultSetting account settings}.
-     *
-     * @throws KeyVaultErrorException thrown if the request is rejected by the server.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public List<KeyVaultSetting> lisSettings() {
-        List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
-
-        this.implClient.getSettings(vaultUrl).getValue()
-            .forEach(setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
-
-        return keyVaultSettings;
-    }
-
-    /**
-     * List the account's settings.
-     *
-     * @return A {@link Response} whose {@link Response#getValue() value} contains the list of
+     * @return A {@link KeyVaultSettingsListResult result object} wrapping the list of
      * {@link KeyVaultSetting account settings}.
      *
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Response<List<KeyVaultSetting>> lisSettingsWithResponse(Context context) {
+    public KeyVaultSettingsListResult lisSettings() {
+        List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
+
+        this.implClient.getSettings(vaultUrl).getValue()
+            .forEach(setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
+
+        return new KeyVaultSettingsListResult(keyVaultSettings);
+    }
+
+    /**
+     * List the account's settings.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains a
+     * {@link KeyVaultSettingsListResult result object} wrapping the list of {@link KeyVaultSetting account settings}.
+     *
+     * @throws KeyVaultErrorException thrown if the request is rejected by the server.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public Response<KeyVaultSettingsListResult> lisSettingsWithResponse(Context context) {
         Response<SettingsListResult> response = this.implClient.getSettingsWithResponse(vaultUrl, context);
         List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
         response.getValue().getValue()
             .forEach(setting -> keyVaultSettings.add(KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(setting)));
 
-        return new SimpleResponse<>(response, keyVaultSettings);
+        return new SimpleResponse<>(response, new KeyVaultSettingsListResult(keyVaultSettings));
     }
 }

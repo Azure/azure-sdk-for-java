@@ -1,0 +1,31 @@
+package com.azure.security.keyvault.administration.models;
+
+import com.azure.core.annotation.Immutable;
+
+import java.util.List;
+
+/**
+ * A result model containing the list of {@link KeyVaultSetting settings} for a given account.
+ */
+@Immutable
+public class KeyVaultSettingsListResult {
+    private List<KeyVaultSetting> settings;
+
+    /**
+     * Creates an instance of {@link KeyVaultSettingsListResult} class.
+     *
+     * @param settings The list of {@link KeyVaultSetting settings} for the account.
+     */
+    public KeyVaultSettingsListResult(List<KeyVaultSetting> settings) {
+
+    }
+
+    /**
+     * Get the list of {@link KeyVaultSetting settings} for the account.
+     *
+     * @return The list of {@link KeyVaultSetting settings} for the account.
+     */
+    public List<KeyVaultSetting> getSettings() {
+        return this.settings;
+    }
+}
