@@ -69,13 +69,18 @@ public class ProviderRegistrationPolicyTests extends ResourceManagerTestBase {
     public void testProviderRegistrationPolicy() {
         final String acrName = generateRandomResourceName("acr", 10);
 
-        Provider provider = azureResourceManager.providers().getByName("Microsoft.ContainerRegistry");
+        final String namespace = "Microsoft.ContainerRegistry";
+
+        Provider provider = azureResourceManager.providers().getByName(namespace);
         if (provider != null && "Registered".equalsIgnoreCase(provider.registrationState())) {
-            provider = azureResourceManager.providers().unregister("Microsoft.ContainerRegistry");
+            provider = azureResourceManager.providers().unregister(namespace);
 
             // wait for unregister complete
             ResourceManagerUtils.sleep(Duration.ofMinutes(5));
+
+            provider = azureResourceManager.providers().getByName(namespace);
         }
+        Assertions.assertEquals("Unregistered", provider.registrationState());
 
         Registry registry =
             azureResourceManager
