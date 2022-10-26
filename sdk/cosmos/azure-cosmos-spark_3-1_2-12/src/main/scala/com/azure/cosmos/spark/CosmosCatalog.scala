@@ -16,33 +16,33 @@ class CosmosCatalog
         with SupportsNamespaces {
 
     override def listNamespaces(): Array[Array[String]] = {
-        super.listNamespaces()
+        super.listNamespacesBase()
     }
     @throws(classOf[NoSuchNamespaceException])
     override def listNamespaces(namespace: Array[String]): Array[Array[String]] = {
-        super.listNamespaces(namespace)
+        super.listNamespacesBase(namespace)
     }
 
     @throws(classOf[NoSuchNamespaceException])
     override def loadNamespaceMetadata(namespace: Array[String]): util.Map[String, String] = {
-        super.loadNamespaceMetadata(namespace)
+        super.loadNamespaceMetadataBase(namespace)
     }
 
     @throws(classOf[NamespaceAlreadyExistsException])
     override def createNamespace(namespace: Array[String],
                                  metadata: util.Map[String, String]): Unit = {
-        super.createNamespace(namespace, metadata)
+        super.createNamespaceBase(namespace, metadata)
     }
 
     @throws(classOf[UnsupportedOperationException])
     override def alterNamespace(namespace: Array[String],
                                 changes: NamespaceChange*): Unit = {
-        super.alterNamespace(namespace, changes)
+        super.alterNamespaceBase(namespace, changes)
     }
 
     @throws(classOf[NoSuchNamespaceException])
     override def dropNamespace(namespace: Array[String]): Boolean = {
-        super.dropNamespace(namespace)
+        super.dropNamespaceBase(namespace)
     }
 
     /*    @throws(classOf[NoSuchNamespaceException])

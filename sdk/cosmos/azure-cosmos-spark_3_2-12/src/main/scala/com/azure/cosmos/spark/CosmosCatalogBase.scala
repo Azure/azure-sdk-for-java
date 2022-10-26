@@ -105,7 +105,7 @@ class CosmosCatalogBase
      *
      * @return an array of multi-part namespace names.
      */
-    def listNamespaces(): Array[Array[String]] = {
+    def listNamespacesBase(): Array[Array[String]] = {
         logDebug("catalog:listNamespaces")
 
         TransientErrorsRetryPolicy.executeWithRetry(() => listNamespacesImpl())
@@ -141,8 +141,8 @@ class CosmosCatalogBase
      * or throw if the root namespace doesn't exist
      */
     @throws(classOf[NoSuchNamespaceException])
-    def listNamespaces(namespace: Array[String]): Array[Array[String]] = {
-        loadNamespaceMetadata(namespace) // throws NoSuchNamespaceException if namespace doesn't exist
+    def listNamespacesBase(namespace: Array[String]): Array[Array[String]] = {
+        loadNamespaceMetadataBase(namespace) // throws NoSuchNamespaceException if namespace doesn't exist
         // Cosmos DB only has one single level depth databases
         Array.empty[Array[String]]
     }
@@ -155,7 +155,7 @@ class CosmosCatalogBase
      * @throws NoSuchNamespaceException If the namespace does not exist (optional)
      */
     @throws(classOf[NoSuchNamespaceException])
-    def loadNamespaceMetadata(namespace: Array[String]): util.Map[String, String] = {
+    def loadNamespaceMetadataBase(namespace: Array[String]): util.Map[String, String] = {
 
         TransientErrorsRetryPolicy.executeWithRetry(() => loadNamespaceMetadataImpl(namespace))
     }
@@ -198,8 +198,8 @@ class CosmosCatalogBase
     }
 
     @throws(classOf[NamespaceAlreadyExistsException])
-    def createNamespace(namespace: Array[String],
-                                 metadata: util.Map[String, String]): Unit = {
+    def createNamespaceBase(namespace: Array[String],
+                            metadata: util.Map[String, String]): Unit = {
         TransientErrorsRetryPolicy.executeWithRetry(() => createNamespaceImpl(namespace, metadata))
     }
 
@@ -241,8 +241,8 @@ class CosmosCatalogBase
     }
 
     @throws(classOf[UnsupportedOperationException])
-    def alterNamespace(namespace: Array[String],
-                                changes: Seq[NamespaceChange]): Unit = {
+    def alterNamespaceBase(namespace: Array[String],
+                           changes: Seq[NamespaceChange]): Unit = {
         checkNamespace(namespace)
         // TODO: moderakh we can support changing database level throughput?
         throw new UnsupportedOperationException("altering namespace not supported")
@@ -255,7 +255,7 @@ class CosmosCatalogBase
      * @return true if the namespace was dropped
      */
     @throws(classOf[NoSuchNamespaceException])
-    def dropNamespace(namespace: Array[String]): Boolean = {
+    def dropNamespaceBase(namespace: Array[String]): Boolean = {
         TransientErrorsRetryPolicy.executeWithRetry(() => dropNamespaceImpl(namespace))
     }
 
