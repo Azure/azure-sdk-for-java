@@ -36,6 +36,10 @@ public final class ManagedClusterPoolUpgradeProfile {
     @JsonProperty(value = "upgrades")
     private List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades;
 
+    /** Creates an instance of ManagedClusterPoolUpgradeProfile class. */
+    public ManagedClusterPoolUpgradeProfile() {
+    }
+
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *

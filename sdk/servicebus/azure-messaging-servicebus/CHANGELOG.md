@@ -3,6 +3,7 @@
 ## 7.13.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added rule manager client to manage rules for ServiceBus subscription with listen claims. ([#27711](https://github.com/Azure/azure-sdk-for-java/issues/27711))
 
 ### Breaking Changes
 

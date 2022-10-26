@@ -13,6 +13,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPool
 import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServerAccessProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterSecurityProfile;
@@ -151,6 +152,12 @@ public final class ManagedClusterProperties {
     private ManagedClusterPodIdentityProfile podIdentityProfile;
 
     /*
+     * The OIDC issuer profile of the Managed Cluster.
+     */
+    @JsonProperty(value = "oidcIssuerProfile")
+    private ManagedClusterOidcIssuerProfile oidcIssuerProfile;
+
+    /*
      * The name of the resource group containing agent pool nodes.
      */
     @JsonProperty(value = "nodeResourceGroup")
@@ -258,6 +265,10 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
+
+    /** Creates an instance of ManagedClusterProperties class. */
+    public ManagedClusterProperties() {
+    }
 
     /**
      * Get the provisioningState property: The current provisioning state.
@@ -543,6 +554,26 @@ public final class ManagedClusterProperties {
      */
     public ManagedClusterProperties withPodIdentityProfile(ManagedClusterPodIdentityProfile podIdentityProfile) {
         this.podIdentityProfile = podIdentityProfile;
+        return this;
+    }
+
+    /**
+     * Get the oidcIssuerProfile property: The OIDC issuer profile of the Managed Cluster.
+     *
+     * @return the oidcIssuerProfile value.
+     */
+    public ManagedClusterOidcIssuerProfile oidcIssuerProfile() {
+        return this.oidcIssuerProfile;
+    }
+
+    /**
+     * Set the oidcIssuerProfile property: The OIDC issuer profile of the Managed Cluster.
+     *
+     * @param oidcIssuerProfile the oidcIssuerProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withOidcIssuerProfile(ManagedClusterOidcIssuerProfile oidcIssuerProfile) {
+        this.oidcIssuerProfile = oidcIssuerProfile;
         return this;
     }
 
@@ -926,6 +957,9 @@ public final class ManagedClusterProperties {
         }
         if (podIdentityProfile() != null) {
             podIdentityProfile().validate();
+        }
+        if (oidcIssuerProfile() != null) {
+            oidcIssuerProfile().validate();
         }
         if (networkProfile() != null) {
             networkProfile().validate();
