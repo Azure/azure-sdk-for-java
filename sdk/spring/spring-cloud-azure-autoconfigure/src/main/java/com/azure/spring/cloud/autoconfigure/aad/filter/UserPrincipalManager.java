@@ -24,7 +24,6 @@ import com.nimbusds.jwt.proc.BadJWTException;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;
-import net.minidev.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +32,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -151,7 +151,7 @@ public class UserPrincipalManager {
         UserPrincipal userPrincipal = new UserPrincipal(aadIssuedBearerToken, jwsObject, jwtClaimsSet);
         Set<String> roles = Optional.of(userPrincipal)
                                     .map(p -> p.getClaim(AadJwtClaimNames.ROLES))
-                                    .map(JSONArray.class::cast)
+                                    .map(List.class::cast)
                                     .map(Collection<Object>::stream)
                                     .orElseGet(Stream::empty)
                                     .map(Object::toString)
