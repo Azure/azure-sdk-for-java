@@ -102,7 +102,6 @@ public class AadResourceServerConfiguration {
     /**
      * Default security configuration of the resource server, user can write another configuration bean to override it.
      */
-    @Configuration(proxyBeanMethods = false)
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     @ConditionalOnMissingBean(SecurityFilterChain.class)
@@ -117,7 +116,7 @@ public class AadResourceServerConfiguration {
          */
         @Bean
         @ConditionalOnBean(AadResourceServerProperties.class)
-        SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
+        SecurityFilterChain defaultAadResourceServerFilterChain(HttpSecurity http) throws Exception {
             http.apply(aadResourceServer());
             return http.build();
         }

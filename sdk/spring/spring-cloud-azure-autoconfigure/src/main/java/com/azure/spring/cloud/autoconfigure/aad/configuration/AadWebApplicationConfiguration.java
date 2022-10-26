@@ -56,7 +56,6 @@ public class AadWebApplicationConfiguration {
     /**
      * The default security configuration of the web application, user can write another configuration bean to override it.
      */
-    @Configuration(proxyBeanMethods = false)
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     @ConditionalOnMissingBean(SecurityFilterChain.class)
@@ -70,7 +69,7 @@ public class AadWebApplicationConfiguration {
          * @throws Exception Configuration failed
          */
         @Bean
-        SecurityFilterChain webApplicationFilterChain(HttpSecurity http) throws Exception {
+        SecurityFilterChain defaultAadWebApplicationFilterChain(HttpSecurity http) throws Exception {
             http
                 .apply(aadWebApplication())
                     .and()
