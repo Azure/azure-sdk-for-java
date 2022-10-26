@@ -4,50 +4,41 @@
 
 package com.azure.storage.file.datalake.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
 /** Defines values for LeaseAction. */
-public enum LeaseAction {
-    /** Enum value acquire. */
-    ACQUIRE("acquire"),
+public final class LeaseAction extends ExpandableStringEnum<LeaseAction> {
+    /** Static value acquire for LeaseAction. */
+    public static final LeaseAction ACQUIRE = fromString("acquire");
 
-    /** Enum value auto-renew. */
-    AUTO_RENEW("auto-renew"),
+    /** Static value auto-renew for LeaseAction. */
+    public static final LeaseAction AUTO_RENEW = fromString("auto-renew");
 
-    /** Enum value release. */
-    RELEASE("release"),
+    /** Static value release for LeaseAction. */
+    public static final LeaseAction RELEASE = fromString("release");
 
-    /** Enum value acquire-release. */
-    ACQUIRE_RELEASE("acquire-release");
+    /** Static value acquire-release for LeaseAction. */
+    public static final LeaseAction ACQUIRE_RELEASE = fromString("acquire-release");
 
-    /** The actual serialized value for a LeaseAction instance. */
-    private final String value;
-
-    LeaseAction(String value) {
-        this.value = value;
+    /**
+     * Creates or finds a LeaseAction from its string representation.
+     *
+     * @param name a name to look for.
+     * @return the corresponding LeaseAction.
+     */
+    @JsonCreator
+    public static LeaseAction fromString(String name) {
+        return fromString(name, LeaseAction.class);
     }
 
     /**
-     * Parses a serialized value to a LeaseAction instance.
+     * Gets known LeaseAction values.
      *
-     * @param value the serialized value to parse.
-     * @return the parsed LeaseAction object, or null if unable to parse.
+     * @return known LeaseAction values.
      */
-    @JsonCreator
-    public static LeaseAction fromString(String value) {
-        LeaseAction[] items = LeaseAction.values();
-        for (LeaseAction item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<LeaseAction> values() {
+        return values(LeaseAction.class);
     }
 }
