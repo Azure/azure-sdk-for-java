@@ -650,7 +650,7 @@ public class EventProcessorClientTest {
     }
 
     /**
-     * process event/eventBatch quickly, the thread won't be interrupted by dispose gracefully.
+     * Process event/eventBatch quickly, the thread won't be interrupted by dispose gracefully.
      */
     @Test
     public void testProcessorDisposeQuickly() throws InterruptedException {
@@ -695,12 +695,12 @@ public class EventProcessorClientTest {
 
         // Assert
         assertTrue(completed);
-        // thread not interrupted.
+        // Thread not interrupted.
         assertFalse(testPartitionProcessor.isInterrupted);
     }
 
     /**
-     * process event/eventBatch slow, the thread will be interrupted if dispose gracefully timeout.
+     * Process event/eventBatch slow, the thread will be interrupted if dispose gracefully timeout.
      */
     @Test
     public void testProcessorDisposeNSlow() throws InterruptedException {
@@ -745,7 +745,7 @@ public class EventProcessorClientTest {
 
         // Assert
         assertTrue(completed);
-        // thread interrupted.
+        // Thread interrupted.
         assertTrue(testPartitionProcessor.isInterrupted);
     }
 
