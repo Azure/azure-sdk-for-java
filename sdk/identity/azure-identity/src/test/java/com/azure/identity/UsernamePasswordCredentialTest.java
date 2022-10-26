@@ -246,14 +246,14 @@ public class UsernamePasswordCredentialTest {
     @Test
     public void testValidMultiTenantAuth() {
         // setup
-        String username = "fakeNamePlaceholder";
+        String fakeUsernamePlaceholder = "fakeNamePlaceholder";
         String password = "fakeCredentialPlaceholder";
 
         TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default")
             .setTenantId("newTenant");
 
         UsernamePasswordCredential credential =
-            new UsernamePasswordCredentialBuilder().username(username).password(password).tenantId("tenant")
+            new UsernamePasswordCredentialBuilder().username(fakeUsernamePlaceholder).password(password).tenantId("tenant")
                 .clientId(clientId).additionallyAllowedTenants(IdentityUtil.ALL_TENANTS).build();
 
         StepVerifier.create(credential.getToken(request))
