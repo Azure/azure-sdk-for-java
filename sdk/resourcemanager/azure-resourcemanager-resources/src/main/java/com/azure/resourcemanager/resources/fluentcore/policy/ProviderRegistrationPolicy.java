@@ -104,7 +104,8 @@ public class ProviderRegistrationPolicy implements HttpPipelinePolicy {
                                 if (managementError.getDetails() != null) {
                                     // find in details.target
                                     resourceNamespace = managementError.getDetails().stream()
-                                        .filter(d -> MISSING_SUBSCRIPTION_REGISTRATION.equals(d.getCode()))
+                                        .filter(d -> MISSING_SUBSCRIPTION_REGISTRATION.equals(d.getCode())
+                                            && d.getTarget() != null)
                                         .map(ManagementError::getTarget)
                                         .findFirst().orElse(null);
                                 }
