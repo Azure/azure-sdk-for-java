@@ -67,7 +67,6 @@ abstract class AbstractAzureJdbcAutoConfigurationTest {
     void testNoAzureAuthenticationTemplate() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
-            .withConfiguration(AutoConfigurations.of(AzureGlobalProperties.class))
             .run((context) -> {
                 assertThat(context).doesNotHaveBean(JdbcPropertiesBeanPostProcessor.class);
                 assertThat(context).doesNotHaveBean(SpringTokenCredentialProviderContextProvider.class);
@@ -78,7 +77,6 @@ abstract class AbstractAzureJdbcAutoConfigurationTest {
     void testNoDataSourcePropertiesBean() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(AzureAuthenticationTemplate.class))
-            .withConfiguration(AutoConfigurations.of(AzureGlobalProperties.class))
             .run((context) -> {
                 assertThat(context).doesNotHaveBean(JdbcPropertiesBeanPostProcessor.class);
                 assertThat(context).doesNotHaveBean(SpringTokenCredentialProviderContextProvider.class);
