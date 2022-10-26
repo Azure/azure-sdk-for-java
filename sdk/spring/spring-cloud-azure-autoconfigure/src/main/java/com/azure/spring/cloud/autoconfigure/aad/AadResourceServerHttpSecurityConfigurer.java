@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.aad.properties.AadResourceServerProp
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
@@ -36,6 +37,10 @@ public class AadResourceServerHttpSecurityConfigurer extends AbstractHttpConfigu
         // @formatter:off
     }
 
+    /**
+     * Default configuer for Resource Server with Azure AD.
+     * @return the configuer instance to customize the {@link SecurityConfigurer}
+     */
     public static AadResourceServerHttpSecurityConfigurer aadResourceServer() {
         return new AadResourceServerHttpSecurityConfigurer();
     }

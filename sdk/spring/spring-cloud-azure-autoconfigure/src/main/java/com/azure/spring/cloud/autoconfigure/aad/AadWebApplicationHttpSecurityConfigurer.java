@@ -12,6 +12,7 @@ import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.ResolvableType;
+import org.springframework.security.config.annotation.SecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.oauth2.client.endpoint.DefaultAuthorizationCodeTokenResponseClient;
@@ -102,13 +103,17 @@ public class AadWebApplicationHttpSecurityConfigurer extends AbstractHttpConfigu
         }
     }
 
+    /**
+     * Default configuer for Web Application with Azure AD.
+     * @return the configuer instance to customize the {@link SecurityConfigurer}
+     */
     public static AadWebApplicationHttpSecurityConfigurer aadWebApplication() {
         return new AadWebApplicationHttpSecurityConfigurer();
     }
 
     /**
-     * Return the filter to handle conditional access exception.
-     * No conditional access filter is provided by default.
+     * Return the filter to handle conditional access exception. No conditional access filter is provided by default.
+     * @param conditionalAccessFilter the conditional access filter
      * @see <a href="https://github.com/Azure-Samples/azure-spring-boot-samples/tree/spring-cloud-azure_4.0.0/aad/spring-cloud-azure-starter-active-directory/web-client-access-resource-server/aad-web-application/src/main/java/com/azure/spring/sample/aad/security/AadConditionalAccessFilter.java">Sample for AAD conditional access filter</a>
      * @see <a href="https://microsoft.github.io/spring-cloud-azure/4.0.0/4.0.0/reference/html/index.html#support-conditional-access-in-web-application">reference doc</a>
      * @return a filter that handles conditional access exception.
