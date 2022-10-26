@@ -15,7 +15,7 @@ import java.time.OffsetDateTime;
 import reactor.core.publisher.Mono;
 
 class LoadTestingClientTestBase extends TestBase {
-    protected LoadTestingClient client;
+    protected LoadTestingClientBuilder builder;
 
     private final String defaultEndpoint = "REDACTED.eus.cnt-prod.loadtesting.azure.com";
 
@@ -41,6 +41,6 @@ class LoadTestingClientTestBase extends TestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             loadTestingClientBuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
-        client = loadTestingClientBuilder.buildClient();
+        builder = loadTestingClientBuilder;
     }
 }

@@ -6,9 +6,7 @@ package com.azure.developer.loadtesting;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.azure.core.credential.TokenCredential;
@@ -26,21 +24,23 @@ public final class ReadmeSamples {
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
         // create client using DefaultAzureCredential
-        LoadTestingClient client = new LoadTestingClientBuilder()
+        LoadTestingClientBuilder builder = new LoadTestingClientBuilder()
             .credential(credential)
-            .endpoint("<Enter Azure Load Testing Data-Plane URL>")
-            .buildClient();
-        LoadTestAdministrationClient adminClient = client.getLoadTestAdministrationClient();
-        TestRunClient testRunClient = client.getLoadTestRunClient();
+            .endpoint("<Enter Azure Load Testing Data-Plane URL>");
+        LoadTestAdministrationClient adminClient = builder.buildLoadTestAdministrationClient();
+        TestRunClient testRunClient = builder.buildTestRunClient();
+
+        adminClient.listTests(null);
+        testRunClient.list(null);
         // END: java-readme-sample-auth
     }
 
     public void createTest() {
         // BEGIN: java-readme-sample-createTest
-        LoadTestingClient client = new LoadTestingClientBuilder()
-            .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("<endpoint>")
-            .buildClient();
+        LoadTestAdministrationClient adminClient = new LoadTestingClientBuilder()
+                .credential(new DefaultAzureCredentialBuilder().build())
+                .endpoint("<endpoint>")
+                .buildLoadTestAdministrationClient();
 
         // construct Test object using nested String:Object Maps
         Map<String, Object> testMap = new HashMap<String, Object>();
@@ -83,33 +83,33 @@ public final class ReadmeSamples {
         BinaryData test = BinaryData.fromObject(testMap);
 
         // receive response with BinaryData content
-        Response<BinaryData> testOutResponse = client.getLoadTestAdministrationClient().createOrUpdateTestWithResponse("test12345", test, null);
+        Response<BinaryData> testOutResponse = adminClient.createOrUpdateTestWithResponse("test12345", test, null);
         System.out.println(testOutResponse.getValue().toString());
         // END: java-readme-sample-createTest
     }
 
     public void uploadTestFile() throws IOException {
         // BEGIN: java-readme-sample-uploadTestFile
-        LoadTestingClient client = new LoadTestingClientBuilder()
+        LoadTestAdministrationClient adminClient = new LoadTestingClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
-            .buildClient();
+            .buildLoadTestAdministrationClient();
 
         // extract file contents to BinaryData
         BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
 
         // receive response with BinaryData content
-        Response<BinaryData> fileUrlOut = client.getLoadTestAdministrationClient().uploadTestFileWithResponse("test12345", "file12345", "sample-file.jmx", fileData, null);
+        Response<BinaryData> fileUrlOut = adminClient.uploadTestFileWithResponse("test12345", "file12345", "sample-file.jmx", fileData, null);
         System.out.println(fileUrlOut.getValue().toString());
         // END: java-readme-sample-uploadTestFile
     }
 
     public void runTest() {
         // BEGIN: java-readme-sample-runTest
-        LoadTestingClient client = new LoadTestingClientBuilder()
+        TestRunClient testRunClient = new LoadTestingClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
-            .buildClient();
+            .buildTestRunClient();
 
         // construct Test Run object using nested String:Object Maps
         Map<String, Object> testRunMap = new HashMap<String, Object>();
@@ -120,14 +120,14 @@ public final class ReadmeSamples {
         BinaryData testRun = BinaryData.fromObject(testRunMap);
 
         // receive response with BinaryData content
-        Response<BinaryData> testRunOut = client.getLoadTestRunClient().createOrUpdateTestRunWithResponse("testrun12345", testRun, null);
+        Response<BinaryData> testRunOut = testRunClient.createOrUpdateWithResponse("testrun12345", testRun, null);
         System.out.println(testRunOut.getValue().toString());
 
         // wait for test to reach terminal state
         JsonNode testRunJson = null;
         String testStatus = null, startDateTime = null, endDateTime = null;
         while (testStatus == null || (testStatus != "DONE" && testStatus != "CANCELLED" && testStatus != "FAILED")) {
-            testRunOut = client.getLoadTestRunClient().getTestRunWithResponse("testrun12345", null);
+            testRunOut = testRunClient.getWithResponse("testrun12345", null);
             // parse JSON and read status value
             try {
                 testRunJson = new ObjectMapper().readTree(testRunOut.getValue().toString());
@@ -148,29 +148,32 @@ public final class ReadmeSamples {
         startDateTime = testRunJson.get("startDateTime").asText();
         endDateTime = testRunJson.get("endDateTime").asText();
 
-        // construct Test Run Client Metrics object using nested String:Object Maps
-        Map<String, Object> clientMetricsMap = new HashMap<String, Object>();
-        List<String> requestSamplersList = new ArrayList<String>();
-        requestSamplersList.add("Homepage");
-        clientMetricsMap.put("requestSamplers", requestSamplersList);
+        // get list of all metric namespaces and pick the first one
+        Response<BinaryData> metricNamespacesOut = testRunClient.getMetricNamespacesWithResponse("testrun12345", null);
+        String metricNamespace = null;
+        // parse JSON and read first value
+        try {
+            JsonNode metricNamespacesJson = new ObjectMapper().readTree(metricNamespacesOut.getValue().toString());
+            metricNamespace = metricNamespacesJson.get("value").get(0).get("metricNamespaceName").asText();
+        } catch (JsonProcessingException e) {
+            System.out.println("Error processing JSON response");
+            // handle error condition
+        }
 
-        List<String> errorsList = new ArrayList<String>();
-        errorsList.add("500");
-        clientMetricsMap.put("errors", errorsList);
+        // get list of all metric definitions and pick the first one
+        Response<BinaryData> metricDefinitionsOut = testRunClient.getMetricDefinitionsWithResponse("testrun12345", metricNamespace, null);
+        String metricName = null;
+        // parse JSON and read first value
+        try {
+            JsonNode metricDefinitionsJson = new ObjectMapper().readTree(metricDefinitionsOut.getValue().toString());
+            metricName = metricDefinitionsJson.get("value").get(0).get("name").get("value").asText();
+        } catch (JsonProcessingException e) {
+            System.out.println("Error processing JSON response");
+            // handle error condition
+        }
 
-        List<String> percentilesList = new ArrayList<String>();
-        percentilesList.add("95");
-        clientMetricsMap.put("percentiles", percentilesList);
-
-        clientMetricsMap.put("groupByInterval", "10s");
-        clientMetricsMap.put("startTime", startDateTime);
-        clientMetricsMap.put("endTime", endDateTime);
-
-        // convert the object Map to JSON BinaryData
-        BinaryData clientMetrics = BinaryData.fromObject(clientMetricsMap);
-
-        // fetch client metrics
-        Response<BinaryData> clientMetricsOut = client.getLoadTestRunClient().getTestRunClientMetricsWithResponse("testrun12345", clientMetrics, null);
+        // fetch client metrics using metric namespace and metric name
+        Response<BinaryData> clientMetricsOut = testRunClient.getMetricsWithResponse("testrun12345", metricName, metricNamespace, "Data", startDateTime+'/'+endDateTime, null);
         System.out.println(clientMetricsOut.getValue().toString());
         // END: java-readme-sample-runTest
     }
