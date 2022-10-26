@@ -74,8 +74,8 @@ public final class RestTemplateTestUtil {
 
     private static void assertRestTemplateWellConfiguredForAllOAuth2AuthorizedClientProviders(ApplicationContext context) {
         List<OAuth2AuthorizedClientProvider> providers = getAllOAuth2AuthorizedClientProviderThatShouldConfiguredRestTemplate(context);
-        // 3 providers: refreshToken, clientCredential, password.
-        assertTrue(providers.size() >= 3);
+        // 3 providers: refreshToken, clientCredential.
+        assertTrue(providers.size() >= 2);
         providers.forEach(provider -> {
             OAuth2AccessTokenResponseClient<?> client = (OAuth2AccessTokenResponseClient<?>) getField(provider.getClass(), "accessTokenResponseClient", provider);
             assertRestTemplateWellConfiguredInOAuth2AccessTokenResponseClient(client);
