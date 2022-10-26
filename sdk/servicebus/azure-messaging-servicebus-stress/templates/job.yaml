@@ -6,6 +6,8 @@ metadata:
     testName: servicebus-stress-test
     chaos: "true"
 spec:
+  nodeSelector:
+    sku: 'highMem'
   containers:
     - name: sender
       image: {{ .Values.image }}
@@ -15,19 +17,36 @@ spec:
         - |
           set -a &&
           source $ENV_FILE &&
+          export CONTAINER_NAME=sender &&
           java "org.springframework.boot.loader.JarLauncher" \
           --TEST_CLASS=MessageSender
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
+      resources:
+        requests:
+          memory: "1G"
+          cpu: "1"
+        limits:
+          memory: "2G"
+          cpu: "2"
     - name: receiver
       image: {{ .Values.image }}
       imagePullPolicy: Always
       command: ['sh', '-c']
       args:
         - |
-            set -a &&
-            source $ENV_FILE &&
-            java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
-            "org.springframework.boot.loader.JarLauncher" \
-            --TEST_CLASS=MessageProcessor
+          set -a &&
+          source $ENV_FILE &&
+          export CONTAINER_NAME=receiver &&
+          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.1.jar \
+          -Dreactor.schedulers.defaultBoundedElasticSize=100 \
+          "org.springframework.boot.loader.JarLauncher" \
+          --TEST_CLASS=MessageProcessor
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
+      resources:
+        requests:
+          memory: "1G"
+          cpu: "1"
+        limits:
+          memory: "2G"
+          cpu: "2"
 {{- end -}}

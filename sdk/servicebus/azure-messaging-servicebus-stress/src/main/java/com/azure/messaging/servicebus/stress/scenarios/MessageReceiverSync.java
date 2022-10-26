@@ -64,12 +64,12 @@ public class MessageReceiverSync extends ServiceBusScenario {
         try {
             for (ServiceBusReceivedMessage receivedMessage : receivedMessages) {
                 try {
-                    LOGGER.info("Before complete. messageId: {}, lockToken: {}",
+                    LOGGER.verbose("Before complete. messageId: {}, lockToken: {}",
                         receivedMessage.getMessageId(),
                         receivedMessage.getLockToken());
                     client.complete(receivedMessage);
                     rateMeter.add(metricKey, 1);
-                    LOGGER.info("After complete. messageId: {}, lockToken: {}",
+                    LOGGER.verbose("After complete. messageId: {}, lockToken: {}",
                         receivedMessage.getMessageId(),
                         receivedMessage.getLockToken());
                 } catch (ServiceBusException | AmqpException err) {

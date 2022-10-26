@@ -21,10 +21,10 @@ import java.time.Duration;
 public class MessageProcessor extends ServiceBusScenario {
     private static final ClientLogger LOGGER = new ClientLogger(MessageProcessor.class);
 
-    @Value("${MAX_CONCURRENT_CALLS:10}")
+    @Value("${MAX_CONCURRENT_CALLS:50}")
     private int maxConcurrentCalls;
 
-    @Value("${PREFETCH_COUNT:50}")
+    @Value("${PREFETCH_COUNT:10}")
     private int prefetchCount;
 
     @Override
@@ -54,12 +54,12 @@ public class MessageProcessor extends ServiceBusScenario {
             .disableAutoComplete()
             .prefetchCount(prefetchCount)
             .processMessage(messageContext -> {
-                LOGGER.info("Before complete. messageId: {}, lockToken: {}",
+                LOGGER.verbose("Before complete. messageId: {}, lockToken: {}",
                     messageContext.getMessage().getMessageId(),
                     messageContext.getMessage().getLockToken());
                 messageContext.complete();
                 rateMeter.add(metricKey, 1);
-                LOGGER.info("After complete. messageId: {}, lockToken: {}",
+                LOGGER.verbose("After complete. messageId: {}, lockToken: {}",
                     messageContext.getMessage().getMessageId(),
                     messageContext.getMessage().getLockToken());
             })

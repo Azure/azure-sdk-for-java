@@ -45,7 +45,7 @@ public class MessageReceiver extends ServiceBusScenario {
 
         client.receiveMessages()
             .flatMap(message -> {
-                LOGGER.info("message received: {}", message.getMessageId());
+                LOGGER.verbose("message received: {}", message.getMessageId());
                 rateMeter.add(metricKey, 1);
                 return client.complete(message)
                     .onErrorResume(error -> {

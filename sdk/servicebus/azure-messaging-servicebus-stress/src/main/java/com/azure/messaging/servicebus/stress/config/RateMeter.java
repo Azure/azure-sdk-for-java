@@ -63,7 +63,7 @@ public class RateMeter {
                 metricTelemetryList.add(metricTelemetry);
             });
             metricTelemetryList.forEach(metricTelemetry -> {
-                LOGGER.info("Metrics: {Duration: {}, Metric: {}}", periodicDuration, metricTelemetry);
+                LOGGER.verbose("Metrics: {Duration: {}, Metric: {}}", periodicDuration, metricTelemetry);
                 telemetryClient.trackMetric(metricTelemetry);
             });
         }, periodicDuration.toMillis(), periodicDuration.toMillis(), TimeUnit.MILLISECONDS);
