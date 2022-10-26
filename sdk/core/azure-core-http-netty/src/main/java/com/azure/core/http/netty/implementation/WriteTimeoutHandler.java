@@ -32,6 +32,7 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
     private long lastWriteMillis;
     private long lastWriteProgress;
     private ScheduledFuture<?> writeTimeoutWatcher;
+    private ChannelHandlerContext ctx;
 
     /**
      * Constructs a channel handler that watches channel write operations to ensure they aren't timing out.
@@ -58,14 +59,17 @@ public final class WriteTimeoutHandler extends ChannelOutboundHandlerAdapter {
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
-        if (timeoutMillis > 0) {
+        this.ctx = ctx;
+    }
+
+    public void start() {
+        if (timeoutMillis > 0 && ctx != null) {
             this.writeTimeoutWatcher = ctx.executor().scheduleAtFixedRate(() -> writeTimeoutRunnable(ctx),
                 timeoutMillis, timeoutMillis, TimeUnit.MILLISECONDS);
         }
     }
 
-    @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) {
+    public void stop() {
         disposeWatcher();
     }
 

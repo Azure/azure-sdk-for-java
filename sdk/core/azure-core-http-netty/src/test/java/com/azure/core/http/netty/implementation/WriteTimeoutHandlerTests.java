@@ -38,6 +38,7 @@ public class WriteTimeoutHandlerTests {
         when(ctx.executor()).thenReturn(eventExecutor);
 
         writeTimeoutHandler.handlerAdded(ctx);
+        writeTimeoutHandler.start();
 
         verify(eventExecutor, never()).scheduleAtFixedRate(any(), anyLong(), anyLong(), any());
     }
@@ -53,19 +54,21 @@ public class WriteTimeoutHandlerTests {
         when(ctx.executor()).thenReturn(eventExecutor);
 
         writeTimeoutHandler.handlerAdded(ctx);
+        writeTimeoutHandler.start();
 
         verify(eventExecutor, times(1)).scheduleAtFixedRate(any(), eq(1L), eq(1L), any());
     }
 
     @Test
-    public void removingHandlerCancelsTimeout() {
+    public void stoppingHandlerCancelsTimeout() {
         WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
 
         writeTimeoutHandler.handlerAdded(ctx);
-        writeTimeoutHandler.handlerRemoved(ctx);
+        writeTimeoutHandler.start();
+        writeTimeoutHandler.stop();
 
         // When the handler is removed the timer is nulled out.
         assertNull(writeTimeoutHandler.getWriteTimeoutWatcher());
@@ -86,6 +89,7 @@ public class WriteTimeoutHandlerTests {
         when(ctx.channel()).thenReturn(channel);
 
         writeTimeoutHandler.handlerAdded(ctx);
+        writeTimeoutHandler.start();
 
         // Fake that the scheduled timer completed before any write operations happened.
         writeTimeoutHandler.writeTimeoutRunnable(ctx);
@@ -112,12 +116,13 @@ public class WriteTimeoutHandlerTests {
         when(ctx.write(any(), any())).thenReturn(channelPromise);
 
         writeTimeoutHandler.handlerAdded(ctx);
+        writeTimeoutHandler.start();
 
         // Fake that the scheduled timer completed before after a write operation happened.
         writeTimeoutHandler.getWriteListener().operationComplete(null);
         writeTimeoutHandler.writeTimeoutRunnable(ctx);
 
-        writeTimeoutHandler.handlerRemoved(ctx);
+        writeTimeoutHandler.start();
 
         verify(ctx, never()).fireExceptionCaught(any());
     }

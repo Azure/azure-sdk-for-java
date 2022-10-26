@@ -25,6 +25,7 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
 
     private boolean closed;
     private ScheduledFuture<?> responseTimeoutWatcher;
+    private ChannelHandlerContext ctx;
 
     /**
      * Constructs a channel that watches that the channel receives a response within a given timeout period.
@@ -41,14 +42,17 @@ public final class ResponseTimeoutHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) {
-        if (timeoutMillis > 0) {
+        this.ctx = ctx;
+    }
+
+    public void start() {
+        if (timeoutMillis > 0 && ctx != null) {
             this.responseTimeoutWatcher = ctx.executor().schedule(() -> responseTimedOut(ctx), timeoutMillis,
                 TimeUnit.MILLISECONDS);
         }
     }
 
-    @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) {
+    public void stop() {
         disposeWatcher();
     }
 

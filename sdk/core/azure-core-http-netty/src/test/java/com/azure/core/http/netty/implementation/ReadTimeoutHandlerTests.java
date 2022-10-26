@@ -34,6 +34,7 @@ public class ReadTimeoutHandlerTests {
         when(ctx.executor()).thenReturn(eventExecutor);
 
         readTimeoutHandler.handlerAdded(ctx);
+        readTimeoutHandler.start();
 
         verify(eventExecutor, never()).scheduleAtFixedRate(any(), anyLong(), anyLong(), any());
     }
@@ -49,19 +50,21 @@ public class ReadTimeoutHandlerTests {
         when(ctx.executor()).thenReturn(eventExecutor);
 
         readTimeoutHandler.handlerAdded(ctx);
+        readTimeoutHandler.start();
 
         verify(eventExecutor, times(1)).scheduleAtFixedRate(any(), eq(1L), eq(1L), any());
     }
 
     @Test
-    public void removingHandlerCancelsTimeout() {
+    public void stoppingHandlerCancelsTimeout() {
         ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
 
         readTimeoutHandler.handlerAdded(ctx);
-        readTimeoutHandler.handlerRemoved(ctx);
+        readTimeoutHandler.start();
+        readTimeoutHandler.stop();
 
         assertNull(readTimeoutHandler.getReadTimeoutWatcher());
     }
@@ -74,6 +77,7 @@ public class ReadTimeoutHandlerTests {
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
 
         readTimeoutHandler.handlerAdded(ctx);
+        readTimeoutHandler.start();
 
         // Fake that the scheduled timer completed before any read operations happened.
         readTimeoutHandler.readTimeoutRunnable(ctx);
@@ -89,13 +93,14 @@ public class ReadTimeoutHandlerTests {
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
 
         readTimeoutHandler.handlerAdded(ctx);
+        readTimeoutHandler.start();
 
         readTimeoutHandler.channelReadComplete(ctx);
 
         // Fake that the scheduled timer completed before after a read operation happened.
         readTimeoutHandler.readTimeoutRunnable(ctx);
 
-        readTimeoutHandler.handlerRemoved(ctx);
+        readTimeoutHandler.stop();
 
         verify(ctx, never()).fireExceptionCaught(any());
     }

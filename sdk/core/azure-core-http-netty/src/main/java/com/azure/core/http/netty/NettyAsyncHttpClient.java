@@ -47,10 +47,12 @@ import reactor.util.retry.Retry;
 import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.net.URI;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
@@ -117,13 +119,47 @@ class NettyAsyncHttpClient implements HttpClient {
         boolean effectiveHeadersEagerlyConverted = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS)
             .orElse(false);
 
+        WriteTimeoutHandler writeTimeoutHandler = new WriteTimeoutHandler(writeTimeout);
+        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
+        RequestProgressReportingHandler progressReportingHandler = (progressReporter == null) ? null
+            : new RequestProgressReportingHandler(progressReporter);
+        ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(effectiveResponseTimeout);
+        ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(readTimeout);
+        AtomicBoolean added = new AtomicBoolean(false);
+
+        Runnable stopAllTimeouts = () -> {
+            writeTimeoutHandler.stop();
+            responseTimeoutHandler.stop();
+            readTimeoutHandler.stop();
+        };
+
         return nettyClient
-            .doOnRequest((r, connection) -> addRequestHandlers(connection, context))
-            .doAfterRequest((r, connection) -> doAfterRequest(connection, effectiveResponseTimeout))
-            .doOnResponse((response, connection) -> addReadTimeoutHandler(connection, readTimeout))
-            .doAfterResponseSuccess((response, connection) -> removeReadTimeoutHandler(connection))
+            .doOnRequest((r, connection) -> {
+                if (added.compareAndSet(false, true)) {
+                    connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, writeTimeoutHandler);
+                    connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
+                    if (progressReportingHandler != null) {
+                        connection.addHandlerLast(
+                            RequestProgressReportingHandler.HANDLER_NAME, progressReportingHandler);
+                    }
+                    connection.addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, responseTimeoutHandler);
+                    connection.addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, readTimeoutHandler);
+                }
+
+                writeTimeoutHandler.start();
+            })
+            .doAfterRequest((r, connection) -> {
+                writeTimeoutHandler.stop();
+                responseTimeoutHandler.start();
+            })
+            .doOnResponse((response, connection) -> {
+                responseTimeoutHandler.stop();
+                readTimeoutHandler.start();
+            })
+            .doAfterResponseSuccess((response, connection) -> readTimeoutHandler.stop())
+            .doOnError((r, e) -> stopAllTimeouts.run(), (r, e) -> stopAllTimeouts.run())
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
-            .uri(request.getUrl().toString())
+            .uri(URI.create(request.getUrl().toString()))
             .send(bodySendDelegate(request))
             .responseConnection(responseDelegate(request, disableBufferCopy, effectiveEagerlyReadResponse,
                 effectiveHeadersEagerlyConverted))
@@ -271,48 +307,5 @@ class NettyAsyncHttpClient implements HttpClient {
                     disableBufferCopy, headersEagerlyConverted));
             }
         };
-    }
-
-    /*
-     * Adds request handlers:
-     * - write timeout handler once the request is ready to begin sending.
-     * - progress handler if progress tracking has been requested.
-     */
-    private void addRequestHandlers(Connection connection, Context context) {
-        connection.addHandlerLast(WriteTimeoutHandler.HANDLER_NAME, new WriteTimeoutHandler(writeTimeout));
-        ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
-        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
-        if (progressReporter != null) {
-            connection.addHandlerLast(
-                RequestProgressReportingHandler.HANDLER_NAME, new RequestProgressReportingHandler(progressReporter));
-        }
-    }
-
-    /*
-     * After request has been sent:
-     * - Remove Progress Handler
-     * - Remove write timeout handler from the connection as the request has finished sending, then add response timeout
-     * handler.
-     */
-    private static void doAfterRequest(Connection connection, long responseTimeoutMillis) {
-        connection.removeHandler(RequestProgressReportingHandler.HANDLER_NAME);
-        connection.removeHandler(WriteTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ResponseTimeoutHandler.HANDLER_NAME, new ResponseTimeoutHandler(responseTimeoutMillis));
-    }
-
-    /*
-     * Remove response timeout handler from the connection as the response has been received, then add read timeout
-     * handler.
-     */
-    private static void addReadTimeoutHandler(Connection connection, long timeoutMillis) {
-        connection.removeHandler(ResponseTimeoutHandler.HANDLER_NAME)
-            .addHandlerLast(ReadTimeoutHandler.HANDLER_NAME, new ReadTimeoutHandler(timeoutMillis));
-    }
-
-    /*
-     * Remove read timeout handler as the complete response has been received.
-     */
-    private static void removeReadTimeoutHandler(Connection connection) {
-        connection.removeHandler(ReadTimeoutHandler.HANDLER_NAME);
     }
 }

@@ -34,6 +34,7 @@ public class ResponseTimeoutHandlerTests {
         when(ctx.executor()).thenReturn(eventExecutor);
 
         responseTimeoutHandler.handlerAdded(ctx);
+        responseTimeoutHandler.start();
 
         verify(eventExecutor, never()).schedule(any(Runnable.class), anyLong(), any());
     }
@@ -49,19 +50,21 @@ public class ResponseTimeoutHandlerTests {
         when(ctx.executor()).thenReturn(eventExecutor);
 
         responseTimeoutHandler.handlerAdded(ctx);
+        responseTimeoutHandler.start();
 
         verify(eventExecutor, times(1)).schedule(any(Runnable.class), eq(1L), any());
     }
 
     @Test
-    public void removingHandlerCancelsTimeout() {
+    public void stoppingHandlerCancelsTimeout() {
         ResponseTimeoutHandler responseTimeoutHandler = new ResponseTimeoutHandler(100);
 
         ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
 
         responseTimeoutHandler.handlerAdded(ctx);
-        responseTimeoutHandler.handlerRemoved(ctx);
+        responseTimeoutHandler.start();
+        responseTimeoutHandler.stop();
 
         assertNull(responseTimeoutHandler.getResponseTimeoutWatcher());
     }
@@ -74,6 +77,7 @@ public class ResponseTimeoutHandlerTests {
         when(ctx.executor()).thenReturn(new DefaultEventExecutor());
 
         responseTimeoutHandler.handlerAdded(ctx);
+        responseTimeoutHandler.start();
 
         // Fake that the scheduled timer completed before any response is received.
         responseTimeoutHandler.responseTimedOut(ctx);
