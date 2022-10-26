@@ -1,5 +1,15 @@
 ## Release History
 
+### 3.30.0-beta.1 (Unreleased)
+
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+
+#### Other Changes
+
 ### 3.29.1 (2022-10-21)
 #### Bugs Fixed
 * Fixed serialization and persistence issues for UUID for JDK 16 and above - See [PR 31417](https://github.com/Azure/azure-sdk-for-java/pull/31417)

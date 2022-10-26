@@ -77,6 +77,10 @@ public final class OpenShiftManagedClusterProperties {
     @JsonProperty(value = "authProfile")
     private OpenShiftManagedClusterAuthProfile authProfile;
 
+    /** Creates an instance of OpenShiftManagedClusterProperties class. */
+    public OpenShiftManagedClusterProperties() {
+    }
+
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.

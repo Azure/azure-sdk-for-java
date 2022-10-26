@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported description in role assignment.
 
 ## 2.19.0 (2022-09-23)
 
