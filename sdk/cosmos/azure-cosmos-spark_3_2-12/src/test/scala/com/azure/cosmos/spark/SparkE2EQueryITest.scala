@@ -916,10 +916,11 @@ class SparkE2EQueryITest
       df.where("nestedObject.prop2 = '6'").explain()
     }
     queryPlan = output.toString.replaceAll("#\\d+", "#x")
-    logInfo(s"Query Plan: $queryPlan")
+    logInfo(s"nullable properties Query Plan: $queryPlan")
     val expected = s"Cosmos Query: SELECT * FROM r WHERE (NOT(IS_NULL(r['nestedObject'])) AND IS_DEFINED(r['nestedObject'])) " +
       s"AND r['nestedObject']['prop2']=" +
       s"@param0${System.getProperty("line.separator")} > param: @param0 = 6"
+    logInfo(s"nullable properties $expected, matches the real query plan ${queryPlan.contains(expected)}")
     queryPlan.contains(expected) shouldEqual true
 
     val item = rowsArray(0)
