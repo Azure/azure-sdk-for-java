@@ -271,7 +271,7 @@ Not all credentials require this configuration. Credentials that authenticate th
 ### Authenticate Azure-hosted applications
 
 <table style="border: 1px; width: 100%;">
-  <caption></caption>
+  <caption>Authenticate Azure-hosted applications</caption>
   <thead>
     <tr>
       <th>Credential class</th>
@@ -306,7 +306,7 @@ Not all credentials require this configuration. Credentials that authenticate th
 ### Authenticate service principals
 
 <table style="border: 1px; width: 100%;">
-  <caption></caption>
+  <caption>Authenticate service principals</caption>
   <thead>
     <tr>
       <th>Credential class</th>
@@ -340,7 +340,7 @@ Not all credentials require this configuration. Credentials that authenticate th
 ### Authenticate users
 
 <table style="border: 1px; width: 100%;">
-  <caption></caption>
+  <caption>Authenticate users</caption>
   <thead>
     <tr>
       <th>Credential class</th>
@@ -386,7 +386,7 @@ Not all credentials require this configuration. Credentials that authenticate th
 ### Authenticate via development tools
 
 <table style="border: 1px; width: 100%;">
-  <caption></caption>
+  <caption>Authenticate via development tools</caption>
   <thead>
     <tr>
       <th>Credential class</th>
@@ -434,7 +434,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
 ### Service principal with secret
 
 <table style="border: 1px; width: 100%;">
-  <caption></caption>
+  <caption>Service principal with secret</caption>
   <thead>
     <tr>
       <th>Variable name</th>
@@ -460,7 +460,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
 ### Service principal with certificate
 
 <table style="border: 1px; width: 100%;">
-  <caption></caption>
+  <caption>Service principal with certificate</caption>
   <thead>
     <tr>
       <th>Variable name</th>
@@ -490,7 +490,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
 ### Username and password
 
 <table style="border: 1px; width: 100%;">
-  <caption></caption>
+  <caption>Username and password</caption>
   <thead>
     <tr>
       <th>Variable name</th>
