@@ -9,6 +9,7 @@ import com.azure.core.util.serializer.SerializerEncoding
 import com.azure.storage.blob.APISpec
 import com.azure.storage.blob.BlobContainerAsyncClient
 import com.azure.storage.blob.BlobUrlParts
+import com.azure.storage.blob.FakeCredentialInTest
 import com.azure.storage.blob.implementation.util.BlobSasImplUtil
 import com.azure.storage.blob.models.BlobRange
 import com.azure.storage.blob.models.PageList

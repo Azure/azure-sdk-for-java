@@ -18,7 +18,7 @@ public final class NetworkConnectionInnerTests {
         NetworkConnectionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"f\",\"healthCheckStatus\":\"Warning\",\"networkingResourceGroupName\":\"bfvoowvrv\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"jqppyostronzmy\",\"domainName\":\"fipns\",\"organizationUnit\":\"mcwaekrrjr\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"glikkxwslolb\"},\"location\":\"vuzlm\",\"tags\":{\"noigbrnjwmwk\":\"lfktgplcrpwjxe\"},\"id\":\"nbsazejjoqkag\",\"name\":\"hsxttaugzxnf\",\"type\":\"azpxdtnkdmkqjjl\"}")
+                    "{\"properties\":{\"provisioningState\":\"f\",\"healthCheckStatus\":\"Warning\",\"networkingResourceGroupName\":\"bfvoowvrv\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"jqppyostronzmy\",\"domainName\":\"fipns\",\"organizationUnit\":\"mcwaekrrjr\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakeCredentialPlaceholder\"},\"location\":\"vuzlm\",\"tags\":{\"noigbrnjwmwk\":\"lfktgplcrpwjxe\"},\"id\":\"nbsazejjoqkag\",\"name\":\"hsxttaugzxnf\",\"type\":\"azpxdtnkdmkqjjl\"}")
                 .toObject(NetworkConnectionInner.class);
         Assertions.assertEquals("vuzlm", model.location());
         Assertions.assertEquals("lfktgplcrpwjxe", model.tags().get("noigbrnjwmwk"));

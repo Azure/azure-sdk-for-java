@@ -149,7 +149,8 @@ public final class SqlVirtualMachinesCreateOrUpdateTests {
         Assertions.assertEquals(LeastPrivilegeMode.ENABLED, response.leastPrivilegeMode());
         Assertions.assertEquals(SqlImageSku.WEB, response.sqlImageSku());
         Assertions.assertEquals("mtdaa", response.sqlVirtualMachineGroupResourceId());
-        Assertions.assertEquals("v", response.wsfcDomainCredentials().clusterBootstrapAccountPassword());
+        Assertions.assertEquals("fakeClusterBootstrapAccountPasswordPlaceholder",
+            response.wsfcDomainCredentials().clusterBootstrapAccountPassword());
         Assertions.assertEquals("fakeOperatorAccountPasswordPlaceholder",
             response.wsfcDomainCredentials().clusterOperatorAccountPassword());
         Assertions.assertEquals("fakeSqlServiceAccountPasswordPlaceholder",
