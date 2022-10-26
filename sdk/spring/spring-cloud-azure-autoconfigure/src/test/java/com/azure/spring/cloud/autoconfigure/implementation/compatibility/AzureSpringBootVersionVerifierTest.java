@@ -154,7 +154,7 @@ class AzureSpringBootVersionVerifierTest {
     }
 
     @Test
-    public void testVersionVerifierLog(CapturedOutput capturedOutput) {
+    public void testVersionVerifierLog(CapturedOutput capturedOutput) throws InterruptedException {
         List<String> acceptedVersions = Arrays.asList("2.5.x", "2.6.x", "2.7.x");
         ClassNameResolverPredicate mockResolver = mock(ClassNameResolverPredicate.class);
 
@@ -165,6 +165,7 @@ class AzureSpringBootVersionVerifierTest {
             }
         };
         versionVerifier.verify();
+        Thread.sleep(2000);
         String allOutput = capturedOutput.getAll();
         String log1 = "Currently running on Spring Boot version [2.6.2], trying to match it with Spring Cloud Azure accepted version [2.5.x].";
         String log2 = "Currently running on Spring Boot version [2.6.2], trying to match it with Spring Cloud Azure accepted version [2.6.x].";
