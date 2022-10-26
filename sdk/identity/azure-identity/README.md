@@ -271,6 +271,7 @@ Not all credentials require this configuration. Credentials that authenticate th
 ### Authenticate Azure-hosted applications
 
 <table style="border: 1px; width: 100%;">
+  <caption></caption>
   <thead>
     <tr>
       <th>Credential class</th>
@@ -305,6 +306,7 @@ Not all credentials require this configuration. Credentials that authenticate th
 ### Authenticate service principals
 
 <table style="border: 1px; width: 100%;">
+  <caption></caption>
   <thead>
     <tr>
       <th>Credential class</th>
@@ -338,6 +340,7 @@ Not all credentials require this configuration. Credentials that authenticate th
 ### Authenticate users
 
 <table style="border: 1px; width: 100%;">
+  <caption></caption>
   <thead>
     <tr>
       <th>Credential class</th>
@@ -383,6 +386,7 @@ Not all credentials require this configuration. Credentials that authenticate th
 ### Authenticate via development tools
 
 <table style="border: 1px; width: 100%;">
+  <caption></caption>
   <thead>
     <tr>
       <th>Credential class</th>
@@ -430,6 +434,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
 ### Service principal with secret
 
 <table style="border: 1px; width: 100%;">
+  <caption></caption>
   <thead>
     <tr>
       <th>Variable name</th>
@@ -455,6 +460,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
 ### Service principal with certificate
 
 <table style="border: 1px; width: 100%;">
+  <caption></caption>
   <thead>
     <tr>
       <th>Variable name</th>
@@ -484,6 +490,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
 ### Username and password
 
 <table style="border: 1px; width: 100%;">
+  <caption></caption>
   <thead>
     <tr>
       <th>Variable name</th>
