@@ -202,7 +202,7 @@ public class UsernamePasswordCredentialTest {
             StepVerifier.create(credential.authenticate(request1))
                 .expectNextMatches(authenticationRecord -> authenticationRecord.getAuthority()
                     .equals("http://login.microsoftonline.com")
-                    && authenticationRecord.getUsername().equals("fakeNamePlaceholder")
+                    && authenticationRecord.getUsername().equals("username")
                     && authenticationRecord.getHomeAccountId() != null)
                 .verifyComplete();
             Assert.assertNotNull(identityClientMock);
