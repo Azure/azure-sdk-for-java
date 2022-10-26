@@ -4,21 +4,12 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.TestConfigurations
-import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 
 import java.util.UUID
 
 class SparkE2EQueryITest
-    extends IntegrationSpec
-        with SparkWithJustDropwizardAndNoSlf4jMetrics
-        with CosmosClient
-        with AutoCleanableCosmosContainer
-        with BasicLoggingTrait
-        with MetricAssertions {
-
-    val objectMapper = new ObjectMapper()
+    extends SparkE2EQueryITestBase  {
 
     "spark query" can "return proper Cosmos specific query plan on explain with nullable properties" in {
         val cosmosEndpoint = TestConfigurations.HOST

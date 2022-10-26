@@ -72,6 +72,7 @@
             <configuration>
               <sources>
                 <source>${basedir}/../azure-cosmos-spark_3_2-12/src/test/scala</source>
+                <source>${basedir}/src/test/scala</source>
               </sources>
             </configuration>
           </execution>

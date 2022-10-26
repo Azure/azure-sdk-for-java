@@ -13,7 +13,7 @@ import java.sql.Timestamp
 import java.util.UUID
 import scala.collection.mutable
 
-class SparkE2EQueryBaseITest
+abstract class SparkE2EQueryITestBase
   extends IntegrationSpec
     with SparkWithJustDropwizardAndNoSlf4jMetrics
     with CosmosClient
