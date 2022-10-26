@@ -29,6 +29,8 @@ public class StartRecordingOptions {
 
     private List<CommunicationIdentifier> audioChannelParticipantOrdering;
 
+    private RepeatabilityHeaders repeatabilityHeaders;
+
     /**
      * Constructor
      *
@@ -154,6 +156,27 @@ public class StartRecordingOptions {
      */
     public StartRecordingOptions setAudioChannelParticipantOrdering(List<CommunicationIdentifier> audioChannelParticipantOrdering) {
         this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
+        return this;
+    }
+
+    /**
+     * Get the Repeatability headers configuration.
+     *
+     * @return the repeatabilityHeaders
+     */
+    public RepeatabilityHeaders getRepeatabilityHeaders() {
+        return repeatabilityHeaders;
+    }
+
+
+    /**
+     * Set the repeatability headers
+     *
+     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @return the StartRecordingOptions object itself.
+     */
+    public StartRecordingOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+        this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
 }
