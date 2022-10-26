@@ -326,27 +326,7 @@ public class RntbdTransportClient extends TransportClient {
                 return;
             }
 
-            result.subscribe(
-                response -> {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(
-                            "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
-                                + "\"value\":{}}}}",
-                            RntbdObjectMapper.toJson(record),
-                            response.getClass().getSimpleName(),
-                            RntbdObjectMapper.toJson(response));
-                    }
-                },
-                throwable -> {
-                    if (logger.isDebugEnabled()) {
-                        logger.debug(
-                            "received response to cancelled request: {\"request\":{},\"response\":{\"type\":{},"
-                                + "\"value\":{}}}",
-                            RntbdObjectMapper.toJson(record),
-                            throwable.getClass().getSimpleName(),
-                            RntbdObjectMapper.toJson(throwable));
-                    }
-                });
+            logger.info("The request has been cancelled");
         }).contextWrite(reactorContext);
     }
 
