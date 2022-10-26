@@ -10,9 +10,9 @@ import com.azure.core.annotation.Immutable;
  */
 @Immutable
 public final class KeyVaultSetting {
-    private String name;
-    private String value;
-    private KeyVaultSettingType type;
+    private final String name;
+    private final String value;
+    private final KeyVaultSettingType type;
 
     /**
      * Creates a new {@link KeyVaultSetting setting} with the specified details.
@@ -36,12 +36,6 @@ public final class KeyVaultSetting {
         return this.name;
     }
 
-    KeyVaultSetting setName(String name) {
-        this.name = name;
-
-        return this;
-    }
-
     /**
      * Get the value of the {@link KeyVaultSetting}.
      *
@@ -51,12 +45,6 @@ public final class KeyVaultSetting {
         return this.value;
     }
 
-    KeyVaultSetting setValue(String value) {
-        this.value = value;
-
-        return this;
-    }
-
     /**
      * Get the type of the {@link KeyVaultSetting}'s value.
      *
@@ -64,11 +52,5 @@ public final class KeyVaultSetting {
      */
     public KeyVaultSettingType getType() {
         return this.type;
-    }
-
-    KeyVaultSetting setType(KeyVaultSettingType type) {
-        this.type = type;
-
-        return this;
     }
 }

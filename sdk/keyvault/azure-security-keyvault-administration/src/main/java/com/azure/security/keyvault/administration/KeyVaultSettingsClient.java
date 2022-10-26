@@ -10,6 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.implementation.KeyVaultSettingsClientImpl;
 import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
 import com.azure.security.keyvault.administration.implementation.models.Setting;
@@ -33,6 +34,7 @@ import java.util.List;
 public final class KeyVaultSettingsClient {
     private final String vaultUrl;
     private final KeyVaultSettingsClientImpl implClient;
+    private final ClientLogger logger = new ClientLogger(KeyVaultSettingsClient.class);
 
     /**
      * Initializes an instance of {@link KeyVaultSettingsClient} class.
@@ -59,7 +61,7 @@ public final class KeyVaultSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSetting updateSetting(String name, String value) {
         if (CoreUtils.isNullOrEmpty(name)) {
-            throw new IllegalArgumentException("'name' cannot be empty or null");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
         }
 
         return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(
@@ -82,7 +84,7 @@ public final class KeyVaultSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSetting> updateSettingWithResponse(String name, String value, Context context) {
         if (CoreUtils.isNullOrEmpty(name)) {
-            throw new IllegalArgumentException("'name' cannot be empty or null");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
         }
 
         Response<Setting> response = this.implClient.updateSettingWithResponse(vaultUrl, name, value, context);
@@ -103,7 +105,7 @@ public final class KeyVaultSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSetting getSetting(String name) {
         if (CoreUtils.isNullOrEmpty(name)) {
-            throw new IllegalArgumentException("'name' cannot be empty or null");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
         }
 
         return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(this.implClient.getSetting(vaultUrl, name));
@@ -124,7 +126,7 @@ public final class KeyVaultSettingsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSetting> getSettingWithResponse(String name, Context context) {
         if (CoreUtils.isNullOrEmpty(name)) {
-            throw new IllegalArgumentException("'name' cannot be empty or null");
+            throw logger.logExceptionAsError(new IllegalArgumentException("'name' cannot be empty or null"));
         }
 
         Response<Setting> response = this.implClient.getSettingWithResponse(vaultUrl, name, context);
@@ -141,7 +143,7 @@ public final class KeyVaultSettingsClient {
      *
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultSettingsListResult listSettings() {
         List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();
 
@@ -161,7 +163,7 @@ public final class KeyVaultSettingsClient {
      *
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultSettingsListResult> listSettingsWithResponse(Context context) {
         Response<SettingsListResult> response = this.implClient.getSettingsWithResponse(vaultUrl, context);
         List<KeyVaultSetting> keyVaultSettings = new ArrayList<>();

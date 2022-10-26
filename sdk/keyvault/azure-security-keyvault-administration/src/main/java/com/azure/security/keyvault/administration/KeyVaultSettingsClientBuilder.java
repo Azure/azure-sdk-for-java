@@ -65,8 +65,7 @@ public final class KeyVaultSettingsClientBuilder implements
     private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
     private static final String SDK_NAME = "name";
     private static final String SDK_VERSION = "version";
-
-    private final ClientLogger logger = new ClientLogger(KeyVaultBackupClientBuilder.class);
+    private final ClientLogger logger = new ClientLogger(KeyVaultSettingsClientBuilder.class);
     private final KeyVaultSettingsClientImplBuilder implClientBuilder;
     private final List<HttpPipelinePolicy> pipelinePolicies;
     private final Map<String, String> properties;

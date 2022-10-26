@@ -175,7 +175,7 @@ public final class KeyVaultSettingsAsyncClient {
      *
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<KeyVaultSettingsListResult> listSettings() {
         try {
             return this.implClient.getSettingsAsync(vaultUrl)
@@ -204,7 +204,7 @@ public final class KeyVaultSettingsAsyncClient {
      *
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KeyVaultSettingsListResult>> listSettingsWithResponse() {
         try {
             return this.implClient.getSettingsWithResponseAsync(vaultUrl)

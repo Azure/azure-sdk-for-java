@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.administration.models;
 
 import com.azure.core.annotation.Immutable;
@@ -9,7 +12,7 @@ import java.util.List;
  */
 @Immutable
 public class KeyVaultSettingsListResult {
-    private List<KeyVaultSetting> settings;
+    private final List<KeyVaultSetting> settings;
 
     /**
      * Creates an instance of {@link KeyVaultSettingsListResult} class.
@@ -17,7 +20,7 @@ public class KeyVaultSettingsListResult {
      * @param settings The list of {@link KeyVaultSetting settings} for the account.
      */
     public KeyVaultSettingsListResult(List<KeyVaultSetting> settings) {
-
+        this.settings = settings;
     }
 
     /**
