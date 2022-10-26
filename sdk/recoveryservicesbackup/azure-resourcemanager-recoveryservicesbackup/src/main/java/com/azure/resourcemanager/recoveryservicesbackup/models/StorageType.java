@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for StorageType. */
+/** Storage type. */
 public final class StorageType extends ExpandableStringEnum<StorageType> {
     /** Static value Invalid for StorageType. */
     public static final StorageType INVALID = fromString("Invalid");

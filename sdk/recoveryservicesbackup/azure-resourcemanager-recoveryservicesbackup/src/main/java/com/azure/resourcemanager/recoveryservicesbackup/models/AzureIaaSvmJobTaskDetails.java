@@ -61,6 +61,10 @@ public final class AzureIaaSvmJobTaskDetails {
     @JsonProperty(value = "taskExecutionDetails")
     private String taskExecutionDetails;
 
+    /** Creates an instance of AzureIaaSvmJobTaskDetails class. */
+    public AzureIaaSvmJobTaskDetails() {
+    }
+
     /**
      * Get the taskId property: The task display name.
      *

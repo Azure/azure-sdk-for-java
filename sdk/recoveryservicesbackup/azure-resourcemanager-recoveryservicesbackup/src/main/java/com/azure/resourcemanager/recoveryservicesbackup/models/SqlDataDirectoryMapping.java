@@ -34,6 +34,10 @@ public final class SqlDataDirectoryMapping {
     @JsonProperty(value = "targetPath")
     private String targetPath;
 
+    /** Creates an instance of SqlDataDirectoryMapping class. */
+    public SqlDataDirectoryMapping() {
+    }
+
     /**
      * Get the mappingType property: Type of data directory mapping.
      *

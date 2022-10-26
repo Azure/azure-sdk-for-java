@@ -21,6 +21,10 @@ public final class AzureWorkloadSapHanaRestoreWithRehydrateRequest extends Azure
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
+    /** Creates an instance of AzureWorkloadSapHanaRestoreWithRehydrateRequest class. */
+    public AzureWorkloadSapHanaRestoreWithRehydrateRequest() {
+    }
+
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
      *
