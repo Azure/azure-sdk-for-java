@@ -1557,7 +1557,7 @@
       <id>test-module-base-compile</id>
       <activation>
         <file>
-          <exists>${project.build.testSourceDirectory}/module-info.java</exists>
+          <exists>${build.testSourceDirectory}/module-info.java</exists>
         </file>
       </activation>
 
