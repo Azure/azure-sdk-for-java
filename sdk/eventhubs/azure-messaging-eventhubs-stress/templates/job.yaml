@@ -42,10 +42,10 @@ spec:
           --TEST_CLASS=EventProcessor
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
       resources:
-          requests:
-              memory: "1G"
-              cpu: "1"
-          limits:
-              memory: "2G"
-              cpu: "2"
+        requests:
+          memory: "1G"
+          cpu: "1"
+        limits:
+          memory: "2G"
+          cpu: "2"
 {{- end -}}
