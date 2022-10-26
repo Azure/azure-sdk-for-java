@@ -57,7 +57,7 @@ public final class KeyVaultSettingsClient {
      * @throws KeyVaultErrorException thrown if the request is rejected by the server.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultSetting createOrUpdateSetting(String name, String value) {
+    public KeyVaultSetting updateSetting(String name, String value) {
         if (CoreUtils.isNullOrEmpty(name)) {
             throw new IllegalArgumentException("'name' cannot be empty or null");
         }
