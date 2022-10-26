@@ -71,6 +71,7 @@ public final class KeyVaultSettingsClient {
      *
      * @param name The name of the setting to update.
      * @param value The value to set.
+     * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the updated
      * {@link KeyVaultSetting account setting}.
@@ -112,6 +113,7 @@ public final class KeyVaultSettingsClient {
      * Get the value of a specific account setting.
      *
      * @param name The name of setting to retrieve the value of.
+     * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains the
      * {@link KeyVaultSetting account setting}.
@@ -151,6 +153,8 @@ public final class KeyVaultSettingsClient {
 
     /**
      * List the account's settings.
+     *
+     * @param context Additional {@link Context} that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link Response} whose {@link Response#getValue() value} contains a
      * {@link KeyVaultSettingsListResult result object} wrapping the list of {@link KeyVaultSetting account settings}.

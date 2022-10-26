@@ -14,6 +14,13 @@ public final class KeyVaultSetting {
     private String value;
     private KeyVaultSettingType type;
 
+    /**
+     * Creates a new {@link KeyVaultSetting setting} with the specified details.
+     *
+     * @param name The name of the {@link KeyVaultSetting setting}.
+     * @param value The value of the {@link KeyVaultSetting setting}.
+     * @param type The data type of the contents of the {@link KeyVaultSetting setting}.
+     */
     public KeyVaultSetting(String name, String value, KeyVaultSettingType type) {
         this.name = name;
         this.value = value;
