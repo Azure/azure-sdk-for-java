@@ -3,81 +3,47 @@
 
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
-import com.fasterxml.jackson.databind.node.ArrayNode
-
-import java.time.format.DateTimeFormatter
-import java.time.{ZoneOffset, ZonedDateTime}
 import java.util
-import scala.collection.immutable.Map
-import scala.collection.mutable.ArrayBuffer
 // scalastyle:off underscore.import
-import com.azure.cosmos.models._
 // scalastyle:on underscore.import
-import com.azure.cosmos.CosmosException
-import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NonEmptyNamespaceException, NoSuchNamespaceException, NoSuchTableException}
-import org.apache.spark.sql.connector.catalog.{CatalogPlugin, Identifier, NamespaceChange, SupportsNamespaces, Table, TableCatalog, TableChange}
-import org.apache.spark.sql.connector.expressions.Transform
-import org.apache.spark.sql.execution.streaming.HDFSMetadataLog
-import org.apache.spark.sql.types.StructType
-import org.apache.spark.sql.util.CaseInsensitiveStringMap
-
-import java.util.Collections
-import scala.annotation.tailrec
+import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException}
+import org.apache.spark.sql.connector.catalog.{NamespaceChange, SupportsNamespaces}
 
 // scalastyle:off underscore.import
-import scala.collection.JavaConverters._
 
 class CosmosCatalog
   extends CosmosCatalogBase
     with SupportsNamespaces {
 
     override def listNamespaces(): Array[Array[String]] = {
-        logDebug("catalog:listNamespaces")
-
-        TransientErrorsRetryPolicy.executeWithRetry(() => listNamespacesImpl())
+        super.listNamespaces()
     }
 
     @throws(classOf[NoSuchNamespaceException])
-    override def listNamespaces(
-                                   namespace: Array[String]): Array[Array[String]] = {
-        loadNamespaceMetadata(namespace) // throws NoSuchNamespaceException if namespace doesn't exist
-        // Cosmos DB only has one single level depth databases
-        Array.empty[Array[String]]
+    override def listNamespaces(namespace: Array[String]): Array[Array[String]] = {
+        super.listNamespaces(namespace)
     }
 
     @throws(classOf[NoSuchNamespaceException])
-    override def loadNamespaceMetadata(
-                                          namespace: Array[String]): util.Map[String, String] = {
-
-        TransientErrorsRetryPolicy.executeWithRetry(() => loadNamespaceMetadataImpl(namespace))
+    override def loadNamespaceMetadata(namespace: Array[String]): util.Map[String, String] = {
+        super.loadNamespaceMetadata(namespace)
     }
 
     @throws(classOf[NamespaceAlreadyExistsException])
     override def createNamespace(namespace: Array[String],
                                  metadata: util.Map[String, String]): Unit = {
-        TransientErrorsRetryPolicy.executeWithRetry(() => createNamespaceImpl(namespace, metadata))
+        super.createNamespace(namespace, metadata)
     }
 
     @throws(classOf[UnsupportedOperationException])
     override def alterNamespace(namespace: Array[String],
                                 changes: NamespaceChange*): Unit = {
-        checkNamespace(namespace)
-        // TODO: we can support changing database level throughput?
-        throw new UnsupportedOperationException("altering namespace not supported")
-    }
-
-
-    @throws(classOf[NoSuchNamespaceException])
-    def dropNamespace(namespace: Array[String]): Boolean = {
-        TransientErrorsRetryPolicy.executeWithRetry(() => dropNamespaceImpl(namespace))
+        super.alterNamespace(namespace, changes)
     }
 
     @throws(classOf[NoSuchNamespaceException])
     override def dropNamespace(namespace: Array[String], cascade: Boolean): Boolean = {
-        TransientErrorsRetryPolicy.executeWithRetry(() => dropNamespaceImpl(namespace))
+        super.dropNamespace(namespace)
     }
 }
 // scalastyle:on multiple.string.literals
