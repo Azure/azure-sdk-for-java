@@ -1,6 +1,6 @@
 # Release History
 
-## 1.5.0-beta.1 (Unreleased)
+## 0.5.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -10,7 +10,7 @@
 
 ### Other Changes
 
-## 1.4.0 (2022-10-12)
+## 4.4.0 (2022-10-12)
 
 ### Features Added
 - Added support to customize the Communication Identity access token’s validity period:
@@ -32,7 +32,7 @@
 - Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
 - Upgraded `azure-communication-common` from `1.2.1` to version `1.2.2`.
 
-## 1.3.1 (2022-09-08)
+## 2.3.1 (2022-09-08)
 
 ### Other Changes
 
@@ -41,7 +41,7 @@
 - Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
 - Upgraded `azure-communication-common` from `1.2.0` to version `1.2.1`.
 
-## 1.3.0 (2022-08-10)
+## 3.3.0 (2022-08-10)
 
 ### Features Added
 - Added `String getRawId()` and `static CommunicationIdentifier fromRawId(String rawId)` to `CommunicationIdentifier` to translate between a `CommunicationIdentifier` and its underlying canonical rawId representation. Developers can now use the rawId as an encoded format for identifiers to store in their databases or as stable keys in general.
