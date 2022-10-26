@@ -1,6 +1,6 @@
 # Release History
 
-## 1.3.0-beta.2 (Unreleased)
+## 0.3.0-beta.2 (Unreleased)
 
 ### Bug Fixes
 
@@ -8,7 +8,7 @@
 
 #### Dependency Updates
 
-## 1.2.2 (2022-10-11)
+## 4.2.2 (2022-10-11)
 
 ### Bug Fixes
 - Fixed the logic of `PhoneNumberIdentifier` to always maintain the original phone number string whether it included the leading `+` sign or not.
@@ -20,7 +20,7 @@
 - Upgraded `azure-core` from `1.32.0` to version `1.33.0`.
 - Upgraded `azure-core-http-netty` from `1.12.5` to version `1.12.6`.
 
-## 1.2.1 (2022-09-07)
+## 2.2.1 (2022-09-07)
 
 ### Other Changes
 
@@ -29,7 +29,7 @@
 - Upgraded `azure-core` from `1.31.0` to version `1.32.0`.
 - Upgraded `azure-core-http-netty` from `1.12.4` to version `1.12.5`.
 
-## 1.3.0-beta.1 (2022-08-12)
+## 3.3.0-beta.1 (2022-08-12)
 
 ### Other Changes
 - Opened the package to the new `azure-communication-rooms` library by modifying the `module-info.java` file.
