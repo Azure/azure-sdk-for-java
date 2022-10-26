@@ -8,6 +8,7 @@ import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import reactor.core.scheduler.Scheduler;
 
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTITION_ID_KEY;
 
@@ -21,6 +22,7 @@ class PartitionPump implements AutoCloseable {
     private final EventHubConsumerAsyncClient client;
     private final Scheduler scheduler;
     private LastEnqueuedEventProperties lastEnqueuedEventProperties;
+    private final AtomicBoolean isDisposed = new AtomicBoolean();
 
     /**
      * Creates an instance with the given client and scheduler.
@@ -63,6 +65,11 @@ class PartitionPump implements AutoCloseable {
      */
     @Override
     public void close() {
+        // When client receive complete signal will call this method again in clean up method on scheduler thread,
+        // the first dispose will cause a timeout exception. Add a check avoid close twice.
+        if (isDisposed.getAndSet(true)) {
+            return;
+        }
         try {
             client.close();
         } catch (Exception error) {
@@ -70,7 +77,11 @@ class PartitionPump implements AutoCloseable {
                 .addKeyValue(PARTITION_ID_KEY, partitionId)
                 .log("Exception occurred disposing of consumer client.", error);
         } finally {
-            scheduler.disposeGracefully().block(Duration.ofSeconds(1));
+            try {
+                scheduler.disposeGracefully().block(Duration.ofSeconds(1));
+            } catch (IllegalStateException e) {
+                scheduler.dispose();
+            }
         }
     }
 }

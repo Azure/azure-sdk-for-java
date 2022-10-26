@@ -45,6 +45,7 @@ import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 import static com.azure.core.util.tracing.Tracer.SPAN_CONTEXT_KEY;
 import static com.azure.messaging.eventhubs.EventHubClientBuilder.DEFAULT_PREFETCH_COUNT;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -646,6 +647,154 @@ public class EventProcessorClientTest {
         assertTrue(completed);
         assertTrue(testPartitionProcessor.receivedEventsCount.contains(0));
         assertTrue(testPartitionProcessor.receivedEventsCount.contains(1));
+    }
+
+    /**
+     * process event/eventBatch quickly, the thread won't be interrupted by dispose gracefully.
+     */
+    @Test
+    public void testProcessorDisposeQuickly() throws InterruptedException {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+
+        when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
+        when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt()))
+            .thenReturn(consumer1);
+        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
+
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData3.getSequenceNumber()).thenReturn(3L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData2.getOffset()).thenReturn(100L);
+        when(eventData3.getOffset()).thenReturn(150L);
+
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
+        // Use 200 milliseconds to process per event/eventBatch.
+        final MonitorPartitionProcessor testPartitionProcessor = new MonitorPartitionProcessor(200);
+        CountDownLatch countDownLatch = new CountDownLatch(3);
+        testPartitionProcessor.countDownLatch = countDownLatch;
+
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            3, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+
+        // Act
+        eventProcessorClient.start();
+        boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
+        eventProcessorClient.stop();
+
+        // Assert
+        assertTrue(completed);
+        // thread not interrupted.
+        assertFalse(testPartitionProcessor.isInterrupted);
+    }
+
+    /**
+     * process event/eventBatch slow, the thread will be interrupted if dispose gracefully timeout.
+     */
+    @Test
+    public void testProcessorDisposeNSlow() throws InterruptedException {
+        // Arrange
+        final Tracer tracer1 = mock(Tracer.class);
+        final List<Tracer> tracers = Collections.singletonList(tracer1);
+        TracerProvider tracerProvider = new TracerProvider(tracers);
+
+        when(eventHubClientBuilder.getPrefetchCount()).thenReturn(DEFAULT_PREFETCH_COUNT);
+        when(eventHubClientBuilder.buildAsyncClient()).thenReturn(eventHubAsyncClient);
+        when(eventHubAsyncClient.getFullyQualifiedNamespace()).thenReturn("test-ns");
+        when(eventHubAsyncClient.getEventHubName()).thenReturn("test-eh");
+        when(eventHubAsyncClient.getPartitionIds()).thenReturn(Flux.just("1"));
+        when(eventHubAsyncClient.getIdentifier()).thenReturn("my-client-identifier");
+        when(eventHubAsyncClient
+            .createConsumer(anyString(), anyInt()))
+            .thenReturn(consumer1);
+        when(consumer1.receiveFromPartition(anyString(), any(EventPosition.class), any(ReceiveOptions.class)))
+            .thenReturn(Flux.just(getEvent(eventData1), getEvent(eventData2), getEvent(eventData3)));
+
+        when(eventData1.getSequenceNumber()).thenReturn(1L);
+        when(eventData2.getSequenceNumber()).thenReturn(2L);
+        when(eventData3.getSequenceNumber()).thenReturn(3L);
+        when(eventData1.getOffset()).thenReturn(1L);
+        when(eventData2.getOffset()).thenReturn(100L);
+        when(eventData3.getOffset()).thenReturn(150L);
+
+        final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
+        // Use 2000 milliseconds to process per event/eventBatch.
+        final MonitorPartitionProcessor testPartitionProcessor = new MonitorPartitionProcessor(2000);
+        CountDownLatch countDownLatch = new CountDownLatch(3);
+        testPartitionProcessor.countDownLatch = countDownLatch;
+
+        final EventProcessorClient eventProcessorClient = new EventProcessorClient(eventHubClientBuilder, "test-consumer",
+            () -> testPartitionProcessor, checkpointStore, false, tracerProvider, ec -> { }, new HashMap<>(),
+            3, Duration.ofSeconds(1), true, Duration.ofSeconds(10), Duration.ofMinutes(1), LoadBalancingStrategy.BALANCED);
+
+        // Act
+        eventProcessorClient.start();
+        boolean completed = countDownLatch.await(10, TimeUnit.SECONDS);
+        eventProcessorClient.stop();
+
+        // Assert
+        assertTrue(completed);
+        // thread interrupted.
+        assertTrue(testPartitionProcessor.isInterrupted);
+    }
+
+    private static final class MonitorPartitionProcessor extends PartitionProcessor {
+        CountDownLatch countDownLatch;
+        boolean isInterrupted = false;
+        long sleepTime;
+
+        MonitorPartitionProcessor(long sleepTimeInMills) {
+            super();
+            sleepTime = sleepTimeInMills;
+        }
+
+
+        @Override
+        public void processEvent(EventContext eventContext) {
+            if (eventContext.getEventData() != null) {
+                if (countDownLatch != null) {
+                    countDownLatch.countDown();
+                    eventContext.updateCheckpoint();
+                }
+            }
+            try {
+                TimeUnit.MILLISECONDS.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                isInterrupted = true;
+            }
+        }
+
+        @Override
+        public void processEventBatch(EventBatchContext eventBatchContext) {
+            eventBatchContext.getEvents().forEach(eventContext -> {
+                if (countDownLatch != null) {
+                    countDownLatch.countDown();
+                }
+            });
+            eventBatchContext.updateCheckpoint();
+            try {
+                TimeUnit.MILLISECONDS.sleep(sleepTime);
+            } catch (InterruptedException e) {
+                isInterrupted = true;
+            }
+        }
+
+        @Override
+        public void processError(ErrorContext errorContext) {
+            // do nothing
+            return;
+        }
     }
 
     private PartitionEvent getEvent(EventData event) {
