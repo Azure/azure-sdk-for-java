@@ -54,7 +54,7 @@ public final class TrafficIncidentViewportOptions {
     }
 
     /**
-     * get bounding xoom
+     * get bounding zoom
      * @return int
      */
     public int getBoundingZoom() {
