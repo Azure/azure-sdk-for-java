@@ -5,6 +5,8 @@ package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Scheduler;
 import reactor.core.scheduler.Schedulers;
 
 import java.lang.invoke.MethodHandle;
@@ -22,12 +24,15 @@ public final class ReactorShim {
     private static final ClientLogger LOGGER = new ClientLogger(ReactorShim.class);
 
     /* Reactor Operator names */
-    private static final String  WINDOW_TIMEOUT_OPERATOR = "windowTimeout";
+    private static final String WINDOW_TIMEOUT_OPERATOR = "windowTimeout";
+    private static final String DISPOSE_GRACEFULLY = "disposeGracefully";
     /* Reactor Operator handles */
     private static final MethodHandle BACKPRESSURE_WINDOW_TIMEOUT_OPERATOR_HANDLE;
+    private static final MethodHandle SCHEDULER_DISPOSE_GRACEFULLY_OPERATOR_HANDLE;
 
     static {
         BACKPRESSURE_WINDOW_TIMEOUT_OPERATOR_HANDLE = lookupBackpressureWindowTimeoutOperator();
+        SCHEDULER_DISPOSE_GRACEFULLY_OPERATOR_HANDLE = lookupDisposeGracefullyOperator();
     }
 
     /**
@@ -70,6 +75,32 @@ public final class ReactorShim {
     }
 
     /**
+     * If the loaded Reactor library has disposeGracefully method then it will be called, otherwise, call dispose method.
+     *
+     * @param source scheduler.
+     * @return a {@link Mono} of scheduler call dispose or disposeGracefully.
+     */
+    public static Mono<Void> disposeGracefully(Scheduler source) {
+        if (SCHEDULER_DISPOSE_GRACEFULLY_OPERATOR_HANDLE == null) {
+            source.dispose();
+            return Mono.empty();
+        }
+        try {
+            return (Mono<Void>) SCHEDULER_DISPOSE_GRACEFULLY_OPERATOR_HANDLE.invoke(source);
+        } catch (Throwable err) {
+            // 'java.lang.invoke' throws Throwable. Given 'Error' category represents a serious
+            // abnormal thread state throw it immediately else throw via standard azure-core Logger.
+            if (err instanceof Error) {
+                throw (Error) err;
+            } else if (err instanceof RuntimeException) {
+                throw LOGGER.logExceptionAsError((RuntimeException) err);
+            } else {
+                throw LOGGER.logExceptionAsError(new RuntimeException(err));
+            }
+        }
+    }
+
+    /**
      * Try to obtain {@link MethodHandle} for backpressure aware windowTimeout Reactor operator.
      *
      * @return if the backpressure aware windowTimeout Reactor operator is available then return
@@ -81,6 +112,20 @@ public final class ReactorShim {
                 MethodType.methodType(Flux.class, int.class, Duration.class, boolean.class));
         } catch (IllegalAccessException | NoSuchMethodException err) {
             LOGGER.verbose("Failed to retrieve MethodHandle for backpressure aware windowTimeout Reactor operator.", err);
+        }
+        return null;
+    }
+
+    /**
+     * Try to obtain {@link MethodHandle} for scheduler disposeGracefully method.
+     *
+     * @return if the scheduler disposeGracefully method is available then return {@link MethodHandle} else null.
+     */
+    private static MethodHandle lookupDisposeGracefullyOperator() {
+        try {
+            return MethodHandles.publicLookup().findVirtual(Scheduler.class, DISPOSE_GRACEFULLY, MethodType.methodType(Mono.class));
+        }  catch (IllegalAccessException | NoSuchMethodException err) {
+            LOGGER.verbose("Failed to retrieve MethodHandle for scheduler dispose gracefully method.", err);
         }
         return null;
     }

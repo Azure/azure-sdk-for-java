@@ -4,6 +4,7 @@
 package com.azure.messaging.eventhubs;
 
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.messaging.eventhubs.implementation.ReactorShim;
 import com.azure.messaging.eventhubs.models.LastEnqueuedEventProperties;
 import reactor.core.scheduler.Scheduler;
 
@@ -78,7 +79,7 @@ class PartitionPump implements AutoCloseable {
                 .log("Exception occurred disposing of consumer client.", error);
         } finally {
             try {
-                scheduler.disposeGracefully().block(Duration.ofSeconds(1));
+                ReactorShim.disposeGracefully(scheduler).block(Duration.ofSeconds(1));
             } catch (IllegalStateException e) {
                 scheduler.dispose();
             }
