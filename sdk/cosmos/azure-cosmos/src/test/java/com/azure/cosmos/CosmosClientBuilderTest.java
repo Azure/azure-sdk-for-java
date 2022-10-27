@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
+import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -38,7 +39,7 @@ public class CosmosClientBuilderTest {
             CosmosAsyncClient client = new CosmosClientBuilder()
                 .key(TestConfigurations.MASTER_KEY)
                 .endpoint(hostName)
-                .preferredRegions(ImmutableList.of(" "))
+                .preferredRegions(Collections.emptyList())
                 .buildAsyncClient();
             client.close();
         } catch (Exception e) {
