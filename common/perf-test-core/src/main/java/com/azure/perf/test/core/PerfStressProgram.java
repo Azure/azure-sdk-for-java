@@ -140,8 +140,7 @@ public class PerfStressProgram {
         for (int i = 0; i < options.getParallel(); i++) {
             try {
                 tests[i] = (PerfTestBase<?>) testClass.getConstructor(options.getClass()).newInstance(options);
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                     | InvocationTargetException | SecurityException | NoSuchMethodException e) {
+            } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e);
             }
         }
@@ -276,7 +275,7 @@ public class PerfStressProgram {
                             sink.complete();
                         }
                     })
-                    .parallel()
+                    .parallel(parallel)
                     .runOn(Schedulers.boundedElastic())
                     .flatMap(test -> {
                         if (System.nanoTime() < endNanoTime) {
@@ -288,7 +287,7 @@ public class PerfStressProgram {
                         } else {
                             return Mono.just(1);
                         }
-                    }, false, parallel)
+                    }, false, Math.min(Schedulers.DEFAULT_POOL_SIZE * 2, parallel), 1)
                     .then()
                     .block();
             }
@@ -356,9 +355,7 @@ public class PerfStressProgram {
                 System.out.println();
             }
             System.out.println();
-        }).subscribe(i -> {
-            printStatusHelper(status, newLine, needsExtraNewline);
-        });
+        }).subscribe(i -> printStatusHelper(status, newLine, needsExtraNewline));
     }
 
     private static void printStatusHelper(Supplier<Object> status, boolean newLine, boolean[] needsExtraNewline) {
