@@ -70,7 +70,8 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
             }
         } else {
             Map<String, Object> main = new LinkedHashMap<>();
-            Map<String, Object> spring = new LinkedHashMap<String, Object>() {{ put("main", main); }};
+            Map<String, Object> spring = new LinkedHashMap<>();
+            spring.put("main", main);
             map.put("spring", spring);
             return main;
         }
