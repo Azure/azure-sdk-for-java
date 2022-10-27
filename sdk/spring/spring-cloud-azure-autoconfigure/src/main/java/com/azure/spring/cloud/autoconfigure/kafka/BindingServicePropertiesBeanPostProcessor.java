@@ -41,7 +41,6 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
                     if (entry.getKey() != null && entry.getValue() != null
                             && (KAKFA_BINDER_TYPE.equalsIgnoreCase(entry.getValue().getType())
                             || KAKFA_BINDER_DEFAULT_NAME.equalsIgnoreCase(entry.getKey()))) {
-                        readSpringMainPropertiesMap(entry.getValue().getEnvironment());
                         configureBinderSources(readSpringMainPropertiesMap(entry.getValue().getEnvironment()));
                     }
                 }
