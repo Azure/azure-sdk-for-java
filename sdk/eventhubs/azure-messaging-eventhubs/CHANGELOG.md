@@ -3,7 +3,7 @@
 ## 5.15.0-beta.1 (Unreleased)
 
 ### Features Added
-- Added stop EventhubProcessorClient gracefully. ([26972](https://github.com/Azure/azure-sdk-for-java/issues/26972))
+- Added stop EventProcessorClient gracefully. ([26972](https://github.com/Azure/azure-sdk-for-java/issues/26972))
 ### Breaking Changes
 
 ### Bugs Fixed
