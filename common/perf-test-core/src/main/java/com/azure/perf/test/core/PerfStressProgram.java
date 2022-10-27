@@ -276,7 +276,7 @@ public class PerfStressProgram {
                         }
                     })
                     .parallel(parallel)
-                    .runOn(Schedulers.boundedElastic())
+                    .runOn(Schedulers.parallel())
                     .flatMap(test -> {
                         if (System.nanoTime() < endNanoTime) {
                             return test.runTestAsync()
@@ -287,7 +287,7 @@ public class PerfStressProgram {
                         } else {
                             return Mono.just(1);
                         }
-                    }, false, Math.min(Schedulers.DEFAULT_POOL_SIZE * 2, parallel), 1)
+                    }, false, Math.min(1000 / parallel, parallel), 1)
                     .then()
                     .block();
             }
