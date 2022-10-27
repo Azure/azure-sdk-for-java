@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.communication.callautomation.implementation.models;
+package com.azure.communication.callautomation.implementation.converters;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The MediaStreamingAudioInternal model. */
-public final class MediaStreamingAudioDataInternal {
+public final class MediaStreamingAudioDataConverter {
 
     /*
      * The audio data.
