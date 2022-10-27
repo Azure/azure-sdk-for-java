@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -284,7 +283,7 @@ public class PerfStressProgram {
                     .then()
                     .block();
             }
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException e) {
             System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
             e.printStackTrace(System.err);
             throw new RuntimeException(e);
