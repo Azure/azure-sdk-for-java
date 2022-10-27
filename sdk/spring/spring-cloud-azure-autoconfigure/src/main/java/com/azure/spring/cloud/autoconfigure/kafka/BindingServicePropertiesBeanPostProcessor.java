@@ -4,11 +4,12 @@ package com.azure.spring.cloud.autoconfigure.kafka;
 
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.cloud.stream.binder.DefaultBinderFactory;
 import org.springframework.cloud.stream.config.BinderProperties;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
@@ -29,7 +30,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
             BindingServiceProperties bindingServiceProperties = (BindingServiceProperties) bean;
             if (bindingServiceProperties.getBinders().isEmpty()) {
                 BinderProperties kafkaBinderSourceProperty = new BinderProperties();
-                configureBinderSources(kafkaBinderSourceProperty, AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
+                configureBinderSources(kafkaBinderSourceProperty);
 
                 Map<String, BinderProperties> kafkaBinderPropertyMap = new HashMap<>();
                 kafkaBinderPropertyMap.put(KAKFA_BINDER_DEFAULT_NAME, kafkaBinderSourceProperty);
@@ -40,7 +41,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
                     if (entry.getKey() != null && entry.getValue() != null
                             && (KAKFA_BINDER_TYPE.equalsIgnoreCase(entry.getValue().getType())
                             || KAKFA_BINDER_DEFAULT_NAME.equalsIgnoreCase(entry.getKey()))) {
-                        configureBinderSources(entry.getValue(), buildKafkaBinderSources(entry.getValue()));
+                        configureBinderSources(entry.getValue());
                     }
                 }
             }
@@ -48,37 +49,32 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
-    private String buildKafkaBinderSources(BinderProperties binderProperties) {
-        Map<String, Object> flattenedProperties = new HashMap<>();
-        flatten(null, binderProperties.getEnvironment(), flattenedProperties);
-        
+    private void configureBinderSources(BinderProperties binderProperties) {
+        Map<String, Object> originalSources = readSpringMainPropertiesMap(binderProperties.getEnvironment());
         StringBuilder sources = new StringBuilder(AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
-        if (flattenedProperties.get(SPRING_MAIN_SOURCES_PROPERTY) != null) {
-            sources.append("," + flattenedProperties.get(SPRING_MAIN_SOURCES_PROPERTY));
+        if (StringUtils.hasText((String) originalSources.get("sources"))) {
+            sources.append("," + originalSources.get("sources"));
         }
-        return sources.toString();
+        originalSources.put("sources", sources.toString());
     }
 
-    private void configureBinderSources(BinderProperties binderProperties, String sources) {
-        binderProperties.getEnvironment().put(SPRING_MAIN_SOURCES_PROPERTY, sources);
-    }
-
-    /**
-     * Ensures that nested properties are flattened (i.e., foo.bar=baz instead of
-     * foo={bar=baz}). Copied from {@link DefaultBinderFactory}.
-     * @param propertyName property name to flatten
-     * @param value value that contains the property name
-     * @param flattenedProperties map to which we'll add the falttened property
-     */
     @SuppressWarnings("unchecked")
-    private void flatten(String propertyName, Object value,
-            Map<String, Object> flattenedProperties) {
-        if (value instanceof Map) {
-            ((Map<Object, Object>) value).forEach((k, v) -> flatten(
-                (propertyName != null ? propertyName + "." : "") + k, v,
-                flattenedProperties));
+    static Map<String, Object> readSpringMainPropertiesMap(Map<String, Object> map) {
+
+        if (map.containsKey("spring")) {
+            Map<String, Object> spring = (Map<String, Object>) map.get("spring");
+            if (spring.containsKey("main")) {
+                return (Map<String, Object>) spring.get("main");
+            } else {
+                LinkedHashMap<String, Object> main = new LinkedHashMap<>();
+                spring.put("main", main);
+                return main;
+            }
         } else {
-            flattenedProperties.put(propertyName, value.toString());
+            Map<String, Object> main = new LinkedHashMap<>();
+            Map<String, Object> spring = new LinkedHashMap<String, Object>() {{ put("main", main); }};
+            map.put("spring", spring);
+            return main;
         }
     }
 }

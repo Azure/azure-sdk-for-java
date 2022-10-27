@@ -2,19 +2,21 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.kafka;
 
+import java.util.Map;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.cloud.stream.binder.kafka.config.KafkaBinderConfiguration;
 import org.springframework.cloud.stream.config.BinderFactoryAutoConfiguration;
-import org.springframework.cloud.stream.config.BinderProperties;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
 import org.springframework.context.support.ConversionServiceFactoryBean;
 import org.springframework.integration.support.utils.IntegrationUtils;
 
 import static com.azure.spring.cloud.autoconfigure.kafka.AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS;
 import static com.azure.spring.cloud.autoconfigure.kafka.BindingServicePropertiesBeanPostProcessor.SPRING_MAIN_SOURCES_PROPERTY;
+import static com.azure.spring.cloud.autoconfigure.kafka.BindingServicePropertiesBeanPostProcessor.readSpringMainPropertiesMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -62,13 +64,44 @@ class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
     @Test
     void shouldConfigureWhenBinderNameSpecified() {
         this.contextRunner
-                .withPropertyValues("spring.cloud.stream.binders.kafka.environment.spring.main.sources=value")
+                .withPropertyValues("spring.cloud.stream.binders.kafka.environment.key=value")
                 .run(context -> {
                     assertThat(context).hasSingleBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(BindingServiceProperties.class);
 
-                    testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS + ",value");
+                    testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
+                    assertEquals("value", context.getBean(BindingServiceProperties.class).getBinders().get("kafka").getEnvironment().get("key"));
+                });
+    }
+
+    @Test
+    @SuppressWarnings("unchecked")
+    void shouldConfigureWhenOtherSpringEnvironmentSpecified() {
+        this.contextRunner
+                .withPropertyValues("spring.cloud.stream.binders.kafka.environment.spring.profiles.active=value")
+                .run(context -> {
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class);
+                    assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessor.class);
+                    assertThat(context).hasSingleBean(BindingServiceProperties.class);
+
+                    testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
+                    assertEquals("value", ((Map<String, Map<String, Object>>) context.getBean(BindingServiceProperties.class).getBinders().get("kafka").getEnvironment().get("spring"))
+                            .get("profiles").get("active"));
+                });
+    }
+
+    @Test
+    void shouldConfigureWhenOtherSpringMainEnvironmentSpecified() {
+        this.contextRunner
+                .withPropertyValues("spring.cloud.stream.binders.kafka.environment.spring.main.banner-mode=console")
+                .run(context -> {
+                    assertThat(context).hasSingleBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class);
+                    assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessor.class);
+                    assertThat(context).hasSingleBean(BindingServiceProperties.class);
+
+                    testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
+                    assertEquals("console", readSpringMainPropertiesMap(context.getBean(BindingServiceProperties.class).getBinders().get("kafka").getEnvironment()).get("banner-mode"));
                 });
     }
 
@@ -107,32 +140,21 @@ class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
 
     @Test
     void shouldAppendOriginalSources() {
-
-        new ApplicationContextRunner()
-                .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class))
-                .withBean(IntegrationUtils.INTEGRATION_CONVERSION_SERVICE_BEAN_NAME, ConversionServiceFactoryBean.class,
-                        ConversionServiceFactoryBean::new)
-                .withBean(BindingServiceProperties.class, () -> {
-                    BindingServiceProperties bindingServiceProperties = new BindingServiceProperties();
-                    BinderProperties kafkaBinderSourceProperty = new BinderProperties();
-                    kafkaBinderSourceProperty.getEnvironment().put(SPRING_MAIN_SOURCES_PROPERTY, "test");
-                    bindingServiceProperties.getBinders().put("kafka", kafkaBinderSourceProperty);
-                    return bindingServiceProperties;
-                })
+        this.contextRunner
+                .withPropertyValues("spring.cloud.stream.binders.kafka.environment.spring.main.sources=value")
                 .run(context -> {
                     assertThat(context).hasSingleBean(AzureEventHubsKafkaBinderOAuth2AutoConfiguration.class);
                     assertThat(context).hasSingleBean(BindingServicePropertiesBeanPostProcessor.class);
                     assertThat(context).hasSingleBean(BindingServiceProperties.class);
 
-                    testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS + ",test");
+                    testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS + ",value");
                 });
     }
 
     private void testBinderSources(BindingServiceProperties bindingServiceProperties, String binderName, String binderSources) {
         assertFalse(bindingServiceProperties.getBinders().isEmpty());
         assertNotNull(bindingServiceProperties.getBinders().get(binderName));
-        assertEquals(binderSources,
-                bindingServiceProperties.getBinders().get(binderName).getEnvironment().get(SPRING_MAIN_SOURCES_PROPERTY));
+        assertEquals(binderSources, readSpringMainPropertiesMap(bindingServiceProperties.getBinders().get(binderName).getEnvironment()).get("sources"));
     }
 
 
