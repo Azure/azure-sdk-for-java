@@ -21,11 +21,9 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
-import java.util.stream.Stream;
 
 /**
  * Represents the main program class which reflectively runs and manages the performance tests.
@@ -33,14 +31,29 @@ import java.util.stream.Stream;
 public class PerfStressProgram {
     private static final int NANOSECONDS_PER_SECOND = 1_000_000_000;
 
-    private static int getCompletedOperations(PerfTestBase<?>[] tests) {
-        return Stream.of(tests).mapToInt(perfStressTest -> Long.valueOf(perfStressTest.getCompletedOperations()).intValue()).sum();
+    private static long getCompletedOperations(PerfTestBase<?>[] tests) {
+        long count = 0;
+        for (PerfTestBase<?> test : tests) {
+            count += test.getCompletedOperations();
+        }
+
+        return count;
     }
 
     private static double getOperationsPerSecond(PerfTestBase<?>[] tests) {
-        return Arrays.stream(tests)
-            .mapToDouble(test -> test.getCompletedOperations() / (((double) test.lastCompletionNanoTime) / NANOSECONDS_PER_SECOND))
-            .sum();
+        double operationsPerSecond = 0.0D;
+        for (PerfTestBase<?> test : tests) {
+            operationsPerSecond += (test.getCompletedOperations() / (((double) test.lastCompletionNanoTime) / NANOSECONDS_PER_SECOND));
+        }
+
+        return operationsPerSecond;
+    }
+
+    private static void resetTests(PerfTestBase<?>[] tests) {
+        for (PerfTestBase<?> test : tests) {
+            test.resetCompletedOperations();
+            test.lastCompletionNanoTime = 0;
+        }
     }
 
     /**
@@ -158,6 +171,7 @@ public class PerfStressProgram {
 
                 if (options.getWarmup() > 0) {
                     runTests(tests, options.isSync(), options.getParallel(), options.getWarmup(), "Warmup");
+                    resetTests(tests);
                 }
 
                 for (int i = 0; i < options.getIterations(); i++) {
@@ -216,11 +230,11 @@ public class PerfStressProgram {
      */
     public static void runTests(PerfTestBase<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
 
-        int[] lastCompleted = new int[]{0};
+        long[] lastCompleted = new long[]{0};
         Disposable progressStatus = printStatus(
             "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
-                int totalCompleted = getCompletedOperations(tests);
-                int currentCompleted = totalCompleted - lastCompleted[0];
+                long totalCompleted = getCompletedOperations(tests);
+                long currentCompleted = totalCompleted - lastCompleted[0];
                 double averageCompleted = getOperationsPerSecond(tests);
 
                 lastCompleted[0] = totalCompleted;
@@ -231,22 +245,14 @@ public class PerfStressProgram {
 
         try {
             if (sync) {
-                int operationPool = 250_000 * durationSeconds;
                 ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
-                // Create an arbitrarily large number of operations that will never be met.
-                List<Callable<Integer>> operations = new ArrayList<>(operationPool);
-                for (int i = 0; i < operationPool; i++) {
-                    operations.add(() -> ((ApiPerfTestBase<?>) tests[operationPool % parallel]).runTest());
+                for (PerfTestBase<?> test : tests) {
+                    forkJoinPool.submit(new ResubmittingTestCallable(forkJoinPool, (ApiPerfTestBase<?>) test));
                 }
 
-                List<Future<Integer>> tasks = forkJoinPool.invokeAll(operations, durationSeconds, TimeUnit.SECONDS);
-
-                ApiPerfTestBase<?> test = (ApiPerfTestBase<?>) tests[0];
-                for (Future<Integer> task : tasks) {
-                    if (task.isDone()) {
-                        test.completedOperations += task.get();
-                    }
-                }
+                Thread.sleep(durationSeconds * 1000L);
+                forkJoinPool.shutdown();
+                forkJoinPool.awaitTermination(5, TimeUnit.SECONDS);
             } else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
@@ -268,13 +274,13 @@ public class PerfStressProgram {
                             sink.complete();
                         }
                     })
-                    .parallel()
+                    .parallel(parallel)
                     .runOn(Schedulers.parallel())
                     .flatMap(test -> test.runTestAsync()
                         .doOnNext(v -> {
                             test.lastCompletionNanoTime = System.nanoTime() - startNanoTime;
                             test.completedOperations += v;
-                        }), false, parallel, 1)
+                        }), false, 1, 1)
                     .then()
                     .block();
             }
@@ -291,7 +297,7 @@ public class PerfStressProgram {
 
         System.out.println("=== Results ===");
 
-        int totalOperations = getCompletedOperations(tests);
+        long totalOperations = getCompletedOperations(tests);
         if (totalOperations == 0) {
             throw new IllegalStateException("Zero operations has been completed");
         }
@@ -305,6 +311,24 @@ public class PerfStressProgram {
             NumberFormatter.Format(operationsPerSecond, 4),
             NumberFormatter.Format(secondsPerOperation, 4));
         System.out.println();
+    }
+
+    private static class ResubmittingTestCallable implements Callable<Integer> {
+        private final ForkJoinPool pool;
+        private final ApiPerfTestBase<?> test;
+
+        private ResubmittingTestCallable(ForkJoinPool pool, ApiPerfTestBase<?> test) {
+            this.pool = pool;
+            this.test = test;
+        }
+
+        @Override
+        public Integer call() throws Exception {
+            test.completedOperations += test.runTest();
+            pool.submit(this);
+
+            return 1;
+        }
     }
 
     private static Disposable printStatus(String header, Supplier<Object> status, boolean newLine, boolean printFinalStatus) {

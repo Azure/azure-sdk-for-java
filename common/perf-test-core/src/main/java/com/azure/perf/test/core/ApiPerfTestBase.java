@@ -25,6 +25,7 @@ import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -58,7 +59,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             recordPlaybackHttpClient = createRecordPlaybackClient(options);
             testProxy = options.getTestProxies().get(parallelIndex % options.getTestProxies().size());
             testProxyPolicy = new TestProxyPolicy(testProxy);
-            policies = Arrays.asList(testProxyPolicy);
+            policies = Collections.singletonList(testProxyPolicy);
         } else {
             recordPlaybackHttpClient = null;
             testProxy = null;
@@ -148,8 +149,6 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
 
     @Override
     public void runAll(long endNanoTime) {
-        completedOperations = 0;
-        lastCompletionNanoTime = 0;
         long startNanoTime = System.nanoTime();
         while (System.nanoTime() < endNanoTime) {
             completedOperations += runTest();
@@ -159,8 +158,6 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
 
     @Override
     public Mono<Void> runAllAsync(long endNanoTime) {
-        completedOperations = 0;
-        lastCompletionNanoTime = 0;
         long startNanoTime = System.nanoTime();
 
         return Flux.just(1)
@@ -284,5 +281,10 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
     @Override
     public long getCompletedOperations() {
         return completedOperations;
+    }
+
+    @Override
+    public void resetCompletedOperations() {
+        completedOperations = 0;
     }
 }
