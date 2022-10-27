@@ -17,7 +17,7 @@ public final class KeySignRequest {
      * The signing/verification algorithm. For more information on possible
      * algorithm types, see SignatureAlgorithm. Possible values
      * include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL',
-     * 'ES256', 'ES384', 'ES512', 'ES256K'.
+     * 'ES256', 'ES384', 'ES512', 'ES256K', 'Ed25519'.
      */
     @JsonProperty(value = "alg", required = true)
     private SignatureAlgorithm algorithm;

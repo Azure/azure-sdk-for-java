@@ -28,6 +28,7 @@ import com.azure.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
 import com.azure.security.keyvault.keys.models.KeyOperation;
+import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
 
@@ -42,6 +43,8 @@ import static com.azure.security.keyvault.keys.models.KeyType.EC;
 import static com.azure.security.keyvault.keys.models.KeyType.EC_HSM;
 import static com.azure.security.keyvault.keys.models.KeyType.OCT;
 import static com.azure.security.keyvault.keys.models.KeyType.OCT_HSM;
+import static com.azure.security.keyvault.keys.models.KeyType.OKP;
+import static com.azure.security.keyvault.keys.models.KeyType.OKP_HSM;
 import static com.azure.security.keyvault.keys.models.KeyType.RSA;
 import static com.azure.security.keyvault.keys.models.KeyType.RSA_HSM;
 
@@ -147,6 +150,9 @@ public class CryptographyAsyncClient {
             this.localKeyCryptographyClient = new EcKeyCryptographyClient(this.key, this.cryptographyServiceClient);
         } else if (key.getKeyType().equals(OCT) || key.getKeyType().equals(OCT_HSM)) {
             this.localKeyCryptographyClient = new AesKeyCryptographyClient(this.key, this.cryptographyServiceClient);
+        } else if (key.getKeyType().equals(OKP) || key.getKeyType().equals(OKP_HSM)) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("The JSON Web Key type: OKP is not supported for local operations."));
         } else {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "The JSON Web Key type: %s is not supported.", this.key.getKeyType().toString())));
@@ -546,11 +552,12 @@ public class CryptographyAsyncClient {
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to create the
      * signature from the digest. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 ES384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
+     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -615,12 +622,13 @@ public class CryptographyAsyncClient {
      * requires the {@code keys/verify} permission for non-local operations.
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
-     * signature. Possible values include: {@link SignatureAlgorithm#ES256 ES256},
-     * {@link SignatureAlgorithm#ES384 E384}, {@link SignatureAlgorithm#ES512 ES512},
-     * {@link SignatureAlgorithm#ES256K ES246K}, {@link SignatureAlgorithm#PS256 PS256},
-     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512},
-     * {@link SignatureAlgorithm#RS256 RS256}, {@link SignatureAlgorithm#RS384 RS384} and
-     * {@link SignatureAlgorithm#RS512 RS512}</p>
+     * signature. Possible values include:
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 ES384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
+     * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
+     * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
+     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
@@ -822,11 +830,12 @@ public class CryptographyAsyncClient {
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to sign the digest.
      * Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 ES384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
+     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
@@ -889,11 +898,12 @@ public class CryptographyAsyncClient {
      *
      * <p>The {@link SignatureAlgorithm signature algorithm} indicates the type of algorithm to use to verify the
      * signature. Possible values include:
-     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 E384},
-     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES246K},
+     * {@link SignatureAlgorithm#ES256 ES256}, {@link SignatureAlgorithm#ES384 ES384},
+     * {@link SignatureAlgorithm#ES512 ES512}, {@link SignatureAlgorithm#ES256K ES256K},
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
-     * {@link SignatureAlgorithm#RS384 RS384} and {@link SignatureAlgorithm#RS512 RS512}</p>
+     * {@link SignatureAlgorithm#RS384 RS384},{@link SignatureAlgorithm#RS512 RS512} and
+     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the
@@ -1002,7 +1012,8 @@ public class CryptographyAsyncClient {
                 return getKey().map(keyVaultKey -> {
                     key = (keyVaultKey.getKey());
 
-                    if (key.isValid()) {
+                    // OKP is not supported for local cryptographic operations.
+                    if (key.isValid() && key.getKeyType() != OKP && key.getKeyType() != OKP_HSM) {
                         initializeCryptoClients();
                         return true;
                     } else {
