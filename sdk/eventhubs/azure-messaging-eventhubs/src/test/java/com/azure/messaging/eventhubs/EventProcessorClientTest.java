@@ -703,7 +703,7 @@ public class EventProcessorClientTest {
      * Process event/eventBatch slow, the thread will be interrupted if dispose gracefully timeout.
      */
     @Test
-    public void testProcessorDisposeNSlow() throws InterruptedException {
+    public void testProcessorDisposeSlow() throws InterruptedException {
         // Arrange
         final Tracer tracer1 = mock(Tracer.class);
         final List<Tracer> tracers = Collections.singletonList(tracer1);
