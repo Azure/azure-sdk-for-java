@@ -20,7 +20,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 
 /**
@@ -149,7 +148,7 @@ public class PerfStressProgram {
             boolean startedPlayback = false;
 
             try {
-                Flux.just(tests).flatMap(PerfTestBase::setupAsync).blockLast();
+                Flux.just(tests).flatMap(PerfTestBase::setupAsync, 2).blockLast();
                 setupStatus.dispose();
 
                 if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
@@ -195,7 +194,7 @@ public class PerfStressProgram {
                     if (!options.isNoCleanup()) {
                         cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
 
-                        Flux.just(tests).flatMap(PerfTestBase::cleanupAsync).blockLast();
+                        Flux.just(tests).flatMap(PerfTestBase::cleanupAsync, 2).blockLast();
                     }
                 }
             }
@@ -238,9 +237,17 @@ public class PerfStressProgram {
             }, true, true);
 
         if (tests[0] instanceof ApiPerfTestBase) {
-            runApiTests((ApiPerfTestBase<?>[]) tests, sync, parallel, durationSeconds, progressStatus);
+            ApiPerfTestBase<?>[] apiTests = new ApiPerfTestBase[tests.length];
+            for (int i = 0; i < tests.length; i++) {
+                apiTests[i] = (ApiPerfTestBase<?>) tests[i];
+            }
+            runApiTests(apiTests, sync, parallel, durationSeconds, progressStatus);
         } else {
-            runEventTests((EventPerfTest<?>[]) tests, sync, parallel, durationSeconds, progressStatus);
+            EventPerfTest<?>[] eventTests = new EventPerfTest[tests.length];
+            for (int i = 0; i < tests.length; i++) {
+                eventTests[i] = (EventPerfTest<?>) tests[i];
+            }
+            runEventTests(eventTests, sync, parallel, durationSeconds, progressStatus);
         }
 
         System.out.println("=== Results ===");
@@ -288,29 +295,15 @@ public class PerfStressProgram {
                     System.exit(1);
                 });
 
-                AtomicLong count = new AtomicLong();
-                Flux.<ApiPerfTestBase<?>>generate(sink -> {
-                        // Continue emitting tests until the end time is reached.
-                        if (System.nanoTime() < endNanoTime) {
-                            ApiPerfTestBase<?> test = tests[(int) (count.getAndIncrement() % parallel)];
-                            sink.next(test);
-                        } else {
-                            sink.complete();
-                        }
-                    })
+                Flux.just(tests)
+                    .repeat(() -> System.nanoTime() < endNanoTime)
                     .parallel(parallel)
                     .runOn(Schedulers.parallel())
-                    .flatMap(test -> {
-                        if (System.nanoTime() < endNanoTime) {
-                            return test.runTestAsync()
-                                .doOnNext(v -> {
-                                    test.lastCompletionNanoTime = System.nanoTime() - startNanoTime;
-                                    test.completedOperations += v;
-                                });
-                        } else {
-                            return Mono.just(1);
-                        }
-                    }, false, Math.min(1000 / parallel, parallel), 1)
+                    .flatMap(test -> test.runTestAsync()
+                        .doOnNext(v -> {
+                            test.lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+                            test.completedOperations += v;
+                        }), false, Math.min(1000 / parallel, parallel), 1)
                     .then()
                     .block();
             }
