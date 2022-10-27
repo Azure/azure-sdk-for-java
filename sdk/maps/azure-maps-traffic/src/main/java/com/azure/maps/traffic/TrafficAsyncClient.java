@@ -30,7 +30,39 @@ import com.azure.maps.traffic.models.TrafficIncidentViewportOptions;
 
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous TrafficClient type. */
+/** Initializes a new instance of the asynchronous TrafficClient type.
+* Creating an async client using a {@link com.azure.core.credential.AzureKeyCredential}:
+* <!-- src_embed com.azure.maps.traffic.async.builder.key.instantiation -->
+* <pre>
+* &#47;&#47; Authenticates using subscription key
+* AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
+*
+* &#47;&#47; Creates a builder
+* TrafficClientBuilder builder = new TrafficClientBuilder&#40;&#41;;
+* builder.credential&#40;keyCredential&#41;;
+* builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
+*
+* &#47;&#47; Builds the client
+* TrafficAsyncClient client = builder.buildAsyncClient&#40;&#41;;
+* </pre>
+* <!-- end com.azure.maps.traffic.async.builder.key.instantiation -->
+* <!-- src_embed com.azure.maps.traffic.async.builder.ad.instantiation -->
+* <pre>
+* &#47;&#47; Authenticates using Azure AD building a default credential
+* &#47;&#47; This will look for AZURE_CLIENT_ID, AZURE_TENANT_ID, and AZURE_CLIENT_SECRET env variables
+* DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;;
+*
+* &#47;&#47; Creates a builder
+* TrafficClientBuilder builder = new TrafficClientBuilder&#40;&#41;;
+* builder.credential&#40;tokenCredential&#41;;
+* builder.mapsClientId&#40;System.getenv&#40;&quot;MAPS_CLIENT_ID&quot;&#41;&#41;;
+* builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
+*
+* &#47;&#47; Builds a client
+* TrafficAsyncClient client = builder.buildAsyncClient&#40;&#41;;
+* </pre>
+* <!-- end com.azure.maps.traffic.async.builder.ad.instantiation -->
+*/
 @ServiceClient(builder = TrafficClientBuilder.class, isAsync = true)
 public final class TrafficAsyncClient {
     private final TrafficsImpl serviceClient;
@@ -47,6 +79,23 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Flow Tile__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_tile -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Flow Tile:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * asyncClient.getTrafficFlowTile&#40;
+     *     new TrafficFlowTileOptions&#40;&#41;
+     *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * asyncClient.getTrafficFlowTile&#40;
+     *     new TrafficFlowTileOptions&#40;&#41;
+     *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;
+     *         .setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;2044&#41;.setY&#40;1360&#41;&#41;.setThickness&#40;10&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.async.get_traffic_flow_tile -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -71,6 +120,23 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Flow Tile__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_tile -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Flow Tile:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * asyncClient.getTrafficFlowTile&#40;
+     *     new TrafficFlowTileOptions&#40;&#41;
+     *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * asyncClient.getTrafficFlowTile&#40;
+     *     new TrafficFlowTileOptions&#40;&#41;
+     *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;
+     *         .setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;2044&#41;.setY&#40;1360&#41;&#41;.setThickness&#40;10&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.async.get_traffic_flow_tile -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -105,6 +171,23 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Flow Tile__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_tile -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Flow Tile:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * asyncClient.getTrafficFlowTile&#40;
+     *     new TrafficFlowTileOptions&#40;&#41;
+     *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * asyncClient.getTrafficFlowTile&#40;
+     *     new TrafficFlowTileOptions&#40;&#41;
+     *         .setTrafficFlowTileStyle&#40;TrafficFlowTileStyle.RELATIVE_DELAY&#41;.setFormat&#40;TileFormat.PNG&#41;.setZoom&#40;10&#41;
+     *         .setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;2044&#41;.setY&#40;1360&#41;&#41;.setThickness&#40;10&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.async.get_traffic_flow_tile -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -141,6 +224,25 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Flow Segment__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_segment -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Flow Segment:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * asyncClient.getTrafficFlowSegment&#40;
+     *     new TrafficFlowSegmentOptions&#40;&#41;
+     *         .setTrafficFlowSegmentStyle&#40;TrafficFlowSegmentStyle.ABSOLUTE&#41;.setZoom&#40;10&#41;
+     *         .setCoordinates&#40;new GeoPosition&#40;4.84239, 52.41072&#41;&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * asyncClient.getTrafficFlowSegment&#40;
+     *     new TrafficFlowSegmentOptions&#40;&#41;
+     *         .setTrafficFlowSegmentStyle&#40;TrafficFlowSegmentStyle.ABSOLUTE&#41;.setZoom&#40;10&#41;
+     *         .setCoordinates&#40;new GeoPosition&#40;4.84239, 52.41072&#41;&#41;.setOpenLr&#40;false&#41;
+     *         .setThickness&#40;2&#41;.setUnit&#40;SpeedUnit.MPH&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.async.get_traffic_flow_segment -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -165,6 +267,25 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Flow Segment__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_segment -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Flow Segment:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * asyncClient.getTrafficFlowSegment&#40;
+     *     new TrafficFlowSegmentOptions&#40;&#41;
+     *         .setTrafficFlowSegmentStyle&#40;TrafficFlowSegmentStyle.ABSOLUTE&#41;.setZoom&#40;10&#41;
+     *         .setCoordinates&#40;new GeoPosition&#40;4.84239, 52.41072&#41;&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * asyncClient.getTrafficFlowSegment&#40;
+     *     new TrafficFlowSegmentOptions&#40;&#41;
+     *         .setTrafficFlowSegmentStyle&#40;TrafficFlowSegmentStyle.ABSOLUTE&#41;.setZoom&#40;10&#41;
+     *         .setCoordinates&#40;new GeoPosition&#40;4.84239, 52.41072&#41;&#41;.setOpenLr&#40;false&#41;
+     *         .setThickness&#40;2&#41;.setUnit&#40;SpeedUnit.MPH&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.async.get_traffic_flow_segment -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -186,6 +307,25 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Flow Segment__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.async.get_traffic_flow_segment -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Flow Segment:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * asyncClient.getTrafficFlowSegment&#40;
+     *     new TrafficFlowSegmentOptions&#40;&#41;
+     *         .setTrafficFlowSegmentStyle&#40;TrafficFlowSegmentStyle.ABSOLUTE&#41;.setZoom&#40;10&#41;
+     *         .setCoordinates&#40;new GeoPosition&#40;4.84239, 52.41072&#41;&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * asyncClient.getTrafficFlowSegment&#40;
+     *     new TrafficFlowSegmentOptions&#40;&#41;
+     *         .setTrafficFlowSegmentStyle&#40;TrafficFlowSegmentStyle.ABSOLUTE&#41;.setZoom&#40;10&#41;
+     *         .setCoordinates&#40;new GeoPosition&#40;4.84239, 52.41072&#41;&#41;.setOpenLr&#40;false&#41;
+     *         .setThickness&#40;2&#41;.setUnit&#40;SpeedUnit.MPH&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.async.get_traffic_flow_segment -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -220,6 +360,24 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Incident Tile__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_tile -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Incident Tile:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * client.getTrafficIncidentTile&#40;
+     *     new TrafficIncidentTileOptions&#40;&#41;
+     *         .setFormat&#40;TileFormat.PNG&#41;.setTrafficIncidentTileStyle&#40;TrafficIncidentTileStyle.S3&#41;
+     *         .setZoom&#40;10&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * client.getTrafficIncidentTile&#40;
+     *     new TrafficIncidentTileOptions&#40;&#41;
+     *         .setFormat&#40;TileFormat.PNG&#41;.setTrafficIncidentTileStyle&#40;TrafficIncidentTileStyle.S3&#41;
+     *         .setZoom&#40;10&#41;.setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;175&#41;.setY&#40;408&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.sync.get_traffic_incident_tile -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -246,6 +404,24 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Incident Tile__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_tile -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Incident Tile:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * client.getTrafficIncidentTile&#40;
+     *     new TrafficIncidentTileOptions&#40;&#41;
+     *         .setFormat&#40;TileFormat.PNG&#41;.setTrafficIncidentTileStyle&#40;TrafficIncidentTileStyle.S3&#41;
+     *         .setZoom&#40;10&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * client.getTrafficIncidentTile&#40;
+     *     new TrafficIncidentTileOptions&#40;&#41;
+     *         .setFormat&#40;TileFormat.PNG&#41;.setTrafficIncidentTileStyle&#40;TrafficIncidentTileStyle.S3&#41;
+     *         .setZoom&#40;10&#41;.setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;175&#41;.setY&#40;408&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.sync.get_traffic_incident_tile -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -274,6 +450,24 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Incident Tile__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_tile -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Incident Tile:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * client.getTrafficIncidentTile&#40;
+     *     new TrafficIncidentTileOptions&#40;&#41;
+     *         .setFormat&#40;TileFormat.PNG&#41;.setTrafficIncidentTileStyle&#40;TrafficIncidentTileStyle.S3&#41;
+     *         .setZoom&#40;10&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * client.getTrafficIncidentTile&#40;
+     *     new TrafficIncidentTileOptions&#40;&#41;
+     *         .setFormat&#40;TileFormat.PNG&#41;.setTrafficIncidentTileStyle&#40;TrafficIncidentTileStyle.S3&#41;
+     *         .setZoom&#40;10&#41;.setTileIndex&#40;new TileIndex&#40;&#41;.setX&#40;175&#41;.setY&#40;408&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.sync.get_traffic_incident_tile -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -309,6 +503,28 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Incident Detail__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_detail -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Incident Detail:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * client.getTrafficIncidentDetail&#40;
+     *     new TrafficIncidentDetailOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
+     *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
+     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * client.getTrafficIncidentDetail&#40;
+     *     new TrafficIncidentDetailOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
+     *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
+     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;.setLanguage&#40;&quot;en&quot;&#41;
+     *         .setProjectionStandard&#40;ProjectionStandard.EPSG900913&#41;.setIncidentGeometryType&#40;IncidentGeometryType.ORIGINAL&#41;
+     *         .setExpandCluster&#40;false&#41;.setOriginalPosition&#40;false&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.sync.get_traffic_incident_detail -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -335,6 +551,28 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Incident Detail__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_detail -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Incident Detail:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * client.getTrafficIncidentDetail&#40;
+     *     new TrafficIncidentDetailOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
+     *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
+     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * client.getTrafficIncidentDetail&#40;
+     *     new TrafficIncidentDetailOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
+     *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
+     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;.setLanguage&#40;&quot;en&quot;&#41;
+     *         .setProjectionStandard&#40;ProjectionStandard.EPSG900913&#41;.setIncidentGeometryType&#40;IncidentGeometryType.ORIGINAL&#41;
+     *         .setExpandCluster&#40;false&#41;.setOriginalPosition&#40;false&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.sync.get_traffic_incident_detail -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -358,6 +596,28 @@ public final class TrafficAsyncClient {
     
     /**
      * __Traffic Incident Detail__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_detail -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Incident Detail:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * client.getTrafficIncidentDetail&#40;
+     *     new TrafficIncidentDetailOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
+     *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
+     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * client.getTrafficIncidentDetail&#40;
+     *     new TrafficIncidentDetailOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;.setBoundingZoom&#40;11&#41;
+     *         .setIncidentDetailStyle&#40;IncidentDetailStyle.S3&#41;.setBoundingZoom&#40;11&#41;
+     *         .setTrafficmodelid&#40;&quot;1335294634919&quot;&#41;.setLanguage&#40;&quot;en&quot;&#41;
+     *         .setProjectionStandard&#40;ProjectionStandard.EPSG900913&#41;.setIncidentGeometryType&#40;IncidentGeometryType.ORIGINAL&#41;
+     *         .setExpandCluster&#40;false&#41;.setOriginalPosition&#40;false&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.sync.get_traffic_incident_detail -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -398,6 +658,26 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Incident Viewport__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_viewport -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Incident Tile:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * client.getTrafficIncidentViewport&#40;
+     *     new TrafficIncidentViewportOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setBoundingZoom&#40;2&#41;.setOverview&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setOverviewZoom&#40;2&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * client.getTrafficIncidentViewport&#40;
+     *     new TrafficIncidentViewportOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setBoundingZoom&#40;2&#41;.setOverview&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setOverviewZoom&#40;2&#41;.setCopyright&#40;true&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.sync.get_traffic_incident_viewport -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -424,6 +704,26 @@ public final class TrafficAsyncClient {
 
     /**
      * __Traffic Incident Viewport__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_viewport -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Incident Tile:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * client.getTrafficIncidentViewport&#40;
+     *     new TrafficIncidentViewportOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setBoundingZoom&#40;2&#41;.setOverview&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setOverviewZoom&#40;2&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * client.getTrafficIncidentViewport&#40;
+     *     new TrafficIncidentViewportOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setBoundingZoom&#40;2&#41;.setOverview&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setOverviewZoom&#40;2&#41;.setCopyright&#40;true&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.sync.get_traffic_incident_viewport -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *
@@ -447,6 +747,26 @@ public final class TrafficAsyncClient {
     
     /**
      * __Traffic Incident Viewport__
+     * 
+     * <!-- src_embed com.azure.maps.traffic.sync.get_traffic_incident_viewport -->
+     * <pre>
+     * System.out.println&#40;&quot;Get Traffic Incident Tile:&quot;&#41;;
+     *
+     * &#47;&#47; options
+     * client.getTrafficIncidentViewport&#40;
+     *     new TrafficIncidentViewportOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setBoundingZoom&#40;2&#41;.setOverview&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setOverviewZoom&#40;2&#41;&#41;;
+     *
+     * &#47;&#47; complete
+     * client.getTrafficIncidentViewport&#40;
+     *     new TrafficIncidentViewportOptions&#40;&#41;
+     *         .setBoundingBox&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setBoundingZoom&#40;2&#41;.setOverview&#40;new GeoBoundingBox&#40;45, 45, 45, 45&#41;&#41;
+     *         .setOverviewZoom&#40;2&#41;.setCopyright&#40;true&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.maps.traffic.sync.get_traffic_incident_viewport -->
      *
      * <p>**Applies to**: S0 and S1 pricing tiers.
      *

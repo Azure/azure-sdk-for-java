@@ -40,7 +40,25 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.maps.traffic.implementation.TrafficClientImpl;
 import com.azure.maps.traffic.implementation.TrafficClientImplBuilder;
 
-/** A builder for creating a new instance of the TrafficClient type. */
+/** A builder for creating a new instance of the TrafficClient type. 
+ * Builder class used to instantiate both synchronous and asynchronous {@link TrafficClient} clients.
+ * <p><b>Example usage</b></p>
+ * Creating a sync client using a {@link AzureKeyCredential}:
+ * <!-- src_embed com.azure.maps.traffic.sync.builder.key.instantiation -->
+ * <pre>
+ * &#47;&#47; Authenticates using subscription key
+ * AzureKeyCredential keyCredential = new AzureKeyCredential&#40;System.getenv&#40;&quot;SUBSCRIPTION_KEY&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Creates a builder
+ * TrafficClientBuilder builder = new TrafficClientBuilder&#40;&#41;;
+ * builder.credential&#40;keyCredential&#41;;
+ * builder.httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;;
+ *
+ * &#47;&#47; Builds the client
+ * TrafficClient client = builder.buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.maps.traffic.sync.builder.key.instantiation -->
+*/
 @ServiceClientBuilder(serviceClients = {TrafficClient.class, TrafficAsyncClient.class})
 public final class TrafficClientBuilder implements AzureKeyCredentialTrait<TrafficClientBuilder>,
     TokenCredentialTrait<TrafficClientBuilder>, HttpTrait<TrafficClientBuilder>,
