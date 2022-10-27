@@ -5,6 +5,7 @@
 
 package com.azure.ai.anomalydetector.implementation;
 
+import com.azure.ai.anomalydetector.AnomalyDetectorServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -70,16 +71,16 @@ public final class AnomalyDetectorClientImpl {
         return this.endpoint;
     }
 
-    /** Anomaly Detector API version (for example, v1.1). */
-    private final String apiVersion;
+    /** Service version. */
+    private final AnomalyDetectorServiceVersion serviceVersion;
 
     /**
-     * Gets Anomaly Detector API version (for example, v1.1).
+     * Gets Service version.
      *
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public AnomalyDetectorServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -111,16 +112,16 @@ public final class AnomalyDetectorClientImpl {
      *
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
-     * @param apiVersion Anomaly Detector API version (for example, v1.1).
+     * @param serviceVersion Service version.
      */
-    public AnomalyDetectorClientImpl(String endpoint, String apiVersion) {
+    public AnomalyDetectorClientImpl(String endpoint, AnomalyDetectorServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
                 endpoint,
-                apiVersion);
+                serviceVersion);
     }
 
     /**
@@ -129,10 +130,11 @@ public final class AnomalyDetectorClientImpl {
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
-     * @param apiVersion Anomaly Detector API version (for example, v1.1).
+     * @param serviceVersion Service version.
      */
-    public AnomalyDetectorClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
+    public AnomalyDetectorClientImpl(
+            HttpPipeline httpPipeline, String endpoint, AnomalyDetectorServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -142,14 +144,17 @@ public final class AnomalyDetectorClientImpl {
      * @param serializerAdapter The serializer to serialize an object into a string.
      * @param endpoint Supported Cognitive Services endpoints (protocol and hostname, for example:
      *     https://westus2.api.cognitive.microsoft.com).
-     * @param apiVersion Anomaly Detector API version (for example, v1.1).
+     * @param serviceVersion Service version.
      */
     public AnomalyDetectorClientImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String endpoint,
+            AnomalyDetectorServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
-        this.apiVersion = apiVersion;
+        this.serviceVersion = serviceVersion;
         this.service =
                 RestProxy.create(AnomalyDetectorClientService.class, this.httpPipeline, this.getSerializerAdapter());
     }
@@ -175,7 +180,7 @@ public final class AnomalyDetectorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectUnivariateEntireSeries(
                 @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -195,7 +200,7 @@ public final class AnomalyDetectorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectUnivariateLastPoint(
                 @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -215,7 +220,7 @@ public final class AnomalyDetectorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectUnivariateChangePoint(
                 @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -235,7 +240,7 @@ public final class AnomalyDetectorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getMultivariateBatchDetectionResult(
                 @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("ApiVersion") String apiVersion,
                 @PathParam("resultId") String resultId,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -255,7 +260,7 @@ public final class AnomalyDetectorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> createAndTrainMultivariateModel(
                 @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -275,7 +280,7 @@ public final class AnomalyDetectorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> listMultivariateModels(
                 @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("ApiVersion") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -294,7 +299,7 @@ public final class AnomalyDetectorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<Void>> deleteMultivariateModel(
                 @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -314,7 +319,7 @@ public final class AnomalyDetectorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> getMultivariateModel(
                 @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
@@ -334,7 +339,7 @@ public final class AnomalyDetectorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectMultivariateBatchAnomaly(
                 @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
                 @BodyParam("application/json") BinaryData body,
                 @HeaderParam("Accept") String accept,
@@ -355,7 +360,7 @@ public final class AnomalyDetectorClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> detectMultivariateLastAnomaly(
                 @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
+                @PathParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
                 @BodyParam("application/json") BinaryData body,
                 @HeaderParam("Accept") String accept,
@@ -377,7 +382,6 @@ public final class AnomalyDetectorClientImpl {
         Mono<Response<BinaryData>> listMultivariateModelsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
-                @HostParam("ApiVersion") String apiVersion,
                 @HeaderParam("Accept") String accept,
                 RequestOptions requestOptions,
                 Context context);
@@ -455,7 +459,12 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.detectUnivariateEntireSeries(
-                                this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                body,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -586,7 +595,12 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.detectUnivariateLastPoint(
-                                this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                body,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -698,7 +712,12 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.detectUnivariateChangePoint(
-                                this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                body,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -831,7 +850,12 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getMultivariateBatchDetectionResult(
-                                this.getEndpoint(), this.getApiVersion(), resultId, accept, requestOptions, context));
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                resultId,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1039,7 +1063,12 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.createAndTrainMultivariateModel(
-                                this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                body,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1254,7 +1283,11 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listMultivariateModels(
-                                        this.getEndpoint(), this.getApiVersion(), accept, requestOptions, context))
+                                        this.getEndpoint(),
+                                        this.getServiceVersion().getVersion(),
+                                        accept,
+                                        requestOptions,
+                                        context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(
@@ -1459,7 +1492,12 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.deleteMultivariateModel(
-                                this.getEndpoint(), this.getApiVersion(), modelId, accept, requestOptions, context));
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                modelId,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1556,7 +1594,12 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                 context ->
                         service.getMultivariateModel(
-                                this.getEndpoint(), this.getApiVersion(), modelId, accept, requestOptions, context));
+                                this.getEndpoint(),
+                                this.getServiceVersion().getVersion(),
+                                modelId,
+                                accept,
+                                requestOptions,
+                                context));
     }
 
     /**
@@ -1727,7 +1770,7 @@ public final class AnomalyDetectorClientImpl {
                 context ->
                         service.detectMultivariateBatchAnomaly(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
+                                this.getServiceVersion().getVersion(),
                                 modelId,
                                 body,
                                 accept,
@@ -2014,7 +2057,7 @@ public final class AnomalyDetectorClientImpl {
                 context ->
                         service.detectMultivariateLastAnomaly(
                                 this.getEndpoint(),
-                                this.getApiVersion(),
+                                this.getServiceVersion().getVersion(),
                                 modelId,
                                 body,
                                 accept,
@@ -2180,12 +2223,7 @@ public final class AnomalyDetectorClientImpl {
         return FluxUtil.withContext(
                         context ->
                                 service.listMultivariateModelsNext(
-                                        nextLink,
-                                        this.getEndpoint(),
-                                        this.getApiVersion(),
-                                        accept,
-                                        requestOptions,
-                                        context))
+                                        nextLink, this.getEndpoint(), accept, requestOptions, context))
                 .map(
                         res ->
                                 new PagedResponseBase<>(

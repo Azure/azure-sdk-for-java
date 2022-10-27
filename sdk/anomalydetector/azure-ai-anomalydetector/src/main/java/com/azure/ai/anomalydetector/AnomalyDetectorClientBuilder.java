@@ -176,19 +176,19 @@ public final class AnomalyDetectorClientBuilder
     }
 
     /*
-     * Anomaly Detector API version (for example, v1.1).
+     * Service version
      */
-    @Generated private String apiVersion;
+    @Generated private AnomalyDetectorServiceVersion serviceVersion;
 
     /**
-     * Sets Anomaly Detector API version (for example, v1.1).
+     * Sets Service version.
      *
-     * @param apiVersion the apiVersion value.
+     * @param serviceVersion the serviceVersion value.
      * @return the AnomalyDetectorClientBuilder.
      */
     @Generated
-    public AnomalyDetectorClientBuilder apiVersion(String apiVersion) {
-        this.apiVersion = apiVersion;
+    public AnomalyDetectorClientBuilder serviceVersion(AnomalyDetectorServiceVersion serviceVersion) {
+        this.serviceVersion = serviceVersion;
         return this;
     }
 
@@ -217,9 +217,11 @@ public final class AnomalyDetectorClientBuilder
     @Generated
     private AnomalyDetectorClientImpl buildInnerClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
+        AnomalyDetectorServiceVersion localServiceVersion =
+                (serviceVersion != null) ? serviceVersion : AnomalyDetectorServiceVersion.getLatest();
         AnomalyDetectorClientImpl client =
                 new AnomalyDetectorClientImpl(
-                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
+                        localPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, localServiceVersion);
         return client;
     }
 
