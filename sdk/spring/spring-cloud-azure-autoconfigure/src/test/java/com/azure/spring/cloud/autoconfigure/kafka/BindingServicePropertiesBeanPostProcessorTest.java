@@ -81,7 +81,8 @@ class BindingServicePropertiesBeanPostProcessorTest {
     @Test
     void testBindKafkaByName() {
         BinderProperties binderProperties = new BinderProperties();
-        Map<String, BinderProperties> binders = new HashMap<String, BinderProperties>() {{ put("kafka", binderProperties); }};
+        Map<String, BinderProperties> binders = new HashMap<>();
+        binders.put("kafka", binderProperties);
         BindingServiceProperties bindingServiceProperties = new BindingServiceProperties();
         bindingServiceProperties.setBinders(binders);
 
@@ -94,7 +95,8 @@ class BindingServicePropertiesBeanPostProcessorTest {
     @Test
     void testBindKafkaByType() {
         BinderProperties binderProperties = new BinderProperties();
-        Map<String, BinderProperties> binders = new HashMap<String, BinderProperties>() {{ put("test", binderProperties); }};
+        Map<String, BinderProperties> binders = new HashMap<>();
+        binders.put("test", binderProperties);
         binderProperties.setType("kafka");
         BindingServiceProperties bindingServiceProperties = new BindingServiceProperties();
         bindingServiceProperties.setBinders(binders);
@@ -109,7 +111,8 @@ class BindingServicePropertiesBeanPostProcessorTest {
         if (StringUtils.hasText(secondProperty)) {
             Map<String, Object> second = new LinkedHashMap<>();
             second.put(thirdProperty, value);
-            Map<String, Object> first = new LinkedHashMap<String, Object>() {{ put(secondProperty, second); }};
+            Map<String, Object> first = new LinkedHashMap<>();
+            first.put(secondProperty, second);
             env.put("spring", first);
         }
         return bpp.readSpringMainPropertiesMap(env);
