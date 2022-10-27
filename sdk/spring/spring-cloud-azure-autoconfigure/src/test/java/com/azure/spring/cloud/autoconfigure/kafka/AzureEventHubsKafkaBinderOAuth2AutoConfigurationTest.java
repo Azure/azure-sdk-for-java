@@ -92,6 +92,7 @@ class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     void shouldConfigureWhenOtherSpringMainEnvironmentSpecified() {
         this.contextRunner
                 .withPropertyValues("spring.cloud.stream.binders.kafka.environment.spring.main.banner-mode=console")
@@ -101,7 +102,8 @@ class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
                     assertThat(context).hasSingleBean(BindingServiceProperties.class);
 
                     testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
-                    assertEquals("console", bpp.readSpringMainPropertiesMap(context.getBean(BindingServiceProperties.class).getBinders().get("kafka").getEnvironment()).get("banner-mode"));
+                    assertEquals("console", ((Map<String, Map<String, Object>>) context.getBean(BindingServiceProperties.class).getBinders().get("kafka").getEnvironment().get("spring"))
+                            .get("main").get("banner-mode"));
                 });
     }
 

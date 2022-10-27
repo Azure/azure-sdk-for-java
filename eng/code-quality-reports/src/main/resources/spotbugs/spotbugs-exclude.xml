@@ -2327,6 +2327,12 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
   </Match>
 
+  <Match>
+    <Class name="com.azure.spring.cloud.autoconfigure.kafka.BindingServicePropertiesBeanPostProcessor"/>
+    <Method name="$1"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
+
   <!-- The transient fields are not used if deserialization happens. -->
   <Match>
     <Class name="com.azure.identity.implementation.MsalAuthenticationAccount"/>

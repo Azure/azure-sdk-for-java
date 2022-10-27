@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.cloud.stream.config.BinderProperties;
 import org.springframework.cloud.stream.config.BindingServiceProperties;
+import org.springframework.util.StringUtils;
 
 import static com.azure.spring.cloud.autoconfigure.kafka.AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +24,7 @@ class BindingServicePropertiesBeanPostProcessorTest {
     @Test
     void testReadSpringMainPropertiesMapWithoutOriginalValues() {
         Map<String, Object> env = new LinkedHashMap<>();
-        Map<String, Object> mainPropertiesMap = bpp.readSpringMainPropertiesMap(env);
+        Map<String, Object> mainPropertiesMap = buildSpringMainPropertiesMap(env, null, null, null);
         assertSame(mainPropertiesMap, ((Map<String, Object>) env.get("spring")).get("main"));
     }
 
@@ -105,10 +106,12 @@ class BindingServicePropertiesBeanPostProcessorTest {
     }
 
     private Map<String, Object> buildSpringMainPropertiesMap(Map<String, Object> env, String secondProperty, String thirdProperty, String value) {
-        Map<String, Object> second = new LinkedHashMap<>();
-        second.put(thirdProperty, value);
-        Map<String, Object> first = new LinkedHashMap<String, Object>() {{ put(secondProperty, second); }};
-        env.put("spring", first);
+        if (StringUtils.hasText(secondProperty)) {
+            Map<String, Object> second = new LinkedHashMap<>();
+            second.put(thirdProperty, value);
+            Map<String, Object> first = new LinkedHashMap<String, Object>() {{ put(secondProperty, second); }};
+            env.put("spring", first);
+        }
         return bpp.readSpringMainPropertiesMap(env);
     }
 
