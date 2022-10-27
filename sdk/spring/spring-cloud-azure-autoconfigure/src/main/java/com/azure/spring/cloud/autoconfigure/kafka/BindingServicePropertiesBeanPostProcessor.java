@@ -30,7 +30,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
             BindingServiceProperties bindingServiceProperties = (BindingServiceProperties) bean;
             if (bindingServiceProperties.getBinders().isEmpty()) {
                 BinderProperties kafkaBinderSourceProperty = new BinderProperties();
-                configureBinderSources(kafkaBinderSourceProperty);
+                configureBinderSources(readSpringMainPropertiesMap(kafkaBinderSourceProperty.getEnvironment()));
 
                 Map<String, BinderProperties> kafkaBinderPropertyMap = new HashMap<>();
                 kafkaBinderPropertyMap.put(KAKFA_BINDER_DEFAULT_NAME, kafkaBinderSourceProperty);
@@ -41,7 +41,8 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
                     if (entry.getKey() != null && entry.getValue() != null
                             && (KAKFA_BINDER_TYPE.equalsIgnoreCase(entry.getValue().getType())
                             || KAKFA_BINDER_DEFAULT_NAME.equalsIgnoreCase(entry.getKey()))) {
-                        configureBinderSources(entry.getValue());
+                        readSpringMainPropertiesMap(entry.getValue().getEnvironment());
+                        configureBinderSources(readSpringMainPropertiesMap(entry.getValue().getEnvironment()));
                     }
                 }
             }
@@ -49,8 +50,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
         return bean;
     }
 
-    private void configureBinderSources(BinderProperties binderProperties) {
-        Map<String, Object> originalSources = readSpringMainPropertiesMap(binderProperties.getEnvironment());
+    void configureBinderSources(Map<String, Object> originalSources) {
         StringBuilder sources = new StringBuilder(AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
         if (StringUtils.hasText((String) originalSources.get("sources"))) {
             sources.append("," + originalSources.get("sources"));
@@ -59,8 +59,7 @@ class BindingServicePropertiesBeanPostProcessor implements BeanPostProcessor {
     }
 
     @SuppressWarnings("unchecked")
-    static Map<String, Object> readSpringMainPropertiesMap(Map<String, Object> map) {
-
+    Map<String, Object> readSpringMainPropertiesMap(Map<String, Object> map) {
         if (map.containsKey("spring")) {
             Map<String, Object> spring = (Map<String, Object>) map.get("spring");
             if (spring.containsKey("main")) {

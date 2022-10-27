@@ -16,7 +16,6 @@ import org.springframework.integration.support.utils.IntegrationUtils;
 
 import static com.azure.spring.cloud.autoconfigure.kafka.AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS;
 import static com.azure.spring.cloud.autoconfigure.kafka.BindingServicePropertiesBeanPostProcessor.SPRING_MAIN_SOURCES_PROPERTY;
-import static com.azure.spring.cloud.autoconfigure.kafka.BindingServicePropertiesBeanPostProcessor.readSpringMainPropertiesMap;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -30,6 +29,7 @@ class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
             // Required by the init method of BindingServiceProperties
             .withBean(IntegrationUtils.INTEGRATION_CONVERSION_SERVICE_BEAN_NAME, ConversionServiceFactoryBean.class,
                     ConversionServiceFactoryBean::new);
+    private final BindingServicePropertiesBeanPostProcessor bpp = new BindingServicePropertiesBeanPostProcessor();
 
     @Test
     void shouldNotConfigureWithoutKafkaBinderConfigurationClass() {
@@ -101,7 +101,7 @@ class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
                     assertThat(context).hasSingleBean(BindingServiceProperties.class);
 
                     testBinderSources(context.getBean(BindingServiceProperties.class), "kafka", AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS);
-                    assertEquals("console", readSpringMainPropertiesMap(context.getBean(BindingServiceProperties.class).getBinders().get("kafka").getEnvironment()).get("banner-mode"));
+                    assertEquals("console", bpp.readSpringMainPropertiesMap(context.getBean(BindingServiceProperties.class).getBinders().get("kafka").getEnvironment()).get("banner-mode"));
                 });
     }
 
@@ -154,7 +154,7 @@ class AzureEventHubsKafkaBinderOAuth2AutoConfigurationTest {
     private void testBinderSources(BindingServiceProperties bindingServiceProperties, String binderName, String binderSources) {
         assertFalse(bindingServiceProperties.getBinders().isEmpty());
         assertNotNull(bindingServiceProperties.getBinders().get(binderName));
-        assertEquals(binderSources, readSpringMainPropertiesMap(bindingServiceProperties.getBinders().get(binderName).getEnvironment()).get("sources"));
+        assertEquals(binderSources, bpp.readSpringMainPropertiesMap(bindingServiceProperties.getBinders().get(binderName).getEnvironment()).get("sources"));
     }
 
 

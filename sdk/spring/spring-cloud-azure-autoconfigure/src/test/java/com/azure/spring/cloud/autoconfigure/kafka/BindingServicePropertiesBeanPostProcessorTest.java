@@ -1,0 +1,113 @@
+package com.azure.spring.cloud.autoconfigure.kafka;
+
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import org.junit.jupiter.api.Test;
+
+import org.springframework.cloud.stream.config.BinderProperties;
+import org.springframework.cloud.stream.config.BindingServiceProperties;
+
+import static com.azure.spring.cloud.autoconfigure.kafka.AzureKafkaSpringCloudStreamConfiguration.AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+
+@SuppressWarnings("unchecked")
+class BindingServicePropertiesBeanPostProcessorTest {
+
+    private final BindingServicePropertiesBeanPostProcessor bpp = new BindingServicePropertiesBeanPostProcessor();
+
+    @Test
+    void testReadSpringMainPropertiesMapWithoutOriginalValues() {
+        Map<String, Object> env = new LinkedHashMap<>();
+        Map<String, Object> mainPropertiesMap = bpp.readSpringMainPropertiesMap(env);
+        assertSame(mainPropertiesMap, ((Map<String, Object>) env.get("spring")).get("main"));
+    }
+
+    @Test
+    void testReadSpringMainPropertiesMapWithSpringProp() {
+        Map<String, Object> env = new LinkedHashMap<>();
+        Map<String, Object> mainPropertiesMap = buildSpringMainPropertiesMap(env, "profiles", "active", "dev");
+
+        assertEquals("dev", ((Map<String, Map<String, Object>>) env.get("spring")).get("profiles").get("active"));
+        assertSame(mainPropertiesMap, ((Map<String, Object>) env.get("spring")).get("main"));
+    }
+
+    @Test
+    void testReadSpringMainPropertiesMapWithMainProp() {
+        Map<String, Object> env = new LinkedHashMap<>();
+        Map<String, Object> mainPropertiesMap = buildSpringMainPropertiesMap(env, "main", "banner-mode", "test");
+
+        assertEquals("test", ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("banner-mode"));
+        assertSame(mainPropertiesMap, ((Map<String, Object>) env.get("spring")).get("main"));
+    }
+
+    @Test
+    void testReadSpringMainPropertiesMapWithSourcesProp() {
+        Map<String, Object> env = new LinkedHashMap<>();
+        Map<String, Object> mainPropertiesMap = buildSpringMainPropertiesMap(env, "main", "sources", "test");
+
+        assertEquals("test", ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+        assertSame(mainPropertiesMap, ((Map<String, Object>) env.get("spring")).get("main"));
+    }
+
+    @Test
+    void testConfigureBinderSources() {
+        Map<String, Object> env = new LinkedHashMap<>();
+        Map<String, Object> mainPropertiesMap = buildSpringMainPropertiesMap(env, "main", "sources", "test");
+        bpp.configureBinderSources(mainPropertiesMap);
+        assertEquals(AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS + ",test", ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+
+        env.clear();
+        mainPropertiesMap = buildSpringMainPropertiesMap(env, "main", "profiles", "active");
+        bpp.configureBinderSources(mainPropertiesMap);
+        assertEquals(AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+    }
+
+    @Test
+    void testBindKafkaByDefault() {
+        BindingServiceProperties bindingServiceProperties = new BindingServiceProperties();
+        bpp.postProcessBeforeInitialization(bindingServiceProperties, null);
+        Map<String, Object> env = bindingServiceProperties.getBinders().get("kafka")
+                .getEnvironment();
+        assertEquals(AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+
+    }
+
+    @Test
+    void testBindKafkaByName() {
+        BinderProperties binderProperties = new BinderProperties();
+        Map<String, BinderProperties> binders= new HashMap<>() {{ put("kafka", binderProperties); }};
+        BindingServiceProperties bindingServiceProperties = new BindingServiceProperties();
+        bindingServiceProperties.setBinders(binders);
+
+        bpp.postProcessBeforeInitialization(bindingServiceProperties, null);
+        Map<String, Object> env = bindingServiceProperties.getBinders().get("kafka")
+                .getEnvironment();
+        assertEquals(AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+    }
+
+    @Test
+    void testBindKafkaByType() {
+        BinderProperties binderProperties = new BinderProperties();
+        Map<String, BinderProperties> binders= new HashMap<>() {{ put("test", binderProperties); }};
+        binderProperties.setType("kafka");
+        BindingServiceProperties bindingServiceProperties = new BindingServiceProperties();
+        bindingServiceProperties.setBinders(binders);
+
+        bpp.postProcessBeforeInitialization(bindingServiceProperties, null);
+        Map<String, Object> env = bindingServiceProperties.getBinders().get("test")
+                .getEnvironment();
+        assertEquals(AZURE_KAFKA_SPRING_CLOUD_STREAM_CONFIGURATION_CLASS, ((Map<String, Map<String, Object>>) env.get("spring")).get("main").get("sources"));
+    }
+
+    private Map<String, Object> buildSpringMainPropertiesMap(Map<String, Object> env, String secondProperty, String thirdProperty, String value) {
+        Map<String, Object> second = new LinkedHashMap<>();
+        second.put(thirdProperty, value);
+        Map<String, Object> first = new LinkedHashMap<String, Object>() {{ put(secondProperty, second); }};
+        env.put("spring", first);
+        return bpp.readSpringMainPropertiesMap(env);
+    }
+
+}
