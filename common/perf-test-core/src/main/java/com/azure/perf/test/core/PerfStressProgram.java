@@ -240,18 +240,18 @@ public class PerfStressProgram {
                 return String.format("%d\t\t%d\t\t%.2f", currentCompleted, totalCompleted, averageCompleted);
             }, true, true);
 
+        long startNanoTime = System.nanoTime();
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
         try {
             if (sync) {
                 ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
                 for (PerfTestBase<?> test : tests) {
-                    forkJoinPool.submit(new ResubmittingTestCallable(forkJoinPool, (ApiPerfTestBase<?>) test));
+                    forkJoinPool.submit(new ResubmittingTestCallable(forkJoinPool, (ApiPerfTestBase<?>) test, startNanoTime));
                 }
 
                 Thread.sleep(durationSeconds * 1000L);
-                forkJoinPool.shutdown();
-                forkJoinPool.awaitTermination(5, TimeUnit.SECONDS);
+                forkJoinPool.shutdownNow();
             } else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
@@ -262,7 +262,6 @@ public class PerfStressProgram {
                     System.exit(1);
                 });
 
-                long startNanoTime = System.nanoTime();
                 AtomicLong count = new AtomicLong();
                 Flux.<ApiPerfTestBase<?>>generate(sink -> {
                         // Continue emitting tests until the end time is reached.
@@ -274,7 +273,7 @@ public class PerfStressProgram {
                         }
                     })
                     .parallel(parallel)
-                    .runOn(Schedulers.parallel())
+                    .runOn(Schedulers.boundedElastic())
                     .flatMap(test -> test.runTestAsync()
                         .doOnNext(v -> {
                             test.lastCompletionNanoTime = System.nanoTime() - startNanoTime;
@@ -315,15 +314,18 @@ public class PerfStressProgram {
     private static class ResubmittingTestCallable implements Callable<Integer> {
         private final ForkJoinPool pool;
         private final ApiPerfTestBase<?> test;
+        private final long startNanoTime;
 
-        private ResubmittingTestCallable(ForkJoinPool pool, ApiPerfTestBase<?> test) {
+        private ResubmittingTestCallable(ForkJoinPool pool, ApiPerfTestBase<?> test, long startNanoTime) {
             this.pool = pool;
             this.test = test;
+            this.startNanoTime = startNanoTime;
         }
 
         @Override
         public Integer call() throws Exception {
             test.completedOperations += test.runTest();
+            test.lastCompletionNanoTime = System.nanoTime() - startNanoTime;
             pool.submit(this);
 
             return 1;
