@@ -23,7 +23,6 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import java.net.URL;
 import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in ServerCalls. */
@@ -56,7 +55,7 @@ public final class ServerCallsImpl {
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<RecordingStateResponseInternal>> getRecordingProperties(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -66,7 +65,7 @@ public final class ServerCallsImpl {
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> stopRecording(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -76,7 +75,7 @@ public final class ServerCallsImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> pauseRecording(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -86,7 +85,7 @@ public final class ServerCallsImpl {
         @ExpectedResponses({202})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> resumeRecording(
-                @HostParam("endpoint") URL endpoint,
+                @HostParam("endpoint") String endpoint,
                 @PathParam("recordingId") String recordingId,
                 @QueryParam("api-version") String apiVersion,
                 @HeaderParam("Accept") String accept,

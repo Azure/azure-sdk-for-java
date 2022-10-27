@@ -26,11 +26,6 @@ public class AnswerCallOptions {
     private RepeatabilityHeaders repeatabilityHeaders;
 
     /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
-    /**
      * Constructor
      *
      * @param incomingCallContext The incoming call context.
@@ -60,15 +55,6 @@ public class AnswerCallOptions {
     }
 
     /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-
-    /**
      * Get the Repeatability headers configuration.
      *
      * @return the repeatabilityHeaders
@@ -85,17 +71,6 @@ public class AnswerCallOptions {
      */
     public AnswerCallOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
         this.repeatabilityHeaders = repeatabilityHeaders;
-        return this;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 }
