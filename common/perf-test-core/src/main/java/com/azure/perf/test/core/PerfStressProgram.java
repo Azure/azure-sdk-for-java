@@ -237,13 +237,13 @@ public class PerfStressProgram {
             }, true, true);
 
         if (tests[0] instanceof ApiPerfTestBase) {
-            ApiPerfTestBase<?>[] apiTests = new ApiPerfTestBase[tests.length];
+            ApiPerfTestBase<?>[] apiTests = new ApiPerfTestBase<?>[tests.length];
             for (int i = 0; i < tests.length; i++) {
                 apiTests[i] = (ApiPerfTestBase<?>) tests[i];
             }
             runApiTests(apiTests, sync, parallel, durationSeconds, progressStatus);
         } else {
-            EventPerfTest<?>[] eventTests = new EventPerfTest[tests.length];
+            EventPerfTest<?>[] eventTests = new EventPerfTest<?>[tests.length];
             for (int i = 0; i < tests.length; i++) {
                 eventTests[i] = (EventPerfTest<?>) tests[i];
             }
