@@ -1281,7 +1281,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         PathHttpHeaders httpHeaders, DataLakeRequestConditions requestConditions) {
         DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions()
             .setUncommittedDataRetained(retainUncommittedData)
-            .setClose(close)
+            .setClosed(close)
             .setPathHttpHeaders(httpHeaders)
             .setRequestConditions(requestConditions);
 
@@ -1314,7 +1314,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
      *
      * DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions&#40;&#41;
      *     .setUncommittedDataRetained&#40;retainUncommittedData&#41;
-     *     .setClose&#40;close&#41;
+     *     .setClosed&#40;close&#41;
      *     .setPathHttpHeaders&#40;httpHeaders&#41;
      *     .setRequestConditions&#40;requestConditions&#41;
      *     .setLeaseAction&#40;LeaseAction.ACQUIRE&#41;
@@ -1363,7 +1363,7 @@ public class DataLakeFileAsyncClient extends DataLakePathAsyncClient {
         context = context == null ? Context.NONE : context;
 
         return this.dataLakeStorage.getPaths().flushDataWithResponseAsync(null, position, flushOptions.isUncommittedDataRetained(),
-                flushOptions.isClose(), (long) 0, flushOptions.getLeaseAction(), leaseDuration, flushOptions.getProposedLeaseId(),
+                flushOptions.isClosed(), (long) 0, flushOptions.getLeaseAction(), leaseDuration, flushOptions.getProposedLeaseId(),
                 null, httpHeaders, lac, mac, getCpkInfo(), context.addData(AZ_TRACING_NAMESPACE_KEY, STORAGE_TRACING_NAMESPACE_VALUE))
             .map(response -> new SimpleResponse<>(response, new PathInfo(response.getDeserializedHeaders().getETag(),
                 response.getDeserializedHeaders().getLastModified(),

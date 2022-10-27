@@ -64,7 +64,7 @@ public class DataLakeFileFlushOptions {
      *
      * @return whether the file stream has been closed.
      */
-    public Boolean isClose() {
+    public Boolean isClosed() {
         return close;
     }
 
@@ -82,7 +82,7 @@ public class DataLakeFileFlushOptions {
      * @param close boolean flag to indicate whether file stream has been closed.
      * @return the updated DataLakeFileFlushOptions object.
      */
-    public DataLakeFileFlushOptions setClose(Boolean close) {
+    public DataLakeFileFlushOptions setClosed(Boolean close) {
         this.close = close;
         return this;
     }
@@ -131,7 +131,7 @@ public class DataLakeFileFlushOptions {
      * Get lease action set on file.
      * {@link LeaseAction#ACQUIRE} will attempt to acquire a new lease on the file,
      * with {@link DataLakeFileFlushOptions#proposedLeaseId} as the lease ID.
-     * {@link LeaseAction#ACQUIRE_RELEASE} will attempt to aquire a new lease on the file,
+     * {@link LeaseAction#ACQUIRE_RELEASE} will attempt to acquire a new lease on the file,
      * with {@link DataLakeFileFlushOptions#proposedLeaseId} as the lease ID. The lease will be released once the
      * Append operation is complete.
      * {@link LeaseAction#AUTO_RENEW} will attempt to renew the lease specified by {@link DataLakeRequestConditions#getLeaseId()}.
@@ -147,7 +147,7 @@ public class DataLakeFileFlushOptions {
      * Get lease action set on file.
      * {@link LeaseAction#ACQUIRE} will attempt to acquire a new lease on the file,
      * with {@link DataLakeFileFlushOptions#proposedLeaseId} as the lease ID.
-     * {@link LeaseAction#ACQUIRE_RELEASE} will attempt to aquire a new lease on the file,
+     * {@link LeaseAction#ACQUIRE_RELEASE} will attempt to acquire a new lease on the file,
      * with {@link DataLakeFileFlushOptions#proposedLeaseId} as the lease ID. The lease will be released once the
      * Append operation is complete.
      * {@link LeaseAction#AUTO_RENEW} will attempt to renew the lease specified by {@link DataLakeRequestConditions#getLeaseId()}.
