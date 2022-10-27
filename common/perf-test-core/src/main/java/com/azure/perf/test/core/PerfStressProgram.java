@@ -273,8 +273,8 @@ public class PerfStressProgram {
                             sink.complete();
                         }
                     })
-//                    .parallel(parallel)
-//                    .runOn(Schedulers.boundedElastic())
+                    .parallel()
+                    .runOn(Schedulers.boundedElastic())
                     .flatMap(test -> {
                         if (System.nanoTime() < endNanoTime) {
                             return test.runTestAsync()
@@ -285,7 +285,7 @@ public class PerfStressProgram {
                         } else {
                             return Mono.just(1);
                         }
-                    }, parallel)
+                    }, false, parallel)
                     .then()
                     .block();
             }
