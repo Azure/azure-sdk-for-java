@@ -5,7 +5,6 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImplBuilder;
-import com.azure.communication.callautomation.implementation.CustomHmacAuthenticationPolicy;
 import com.azure.communication.common.implementation.CommunicationConnectionString;
 import com.azure.communication.common.implementation.HmacAuthenticationPolicy;
 import com.azure.core.annotation.ServiceClientBuilder;
@@ -319,20 +318,10 @@ public final class CallAutomationClientBuilder implements
         boolean isEndpointSet = endpoint != null && !endpoint.trim().isEmpty();
         boolean isAzureKeyCredentialSet = azureKeyCredential != null;
         boolean isTokenCredentialSet = tokenCredential != null;
-        boolean isCustomEndpointUsed;
 
-        String customEndpointEnabled = Configuration.getGlobalConfiguration().get("COMMUNICATION_CUSTOM_ENDPOINT_ENABLED",
-            "false");
-        isCustomEndpointUsed = Objects.equals(customEndpointEnabled, "true");
-
-        if (isConnectionStringSet && isEndpointSet && !isCustomEndpointUsed) {
+        if (isConnectionStringSet && isEndpointSet) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Both 'connectionString' and 'endpoint' are set. Just one may be used."));
-        }
-
-        if (((!isConnectionStringSet && !isTokenCredentialSet) || !isEndpointSet) && isCustomEndpointUsed) {
-            throw logger.logExceptionAsError(new IllegalArgumentException(
-                "Custom Endpoint mode requires 'ConnectionString/TokenCredential' and 'Endpoint' both to be set. Requirement is not fulfilled, changing back to normal mode."));
         }
 
         if (isConnectionStringSet && isAzureKeyCredentialSet) {
@@ -350,11 +339,7 @@ public final class CallAutomationClientBuilder implements
                 "Both 'tokenCredential' and 'keyCredential' are set. Just one may be used."));
         }
 
-        if (isCustomEndpointUsed && !isTokenCredentialSet) {
-            CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
-            String accessKey = connectionStringObject.getAccessKey();
-            credential(new AzureKeyCredential(accessKey));
-        } else if (isConnectionStringSet) {
+        if (isConnectionStringSet) {
             CommunicationConnectionString connectionStringObject = new CommunicationConnectionString(connectionString);
             String endpoint = connectionStringObject.getEndpoint();
             String accessKey = connectionStringObject.getAccessKey();
@@ -372,7 +357,7 @@ public final class CallAutomationClientBuilder implements
 
         HttpPipeline builderPipeline = pipeline;
         if (pipeline == null) {
-            builderPipeline = createHttpPipeline(httpClient, isCustomEndpointUsed);
+            builderPipeline = createHttpPipeline(httpClient);
         }
 
         AzureCommunicationCallAutomationServiceImplBuilder clientBuilder = new AzureCommunicationCallAutomationServiceImplBuilder();
@@ -397,7 +382,7 @@ public final class CallAutomationClientBuilder implements
         return this;
     }
 
-    private List<HttpPipelinePolicy> createHttpPipelineAuthPolicies(boolean isCustomEndpointUsed) throws MalformedURLException {
+    private List<HttpPipelinePolicy> createHttpPipelineAuthPolicies() {
         if (tokenCredential != null && azureKeyCredential != null) {
             throw logger.logExceptionAsError(new IllegalArgumentException(
                 "Both 'credential' and 'keyCredential' are set. Just one may be used."));
@@ -411,12 +396,7 @@ public final class CallAutomationClientBuilder implements
             httpHeaders.put("x-ms-host", hostName);
             pipelinePolicies.add(new AddHeadersPolicy(new HttpHeaders(httpHeaders)));
         } else if (azureKeyCredential != null) {
-            if (isCustomEndpointUsed) {
-                String acsEndpoint = (new CommunicationConnectionString(connectionString)).getEndpoint();
-                pipelinePolicies.add(new CustomHmacAuthenticationPolicy(azureKeyCredential, (new URL(acsEndpoint)).getHost()));
-            } else {
-                pipelinePolicies.add(new HmacAuthenticationPolicy(azureKeyCredential));
-            }
+            pipelinePolicies.add(new HmacAuthenticationPolicy(azureKeyCredential));
         } else {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
@@ -425,7 +405,7 @@ public final class CallAutomationClientBuilder implements
         return pipelinePolicies;
     }
 
-    private HttpPipeline createHttpPipeline(HttpClient httpClient, boolean isCustomEndpointUsed) {
+    private HttpPipeline createHttpPipeline(HttpClient httpClient) {
         if (pipeline != null) {
             return pipeline;
         }
@@ -450,7 +430,7 @@ public final class CallAutomationClientBuilder implements
         policyList.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions));
         policyList.add(new RedirectPolicy());
         try {
-            policyList.addAll(createHttpPipelineAuthPolicies(isCustomEndpointUsed));
+            policyList.addAll(createHttpPipelineAuthPolicies());
         } catch (Exception e) {
             throw logger.logExceptionAsError(
                 new IllegalArgumentException("Invalid ACS Endpoint exception: " + e));
