@@ -10,7 +10,7 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Recor
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallLocatorInternal;
 import com.azure.communication.callautomation.implementation.models.CallLocatorKindInternal;
-import com.azure.communication.callautomation.implementation.models.ChannelAffinityInternal;
+import com.azure.communication.callautomation.implementation.models.CommunicationIdentifierModel;
 import com.azure.communication.callautomation.implementation.models.RecordingContentInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingFormatInternal;
 import com.azure.communication.callautomation.implementation.models.RecordingChannelInternal;
@@ -22,6 +22,7 @@ import com.azure.communication.callautomation.models.DownloadToFileOptions;
 import com.azure.communication.callautomation.models.GroupCallLocator;
 import com.azure.communication.callautomation.models.ParallelDownloadOptions;
 import com.azure.communication.callautomation.models.RecordingStateResult;
+import com.azure.communication.callautomation.models.RepeatabilityHeaders;
 import com.azure.communication.callautomation.models.ServerCallLocator;
 import com.azure.communication.callautomation.models.StartRecordingOptions;
 import com.azure.core.annotation.ReturnType;
@@ -51,10 +52,12 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidParameterException;
+import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -120,10 +123,19 @@ public class CallRecordingAsync {
             }
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
 
+            if (options.getRepeatabilityHeaders() == null) {
+                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
+                options.setRepeatabilityHeaders(autoRepeatabilityHeaders);
+            }
+
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return contentsInternal
-                    .recordingWithResponseAsync(request, null, null, contextValue)
+                    .recordingWithResponseAsync(
+                        request,
+                        options.getRepeatabilityHeaders().getRepeatabilityRequestId(),
+                        options.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                        contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
                         new SimpleResponse<>(response, RecordingStateResponseConstructorProxy.create(response.getValue()))
@@ -164,14 +176,11 @@ public class CallRecordingAsync {
         if (options.getRecordingStateCallbackUrl() != null) {
             request.setRecordingStateCallbackUri(options.getRecordingStateCallbackUrl());
         }
-        if (options.getChannelAffinity() != null) {
-            List<ChannelAffinityInternal> channelAffinityInternal = options.getChannelAffinity()
-                .stream()
-                .map(c -> new ChannelAffinityInternal()
-                    .setChannel(c.getChannel())
-                    .setParticipant(CommunicationIdentifierConverter.convert(c.getParticipant())))
+        if (options.getAudioChannelParticipantOrdering() != null) {
+            List<CommunicationIdentifierModel> audioChannelParticipantOrdering = options.getAudioChannelParticipantOrdering()
+                .stream().map(CommunicationIdentifierConverter::convert)
                 .collect(Collectors.toList());
-            request.setChannelAffinity(channelAffinityInternal);
+            request.setAudioChannelParticipantOrdering(audioChannelParticipantOrdering);
         }
 
         return request;

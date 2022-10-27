@@ -20,7 +20,9 @@ class OpenTelemetryAttributes implements TelemetryAttributes {
 
     private static Map<String, String> getMappings() {
         Map<String, String> mappings = new HashMap<>();
-        // messaging mapping, attributes are defined in com.azure.core.amqp.implementation.ClientConstants
+        // messaging mapping, attributes are defined in com.azure.core.amqp.implementation.ClientConstants and in EventHubs, ServiceBus
+        // metric helpers
+        mappings.put("status", "otel.status_code");
         mappings.put("entityName", "messaging.destination");
         mappings.put("entityPath", "messaging.az.entity_path");
         mappings.put("hostName", "net.peer.name");
@@ -28,6 +30,10 @@ class OpenTelemetryAttributes implements TelemetryAttributes {
         mappings.put("amqpStatusCode", "amqp.status_code");
         mappings.put("amqpOperation", "amqp.operation");
         mappings.put("deliveryState", "amqp.delivery_state");
+        mappings.put("partitionId", "messaging.eventhubs.partition_id");
+        mappings.put("consumerGroup", "messaging.eventhubs.consumer_group");
+        mappings.put("subscriptionName", "messaging.servicebus.subscription_name");
+        mappings.put("dispositionStatus", "messaging.servicebus.disposition_status");
 
         return Collections.unmodifiableMap(mappings);
     }

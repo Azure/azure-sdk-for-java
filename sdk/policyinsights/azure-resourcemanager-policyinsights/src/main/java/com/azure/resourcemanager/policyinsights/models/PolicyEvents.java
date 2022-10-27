@@ -13,17 +13,22 @@ public interface PolicyEvents {
     /**
      * Queries policy events for the resources under the management group.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param managementGroupName Management group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PolicyEvent> listQueryResultsForManagementGroup(String managementGroupName);
+    PagedIterable<PolicyEvent> listQueryResultsForManagementGroup(
+        PolicyEventsResourceType policyEventsResource, String managementGroupName);
 
     /**
      * Queries policy events for the resources under the management group.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param managementGroupName Management group name.
      * @param top Maximum number of records to return.
      * @param orderBy Ordering expression using OData notation. One or more comma-separated column names with an
@@ -42,9 +47,10 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyEvent> listQueryResultsForManagementGroup(
+        PolicyEventsResourceType policyEventsResource,
         String managementGroupName,
         Integer top,
         String orderBy,
@@ -59,17 +65,22 @@ public interface PolicyEvents {
     /**
      * Queries policy events for the resources under the subscription.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PolicyEvent> listQueryResultsForSubscription(String subscriptionId);
+    PagedIterable<PolicyEvent> listQueryResultsForSubscription(
+        PolicyEventsResourceType policyEventsResource, String subscriptionId);
 
     /**
      * Queries policy events for the resources under the subscription.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param top Maximum number of records to return.
      * @param orderBy Ordering expression using OData notation. One or more comma-separated column names with an
@@ -88,9 +99,10 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyEvent> listQueryResultsForSubscription(
+        PolicyEventsResourceType policyEventsResource,
         String subscriptionId,
         Integer top,
         String orderBy,
@@ -105,18 +117,23 @@ public interface PolicyEvents {
     /**
      * Queries policy events for the resources under the resource group.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PolicyEvent> listQueryResultsForResourceGroup(String subscriptionId, String resourceGroupName);
+    PagedIterable<PolicyEvent> listQueryResultsForResourceGroup(
+        PolicyEventsResourceType policyEventsResource, String subscriptionId, String resourceGroupName);
 
     /**
      * Queries policy events for the resources under the resource group.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param top Maximum number of records to return.
@@ -136,9 +153,10 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyEvent> listQueryResultsForResourceGroup(
+        PolicyEventsResourceType policyEventsResource,
         String subscriptionId,
         String resourceGroupName,
         Integer top,
@@ -154,17 +172,22 @@ public interface PolicyEvents {
     /**
      * Queries policy events for the resource.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param resourceId Resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PolicyEvent> listQueryResultsForResource(String resourceId);
+    PagedIterable<PolicyEvent> listQueryResultsForResource(
+        PolicyEventsResourceType policyEventsResource, String resourceId);
 
     /**
      * Queries policy events for the resource.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param resourceId Resource ID.
      * @param top Maximum number of records to return.
      * @param orderBy Ordering expression using OData notation. One or more comma-separated column names with an
@@ -184,9 +207,10 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyEvent> listQueryResultsForResource(
+        PolicyEventsResourceType policyEventsResource,
         String resourceId,
         Integer top,
         String orderBy,
@@ -202,19 +226,23 @@ public interface PolicyEvents {
     /**
      * Queries policy events for the subscription level policy set definition.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policySetDefinitionName Policy set definition name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyEvent> listQueryResultsForPolicySetDefinition(
-        String subscriptionId, String policySetDefinitionName);
+        PolicyEventsResourceType policyEventsResource, String subscriptionId, String policySetDefinitionName);
 
     /**
      * Queries policy events for the subscription level policy set definition.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policySetDefinitionName Policy set definition name.
      * @param top Maximum number of records to return.
@@ -234,9 +262,10 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyEvent> listQueryResultsForPolicySetDefinition(
+        PolicyEventsResourceType policyEventsResource,
         String subscriptionId,
         String policySetDefinitionName,
         Integer top,
@@ -252,18 +281,23 @@ public interface PolicyEvents {
     /**
      * Queries policy events for the subscription level policy definition.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyDefinitionName Policy definition name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<PolicyEvent> listQueryResultsForPolicyDefinition(String subscriptionId, String policyDefinitionName);
+    PagedIterable<PolicyEvent> listQueryResultsForPolicyDefinition(
+        PolicyEventsResourceType policyEventsResource, String subscriptionId, String policyDefinitionName);
 
     /**
      * Queries policy events for the subscription level policy definition.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyDefinitionName Policy definition name.
      * @param top Maximum number of records to return.
@@ -283,9 +317,10 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyEvent> listQueryResultsForPolicyDefinition(
+        PolicyEventsResourceType policyEventsResource,
         String subscriptionId,
         String policyDefinitionName,
         Integer top,
@@ -301,19 +336,23 @@ public interface PolicyEvents {
     /**
      * Queries policy events for the subscription level policy assignment.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyAssignmentName Policy assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyEvent> listQueryResultsForSubscriptionLevelPolicyAssignment(
-        String subscriptionId, String policyAssignmentName);
+        PolicyEventsResourceType policyEventsResource, String subscriptionId, String policyAssignmentName);
 
     /**
      * Queries policy events for the subscription level policy assignment.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param policyAssignmentName Policy assignment name.
      * @param top Maximum number of records to return.
@@ -333,9 +372,10 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyEvent> listQueryResultsForSubscriptionLevelPolicyAssignment(
+        PolicyEventsResourceType policyEventsResource,
         String subscriptionId,
         String policyAssignmentName,
         Integer top,
@@ -351,20 +391,27 @@ public interface PolicyEvents {
     /**
      * Queries policy events for the resource group level policy assignment.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param policyAssignmentName Policy assignment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyEvent> listQueryResultsForResourceGroupLevelPolicyAssignment(
-        String subscriptionId, String resourceGroupName, String policyAssignmentName);
+        PolicyEventsResourceType policyEventsResource,
+        String subscriptionId,
+        String resourceGroupName,
+        String policyAssignmentName);
 
     /**
      * Queries policy events for the resource group level policy assignment.
      *
+     * @param policyEventsResource The name of the virtual resource under PolicyEvents resource type; only "default" is
+     *     allowed.
      * @param subscriptionId Microsoft Azure subscription ID.
      * @param resourceGroupName Resource group name.
      * @param policyAssignmentName Policy assignment name.
@@ -385,9 +432,10 @@ public interface PolicyEvents {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return query results.
+     * @return query results as paginated response with {@link PagedIterable}.
      */
     PagedIterable<PolicyEvent> listQueryResultsForResourceGroupLevelPolicyAssignment(
+        PolicyEventsResourceType policyEventsResource,
         String subscriptionId,
         String resourceGroupName,
         String policyAssignmentName,

@@ -44,6 +44,10 @@ public final class VirtualHubInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of VirtualHubInner class. */
+    public VirtualHubInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the virtual hub.
      *
@@ -395,6 +399,15 @@ public final class VirtualHubInner extends Resource {
      */
     public List<SubResource> ipConfigurations() {
         return this.innerProperties() == null ? null : this.innerProperties().ipConfigurations();
+    }
+
+    /**
+     * Get the routeMaps property: List of references to RouteMaps.
+     *
+     * @return the routeMaps value.
+     */
+    public List<SubResource> routeMaps() {
+        return this.innerProperties() == null ? null : this.innerProperties().routeMaps();
     }
 
     /**

@@ -105,6 +105,10 @@ public final class ExpressRouteCircuitPropertiesFormat {
     @JsonProperty(value = "authorizationKey")
     private String authorizationKey;
 
+    /** Creates an instance of ExpressRouteCircuitPropertiesFormat class. */
+    public ExpressRouteCircuitPropertiesFormat() {
+    }
+
     /**
      * Get the allowClassicOperations property: Allow classic operations.
      *

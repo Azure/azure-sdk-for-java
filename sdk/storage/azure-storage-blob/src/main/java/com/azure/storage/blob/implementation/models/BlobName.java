@@ -24,6 +24,9 @@ public final class BlobName {
      */
     @JacksonXmlText private String content;
 
+    /** Creates an instance of BlobName class. */
+    public BlobName() {}
+
     /**
      * Get the encoded property: Indicates if the blob name is encoded.
      *

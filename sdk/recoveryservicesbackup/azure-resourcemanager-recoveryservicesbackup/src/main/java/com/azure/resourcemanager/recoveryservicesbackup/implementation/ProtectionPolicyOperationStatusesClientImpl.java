@@ -223,14 +223,16 @@ public final class ProtectionPolicyOperationStatusesClientImpl implements Protec
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's status needs to be fetched.
      * @param operationId Operation ID which represents an operation whose status needs to be fetched.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
+     * @return operation status along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner get(String vaultName, String resourceGroupName, String policyName, String operationId) {
-        return getAsync(vaultName, resourceGroupName, policyName, operationId).block();
+    public Response<OperationStatusInner> getWithResponse(
+        String vaultName, String resourceGroupName, String policyName, String operationId, Context context) {
+        return getWithResponseAsync(vaultName, resourceGroupName, policyName, operationId, context).block();
     }
 
     /**
@@ -242,15 +244,13 @@ public final class ProtectionPolicyOperationStatusesClientImpl implements Protec
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param policyName Backup policy name whose operation's status needs to be fetched.
      * @param operationId Operation ID which represents an operation whose status needs to be fetched.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status along with {@link Response}.
+     * @return operation status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperationStatusInner> getWithResponse(
-        String vaultName, String resourceGroupName, String policyName, String operationId, Context context) {
-        return getWithResponseAsync(vaultName, resourceGroupName, policyName, operationId, context).block();
+    public OperationStatusInner get(String vaultName, String resourceGroupName, String policyName, String operationId) {
+        return getWithResponse(vaultName, resourceGroupName, policyName, operationId, Context.NONE).getValue();
     }
 }

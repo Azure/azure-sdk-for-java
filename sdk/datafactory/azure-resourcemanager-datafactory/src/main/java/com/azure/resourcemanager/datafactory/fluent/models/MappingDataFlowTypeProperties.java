@@ -44,6 +44,10 @@ public final class MappingDataFlowTypeProperties {
     @JsonProperty(value = "scriptLines")
     private List<String> scriptLines;
 
+    /** Creates an instance of MappingDataFlowTypeProperties class. */
+    public MappingDataFlowTypeProperties() {
+    }
+
     /**
      * Get the sources property: List of sources in data flow.
      *

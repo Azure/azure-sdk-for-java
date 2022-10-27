@@ -79,6 +79,10 @@ public final class FileServerReadSettings extends StoreReadSettings {
     @JsonProperty(value = "fileFilter")
     private Object fileFilter;
 
+    /** Creates an instance of FileServerReadSettings class. */
+    public FileServerReadSettings() {
+    }
+
     /**
      * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
      * boolean (or Expression with resultType boolean).

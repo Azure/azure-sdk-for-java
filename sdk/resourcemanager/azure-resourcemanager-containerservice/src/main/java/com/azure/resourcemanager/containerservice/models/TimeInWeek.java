@@ -27,6 +27,10 @@ public final class TimeInWeek {
     @JsonProperty(value = "hourSlots")
     private List<Integer> hourSlots;
 
+    /** Creates an instance of TimeInWeek class. */
+    public TimeInWeek() {
+    }
+
     /**
      * Get the day property: The day of the week.
      *

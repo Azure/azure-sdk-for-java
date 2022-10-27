@@ -75,6 +75,10 @@ public final class BackendAddressPoolPropertiesFormat {
     @JsonProperty(value = "drainPeriodInSeconds")
     private Integer drainPeriodInSeconds;
 
+    /** Creates an instance of BackendAddressPoolPropertiesFormat class. */
+    public BackendAddressPoolPropertiesFormat() {
+    }
+
     /**
      * Get the location property: The location of the backend address pool.
      *

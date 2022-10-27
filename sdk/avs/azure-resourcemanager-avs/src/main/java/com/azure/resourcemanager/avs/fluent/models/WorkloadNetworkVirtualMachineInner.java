@@ -6,21 +6,21 @@ package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.VMTypeEnum;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** NSX Virtual Machine. */
 @Fluent
 public final class WorkloadNetworkVirtualMachineInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkVirtualMachineInner.class);
-
     /*
      * Virtual machine properties.
      */
     @JsonProperty(value = "properties")
     private WorkloadNetworkVirtualMachineProperties innerProperties;
+
+    /** Creates an instance of WorkloadNetworkVirtualMachineInner class. */
+    public WorkloadNetworkVirtualMachineInner() {
+    }
 
     /**
      * Get the innerProperties property: Virtual machine properties.

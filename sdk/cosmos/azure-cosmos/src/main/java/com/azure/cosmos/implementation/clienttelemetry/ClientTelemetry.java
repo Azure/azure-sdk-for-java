@@ -56,6 +56,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class ClientTelemetry {
+    public final static boolean DEFAULT_CLIENT_TELEMETRY_ENABLED = false;
     public final static String VM_ID_PREFIX = "vmId_";
     public final static int ONE_KB_TO_BYTES = 1024;
     public final static int REQUEST_LATENCY_MAX_MILLI_SEC = 300000;
@@ -142,13 +143,14 @@ public class ClientTelemetry {
         this.isClosed = false;
         this.configs = configs;
         this.clientTelemetryConfig = clientTelemetryConfig;
-        this.clientTelemetryConfigEnabled = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
+        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
+            clientTelemetryAccessor = ImplementationBridgeHelpers
+                .CosmosClientTelemetryConfigHelper
+                .getCosmosClientTelemetryConfigAccessor();
+        assert(clientTelemetryAccessor != null);
+        this.clientTelemetryConfigEnabled = clientTelemetryAccessor
             .isSendClientTelemetryToServiceEnabled(clientTelemetryConfig);
-        this.clientMetricsEnabled = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
+        this.clientMetricsEnabled = clientTelemetryAccessor
             .isClientMetricsEnabled(clientTelemetryConfig);
         this.httpClient = getHttpClientForClientTelemetry();
         this.metadataHttpClient = getHttpClientForIMDS();

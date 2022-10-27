@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for DomainJoinType. */
+/** Active Directory join type. */
 public final class DomainJoinType extends ExpandableStringEnum<DomainJoinType> {
     /** Static value HybridAzureADJoin for DomainJoinType. */
     public static final DomainJoinType HYBRID_AZURE_ADJOIN = fromString("HybridAzureADJoin");

@@ -20,6 +20,10 @@ public final class ProjectEnvironmentTypeProperties extends ProjectEnvironmentTy
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private String provisioningState;
 
+    /** Creates an instance of ProjectEnvironmentTypeProperties class. */
+    public ProjectEnvironmentTypeProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state of the resource.
      *

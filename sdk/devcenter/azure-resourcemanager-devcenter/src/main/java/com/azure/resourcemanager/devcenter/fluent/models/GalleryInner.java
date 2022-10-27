@@ -24,6 +24,10 @@ public final class GalleryInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of GalleryInner class. */
+    public GalleryInner() {
+    }
+
     /**
      * Get the innerProperties property: Gallery properties.
      *

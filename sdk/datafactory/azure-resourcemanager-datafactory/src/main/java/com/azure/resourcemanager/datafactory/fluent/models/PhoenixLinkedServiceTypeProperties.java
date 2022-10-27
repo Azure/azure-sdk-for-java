@@ -91,6 +91,10 @@ public final class PhoenixLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of PhoenixLinkedServiceTypeProperties class. */
+    public PhoenixLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: The IP address or host name of the Phoenix server. (i.e. 192.168.222.160).
      *

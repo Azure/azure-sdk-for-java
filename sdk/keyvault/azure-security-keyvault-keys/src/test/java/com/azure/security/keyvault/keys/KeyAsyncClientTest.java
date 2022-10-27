@@ -24,12 +24,12 @@ import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
-import com.azure.security.keyvault.keys.models.KeyProperties;
 import com.azure.security.keyvault.keys.models.KeyRotationPolicyAction;
 import com.azure.security.keyvault.keys.models.KeyType;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Assumptions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -548,7 +548,6 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
         createKeyAsyncClient(httpClient, serviceVersion);
 
         listKeyVersionsRunner((keysToList) -> {
-            List<KeyProperties> output = new ArrayList<>();
             String keyName = null;
 
             for (CreateKeyOptions key : keysToList) {
@@ -561,11 +560,9 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
 
             sleepInRecordMode(30000);
 
-            keyAsyncClient.listPropertiesOfKeyVersions(keyName).subscribe(output::add);
-
-            sleepInRecordMode(30000);
-
-            assertEquals(keysToList.size(), output.size());
+            StepVerifier.create(keyAsyncClient.listPropertiesOfKeyVersions(keyName).collectList())
+                .assertNext(actualKeys -> assertEquals(keysToList.size(), actualKeys.size()))
+                .verifyComplete();
         });
 
     }
@@ -691,7 +688,8 @@ public class KeyAsyncClientTest extends KeyClientTestBase {
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    @DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
+    @Disabled("Disable after https://github.com/Azure/azure-sdk-for-java/issues/31510 is fixed.")
+    //@DisabledIfSystemProperty(named = "IS_SKIP_ROTATION_POLICY_TEST", matches = "true")
     public void updateGetKeyRotationPolicyWithMinimumProperties(HttpClient httpClient,
                                                                 KeyServiceVersion serviceVersion) {
         // Key Rotation is not yet enabled in Managed HSM.

@@ -1,6 +1,17 @@
 # Release History
 
-## 4.4.0-beta.1 (Unreleased)
+## 4.5.0-beta.2 (Unreleased)
+Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies version to 2021.0.4
+
+#### Bugs Fixed
+- Fix bug: Put a value into Collections.emptyMap(). [#31190](https://github.com/Azure/azure-sdk-for-java/issues/31190).
+- Fix bug: RestTemplate used to get access token should only contain 2 converters. [#31482](https://github.com/Azure/azure-sdk-for-java/issues/31482).
+- Fix bug: RestOperations is not well configured when jwkResolver is null. [#31218](https://github.com/Azure/azure-sdk-for-java/issues/31218).
+- Fix bug: Duplicated "scope" parameter. [#31191](https://github.com/Azure/azure-sdk-for-java/issues/31191).
+- Fix bug: NimbusJwtDecoder still uses `RestTemplate()` instead `RestTemplateBuilder` [#31233](https://github.com/Azure/azure-sdk-for-java/issues/31233)
+- Fix bug: Proxy setting not work in Azure AD B2C web application [31593](https://github.com/Azure/azure-sdk-for-java/issues/31593)
+
+## 4.4.0 (2022-09-26)
 Upgrade Spring Boot dependencies version to 2.7.3 and Spring Cloud dependencies version to 2021.0.3
 Upgrade Spring Boot dependencies version to 2.7.2 and Spring Cloud dependencies version to 2021.0.3.
 
@@ -29,7 +40,14 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fix the Service Bus Binder cannot automatically create Topic/Subscriptions from consumer bug. [#30722](https://github.com/Azure/azure-sdk-for-java/pull/30722).
 - Fix the cloud type cannot be configured for Service Bus Binder bug [#30936](https://github.com/Azure/azure-sdk-for-java/issues/30936).
 
+## 4.5.0-beta.1 (2022-09-23)
+- This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.11, 2.7.0-2.7.3. (Note: 2.5.x (x>14), 2.6.y (y>11) and 2.7.z (z>3) should be supported, but they aren't tested with this release.)
+- This release is compatible with Spring Cloud 2020.0.3-2020.0.6, 2021.0.0-2021.0.3. (Note: 2020.0.x (x>6) and 2021.0.y (y>3) should be supported, but they aren't tested with this release.)
 
+### Spring Cloud Azure Starter
+This section includes changes in `spring-cloud-azure-starter` module.
+#### Features Added
++ Support Azure hosted PostgreSQL and MySQL services authenticating with Azure AD [#30024](https://github.com/Azure/azure-sdk-for-java/pull/30024).
 
 ## 4.3.0 (2022-06-29)
 - This release is compatible with Spring Boot 2.5.0-2.5.14, 2.6.0-2.6.9, 2.7.0-2.7.1. (Note: 2.5.x (x>14), 2.6.y (y>9) and 2.7.z (z>1) should be supported, but they aren't tested with this release.)
@@ -151,7 +169,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Upgrade dependency according to spring-boot-dependencies:2.6.3 and spring-cloud-dependencies:2021.0.0.
 
 ### Features Added 
-- Add `Automatic-Module-Name` for all Spring Cloud Azure modules and change the root pacakge names to match the module names [#27350](https://github.com/Azure/azure-sdk-for-java/issues/27350), [#27420](https://github.com/Azure/azure-sdk-for-java/pull/27420).
+- Add `Automatic-Module-Name` for all Spring Cloud Azure modules and change the root package names to match the module names [#27350](https://github.com/Azure/azure-sdk-for-java/issues/27350), [#27420](https://github.com/Azure/azure-sdk-for-java/pull/27420).
 
 ### Spring Cloud Azure Dependencies (BOM)
 #### Dependency Updates
@@ -258,13 +276,13 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Change non-SDK defined boolean configuration properties from `Boolean` to `boolean` [#27321](https://github.com/Azure/azure-sdk-for-java/pull/27321).
 - Delete unused API from `KeyVaultOperation` and `KeyVaultPropertySource` [#27722](https://github.com/Azure/azure-sdk-for-java/pull/27722).
 - Delete `Propagator` from the constructor of `SleuthHttpPolicy` [#27621](https://github.com/Azure/azure-sdk-for-java/pull/27621).
-- Move classes for internal usage to the implementation pacakge [#27113](https://github.com/Azure/azure-sdk-for-java/issues/27113).
+- Move classes for internal usage to the implementation package [#27113](https://github.com/Azure/azure-sdk-for-java/issues/27113).
 
 #### Features Added
 - Add a compatibility verifier for Spring Cloud Azure [#25437](https://github.com/Azure/azure-sdk-for-java/issues/25437).
 - Support configuring an `AzureTokenCredentialResolver` for each `*ClientBuilderFactory` [#26792](https://github.com/Azure/azure-sdk-for-java/pull/26792).
 - Add more hints for configuration properties in `additional-spring-configuration-metadata.json` file [#26600](https://github.com/Azure/azure-sdk-for-java/issues/26600).
-- Add descriptions and logs for `namespacce` property of Service Bus and Event Hubs [#27053](https://github.com/Azure/azure-sdk-for-java/issues/27053).
+- Add descriptions and logs for `namespace` property of Service Bus and Event Hubs [#27053](https://github.com/Azure/azure-sdk-for-java/issues/27053).
 
 #### Bugs Fixed
 - Fix AAD autoconfiguration activated when no web dependencies on the classpath [#26915](https://github.com/Azure/azure-sdk-for-java/issues/26915).
@@ -329,7 +347,7 @@ This section includes changes in `spring-cloud-azure-stream-binder-servicebus` m
 This section includes changes in the `spring-integration-azure-eventhubs` module.
 
 #### Breaking Changes
-- Move classes for internal usage to the implementation pacakge [#27281](https://github.com/Azure/azure-sdk-for-java/pull/27281).
+- Move classes for internal usage to the implementation package [#27281](https://github.com/Azure/azure-sdk-for-java/pull/27281).
 - Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
 - Refactor the constructors of `EventHubsInboundChannelAdapter` to `EventHubsInboundChannelAdapter(EventHubsMessageListenerContainer)` and `EventHubsInboundChannelAdapter(EventHubsMessageListenerContainer, ListenerMode)` [#27216](https://github.com/Azure/azure-sdk-for-java/pull/27216), [#27421](https://github.com/Azure/azure-sdk-for-java/pull/27421).
 
@@ -337,7 +355,7 @@ This section includes changes in the `spring-integration-azure-eventhubs` module
 This section includes changes in the `spring-integration-azure-servicebus` module.
 
 #### Breaking Changes
-- Move classes for internal usage to the implementation pacakge [#27281](https://github.com/Azure/azure-sdk-for-java/pull/27281).
+- Move classes for internal usage to the implementation package [#27281](https://github.com/Azure/azure-sdk-for-java/pull/27281).
 - Delete message header of `AzureHeaders.RAW_ID`. Please use `ServiceBusMessageHeaders.MESSAGE_ID` instead [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
 - Delete class `CheckpointConfig`. Please use `ServiceBusContainerProperties#setAutoComplete` instead. To disable the auto-complete mode is 
 equivalent to `MANUAL` checkpoint mode and to enable it will trigger the `RECORD` mode [#27615](https://github.com/Azure/azure-sdk-for-java/pull/27615), [#27646](https://github.com/Azure/azure-sdk-for-java/pull/27646).
@@ -374,7 +392,7 @@ This section includes changes in the `spring-messaging-azure` module.
 This section includes changes in the `spring-messaging-azure-eventhubs` module.
 
 #### Breaking Changes
-- Move classes for internal usage to the implementation pacakge [#27396](https://github.com/Azure/azure-sdk-for-java/pull/27396).
+- Move classes for internal usage to the implementation package [#27396](https://github.com/Azure/azure-sdk-for-java/pull/27396).
 - Move class `PartitionSupplier` from package `com.azure.spring.messaging` to `com.azure.spring.messaging.eventhubs.core` [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
 - Delete parameter of `PartitionSupplier` from the sending API for a single message in `EventHubsTemplate` [#27422](https://github.com/Azure/azure-sdk-for-java/pull/27422). Please use message headers of `com.azure.spring.messaging.AzureHeaders.PARTITION_ID` and `com.azure.spring.messaging.AzureHeaders.PARTITION_KEY` instead [#27422](https://github.com/Azure/azure-sdk-for-java/issues/27422).
 - Change the message header prefix from `azure_eventhub` to `azure_eventhubs_` [#27746](https://github.com/Azure/azure-sdk-for-java/pull/27746).
@@ -385,7 +403,7 @@ This section includes changes in the `spring-messaging-azure-eventhubs` module.
   + Rename `BatchEventProcessingListener` and `RecordEventProcessingListener` to `EventHubsBatchMessageListener` and `EventHubsRecordMessageListener`.
 
 #### Features Added
-- Support adding builder custoimzers in `DefaultEventHubsNamespaceProducerFactory` and `DefaultEventHubsNamespaceProcessorFactory` [#27452](https://github.com/Azure/azure-sdk-for-java/pull/27452).
+- Support adding builder customizers in `DefaultEventHubsNamespaceProducerFactory` and `DefaultEventHubsNamespaceProcessorFactory` [#27452](https://github.com/Azure/azure-sdk-for-java/pull/27452).
 
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.
@@ -418,7 +436,7 @@ Please use message header of `com.azure.spring.messaging.AzureHeaders.PARTITION_
   * ServiceBusMessageHeaders.STATE
   * ServiceBusMessageHeaders.SUBJECT
 - Support the message header of `ServiceBusMessageHeaders.SUBJECT` to specify the AMQP property of `subject` when sending messages [#27675](https://github.com/Azure/azure-sdk-for-java/pull/27675).
-- Support adding builder custoimzers in `DefaultServiceBusNamespaceProducerFactory` and `DefaultServiceBusNamespaceProcessorFactory` [#27452](https://github.com/Azure/azure-sdk-for-java/pull/27452), [#27820](https://github.com/Azure/azure-sdk-for-java/pull/27820).
+- Support adding builder customizers in `DefaultServiceBusNamespaceProducerFactory` and `DefaultServiceBusNamespaceProcessorFactory` [#27452](https://github.com/Azure/azure-sdk-for-java/pull/27452), [#27820](https://github.com/Azure/azure-sdk-for-java/pull/27820).
 
 ### Spring Messaging Azure Storage Queue
 This section includes changes in `spring-messaging-azure-storage-queue` module.

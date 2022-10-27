@@ -60,7 +60,16 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
     }
 
     @Test(groups = {"simple"}, timeOut = TIMEOUT * 2)
-    public void createItem_withBulkAndThroughputControl() throws InterruptedException {
+    public void createItem_withBulkAndThroughputControlAsDefaultGroup() throws InterruptedException {
+        runBulkTest(true);
+    }
+
+    @Test(groups = {"simple"}, timeOut = TIMEOUT * 2)
+    public void createItem_withBulkAndThroughputControlAsNonDefaultGroup() throws InterruptedException {
+        runBulkTest(false);
+    }
+
+    private void runBulkTest(boolean isDefaultTestGroup) throws InterruptedException {
         int totalRequest = getTotalRequest(180, 200);
 
         PartitionKeyDefinition pkDefinition = new PartitionKeyDefinition();
@@ -73,7 +82,7 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
         ThroughputControlGroupConfig groupConfig = new ThroughputControlGroupConfigBuilder()
             .groupName("test-group")
             .targetThroughputThreshold(0.2)
-            .defaultControlGroup(true)
+            .defaultControlGroup(isDefaultTestGroup)
             .build();
         bulkAsyncContainerWithThroughputControl.enableLocalThroughputControlGroup(groupConfig);
 
@@ -92,6 +101,9 @@ public class CosmosBulkAsyncTest extends BatchTestBase {
             }));
 
         CosmosBulkExecutionOptions cosmosBulkExecutionOptions = new CosmosBulkExecutionOptions();
+        if (!isDefaultTestGroup) {
+            cosmosBulkExecutionOptions.setThroughputControlGroupName("test-group");
+        }
 
         try {
             Flux<com.azure.cosmos.models.CosmosBulkOperationResponse<CosmosBulkAsyncTest>> responseFlux = bulkAsyncContainerWithThroughputControl

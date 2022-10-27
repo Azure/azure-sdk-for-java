@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for EncryptionState. */
+/** Status of customer managed encryption key. */
 public final class EncryptionState extends ExpandableStringEnum<EncryptionState> {
     /** Static value Enabled for EncryptionState. */
     public static final EncryptionState ENABLED = fromString("Enabled");
@@ -27,7 +27,11 @@ public final class EncryptionState extends ExpandableStringEnum<EncryptionState>
         return fromString(name, EncryptionState.class);
     }
 
-    /** @return known EncryptionState values. */
+    /**
+     * Gets known EncryptionState values.
+     *
+     * @return known EncryptionState values.
+     */
     public static Collection<EncryptionState> values() {
         return values(EncryptionState.class);
     }

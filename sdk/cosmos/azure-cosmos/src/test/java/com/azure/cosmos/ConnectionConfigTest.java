@@ -244,7 +244,7 @@ public class ConnectionConfigTest extends TestSuiteBase {
         ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor accessor =
             ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper
             .getCosmosClientTelemetryConfigAccessor();
-        assertThat(accessor.isSendClientTelemetryToServiceEnabled(clientTelemetryConfig)).isTrue();
+        assertThat(accessor.isSendClientTelemetryToServiceEnabled(clientTelemetryConfig)).isNull();
         assertThat(accessor.getProxy(clientTelemetryConfig).getType()).isEqualTo(proxyOptions.getType());
         assertThat(accessor.getProxy(clientTelemetryConfig).getAddress()).isEqualTo(proxyOptions.getAddress());
         assertThat(accessor.getProxy(clientTelemetryConfig).getUsername()).isEqualTo(proxyOptions.getUsername());

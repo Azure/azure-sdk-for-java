@@ -7,12 +7,13 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CallSourceInternal model. */
+/** The caller. */
 @Fluent
 public final class CallSourceInternal {
     /*
-     * The alternate identity of the source of the call if dialing out to a
-     * pstn number
+     * The source caller Id, a phone number, that's shown to the PSTN
+     * participant being invited.
+     * Required only when calling a PSTN callee.
      */
     @JsonProperty(value = "callerId")
     private PhoneNumberIdentifierModel callerId;
@@ -30,7 +31,8 @@ public final class CallSourceInternal {
     private CommunicationIdentifierModel identifier;
 
     /**
-     * Get the callerId property: The alternate identity of the source of the call if dialing out to a pstn number.
+     * Get the callerId property: The source caller Id, a phone number, that's shown to the PSTN participant being
+     * invited. Required only when calling a PSTN callee.
      *
      * @return the callerId value.
      */
@@ -39,7 +41,8 @@ public final class CallSourceInternal {
     }
 
     /**
-     * Set the callerId property: The alternate identity of the source of the call if dialing out to a pstn number.
+     * Set the callerId property: The source caller Id, a phone number, that's shown to the PSTN participant being
+     * invited. Required only when calling a PSTN callee.
      *
      * @param callerId the callerId value to set.
      * @return the CallSourceInternal object itself.

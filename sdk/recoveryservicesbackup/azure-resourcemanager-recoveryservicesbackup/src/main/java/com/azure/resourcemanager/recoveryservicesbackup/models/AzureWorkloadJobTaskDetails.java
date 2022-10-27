@@ -22,6 +22,10 @@ public final class AzureWorkloadJobTaskDetails {
     @JsonProperty(value = "status")
     private String status;
 
+    /** Creates an instance of AzureWorkloadJobTaskDetails class. */
+    public AzureWorkloadJobTaskDetails() {
+    }
+
     /**
      * Get the taskId property: The task display name.
      *

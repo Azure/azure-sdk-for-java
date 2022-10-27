@@ -79,6 +79,9 @@ public final class BlobItemInternal {
     @JsonProperty(value = "IsPrefix")
     private Boolean isPrefix;
 
+    /** Creates an instance of BlobItemInternal class. */
+    public BlobItemInternal() {}
+
     /**
      * Get the name property: The Name property.
      *

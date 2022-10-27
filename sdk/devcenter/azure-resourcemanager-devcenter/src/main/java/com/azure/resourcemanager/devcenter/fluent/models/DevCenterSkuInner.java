@@ -32,6 +32,10 @@ public final class DevCenterSkuInner extends Sku {
     @JsonProperty(value = "capabilities", access = JsonProperty.Access.WRITE_ONLY)
     private List<Capability> capabilities;
 
+    /** Creates an instance of DevCenterSkuInner class. */
+    public DevCenterSkuInner() {
+    }
+
     /**
      * Get the resourceType property: The name of the resource type.
      *

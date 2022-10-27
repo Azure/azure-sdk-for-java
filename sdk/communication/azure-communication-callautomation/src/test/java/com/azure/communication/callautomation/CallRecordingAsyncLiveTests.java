@@ -5,7 +5,6 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.CallConnectionProperties;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
-import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.RecordingState;
 import com.azure.communication.callautomation.models.RecordingStateResult;
@@ -37,7 +36,7 @@ public class CallRecordingAsyncLiveTests extends CallAutomationLiveTestBase {
         matches = "(?i)(true)",
         disabledReason = "Requires human intervention")
     public void recordingOperations(HttpClient httpClient) {
-        CallAutomationAsyncClient client = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient client = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("recordingOperationsAsync", next))
             .buildAsyncClient();
 
@@ -57,7 +56,7 @@ public class CallRecordingAsyncLiveTests extends CallAutomationLiveTestBase {
 
             String ngrok = "https://localhost";
 
-            CreateCallResult createCallResult = client.createCall(new CreateCallOptions(sourceUser, targets, ngrok)).block();
+            CreateCallResult createCallResult = client.createCall(sourceUser, targets, ngrok).block();
 
             assertNotNull(createCallResult);
             waitForOperationCompletion(10000);

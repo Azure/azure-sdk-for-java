@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
 import java.util.List;
@@ -26,7 +27,9 @@ public class StartRecordingOptions {
 
     private RecordingFormat recordingFormat;
 
-    private List<ChannelAffinity> channelAffinity;
+    private List<CommunicationIdentifier> audioChannelParticipantOrdering;
+
+    private RepeatabilityHeaders repeatabilityHeaders;
 
     /**
      * Constructor
@@ -129,22 +132,51 @@ public class StartRecordingOptions {
     }
 
     /**
-     * Get the channel affinity.
+     * Get the audioChannelParticipantOrdering property: The sequential order in which audio channels are assigned to
+     * participants in the unmixed recording. When 'recordingChannelType' is set to 'unmixed' and
+     * `audioChannelParticipantOrdering is not specified, the audio channel to participant mapping will be automatically
+     * assigned based on the order in which participant first audio was detected. Channel to participant mapping details
+     * can be found in the metadata of the recording.
      *
-     * @return the channel affinity.
+     * @return the audioChannelParticipantOrdering value.
      */
-    public List<ChannelAffinity> getChannelAffinity() {
-        return channelAffinity;
+    public List<CommunicationIdentifier> getAudioChannelParticipantOrdering() {
+        return audioChannelParticipantOrdering;
     }
 
     /**
-     * Sets the channel affinity.
+     * Set the audioChannelParticipantOrdering property: The sequential order in which audio channels are assigned to
+     * participants in the unmixed recording. When 'recordingChannelType' is set to 'unmixed' and
+     * `audioChannelParticipantOrdering is not specified, the audio channel to participant mapping will be automatically
+     * assigned based on the order in which participant first audio was detected. Channel to participant mapping details
+     * can be found in the metadata of the recording.
      *
-     * @param channelAffinity the list of {@link ChannelAffinity}.
+     * @param audioChannelParticipantOrdering the list of {@link CommunicationIdentifier}.
      * @return the {@link StartRecordingOptions}
      */
-    public StartRecordingOptions setChannelAffinity(List<ChannelAffinity> channelAffinity) {
-        this.channelAffinity = channelAffinity;
+    public StartRecordingOptions setAudioChannelParticipantOrdering(List<CommunicationIdentifier> audioChannelParticipantOrdering) {
+        this.audioChannelParticipantOrdering = audioChannelParticipantOrdering;
+        return this;
+    }
+
+    /**
+     * Get the Repeatability headers configuration.
+     *
+     * @return the repeatabilityHeaders
+     */
+    public RepeatabilityHeaders getRepeatabilityHeaders() {
+        return repeatabilityHeaders;
+    }
+
+
+    /**
+     * Set the repeatability headers
+     *
+     * @param repeatabilityHeaders The repeatability headers configuration.
+     * @return the StartRecordingOptions object itself.
+     */
+    public StartRecordingOptions setRepeatabilityHeaders(RepeatabilityHeaders repeatabilityHeaders) {
+        this.repeatabilityHeaders = repeatabilityHeaders;
         return this;
     }
 }

@@ -107,6 +107,10 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
+    /** Creates an instance of VirtualNetworkPeeringPropertiesFormat class. */
+    public VirtualNetworkPeeringPropertiesFormat() {
+    }
+
     /**
      * Get the allowVirtualNetworkAccess property: Whether the VMs in the local virtual network space would be able to
      * access the VMs in remote virtual network space.

@@ -18,6 +18,10 @@ public final class BackupEngineBaseResourceList extends ResourceList {
     @JsonProperty(value = "value")
     private List<BackupEngineBaseResourceInner> value;
 
+    /** Creates an instance of BackupEngineBaseResourceList class. */
+    public BackupEngineBaseResourceList() {
+    }
+
     /**
      * Get the value property: List of resources.
      *

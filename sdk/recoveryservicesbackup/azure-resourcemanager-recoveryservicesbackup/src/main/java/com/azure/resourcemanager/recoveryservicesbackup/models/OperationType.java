@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for OperationType. */
+/** Re-Do Operation. */
 public final class OperationType extends ExpandableStringEnum<OperationType> {
     /** Static value Invalid for OperationType. */
     public static final OperationType INVALID = fromString("Invalid");

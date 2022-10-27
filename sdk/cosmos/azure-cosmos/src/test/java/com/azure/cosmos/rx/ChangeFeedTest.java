@@ -80,7 +80,7 @@ public class ChangeFeedTest extends TestSuiteBase {
 
         if (enableFullFidelity) {
             collectionDefinition.setChangeFeedPolicy(
-                ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(10)));
+                ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(10)));
         }
 
         return collectionDefinition;
@@ -197,7 +197,7 @@ public class ChangeFeedTest extends TestSuiteBase {
                 .createForProcessingFromNow(feedRange);
 
         if (enableFullFidelityChangeFeedMode) {
-            changeFeedOption = changeFeedOption.fullFidelity();
+            changeFeedOption = changeFeedOption.allVersionsAndDeletes();
         }
 
         List<FeedResponse<Document>> changeFeedResultsList = client

@@ -10,12 +10,12 @@ import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
-import com.azure.communication.callautomation.models.TransferToParticipantCallOptions;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -46,7 +46,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
          * 5. verify existing call is still ongoing and has 2 participants now.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("removeAPSTNUserFromAnOngoingCallTest", next))
             .buildClient();
 
@@ -62,13 +62,15 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
 
             CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl)
                 .setSourceCallerId(ACS_RESOURCE_PHONE);
-            CreateCallResult result = callClient.createCall(createCallOptions);
-            assertNotNull(result);
-            assertNotNull(result.getCallConnection());
-            assertNotNull(result.getCallConnectionProperties());
+            Response<CreateCallResult> createCallResultResponse = callClient.createCallWithResponse(createCallOptions, null);
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnection());
+            assertNotNull(createCallResult.getCallConnectionProperties());
             waitForOperationCompletion(15000);
 
-            CallConnection callConnection = callClient.getCallConnection(result.getCallConnectionProperties().getCallConnectionId());
+            CallConnection callConnection = callClient.getCallConnection(createCallResult.getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnection);
             CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
@@ -80,8 +82,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             assertEquals(3, listParticipantsResult.getValues().size());
 
             RemoveParticipantsResult removeParticipantsResult = callConnection.removeParticipants(
-                new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1))),
-                null);
+                new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1))));
 
             callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
@@ -114,7 +115,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
          * 5. verify existing call is still ongoing and has 2 participants now.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("removeAPSTNUserAndAcsUserFromAnOngoingCallTest", next))
             .buildClient();
 
@@ -130,13 +131,15 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
 
             CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl)
                 .setSourceCallerId(ACS_RESOURCE_PHONE);
-            CreateCallResult result = callClient.createCall(createCallOptions);
-            assertNotNull(result);
-            assertNotNull(result.getCallConnection());
-            assertNotNull(result.getCallConnectionProperties());
+            Response<CreateCallResult> createCallResultResponse = callClient.createCallWithResponse(createCallOptions, null);
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnection());
+            assertNotNull(createCallResult.getCallConnectionProperties());
             waitForOperationCompletion(20000);
 
-            CallConnection callConnection = callClient.getCallConnection(result.getCallConnectionProperties().getCallConnectionId());
+            CallConnection callConnection = callClient.getCallConnection(createCallResult.getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnection);
             CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
@@ -148,7 +151,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
             assertEquals(4, listParticipantsResult.getValues().size());
 
             callConnection.removeParticipants(new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1),
-                new CommunicationUserIdentifier(ACS_USER_2))), null);
+                new CommunicationUserIdentifier(ACS_USER_2))));
 
             callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
@@ -180,7 +183,7 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
          * 4. transfer the call to another target.
          */
 
-        CallAutomationClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("transferACallFromOneUserToAnotherUserTest", next))
             .buildClient();
 
@@ -195,20 +198,21 @@ public class CallConnectionLiveTests extends CallAutomationLiveTestBase {
 
             CreateCallOptions createCallOptions = new CreateCallOptions(source, targets, callbackUrl)
                 .setSourceCallerId(ACS_RESOURCE_PHONE);
-            CreateCallResult result = callClient.createCall(createCallOptions);
-            assertNotNull(result);
-            assertNotNull(result.getCallConnection());
-            assertNotNull(result.getCallConnectionProperties());
+            Response<CreateCallResult> createCallResultResponse = callClient.createCallWithResponse(createCallOptions, null);
+            assertNotNull(createCallResultResponse);
+            CreateCallResult createCallResult = createCallResultResponse.getValue();
+            assertNotNull(createCallResult);
+            assertNotNull(createCallResult.getCallConnection());
+            assertNotNull(createCallResult.getCallConnectionProperties());
             waitForOperationCompletion(12000);
 
-            CallConnection callConnection = callClient.getCallConnection(result.getCallConnectionProperties().getCallConnectionId());
+            CallConnection callConnection = callClient.getCallConnection(createCallResult.getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnection);
             CallConnectionProperties callConnectionProperties = callConnection.getCallProperties();
             assertNotNull(callConnectionProperties);
             assertEquals(CallConnectionState.CONNECTED, callConnectionProperties.getCallConnectionState());
 
-            TransferToParticipantCallOptions transferToParticipantCallOptions = new TransferToParticipantCallOptions(new CommunicationUserIdentifier(ACS_USER_1));
-            TransferCallResult transferCallResult = callConnection.transferToParticipantCall(transferToParticipantCallOptions);
+            TransferCallResult transferCallResult = callConnection.transferToParticipantCall(new CommunicationUserIdentifier(ACS_USER_1));
             assertNotNull(transferCallResult);
 
             waitForOperationCompletion(5000);

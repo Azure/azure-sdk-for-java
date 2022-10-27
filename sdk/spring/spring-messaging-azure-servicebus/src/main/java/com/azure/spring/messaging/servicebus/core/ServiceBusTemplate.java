@@ -41,9 +41,9 @@ public class ServiceBusTemplate implements SendOperation {
     @Override
     public <U> Mono<Void> sendAsync(String destination, Message<U> message) {
         Assert.hasText(destination, "destination can't be null or empty");
-        ServiceBusSenderAsyncClient senderAsyncClient = this.producerFactory.createProducer(destination, defaultEntityType);
+        ServiceBusSenderAsyncClient senderAsyncClient =
+                     this.producerFactory.createProducer(destination, defaultEntityType);
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
-
         return senderAsyncClient.sendMessage(serviceBusMessage);
     }
 

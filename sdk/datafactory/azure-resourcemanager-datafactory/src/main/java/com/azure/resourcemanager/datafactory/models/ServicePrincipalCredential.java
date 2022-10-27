@@ -24,6 +24,10 @@ public final class ServicePrincipalCredential extends Credential {
     private ServicePrincipalCredentialTypeProperties innerTypeProperties =
         new ServicePrincipalCredentialTypeProperties();
 
+    /** Creates an instance of ServicePrincipalCredential class. */
+    public ServicePrincipalCredential() {
+    }
+
     /**
      * Get the innerTypeProperties property: Service Principal credential properties.
      *

@@ -10,7 +10,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpBufferedResponse;
 import com.azure.core.http.netty.implementation.NettyAsyncHttpResponse;
-import com.azure.core.http.netty.implementation.NettyToAzureCoreHttpHeadersWrapper;
 import com.azure.core.http.netty.implementation.ReadTimeoutHandler;
 import com.azure.core.http.netty.implementation.RequestProgressReportingHandler;
 import com.azure.core.http.netty.implementation.ResponseTimeoutHandler;
@@ -25,7 +24,6 @@ import com.azure.core.implementation.util.StringContent;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
-import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
 import io.netty.buffer.ByteBuf;
@@ -68,11 +66,12 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
  * @see NettyAsyncHttpClientBuilder
  */
 class NettyAsyncHttpClient implements HttpClient {
-
     private static final ClientLogger LOGGER = new ClientLogger(NettyAsyncHttpClient.class);
+    private static final byte[] EMPTY_BYTES = new byte[0];
 
     private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
     private static final String AZURE_RESPONSE_TIMEOUT = "azure-response-timeout";
+    private static final String AZURE_EAGERLY_CONVERT_HEADERS = "azure-eagerly-convert-headers";
 
     final boolean disableBufferCopy;
     final long readTimeout;
@@ -115,6 +114,8 @@ class NettyAsyncHttpClient implements HttpClient {
             .filter(timeoutDuration -> timeoutDuration instanceof Duration)
             .map(timeoutDuration -> ((Duration) timeoutDuration).toMillis())
             .orElse(this.responseTimeout);
+        boolean effectiveHeadersEagerlyConverted = (boolean) context.getData(AZURE_EAGERLY_CONVERT_HEADERS)
+            .orElse(false);
 
         return nettyClient
             .doOnRequest((r, connection) -> addRequestHandlers(connection, context))
@@ -124,7 +125,8 @@ class NettyAsyncHttpClient implements HttpClient {
             .request(HttpMethod.valueOf(request.getHttpMethod().toString()))
             .uri(request.getUrl().toString())
             .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request, disableBufferCopy, effectiveEagerlyReadResponse))
+            .responseConnection(responseDelegate(request, disableBufferCopy, effectiveEagerlyReadResponse,
+                effectiveHeadersEagerlyConverted))
             .single()
             .onErrorMap(throwable -> {
                 // The exception was an SSLException that was caused by a failure to connect to a proxy.
@@ -245,10 +247,13 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param restRequest the Rest request whose response this delegate handles
      * @param disableBufferCopy Flag indicating if the network response shouldn't be buffered.
      * @param eagerlyReadResponse Flag indicating if the network response should be eagerly read into memory.
+     * @param headersEagerlyConverted Flag indicating if the Netty HttpHeaders should be eagerly converted to Azure Core
+     * HttpHeaders.
      * @return a delegate upon invocation setup Rest response object
      */
     private static BiFunction<HttpClientResponse, Connection, Publisher<HttpResponse>> responseDelegate(
-        final HttpRequest restRequest, final boolean disableBufferCopy, final boolean eagerlyReadResponse) {
+        HttpRequest restRequest, boolean disableBufferCopy, boolean eagerlyReadResponse,
+        boolean headersEagerlyConverted) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
             /*
              * If the response is being eagerly read into memory the flag for buffer copying can be ignored as the
@@ -256,14 +261,14 @@ class NettyAsyncHttpClient implements HttpClient {
              */
             if (eagerlyReadResponse) {
                 // Set up the body flux and dispose the connection once it has been received.
-                return FluxUtil.collectBytesFromNetworkResponse(
-                        reactorNettyConnection.inbound().receive().asByteBuffer(),
-                        new NettyToAzureCoreHttpHeadersWrapper(reactorNettyResponse.responseHeaders()))
+                return reactorNettyConnection.inbound().receive().aggregate().asByteArray()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
-                    .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes));
+                    .switchIfEmpty(Mono.just(EMPTY_BYTES))
+                    .map(bytes -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
+                        headersEagerlyConverted));
             } else {
                 return Mono.just(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection, restRequest,
-                    disableBufferCopy));
+                    disableBufferCopy, headersEagerlyConverted));
             }
         };
     }

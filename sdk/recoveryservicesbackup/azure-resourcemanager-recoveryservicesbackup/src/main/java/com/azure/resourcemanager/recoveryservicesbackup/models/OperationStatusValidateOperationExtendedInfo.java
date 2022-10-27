@@ -20,6 +20,10 @@ public final class OperationStatusValidateOperationExtendedInfo extends Operatio
     @JsonProperty(value = "validateOperationResponse")
     private ValidateOperationResponse validateOperationResponse;
 
+    /** Creates an instance of OperationStatusValidateOperationExtendedInfo class. */
+    public OperationStatusValidateOperationExtendedInfo() {
+    }
+
     /**
      * Get the validateOperationResponse property: Gets the validation operation response.
      *

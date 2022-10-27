@@ -43,6 +43,10 @@ public class ScheduleUpdateProperties {
     @JsonProperty(value = "state")
     private EnableStatus state;
 
+    /** Creates an instance of ScheduleUpdateProperties class. */
+    public ScheduleUpdateProperties() {
+    }
+
     /**
      * Get the type property: Supported type this scheduled task represents.
      *

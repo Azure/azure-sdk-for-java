@@ -57,6 +57,10 @@ public final class ManagedPrivateEndpoint {
      */
     @JsonIgnore private Map<String, Object> additionalProperties;
 
+    /** Creates an instance of ManagedPrivateEndpoint class. */
+    public ManagedPrivateEndpoint() {
+    }
+
     /**
      * Get the connectionState property: The managed private endpoint connection state.
      *

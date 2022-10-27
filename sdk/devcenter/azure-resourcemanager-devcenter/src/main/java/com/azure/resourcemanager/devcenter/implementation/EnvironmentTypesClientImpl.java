@@ -493,22 +493,6 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an environment type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentTypeInner get(String resourceGroupName, String devCenterName, String environmentTypeName) {
-        return getAsync(resourceGroupName, devCenterName, environmentTypeName).block();
-    }
-
-    /**
-     * Gets an environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -519,6 +503,22 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
     public Response<EnvironmentTypeInner> getWithResponse(
         String resourceGroupName, String devCenterName, String environmentTypeName, Context context) {
         return getWithResponseAsync(resourceGroupName, devCenterName, environmentTypeName, context).block();
+    }
+
+    /**
+     * Gets an environment type.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param environmentTypeName The name of the environment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an environment type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EnvironmentTypeInner get(String resourceGroupName, String devCenterName, String environmentTypeName) {
+        return getWithResponse(resourceGroupName, devCenterName, environmentTypeName, Context.NONE).getValue();
     }
 
     /**
@@ -671,24 +671,6 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param body Represents an Environment Type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an environment type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentTypeInner createOrUpdate(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeInner body) {
-        return createOrUpdateAsync(resourceGroupName, devCenterName, environmentTypeName, body).block();
-    }
-
-    /**
-     * Creates or updates an environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param environmentTypeName The name of the environment type.
-     * @param body Represents an Environment Type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -704,6 +686,25 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
         Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, devCenterName, environmentTypeName, body, context)
             .block();
+    }
+
+    /**
+     * Creates or updates an environment type.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param environmentTypeName The name of the environment type.
+     * @param body Represents an Environment Type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an environment type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EnvironmentTypeInner createOrUpdate(
+        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeInner body) {
+        return createOrUpdateWithResponse(resourceGroupName, devCenterName, environmentTypeName, body, Context.NONE)
+            .getValue();
     }
 
     /**
@@ -856,24 +857,6 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
      * @param body Updatable environment type properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an environment type.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public EnvironmentTypeInner update(
-        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeUpdate body) {
-        return updateAsync(resourceGroupName, devCenterName, environmentTypeName, body).block();
-    }
-
-    /**
-     * Partially updates an environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param environmentTypeName The name of the environment type.
-     * @param body Updatable environment type properties.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -888,6 +871,24 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
         EnvironmentTypeUpdate body,
         Context context) {
         return updateWithResponseAsync(resourceGroupName, devCenterName, environmentTypeName, body, context).block();
+    }
+
+    /**
+     * Partially updates an environment type.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param environmentTypeName The name of the environment type.
+     * @param body Updatable environment type properties.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an environment type.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public EnvironmentTypeInner update(
+        String resourceGroupName, String devCenterName, String environmentTypeName, EnvironmentTypeUpdate body) {
+        return updateWithResponse(resourceGroupName, devCenterName, environmentTypeName, body, Context.NONE).getValue();
     }
 
     /**
@@ -1019,21 +1020,6 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
      * @param resourceGroupName Name of the resource group within the Azure subscription.
      * @param devCenterName The name of the devcenter.
      * @param environmentTypeName The name of the environment type.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String devCenterName, String environmentTypeName) {
-        deleteAsync(resourceGroupName, devCenterName, environmentTypeName).block();
-    }
-
-    /**
-     * Deletes an environment type.
-     *
-     * @param resourceGroupName Name of the resource group within the Azure subscription.
-     * @param devCenterName The name of the devcenter.
-     * @param environmentTypeName The name of the environment type.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1047,9 +1033,25 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
     }
 
     /**
+     * Deletes an environment type.
+     *
+     * @param resourceGroupName Name of the resource group within the Azure subscription.
+     * @param devCenterName The name of the devcenter.
+     * @param environmentTypeName The name of the environment type.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String devCenterName, String environmentTypeName) {
+        deleteWithResponse(resourceGroupName, devCenterName, environmentTypeName, Context.NONE);
+    }
+
+    /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1085,7 +1087,8 @@ public final class EnvironmentTypesClientImpl implements EnvironmentTypesClient 
     /**
      * Get the next page of items.
      *
-     * @param nextLink The nextLink parameter.
+     * @param nextLink The URL to get the next list of items
+     *     <p>The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.

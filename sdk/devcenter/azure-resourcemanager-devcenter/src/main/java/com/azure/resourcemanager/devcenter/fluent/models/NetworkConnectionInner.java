@@ -27,6 +27,10 @@ public final class NetworkConnectionInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
+    /** Creates an instance of NetworkConnectionInner class. */
+    public NetworkConnectionInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of a Network Connection.
      *

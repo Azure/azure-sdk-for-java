@@ -17,6 +17,10 @@ public class ResourceSet {
     @JsonProperty(value = "subscriptions")
     private List<String> subscriptions;
 
+    /** Creates an instance of ResourceSet class. */
+    public ResourceSet() {
+    }
+
     /**
      * Get the subscriptions property: The list of subscriptions.
      *

@@ -1,6 +1,6 @@
 # Release History
 
-## 2.20.0-beta.1 (Unreleased)
+## 2.21.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,12 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.20.0 (2022-10-26)
+
+### Features Added
+
+- Supported description in role assignment.
 
 ## 2.19.0 (2022-09-23)
 

@@ -17,6 +17,10 @@ public final class DevCenterUpdate extends TrackedResourceUpdate {
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
+    /** Creates an instance of DevCenterUpdate class. */
+    public DevCenterUpdate() {
+    }
+
     /**
      * Get the identity property: Managed identity properties.
      *

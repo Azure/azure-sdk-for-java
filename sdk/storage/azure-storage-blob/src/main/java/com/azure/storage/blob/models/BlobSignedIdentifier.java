@@ -24,6 +24,9 @@ public final class BlobSignedIdentifier {
     @JsonProperty(value = "AccessPolicy", required = true)
     private BlobAccessPolicy accessPolicy;
 
+    /** Creates an instance of BlobSignedIdentifier class. */
+    public BlobSignedIdentifier() {}
+
     /**
      * Get the id property: a unique id.
      *

@@ -27,6 +27,10 @@ import java.util.Map;
 })
 @Fluent
 public class AzureWorkloadSapHanaRestoreRequest extends AzureWorkloadRestoreRequest {
+    /** Creates an instance of AzureWorkloadSapHanaRestoreRequest class. */
+    public AzureWorkloadSapHanaRestoreRequest() {
+    }
+
     /** {@inheritDoc} */
     @Override
     public AzureWorkloadSapHanaRestoreRequest withRecoveryType(RecoveryType recoveryType) {

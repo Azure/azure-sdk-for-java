@@ -267,34 +267,6 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
      * @param containerName Container name associated with the backup item.
      * @param protectedItemName Backup item name whose details are to be fetched.
      * @param operationId OperationID represents the operation whose status needs to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return operation status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public OperationStatusInner get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId) {
-        return getAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId)
-            .block();
-    }
-
-    /**
-     * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
-     * or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some
-     * operations create jobs. This method returns the list of jobs associated with the operation.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the backup item.
-     * @param containerName Container name associated with the backup item.
-     * @param protectedItemName Backup item name whose details are to be fetched.
-     * @param operationId OperationID represents the operation whose status needs to be fetched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -313,5 +285,34 @@ public final class ProtectedItemOperationStatusesClientImpl implements Protected
         return getWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId, context)
             .block();
+    }
+
+    /**
+     * Fetches the status of an operation such as triggering a backup, restore. The status can be in progress, completed
+     * or failed. You can refer to the OperationStatus enum for all the possible states of the operation. Some
+     * operations create jobs. This method returns the list of jobs associated with the operation.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the backup item.
+     * @param containerName Container name associated with the backup item.
+     * @param protectedItemName Backup item name whose details are to be fetched.
+     * @param operationId OperationID represents the operation whose status needs to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operation status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationStatusInner get(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        String operationId) {
+        return getWithResponse(
+                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId, Context.NONE)
+            .getValue();
     }
 }

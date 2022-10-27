@@ -24,6 +24,10 @@ public final class ConcurLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private ConcurLinkedServiceTypeProperties innerTypeProperties = new ConcurLinkedServiceTypeProperties();
 
+    /** Creates an instance of ConcurLinkedService class. */
+    public ConcurLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Concur Service linked service properties.
      *

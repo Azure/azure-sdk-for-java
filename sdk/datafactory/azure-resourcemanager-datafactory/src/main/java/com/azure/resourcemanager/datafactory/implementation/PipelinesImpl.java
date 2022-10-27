@@ -42,15 +42,6 @@ public final class PipelinesImpl implements Pipelines {
         return Utils.mapPage(inner, inner1 -> new PipelineResourceImpl(inner1, this.manager()));
     }
 
-    public PipelineResource get(String resourceGroupName, String factoryName, String pipelineName) {
-        PipelineResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, pipelineName);
-        if (inner != null) {
-            return new PipelineResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<PipelineResource> getWithResponse(
         String resourceGroupName, String factoryName, String pipelineName, String ifNoneMatch, Context context) {
         Response<PipelineResourceInner> inner =
@@ -66,8 +57,13 @@ public final class PipelinesImpl implements Pipelines {
         }
     }
 
-    public void delete(String resourceGroupName, String factoryName, String pipelineName) {
-        this.serviceClient().delete(resourceGroupName, factoryName, pipelineName);
+    public PipelineResource get(String resourceGroupName, String factoryName, String pipelineName) {
+        PipelineResourceInner inner = this.serviceClient().get(resourceGroupName, factoryName, pipelineName);
+        if (inner != null) {
+            return new PipelineResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -75,13 +71,8 @@ public final class PipelinesImpl implements Pipelines {
         return this.serviceClient().deleteWithResponse(resourceGroupName, factoryName, pipelineName, context);
     }
 
-    public CreateRunResponse createRun(String resourceGroupName, String factoryName, String pipelineName) {
-        CreateRunResponseInner inner = this.serviceClient().createRun(resourceGroupName, factoryName, pipelineName);
-        if (inner != null) {
-            return new CreateRunResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String resourceGroupName, String factoryName, String pipelineName) {
+        this.serviceClient().delete(resourceGroupName, factoryName, pipelineName);
     }
 
     public Response<CreateRunResponse> createRunWithResponse(
@@ -113,6 +104,15 @@ public final class PipelinesImpl implements Pipelines {
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new CreateRunResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public CreateRunResponse createRun(String resourceGroupName, String factoryName, String pipelineName) {
+        CreateRunResponseInner inner = this.serviceClient().createRun(resourceGroupName, factoryName, pipelineName);
+        if (inner != null) {
+            return new CreateRunResponseImpl(inner, this.manager());
         } else {
             return null;
         }
