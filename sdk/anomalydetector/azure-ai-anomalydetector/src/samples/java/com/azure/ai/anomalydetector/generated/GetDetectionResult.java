@@ -21,11 +21,11 @@ public class GetDetectionResult {
                         .apiVersion("v1.1")
                         .endpoint("{Endpoint}")
                         .buildClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.getbatchdetectionresult.getdetectionresult
+        // BEGIN:com.azure.ai.anomalydetector.generated.getmultivariatebatchdetectionresult.getdetectionresult
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response =
-                anomalyDetectorClient.getBatchDetectionResultWithResponse(
+                anomalyDetectorClient.getMultivariateBatchDetectionResultWithResponse(
                         "663884e6-b117-11ea-b3de-0242ac130004", requestOptions);
-        // END:com.azure.ai.anomalydetector.generated.getbatchdetectionresult.getdetectionresult
+        // END:com.azure.ai.anomalydetector.generated.getmultivariatebatchdetectionresult.getdetectionresult
     }
 }

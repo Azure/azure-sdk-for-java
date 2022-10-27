@@ -173,7 +173,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> detectEntireSeries(
+        Mono<Response<BinaryData>> detectUnivariateEntireSeries(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
@@ -193,7 +193,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> detectLastPoint(
+        Mono<Response<BinaryData>> detectUnivariateLastPoint(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
@@ -213,7 +213,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> detectChangePoint(
+        Mono<Response<BinaryData>> detectUnivariateChangePoint(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
@@ -233,7 +233,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> getBatchDetectionResult(
+        Mono<Response<BinaryData>> getMultivariateBatchDetectionResult(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("resultId") String resultId,
@@ -253,7 +253,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> createMultivariateModel(
+        Mono<Response<BinaryData>> createAndTrainMultivariateModel(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @BodyParam("application/json") BinaryData body,
@@ -273,7 +273,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMultivariateModel(
+        Mono<Response<BinaryData>> listMultivariateModels(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @HeaderParam("Accept") String accept,
@@ -332,7 +332,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> batchDetectAnomaly(
+        Mono<Response<BinaryData>> detectMultivariateBatchAnomaly(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
@@ -353,7 +353,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> lastDetectAnomaly(
+        Mono<Response<BinaryData>> detectMultivariateLastAnomaly(
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
                 @PathParam("modelId") String modelId,
@@ -374,7 +374,7 @@ public final class AnomalyDetectorClientImpl {
                 value = ResourceModifiedException.class,
                 code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> listMultivariateModelNext(
+        Mono<Response<BinaryData>> listMultivariateModelsNext(
                 @PathParam(value = "nextLink", encoded = true) String nextLink,
                 @HostParam("Endpoint") String endpoint,
                 @HostParam("ApiVersion") String apiVersion,
@@ -449,12 +449,12 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectEntireSeriesWithResponseAsync(
+    public Mono<Response<BinaryData>> detectUnivariateEntireSeriesWithResponseAsync(
             BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.detectEntireSeries(
+                        service.detectUnivariateEntireSeries(
                                 this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
     }
 
@@ -523,8 +523,9 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of entire anomaly detection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectEntireSeriesWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return detectEntireSeriesWithResponseAsync(body, requestOptions).block();
+    public Response<BinaryData> detectUnivariateEntireSeriesWithResponse(
+            BinaryData body, RequestOptions requestOptions) {
+        return detectUnivariateEntireSeriesWithResponseAsync(body, requestOptions).block();
     }
 
     /**
@@ -579,11 +580,12 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectLastPointWithResponseAsync(BinaryData body, RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> detectUnivariateLastPointWithResponseAsync(
+            BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.detectLastPoint(
+                        service.detectUnivariateLastPoint(
                                 this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
     }
 
@@ -638,8 +640,8 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of last anomaly detection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectLastPointWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return detectLastPointWithResponseAsync(body, requestOptions).block();
+    public Response<BinaryData> detectUnivariateLastPointWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return detectUnivariateLastPointWithResponseAsync(body, requestOptions).block();
     }
 
     /**
@@ -690,12 +692,12 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> detectChangePointWithResponseAsync(
+    public Mono<Response<BinaryData>> detectUnivariateChangePointWithResponseAsync(
             BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.detectChangePoint(
+                        service.detectUnivariateChangePoint(
                                 this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
     }
 
@@ -746,8 +748,9 @@ public final class AnomalyDetectorClientImpl {
      * @return the response of change point detection along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectChangePointWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return detectChangePointWithResponseAsync(body, requestOptions).block();
+    public Response<BinaryData> detectUnivariateChangePointWithResponse(
+            BinaryData body, RequestOptions requestOptions) {
+        return detectUnivariateChangePointWithResponseAsync(body, requestOptions).block();
     }
 
     /**
@@ -822,12 +825,12 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getBatchDetectionResultWithResponseAsync(
+    public Mono<Response<BinaryData>> getMultivariateBatchDetectionResultWithResponseAsync(
             String resultId, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.getBatchDetectionResult(
+                        service.getMultivariateBatchDetectionResult(
                                 this.getEndpoint(), this.getApiVersion(), resultId, accept, requestOptions, context));
     }
 
@@ -902,8 +905,9 @@ public final class AnomalyDetectorClientImpl {
      * @return detection results for the given resultId along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBatchDetectionResultWithResponse(String resultId, RequestOptions requestOptions) {
-        return getBatchDetectionResultWithResponseAsync(resultId, requestOptions).block();
+    public Response<BinaryData> getMultivariateBatchDetectionResultWithResponse(
+            String resultId, RequestOptions requestOptions) {
+        return getMultivariateBatchDetectionResultWithResponseAsync(resultId, requestOptions).block();
     }
 
     /**
@@ -1029,12 +1033,12 @@ public final class AnomalyDetectorClientImpl {
      * @return response of getting a model along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createMultivariateModelWithResponseAsync(
+    public Mono<Response<BinaryData>> createAndTrainMultivariateModelWithResponseAsync(
             BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.createMultivariateModel(
+                        service.createAndTrainMultivariateModel(
                                 this.getEndpoint(), this.getApiVersion(), body, accept, requestOptions, context));
     }
 
@@ -1161,8 +1165,9 @@ public final class AnomalyDetectorClientImpl {
      * @return response of getting a model along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createMultivariateModelWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return createMultivariateModelWithResponseAsync(body, requestOptions).block();
+    public Response<BinaryData> createAndTrainMultivariateModelWithResponse(
+            BinaryData body, RequestOptions requestOptions) {
+        return createAndTrainMultivariateModelWithResponseAsync(body, requestOptions).block();
     }
 
     /**
@@ -1185,61 +1190,54 @@ public final class AnomalyDetectorClientImpl {
      *
      * <pre>{@code
      * {
-     *     models (Required): [
-     *          (Required){
-     *             modelId: String (Required)
-     *             createdTime: OffsetDateTime (Required)
-     *             lastUpdatedTime: OffsetDateTime (Required)
-     *             modelInfo (Optional): {
-     *                 dataSource: String (Required)
-     *                 dataSchema: String(OneTable/MultiTable) (Optional)
-     *                 startTime: OffsetDateTime (Required)
-     *                 endTime: OffsetDateTime (Required)
-     *                 displayName: String (Optional)
-     *                 slidingWindow: Integer (Optional)
-     *                 alignPolicy (Optional): {
-     *                     alignMode: String(Inner/Outer) (Optional)
-     *                     fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *                     paddingValue: Float (Optional)
-     *                 }
-     *                 status: String(CREATED/RUNNING/READY/FAILED) (Optional)
-     *                 errors (Optional): [
-     *                      (Optional){
-     *                         code: String (Required)
-     *                         message: String (Required)
-     *                     }
-     *                 ]
-     *                 diagnosticsInfo (Optional): {
-     *                     modelState (Optional): {
-     *                         epochIds (Optional): [
-     *                             int (Optional)
-     *                         ]
-     *                         trainLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         validationLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         latenciesInSeconds (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                     }
-     *                     variableStates (Optional): [
-     *                          (Optional){
-     *                             variable: String (Optional)
-     *                             filledNARatio: Float (Optional)
-     *                             effectiveCount: Integer (Optional)
-     *                             firstTimestamp: OffsetDateTime (Optional)
-     *                             lastTimestamp: OffsetDateTime (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Float (Optional)
      *         }
-     *     ]
-     *     currentCount: int (Required)
-     *     maxCount: int (Required)
-     *     nextLink: String (Optional)
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Float (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -1251,11 +1249,11 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listMultivariateModelSinglePageAsync(RequestOptions requestOptions) {
+    private Mono<PagedResponse<BinaryData>> listMultivariateModelsSinglePageAsync(RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listMultivariateModel(
+                                service.listMultivariateModels(
                                         this.getEndpoint(), this.getApiVersion(), accept, requestOptions, context))
                 .map(
                         res ->
@@ -1288,61 +1286,54 @@ public final class AnomalyDetectorClientImpl {
      *
      * <pre>{@code
      * {
-     *     models (Required): [
-     *          (Required){
-     *             modelId: String (Required)
-     *             createdTime: OffsetDateTime (Required)
-     *             lastUpdatedTime: OffsetDateTime (Required)
-     *             modelInfo (Optional): {
-     *                 dataSource: String (Required)
-     *                 dataSchema: String(OneTable/MultiTable) (Optional)
-     *                 startTime: OffsetDateTime (Required)
-     *                 endTime: OffsetDateTime (Required)
-     *                 displayName: String (Optional)
-     *                 slidingWindow: Integer (Optional)
-     *                 alignPolicy (Optional): {
-     *                     alignMode: String(Inner/Outer) (Optional)
-     *                     fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *                     paddingValue: Float (Optional)
-     *                 }
-     *                 status: String(CREATED/RUNNING/READY/FAILED) (Optional)
-     *                 errors (Optional): [
-     *                      (Optional){
-     *                         code: String (Required)
-     *                         message: String (Required)
-     *                     }
-     *                 ]
-     *                 diagnosticsInfo (Optional): {
-     *                     modelState (Optional): {
-     *                         epochIds (Optional): [
-     *                             int (Optional)
-     *                         ]
-     *                         trainLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         validationLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         latenciesInSeconds (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                     }
-     *                     variableStates (Optional): [
-     *                          (Optional){
-     *                             variable: String (Optional)
-     *                             filledNARatio: Float (Optional)
-     *                             effectiveCount: Integer (Optional)
-     *                             firstTimestamp: OffsetDateTime (Optional)
-     *                             lastTimestamp: OffsetDateTime (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Float (Optional)
      *         }
-     *     ]
-     *     currentCount: int (Required)
-     *     maxCount: int (Required)
-     *     nextLink: String (Optional)
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Float (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -1354,15 +1345,15 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<BinaryData> listMultivariateModelAsync(RequestOptions requestOptions) {
+    public PagedFlux<BinaryData> listMultivariateModelsAsync(RequestOptions requestOptions) {
         RequestOptions requestOptionsForNextPage = new RequestOptions();
         requestOptionsForNextPage.setContext(
                 requestOptions != null && requestOptions.getContext() != null
                         ? requestOptions.getContext()
                         : Context.NONE);
         return new PagedFlux<>(
-                () -> listMultivariateModelSinglePageAsync(requestOptions),
-                nextLink -> listMultivariateModelNextSinglePageAsync(nextLink, requestOptionsForNextPage));
+                () -> listMultivariateModelsSinglePageAsync(requestOptions),
+                nextLink -> listMultivariateModelsNextSinglePageAsync(nextLink, requestOptionsForNextPage));
     }
 
     /**
@@ -1385,61 +1376,54 @@ public final class AnomalyDetectorClientImpl {
      *
      * <pre>{@code
      * {
-     *     models (Required): [
-     *          (Required){
-     *             modelId: String (Required)
-     *             createdTime: OffsetDateTime (Required)
-     *             lastUpdatedTime: OffsetDateTime (Required)
-     *             modelInfo (Optional): {
-     *                 dataSource: String (Required)
-     *                 dataSchema: String(OneTable/MultiTable) (Optional)
-     *                 startTime: OffsetDateTime (Required)
-     *                 endTime: OffsetDateTime (Required)
-     *                 displayName: String (Optional)
-     *                 slidingWindow: Integer (Optional)
-     *                 alignPolicy (Optional): {
-     *                     alignMode: String(Inner/Outer) (Optional)
-     *                     fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *                     paddingValue: Float (Optional)
-     *                 }
-     *                 status: String(CREATED/RUNNING/READY/FAILED) (Optional)
-     *                 errors (Optional): [
-     *                      (Optional){
-     *                         code: String (Required)
-     *                         message: String (Required)
-     *                     }
-     *                 ]
-     *                 diagnosticsInfo (Optional): {
-     *                     modelState (Optional): {
-     *                         epochIds (Optional): [
-     *                             int (Optional)
-     *                         ]
-     *                         trainLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         validationLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         latenciesInSeconds (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                     }
-     *                     variableStates (Optional): [
-     *                          (Optional){
-     *                             variable: String (Optional)
-     *                             filledNARatio: Float (Optional)
-     *                             effectiveCount: Integer (Optional)
-     *                             firstTimestamp: OffsetDateTime (Optional)
-     *                             lastTimestamp: OffsetDateTime (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Float (Optional)
      *         }
-     *     ]
-     *     currentCount: int (Required)
-     *     maxCount: int (Required)
-     *     nextLink: String (Optional)
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Float (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -1451,8 +1435,8 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listMultivariateModel(RequestOptions requestOptions) {
-        return new PagedIterable<>(listMultivariateModelAsync(requestOptions));
+    public PagedIterable<BinaryData> listMultivariateModels(RequestOptions requestOptions) {
+        return new PagedIterable<>(listMultivariateModelsAsync(requestOptions));
     }
 
     /**
@@ -1736,12 +1720,12 @@ public final class AnomalyDetectorClientImpl {
      *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> batchDetectAnomalyWithResponseAsync(
+    private Mono<Response<BinaryData>> detectMultivariateBatchAnomalyWithResponseAsync(
             String modelId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.batchDetectAnomaly(
+                        service.detectMultivariateBatchAnomaly(
                                 this.getEndpoint(),
                                 this.getApiVersion(),
                                 modelId,
@@ -1837,11 +1821,11 @@ public final class AnomalyDetectorClientImpl {
      * @return the {@link PollerFlux} for polling of detection results for the given resultId.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginBatchDetectAnomalyAsync(
+    public PollerFlux<BinaryData, BinaryData> beginDetectMultivariateBatchAnomalyAsync(
             String modelId, BinaryData body, RequestOptions requestOptions) {
         return PollerFlux.create(
                 Duration.ofSeconds(1),
-                () -> this.batchDetectAnomalyWithResponseAsync(modelId, body, requestOptions),
+                () -> this.detectMultivariateBatchAnomalyWithResponseAsync(modelId, body, requestOptions),
                 new DefaultPollingStrategy<>(
                         this.getHttpPipeline(),
                         "{Endpoint}/anomalydetector/{ApiVersion}".replace("{Endpoint}", this.getEndpoint()),
@@ -1939,9 +1923,9 @@ public final class AnomalyDetectorClientImpl {
      * @return the {@link SyncPoller} for polling of detection results for the given resultId.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginBatchDetectAnomaly(
+    public SyncPoller<BinaryData, BinaryData> beginDetectMultivariateBatchAnomaly(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return this.beginBatchDetectAnomalyAsync(modelId, body, requestOptions).getSyncPoller();
+        return this.beginDetectMultivariateBatchAnomalyAsync(modelId, body, requestOptions).getSyncPoller();
     }
 
     /**
@@ -2023,12 +2007,12 @@ public final class AnomalyDetectorClientImpl {
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> lastDetectAnomalyWithResponseAsync(
+    public Mono<Response<BinaryData>> detectMultivariateLastAnomalyWithResponseAsync(
             String modelId, BinaryData body, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
-                        service.lastDetectAnomaly(
+                        service.detectMultivariateLastAnomaly(
                                 this.getEndpoint(),
                                 this.getApiVersion(),
                                 modelId,
@@ -2117,9 +2101,9 @@ public final class AnomalyDetectorClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> lastDetectAnomalyWithResponse(
+    public Response<BinaryData> detectMultivariateLastAnomalyWithResponse(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return lastDetectAnomalyWithResponseAsync(modelId, body, requestOptions).block();
+        return detectMultivariateLastAnomalyWithResponseAsync(modelId, body, requestOptions).block();
     }
 
     /**
@@ -2129,61 +2113,54 @@ public final class AnomalyDetectorClientImpl {
      *
      * <pre>{@code
      * {
-     *     models (Required): [
-     *          (Required){
-     *             modelId: String (Required)
-     *             createdTime: OffsetDateTime (Required)
-     *             lastUpdatedTime: OffsetDateTime (Required)
-     *             modelInfo (Optional): {
-     *                 dataSource: String (Required)
-     *                 dataSchema: String(OneTable/MultiTable) (Optional)
-     *                 startTime: OffsetDateTime (Required)
-     *                 endTime: OffsetDateTime (Required)
-     *                 displayName: String (Optional)
-     *                 slidingWindow: Integer (Optional)
-     *                 alignPolicy (Optional): {
-     *                     alignMode: String(Inner/Outer) (Optional)
-     *                     fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *                     paddingValue: Float (Optional)
-     *                 }
-     *                 status: String(CREATED/RUNNING/READY/FAILED) (Optional)
-     *                 errors (Optional): [
-     *                      (Optional){
-     *                         code: String (Required)
-     *                         message: String (Required)
-     *                     }
-     *                 ]
-     *                 diagnosticsInfo (Optional): {
-     *                     modelState (Optional): {
-     *                         epochIds (Optional): [
-     *                             int (Optional)
-     *                         ]
-     *                         trainLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         validationLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         latenciesInSeconds (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                     }
-     *                     variableStates (Optional): [
-     *                          (Optional){
-     *                             variable: String (Optional)
-     *                             filledNARatio: Float (Optional)
-     *                             effectiveCount: Integer (Optional)
-     *                             firstTimestamp: OffsetDateTime (Optional)
-     *                             lastTimestamp: OffsetDateTime (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Float (Optional)
      *         }
-     *     ]
-     *     currentCount: int (Required)
-     *     maxCount: int (Required)
-     *     nextLink: String (Optional)
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Float (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -2197,12 +2174,12 @@ public final class AnomalyDetectorClientImpl {
      * @return response of listing models along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<BinaryData>> listMultivariateModelNextSinglePageAsync(
+    private Mono<PagedResponse<BinaryData>> listMultivariateModelsNextSinglePageAsync(
             String nextLink, RequestOptions requestOptions) {
         final String accept = "application/json";
         return FluxUtil.withContext(
                         context ->
-                                service.listMultivariateModelNext(
+                                service.listMultivariateModelsNext(
                                         nextLink,
                                         this.getEndpoint(),
                                         this.getApiVersion(),

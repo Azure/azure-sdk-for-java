@@ -22,7 +22,7 @@ public final class DetectAnomalyWithMultivariateModelTests extends AnomalyDetect
                         "{\"dataSource\":\"https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv\",\"endTime\":\"2019-04-01T00:40:00Z\",\"startTime\":\"2019-04-01T00:15:00Z\",\"topContributorCount\":10}");
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
-                anomalyDetectorClient.beginBatchDetectAnomaly(
+                anomalyDetectorClient.beginDetectMultivariateBatchAnomaly(
                         "45aad126-aafd-11ea-b8fb-d89ef3400c5f", body, requestOptions);
         Assertions.assertEquals(
                 LongRunningOperationStatus.SUCCESSFULLY_COMPLETED, response.waitForCompletion().getStatus());

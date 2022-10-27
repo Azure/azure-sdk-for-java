@@ -21,12 +21,13 @@ public class TrainMultivariateModel {
                         .apiVersion("v1.1")
                         .endpoint("{Endpoint}")
                         .buildClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.createmultivariatemodel.trainmultivariatemodel
+        // BEGIN:com.azure.ai.anomalydetector.generated.createandtrainmultivariatemodel.trainmultivariatemodel
         BinaryData body =
                 BinaryData.fromString(
                         "{\"alignPolicy\":{\"alignMode\":\"Outer\",\"fillNAMethod\":\"Linear\",\"paddingValue\":0},\"dataSchema\":\"OneTable\",\"dataSource\":\"https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv\",\"displayName\":\"Devops-MultiAD\",\"endTime\":\"2019-04-02T00:00:00Z\",\"slidingWindow\":20,\"startTime\":\"2019-04-01T00:00:00Z\"}");
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = anomalyDetectorClient.createMultivariateModelWithResponse(body, requestOptions);
-        // END:com.azure.ai.anomalydetector.generated.createmultivariatemodel.trainmultivariatemodel
+        Response<BinaryData> response =
+                anomalyDetectorClient.createAndTrainMultivariateModelWithResponse(body, requestOptions);
+        // END:com.azure.ai.anomalydetector.generated.createandtrainmultivariatemodel.trainmultivariatemodel
     }
 }

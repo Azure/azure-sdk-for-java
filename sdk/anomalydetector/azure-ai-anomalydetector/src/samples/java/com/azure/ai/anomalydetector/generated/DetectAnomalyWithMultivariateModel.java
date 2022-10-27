@@ -21,14 +21,14 @@ public class DetectAnomalyWithMultivariateModel {
                         .apiVersion("v1.1")
                         .endpoint("{Endpoint}")
                         .buildClient();
-        // BEGIN:com.azure.ai.anomalydetector.generated.batchdetectanomaly.detectanomalywithmultivariatemodel
+        // BEGIN:com.azure.ai.anomalydetector.generated.detectmultivariatebatchanomaly.detectanomalywithmultivariatemodel
         BinaryData body =
                 BinaryData.fromString(
                         "{\"dataSource\":\"https://multiadsample.blob.core.windows.net/data/sample_data_2_1000.csv\",\"endTime\":\"2019-04-01T00:40:00Z\",\"startTime\":\"2019-04-01T00:15:00Z\",\"topContributorCount\":10}");
         RequestOptions requestOptions = new RequestOptions();
         SyncPoller<BinaryData, BinaryData> response =
-                anomalyDetectorClient.beginBatchDetectAnomaly(
+                anomalyDetectorClient.beginDetectMultivariateBatchAnomaly(
                         "45aad126-aafd-11ea-b8fb-d89ef3400c5f", body, requestOptions);
-        // END:com.azure.ai.anomalydetector.generated.batchdetectanomaly.detectanomalywithmultivariatemodel
+        // END:com.azure.ai.anomalydetector.generated.detectmultivariatebatchanomaly.detectanomalywithmultivariatemodel
     }
 }

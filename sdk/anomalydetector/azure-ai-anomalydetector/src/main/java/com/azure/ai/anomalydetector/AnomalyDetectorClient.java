@@ -100,8 +100,9 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectEntireSeriesWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.client.detectEntireSeriesWithResponse(body, requestOptions).block();
+    public Response<BinaryData> detectUnivariateEntireSeriesWithResponse(
+            BinaryData body, RequestOptions requestOptions) {
+        return this.client.detectUnivariateEntireSeriesWithResponse(body, requestOptions).block();
     }
 
     /**
@@ -156,8 +157,8 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectLastPointWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.client.detectLastPointWithResponse(body, requestOptions).block();
+    public Response<BinaryData> detectUnivariateLastPointWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.client.detectUnivariateLastPointWithResponse(body, requestOptions).block();
     }
 
     /**
@@ -208,8 +209,9 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> detectChangePointWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.client.detectChangePointWithResponse(body, requestOptions).block();
+    public Response<BinaryData> detectUnivariateChangePointWithResponse(
+            BinaryData body, RequestOptions requestOptions) {
+        return this.client.detectUnivariateChangePointWithResponse(body, requestOptions).block();
     }
 
     /**
@@ -284,8 +286,9 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getBatchDetectionResultWithResponse(String resultId, RequestOptions requestOptions) {
-        return this.client.getBatchDetectionResultWithResponse(resultId, requestOptions).block();
+    public Response<BinaryData> getMultivariateBatchDetectionResultWithResponse(
+            String resultId, RequestOptions requestOptions) {
+        return this.client.getMultivariateBatchDetectionResultWithResponse(resultId, requestOptions).block();
     }
 
     /**
@@ -412,8 +415,9 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createMultivariateModelWithResponse(BinaryData body, RequestOptions requestOptions) {
-        return this.client.createMultivariateModelWithResponse(body, requestOptions).block();
+    public Response<BinaryData> createAndTrainMultivariateModelWithResponse(
+            BinaryData body, RequestOptions requestOptions) {
+        return this.client.createAndTrainMultivariateModelWithResponse(body, requestOptions).block();
     }
 
     /**
@@ -436,61 +440,54 @@ public final class AnomalyDetectorClient {
      *
      * <pre>{@code
      * {
-     *     models (Required): [
-     *          (Required){
-     *             modelId: String (Required)
-     *             createdTime: OffsetDateTime (Required)
-     *             lastUpdatedTime: OffsetDateTime (Required)
-     *             modelInfo (Optional): {
-     *                 dataSource: String (Required)
-     *                 dataSchema: String(OneTable/MultiTable) (Optional)
-     *                 startTime: OffsetDateTime (Required)
-     *                 endTime: OffsetDateTime (Required)
-     *                 displayName: String (Optional)
-     *                 slidingWindow: Integer (Optional)
-     *                 alignPolicy (Optional): {
-     *                     alignMode: String(Inner/Outer) (Optional)
-     *                     fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
-     *                     paddingValue: Float (Optional)
-     *                 }
-     *                 status: String(CREATED/RUNNING/READY/FAILED) (Optional)
-     *                 errors (Optional): [
-     *                      (Optional){
-     *                         code: String (Required)
-     *                         message: String (Required)
-     *                     }
-     *                 ]
-     *                 diagnosticsInfo (Optional): {
-     *                     modelState (Optional): {
-     *                         epochIds (Optional): [
-     *                             int (Optional)
-     *                         ]
-     *                         trainLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         validationLosses (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                         latenciesInSeconds (Optional): [
-     *                             float (Optional)
-     *                         ]
-     *                     }
-     *                     variableStates (Optional): [
-     *                          (Optional){
-     *                             variable: String (Optional)
-     *                             filledNARatio: Float (Optional)
-     *                             effectiveCount: Integer (Optional)
-     *                             firstTimestamp: OffsetDateTime (Optional)
-     *                             lastTimestamp: OffsetDateTime (Optional)
-     *                         }
-     *                     ]
-     *                 }
-     *             }
+     *     modelId: String (Required)
+     *     createdTime: OffsetDateTime (Required)
+     *     lastUpdatedTime: OffsetDateTime (Required)
+     *     modelInfo (Optional): {
+     *         dataSource: String (Required)
+     *         dataSchema: String(OneTable/MultiTable) (Optional)
+     *         startTime: OffsetDateTime (Required)
+     *         endTime: OffsetDateTime (Required)
+     *         displayName: String (Optional)
+     *         slidingWindow: Integer (Optional)
+     *         alignPolicy (Optional): {
+     *             alignMode: String(Inner/Outer) (Optional)
+     *             fillNAMethod: String(Previous/Subsequent/Linear/Zero/Fixed) (Optional)
+     *             paddingValue: Float (Optional)
      *         }
-     *     ]
-     *     currentCount: int (Required)
-     *     maxCount: int (Required)
-     *     nextLink: String (Optional)
+     *         status: String(CREATED/RUNNING/READY/FAILED) (Optional)
+     *         errors (Optional): [
+     *              (Optional){
+     *                 code: String (Required)
+     *                 message: String (Required)
+     *             }
+     *         ]
+     *         diagnosticsInfo (Optional): {
+     *             modelState (Optional): {
+     *                 epochIds (Optional): [
+     *                     int (Optional)
+     *                 ]
+     *                 trainLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 validationLosses (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *                 latenciesInSeconds (Optional): [
+     *                     float (Optional)
+     *                 ]
+     *             }
+     *             variableStates (Optional): [
+     *                  (Optional){
+     *                     variable: String (Optional)
+     *                     filledNARatio: Float (Optional)
+     *                     effectiveCount: Integer (Optional)
+     *                     firstTimestamp: OffsetDateTime (Optional)
+     *                     lastTimestamp: OffsetDateTime (Optional)
+     *                 }
+     *             ]
+     *         }
+     *     }
      * }
      * }</pre>
      *
@@ -503,8 +500,8 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listMultivariateModel(RequestOptions requestOptions) {
-        return new PagedIterable<>(this.client.listMultivariateModel(requestOptions));
+    public PagedIterable<BinaryData> listMultivariateModels(RequestOptions requestOptions) {
+        return new PagedIterable<>(this.client.listMultivariateModels(requestOptions));
     }
 
     /**
@@ -688,9 +685,9 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginBatchDetectAnomaly(
+    public SyncPoller<BinaryData, BinaryData> beginDetectMultivariateBatchAnomaly(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.beginBatchDetectAnomaly(modelId, body, requestOptions).getSyncPoller();
+        return this.client.beginDetectMultivariateBatchAnomaly(modelId, body, requestOptions).getSyncPoller();
     }
 
     /**
@@ -773,8 +770,8 @@ public final class AnomalyDetectorClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> lastDetectAnomalyWithResponse(
+    public Response<BinaryData> detectMultivariateLastAnomalyWithResponse(
             String modelId, BinaryData body, RequestOptions requestOptions) {
-        return this.client.lastDetectAnomalyWithResponse(modelId, body, requestOptions).block();
+        return this.client.detectMultivariateLastAnomalyWithResponse(modelId, body, requestOptions).block();
     }
 }
