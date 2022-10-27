@@ -143,7 +143,9 @@ public class PerfStressProgram {
         }
 
         try {
-            Flux.just(tests).flatMap(PerfTestBase::globalSetupAsync).blockLast();
+            for (PerfTestBase<?> test : tests) {
+                test.globalSetupAsync().block();
+            }
 
             boolean startedPlayback = false;
 
@@ -204,7 +206,9 @@ public class PerfStressProgram {
                     cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
                 }
 
-                Flux.just(tests).flatMap(PerfTestBase::globalCleanupAsync).blockLast();
+                for (PerfTestBase<?> test : tests) {
+                    test.globalCleanupAsync().block();
+                }
             }
         }
 
