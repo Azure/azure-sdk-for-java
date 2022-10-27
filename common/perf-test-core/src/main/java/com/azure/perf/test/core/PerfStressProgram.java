@@ -245,7 +245,7 @@ public class PerfStressProgram {
 
         try {
             if (sync) {
-                ForkJoinPool forkJoinPool = new ForkJoinPool(parallel, defaultForkJoinWorkerThreadFactory, null, true);
+                ForkJoinPool forkJoinPool = new ForkJoinPool();
                 List<ResubmittingTestCallable> operations = new ArrayList<>();
                 for (PerfTestBase<?> test : tests) {
                     operations.add(new ResubmittingTestCallable(forkJoinPool, (ApiPerfTestBase<?>) test, startNanoTime));
