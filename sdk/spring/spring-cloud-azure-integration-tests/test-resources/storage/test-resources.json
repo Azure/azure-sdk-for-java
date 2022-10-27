@@ -69,6 +69,22 @@
       }
     },
     {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "kind": "AzurePowerShell",
+      "name": "WaitSection1",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Authorization/roleAssignments', [guid(concat(variables('azureStorageQueueDataContributorRoleId'), variables('storageAccountsName')))])]"
+      ],
+      "properties": {
+        "azPowerShellVersion": "3.0",
+        "scriptContent": "start-sleep -Seconds 60",
+        "cleanupPreference": "Always",
+        "retentionInterval": "PT1H"
+      }
+    },
+    {
       "type": "Microsoft.Authorization/roleAssignments",
       "apiVersion": "2020-10-01-preview",
       "name": "[guid(concat(variables('azureStorageBlobDataOwnerRoleId'), variables('storageAccountsName')))]",
@@ -82,11 +98,29 @@
       }
     },
     {
+      "type": "Microsoft.Resources/deploymentScripts",
+      "apiVersion": "2020-10-01",
+      "kind": "AzurePowerShell",
+      "name": "WaitSection2",
+      "location": "[variables('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Authorization/roleAssignments', [guid(concat(variables('azureStorageBlobDataOwnerRoleId'), variables('storageAccountsName')))])]"
+      ],
+      "properties": {
+        "azPowerShellVersion": "3.0",
+        "scriptContent": "start-sleep -Seconds 60",
+        "cleanupPreference": "Always",
+        "retentionInterval": "PT1H"
+      }
+    },
+    {
       "type": "Microsoft.Storage/storageAccounts/blobServices",
       "apiVersion": "2019-06-01",
       "name": "[concat(variables('storageAccountsName'), '/default')]",
       "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]",
+        "[WaitSection1]",
+        "[WaitSection2]"
       ],
       "sku": {
         "name": "Standard_RAGRS",
