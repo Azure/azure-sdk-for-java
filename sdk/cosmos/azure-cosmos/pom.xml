@@ -215,6 +215,14 @@ Licensed under the MIT License.
     </dependency>
 
     <dependency>
+      <groupId>com.google.guava</groupId>
+      <artifactId>guava</artifactId>
+      <version>30.1.1-jre</version> <!-- {x-version-update;cosmos_com.google.guava:guava;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+
+    <dependency>
       <groupId>io.dropwizard.metrics</groupId>
       <artifactId>metrics-core</artifactId>
       <version>4.1.0</version> <!-- {x-version-update;cosmos_io.dropwizard.metrics:metrics-core;external_dependency} -->
