@@ -39,7 +39,7 @@ public final class CreateCallRequestInternal {
      * Media Streaming Configuration.
      */
     @JsonProperty(value = "mediaStreamingConfiguration")
-    private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
+    private MediaStreamingConfiguration mediaStreamingConfiguration;
 
     /**
      * Get the targets property: The targets of the call.
@@ -126,7 +126,7 @@ public final class CreateCallRequestInternal {
      *
      * @return the mediaStreamingConfiguration value.
      */
-    public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
+    public MediaStreamingConfiguration getMediaStreamingConfiguration() {
         return this.mediaStreamingConfiguration;
     }
 
@@ -137,7 +137,7 @@ public final class CreateCallRequestInternal {
      * @return the CreateCallRequestInternal object itself.
      */
     public CreateCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
+            MediaStreamingConfiguration mediaStreamingConfiguration) {
         this.mediaStreamingConfiguration = mediaStreamingConfiguration;
         return this;
     }

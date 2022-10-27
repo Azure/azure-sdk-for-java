@@ -133,9 +133,6 @@ directive:
     from: RecognizeConfigurations
     to: RecognizeConfigurationsInternal   
 - rename-model:
-    from: MediaStreamingConfiguration
-    to: MediaStreamingConfigurationInternal
-- rename-model:
     from: DtmfOptions
     to: DtmfOptionsInternal
 - rename-model:
@@ -258,33 +255,6 @@ directive:
   where: $.definitions.RecognizeInputType["x-ms-enum"]
   transform: >
     $.name = "RecognizeInputTypeInternal";
-```
-
-### Rename MediaStreamingAudioChannelType to MediaStreamingAudioChannelTypeInternal
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.MediaStreamingAudioChannelType["x-ms-enum"]
-  transform: >
-    $.name = "MediaStreamingAudioChannelTypeInternal";
-```
-
-### Rename MediaStreamingContentType to MediaStreamingContentTypeInternal
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.MediaStreamingContentType["x-ms-enum"]
-  transform: >
-    $.name = "MediaStreamingContentTypeInternal";
-```
-
-### Rename MediaStreamingTransportType to MediaStreamingTransportType
-``` yaml
-directive:
-- from: swagger-document
-  where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
-  transform: >
-    $.name = "MediaStreamingTransportTypeInternal";
 ```
 
 ### Rename RecognitionType to RecognitionTypeInternal
