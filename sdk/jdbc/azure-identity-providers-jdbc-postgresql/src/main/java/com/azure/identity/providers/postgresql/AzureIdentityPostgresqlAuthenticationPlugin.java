@@ -3,7 +3,6 @@
 
 package com.azure.identity.providers.postgresql;
 
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
 import org.postgresql.plugin.AuthenticationPlugin;
 import org.postgresql.plugin.AuthenticationRequestType;
@@ -18,8 +17,6 @@ import static org.postgresql.util.PSQLState.INVALID_PASSWORD;
  */
 public class AzureIdentityPostgresqlAuthenticationPlugin implements AuthenticationPlugin {
 
-    private static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
-
     private final AzureAuthenticationTemplate azureAuthenticationTemplate;
 
     /**
@@ -29,13 +26,11 @@ public class AzureIdentityPostgresqlAuthenticationPlugin implements Authenticati
      */
     public AzureIdentityPostgresqlAuthenticationPlugin(Properties properties) {
         this.azureAuthenticationTemplate = new AzureAuthenticationTemplate();
-        AuthProperty.SCOPES.setProperty(properties, OSSRDBMS_SCOPE);
         azureAuthenticationTemplate.init(properties);
     }
 
     AzureIdentityPostgresqlAuthenticationPlugin(AzureAuthenticationTemplate azureAuthenticationTemplate, Properties properties) {
         this.azureAuthenticationTemplate = azureAuthenticationTemplate;
-        AuthProperty.SCOPES.setProperty(properties, OSSRDBMS_SCOPE);
         this.azureAuthenticationTemplate.init(properties);
     }
 

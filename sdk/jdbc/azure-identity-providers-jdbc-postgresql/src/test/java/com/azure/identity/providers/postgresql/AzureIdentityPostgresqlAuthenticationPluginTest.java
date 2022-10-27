@@ -3,7 +3,6 @@
 
 package com.azure.identity.providers.postgresql;
 
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
 import org.junit.jupiter.api.Test;
 import org.postgresql.plugin.AuthenticationRequestType;
@@ -19,20 +18,12 @@ import static org.mockito.Mockito.when;
 
 
 class AzureIdentityPostgresqlAuthenticationPluginTest {
-    private static final String OSSRDBMS_SCOPES = "https://ossrdbms-aad.database.windows.net/.default";
 
     @Test
     void testTokenCredentialProvider() {
         Properties properties = new Properties();
         AzureIdentityPostgresqlAuthenticationPlugin plugin = new AzureIdentityPostgresqlAuthenticationPlugin(properties);
         assertNotNull(plugin.getAzureAuthenticationTemplate());
-    }
-
-    @Test
-    protected void tokenAudienceShouldConfig() {
-        Properties properties = new Properties();
-        new AzureIdentityPostgresqlAuthenticationPlugin(properties);
-        assertEquals(OSSRDBMS_SCOPES, properties.getProperty(AuthProperty.SCOPES.getPropertyKey()));
     }
 
     @Test

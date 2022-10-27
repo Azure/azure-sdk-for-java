@@ -223,11 +223,7 @@
     "sdk/spring-experimental/spring-cloud-azure-native-configuration/**",
     "sdk/spring/spring-messaging-azure-servicebus/**",
     "sdk/spring/spring-messaging-azure-eventhubs/**",
-    "sdk/storage/azure-storage-blob-batch/**",
-    "sdk/storage/azure-storage-blob-changefeed/**",
     "sdk/storage/azure-storage-internal-avro/**",
-    "sdk/storage/azure-storage-common/**",
-    "sdk/storage/azure-storage-blob-cryptography/**",
     "sdk/storage/azure-storage-queue/**",
     "sdk/synapse/azure-analytics-synapse-accesscontrol/**",
     "sdk/synapse/azure-analytics-synapse-managedprivateendpoints/**",
@@ -248,7 +244,6 @@
     "sdk/tables/azure-data-tables/**",
     "sdk/textanalytics/azure-ai-textanalytics/**",
     "sdk/storage/azure-storage-file-datalake/**",
-    "sdk/storage/azure-storage-blob/**",
     "sdk/eventhubs/azure-messaging-eventhubs-stress/**",
     "sdk/jdbc/azure-identity-providers-jdbc-mysql/**",
     "sdk/jdbc/azure-identity-providers-jdbc-postgresql/**",
@@ -283,8 +278,10 @@
     "createorupdate",
     "creds",
     "credscan",
+    "curr",
     "databind",
     "databricks",
+    "DAZURE",
     "ddos",
     "deallocate",
     "decryptor",
@@ -304,6 +301,7 @@
     "eventhubs",
     "endtoend",
     "filereports",
+    "gapra",
     "gmavenplus",
     "gson",
     "guids",
@@ -328,6 +326,7 @@
     "junitxml",
     "jtoken",
     "keyvault",
+    "kasobol",
     "kube",
     "kubeconfig",
     "kubeconfigs",
@@ -355,6 +354,7 @@
     "onboarded",
     "onenote",
     "pwsh",
+    "racdw",
     "reimage",
     "reimaging",
     "Remediations",
@@ -382,6 +382,8 @@
     "toFile",
     "undelete",
     "unmanaged",
+    "unmutated",
+    "versionid",
     "vmware",
     "vnet",
     "VNET",
@@ -631,6 +633,45 @@
       "words": [
         "AADB",
         "JPMS"
+      ]
+    },
+    {
+      "filename": "sdk/storage/azure-storage-common/**",
+      "words": [
+        "alzimmer",
+        "azstoragesdkaccount",
+        "BUILDID"
+      ]
+    },
+    {
+      "filename": "sdk/storage/azure-storage-blob-cryptography/**",
+      "words": [
+        "akek"
+      ]
+    },
+    {
+      "filename": "sdk/storage/azure-storage-blob/**",
+      "words": [
+        "clientime",
+        "ctxt",
+        "etags",
+        "HTBB",
+        "IPMISMATCH",
+        "myaccountname",
+        "myblob",
+        "myblobmetadata",
+        "myblobsforlisting",
+        "myblockblob",
+        "mycontainer",
+        "mycontainermetadata",
+        "mycontainersforlisting",
+        "myimage",
+        "myjavacontainerbasic",
+        "myjavacontainerbufferedupload",
+        "myjavacontainerbuffereduploadlength",
+        "myjavacontainerparallelupload",
+        "RAGRS",
+        "saoid"
       ]
     }
   ],

@@ -75,13 +75,28 @@
       "metadata": {
         "description": "Geo-Redundant Backup setting"
       }
+    },
+    // 2023-02-01 14:02:17
+    "resourceStartTime": {
+      "type": "int",
+      "defaultValue": 1675231337
+    },
+    "currentEpoch": {
+      "type": "int",
+      "defaultValue": "[dateTimeToEpoch(utcNow())]"
+    },
+    "skipResourceRegion": {
+      "type": "string",
+      "defaultValue": "chinanorth3"
     }
   },
   "variables": {
-    "location": "[resourceGroup().location]"
+    "location": "[resourceGroup().location]",
+    "skipCondition": "[or(not(equals(resourceGroup().location, parameters('skipResourceRegion'))), greater(parameters('currentEpoch'), parameters('resourceStartTime')))]
   },
   "resources": [
     {
+      "condition": "[variables('skipCondition')]",
       "type": "Microsoft.DBforMySQL/servers",
       "apiVersion": "2017-12-01",
       "name": "[parameters('serverName')]",
@@ -110,6 +125,7 @@
       }
     },
     {
+      "condition": "[variables('skipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/administrators",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/ActiveDirectory')]",
@@ -124,6 +140,7 @@
       }
     },
     {
+      "condition": "[variables('skipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/audit_log_enabled')]",
@@ -136,6 +153,7 @@
       }
     },
     {
+      "condition": "[variables('skipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/gtid_mode')]",
@@ -148,6 +166,7 @@
       }
     },
     {
+      "condition": "[variables('skipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/init_connect')]",
@@ -159,6 +178,7 @@
       }
     },
     {
+      "condition": "[variables('skipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/databases",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/db')]",
@@ -171,6 +191,7 @@
       }
     },
     {
+      "condition": "[variables('skipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/firewallRules",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/AllowAll_2022-9-14_18-12-24')]",
@@ -183,6 +204,7 @@
       }
     },
     {
+      "condition": "[variables('skipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/securityAlertPolicies",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/Default')]",
@@ -206,6 +228,18 @@
     "AZURE_MYSQL_ACCOUNT_NAME": {
       "type": "string",
       "value": "[parameters('serverName')]"
+    },
+    "AZURE_MYSQL_ACCOUNT_LOCATION": {
+      "type": "string",
+      "value": "[variables('location')]"
+    },
+    "AZURE_MYSQL_IT_SKIPRUNNING": {
+      "type": "string",
+      "value": "[if(or(not(equals(resourceGroup().location, variables('skipResourceRegion'))), greater(parameters('currentEpoch'), parameters('resourceStartTime'))), 'notskip', 'skipRunning')]"
+    },
+    "AZURE_MYSQL_ENDPOINT": {
+      "type": "string",
+      "[if(or(not(equals(resourceGroup().location, variables('skipResourceRegion'))), greater(parameters('currentEpoch'), parameters('resourceStartTime'))), 'skipResource', reference(parameters('serverName')).fullyQualifiedDomainName))]"
     }
   }
 }
