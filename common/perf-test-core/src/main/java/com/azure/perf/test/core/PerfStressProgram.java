@@ -285,7 +285,7 @@ public class PerfStressProgram {
                         } else {
                             return Mono.just(1);
                         }
-                    }, parallel, 1)
+                    }, parallel)
                     .then()
                     .block();
             }
