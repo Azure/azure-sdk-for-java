@@ -587,7 +587,7 @@ javax.xml.ws:jaxws-api;2.3.1
 jaxen:jaxen;1.2.0
 junit:junit;4.13.2
 me.snowdrop:istio-client;1.7.7.1
-mysql:mysql-connector-java;8.0.31
+com.mysql:mysql-connector-j;8.0.31
 net.bytebuddy:byte-buddy;1.12.18
 net.bytebuddy:byte-buddy-agent;1.12.18
 net.minidev:json-smart;2.4.8

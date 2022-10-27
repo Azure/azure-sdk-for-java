@@ -4,6 +4,10 @@
 Upgrade Spring Boot dependencies version to 2.7.5 and Spring Cloud dependencies version to 2021.0.4
 Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies version to 2021.0.4
 
+### Spring Cloud Azure Starter Jdbc Mysql
+#### Dependency Updates
+- Upgrade `mysql:mysql-connector-java:[8.0.30]` to `com.mysql:mysql-connector-j:[8.0.31]`
+
 #### Bugs Fixed
 - Fix bug: Put a value into Collections.emptyMap(). [#31190](https://github.com/Azure/azure-sdk-for-java/issues/31190).
 - Fix bug: RestTemplate used to get access token should only contain 2 converters. [#31482](https://github.com/Azure/azure-sdk-for-java/issues/31482).

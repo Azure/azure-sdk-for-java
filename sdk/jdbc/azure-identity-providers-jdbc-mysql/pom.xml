@@ -26,9 +26,9 @@
     </dependency>
 
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>8.0.31</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
+      <version>8.0.31</version> <!-- {x-version-update;com.mysql:mysql-connector-j;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -65,8 +65,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>mysql:mysql-connector-java:[8.0.31]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
-                <include>com.mysql:mysql-connector-j:[8.0.31]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
+                <include>com.mysql:mysql-connector-j:[8.0.31]</include> <!-- {x-include-update;com.mysql:mysql-connector-j;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
