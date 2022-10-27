@@ -48,13 +48,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.13.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
+      <version>5.14.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     </dependency>
     <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.15.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
+      <version>1.16.0</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>org.springframework.retry</groupId>
       <artifactId>spring-retry</artifactId>
-      <version>1.3.3</version> <!-- {x-version-update;org.springframework.retry:spring-retry;external_dependency} -->
+      <version>2.0.0-M1</version> <!-- {x-version-update;org.springframework.retry:spring-retry;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
@@ -117,7 +117,7 @@
     <dependency>
       <groupId>io.projectreactor</groupId>
       <artifactId>reactor-test</artifactId>
-      <version>3.4.21</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
+      <version>3.4.23</version> <!-- {x-version-update;io.projectreactor:reactor-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -133,7 +133,7 @@
               <includes>
                 <include>io.micrometer:micrometer-core:[1.10.0-M6]</include> <!-- {x-include-update;io.micrometer:micrometer-core;external_dependency} -->
                 <include>org.springframework:spring-tx:[6.0.0-M6]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
-                <include>org.springframework.retry:spring-retry:[1.3.3]</include> <!-- {x-include-update;org.springframework.retry:spring-retry;external_dependency} -->
+                <include>org.springframework.retry:spring-retry:[2.0.0-M1]</include> <!-- {x-include-update;org.springframework.retry:spring-retry;external_dependency} -->
                 <include>org.springframework.data:spring-data-commons:[3.0.0-M6]</include> <!-- {x-include-update;org.springframework.data:spring-data-commons;external_dependency} -->
               </includes>
             </bannedDependencies>
