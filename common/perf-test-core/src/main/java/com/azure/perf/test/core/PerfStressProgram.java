@@ -23,6 +23,8 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 
+import static java.util.concurrent.ForkJoinPool.defaultForkJoinWorkerThreadFactory;
+
 /**
  * Represents the main program class which reflectively runs and manages the performance tests.
  */
@@ -244,7 +246,7 @@ public class PerfStressProgram {
 
         try {
             if (sync) {
-                ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
+                ForkJoinPool forkJoinPool = new ForkJoinPool(parallel, defaultForkJoinWorkerThreadFactory, null, true);
                 for (PerfTestBase<?> test : tests) {
                     forkJoinPool.submit(new ResubmittingTestCallable(forkJoinPool, (ApiPerfTestBase<?>) test, startNanoTime));
                 }
@@ -283,7 +285,7 @@ public class PerfStressProgram {
                         } else {
                             return Mono.just(1);
                         }
-                    }, false, 1, 1)
+                    }, false, Schedulers.DEFAULT_POOL_SIZE, 1)
                     .then()
                     .block();
             }
