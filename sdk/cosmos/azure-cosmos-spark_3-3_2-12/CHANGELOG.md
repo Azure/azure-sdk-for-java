@@ -10,6 +10,9 @@
 
 #### Other Changes
 
+### NOTE: Below versions only exist for Spark 3.2 -
+***keeping the changelog here for reference only***
+
 ### 4.14.1 (2022-10-07)
 > [!IMPORTANT]
 > We strongly recommend our customers to use version 4.14.1 and above.
