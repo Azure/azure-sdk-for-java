@@ -23,8 +23,6 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
 
-import static java.util.concurrent.ForkJoinPool.defaultForkJoinWorkerThreadFactory;
-
 /**
  * Represents the main program class which reflectively runs and manages the performance tests.
  */
@@ -228,7 +226,6 @@ public class PerfStressProgram {
      * @throws IllegalStateException if zero operations completed of the performance test.
      */
     public static void runTests(PerfTestBase<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
-
         long[] lastCompleted = new long[]{0};
         Disposable progressStatus = printStatus(
             "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
@@ -240,15 +237,41 @@ public class PerfStressProgram {
                 return String.format("%d\t\t%d\t\t%.2f", currentCompleted, totalCompleted, averageCompleted);
             }, true, true);
 
+        if (tests[0] instanceof ApiPerfTestBase) {
+            runApiTests((ApiPerfTestBase<?>[]) tests, sync, parallel, durationSeconds, progressStatus);
+        } else {
+            runEventTests((EventPerfTest<?>[]) tests, sync, parallel, durationSeconds, progressStatus);
+        }
+
+        System.out.println("=== Results ===");
+
+        long totalOperations = getCompletedOperations(tests);
+        if (totalOperations == 0) {
+            throw new IllegalStateException("Zero operations has been completed");
+        }
+        double operationsPerSecond = getOperationsPerSecond(tests);
+        double secondsPerOperation = 1 / operationsPerSecond;
+        double weightedAverageSeconds = totalOperations / operationsPerSecond;
+
+        System.out.printf("Completed %,d operations in a weighted-average of %ss (%s ops/s, %s s/op)%n",
+            totalOperations,
+            NumberFormatter.Format(weightedAverageSeconds, 4),
+            NumberFormatter.Format(operationsPerSecond, 4),
+            NumberFormatter.Format(secondsPerOperation, 4));
+        System.out.println();
+    }
+
+    private static void runApiTests(ApiPerfTestBase<?>[] tests, boolean sync, int parallel, int durationSeconds,
+        Disposable progressStatus) {
         long startNanoTime = System.nanoTime();
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
         try {
             if (sync) {
-                ForkJoinPool forkJoinPool = new ForkJoinPool();
+                ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
                 List<ResubmittingTestCallable> operations = new ArrayList<>();
-                for (PerfTestBase<?> test : tests) {
-                    operations.add(new ResubmittingTestCallable(forkJoinPool, (ApiPerfTestBase<?>) test, startNanoTime));
+                for (ApiPerfTestBase<?> test : tests) {
+                    operations.add(new ResubmittingTestCallable(forkJoinPool, test, startNanoTime));
                 }
 
                 forkJoinPool.invokeAll(operations);
@@ -269,7 +292,7 @@ public class PerfStressProgram {
                 Flux.<ApiPerfTestBase<?>>generate(sink -> {
                         // Continue emitting tests until the end time is reached.
                         if (System.nanoTime() < endNanoTime) {
-                            ApiPerfTestBase<?> test = (ApiPerfTestBase<?>) tests[(int) (count.getAndIncrement() % parallel)];
+                            ApiPerfTestBase<?> test = tests[(int) (count.getAndIncrement() % parallel)];
                             sink.next(test);
                         } else {
                             sink.complete();
@@ -301,23 +324,54 @@ public class PerfStressProgram {
         } finally {
             progressStatus.dispose();
         }
+    }
 
-        System.out.println("=== Results ===");
+    private static void runEventTests(EventPerfTest<?>[] tests, boolean sync, int parallel, int durationSeconds,
+        Disposable progressStatus) {
+        long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
-        long totalOperations = getCompletedOperations(tests);
-        if (totalOperations == 0) {
-            throw new IllegalStateException("Zero operations has been completed");
+        try {
+            if (sync) {
+                ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
+                List<Callable<Integer>> operations = new ArrayList<>();
+                for (EventPerfTest<?> test : tests) {
+                    operations.add(() -> {
+                        test.runAll(endNanoTime);
+                        return 1;
+                    });
+                }
+
+                forkJoinPool.invokeAll(operations);
+
+                Thread.sleep(durationSeconds * 1000L);
+                forkJoinPool.shutdownNow();
+            } else {
+                // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
+                // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
+                // Schedulers.onHandleError.  This handler ensures the perf framework will fail fast on any such exceptions.
+                Schedulers.onHandleError((t, e) -> {
+                    System.err.print(t + " threw exception: ");
+                    e.printStackTrace();
+                    System.exit(1);
+                });
+
+                Flux.range(0, parallel)
+                    .parallel(parallel)
+                    .runOn(Schedulers.parallel())
+                    .flatMap(i -> tests[i].runAllAsync(endNanoTime))
+                    .then()
+                    .block();
+            }
+        } catch (InterruptedException e) {
+            System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
+            e.printStackTrace(System.err);
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("Error occurred running tests: " + System.lineSeparator() + e);
+            e.printStackTrace(System.err);
+        } finally {
+            progressStatus.dispose();
         }
-        double operationsPerSecond = getOperationsPerSecond(tests);
-        double secondsPerOperation = 1 / operationsPerSecond;
-        double weightedAverageSeconds = totalOperations / operationsPerSecond;
-
-        System.out.printf("Completed %,d operations in a weighted-average of %ss (%s ops/s, %s s/op)%n",
-            totalOperations,
-            NumberFormatter.Format(weightedAverageSeconds, 4),
-            NumberFormatter.Format(operationsPerSecond, 4),
-            NumberFormatter.Format(secondsPerOperation, 4));
-        System.out.println();
     }
 
     private static class ResubmittingTestCallable implements Callable<Integer> {
