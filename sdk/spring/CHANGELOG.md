@@ -4,7 +4,7 @@
 Upgrade Spring Boot dependencies version to 2.7.5 and Spring Cloud dependencies version to 2021.0.4
 Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies version to 2021.0.4
 
-### Spring Cloud Azure Starter Jdbc Mysql
+### Spring Cloud Azure Starter JDBC MySQL
 #### Dependency Updates
 - Upgrade `mysql:mysql-connector-java:[8.0.30]` to `com.mysql:mysql-connector-j:[8.0.31]`
 
