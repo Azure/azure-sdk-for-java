@@ -92,7 +92,7 @@
   },
   "variables": {
     "location": "[resourceGroup().location]",
-    "skipCondition": "[or(not(equals(resourceGroup().location, parameters('skipResourceRegion'))), greater(parameters('currentEpoch'), parameters('resourceStartTime')))]
+    "skipCondition": "[or(not(equals(resourceGroup().location, parameters('skipResourceRegion'))), greater(parameters('currentEpoch'), parameters('resourceStartTime')))]",
   },
   "resources": [
     {
