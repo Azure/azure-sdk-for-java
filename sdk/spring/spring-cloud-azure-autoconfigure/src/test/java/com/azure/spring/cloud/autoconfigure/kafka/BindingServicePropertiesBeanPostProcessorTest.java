@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.kafka;
 
 import java.util.HashMap;
@@ -78,7 +80,7 @@ class BindingServicePropertiesBeanPostProcessorTest {
     @Test
     void testBindKafkaByName() {
         BinderProperties binderProperties = new BinderProperties();
-        Map<String, BinderProperties> binders= new HashMap<>() {{ put("kafka", binderProperties); }};
+        Map<String, BinderProperties> binders = new HashMap<String, BinderProperties>() {{ put("kafka", binderProperties); }};
         BindingServiceProperties bindingServiceProperties = new BindingServiceProperties();
         bindingServiceProperties.setBinders(binders);
 
@@ -91,7 +93,7 @@ class BindingServicePropertiesBeanPostProcessorTest {
     @Test
     void testBindKafkaByType() {
         BinderProperties binderProperties = new BinderProperties();
-        Map<String, BinderProperties> binders= new HashMap<>() {{ put("test", binderProperties); }};
+        Map<String, BinderProperties> binders = new HashMap<String, BinderProperties>() {{ put("test", binderProperties); }};
         binderProperties.setType("kafka");
         BindingServiceProperties bindingServiceProperties = new BindingServiceProperties();
         bindingServiceProperties.setBinders(binders);
