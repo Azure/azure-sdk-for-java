@@ -45,14 +45,12 @@ public class CallAutomationUnitTestBase {
     }
 
     public static String generateCallProperties(String callConnectionId, String serverCallId, String callerId,
-                                                String targetId, String connectionState, String subject, String callbackUri,
-                                                String mediaSubscriptionId) {
+                                                String targetId, String connectionState, String subject, String callbackUri) {
         CallConnectionPropertiesInternal result = new CallConnectionPropertiesInternal()
             .setCallConnectionId(callConnectionId)
             .setServerCallId(serverCallId)
             .setCallbackUri(callbackUri)
             .setCallConnectionState(CallConnectionStateModelInternal.fromString(connectionState))
-            .setMediaSubscriptionId(mediaSubscriptionId)
             .setSource(new CallSourceInternal()
                 .setIdentifier(ModelGenerator.generateUserIdentifierModel(callerId)))
             .setTargets(new ArrayList<>(Collections.singletonList(ModelGenerator.generateUserIdentifierModel(targetId)))

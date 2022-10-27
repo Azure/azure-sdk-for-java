@@ -26,7 +26,6 @@ public final class CallConnectionProperties {
     private final List<CommunicationIdentifier> targets;
     private final CallConnectionState callConnectionState;
     private final URI callbackUri;
-    private final String mediaSubscriptionId;
 
     static {
         CallConnectionPropertiesConstructorProxy.setAccessor(
@@ -49,7 +48,6 @@ public final class CallConnectionProperties {
         this.targets = null;
         this.callConnectionState = null;
         this.callbackUri = null;
-        this.mediaSubscriptionId = null;
     }
 
     /**
@@ -65,7 +63,6 @@ public final class CallConnectionProperties {
         this.targets = callConnectionPropertiesInternal.getTargets().stream().map(CommunicationIdentifierConverter::convert).collect(Collectors.toList());
         this.callConnectionState = CallConnectionState.fromString(callConnectionPropertiesInternal.getCallConnectionState().toString());
         this.callbackUri = new URI(callConnectionPropertiesInternal.getCallbackUri());
-        this.mediaSubscriptionId = callConnectionPropertiesInternal.getMediaSubscriptionId();
     }
 
     /**
@@ -120,14 +117,5 @@ public final class CallConnectionProperties {
      */
     public String getCallConnectionId() {
         return callConnectionId;
-    }
-
-    /**
-     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
-     *
-     * @return the mediaSubscriptionId value.
-     */
-    public String getMediaSubscriptionId() {
-        return mediaSubscriptionId;
     }
 }
