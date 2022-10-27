@@ -6,7 +6,10 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.InternalObjectNode;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.models.*;
 import com.azure.cosmos.rx.TestSuiteBase;
@@ -22,7 +25,6 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
-import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.*;
@@ -152,7 +154,7 @@ public class CosmosItemTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void readMany() throws Exception {
         List<CosmosItemIdentity> cosmosItemIdentities = new ArrayList<>();
-        Set<String> idSet = new HashSet<String>();
+        Set<String> idSet = new HashSet<>();
         int numDocuments = 5;
 
         for (int i = 0; i < numDocuments; i++) {

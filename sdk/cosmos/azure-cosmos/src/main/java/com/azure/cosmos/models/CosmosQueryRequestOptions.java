@@ -751,6 +751,26 @@ public class CosmosQueryRequestOptions {
 
                     return queryRequestOptions.getQueryNameOrDefault(defaultQueryName);
                 }
+
+                @Override
+                public RequestOptions toRequestOptions(CosmosQueryRequestOptions queryRequestOptions) {
+                    RequestOptions requestOptions = new RequestOptions();
+                    requestOptions.setConsistencyLevel(queryRequestOptions.getConsistencyLevel());
+                    requestOptions.setSessionToken(queryRequestOptions.getSessionToken());
+                    requestOptions.setPartitionKey(queryRequestOptions.getPartitionKey());
+                    requestOptions.setThroughputControlGroupName(queryRequestOptions.getThroughputControlGroupName());
+                    requestOptions.setOperationContextAndListenerTuple(queryRequestOptions.getOperationContextAndListenerTuple());
+                    requestOptions.setDedicatedGatewayRequestOptions(queryRequestOptions.getDedicatedGatewayRequestOptions());
+                    requestOptions.setThresholdForDiagnosticsOnTracer(queryRequestOptions.getThresholdForDiagnosticsOnTracer());
+
+                    if (queryRequestOptions.customOptions != null) {
+                        for(Map.Entry<String, String> entry : queryRequestOptions.customOptions.entrySet()) {
+                            requestOptions.setHeader(entry.getKey(), entry.getValue());
+                        }
+                    }
+
+                    return requestOptions;
+                }
             });
     }
 

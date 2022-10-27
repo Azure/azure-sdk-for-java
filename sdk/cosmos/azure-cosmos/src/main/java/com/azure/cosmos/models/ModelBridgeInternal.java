@@ -300,11 +300,6 @@ public final class ModelBridgeInternal {
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static RequestOptions toRequestOptions(CosmosQueryRequestOptions cosmosQueryRequestOptions) {
-        return cosmosQueryRequestOptions.toRequestOptions();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static DatabaseAccount toDatabaseAccount(RxDocumentServiceResponse response) {
         DatabaseAccount account = response.getResource(DatabaseAccount.class);
 
@@ -381,11 +376,6 @@ public final class ModelBridgeInternal {
     public static <T> FeedResponse<T> createFeedResponse(List<T> results,
                                                          Map<String, String> headers) {
         return new FeedResponse<>(results, headers);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> FeedResponse<T> createFeedResponse(T result, Map<String, String> headers) {
-        return new FeedResponse<>(Arrays.asList(result), headers);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

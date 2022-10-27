@@ -9,7 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
-* Optimized the readMany API to make use of point reads when a single item is requested for a given physical partition - See [PR 31723](https://github.com/Azure/azure-sdk-for-java/pull/31723)
+* Optimized `readMany` API to leverage point reads when a single item is requested for a given partition - See [PR 31723](https://github.com/Azure/azure-sdk-for-java/pull/31723)
 
 ### 4.38.1 (2022-10-21)
 #### Other Changes
