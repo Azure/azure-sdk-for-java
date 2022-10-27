@@ -27,7 +27,7 @@ public class DownloadBlobNonSharedClientTest extends AbstractDownloadTest<BlobPe
     @Override
     public void run() {
         BlobClient blobClient = new BlobClientBuilder()
-                                    .containerName(CONTAINER_NAME)
+                                    .containerName(CONTAINER_NAME_BASE)
                                     .connectionString(connectionString)
                                     .blobName(blobName)
                                     .buildClient();
@@ -37,7 +37,7 @@ public class DownloadBlobNonSharedClientTest extends AbstractDownloadTest<BlobPe
     @Override
     public Mono<Void> runAsync() {
         BlobAsyncClient blobAsyncClient = new BlobClientBuilder()
-                                              .containerName(CONTAINER_NAME)
+                                              .containerName(CONTAINER_NAME_BASE)
                                               .connectionString(connectionString)
                                               .blobName(blobName)
                                               .buildAsyncClient();

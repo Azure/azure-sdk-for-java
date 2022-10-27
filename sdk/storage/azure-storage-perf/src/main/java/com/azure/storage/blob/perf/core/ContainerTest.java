@@ -10,9 +10,11 @@ import com.azure.storage.blob.BlobContainerClient;
 import reactor.core.publisher.Mono;
 
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class ContainerTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
-    protected static final String CONTAINER_NAME = "perfstress-" + UUID.randomUUID().toString();
+    private static final AtomicInteger ITERATION = new AtomicInteger();
+    protected static final String CONTAINER_NAME_BASE = "perfstress-" + UUID.randomUUID();
 
     protected final BlobContainerClient blobContainerClient;
     protected final BlobContainerAsyncClient blobContainerAsyncClient;
@@ -20,8 +22,9 @@ public abstract class ContainerTest<TOptions extends PerfStressOptions> extends 
     public ContainerTest(TOptions options) {
         super(options);
         // Setup the container clients
-        blobContainerClient = blobServiceClient.getBlobContainerClient(CONTAINER_NAME);
-        blobContainerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(CONTAINER_NAME);
+        int iteration = ITERATION.getAndIncrement();
+        blobContainerClient = blobServiceClient.getBlobContainerClient(CONTAINER_NAME_BASE + iteration);
+        blobContainerAsyncClient = blobServiceAsyncClient.getBlobContainerAsyncClient(CONTAINER_NAME_BASE + iteration);
     }
 
     // NOTE: the pattern setup the parent first, then yourself.
