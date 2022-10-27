@@ -7,7 +7,7 @@ package com.azure.ai.anomalydetector.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for ModelStatus. */
+/** Model training status. */
 public enum ModelStatus {
     /** Enum value CREATED. */
     CREATED("CREATED"),
@@ -36,6 +36,9 @@ public enum ModelStatus {
      */
     @JsonCreator
     public static ModelStatus fromString(String value) {
+        if (value == null) {
+            return null;
+        }
         ModelStatus[] items = ModelStatus.values();
         for (ModelStatus item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
@@ -45,6 +48,7 @@ public enum ModelStatus {
         return null;
     }
 
+    /** {@inheritDoc} */
     @JsonValue
     @Override
     public String toString() {

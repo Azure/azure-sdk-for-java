@@ -22,6 +22,9 @@ public final class AnomalyDetectorError {
     @JsonProperty(value = "message")
     private String message;
 
+    /** Creates an instance of AnomalyDetectorError class. */
+    public AnomalyDetectorError() {}
+
     /**
      * Get the code property: The error code.
      *

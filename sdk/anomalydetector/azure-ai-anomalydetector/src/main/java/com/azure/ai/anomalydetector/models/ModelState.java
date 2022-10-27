@@ -35,6 +35,9 @@ public final class ModelState {
     @JsonProperty(value = "latenciesInSeconds")
     private List<Float> latenciesInSeconds;
 
+    /** Creates an instance of ModelState class. */
+    public ModelState() {}
+
     /**
      * Get the epochIds property: Epoch id.
      *

@@ -31,11 +31,13 @@ public final class Model {
     private OffsetDateTime lastUpdatedTime;
 
     /*
-     * Train result of a model including status, errors and diagnose info for
-     * model and variables.
+     * Train result of a model including status, errors and diagnose info for model and variables.
      */
     @JsonProperty(value = "modelInfo")
     private ModelInfo modelInfo;
+
+    /** Creates an instance of Model class. */
+    public Model() {}
 
     /**
      * Get the modelId property: Model identifier.

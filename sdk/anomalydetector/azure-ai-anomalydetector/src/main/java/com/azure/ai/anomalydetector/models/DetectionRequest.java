@@ -12,27 +12,27 @@ import java.time.OffsetDateTime;
 @Fluent
 public final class DetectionRequest {
     /*
-     * Source link to the input variables. Each variable should be a csv with
-     * two columns, `timestamp` and `value`. The file name of the variable will
-     * be used as its name. The variables used in detection should be exactly
-     * the same with those used in the training phase.
+     * Source link to the input variables. Each variable should be a csv with two columns, `timestamp` and `value`. The
+     * file name of the variable will be used as its name. The variables used in detection should be exactly the same
+     * with those used in the training phase.
      */
     @JsonProperty(value = "source", required = true)
     private String source;
 
     /*
-     * A required field, indicating the start time of data for detection.
-     * Should be date-time.
+     * A required field, indicating the start time of data for detection. Should be date-time.
      */
     @JsonProperty(value = "startTime", required = true)
     private OffsetDateTime startTime;
 
     /*
-     * A required field, indicating the end time of data for detection. Should
-     * be date-time.
+     * A required field, indicating the end time of data for detection. Should be date-time.
      */
     @JsonProperty(value = "endTime", required = true)
     private OffsetDateTime endTime;
+
+    /** Creates an instance of DetectionRequest class. */
+    public DetectionRequest() {}
 
     /**
      * Get the source property: Source link to the input variables. Each variable should be a csv with two columns,

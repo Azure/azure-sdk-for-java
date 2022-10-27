@@ -35,6 +35,9 @@ public final class DetectionResultSummary {
     @JsonProperty(value = "setupInfo", required = true)
     private DetectionRequest setupInfo;
 
+    /** Creates an instance of DetectionResultSummary class. */
+    public DetectionResultSummary() {}
+
     /**
      * Get the status property: Status of detection results. One of CREATED, RUNNING, READY, and FAILED.
      *

@@ -11,8 +11,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class LastDetectResponse {
     /*
-     * Frequency extracted from the series, zero means no recurrent pattern has
-     * been found.
+     * Frequency extracted from the series, zero means no recurrent pattern has been found.
      */
     @JsonProperty(value = "period", required = true)
     private int period;
@@ -30,54 +29,51 @@ public final class LastDetectResponse {
     private float expectedValue;
 
     /*
-     * Upper margin of the latest point. UpperMargin is used to calculate
-     * upperBoundary, which equals to expectedValue + (100 -
-     * marginScale)*upperMargin. If the value of latest point is between
-     * upperBoundary and lowerBoundary, it should be treated as normal value.
-     * By adjusting marginScale value, anomaly status of latest point can be
+     * Upper margin of the latest point. UpperMargin is used to calculate upperBoundary, which equals to expectedValue
+     * + (100 - marginScale)*upperMargin. If the value of latest point is between upperBoundary and lowerBoundary, it
+     * should be treated as normal value. By adjusting marginScale value, anomaly status of latest point can be
      * changed.
      */
     @JsonProperty(value = "upperMargin", required = true)
     private float upperMargin;
 
     /*
-     * Lower margin of the latest point. LowerMargin is used to calculate
-     * lowerBoundary, which equals to expectedValue - (100 -
-     * marginScale)*lowerMargin.
+     * Lower margin of the latest point. LowerMargin is used to calculate lowerBoundary, which equals to expectedValue
+     * - (100 - marginScale)*lowerMargin.
      */
     @JsonProperty(value = "lowerMargin", required = true)
     private float lowerMargin;
 
     /*
-     * Anomaly status of the latest point, true means the latest point is an
-     * anomaly either in negative direction or positive direction.
+     * Anomaly status of the latest point, true means the latest point is an anomaly either in negative direction or
+     * positive direction.
      */
     @JsonProperty(value = "isAnomaly", required = true)
     private boolean isAnomaly;
 
     /*
-     * Anomaly status in negative direction of the latest point. True means the
-     * latest point is an anomaly and its real value is smaller than the
-     * expected one.
+     * Anomaly status in negative direction of the latest point. True means the latest point is an anomaly and its real
+     * value is smaller than the expected one.
      */
     @JsonProperty(value = "isNegativeAnomaly", required = true)
     private boolean isNegativeAnomaly;
 
     /*
-     * Anomaly status in positive direction of the latest point. True means the
-     * latest point is an anomaly and its real value is larger than the
-     * expected one.
+     * Anomaly status in positive direction of the latest point. True means the latest point is an anomaly and its real
+     * value is larger than the expected one.
      */
     @JsonProperty(value = "isPositiveAnomaly", required = true)
     private boolean isPositiveAnomaly;
 
     /*
-     * The severity score for the last input point. The larger the value is,
-     * the more sever the anomaly is. For normal points, the "severity" is
-     * always 0.
+     * The severity score for the last input point. The larger the value is, the more sever the anomaly is. For normal
+     * points, the "severity" is always 0.
      */
     @JsonProperty(value = "severity")
     private Float severity;
+
+    /** Creates an instance of LastDetectResponse class. */
+    public LastDetectResponse() {}
 
     /**
      * Get the period property: Frequency extracted from the series, zero means no recurrent pattern has been found.

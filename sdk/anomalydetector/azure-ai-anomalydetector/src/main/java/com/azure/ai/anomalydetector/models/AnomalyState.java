@@ -30,6 +30,9 @@ public final class AnomalyState {
     @JsonProperty(value = "errors")
     private List<ErrorResponse> errors;
 
+    /** Creates an instance of AnomalyState class. */
+    public AnomalyState() {}
+
     /**
      * Get the timestamp property: timestamp.
      *

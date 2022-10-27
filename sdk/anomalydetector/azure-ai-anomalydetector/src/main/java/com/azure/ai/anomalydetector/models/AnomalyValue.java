@@ -18,8 +18,7 @@ public final class AnomalyValue {
     private boolean isAnomaly;
 
     /*
-     * Indicates the significance of the anomaly. The higher the severity, the
-     * more significant the anomaly.
+     * Indicates the significance of the anomaly. The higher the severity, the more significant the anomaly.
      */
     @JsonProperty(value = "severity", required = true)
     private float severity;
@@ -35,6 +34,9 @@ public final class AnomalyValue {
      */
     @JsonProperty(value = "interpretation")
     private List<AnomalyInterpretation> interpretation;
+
+    /** Creates an instance of AnomalyValue class. */
+    public AnomalyValue() {}
 
     /**
      * Get the isAnomaly property: True if an anomaly is detected at the current timestamp.

@@ -21,34 +21,35 @@ import com.azure.ai.anomalydetector.models.Model;
 import com.azure.ai.anomalydetector.models.ModelInfo;
 import com.azure.ai.anomalydetector.models.ModelSnapshot;
 import com.azure.ai.anomalydetector.models.TrainMultivariateModelResponse;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
-import com.azure.core.http.rest.StreamResponse;
-import java.nio.ByteBuffer;
+import com.azure.core.util.BinaryData;
 import java.util.UUID;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /** Initializes a new instance of the asynchronous AnomalyDetectorClient type. */
 @ServiceClient(builder = AnomalyDetectorClientBuilder.class, isAsync = true)
 public final class AnomalyDetectorAsyncClient {
-    private final AnomalyDetectorClientImpl serviceClient;
+    @Generated private final AnomalyDetectorClientImpl serviceClient;
 
     /**
-     * Initializes an instance of AnomalyDetectorClient client.
+     * Initializes an instance of AnomalyDetectorAsyncClient class.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     AnomalyDetectorAsyncClient(AnomalyDetectorClientImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
 
     /**
-     * This operation generates a model with an entire series, each point is detected with the same model. With this
+     * Detect anomalies for the entire series in batch.
+     *
+     * <p>This operation generates a model with an entire series, each point is detected with the same model. With this
      * method, points before and after a certain point are used to determine whether it is an anomaly. The entire
      * detection can give user an overall status of the time series.
      *
@@ -56,15 +57,19 @@ public final class AnomalyDetectorAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of entire anomaly detection.
+     * @return the response of entire anomaly detection along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<EntireDetectResponse>> detectEntireSeriesWithResponse(DetectRequest body) {
         return this.serviceClient.detectEntireSeriesWithResponseAsync(body);
     }
 
     /**
-     * This operation generates a model with an entire series, each point is detected with the same model. With this
+     * Detect anomalies for the entire series in batch.
+     *
+     * <p>This operation generates a model with an entire series, each point is detected with the same model. With this
      * method, points before and after a certain point are used to determine whether it is an anomaly. The entire
      * detection can give user an overall status of the time series.
      *
@@ -72,332 +77,367 @@ public final class AnomalyDetectorAsyncClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of entire anomaly detection.
+     * @return the response of entire anomaly detection on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<EntireDetectResponse> detectEntireSeries(DetectRequest body) {
         return this.serviceClient.detectEntireSeriesAsync(body);
     }
 
     /**
-     * This operation generates a model using points before the latest one. With this method, only historical points are
-     * used to determine whether the target point is an anomaly. The latest point detecting operation matches the
+     * Detect anomaly status of the latest point in time series.
+     *
+     * <p>This operation generates a model using points before the latest one. With this method, only historical points
+     * are used to determine whether the target point is an anomaly. The latest point detecting operation matches the
      * scenario of real-time monitoring of business metrics.
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of last anomaly detection.
+     * @return the response of last anomaly detection along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LastDetectResponse>> detectLastPointWithResponse(DetectRequest body) {
         return this.serviceClient.detectLastPointWithResponseAsync(body);
     }
 
     /**
-     * This operation generates a model using points before the latest one. With this method, only historical points are
-     * used to determine whether the target point is an anomaly. The latest point detecting operation matches the
+     * Detect anomaly status of the latest point in time series.
+     *
+     * <p>This operation generates a model using points before the latest one. With this method, only historical points
+     * are used to determine whether the target point is an anomaly. The latest point detecting operation matches the
      * scenario of real-time monitoring of business metrics.
      *
      * @param body Time series points and period if needed. Advanced model parameters can also be set in the request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of last anomaly detection.
+     * @return the response of last anomaly detection on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LastDetectResponse> detectLastPoint(DetectRequest body) {
         return this.serviceClient.detectLastPointAsync(body);
     }
 
     /**
-     * Evaluate change point score of every series point.
+     * Detect change point for the entire series
+     *
+     * <p>Evaluate change point score of every series point.
      *
      * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
      *     request if needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of change point detection.
+     * @return the response of change point detection along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ChangePointDetectResponse>> detectChangePointWithResponse(ChangePointDetectRequest body) {
         return this.serviceClient.detectChangePointWithResponseAsync(body);
     }
 
     /**
-     * Evaluate change point score of every series point.
+     * Detect change point for the entire series
+     *
+     * <p>Evaluate change point score of every series point.
      *
      * @param body Time series points and granularity is needed. Advanced model parameters can also be set in the
      *     request if needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws AnomalyDetectorErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of change point detection.
+     * @return the response of change point detection on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChangePointDetectResponse> detectChangePoint(ChangePointDetectRequest body) {
         return this.serviceClient.detectChangePointAsync(body);
     }
 
     /**
-     * Create and train a multivariate anomaly detection model. The request must include a source parameter to indicate
-     * an externally accessible Azure storage Uri (preferably a Shared Access Signature Uri). All time-series used in
-     * generate the model must be zipped into one single file. Each time-series will be in a single CSV file in which
-     * the first column is timestamp and the second column is value.
+     * Train a Multivariate Anomaly Detection Model
+     *
+     * <p>Create and train a multivariate anomaly detection model. The request must include a source parameter to
+     * indicate an externally accessible Azure storage Uri (preferably a Shared Access Signature Uri). All time-series
+     * used in generate the model must be zipped into one single file. Each time-series will be in a single CSV file in
+     * which the first column is timestamp and the second column is value.
      *
      * @param body Training request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrainMultivariateModelResponse> trainMultivariateModelWithResponse(ModelInfo body) {
         return this.serviceClient.trainMultivariateModelWithResponseAsync(body);
     }
 
     /**
-     * Create and train a multivariate anomaly detection model. The request must include a source parameter to indicate
-     * an externally accessible Azure storage Uri (preferably a Shared Access Signature Uri). All time-series used in
-     * generate the model must be zipped into one single file. Each time-series will be in a single CSV file in which
-     * the first column is timestamp and the second column is value.
+     * Train a Multivariate Anomaly Detection Model
+     *
+     * <p>Create and train a multivariate anomaly detection model. The request must include a source parameter to
+     * indicate an externally accessible Azure storage Uri (preferably a Shared Access Signature Uri). All time-series
+     * used in generate the model must be zipped into one single file. Each time-series will be in a single CSV file in
+     * which the first column is timestamp and the second column is value.
      *
      * @param body Training request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> trainMultivariateModel(ModelInfo body) {
         return this.serviceClient.trainMultivariateModelAsync(body);
     }
 
     /**
-     * List models of a subscription.
+     * List Multivariate Models
+     *
+     * <p>List models of a subscription.
      *
      * @param skip $skip indicates how many models will be skipped.
      * @param top $top indicates how many models will be fetched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of listing models.
+     * @return response of listing models as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<ModelSnapshot>> listMultivariateModelSinglePage(Integer skip, Integer top) {
-        return this.serviceClient.listMultivariateModelSinglePageAsync(skip, top);
-    }
-
-    /**
-     * List models of a subscription.
-     *
-     * @param skip $skip indicates how many models will be skipped.
-     * @param top $top indicates how many models will be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of listing models.
-     */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ModelSnapshot> listMultivariateModel(Integer skip, Integer top) {
         return this.serviceClient.listMultivariateModelAsync(skip, top);
     }
 
     /**
-     * Get detailed information of multivariate model, including the training status and variables used in the model.
+     * Get Multivariate Model
+     *
+     * <p>Get detailed information of multivariate model, including the training status and variables used in the model.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of multivariate model, including the training status and variables used in the
-     *     model.
+     * @return detailed information of multivariate model, including the training status and variables used in the model
+     *     along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Model>> getMultivariateModelWithResponse(UUID modelId) {
         return this.serviceClient.getMultivariateModelWithResponseAsync(modelId);
     }
 
     /**
-     * Get detailed information of multivariate model, including the training status and variables used in the model.
+     * Get Multivariate Model
+     *
+     * <p>Get detailed information of multivariate model, including the training status and variables used in the model.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return detailed information of multivariate model, including the training status and variables used in the
-     *     model.
+     * @return detailed information of multivariate model, including the training status and variables used in the model
+     *     on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Model> getMultivariateModel(UUID modelId) {
         return this.serviceClient.getMultivariateModelAsync(modelId);
     }
 
     /**
-     * Delete an existing multivariate model according to the modelId.
+     * Delete Multivariate Model
+     *
+     * <p>Delete an existing multivariate model according to the modelId.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteMultivariateModelWithResponse(UUID modelId) {
         return this.serviceClient.deleteMultivariateModelWithResponseAsync(modelId);
     }
 
     /**
-     * Delete an existing multivariate model according to the modelId.
+     * Delete Multivariate Model
+     *
+     * <p>Delete an existing multivariate model according to the modelId.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteMultivariateModel(UUID modelId) {
         return this.serviceClient.deleteMultivariateModelAsync(modelId);
     }
 
     /**
-     * Submit detection multivariate anomaly task with the trained model of modelId, the input schema should be the same
-     * with the training request. Thus request will be complete asynchronously and will return a resultId for querying
-     * the detection result.The request should be a source link to indicate an externally accessible Azure storage Uri
-     * (preferably a Shared Access Signature Uri). All time-series used in generate the model must be zipped into one
-     * single file. Each time-series will be as follows: the first column is timestamp and the second column is value.
+     * Detect Multivariate Anomaly
+     *
+     * <p>Submit detection multivariate anomaly task with the trained model of modelId, the input schema should be the
+     * same with the training request. Thus request will be complete asynchronously and will return a resultId for
+     * querying the detection result.The request should be a source link to indicate an externally accessible Azure
+     * storage Uri (preferably a Shared Access Signature Uri). All time-series used in generate the model must be zipped
+     * into one single file. Each time-series will be as follows: the first column is timestamp and the second column is
+     * value.
      *
      * @param modelId Model identifier.
      * @param body Detect anomaly request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectAnomalyResponse> detectAnomalyWithResponse(UUID modelId, DetectionRequest body) {
         return this.serviceClient.detectAnomalyWithResponseAsync(modelId, body);
     }
 
     /**
-     * Submit detection multivariate anomaly task with the trained model of modelId, the input schema should be the same
-     * with the training request. Thus request will be complete asynchronously and will return a resultId for querying
-     * the detection result.The request should be a source link to indicate an externally accessible Azure storage Uri
-     * (preferably a Shared Access Signature Uri). All time-series used in generate the model must be zipped into one
-     * single file. Each time-series will be as follows: the first column is timestamp and the second column is value.
+     * Detect Multivariate Anomaly
+     *
+     * <p>Submit detection multivariate anomaly task with the trained model of modelId, the input schema should be the
+     * same with the training request. Thus request will be complete asynchronously and will return a resultId for
+     * querying the detection result.The request should be a source link to indicate an externally accessible Azure
+     * storage Uri (preferably a Shared Access Signature Uri). All time-series used in generate the model must be zipped
+     * into one single file. Each time-series will be as follows: the first column is timestamp and the second column is
+     * value.
      *
      * @param modelId Model identifier.
      * @param body Detect anomaly request.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> detectAnomaly(UUID modelId, DetectionRequest body) {
         return this.serviceClient.detectAnomalyAsync(modelId, body);
     }
 
     /**
-     * Get multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
+     * Get Multivariate Anomaly Detection Result
+     *
+     * <p>Get multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
      *
      * @param resultId Result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
+     * @return multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api along with
+     *     {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DetectionResult>> getDetectionResultWithResponse(UUID resultId) {
         return this.serviceClient.getDetectionResultWithResponseAsync(resultId);
     }
 
     /**
-     * Get multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
+     * Get Multivariate Anomaly Detection Result
+     *
+     * <p>Get multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
      *
      * @param resultId Result identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api.
+     * @return multivariate anomaly detection result based on resultId returned by the DetectAnomalyAsync api on
+     *     successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DetectionResult> getDetectionResult(UUID resultId) {
         return this.serviceClient.getDetectionResultAsync(resultId);
     }
 
     /**
-     * Export multivariate anomaly detection model based on modelId.
+     * Export Multivariate Anomaly Detection Model as Zip file
+     *
+     * <p>Export multivariate anomaly detection model based on modelId.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<StreamResponse> exportModelWithResponse(UUID modelId) {
+    public Mono<Response<BinaryData>> exportModelWithResponse(UUID modelId) {
         return this.serviceClient.exportModelWithResponseAsync(modelId);
     }
 
     /**
-     * Export multivariate anomaly detection model based on modelId.
+     * Export Multivariate Anomaly Detection Model as Zip file
+     *
+     * <p>Export multivariate anomaly detection model based on modelId.
      *
      * @param modelId Model identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Flux<ByteBuffer> exportModel(UUID modelId) {
+    public Mono<BinaryData> exportModel(UUID modelId) {
         return this.serviceClient.exportModelAsync(modelId);
     }
 
     /**
-     * Synchronized API for anomaly detection.
+     * Detect anomalies in the last a few points of the request body.
+     *
+     * <p>Synchronized API for anomaly detection.
      *
      * @param modelId Model identifier.
      * @param body Request for last detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<LastDetectionResult>> lastDetectAnomalyWithResponse(UUID modelId, LastDetectionRequest body) {
         return this.serviceClient.lastDetectAnomalyWithResponseAsync(modelId, body);
     }
 
     /**
-     * Synchronized API for anomaly detection.
+     * Detect anomalies in the last a few points of the request body.
+     *
+     * <p>Synchronized API for anomaly detection.
      *
      * @param modelId Model identifier.
      * @param body Request for last detection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
+     * @return the response body on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<LastDetectionResult> lastDetectAnomaly(UUID modelId, LastDetectionRequest body) {
         return this.serviceClient.lastDetectAnomalyAsync(modelId, body);
-    }
-
-    /**
-     * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response of listing models.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<PagedResponse<ModelSnapshot>> listMultivariateModelNextSinglePage(String nextLink) {
-        return this.serviceClient.listMultivariateModelNextSinglePageAsync(nextLink);
     }
 }

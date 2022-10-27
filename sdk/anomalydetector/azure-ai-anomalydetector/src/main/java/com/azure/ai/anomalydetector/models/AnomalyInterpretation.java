@@ -28,6 +28,9 @@ public final class AnomalyInterpretation {
     @JsonProperty(value = "correlationChanges")
     private CorrelationChanges correlationChanges;
 
+    /** Creates an instance of AnomalyInterpretation class. */
+    public AnomalyInterpretation() {}
+
     /**
      * Get the variable property: The variable property.
      *

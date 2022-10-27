@@ -23,6 +23,9 @@ public final class CorrelationChanges {
     @JsonProperty(value = "changedValues")
     private List<Float> changedValues;
 
+    /** Creates an instance of CorrelationChanges class. */
+    public CorrelationChanges() {}
+
     /**
      * Get the changedVariables property: correlated variables.
      *

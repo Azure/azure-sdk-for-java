@@ -23,6 +23,9 @@ public final class LastDetectionResult {
     @JsonProperty(value = "results")
     private List<AnomalyState> results;
 
+    /** Creates an instance of LastDetectionResult class. */
+    public LastDetectionResult() {}
+
     /**
      * Get the variableStates property: The variableStates property.
      *

@@ -23,6 +23,9 @@ public final class TimeSeriesPoint {
     @JsonProperty(value = "value", required = true)
     private float value;
 
+    /** Creates an instance of TimeSeriesPoint class. */
+    public TimeSeriesPoint() {}
+
     /**
      * Get the timestamp property: Optional argument, timestamp of a data point (ISO8601 format).
      *

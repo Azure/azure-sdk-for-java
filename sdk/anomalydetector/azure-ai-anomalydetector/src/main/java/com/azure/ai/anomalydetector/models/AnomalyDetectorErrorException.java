@@ -30,6 +30,7 @@ public final class AnomalyDetectorErrorException extends HttpResponseException {
         super(message, response, value);
     }
 
+    /** {@inheritDoc} */
     @Override
     public AnomalyDetectorError getValue() {
         return (AnomalyDetectorError) super.getValue();

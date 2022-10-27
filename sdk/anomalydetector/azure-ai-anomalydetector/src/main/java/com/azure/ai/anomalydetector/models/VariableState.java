@@ -41,6 +41,9 @@ public final class VariableState {
     @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
+    /** Creates an instance of VariableState class. */
+    public VariableState() {}
+
     /**
      * Get the variable property: Variable name.
      *

@@ -8,40 +8,40 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AnomalyDetectorErrorCodes. */
+/** The error code. */
 public final class AnomalyDetectorErrorCodes extends ExpandableStringEnum<AnomalyDetectorErrorCodes> {
-    /** Static value null for AnomalyDetectorErrorCodes. */
-    public static final AnomalyDetectorErrorCodes INVALID_CUSTOM_INTERVAL = fromString(null);
+    /** Static value InvalidCustomInterval for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes INVALID_CUSTOM_INTERVAL = fromString("InvalidCustomInterval");
 
-    /** Static value null for AnomalyDetectorErrorCodes. */
-    public static final AnomalyDetectorErrorCodes BAD_ARGUMENT = fromString(null);
+    /** Static value BadArgument for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes BAD_ARGUMENT = fromString("BadArgument");
 
-    /** Static value null for AnomalyDetectorErrorCodes. */
-    public static final AnomalyDetectorErrorCodes INVALID_GRANULARITY = fromString(null);
+    /** Static value InvalidGranularity for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes INVALID_GRANULARITY = fromString("InvalidGranularity");
 
-    /** Static value null for AnomalyDetectorErrorCodes. */
-    public static final AnomalyDetectorErrorCodes INVALID_PERIOD = fromString(null);
+    /** Static value InvalidPeriod for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes INVALID_PERIOD = fromString("InvalidPeriod");
 
-    /** Static value null for AnomalyDetectorErrorCodes. */
-    public static final AnomalyDetectorErrorCodes INVALID_MODEL_ARGUMENT = fromString(null);
+    /** Static value InvalidModelArgument for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes INVALID_MODEL_ARGUMENT = fromString("InvalidModelArgument");
 
-    /** Static value null for AnomalyDetectorErrorCodes. */
-    public static final AnomalyDetectorErrorCodes INVALID_SERIES = fromString(null);
+    /** Static value InvalidSeries for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes INVALID_SERIES = fromString("InvalidSeries");
 
-    /** Static value null for AnomalyDetectorErrorCodes. */
-    public static final AnomalyDetectorErrorCodes INVALID_JSON_FORMAT = fromString(null);
+    /** Static value InvalidJsonFormat for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes INVALID_JSON_FORMAT = fromString("InvalidJsonFormat");
 
-    /** Static value null for AnomalyDetectorErrorCodes. */
-    public static final AnomalyDetectorErrorCodes REQUIRED_GRANULARITY = fromString(null);
+    /** Static value RequiredGranularity for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes REQUIRED_GRANULARITY = fromString("RequiredGranularity");
 
-    /** Static value null for AnomalyDetectorErrorCodes. */
-    public static final AnomalyDetectorErrorCodes REQUIRED_SERIES = fromString(null);
+    /** Static value RequiredSeries for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes REQUIRED_SERIES = fromString("RequiredSeries");
 
-    /** Static value null for AnomalyDetectorErrorCodes. */
-    public static final AnomalyDetectorErrorCodes INVALID_IMPUTE_MODE = fromString(null);
+    /** Static value InvalidImputeMode for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes INVALID_IMPUTE_MODE = fromString("InvalidImputeMode");
 
-    /** Static value null for AnomalyDetectorErrorCodes. */
-    public static final AnomalyDetectorErrorCodes INVALID_IMPUTE_FIXED_VALUE = fromString(null);
+    /** Static value InvalidImputeFixedValue for AnomalyDetectorErrorCodes. */
+    public static final AnomalyDetectorErrorCodes INVALID_IMPUTE_FIXED_VALUE = fromString("InvalidImputeFixedValue");
 
     /**
      * Creates or finds a AnomalyDetectorErrorCodes from its string representation.
@@ -54,7 +54,11 @@ public final class AnomalyDetectorErrorCodes extends ExpandableStringEnum<Anomal
         return fromString(name, AnomalyDetectorErrorCodes.class);
     }
 
-    /** @return known AnomalyDetectorErrorCodes values. */
+    /**
+     * Gets known AnomalyDetectorErrorCodes values.
+     *
+     * @return known AnomalyDetectorErrorCodes values.
+     */
     public static Collection<AnomalyDetectorErrorCodes> values() {
         return values(AnomalyDetectorErrorCodes.class);
     }

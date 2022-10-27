@@ -29,6 +29,9 @@ public final class VariableValues {
     @JsonProperty(value = "values", required = true)
     private List<Float> values;
 
+    /** Creates an instance of VariableValues class. */
+    public VariableValues() {}
+
     /**
      * Get the name property: variable name.
      *
