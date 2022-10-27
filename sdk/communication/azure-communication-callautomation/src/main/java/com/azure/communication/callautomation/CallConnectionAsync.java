@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
-import com.azure.communication.callautomation.implementation.ContentsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
@@ -56,16 +55,13 @@ import static com.azure.core.util.FluxUtil.withContext;
 public class CallConnectionAsync {
     private final String callConnectionId;
     private final CallConnectionsImpl callConnectionInternal;
-    private final ContentsImpl contentsInternal;
     private final ClientLogger logger;
 
     CallConnectionAsync(
         String callConnectionId,
-        CallConnectionsImpl callConnectionInternal,
-        ContentsImpl contentsInternal) {
+        CallConnectionsImpl callConnectionInternal) {
         this.callConnectionId = callConnectionId;
         this.callConnectionInternal = callConnectionInternal;
-        this.contentsInternal = contentsInternal;
         this.logger = new ClientLogger(CallConnectionAsync.class);
     }
 
@@ -408,7 +404,7 @@ public class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMediaAsync getCallMediaAsync() {
-        return new CallMediaAsync(callConnectionId, contentsInternal);
+        return new CallMediaAsync(callConnectionId, callConnectionInternal);
     }
     //endregion
 }

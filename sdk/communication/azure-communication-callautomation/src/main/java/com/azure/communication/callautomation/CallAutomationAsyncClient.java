@@ -5,9 +5,8 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.AzureCommunicationCallAutomationServiceImpl;
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
-import com.azure.communication.callautomation.implementation.ContentsImpl;
+import com.azure.communication.callautomation.implementation.RecordingsImpl;
 import com.azure.communication.callautomation.implementation.ServerCallingsImpl;
-import com.azure.communication.callautomation.implementation.ServerCallsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
@@ -68,8 +67,7 @@ import static com.azure.core.util.FluxUtil.withContext;
 public final class CallAutomationAsyncClient {
     private final CallConnectionsImpl callConnectionInternal;
     private final ServerCallingsImpl serverCallingInternal;
-    private final ServerCallsImpl serverCallsInternal;
-    private final ContentsImpl contentsInternal;
+    private final RecordingsImpl recordingsInternal;
     private final ClientLogger logger;
     private final ContentDownloader contentDownloader;
     private final HttpPipeline httpPipelineInternal;
@@ -78,14 +76,13 @@ public final class CallAutomationAsyncClient {
     CallAutomationAsyncClient(AzureCommunicationCallAutomationServiceImpl callServiceClient) {
         this.callConnectionInternal = callServiceClient.getCallConnections();
         this.serverCallingInternal = callServiceClient.getServerCallings();
-        this.serverCallsInternal = callServiceClient.getServerCalls();
-        this.contentsInternal = callServiceClient.getContents();
+        this.recordingsInternal = callServiceClient.getRecordings();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
         this.contentDownloader = new ContentDownloader(
-            callServiceClient.getEndpoint().toString(),
+            callServiceClient.getEndpoint(),
             callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
-        this.resourceEndpoint = callServiceClient.getEndpoint().toString();
+        this.resourceEndpoint = callServiceClient.getEndpoint();
     }
 
     //region Pre-call Actions
@@ -372,7 +369,7 @@ public final class CallAutomationAsyncClient {
      * @return a CallContentAsync.
      */
     public CallConnectionAsync getCallConnectionAsync(String callConnectionId) {
-        return new CallConnectionAsync(callConnectionId, callConnectionInternal, contentsInternal);
+        return new CallConnectionAsync(callConnectionId, callConnectionInternal);
     }
     //endregion
 
@@ -383,7 +380,7 @@ public final class CallAutomationAsyncClient {
      * @return a CallRecordingAsync.
      */
     public CallRecordingAsync getCallRecordingAsync() {
-        return new CallRecordingAsync(serverCallsInternal, contentsInternal,
+        return new CallRecordingAsync(recordingsInternal,
             contentDownloader, httpPipelineInternal, resourceEndpoint);
     }
     //endregion

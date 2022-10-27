@@ -3,7 +3,7 @@
 
 package com.azure.communication.callautomation;
 
-import com.azure.communication.callautomation.implementation.ContentsImpl;
+import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.DtmfOptionsInternal;
@@ -42,13 +42,13 @@ import static com.azure.core.util.FluxUtil.withContext;
  * CallContent.
  */
 public class CallMediaAsync {
-    private final ContentsImpl contentsInternal;
+    private final CallConnectionsImpl contentsInternal;
     private final String callConnectionId;
     private final ClientLogger logger;
 
-    CallMediaAsync(String callConnectionId, ContentsImpl contentsInternal) {
+    CallMediaAsync(String callConnectionId, CallConnectionsImpl callConnectionsInternal) {
         this.callConnectionId = callConnectionId;
-        this.contentsInternal = contentsInternal;
+        this.contentsInternal = callConnectionsInternal;
         this.logger = new ClientLogger(CallMediaAsync.class);
     }
 

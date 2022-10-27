@@ -11,19 +11,18 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import java.net.URL;
 
 /** Initializes a new instance of the AzureCommunicationCallAutomationService type. */
 public final class AzureCommunicationCallAutomationServiceImpl {
     /** The endpoint of the Azure Communication resource. */
-    private final URL endpoint;
+    private final String endpoint;
 
     /**
      * Gets The endpoint of the Azure Communication resource.
      *
      * @return the endpoint value.
      */
-    public URL getEndpoint() {
+    public String getEndpoint() {
         return this.endpoint;
     }
 
@@ -87,28 +86,16 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         return this.callConnections;
     }
 
-    /** The ContentsImpl object to access its operations. */
-    private final ContentsImpl contents;
+    /** The RecordingsImpl object to access its operations. */
+    private final RecordingsImpl recordings;
 
     /**
-     * Gets the ContentsImpl object to access its operations.
+     * Gets the RecordingsImpl object to access its operations.
      *
-     * @return the ContentsImpl object.
+     * @return the RecordingsImpl object.
      */
-    public ContentsImpl getContents() {
-        return this.contents;
-    }
-
-    /** The ServerCallsImpl object to access its operations. */
-    private final ServerCallsImpl serverCalls;
-
-    /**
-     * Gets the ServerCallsImpl object to access its operations.
-     *
-     * @return the ServerCallsImpl object.
-     */
-    public ServerCallsImpl getServerCalls() {
-        return this.serverCalls;
+    public RecordingsImpl getRecordings() {
+        return this.recordings;
     }
 
     /**
@@ -117,7 +104,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationCallAutomationServiceImpl(URL endpoint, String apiVersion) {
+    AzureCommunicationCallAutomationServiceImpl(String endpoint, String apiVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
@@ -134,7 +121,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param endpoint The endpoint of the Azure Communication resource.
      * @param apiVersion Api Version.
      */
-    AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, URL endpoint, String apiVersion) {
+    AzureCommunicationCallAutomationServiceImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
         this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, apiVersion);
     }
 
@@ -147,14 +134,13 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @param apiVersion Api Version.
      */
     AzureCommunicationCallAutomationServiceImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, URL endpoint, String apiVersion) {
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
         this.endpoint = endpoint;
         this.apiVersion = apiVersion;
         this.serverCallings = new ServerCallingsImpl(this);
         this.callConnections = new CallConnectionsImpl(this);
-        this.contents = new ContentsImpl(this);
-        this.serverCalls = new ServerCallsImpl(this);
+        this.recordings = new RecordingsImpl(this);
     }
 }
