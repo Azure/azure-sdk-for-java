@@ -5,17 +5,22 @@ package com.azure.messaging.servicebus.perf;
 
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.servicebus.*;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.messaging.servicebus.ServiceBusMessage;
+import com.azure.messaging.servicebus.ServiceBusMessageBatch;
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.messaging.servicebus.ServiceBusSenderClient;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.perf.test.core.EventPerfTest;
 import com.azure.perf.test.core.TestDataCreationHelper;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
-import java.time.Duration;
 import java.util.UUID;
-import java.util.concurrent.atomic.AtomicInteger;
 
+/**
+ * Test ServiceBus processor client receive messages performance. Use eventRaised() and errorRaised() to record messages
+ * count and error count.
+ */
 public class ServiceBusProcessorTest extends EventPerfTest<ServiceBusStressOptions> {
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusProcessorTest.class);
 
@@ -24,8 +29,6 @@ public class ServiceBusProcessorTest extends EventPerfTest<ServiceBusStressOptio
 
     private final String CONNECTION_STRING;
     private final String QUEUE_NAME;
-
-    private final AtomicInteger total = new AtomicInteger();
 
     private final ServiceBusProcessorClient processor;
 
@@ -57,10 +60,10 @@ public class ServiceBusProcessorTest extends EventPerfTest<ServiceBusStressOptio
             .receiveMode(ServiceBusReceiveMode.RECEIVE_AND_DELETE)
             .maxConcurrentCalls(options.getMaxConcurrentCalls())
             .processMessage(messageContext -> {
-                total.incrementAndGet();
+                eventRaised();
             })
             .processError(errorContext -> {
-                LOGGER.error("Process message error: {}", errorContext.getException());
+                errorRaised(errorContext.getException());
             })
             .buildProcessorClient();
 
@@ -100,7 +103,6 @@ public class ServiceBusProcessorTest extends EventPerfTest<ServiceBusStressOptio
     public Mono<Void> cleanupAsync() {
         return Mono.defer(() -> {
             processor.stop();
-            LOGGER.info("Total messages: {}", total.get());
             return Mono.empty();
         }).then(super.cleanupAsync());
     }
