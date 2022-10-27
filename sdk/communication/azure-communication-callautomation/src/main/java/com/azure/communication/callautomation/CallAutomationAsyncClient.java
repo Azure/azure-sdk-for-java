@@ -12,10 +12,6 @@ import com.azure.communication.callautomation.implementation.accesshelpers.CallC
 import com.azure.communication.callautomation.implementation.accesshelpers.ErrorConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.models.CallSourceInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingAudioChannelTypeInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingConfigurationInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingContentTypeInternal;
-import com.azure.communication.callautomation.implementation.models.MediaStreamingTransportTypeInternal;
 import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallingServerErrorException;
@@ -28,7 +24,6 @@ import com.azure.communication.callautomation.implementation.models.CallRejectRe
 import com.azure.communication.callautomation.implementation.models.PhoneNumberIdentifierModel;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
-import com.azure.communication.callautomation.models.MediaStreamingOptions;
 import com.azure.communication.callautomation.models.RedirectCallOptions;
 import com.azure.communication.callautomation.models.RejectCallOptions;
 import com.azure.communication.callautomation.models.RepeatabilityHeaders;
@@ -167,27 +162,7 @@ public final class CallAutomationAsyncClient {
             .setCallbackUri(createCallOptions.getCallbackUrl())
             .setOperationContext(createCallOptions.getOperationContext());
 
-        if (createCallOptions.getMediaStreamingConfiguration() != null) {
-            MediaStreamingConfigurationInternal streamingConfigurationInternal =
-                getMediaStreamingConfigurationInternal(createCallOptions.getMediaStreamingConfiguration());
-            request.setMediaStreamingConfiguration(streamingConfigurationInternal);
-        }
         return request;
-    }
-
-    private MediaStreamingConfigurationInternal getMediaStreamingConfigurationInternal(
-        MediaStreamingOptions mediaStreamingOptions) {
-        return new MediaStreamingConfigurationInternal()
-            .setTransportUrl(mediaStreamingOptions.getTransportUrl())
-            .setAudioChannelType(
-                MediaStreamingAudioChannelTypeInternal.fromString(
-                    mediaStreamingOptions.getAudioChannelType().toString()))
-            .setContentType(
-                MediaStreamingContentTypeInternal.fromString(
-                    mediaStreamingOptions.getContentType().toString()))
-            .setTransportType(
-                MediaStreamingTransportTypeInternal.fromString(
-                    mediaStreamingOptions.getTransportType().toString()));
     }
 
     /**
@@ -231,14 +206,6 @@ public final class CallAutomationAsyncClient {
                 RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
                 answerCallOptions.setRepeatabilityHeaders(autoRepeatabilityHeaders);
             }
-
-            if (answerCallOptions.getMediaStreamingConfiguration() != null) {
-                MediaStreamingConfigurationInternal mediaStreamingConfigurationInternal =
-                    getMediaStreamingConfigurationInternal(answerCallOptions.getMediaStreamingConfiguration());
-
-                request.setMediaStreamingConfiguration(mediaStreamingConfigurationInternal);
-            }
-
 
             return serverCallingInternal.answerCallWithResponseAsync(request,
                     answerCallOptions.getRepeatabilityHeaders().getRepeatabilityRequestId(),

@@ -50,7 +50,6 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
         CreateCallOptions callOptions = new CreateCallOptions(caller, targets, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
-        callOptions.setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
 
         Response<CreateCallResult> createCallResult = callAutomationAsyncClient.createCallWithResponse(callOptions).block();
 
@@ -86,8 +85,7 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
                     CALL_CALLER_ID, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, MEDIA_SUBSCRIPTION_ID), 200)
             )));
 
-        AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL)
-            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION);
+        AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL);
         Response<AnswerCallResult> answerCallResult = callAutomationAsyncClient.answerCallWithResponse(
             answerCallOptions).block();
 

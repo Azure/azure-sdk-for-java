@@ -18,7 +18,6 @@ import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +40,7 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder {
     /*
      * The endpoint of the Azure Communication resource.
      */
-    private URL endpoint;
+    private String endpoint;
 
     /**
      * Sets The endpoint of the Azure Communication resource.
@@ -49,7 +48,7 @@ public final class AzureCommunicationCallAutomationServiceImplBuilder {
      * @param endpoint the endpoint value.
      * @return the AzureCommunicationCallAutomationServiceImplBuilder.
      */
-    public AzureCommunicationCallAutomationServiceImplBuilder endpoint(URL endpoint) {
+    public AzureCommunicationCallAutomationServiceImplBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
