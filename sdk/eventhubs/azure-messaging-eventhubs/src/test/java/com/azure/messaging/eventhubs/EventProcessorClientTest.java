@@ -729,8 +729,8 @@ public class EventProcessorClientTest {
         when(eventData3.getOffset()).thenReturn(150L);
 
         final SampleCheckpointStore checkpointStore = new SampleCheckpointStore();
-        // Use 2000 milliseconds to process per event/eventBatch.
-        final MonitorPartitionProcessor testPartitionProcessor = new MonitorPartitionProcessor(2000);
+        // Use 5000 milliseconds to process per event/eventBatch.
+        final MonitorPartitionProcessor testPartitionProcessor = new MonitorPartitionProcessor(5000);
         CountDownLatch countDownLatch = new CountDownLatch(3);
         testPartitionProcessor.countDownLatch = countDownLatch;
 
