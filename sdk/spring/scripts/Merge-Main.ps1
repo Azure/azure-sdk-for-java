@@ -14,4 +14,4 @@ param(
     -SourceBranch 'main' `
     -Theirs @('**') `
     -Ours @('sdk/spring', 'sdk/spring-experimental') `
-    -Merge @('eng/versioning/*.txt', 'eng/jacoco-test-coverage/pom.xml', 'sdk/boms/spring-cloud-azure-dependencies/pom.xml')
+    -Merge @('eng/versioning/*.txt', 'eng/jacoco-test-coverage/pom.xml', 'sdk/boms/spring-cloud-azure-dependencies/pom.xml', 'sdk/parents/azure-client-sdk-parent/pom.xml', 'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml', 'sdk/appconfiguration/azure-spring-cloud-test-appconfiguration-config/pom.xml')

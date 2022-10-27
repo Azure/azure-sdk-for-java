@@ -28,7 +28,7 @@
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
-      <version>42.3.7</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <version>42.5.0</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
       <scope>provided</scope>
     </dependency>
 
@@ -36,14 +36,14 @@
     <dependency>
       <groupId>org.mockito</groupId>
       <artifactId>mockito-core</artifactId>
-      <version>4.5.1</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <version>4.8.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>5.8.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
+      <version>5.9.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -65,7 +65,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.postgresql:postgresql:[42.3.7]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.5.0]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
