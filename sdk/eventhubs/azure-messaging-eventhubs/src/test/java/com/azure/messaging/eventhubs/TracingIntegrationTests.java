@@ -436,7 +436,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
         assertEquals(spanName, actual.getName());
         assertEquals(SpanKind.CLIENT, actual.getKind());
         List<LinkData> links = actual.toSpanData().getLinks();
-        /* TODO (lmolkova) uncomment after azure-core-tracing-opentelemetry 1.0.0-beat.29 ships
+        /* TODO (lmolkova) uncomment after azure-core-tracing-opentelemetry 1.0.0-beat.31 ships
         assertEquals(messages.size(), links.size());
         for (int i = 0; i < links.size(); i++) {
             String messageTraceparent = (String) messages.get(i).getData().getProperties().get("traceparent");
@@ -464,7 +464,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private void assertConsumerSpan(ReadableSpan actual, List<EventData> messages, String spanName) {
         assertEquals(spanName, actual.getName());
         assertEquals(SpanKind.CONSUMER, actual.getKind());
-        /* TODO (lmolkova) uncomment after azure-core-tracing-opentelemetry 1.0.0-beta.29 ships
+        /* TODO (lmolkova) uncomment after azure-core-tracing-opentelemetry 1.0.0-beta.31 ships
         assertEquals(messages.size(), actual.toSpanData().getLinks().size());
         List<LinkData> links =  actual.toSpanData().getLinks();
         for (EventData data : messages) {
