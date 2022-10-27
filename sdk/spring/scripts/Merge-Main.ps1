@@ -14,4 +14,4 @@ param(
     -SourceBranch 'main' `
     -Theirs @('**') `
     -Ours @('sdk/spring', 'sdk/spring-experimental') `
-    -Merge @('eng/versioning/*.txt', 'eng/jacoco-test-coverage/pom.xml')
+    -Merge @('eng/versioning/*.txt', 'eng/jacoco-test-coverage/pom.xml', 'sdk/boms/spring-cloud-azure-dependencies/pom.xml')
