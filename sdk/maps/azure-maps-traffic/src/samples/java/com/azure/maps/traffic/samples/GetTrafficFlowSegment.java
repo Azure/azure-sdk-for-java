@@ -13,6 +13,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.maps.traffic.TrafficAsyncClient;
 import com.azure.maps.traffic.TrafficClient;
 import com.azure.maps.traffic.TrafficClientBuilder;
+import com.azure.maps.traffic.models.SpeedUnit;
+import com.azure.maps.traffic.models.TrafficFlowSegmentOptions;
+import com.azure.maps.traffic.models.TrafficFlowSegmentStyle;
 
 public class GetTrafficFlowSegment {
     public static void main(String[] args) throws IOException {
@@ -81,7 +84,7 @@ public class GetTrafficFlowSegment {
             new TrafficFlowSegmentOptions()
                 .setTrafficFlowSegmentStyle(TrafficFlowSegmentStyle.ABSOLUTE).setZoom(10)
                 .setCoordinates(new GeoPosition(4.84239, 52.41072)).setOpenLr(false)
-                .setThickness(2).setUnit(SpeedUnit.MPH)).block().getStatusCode();
+                .setThickness(2).setUnit(SpeedUnit.MPH));
         // END: com.azure.maps.traffic.async.get_traffic_flow_segment
     }
 }

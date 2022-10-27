@@ -4,11 +4,6 @@
 
 package com.azure.maps.traffic;
 
-import java.io.InputStream;
-import java.io.SequenceInputStream;
-import java.util.Enumeration;
-import java.util.Iterator;
-
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -27,7 +22,6 @@ import com.azure.maps.traffic.models.TrafficFlowTileOptions;
 import com.azure.maps.traffic.models.TrafficIncidentDetailOptions;
 import com.azure.maps.traffic.models.TrafficIncidentTileOptions;
 import com.azure.maps.traffic.models.TrafficIncidentViewportOptions;
-import com.fasterxml.jackson.databind.util.ByteBufferBackedInputStream;
 
 /** Initializes a new instance of the synchronous TrafficClient type. */
 @ServiceClient(builder = TrafficClientBuilder.class)
@@ -221,20 +215,5 @@ public final class TrafficClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TrafficIncidentViewport> getTrafficIncidentViewportWithResponse(TrafficIncidentViewportOptions options, Context context) {
         return this.asyncClient.getTrafficIncidentViewportWithResponse(options, context).block();
-    }
-
-    private InputStream getInputStream(Iterator<ByteBufferBackedInputStream> iterator) {
-        Enumeration<InputStream> enumeration = new Enumeration<InputStream>() {
-            @Override
-            public boolean hasMoreElements() {
-                return iterator.hasNext();
-            }
-
-            @Override
-            public InputStream nextElement() {
-                return iterator.next();
-            }
-        };
-        return new SequenceInputStream(enumeration);
     }
 }
