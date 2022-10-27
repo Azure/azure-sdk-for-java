@@ -18,11 +18,13 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Supplier;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 /**
@@ -143,16 +145,12 @@ public class PerfStressProgram {
                 if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
                     Disposable recordStatus = printStatus("=== Record and Start Playback ===", () -> ".", false, false);
 
-                    try {
-                        ForkJoinPool forkJoinPool = new ForkJoinPool(tests.length);
-                        forkJoinPool.submit(() -> {
-                            IntStream.range(0, tests.length).parallel().forEach(i -> tests[i].postSetupAsync().block());
-                        }).get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
-                        e.printStackTrace(System.err);
-                        throw new RuntimeException(e);
-                    }
+                    Flux.range(0, tests.length)
+                        .parallel()
+                        .runOn(Schedulers.parallel())
+                        .flatMap(i -> tests[i].postSetupAsync(), false, tests.length, 1)
+                        .then()
+                        .block();
 
                     startedPlayback = true;
                     recordStatus.dispose();
@@ -233,11 +231,22 @@ public class PerfStressProgram {
 
         try {
             if (sync) {
+                int operationPool = 250_000 * durationSeconds;
                 ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
-                forkJoinPool.submit(() -> {
-                    IntStream.range(0, parallel).parallel().forEach(i -> tests[i].runAll(endNanoTime));
-                }).get();
+                // Create an arbitrarily large number of operations that will never be met.
+                List<Callable<Integer>> operations = new ArrayList<>(operationPool);
+                for (int i = 0; i < operationPool; i++) {
+                    operations.add(() -> ((ApiPerfTestBase<?>) tests[operationPool % parallel]).runTest());
+                }
 
+                List<Future<Integer>> tasks = forkJoinPool.invokeAll(operations, durationSeconds, TimeUnit.SECONDS);
+
+                ApiPerfTestBase<?> test = (ApiPerfTestBase<?>) tests[0];
+                for (Future<Integer> task : tasks) {
+                    if (task.isDone()) {
+                        test.completedOperations += task.get();
+                    }
+                }
             } else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
@@ -259,7 +268,7 @@ public class PerfStressProgram {
                             sink.complete();
                         }
                     })
-                    .parallel(parallel)
+                    .parallel()
                     .runOn(Schedulers.parallel())
                     .flatMap(test -> test.runTestAsync()
                         .doOnNext(v -> {
