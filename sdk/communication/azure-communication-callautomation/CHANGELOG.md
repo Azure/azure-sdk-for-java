@@ -17,7 +17,7 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 - Recognize incoming DTMF in the call.
 - Record calls with option to start/resume/stop.
 - Record mixed and unmixed audio recordings.
-- Download recordings.
+- Download/Delete recordings.
 - Parse various events happening in the call, such as CallConnected and PlayCompleted event.
 
 <!-- LINKS --> 
