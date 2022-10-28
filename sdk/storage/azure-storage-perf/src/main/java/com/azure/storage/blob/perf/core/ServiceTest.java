@@ -10,6 +10,9 @@ import com.azure.perf.test.core.PerfStressTest;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 public abstract class ServiceTest<TOptions extends PerfStressOptions> extends PerfStressTest<TOptions> {
 
@@ -35,5 +38,15 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
         blobServiceClient = builder.buildClient();
         blobServiceAsyncClient = builder.buildAsyncClient();
+    }
+
+    @Override
+    public Mono<Void> globalSetupAsync() {
+        return super.globalSetupAsync().then(Flux.range(0, 1000)
+            .parallel(options.getParallel())
+            .runOn(Schedulers.boundedElastic())
+            .flatMap(ignored -> blobServiceAsyncClient.getProperties(), false,
+                Math.min(options.getParallel(), 1000 / options.getParallel()), 1)
+            .then());
     }
 }
