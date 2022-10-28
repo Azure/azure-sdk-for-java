@@ -981,6 +981,17 @@ class FileAPITests extends APISpec {
         FileLastWrittenMode.PRESERVE | _
     }
 
+    def "Open input stream with range"() {
+        setup:
+        primaryFileClient.create(1024)
+        def shareFileRange = new ShareFileRange(5L, 10L)
+
+        when:
+        def bytes = primaryFileClient.openInputStream(shareFileRange).readAllBytes()
+        then:
+        assert bytes.length == 6
+    }
+
     @Unroll
     def "Start copy"() {
         given:
