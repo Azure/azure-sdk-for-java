@@ -717,17 +717,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertTrue(rule.getAction() instanceof EmptyRuleAction);
     }
 
-    /*
-    2 Topics
-    - testTopic1
-    -- has one subscription
-    - testTopic-2
-    -- subscription-2 - a lot of rules
-    ---- rule-2 (True, no action)
-    9 Queues
-    -queue-5 should exist
-     */
-
     private ServiceBusAdministrationClient getClient() {
         final String connectionString = interceptorManager.isPlaybackMode()
             ? "Endpoint=sb://foo.servicebus.windows.net;SharedAccessKeyName=dummyKey;SharedAccessKey=dummyAccessKey"
