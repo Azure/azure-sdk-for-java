@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
 @ConditionalOnExpression("${spring.cloud.azure.active-directory.enabled:false}")
-@ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken" })
+@ConditionalOnMissingClass({ "org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken" })
 @Import(AadPropertiesConfiguration.class)
 public class AadAuthenticationFilterAutoConfiguration {
 

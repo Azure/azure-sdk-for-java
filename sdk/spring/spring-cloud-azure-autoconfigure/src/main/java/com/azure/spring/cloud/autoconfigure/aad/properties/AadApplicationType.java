@@ -61,7 +61,7 @@ public enum AadApplicationType {
      * The Spring security OAuth2 resource server class name
      */
     public static final String SPRING_SECURITY_OAUTH2_RESOURCE_SERVER_CLASS_NAME =
-        "org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken";
+        "org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken";
 
     /**
      * Infer application type by dependencies

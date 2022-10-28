@@ -56,7 +56,7 @@ public class EventHubsBatchMessageConverterTests {
 
     @BeforeEach
     void beforeEach() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
