@@ -389,7 +389,7 @@ public abstract class CertificateClientTestBase extends TestBase {
             .setAccountId("otherIssuerAccountId")
             .setEnabled(false)
             .setOrganizationId("otherOrgId")
-            .setPassword("fakeCredentialPlaceholder");
+            .setPassword("fakePasswordPlaceholder");
 
         testRunner.accept(certificateIssuer, issuerForUpdate);
     }
@@ -457,7 +457,7 @@ public abstract class CertificateClientTestBase extends TestBase {
     public abstract void importCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion);
 
     void importCertificateRunner(Consumer<ImportCertificateOptions> testRunner) {
-        String certificatePassword = "fakeCredentialPlaceholder";
+        String certificatePassword = "fakePasswordPlaceholder";
         String certificateName = testResourceNamer.randomName("importCertPkcs", 25);
         HashMap<String, String> tags = new HashMap<>();
 
@@ -521,7 +521,7 @@ public abstract class CertificateClientTestBase extends TestBase {
             .setAccountId("issuerAccountId")
             .setEnabled(true)
             .setOrganizationId("orgId")
-            .setPassword("fakeCredentialPlaceholder");
+            .setPassword("fakePasswordPlaceholder");
     }
 
     String toHexString(byte[] x5t) {

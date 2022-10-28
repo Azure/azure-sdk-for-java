@@ -3,16 +3,13 @@
     "suppressions": [
         {
             "placeholder": [
-                "secret=",
                 "serverappsecret"
             ],
             "_justification": "Secret used by test code, it is fake."
         },
         {
             "placeholder": [
-              "username",
-              "-----BEGIN PRIVATE KEY-----",
-              "administratorLoginPassword"
+              "-----BEGIN PRIVATE KEY-----"
             ],
             "_justification": "Well known names."
         },
@@ -67,6 +64,24 @@
                 "sdk/storage/microsoft-azure-storage-blob/src/test/java/com/microsoft/azure/storage/FakeCredentialInTest.groovy"
             ],
             "_justification": "File contains fake key used by test code."
+        },
+        {
+            "file": [
+                "sdk/appconfiguration/azure-data-appconfiguration/src/main/java/com/azure/data/appconfiguration/implementation/ConfigurationClientCredentials.java"
+            ],
+            "_justification": "File contains keyword 'secret='."
+        },
+        {
+            "file": [
+                "sdk/core/azure-core/src/main/java/com/azure/core/http/ProxyOptions.java"
+            ],
+            "_justification": "File contains User Login Credentials."
+        },
+        {
+            "file": [
+              "sdk/spring/spring-cloud-azure-integration-tests/test-resources/jdbc/mysql/test-resources.json"
+            ],
+            "_justification": "File contains General Password, such as 'administratorLoginPassword'."
         }
     ]
 }

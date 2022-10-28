@@ -16,13 +16,13 @@ public final class NetworkPropertiesTests {
         NetworkProperties model =
             BinaryData
                 .fromString(
-                    "{\"provisioningState\":\"envrkpyouaibrebq\",\"healthCheckStatus\":\"Pending\",\"networkingResourceGroupName\":\"j\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"qtnqtt\",\"domainName\":\"lwfffi\",\"organizationUnit\":\"pjpqqmtedltmmji\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakeCredentialPlaceholder\"}")
+                    "{\"provisioningState\":\"envrkpyouaibrebq\",\"healthCheckStatus\":\"Pending\",\"networkingResourceGroupName\":\"j\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"qtnqtt\",\"domainName\":\"lwfffi\",\"organizationUnit\":\"pjpqqmtedltmmji\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakePasswordPlaceholder\"}")
                 .toObject(NetworkProperties.class);
         Assertions.assertEquals("qtnqtt", model.subnetId());
         Assertions.assertEquals("lwfffi", model.domainName());
         Assertions.assertEquals("pjpqqmtedltmmji", model.organizationUnit());
         Assertions.assertEquals("fakeNamePlaceholder", model.domainUsername());
-        Assertions.assertEquals("fakeCredentialPlaceholder", model.domainPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.domainPassword());
         Assertions.assertEquals("j", model.networkingResourceGroupName());
         Assertions.assertEquals(DomainJoinType.HYBRID_AZURE_ADJOIN, model.domainJoinType());
     }
@@ -35,7 +35,7 @@ public final class NetworkPropertiesTests {
                 .withDomainName("lwfffi")
                 .withOrganizationUnit("pjpqqmtedltmmji")
                 .withDomainUsername("fakeNamePlaceholder")
-                .withDomainPassword("fakeCredentialPlaceholder")
+                .withDomainPassword("fakePasswordPlaceholder")
                 .withNetworkingResourceGroupName("j")
                 .withDomainJoinType(DomainJoinType.HYBRID_AZURE_ADJOIN);
         model = BinaryData.fromObject(model).toObject(NetworkProperties.class);
@@ -43,7 +43,7 @@ public final class NetworkPropertiesTests {
         Assertions.assertEquals("lwfffi", model.domainName());
         Assertions.assertEquals("pjpqqmtedltmmji", model.organizationUnit());
         Assertions.assertEquals("fakeNamePlaceholder", model.domainUsername());
-        Assertions.assertEquals("fakeCredentialPlaceholder", model.domainPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.domainPassword());
         Assertions.assertEquals("j", model.networkingResourceGroupName());
         Assertions.assertEquals(DomainJoinType.HYBRID_AZURE_ADJOIN, model.domainJoinType());
     }

@@ -15,11 +15,11 @@ public final class RegistryInfoTests {
         RegistryInfo model =
             BinaryData
                 .fromString(
-                    "{\"registryUrl\":\"fakeUrlPlaceholder\",\"registryUserName\":\"fakeNamePlaceholder\",\"registryPassword\":\"fakeCredentialPlaceholder\"}")
+                    "{\"registryUrl\":\"fakeUrlPlaceholder\",\"registryUserName\":\"fakeNamePlaceholder\",\"registryPassword\":\"fakePasswordPlaceholder\"}")
                 .toObject(RegistryInfo.class);
         Assertions.assertEquals("fakeUrlPlaceholder", model.registryUrl());
         Assertions.assertEquals("fakeNamePlaceholder", model.registryUsername());
-        Assertions.assertEquals("fakeCredentialPlaceholder", model.registryPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.registryPassword());
     }
 
     @Test
@@ -28,10 +28,10 @@ public final class RegistryInfoTests {
             new RegistryInfo()
                 .withRegistryUrl("fakeUrlPlaceholder")
                 .withRegistryUsername("fakeNamePlaceholder")
-                .withRegistryPassword("fakeCredentialPlaceholder");
+                .withRegistryPassword("fakePasswordPlaceholder");
         model = BinaryData.fromObject(model).toObject(RegistryInfo.class);
         Assertions.assertEquals("fakeUrlPlaceholder", model.registryUrl());
         Assertions.assertEquals("fakeNamePlaceholder", model.registryUsername());
-        Assertions.assertEquals("fakeCredentialPlaceholder", model.registryPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.registryPassword());
     }
 }

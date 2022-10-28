@@ -66,7 +66,7 @@ public abstract class NotificationHookTestBase extends MetricsAdvisorAdministrat
         String description = "alert_us!";
         String externalLink = "https://github.com/Azure/azure-sdk-for-java/wiki";
         String username = "username";
-        String fakePasswordPlaceholder = "fakeCredentialPlaceholder";
+        String fakePasswordPlaceholder = "fakePasswordPlaceholder";
         HttpHeaders httpHeaders = new HttpHeaders()
             .put("x-contoso-id", "123")
             .put("x-contoso-name", "contoso");

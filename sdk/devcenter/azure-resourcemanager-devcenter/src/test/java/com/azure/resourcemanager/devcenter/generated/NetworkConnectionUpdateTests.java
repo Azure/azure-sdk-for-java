@@ -17,7 +17,7 @@ public final class NetworkConnectionUpdateTests {
         NetworkConnectionUpdate model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"subnetId\":\"o\",\"domainName\":\"ttpkiwkkbnujrywv\",\"organizationUnit\":\"lbfpncurd\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakeCredentialPlaceholder\"},\"tags\":{\"dzjlu\":\"hrdgoihxumwcto\",\"wtovvtgsein\":\"dfdlwggyts\",\"knpirgnepttwq\":\"fiufx\",\"mqnrojlpijnkr\":\"sniffc\"},\"location\":\"rddh\"}")
+                    "{\"properties\":{\"subnetId\":\"o\",\"domainName\":\"ttpkiwkkbnujrywv\",\"organizationUnit\":\"lbfpncurd\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakePasswordPlaceholder\"},\"tags\":{\"dzjlu\":\"hrdgoihxumwcto\",\"wtovvtgsein\":\"dfdlwggyts\",\"knpirgnepttwq\":\"fiufx\",\"mqnrojlpijnkr\":\"sniffc\"},\"location\":\"rddh\"}")
                 .toObject(NetworkConnectionUpdate.class);
         Assertions.assertEquals("hrdgoihxumwcto", model.tags().get("dzjlu"));
         Assertions.assertEquals("rddh", model.location());
@@ -25,7 +25,7 @@ public final class NetworkConnectionUpdateTests {
         Assertions.assertEquals("ttpkiwkkbnujrywv", model.domainName());
         Assertions.assertEquals("lbfpncurd", model.organizationUnit());
         Assertions.assertEquals("fakeNamePlaceholder", model.domainUsername());
-        Assertions.assertEquals("fakeCredentialPlaceholder", model.domainPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.domainPassword());
     }
 
     @Test
@@ -47,7 +47,7 @@ public final class NetworkConnectionUpdateTests {
                 .withDomainName("ttpkiwkkbnujrywv")
                 .withOrganizationUnit("lbfpncurd")
                 .withDomainUsername("fakeNamePlaceholder")
-                .withDomainPassword("fakeCredentialPlaceholder");
+                .withDomainPassword("fakePasswordPlaceholder");
         model = BinaryData.fromObject(model).toObject(NetworkConnectionUpdate.class);
         Assertions.assertEquals("hrdgoihxumwcto", model.tags().get("dzjlu"));
         Assertions.assertEquals("rddh", model.location());
@@ -55,7 +55,7 @@ public final class NetworkConnectionUpdateTests {
         Assertions.assertEquals("ttpkiwkkbnujrywv", model.domainName());
         Assertions.assertEquals("lbfpncurd", model.organizationUnit());
         Assertions.assertEquals("fakeNamePlaceholder", model.domainUsername());
-        Assertions.assertEquals("fakeCredentialPlaceholder", model.domainPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.domainPassword());
     }
 
     @SuppressWarnings("unchecked")

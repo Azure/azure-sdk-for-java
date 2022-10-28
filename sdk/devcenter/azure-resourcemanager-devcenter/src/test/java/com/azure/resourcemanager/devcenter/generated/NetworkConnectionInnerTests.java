@@ -18,7 +18,7 @@ public final class NetworkConnectionInnerTests {
         NetworkConnectionInner model =
             BinaryData
                 .fromString(
-                    "{\"properties\":{\"provisioningState\":\"f\",\"healthCheckStatus\":\"Warning\",\"networkingResourceGroupName\":\"bfvoowvrv\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"jqppyostronzmy\",\"domainName\":\"fipns\",\"organizationUnit\":\"mcwaekrrjr\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakeCredentialPlaceholder\"},\"location\":\"vuzlm\",\"tags\":{\"noigbrnjwmwk\":\"lfktgplcrpwjxe\"},\"id\":\"nbsazejjoqkag\",\"name\":\"hsxttaugzxnf\",\"type\":\"azpxdtnkdmkqjjl\"}")
+                    "{\"properties\":{\"provisioningState\":\"f\",\"healthCheckStatus\":\"Warning\",\"networkingResourceGroupName\":\"bfvoowvrv\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"jqppyostronzmy\",\"domainName\":\"fipns\",\"organizationUnit\":\"mcwaekrrjr\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakePasswordPlaceholder\"},\"location\":\"vuzlm\",\"tags\":{\"noigbrnjwmwk\":\"lfktgplcrpwjxe\"},\"id\":\"nbsazejjoqkag\",\"name\":\"hsxttaugzxnf\",\"type\":\"azpxdtnkdmkqjjl\"}")
                 .toObject(NetworkConnectionInner.class);
         Assertions.assertEquals("vuzlm", model.location());
         Assertions.assertEquals("lfktgplcrpwjxe", model.tags().get("noigbrnjwmwk"));
@@ -28,7 +28,7 @@ public final class NetworkConnectionInnerTests {
         Assertions.assertEquals("fipns", model.domainName());
         Assertions.assertEquals("mcwaekrrjr", model.organizationUnit());
         Assertions.assertEquals("fakeNamePlaceholder", model.domainUsername());
-        Assertions.assertEquals("fakeCredentialPlaceholder", model.domainPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.domainPassword());
     }
 
     @Test
@@ -43,7 +43,7 @@ public final class NetworkConnectionInnerTests {
                 .withDomainName("fipns")
                 .withOrganizationUnit("mcwaekrrjr")
                 .withDomainUsername("fakeNamePlaceholder")
-                .withDomainPassword("fakeCredentialPlaceholder");
+                .withDomainPassword("fakePasswordPlaceholder");
         model = BinaryData.fromObject(model).toObject(NetworkConnectionInner.class);
         Assertions.assertEquals("vuzlm", model.location());
         Assertions.assertEquals("lfktgplcrpwjxe", model.tags().get("noigbrnjwmwk"));
@@ -53,7 +53,7 @@ public final class NetworkConnectionInnerTests {
         Assertions.assertEquals("fipns", model.domainName());
         Assertions.assertEquals("mcwaekrrjr", model.organizationUnit());
         Assertions.assertEquals("fakeNamePlaceholder", model.domainUsername());
-        Assertions.assertEquals("fakeCredentialPlaceholder", model.domainPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.domainPassword());
     }
 
     @SuppressWarnings("unchecked")

@@ -34,7 +34,7 @@ public final class NetworkConnectionsCreateOrUpdateMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"healthCheckStatus\":\"Running\",\"networkingResourceGroupName\":\"ov\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"ashcxlpmjerbdk\",\"domainName\":\"vidizozsdb\",\"organizationUnit\":\"xjmonf\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakeCredentialPlaceholder\"},\"location\":\"kdasvflyhbxcudch\",\"tags\":{\"ldforobwj\":\"rb\",\"vacqpbtuodxesz\":\"vizbfhfo\",\"rrwoycqucwyhahn\":\"bbelawumuaslzk\"},\"id\":\"mdr\",\"name\":\"ywuhpsvfuur\",\"type\":\"tlwexxwlalniexz\"}";
+            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"healthCheckStatus\":\"Running\",\"networkingResourceGroupName\":\"ov\",\"domainJoinType\":\"HybridAzureADJoin\",\"subnetId\":\"ashcxlpmjerbdk\",\"domainName\":\"vidizozsdb\",\"organizationUnit\":\"xjmonf\",\"domainUsername\":\"fakeNamePlaceholder\",\"domainPassword\":\"fakePasswordPlaceholder\"},\"location\":\"kdasvflyhbxcudch\",\"tags\":{\"ldforobwj\":\"rb\",\"vacqpbtuodxesz\":\"vizbfhfo\",\"rrwoycqucwyhahn\":\"bbelawumuaslzk\"},\"id\":\"mdr\",\"name\":\"ywuhpsvfuur\",\"type\":\"tlwexxwlalniexz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -75,7 +75,7 @@ public final class NetworkConnectionsCreateOrUpdateMockTests {
                 .withDomainName("tmhheioqa")
                 .withOrganizationUnit("v")
                 .withDomainUsername("fakeNamePlaceholder")
-                .withDomainPassword("fakeCredentialPlaceholder")
+                .withDomainPassword("fakePasswordPlaceholder")
                 .create();
 
         Assertions.assertEquals("kdasvflyhbxcudch", response.location());
@@ -86,7 +86,7 @@ public final class NetworkConnectionsCreateOrUpdateMockTests {
         Assertions.assertEquals("vidizozsdb", response.domainName());
         Assertions.assertEquals("xjmonf", response.organizationUnit());
         Assertions.assertEquals("fakeNamePlaceholder", response.domainUsername());
-        Assertions.assertEquals("fakeCredentialPlaceholder", response.domainPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", response.domainPassword());
     }
 
     @SuppressWarnings("unchecked")

@@ -76,7 +76,7 @@ public class CreateServiceLinker {
         String sqlServerName = "sqlserver" + randomString(8);
         String sqlDatabaseName = "sqldb" + randomString(8);
         String sqlUserName = "fakeNamePlaceholder" + randomString(8);
-        String sqlPassword = "fakeCredentialPlaceholder" + randomString(8);
+        String sqlPassword = "fakePasswordPlaceholder" + randomString(8);
 
         SpringService springService = azureResourceManager.springServices().define(springServiceName)
             .withRegion(region)

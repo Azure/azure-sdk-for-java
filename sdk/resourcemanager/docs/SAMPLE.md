@@ -355,7 +355,7 @@ SqlServer sqlServer = azure.sqlServers().define(sqlServerName)
     .withRegion(Region.US_EAST)
     .withNewResourceGroup(rgName)
     .withAdministratorLogin("fakeAdminLoginPlaceholder")
-    .withAdministratorPassword("fakeCredentialPlaceholder")
+    .withAdministratorPassword("fakePasswordPlaceholder")
     .withNewFirewallRule("10.0.0.1")
     .withNewFirewallRule("10.2.0.1", "10.2.0.10")
     .create();
