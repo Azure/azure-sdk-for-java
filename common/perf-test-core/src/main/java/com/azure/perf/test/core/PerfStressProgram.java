@@ -18,11 +18,9 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ForkJoinPool;
 import java.util.function.Supplier;
-import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * Represents the main program class which reflectively runs and manages the performance tests.
@@ -30,14 +28,29 @@ import java.util.stream.Stream;
 public class PerfStressProgram {
     private static final int NANOSECONDS_PER_SECOND = 1_000_000_000;
 
-    private static int getCompletedOperations(PerfTestBase<?>[] tests) {
-        return Stream.of(tests).mapToInt(perfStressTest -> Long.valueOf(perfStressTest.getCompletedOperations()).intValue()).sum();
+    private static long getCompletedOperations(PerfTestBase<?>[] tests) {
+        long count = 0;
+        for (PerfTestBase<?> test : tests) {
+            count += test.getCompletedOperations();
+        }
+
+        return count;
     }
 
     private static double getOperationsPerSecond(PerfTestBase<?>[] tests) {
-        return IntStream.range(0, tests.length)
-            .mapToDouble(i -> tests[i].getCompletedOperations() / (((double) tests[i].lastCompletionNanoTime) / NANOSECONDS_PER_SECOND))
-            .sum();
+        double operationsPerSecond = 0.0D;
+        for (PerfTestBase<?> test : tests) {
+            operationsPerSecond += (test.getCompletedOperations() / (((double) test.lastCompletionNanoTime) / NANOSECONDS_PER_SECOND));
+        }
+
+        return operationsPerSecond;
+    }
+
+    private static void resetTests(PerfTestBase<?>[] tests) {
+        for (PerfTestBase<?> test : tests) {
+            test.resetCompletedOperations();
+            test.lastCompletionNanoTime = 0;
+        }
     }
 
     /**
@@ -45,7 +58,6 @@ public class PerfStressProgram {
      *
      * @param classes the performance test classes to execute.
      * @param args the command line arguments ro run performance tests with.
-     *
      * @throws RuntimeException if the execution fails.
      */
     public static void run(Class<?>[] classes, String[] args) {
@@ -69,7 +81,7 @@ public class PerfStressProgram {
             try {
                 return c.getConstructors()[0].getParameterTypes()[0].getConstructors()[0].newInstance();
             } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | SecurityException e) {
+                     | InvocationTargetException | SecurityException e) {
                 throw new RuntimeException(e);
             }
         }).toArray(i -> new PerfStressOptions[i]);
@@ -102,7 +114,6 @@ public class PerfStressProgram {
      *
      * @param testClass the performance test class to execute.
      * @param options the configuration ro run performance test with.
-     *
      * @throws RuntimeException if the execution fails.
      */
     public static void run(Class<?> testClass, PerfStressOptions options) {
@@ -126,34 +137,31 @@ public class PerfStressProgram {
         for (int i = 0; i < options.getParallel(); i++) {
             try {
                 tests[i] = (PerfTestBase<?>) testClass.getConstructor(options.getClass()).newInstance(options);
-            } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-                | InvocationTargetException | SecurityException | NoSuchMethodException e) {
+            } catch (ReflectiveOperationException e) {
                 throw new RuntimeException(e);
             }
         }
 
         try {
-            tests[0].globalSetupAsync().block();
+            for (PerfTestBase<?> test : tests) {
+                test.globalSetupAsync().block();
+            }
 
             boolean startedPlayback = false;
 
             try {
-                Flux.just(tests).flatMap(PerfTestBase::setupAsync).blockLast();
+                Flux.just(tests).flatMap(PerfTestBase::setupAsync, 2).blockLast();
                 setupStatus.dispose();
 
                 if (options.getTestProxies() != null && !options.getTestProxies().isEmpty()) {
                     Disposable recordStatus = printStatus("=== Record and Start Playback ===", () -> ".", false, false);
 
-                    try {
-                        ForkJoinPool forkJoinPool = new ForkJoinPool(tests.length);
-                        forkJoinPool.submit(() -> {
-                            IntStream.range(0, tests.length).parallel().forEach(i -> tests[i].postSetupAsync().block());
-                        }).get();
-                    } catch (InterruptedException | ExecutionException e) {
-                        System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
-                        e.printStackTrace(System.err);
-                        throw new RuntimeException(e);
-                    }
+                    Flux.range(0, tests.length)
+                        .parallel()
+                        .runOn(Schedulers.parallel())
+                        .flatMap(i -> tests[i].postSetupAsync(), false, tests.length, 1)
+                        .then()
+                        .block();
 
                     startedPlayback = true;
                     recordStatus.dispose();
@@ -161,6 +169,7 @@ public class PerfStressProgram {
 
                 if (options.getWarmup() > 0) {
                     runTests(tests, options.isSync(), options.getParallel(), options.getWarmup(), "Warmup");
+                    resetTests(tests);
                 }
 
                 for (int i = 0; i < options.getIterations(); i++) {
@@ -187,7 +196,7 @@ public class PerfStressProgram {
                     if (!options.isNoCleanup()) {
                         cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
 
-                        Flux.just(tests).flatMap(t -> t.cleanupAsync()).blockLast();
+                        Flux.just(tests).flatMap(PerfTestBase::cleanupAsync, 2).blockLast();
                     }
                 }
             }
@@ -197,7 +206,9 @@ public class PerfStressProgram {
                     cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
                 }
 
-                tests[0].globalCleanupAsync().block();
+                for (PerfTestBase<?> test : tests) {
+                    test.globalCleanupAsync().block();
+                }
             }
         }
 
@@ -214,63 +225,38 @@ public class PerfStressProgram {
      * @param parallel the number of parallel threads to run the performance test on.
      * @param durationSeconds the duration for which performance test should be run on.
      * @param title the title of the performance tests.
-     *
      * @throws RuntimeException if the execution fails.
      * @throws IllegalStateException if zero operations completed of the performance test.
      */
     public static void runTests(PerfTestBase<?>[] tests, boolean sync, int parallel, int durationSeconds, String title) {
-
-        long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
-
-        int[] lastCompleted = new int[]{0};
+        long[] lastCompleted = new long[]{0};
         Disposable progressStatus = printStatus(
             "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
-                int totalCompleted = getCompletedOperations(tests);
-                int currentCompleted = totalCompleted - lastCompleted[0];
+                long totalCompleted = getCompletedOperations(tests);
+                long currentCompleted = totalCompleted - lastCompleted[0];
                 double averageCompleted = getOperationsPerSecond(tests);
 
                 lastCompleted[0] = totalCompleted;
                 return String.format("%d\t\t%d\t\t%.2f", currentCompleted, totalCompleted, averageCompleted);
             }, true, true);
 
-        try {
-            if (sync) {
-                ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
-                forkJoinPool.submit(() -> {
-                    IntStream.range(0, parallel).parallel().forEach(i -> tests[i].runAll(endNanoTime));
-                }).get();
-
-            } else {
-                // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
-                // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
-                // Schedulers.onHandleError.  This handler ensures the perf framework will fail fast on any such exceptions.
-                Schedulers.onHandleError((t, e) -> {
-                    System.err.print(t + " threw exception: ");
-                    e.printStackTrace();
-                    System.exit(1);
-                });
-
-                Flux.range(0, parallel)
-                    .parallel()
-                    .runOn(Schedulers.boundedElastic())
-                    .flatMap(i -> tests[i].runAllAsync(endNanoTime))
-                    .then()
-                    .block();
+        if (tests[0] instanceof ApiPerfTestBase) {
+            ApiPerfTestBase<?>[] apiTests = new ApiPerfTestBase<?>[tests.length];
+            for (int i = 0; i < tests.length; i++) {
+                apiTests[i] = (ApiPerfTestBase<?>) tests[i];
             }
-        } catch (InterruptedException | ExecutionException e) {
-            System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
-            e.printStackTrace(System.err);
-            throw new RuntimeException(e);
-        } catch (Exception e) {
-            System.err.println("Error occurred running tests: " + System.lineSeparator() + e);
-            e.printStackTrace(System.err);
-        } finally {
-            progressStatus.dispose();
+            runApiTests(apiTests, sync, parallel, durationSeconds, progressStatus);
+        } else {
+            EventPerfTest<?>[] eventTests = new EventPerfTest<?>[tests.length];
+            for (int i = 0; i < tests.length; i++) {
+                eventTests[i] = (EventPerfTest<?>) tests[i];
+            }
+            runEventTests(eventTests, sync, parallel, durationSeconds, progressStatus);
         }
 
         System.out.println("=== Results ===");
 
-        int totalOperations = getCompletedOperations(tests);
+        long totalOperations = getCompletedOperations(tests);
         if (totalOperations == 0) {
             throw new IllegalStateException("Zero operations has been completed");
         }
@@ -284,6 +270,126 @@ public class PerfStressProgram {
             NumberFormatter.Format(operationsPerSecond, 4),
             NumberFormatter.Format(secondsPerOperation, 4));
         System.out.println();
+    }
+
+    private static void runApiTests(ApiPerfTestBase<?>[] tests, boolean sync, int parallel, int durationSeconds,
+        Disposable progressStatus) {
+        long startNanoTime = System.nanoTime();
+        long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
+
+        try {
+            if (sync) {
+                ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
+                List<ResubmittingTestCallable> operations = new ArrayList<>();
+                for (ApiPerfTestBase<?> test : tests) {
+                    operations.add(new ResubmittingTestCallable(forkJoinPool, test, startNanoTime));
+                }
+
+                forkJoinPool.invokeAll(operations);
+
+                Thread.sleep(durationSeconds * 1000L);
+                forkJoinPool.shutdownNow();
+            } else {
+                // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
+                // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
+                // Schedulers.onHandleError.  This handler ensures the perf framework will fail fast on any such exceptions.
+                Schedulers.onHandleError((t, e) -> {
+                    System.err.print(t + " threw exception: ");
+                    e.printStackTrace();
+                    System.exit(1);
+                });
+
+                Flux.just(tests)
+                    .repeat(() -> System.nanoTime() < endNanoTime)
+                    .parallel(parallel)
+                    .runOn(Schedulers.parallel())
+                    .flatMap(test -> test.runTestAsync()
+                        .doOnNext(v -> {
+                            test.lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+                            test.completedOperations += v;
+                        }), false, Math.min(1000 / parallel, parallel), 1)
+                    .then()
+                    .block();
+            }
+        } catch (InterruptedException e) {
+            System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
+            e.printStackTrace(System.err);
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("Error occurred running tests: " + System.lineSeparator() + e);
+            e.printStackTrace(System.err);
+        } finally {
+            progressStatus.dispose();
+        }
+    }
+
+    private static void runEventTests(EventPerfTest<?>[] tests, boolean sync, int parallel, int durationSeconds,
+        Disposable progressStatus) {
+        long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
+
+        try {
+            if (sync) {
+                ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
+                List<Callable<Integer>> operations = new ArrayList<>();
+                for (EventPerfTest<?> test : tests) {
+                    operations.add(() -> {
+                        test.runAll(endNanoTime);
+                        return 1;
+                    });
+                }
+
+                forkJoinPool.invokeAll(operations);
+
+                Thread.sleep(durationSeconds * 1000L);
+                forkJoinPool.shutdownNow();
+            } else {
+                // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
+                // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
+                // Schedulers.onHandleError.  This handler ensures the perf framework will fail fast on any such exceptions.
+                Schedulers.onHandleError((t, e) -> {
+                    System.err.print(t + " threw exception: ");
+                    e.printStackTrace();
+                    System.exit(1);
+                });
+
+                Flux.range(0, parallel)
+                    .parallel(parallel)
+                    .runOn(Schedulers.parallel())
+                    .flatMap(i -> tests[i].runAllAsync(endNanoTime))
+                    .then()
+                    .block();
+            }
+        } catch (InterruptedException e) {
+            System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
+            e.printStackTrace(System.err);
+            throw new RuntimeException(e);
+        } catch (Exception e) {
+            System.err.println("Error occurred running tests: " + System.lineSeparator() + e);
+            e.printStackTrace(System.err);
+        } finally {
+            progressStatus.dispose();
+        }
+    }
+
+    private static class ResubmittingTestCallable implements Callable<Integer> {
+        private final ForkJoinPool pool;
+        private final ApiPerfTestBase<?> test;
+        private final long startNanoTime;
+
+        private ResubmittingTestCallable(ForkJoinPool pool, ApiPerfTestBase<?> test, long startNanoTime) {
+            this.pool = pool;
+            this.test = test;
+            this.startNanoTime = startNanoTime;
+        }
+
+        @Override
+        public Integer call() throws Exception {
+            test.completedOperations += test.runTest();
+            test.lastCompletionNanoTime = System.nanoTime() - startNanoTime;
+            pool.submit(this);
+
+            return 1;
+        }
     }
 
     private static Disposable printStatus(String header, Supplier<Object> status, boolean newLine, boolean printFinalStatus) {
@@ -300,9 +406,7 @@ public class PerfStressProgram {
                 System.out.println();
             }
             System.out.println();
-        }).subscribe(i -> {
-            printStatusHelper(status, newLine, needsExtraNewline);
-        });
+        }).subscribe(i -> printStatusHelper(status, newLine, needsExtraNewline));
     }
 
     private static void printStatusHelper(Supplier<Object> status, boolean newLine, boolean[] needsExtraNewline) {

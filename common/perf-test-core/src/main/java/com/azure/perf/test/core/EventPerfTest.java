@@ -62,9 +62,7 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
     @Override
     public void runAll(long endNanoTime) {
         startTime = System.nanoTime();
-        completedOps.set(0);
         errorRaised = false;
-        lastCompletionNanoTime = 0;
 
         synchronized (this) {
             try {
@@ -90,4 +88,8 @@ public abstract class EventPerfTest<TOptions extends PerfStressOptions> extends 
         return completedOps.get();
     }
 
+    @Override
+    public void resetCompletedOperations() {
+        completedOps.set(0);
+    }
 }

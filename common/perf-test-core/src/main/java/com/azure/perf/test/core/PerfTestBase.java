@@ -91,4 +91,6 @@ public abstract class PerfTestBase<TOptions extends PerfStressOptions> {
      * @return the completed operations.
      */
     public abstract long getCompletedOperations();
+
+    public abstract void resetCompletedOperations();
 }

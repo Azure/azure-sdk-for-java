@@ -9,7 +9,6 @@ import reactor.core.publisher.Mono;
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 public abstract class AbstractDownloadTest <TOptions extends BlobPerfStressOptions> extends BlobTestBase<TOptions> {
-
     public AbstractDownloadTest(TOptions options) {
         super(options, BLOB_NAME_PREFIX);
     }
