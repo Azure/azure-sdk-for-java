@@ -30,7 +30,6 @@ import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateCrtKey;
-import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECParameterSpec;
@@ -1167,7 +1166,8 @@ public class JsonWebKey {
             return (d != null && dp != null && dq != null && qi != null && p != null && q != null);
         } else if (KeyType.EC.equals(keyType) || KeyType.EC_HSM.equals(keyType)
             || KeyType.OKP.equals(keyType) || KeyType.OKP_HSM.equals(keyType)) {
-                return (d != null);
+
+            return (d != null);
         }
 
         return false;
@@ -1388,7 +1388,7 @@ public class JsonWebKey {
         curveToSpecMap.put(KeyCurveName.P_384, "secp384r1");
         curveToSpecMap.put(KeyCurveName.P_521, "secp521r1");
         curveToSpecMap.put(KeyCurveName.P_256K, "secp256k1");
-        curveToSpecMap.put(KeyCurveName.Ed25519, "ed25519");
+        curveToSpecMap.put(KeyCurveName.ED25519, "ed25519");
         return curveToSpecMap;
     }
 

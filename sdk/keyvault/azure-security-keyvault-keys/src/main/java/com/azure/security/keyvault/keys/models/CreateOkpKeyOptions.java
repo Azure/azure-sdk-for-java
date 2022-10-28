@@ -9,7 +9,7 @@ import java.util.Map;
 
 /**
  * Represents the configurable options to create an octet key pair. Please refer to
- * <a href="https://tools.ietf.org/html/rfc8037"/>the specification</a> for more information.
+ * <a href="https://tools.ietf.org/html/rfc8037">the specification</a> for more information.
  */
 @Fluent
 public class CreateOkpKeyOptions extends CreateKeyOptions {

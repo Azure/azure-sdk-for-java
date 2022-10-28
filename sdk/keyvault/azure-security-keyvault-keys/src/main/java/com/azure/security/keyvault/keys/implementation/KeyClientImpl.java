@@ -819,7 +819,7 @@ public class KeyClientImpl {
 
         return new KeyRequestParameters()
             .setKty(createOkpKeyOptions.getKeyType())
-            .setKeySize(createOkpKeyOptions.getKeySize())
+            .setCurve(createOkpKeyOptions.getCurveName())
             .setKeyOps(createOkpKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createOkpKeyOptions))
             .setTags(createOkpKeyOptions.getTags())
