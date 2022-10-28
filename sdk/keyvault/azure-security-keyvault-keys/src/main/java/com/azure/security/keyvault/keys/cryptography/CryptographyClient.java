@@ -450,7 +450,7 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
      * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -496,7 +496,7 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
      * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest. Subscribes to the call asynchronously and prints out the signature details when a response
@@ -545,7 +545,7 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
      * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512}
-     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
@@ -593,7 +593,7 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
      * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the specified digest. Subscribes to the call asynchronously and prints out the
@@ -826,7 +826,7 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
      * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
@@ -869,7 +869,7 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
      * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data. Subscribes to the call asynchronously and prints out the signature details when a
@@ -914,7 +914,7 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
      * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the
@@ -959,7 +959,7 @@ public class CryptographyClient {
      * {@link SignatureAlgorithm#PS256 PS256}, {@link SignatureAlgorithm#RS384 RS384},
      * {@link SignatureAlgorithm#RS512 RS512}, {@link SignatureAlgorithm#RS256 RS256},
      * {@link SignatureAlgorithm#RS384 RS384}, {@link SignatureAlgorithm#RS512 RS512} and
-     * {@link SignatureAlgorithm#Ed25519 Ed25519}</p>
+     * {@link SignatureAlgorithm#EDDSA Ed25519}</p>
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Verifies the signature against the raw data. Subscribes to the call asynchronously and prints out the
