@@ -48,7 +48,7 @@ class UserPrincipalManagerTests {
     void testAlgIsTakenFromJWT() throws Exception {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
         final UserPrincipal userPrincipal = userPrincipalManager.buildUserPrincipal(
-        readFileToString("src/test/resources/aad/jwt-signed.txt"));
+            readFileToString("src/test/resources/aad/jwt-signed.txt"));
         assertThat(userPrincipal).isNotNull().extracting(UserPrincipal::getIssuer, UserPrincipal::getSubject)
                                  .containsExactly("https://sts.windows.net/test", "test@example.com");
     }
