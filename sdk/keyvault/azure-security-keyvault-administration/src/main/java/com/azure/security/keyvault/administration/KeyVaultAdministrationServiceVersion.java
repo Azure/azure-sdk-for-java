@@ -41,6 +41,6 @@ public enum KeyVaultAdministrationServiceVersion implements ServiceVersion {
      * @return The latest {@link KeyVaultAdministrationServiceVersion}.
      */
     public static KeyVaultAdministrationServiceVersion getLatest() {
-        return V7_3;
+        return V7_4_PREVIEW_1;
     }
 }
