@@ -253,23 +253,6 @@
       "properties": {
         "publicAccess": "None"
       }
-    },
-    {
-      "type": "Microsoft.Resources/deploymentScripts",
-      "apiVersion": "2020-10-01",
-      "kind": "AzurePowerShell",
-      "name": "WaitSection",
-      "location": "[variables('location')]",
-      "dependsOn": [
-        "[resourceId('Microsoft.Storage/storageAccounts/blobServices', variables('storageAccountsName'), 'default')]",
-        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountsName'))]"
-      ],
-      "properties": {
-        "azPowerShellVersion": "3.0",
-        "scriptContent": "start-sleep -Seconds 120",
-        "cleanupPreference": "Always",
-        "retentionInterval": "PT1H"
-      }
     }
   ],
   "outputs": {
