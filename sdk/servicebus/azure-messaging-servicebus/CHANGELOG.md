@@ -4,11 +4,12 @@
 
 ### Features Added
 - Added rule manager client to manage rules for ServiceBus subscription with listen claims. ([#27711](https://github.com/Azure/azure-sdk-for-java/issues/27711))
+- Added ability to create a subscription with default rule. ([#29885](https://github.com/Azure/azure-sdk-for-java/issues/29885))
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed `listQueues`, `listTopics`, `listRules`, `listSubscriptions`, `createQueue` and `createSubscriptionWithResponse` in `ServiceBusAdministrationClient` class. ([#31712](https://github.com/Azure/azure-sdk-for-java/issues/31712))
+
 ### Other Changes
 
 ## 7.12.1 (2022-10-25)
