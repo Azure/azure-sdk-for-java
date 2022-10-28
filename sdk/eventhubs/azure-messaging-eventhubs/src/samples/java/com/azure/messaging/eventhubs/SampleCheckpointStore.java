@@ -81,8 +81,9 @@ public class SampleCheckpointStore implements CheckpointStore {
 
         return Flux.fromIterable(requestedPartitionOwnerships)
             .filter(partitionOwnership -> {
-                return !partitionOwnershipMap.containsKey(partitionOwnership.getPartitionId())
-                    || partitionOwnershipMap.get(partitionOwnership.getPartitionId()).getETag()
+                String ownershipMapKey = prefix + SEPARATOR + partitionOwnership.getPartitionId();
+                return !partitionOwnershipMap.containsKey(ownershipMapKey)
+                    || partitionOwnershipMap.get(ownershipMapKey).getETag()
                     .equals(partitionOwnership.getETag());
             })
             .doOnNext(partitionOwnership ->
