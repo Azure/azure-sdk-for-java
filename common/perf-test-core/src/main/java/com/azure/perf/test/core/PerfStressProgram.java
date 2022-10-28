@@ -18,11 +18,12 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
-import java.util.stream.Stream;
 
 /**
  * Represents the main program class which reflectively runs and manages the performance tests.
@@ -30,14 +31,25 @@ import java.util.stream.Stream;
 public class PerfStressProgram {
     private static final int NANOSECONDS_PER_SECOND = 1_000_000_000;
 
-    private static int getCompletedOperations(PerfTestBase<?>[] tests) {
-        return Stream.of(tests).mapToInt(perfStressTest -> Long.valueOf(perfStressTest.getCompletedOperations()).intValue()).sum();
+    private static long getCompletedOperations(PerfTestBase<?>[] tests) {
+        long completedOperations = 0;
+        for (PerfTestBase<?> test : tests) {
+            completedOperations += test.getCompletedOperations();
+        }
+
+        return completedOperations;
     }
 
     private static double getOperationsPerSecond(PerfTestBase<?>[] tests) {
-        return IntStream.range(0, tests.length)
-            .mapToDouble(i -> tests[i].getCompletedOperations() / (((double) tests[i].lastCompletionNanoTime) / NANOSECONDS_PER_SECOND))
-            .sum();
+        double operationsPerSecond = 0.0D;
+        for (PerfTestBase<?> test : tests) {
+            double temp = test.getCompletedOperations() / (((double) test.lastCompletionNanoTime) / NANOSECONDS_PER_SECOND);
+            if (!Double.isNaN(temp)) {
+                operationsPerSecond += temp;
+            }
+        }
+
+        return operationsPerSecond;
     }
 
     /**
@@ -187,7 +199,7 @@ public class PerfStressProgram {
                     if (!options.isNoCleanup()) {
                         cleanupStatus = printStatus("=== Cleanup ===", () -> ".", false, false);
 
-                        Flux.just(tests).flatMap(t -> t.cleanupAsync()).blockLast();
+                        Flux.just(tests).flatMap(PerfTestBase::cleanupAsync).blockLast();
                     }
                 }
             }
@@ -222,11 +234,11 @@ public class PerfStressProgram {
 
         long endNanoTime = System.nanoTime() + ((long) durationSeconds * 1000000000);
 
-        int[] lastCompleted = new int[]{0};
+        long[] lastCompleted = new long[]{0};
         Disposable progressStatus = printStatus(
             "=== " + title + " ===" + System.lineSeparator() + "Current\t\tTotal\t\tAverage", () -> {
-                int totalCompleted = getCompletedOperations(tests);
-                int currentCompleted = totalCompleted - lastCompleted[0];
+                long totalCompleted = getCompletedOperations(tests);
+                long currentCompleted = totalCompleted - lastCompleted[0];
                 double averageCompleted = getOperationsPerSecond(tests);
 
                 lastCompleted[0] = totalCompleted;
@@ -236,10 +248,19 @@ public class PerfStressProgram {
         try {
             if (sync) {
                 ForkJoinPool forkJoinPool = new ForkJoinPool(parallel);
-                forkJoinPool.submit(() -> {
-                    IntStream.range(0, parallel).parallel().forEach(i -> tests[i].runAll(endNanoTime));
-                }).get();
+                List<Callable<Integer>> operations = new ArrayList<>(parallel);
+                for (PerfTestBase<?> test : tests) {
+                    operations.add(() -> {
+                        test.runAll(endNanoTime);
+                        return 1;
+                    });
+                }
 
+                forkJoinPool.invokeAll(operations);
+
+                Thread.sleep(durationSeconds * 1000L);
+                forkJoinPool.shutdown();
+                forkJoinPool.awaitTermination(5, TimeUnit.SECONDS);
             } else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
@@ -251,14 +272,13 @@ public class PerfStressProgram {
                 });
 
                 Flux.range(0, parallel)
-                    .flatMap(i -> tests[i].runAllAsync(endNanoTime), parallel)
-//                    .parallel()
-//                    .runOn(Schedulers.boundedElastic())
-//                    .flatMap(i -> tests[i].runAllAsync(endNanoTime))
+                    .parallel(parallel)
+                    .runOn(Schedulers.parallel())
+                    .flatMap(i -> tests[i].runAllAsync(endNanoTime), false, Math.min(parallel, 1000 / parallel), 1)
                     .then()
                     .block();
             }
-        } catch (InterruptedException | ExecutionException e) {
+        } catch (InterruptedException e) {
             System.err.println("Error occurred when submitting jobs to ForkJoinPool. " + System.lineSeparator() + e);
             e.printStackTrace(System.err);
             throw new RuntimeException(e);
@@ -271,7 +291,7 @@ public class PerfStressProgram {
 
         System.out.println("=== Results ===");
 
-        int totalOperations = getCompletedOperations(tests);
+        long totalOperations = getCompletedOperations(tests);
         if (totalOperations == 0) {
             throw new IllegalStateException("Zero operations has been completed");
         }
