@@ -45,6 +45,10 @@ public final class ManagedClusterPodIdentityProfile {
     @JsonProperty(value = "userAssignedIdentityExceptions")
     private List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions;
 
+    /** Creates an instance of ManagedClusterPodIdentityProfile class. */
+    public ManagedClusterPodIdentityProfile() {
+    }
+
     /**
      * Get the enabled property: Whether the pod identity addon is enabled.
      *

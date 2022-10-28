@@ -41,6 +41,10 @@ public final class OpenShiftManagedClusterMasterPoolProfile {
     @JsonProperty(value = "osType")
     private OSType osType;
 
+    /** Creates an instance of OpenShiftManagedClusterMasterPoolProfile class. */
+    public OpenShiftManagedClusterMasterPoolProfile() {
+    }
+
     /**
      * Get the name property: Unique name of the master pool profile in the context of the subscription and resource
      * group.

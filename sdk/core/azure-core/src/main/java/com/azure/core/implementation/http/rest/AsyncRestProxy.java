@@ -22,6 +22,7 @@ import com.azure.core.util.tracing.TracerProxy;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Signal;
+import reactor.core.scheduler.Schedulers;
 import reactor.util.context.ContextView;
 
 import java.io.IOException;
@@ -71,6 +72,7 @@ public class AsyncRestProxy extends RestProxyBase {
 
         Context finalContext = context;
         final Mono<HttpResponse> asyncResponse = RestProxyUtils.validateLengthAsync(request)
+            .publishOn(Schedulers.boundedElastic())
             .flatMap(r -> send(r, finalContext));
 
         Mono<HttpResponseDecoder.HttpDecodedResponse> asyncDecodedResponse = this.decoder
