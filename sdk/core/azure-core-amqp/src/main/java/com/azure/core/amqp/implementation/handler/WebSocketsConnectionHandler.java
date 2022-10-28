@@ -24,6 +24,16 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
 
     private static final String SOCKET_PATH = "/$servicebus/websocket";
     private static final String PROTOCOL = "AMQPWSB10";
+    /**
+     * Once there is an HTTP Connection to the host addressable by https://host-name
+     * (connection the client 'directly' established or established by tunneling through
+     * Proxy etc..), the WebSocket layer has to send an Upgrade request (GET https://host-name)
+     * with upgrade-specific headers to switch from HTTP to WebSocket protocol.
+     * The host-name is the FQDN of the Event Hubs or Service Bus or host part of
+     * CustomEndpointAddress when a custom endpoint frontends the Event Hubs or Service Bus.
+     * The upgrade request will have a 'Host' header matching the host-name.
+     */
+    private final String hostName;
 
     /**
      * Creates a handler that handles proton-j's connection events using web sockets.
@@ -31,9 +41,9 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      * @param connectionId Identifier for this connection.
      * @param connectionOptions Options used when creating the connection.
      */
-    public WebSocketsConnectionHandler(String connectionId, ConnectionOptions connectionOptions,
-        SslPeerDetails peerDetails, AmqpMetricsProvider metricsProvider) {
+    public WebSocketsConnectionHandler(String connectionId, ConnectionOptions connectionOptions, SslPeerDetails peerDetails, AmqpMetricsProvider metricsProvider) {
         super(connectionId, connectionOptions, peerDetails, metricsProvider);
+        this.hostName = connectionOptions.getHostname();
     }
 
     /**
@@ -44,7 +54,6 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
      */
     @Override
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
-        final String hostName = event.getConnection().getHostname();
         logger.info("Adding web socket layer");
         final WebSocketImpl webSocket = new WebSocketImpl();
         webSocket.configure(
