@@ -24,7 +24,7 @@ import java.net.URI;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -58,7 +58,7 @@ public abstract class ApiPerfTestBase<TOptions extends PerfStressOptions> extend
             recordPlaybackHttpClient = createRecordPlaybackClient(options);
             testProxy = options.getTestProxies().get(parallelIndex % options.getTestProxies().size());
             testProxyPolicy = new TestProxyPolicy(testProxy);
-            policies = Arrays.asList(testProxyPolicy);
+            policies = Collections.singletonList(testProxyPolicy);
         } else {
             recordPlaybackHttpClient = null;
             testProxy = null;
