@@ -32,7 +32,6 @@ import java.net.URL;
 import java.text.ParseException;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -149,15 +148,18 @@ public class UserPrincipalManager {
         final JWTClaimsSet jwtClaimsSet = validator.process(aadIssuedBearerToken, null);
         validator.getJWTClaimsSetVerifier().verify(jwtClaimsSet, null);
         UserPrincipal userPrincipal = new UserPrincipal(aadIssuedBearerToken, jwsObject, jwtClaimsSet);
-        Set<String> roles = Optional.of(userPrincipal)
-                                    .map(p -> p.getClaim(AadJwtClaimNames.ROLES))
-                                    .map(List.class::cast)
-                                    .map(Collection<Object>::stream)
-                                    .orElseGet(Stream::empty)
-                                    .map(Object::toString)
-                                    .collect(Collectors.toSet());
-        userPrincipal.setRoles(roles);
+        userPrincipal.setRoles(getRoles(jwtClaimsSet));
         return userPrincipal;
+    }
+
+    Set<String> getRoles(JWTClaimsSet set) {
+        return Optional.of(set)
+                .map(p -> p.getClaim(AadJwtClaimNames.ROLES))
+                .map(Collection.class::cast)
+                .map(Collection<Object>::stream)
+                .orElseGet(Stream::empty)
+                .map(Object::toString)
+                .collect(Collectors.toSet());
     }
 
     /**
