@@ -74,7 +74,7 @@ public class SendSessionMessageAsyncSample {
         List<ServiceBusMessage> messages = Arrays.asList(
             new ServiceBusMessage(BinaryData.fromBytes("Hello".getBytes(UTF_8))).setSessionId(sessionId),
             new ServiceBusMessage(BinaryData.fromBytes("Bonjour".getBytes(UTF_8))).setSessionId(sessionId),
-            new ServiceBusMessage(BinaryData.fromBytes("Guten tag".getBytes(UTF_8))).setSessionId(sessionId)
+            new ServiceBusMessage(BinaryData.fromBytes("Gluten tag".getBytes(UTF_8))).setSessionId(sessionId)
         );
 
         // This sends all the messages in a single message batch.

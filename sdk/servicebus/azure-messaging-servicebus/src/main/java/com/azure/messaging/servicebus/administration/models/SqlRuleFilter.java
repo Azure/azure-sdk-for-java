@@ -53,7 +53,7 @@ public class SqlRuleFilter extends RuleFilter {
     }
 
     /**
-     * Package private constructor for creating a model deserialised from the service.
+     * Package private constructor for creating a model deserialized from the service.
      *
      * @param sqlExpression SQL expression for the filter.
      * @param compatibilityLevel The compatibility level.
