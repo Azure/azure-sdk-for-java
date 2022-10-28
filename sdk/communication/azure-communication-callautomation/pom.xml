@@ -20,7 +20,7 @@
   <name>Microsoft Azure client library for Call Automation service</name>
   <description>
     This client library enables working with the Microsoft Azure Communication Call Automation service.
-    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/release/beta1/sdk/communication/azure-communication-callautomation/README.md and https://github.com/Azure/azure-sdk-for-java/blob/release/beta1/sdk/communication/azure-communication-callautomation/CHANGELOG.md
+    For this release, see notes - https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-callautomation/README.md and https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/communication/azure-communication-callautomation/CHANGELOG.md
     Microsoft Azure Communication Call Automation quickstart - https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/callflows-for-customer-interactions?pivots=programming-language-java
   </description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>

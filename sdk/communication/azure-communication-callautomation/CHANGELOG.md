@@ -22,7 +22,7 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 
 <!-- LINKS --> 
 
-[read_me]: https://github.com/Azure/azure-sdk-for-java/tree/release/beta1/sdk/communication/azure-communication-callautomation/README.md
+[read_me]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callautomation/README.md
 
 [Overview]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation
 

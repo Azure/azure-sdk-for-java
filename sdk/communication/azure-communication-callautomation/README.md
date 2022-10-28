@@ -163,7 +163,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
-[package]: https://dev.azure.com/azure-sdk/public/_artifacts/feed/azure-sdk-for-java-communication-interaction
+[package]: https://azure.github.io/azure-sdk-for-java/
 [api_documentation]: https://aka.ms/java-docs
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callautomation/src
 [overview]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation
