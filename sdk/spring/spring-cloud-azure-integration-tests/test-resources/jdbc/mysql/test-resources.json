@@ -92,11 +92,11 @@
   },
   "variables": {
     "location": "[resourceGroup().location]",
-    "skipCondition": "[or(not(equals(resourceGroup().location, parameters('skipResourceRegion'))), greater(parameters('currentEpoch'), parameters('resourceStartTime')))]
+    "notSkipCondition": "[or(not(equals(resourceGroup().location, parameters('skipResourceRegion'))), greater(parameters('currentEpoch'), parameters('resourceStartTime')))]"
   },
   "resources": [
     {
-      "condition": "[variables('skipCondition')]",
+      "condition": "[variables('notSkipCondition')]",
       "type": "Microsoft.DBforMySQL/servers",
       "apiVersion": "2017-12-01",
       "name": "[parameters('serverName')]",
@@ -125,7 +125,7 @@
       }
     },
     {
-      "condition": "[variables('skipCondition')]",
+      "condition": "[variables('notSkipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/administrators",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/ActiveDirectory')]",
@@ -140,7 +140,7 @@
       }
     },
     {
-      "condition": "[variables('skipCondition')]",
+      "condition": "[variables('notSkipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/audit_log_enabled')]",
@@ -153,7 +153,7 @@
       }
     },
     {
-      "condition": "[variables('skipCondition')]",
+      "condition": "[variables('notSkipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/gtid_mode')]",
@@ -166,7 +166,7 @@
       }
     },
     {
-      "condition": "[variables('skipCondition')]",
+      "condition": "[variables('notSkipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/configurations",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/init_connect')]",
@@ -178,7 +178,7 @@
       }
     },
     {
-      "condition": "[variables('skipCondition')]",
+      "condition": "[variables('notSkipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/databases",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/db')]",
@@ -191,7 +191,7 @@
       }
     },
     {
-      "condition": "[variables('skipCondition')]",
+      "condition": "[variables('notSkipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/firewallRules",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/AllowAll_2022-9-14_18-12-24')]",
@@ -204,7 +204,7 @@
       }
     },
     {
-      "condition": "[variables('skipCondition')]",
+      "condition": "[variables('notSkipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/securityAlertPolicies",
       "apiVersion": "2017-12-01",
       "name": "[concat(parameters('serverName'), '/Default')]",
@@ -235,11 +235,11 @@
     },
     "AZURE_MYSQL_IT_SKIPRUNNING": {
       "type": "string",
-      "value": "[if(or(not(equals(resourceGroup().location, variables('skipResourceRegion'))), greater(parameters('currentEpoch'), parameters('resourceStartTime'))), 'notskip', 'skipRunning')]"
+      "value": "[if(variables('notSkipCondition'), 'notskip', 'skipRunning')]"
     },
     "AZURE_MYSQL_ENDPOINT": {
       "type": "string",
-      "[if(or(not(equals(resourceGroup().location, variables('skipResourceRegion'))), greater(parameters('currentEpoch'), parameters('resourceStartTime'))), 'skipResource', reference(parameters('serverName')).fullyQualifiedDomainName))]"
+      "value": "[if(variables('notSkipCondition'), reference(parameters('serverName')).fullyQualifiedDomainName,'skipResource')]"
     }
   }
 }
