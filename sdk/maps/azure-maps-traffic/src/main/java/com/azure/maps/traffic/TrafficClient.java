@@ -14,7 +14,7 @@ import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.maps.traffic.models.ErrorResponseException;
+import com.azure.maps.traffic.implementation.models.ErrorResponseException;
 import com.azure.maps.traffic.models.TrafficFlowSegmentData;
 import com.azure.maps.traffic.models.TrafficIncidentDetail;
 import com.azure.maps.traffic.models.TrafficIncidentViewport;

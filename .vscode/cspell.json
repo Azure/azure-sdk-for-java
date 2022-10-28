@@ -101,6 +101,18 @@
       ]
     },
     {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/TrafficAsyncClient.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
+      "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/TrafficClient.java",
+      "words": [
+        "EPSG"
+      ]
+    },
+    {
       "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficFlowSegmentDataProperties.java",
       "words": [
         "openlr"

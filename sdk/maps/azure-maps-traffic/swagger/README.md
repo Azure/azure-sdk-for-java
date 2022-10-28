@@ -39,13 +39,14 @@ payload-flattening-threshold: 0
 add-context-parameter: true
 context-client-method-parameter: true
 client-logger: true
+generic-response-type: true
 generate-client-as-impl: true
-sync-methods: all
+sync-methods: none
 generate-sync-async-clients: false
 polling: {}
 models-subpackage: implementation.models
 custom-types-subpackage: models
-custom-types: TileFormat,TrafficFlowTileStyle,TileIndex,ErrorAdditionalInfo,ErrorDetail,ErrorResponse,ErrorResponseException,DelayMagnitude,IconCategory,IncidentDetailStyle,IncidentGeometryType,ProjectionStandard,SpeedUnit,TileFormat,TrafficFlowSegmentStyle,TrafficFlowTileStyle,TrafficIncidentTileStyle,TrafficIncidentPointOfInterest,TrafficFlowSegmentData,TrafficFlowSegmentDataFlowSegmentData,TrafficFlowSegmentDataFlowSegmentDataCoordinates,TrafficIncidentViewport,TrafficIncidentViewportViewpResp,TrafficState,Point,TrafficIncidentDetail,TrafficIncidentDetailTm
+custom-types: TileFormat,TrafficFlowTileStyle,TileIndex,DelayMagnitude,IconCategory,IncidentDetailStyle,IncidentGeometryType,ProjectionStandard,SpeedUnit,TileFormat,TrafficFlowSegmentStyle,TrafficFlowTileStyle,TrafficIncidentTileStyle,TrafficIncidentPointOfInterest,TrafficFlowSegmentData,TrafficFlowSegmentDataFlowSegmentData,TrafficFlowSegmentDataFlowSegmentDataCoordinates,TrafficIncidentViewport,TrafficIncidentViewportViewpResp,TrafficState,Point,TrafficIncidentDetail,TrafficIncidentDetailTm
 customization-jar-path: target/azure-maps-traffic-customization-1.0.0-beta.1.jar
 customization-class: TrafficCustomization
 ```

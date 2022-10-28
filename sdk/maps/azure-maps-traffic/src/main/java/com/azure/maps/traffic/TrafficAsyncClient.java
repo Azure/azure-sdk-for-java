@@ -19,7 +19,7 @@ import com.azure.maps.traffic.implementation.TrafficsImpl;
 import com.azure.maps.traffic.implementation.helpers.Utility;
 import com.azure.maps.traffic.models.TrafficFlowSegmentData;
 import com.azure.maps.traffic.implementation.models.ResponseFormat;
-import com.azure.maps.traffic.models.ErrorResponseException;
+import com.azure.maps.traffic.implementation.models.ErrorResponseException;
 import com.azure.maps.traffic.models.TrafficIncidentDetail;
 import com.azure.maps.traffic.models.TrafficIncidentViewport;
 import com.azure.maps.traffic.models.TrafficFlowSegmentOptions;
@@ -208,18 +208,18 @@ public final class TrafficAsyncClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("Options is null"));
         }    
         return this.serviceClient.getTrafficFlowTileWithResponseAsync(
-            options.getFormat(), 
-            options.getTrafficFlowTileStyle(), 
-            options.getZoom(), 
-            options.getTileIndex(), 
-            options.getThickness(),
-            context).onErrorMap(throwable -> {
-                if (!(throwable instanceof ErrorResponseException)) {
-                    return throwable;
-                }
-                ErrorResponseException exception = (ErrorResponseException) throwable;
-                return new HttpResponseException(exception.getMessage(), exception.getResponse());
-            });
+                options.getFormat(), 
+                options.getTrafficFlowTileStyle(), 
+                options.getZoom(), 
+                options.getTileIndex(), 
+                options.getThickness(),
+                context).onErrorMap(throwable -> {
+                    if (!(throwable instanceof ErrorResponseException)) {
+                        return throwable;
+                    }
+                    ErrorResponseException exception = (ErrorResponseException) throwable;
+                    return new HttpResponseException(exception.getMessage(), exception.getResponse());
+                });
     }
 
     /**
