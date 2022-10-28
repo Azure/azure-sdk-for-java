@@ -8,12 +8,6 @@
             "_justification": "Secret used by test code, it is fake."
         },
         {
-            "placeholder": [
-              "-----BEGIN PRIVATE KEY-----"
-            ],
-            "_justification": "Well known names."
-        },
-        {
             "placeholder": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
             "_justification": "SHA-256 encrypted random data generated at test time."
         },
@@ -58,6 +52,7 @@
             "file": [
                 "sdk/communication/azure-communication-common-perf/src/main/java/com.azure.communication.common.perf/FakeCredentialInTest.java",
                 "sdk/keyvault/azure-security-keyvault-certificates/src/test/java/com/azure/security/keyvault/certificates/FakeCredentialInTest.java",
+                "sdk/spring/spring-cloud-azure-autoconfigure/src/test/java/com/azure/spring/cloud/autoconfigure/FakeCredentialInTest.java",
                 "sdk/spring/spring-cloud-azure-service/src/test/java/com/azure/spring/cloud/service/implementation/storage/FakeCredentialInTest.java",
                 "sdk/storage/azure-storage-blob/src/test/java/com/azure/storage/blob/FakeCredentialInTest.java",
                 "sdk/storage/azure-storage-common/src/test/java/com/azure/storage/common/FakeCredentialInTest.java",

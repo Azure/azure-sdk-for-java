@@ -20,6 +20,8 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import static com.azure.spring.cloud.autoconfigure.FakeCredentialInTest.PASSWORD_PLACEHOLDER;
+import static com.azure.spring.cloud.autoconfigure.FakeCredentialInTest.USERNAME_PLACEHOLDER;
 import static com.azure.spring.cloud.core.implementation.util.ReflectionUtils.getField;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -76,8 +78,8 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
             .withPropertyValues(
                 getPropertyPrefix() + ".profile.cloud-type=AZURE_US_GOVERNMENT",
                 getPropertyPrefix() + ".credential.client-id=fake-client-id",
-                getPropertyPrefix() + ".credential.username=fakeNamePlaceholder",
-                getPropertyPrefix() + ".credential.password=fakePasswordPlaceholder"
+                getPropertyPrefix() + ".credential." + USERNAME_PLACEHOLDER + "=fakeNamePlaceholder",
+                getPropertyPrefix() + ".credential." + PASSWORD_PLACEHOLDER + "=fakePasswordPlaceholder"
             )
             .withConfiguration(AutoConfigurations.of(
                 AzureTokenCredentialAutoConfiguration.class,
