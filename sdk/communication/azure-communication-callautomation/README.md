@@ -21,13 +21,13 @@ This package contains a Java SDK for Azure Communication Call Automation Service
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callautomation</artifactId>
-    <version>1.0.0-beta.5</version>
+    <version>1.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ## Key concepts
-This is the restart of Call Automation Service. It is renamed to Call Automation service and being more intuitive to use.
+This is a refresh of Calling Server Service. It is renamed to Call Automation service and being more intuitive to use.
 
 `CallAutomationClient` provides the functionality to make call, answer/reject incoming call and redirect a call.
 
@@ -38,6 +38,38 @@ This is the restart of Call Automation Service. It is renamed to Call Automation
 `CallRecording` provides the functionality of recording the call.
 
 `EventHandler` provides the functionality to handle events from the ACS resource.
+
+### Using statements
+```java
+import com.azure.communication.callautomation.*;
+import com.azure.communication.callautomation.models.*;
+import com.azure.communication.callautomation.models.events.*;
+```
+
+### Authenticate the client
+Call Automation client can be authenticated using the connection string acquired from an Azure Communication Resource in the [Azure Portal][azure_portal].
+```java
+CallAutomationAsyncClient client = new CallAutomationClientBuilder()
+                .connectionString("<ACS_CONNECTION_STRING>")
+                .buildAsyncClient();
+```
+Or alternatively using a valid Active Directory token / Key.
+```java
+CallAutomationAsyncClient client = new CallAutomationClientBuilder()
+                .endpoint("<ENDPOINT_URL>") // e.g: https://my-resource.communication.azure.com
+                .credential("<TOKEN_CREDENTIAL> OR <AZURE_KEY_CREDENTIAL>")
+                .buildAsyncClient();
+```
+
+## Examples
+### Make a call to a phone number recipient
+```java
+List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier("<RECIPIENT_PHONE_NUMBER>")));// E.164 formatted phone number like +18001234567
+CreateCallOptions options = new CreateCallOptions(new CommunicationUserIdentifier("<CALLER_IDENTIFIER>"), targets, "<CALL_BACK_URL>")
+        .setSourceCallerId("<CALLER_PHONE_NUMBER>"); // E.164 formatted phone number. This is required when dialing to a PSTN recipient
+    
+Response<CreateCallResult> response = client.createCallWithResponse(options).block();
+```
 
 ### Idempotent Requests
 An operation is idempotent if it can be performed multiple times and have the same result as a single execution.
@@ -51,6 +83,7 @@ The following operations are idempotent:
 - `transferToParticipantCall`
 - `addParticipants`
 - `removeParticipants`
+- `startRecording`
 
 By default, SDK generates a new `RepeatabilityHeaders` object every time the above operation is called. If you would
 like to provide your own `RepeatabilityHeaders` for your application (eg. for your own retry mechanism), you can do so by specifying
@@ -75,9 +108,28 @@ Response<CreateCallResult> response2 = callAsyncClient.createCallWithResponse(cr
 // response1 and response2 will have the same callConnectionId as they have the same reapeatability parameters which means that the CreateCall operation was only executed once.
 ```
 
-## Examples
+### Handle Mid-Connection call back events
+Your app will receive mid-connection call back events via the callback url you provided. You will need to write event handler controller to receive the events and direct your app flow based on your business logic.
 
-To be determined.
+```java
+    @RequestMapping(value = "/api/callEvents", method = POST)
+    public ResponseEntity<?> handleCallEvents(@RequestBody(required = false) String requestBody) {
+        List<CallAutomationEventBase> acsEvents = EventHandler.parseEventList(requestBody);
+
+        for (CallAutomationEventBase acsEvent : acsEvents) {
+            if (acsEvent instanceof CallConnected) {
+                // Do something...
+            } else if (acsEvent instanceof RecognizeCompleted) {
+                // Do something...
+            } else if (acsEvent instanceof CallDisconnected){
+                // Do something...   
+            }
+            ...
+        }
+        
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+```
 
 ## Troubleshooting
 
@@ -96,10 +148,14 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 ## Next steps
-
-- [Read more about Call Automation in Azure Communication Services][call_automation_apis_overview]
-- [Read more about Call Recording in Azure Communication Services][call_recording_overview]
-- For a basic guide on how to record and download calls with Event Grid please refer to the [Record and download calls with Event Grid][record_and_download_calls_with_event_grid].
+- [Call Automation Overview][overview]
+- [Incoming Call Concept][incomingcall]
+- [Build a customer interaction workflow using Call Automation][build1]
+- [Redirect inbound telephony calls with Call Automation][build2]
+- [Quickstart: Play action][build3]
+- [Quickstart: Recognize action][build4]
+- [Read more about Call Recording in Azure Communication Services][recording1]
+- [Record and download calls with Event Grid][recording2]
 
 <!-- LINKS -->
 [cla]: https://cla.microsoft.com
@@ -109,7 +165,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://dev.azure.com/azure-sdk/public/_artifacts/feed/azure-sdk-for-java-communication-interaction
 [api_documentation]: https://aka.ms/java-docs
-[call_automation_apis_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation-apis
-[call_recording_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
-[record_and_download_calls_with_event_grid]:https://docs.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/download-recording-file-sample
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callautomation/src
+[overview]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation
+[incomingcall]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/incoming-call-notification
+[build1]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/callflows-for-customer-interactions?pivots=programming-language-java
+[build2]: https://learn.microsoft.com/azure/communication-services/how-tos/call-automation-sdk/redirect-inbound-telephony-calls?pivots=programming-language-java
+[build3]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/play-action?pivots=programming-language-java
+[build4]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/recognize-action?pivots=programming-language-java
+[recording1]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
+[recording2]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/get-started-call-recording?pivots=programming-language-java
+[azure_portal]: https://portal.azure.com
