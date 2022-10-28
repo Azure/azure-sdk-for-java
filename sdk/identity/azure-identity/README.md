@@ -1,15 +1,16 @@
 # Azure Identity client library for Java
-The Azure Identity library provides [Azure Active Directory (Azure AD)](https://learn.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) token authentication support across the Azure SDK. It provides a set of [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementations which can be used to construct Azure SDK clients which support Azure AD token authentication.
 
-  [Source code][source] | [API reference documentation][javadoc] | [Azure Active Directory documentation][azuread_doc]
+The Azure Identity library provides [Azure Active Directory (Azure AD)](https://learn.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) token authentication support across the Azure SDK. It provides a set of [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementations that can be used to construct Azure SDK clients that support Azure AD token authentication.
+
+[Source code][source] | [API reference documentation][javadoc] | [Azure AD documentation][azuread_doc]
 
 ## Getting started
+
 ### Include the package
 
 #### Include the BOM file
 
-Include the `azure-sdk-bom` in your project to take a dependency on the GA version of the library. In the following snippet, replace the `{bom_version_to_target}` placeholder with the version number.
-To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+Include the `azure-sdk-bom` in your project to take a dependency on the stable version of the library. In the following snippet, replace the `{bom_version_to_target}` placeholder with the version number. To learn more about the BOM, see the [Azure SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
 
 ```xml
 <dependencyManagement>
@@ -24,7 +25,8 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
-and then include the direct dependency in the dependencies section without the version tag.
+
+Then include the direct dependency in the `dependencies` section without the version tag:
 
 ```xml
 <dependencies>
@@ -36,11 +38,8 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
-If you want to take dependency on a particular version of the library that is not present in the BOM,
-add the direct dependency to your project as follows.
 
-
-Maven dependency for Azure Secret Client library. Add it to your project's pom file.
+To take dependency on a particular version of the library that isn't present in the BOM, add the direct dependency to your project as follows:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;current})
 ```xml
@@ -53,29 +52,31 @@ Maven dependency for Azure Secret Client library. Add it to your project's pom f
 [//]: # ({x-version-update-end})
 
 ### Prerequisites
-* A [Java Development Kit (JDK)][jdk_link], version 8 or later.
-* An [Azure subscription][azure_sub].
-* The Azure CLI can also be useful for authenticating in a development environment, creating accounts, and managing account roles.
+
+- A [Java Development Kit (JDK)][jdk_link], version 8 or later.
+- An [Azure subscription][azure_sub].
+- The Azure CLI can also be useful for authenticating in a development environment, creating accounts, and managing account roles.
 
 ### Authenticate the client
 
-When debugging and executing code locally it is typical for a developer to use their own account for authenticating calls to Azure services. There are several developer tools which can be used to perform this authentication in your development environment:
+When debugging and executing code locally, it's typical for a developer to use their own account for authenticating calls to Azure services. There are several developer tools that can be used to perform this authentication in your development environment:
 
 - [Azure Toolkit for IntelliJ](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#intellij-credential)
 - [Visual Studio Code Azure Account Extension](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#visual-studio-code-credential)
   - It's a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364) that `VisualStudioCodeCredential` doesn't work with [Azure Account extension](https://marketplace.visualstudio.com/items?itemName=ms-vscode.azure-account) versions newer than **0.9.11**. A long-term fix to this problem is in progress. In the meantime, consider authenticating via the Azure CLI (below).
 - [Azure CLI](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#azure-cli-credential)
 
-Click on each item above to learn about how to configure them for Azure Identity authentication.
+Select each item above to learn about how to configure them for Azure Identity authentication.
 
 ## Key concepts
+
 ### Credentials
 
-A credential is a class which contains or can obtain the data needed for a service client to authenticate requests. Service clients across Azure SDK accept credentials when they are constructed, and service clients use those credentials to authenticate requests to the service. 
+A credential is a class that contains or can obtain the data needed for a service client to authenticate requests. Service clients across the Azure SDK accept credentials when they're constructed. The service clients use those credentials to authenticate requests to the service.
 
-The Azure Identity library focuses on OAuth authentication with Azure Active directory, and it offers a variety of credential classes capable of acquiring an Azure AD token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [azure-core][azure_core_library], and any of them can be used by to construct service clients capable of authenticating with a `TokenCredential`. 
+The Azure Identity library focuses on OAuth authentication with Azure AD, and it offers various credential classes capable of acquiring an Azure AD token to authenticate service requests. All of the credential classes in this library are implementations of the `TokenCredential` abstract class in [azure-core][azure_core_library], and any of them can be used by to construct service clients capable of authenticating with a `TokenCredential`.
 
-See [Credential Classes](#credential-classes) for a complete list of available credential classes.
+See [Credential classes](#credential-classes) for a complete list of available credential classes.
 
 ### DefaultAzureCredential
 
@@ -98,9 +99,11 @@ The `DefaultAzureCredential` will attempt to authenticate via the following mech
 Due to a [known issue](https://github.com/Azure/azure-sdk-for-java/issues/27364), `VisualStudioCodeCredential` has been removed from the `DefaultAzureCredential` token chain. When the issue is resolved in a future release, this change will be reverted.
 
 ## Examples
-You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples). 
+
+You can find more examples of using various credentials in [Azure Identity Examples Wiki page](https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples).
 
 ### Authenticate with `DefaultAzureCredential`
+
 This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`.
 
 ```java
@@ -121,12 +124,13 @@ public void createDefaultAzureCredential() {
 
 See more how to configure the `DefaultAzureCredential` on your workstation or Azure in [Configure DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#configure-defaultazurecredential).
 
-### Authenticate a user-assigned Managed Identity with `DefaultAzureCredential`
-To authenticate using User-Assigned Managed Identity, ensure that configuration instructions for your supported Azure resource [here](#managed-identity-support) have been successfully completed.
+### Authenticate a user-assigned managed identity with `DefaultAzureCredential`
 
-The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`, deployed to an Azure resource with a user assigned managed identity configured.
+To authenticate using user-assigned managed identity, ensure that configuration instructions for your supported Azure resource [here](#managed-identity-support) have been successfully completed.
 
-See more about how to configure a user assigned managed identity for an Azure resource in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources).
+The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`, deployed to an Azure resource with a user-assigned managed identity configured.
+
+See more about how to configure a user-assigned managed identity for an Azure resource in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources).
 
 ```java
 /**
@@ -148,6 +152,7 @@ public void createDefaultAzureCredentialForUserAssignedManagedIdentity() {
 In addition to configuring the `managedIdentityClientId` via code, it can also be set using the `AZURE_CLIENT_ID` environment variable. These two approaches are equivalent when using the `DefaultAzureCredential`.
 
 ### Authenticate a user in Azure Toolkit for IntelliJ with `DefaultAzureCredential`
+
 To authenticate using IntelliJ, ensure that configuration instructions [here](https://learn.microsoft.com/azure/developer/java/sdk/identity-dev-env-auth#sign-in-azure-toolkit-for-intellij-for-intellijcredential) have been successfully completed.
 
 The below example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `DefaultAzureCredential`, on a workstation with IntelliJ IDEA installed, and the user has signed in with an Azure account to the Azure Toolkit for IntelliJ.
@@ -172,21 +177,25 @@ public void createDefaultAzureCredentialForIntelliJ() {
 }
 ```
 
-## Managed Identity Support
+## Managed Identity support
+
 The [Managed identity authentication](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview) is supported via either the `DefaultAzureCredential` or the `ManagedIdentityCredential` directly for the following Azure Services:
-* [Azure App Service and Azure Functions](https://learn.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet)
-* [Azure Arc](https://learn.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)
-* [Azure Cloud Shell](https://learn.microsoft.com/azure/cloud-shell/msi-authorization)
-* [Azure Kubernetes Service](https://learn.microsoft.com/azure/aks/use-managed-identity)
-* [Azure Service Fabric](https://learn.microsoft.com/azure/service-fabric/concepts-managed-identity)
-* [Azure Virtual Machines](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token)
-* [Azure Virtual Machines Scale Sets](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-powershell-windows-vmss)
+
+- [Azure App Service and Azure Functions](https://learn.microsoft.com/azure/app-service/overview-managed-identity?tabs=dotnet)
+- [Azure Arc](https://learn.microsoft.com/azure/azure-arc/servers/managed-identity-authentication)
+- [Azure Cloud Shell](https://learn.microsoft.com/azure/cloud-shell/msi-authorization)
+- [Azure Kubernetes Service](https://learn.microsoft.com/azure/aks/use-managed-identity)
+- [Azure Service Fabric](https://learn.microsoft.com/azure/service-fabric/concepts-managed-identity)
+- [Azure Virtual Machines](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/how-to-use-vm-token)
+- [Azure Virtual Machines Scale Sets](https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/qs-configure-powershell-windows-vmss)
 
 ### Examples
-####  Authenticate in Azure with Managed Identity
-This examples demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `ManagedIdentityCredential` in a virtual machine, app service, function app, cloud shell, or AKS environment on Azure, with system assigned, or user assigned managed identity enabled.
 
-see more about how to configure your Azure resource for managed identity in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources)
+#### Authenticate in Azure with Managed Identity
+
+This example demonstrates authenticating the `SecretClient` from the [azure-security-keyvault-secrets][secrets_client_library] client library using the `ManagedIdentityCredential` in a virtual machine, app service, function app, cloud shell, or AKS environment on Azure, with system-assigned or user-assigned managed identity enabled.
+
+See more about how to configure your Azure resource for managed identity in [Enable managed identity for Azure resources](https://github.com/Azure/azure-sdk-for-java/wiki/Set-up-Your-Environment-for-Authentication#enable-managed-identity-for-azure-resources)
 
 ```java
 /**
@@ -223,7 +232,10 @@ public void createManagedIdentityCredential() {
 
 ### Define a custom authentication flow with the `ChainedTokenCredential`
 
-While the `DefaultAzureCredential` is generally the quickest way to get started developing applications for Azure, more advanced users may want to customize the credentials considered when authenticating. The `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. This example demonstrates creating a `ChainedTokenCredential` which will attempt to authenticate using managed identity, and fall back to authenticating via the Azure CLI if managed identity is unavailable in the current environment.
+While the `DefaultAzureCredential` is generally the quickest way to get started developing applications for Azure, more advanced users may want to customize the credentials considered when authenticating. The `ChainedTokenCredential` enables users to combine multiple credential instances to define a customized chain of credentials. This example demonstrates creating a `ChainedTokenCredential`, which will:
+
+- Attempt to authenticate using managed identity.
+- Fall back to authenticating via the Azure CLI if managed identity is unavailable in the current environment.
 
 ```C# Snippet:CustomChainedTokenCredential
 // Authenticate using managed identity if it is available; otherwise use the Azure CLI to authenticate.
@@ -241,32 +253,28 @@ While the `DefaultAzureCredential` is generally the quickest way to get started 
 ```
 
 ## Cloud configuration
-Credentials default to authenticating to the Azure Active Directory endpoint for
-Azure Public Cloud. To access resources in other clouds, such as Azure Government
-or a private cloud, configure credentials with the `auhtorityHost` argument.
-[AzureAuthorityHosts](https://learn.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable)
-defines authorities for well-known clouds:
+
+Credentials default to authenticating to the Azure AD endpoint for Azure Public Cloud. To access resources in other clouds, such as Azure Government or a private cloud, configure credentials with the `auhtorityHost` argument. [AzureAuthorityHosts](https://learn.microsoft.com/java/api/com.azure.identity.azureauthorityhosts?view=azure-java-stable) defines authorities for well-known clouds:
+
 ```java
 DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilder()
     .authorityHost(AzureAuthorityHosts.AZURE_GOVERNMENT)
     .build();
 ```
-Not all credentials require this configuration. Credentials which authenticate
-through a development tool, such as `AzureCliCredential`, use that tool's
-configuration. Similarly, `VisualStudioCodeCredential` accepts an `authority`
-argument but defaults to the authority matching VS Code's "Azure: Cloud" setting.
+
+Not all credentials require this configuration. Credentials that authenticate through a development tool, such as `AzureCliCredential`, use that tool's configuration. Similarly, `VisualStudioCodeCredential` accepts an `authority` argument but defaults to the authority matching VS Code's "Azure: Cloud" setting.
 
 ## Credential classes
 
 ### Authenticate Azure-hosted applications
-        
+
 <table style="border: 1px; width: 100%;">
   <caption>Authenticate Azure-hosted applications</caption>
   <thead>
     <tr>
-      <th>credential class</th>
-      <th>usage</th>
-      <th>example</th>
+      <th>Credential class</th>
+      <th>Usage</th>
+      <th>Example</th>
     </tr>
   </thead>
   <tbody>
@@ -287,22 +295,22 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     </tr>
     <tr>
       <td><code><a href="https://learn.microsoft.com/java/api/com.azure.identity.managedidentitycredential?view=azure-java-stable">ManagedIdentityCredential</a></code></td>
-      <td>authenticates the managed identity of an azure resource</td>
+      <td>authenticates the managed identity of an Azure resource</td>
       <td><a href="https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#authenticating-in-azure-with-managed-identity">example</a></td>
     </tr>
   </tbody>
 </table>
 
-### Authenticating service principals
+### Authenticate service principals
 
 <table style="border: 1px; width: 100%;">
-  <caption>Authenticating service principals</caption>
+  <caption>Authenticate service principals</caption>
   <thead>
     <tr>
-      <th>credential class</th>
-      <th>usage</th>
-      <th>example</th>
-      <th>reference</th>
+      <th>Credential class</th>
+      <th>Usage</th>
+      <th>Example</th>
+      <th>Reference</th>
     </tr>
   </thead>
   <tbody>
@@ -327,16 +335,16 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
   </tbody>
 </table>
 
-### Authenticating users
+### Authenticate users
 
 <table style="border: 1px; width: 100%;">
   <caption>Authenticate users</caption>
   <thead>
     <tr>
-      <th>credential class</th>
-      <th>usage</th>
-      <th>example</th>
-      <th>reference</th>
+      <th>Credential class</th>
+      <th>Usage</th>
+      <th>Example</th>
+      <th>Reference</th>
     </tr>
   </thead>
   <tbody>
@@ -373,16 +381,16 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
   </tbody>
 </table>
 
-### Authenticating via development tools
+### Authenticate via development tools
 
 <table style="border: 1px; width: 100%;">
-  <caption>Authenticating via development tools</caption>
+  <caption>Authenticate via development tools</caption>
   <thead>
     <tr>
-      <th>credential class</th>
-      <th>usage</th>
-      <th>example</th>
-      <th>reference</th>
+      <th>Credential class</th>
+      <th>Usage</th>
+      <th>Example</th>
+      <th>Reference</th>
     </tr>
   </thead>
   <tbody>
@@ -418,25 +426,27 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 Credentials can be chained together to be tried in turn until one succeeds using the `ChainedTokenCredential`; see [chaining credentials](#define-a-custom-authentication-flow-with-the-chainedtokencredential) for details.
 
 ## Environment variables
+
 `DefaultAzureCredential` and `EnvironmentCredential` can be configured with environment variables. Each type of authentication requires values for specific variables:
 
 ### Service principal with secret
+
 <table style="border: 1px; width: 100%;">
   <caption>Service principal with secret</caption>
   <thead>
     <tr>
-      <th>variable name</th>
-      <th>value</th>
+      <th>Variable name</th>
+      <th>Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><code>AZURE_CLIENT_ID</code></td>
-      <td>id of an Azure Active Directory application</td>
+      <td>ID of an Azure AD application</td>
     </tr>
     <tr>
       <td><code>AZURE_TENANT_ID</code></td>
-      <td>id of the application's Azure Active Directory tenant</td>
+      <td>ID of the application's Azure AD tenant</td>
     </tr>
     <tr>
       <td><code>AZURE_CLIENT_SECRET</code></td>
@@ -446,22 +456,23 @@ Credentials can be chained together to be tried in turn until one succeeds using
 </table>
 
 ### Service principal with certificate
+
 <table style="border: 1px; width: 100%;">
   <caption>Service principal with certificate</caption>
   <thead>
     <tr>
-      <th>variable name</th>
-      <th>value</th>
+      <th>Variable name</th>
+      <th>Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><code>AZURE_CLIENT_ID</code></td>
-      <td>id of an Azure Active Directory application</td>
+      <td>ID of an Azure AD application</td>
     </tr>
     <tr>
       <td><code>AZURE_TENANT_ID</code></td>
-      <td>id of the application's Azure Active Directory tenant</td>
+      <td>ID of the application's Azure AD tenant</td>
     </tr>
     <tr>
       <td><code>AZURE_CLIENT_CERTIFICATE_PATH</code></td>
@@ -469,24 +480,25 @@ Credentials can be chained together to be tried in turn until one succeeds using
     </tr>
     <tr>
         <td><code>AZURE_CLIENT_CERTIFICATE_PASSWORD</code></td>
-        <td>(optional) password for certificate. If not specified, certificate cannot be password protected.</td>
+        <td>(optional) password for certificate. The certificate can't be password-protected unless this value is specified.</td>
     </tr>
   </tbody>
 </table>
 
 ### Username and password
+
 <table style="border: 1px; width: 100%;">
   <caption>Username and password</caption>
   <thead>
     <tr>
-      <th>variable name</th>
-      <th>value</th>
+      <th>Variable name</th>
+      <th>Value</th>
     </tr>
   </thead>
   <tbody>
     <tr>
       <td><code>AZURE_CLIENT_ID</code></td>
-      <td>id of an Azure Active Directory application</td>
+      <td>ID of an Azure AD application</td>
     </tr>
     <tr>
       <td><code>AZURE_USERNAME</code></td>
@@ -502,27 +514,25 @@ Credentials can be chained together to be tried in turn until one succeeds using
 Configuration is attempted in the above order. For example, if values for a client secret and certificate are both present, the client secret will be used.
 
 ## Troubleshooting
-Credentials raise exceptions either when they fail to authenticate or cannot execute authentication.
-When credentials fail to authenticate, the`ClientAuthenticationException` is raised and it has a `message` attribute which
-describes why authentication failed. When this exception is raised by `ChainedTokenCredential`, the chained execution of underlying list of credentials is stopped.
 
-When credentials cannot execute authentication due to one of the underlying resources required by the credential being unavailable on the machine, the`CredentialUnavailableException` is raised and it has a `message` attribute which
-describes why the credential is unavailable for authentication execution . When this exception is raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
+Credentials raise exceptions when they fail to authenticate or can't execute authentication. When credentials fail to authenticate, the`ClientAuthenticationException` is raised. The exception has a `message` attribute, which describes why authentication failed. When this exception is raised by `ChainedTokenCredential`, the chained execution of underlying list of credentials is stopped.
+
+When credentials can't execute authentication due to one of the underlying resources required by the credential being unavailable on the machine, the`CredentialUnavailableException` is raised. The exception has a `message` attribute that describes why the credential is unavailable for authentication execution. When this exception is raised by `ChainedTokenCredential`, the message collects error messages from each credential in the chain.
 
 See the [troubleshooting guide](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity/TROUBLESHOOTING.md) for details on how to diagnose various failure scenarios.
+
 ### Enable client logging
 
-Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite
-their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
-locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
+Azure SDK for Java offers a consistent logging story to help aid in troubleshooting application errors and expedite their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ## Next steps
 
-The java client libraries listed [here](https://azure.github.io/azure-sdk/releases/latest/java.html) support authenticating with `TokenCredential` and the Azure Identity library.  You can learn more about their use, and find additional documentation on use of these client libraries along samples with can be found in the links mentioned [here](https://azure.github.io/azure-sdk/releases/latest/java.html).
+The Java client libraries listed [here](https://azure.github.io/azure-sdk/releases/latest/java.html) support authenticating with `TokenCredential` and the Azure Identity library. You can learn more about their use, and find additional documentation on use of these client libraries along samples with can be found in the links mentioned [here](https://azure.github.io/azure-sdk/releases/latest/java.html).
 
 The [microsoft-graph-sdk](https://github.com/microsoftgraph/msgraph-sdk-java) also supports authenticating with `TokenCredential` and the Azure Identity library.
 
 ## Contributing
+
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
@@ -530,18 +540,14 @@ When you submit a pull request, a CLA-bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct][code_of_conduct]. For more information see the Code of Conduct FAQ or contact opencode@microsoft.com with any additional questions or comments.
 
 <!-- LINKS -->
-[azure_cli]: https://learn.microsoft.com/cli/azure
+[azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core
 [azure_sub]: https://azure.microsoft.com/free/
-[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 [azuread_doc]: https://learn.microsoft.com/azure/active-directory/
 [code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[keys_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-keys
-[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
-[secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets
-[eventhubs_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/eventhubs/azure-messaging-eventhubs
-[azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core
 [javadoc]: https://azure.github.io/azure-sdk-for-java
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
-[chaining_credentials]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#chaining-credentials
+[logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-with-Azure-SDK
+[secrets_client_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/keyvault/azure-security-keyvault-secrets
+[source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)
