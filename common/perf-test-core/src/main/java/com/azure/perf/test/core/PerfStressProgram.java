@@ -256,11 +256,8 @@ public class PerfStressProgram {
                     });
                 }
 
-                forkJoinPool.invokeAll(operations);
-
-                Thread.sleep(durationSeconds * 1000L);
+                forkJoinPool.invokeAll(operations, (durationSeconds * 1000L) + 100L, TimeUnit.MILLISECONDS);
                 forkJoinPool.shutdown();
-                forkJoinPool.awaitTermination(5, TimeUnit.SECONDS);
             } else {
                 // Exceptions like OutOfMemoryError are handled differently by the default Reactor schedulers. Instead of terminating the
                 // Flux, the Flux will hang and the exception is only sent to the thread's uncaughtExceptionHandler and the Reactor
