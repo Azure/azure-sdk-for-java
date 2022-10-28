@@ -7,12 +7,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.metrics.Meter;
 import com.azure.core.util.tracing.ProcessKind;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.messaging.eventhubs.implementation.MessageUtils;
 import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
 
 import java.time.Instant;
-import java.util.Date;
 
 import static com.azure.core.amqp.AmqpMessageConstant.ENQUEUED_TIME_UTC_ANNOTATION_NAME;
 
@@ -37,7 +36,7 @@ public class EventHubsConsumerInstrumentation {
             return parent;
         }
 
-        Instant enqueuedTime = getEnqueuedTime(message.getMessageAnnotations());
+        Instant enqueuedTime = MessageUtils.getEnqueuedTime(message.getMessageAnnotations().getValue(), ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL);
         Context child = parent;
         if (tracer.isEnabled() && !isSync) {
             child = tracer.startSpan(spanName, tracer.setParentAndAttributes(message, enqueuedTime, parent), ProcessKind.PROCESS);
@@ -46,16 +45,5 @@ public class EventHubsConsumerInstrumentation {
         meter.reportReceive(enqueuedTime, partitionId, child);
 
         return child;
-    }
-
-    private Instant getEnqueuedTime(MessageAnnotations messageAnnotations) {
-        Object enqueuedTimeObject = messageAnnotations.getValue().get(ENQUEUED_TIME_UTC_ANNOTATION_NAME_SYMBOL);
-        if (enqueuedTimeObject instanceof Date) {
-            return ((Date) enqueuedTimeObject).toInstant();
-        } else if (enqueuedTimeObject instanceof Instant) {
-            return (Instant) enqueuedTimeObject;
-        }
-
-        return null;
     }
 }
