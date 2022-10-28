@@ -42,6 +42,11 @@ public abstract class ServiceTest<TOptions extends PerfStressOptions> extends Pe
 
     @Override
     public Mono<Void> globalSetupAsync() {
+        // Arbitrarily run 1000 service get properties calls to warm up the connection pool used by the HttpClient.
+        // This helps guard against an edge case seen in Reactor Netty where only one IO thread could end up owning all
+        // connections in the connection pool. This results in drastically less CPU usage and throughput, there is
+        // ongoing discussions with Reactor Netty on what causes this edge case, whether we had a design flaw in the
+        // performance tests, or if there is a configuration change needed in Reactor Netty.
         return super.globalSetupAsync().then(Flux.range(0, 1000)
             .parallel(options.getParallel())
             .runOn(Schedulers.boundedElastic())
