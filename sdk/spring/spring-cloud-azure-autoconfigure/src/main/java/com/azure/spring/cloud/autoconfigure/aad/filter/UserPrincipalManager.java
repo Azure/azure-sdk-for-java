@@ -16,7 +16,6 @@ import com.nimbusds.jose.proc.BadJOSEException;
 import com.nimbusds.jose.proc.JWSKeySelector;
 import com.nimbusds.jose.proc.JWSVerificationKeySelector;
 import com.nimbusds.jose.proc.SecurityContext;
-import com.nimbusds.jose.shaded.json.JSONArray;
 import com.nimbusds.jose.util.ResourceRetriever;
 import com.nimbusds.jwt.JWT;
 import com.nimbusds.jwt.JWTClaimsSet;
@@ -149,15 +148,18 @@ public class UserPrincipalManager {
         final JWTClaimsSet jwtClaimsSet = validator.process(aadIssuedBearerToken, null);
         validator.getJWTClaimsSetVerifier().verify(jwtClaimsSet, null);
         UserPrincipal userPrincipal = new UserPrincipal(aadIssuedBearerToken, jwsObject, jwtClaimsSet);
-        Set<String> roles = Optional.of(userPrincipal)
-                                    .map(p -> p.getClaim(AadJwtClaimNames.ROLES))
-                                    .map(JSONArray.class::cast)
-                                    .map(Collection<Object>::stream)
-                                    .orElseGet(Stream::empty)
-                                    .map(Object::toString)
-                                    .collect(Collectors.toSet());
-        userPrincipal.setRoles(roles);
+        userPrincipal.setRoles(getRoles(jwtClaimsSet));
         return userPrincipal;
+    }
+
+    Set<String> getRoles(JWTClaimsSet set) {
+        return Optional.of(set)
+                .map(p -> p.getClaim(AadJwtClaimNames.ROLES))
+                .map(Collection.class::cast)
+                .map(Collection<Object>::stream)
+                .orElseGet(Stream::empty)
+                .map(Object::toString)
+                .collect(Collectors.toSet());
     }
 
     /**
