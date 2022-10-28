@@ -8,6 +8,9 @@ Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies 
 #### Dependency Updates
 - Upgrade `mysql:mysql-connector-java:[8.0.30]` to `com.mysql:mysql-connector-j:[8.0.31]`
 
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
 #### Bugs Fixed
 - Fix bug: Put a value into Collections.emptyMap(). [#31190](https://github.com/Azure/azure-sdk-for-java/issues/31190).
 - Fix bug: RestTemplate used to get access token should only contain 2 converters. [#31482](https://github.com/Azure/azure-sdk-for-java/issues/31482).
@@ -15,6 +18,8 @@ Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies 
 - Fix bug: Duplicated "scope" parameter. [#31191](https://github.com/Azure/azure-sdk-for-java/issues/31191).
 - Fix bug: NimbusJwtDecoder still uses `RestTemplate()` instead `RestTemplateBuilder` [#31233](https://github.com/Azure/azure-sdk-for-java/issues/31233)
 - Fix bug: Proxy setting not work in Azure AD B2C web application [31593](https://github.com/Azure/azure-sdk-for-java/issues/31593)
+- Fix bug: `spring.main.sources` configuration from Spring Cloud Stream Kafka binder cannot take effect. [#31715](https://github.com/Azure/azure-sdk-for-java/pull/31715)
+- Fix Bug: NoClassDefFoundError for JSONArray. [31716](https://github.com/Azure/azure-sdk-for-java/issues/31716)
 
 ## 4.4.0 (2022-09-26)
 Upgrade Spring Boot dependencies version to 2.7.3 and Spring Cloud dependencies version to 2021.0.3
