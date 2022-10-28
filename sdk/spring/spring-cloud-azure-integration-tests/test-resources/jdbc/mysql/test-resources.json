@@ -239,7 +239,7 @@
     },
     "AZURE_MYSQL_ENDPOINT": {
       "type": "string",
-      "[if(variables('notSkipCondition'), reference(parameters('serverName')).fullyQualifiedDomainName,'skipResource')]"
+      "value": "[if(variables('notSkipCondition'), reference(parameters('serverName')).fullyQualifiedDomainName,'skipResource')]"
     }
   }
 }
