@@ -42,11 +42,6 @@ public class CreateCallOptions {
     private String operationContext;
 
     /**
-     * Media Streaming Configuration.
-     */
-    private MediaStreamingOptions mediaStreamingOptions;
-
-    /**
      * Repeatability Headers Configuration
      */
     private RepeatabilityHeaders repeatabilityHeaders;
@@ -111,15 +106,6 @@ public class CreateCallOptions {
     }
 
     /**
-     * Get the Media Streaming configuration.
-     *
-     * @return the mediaStreamingConfiguration.
-     */
-    public MediaStreamingOptions getMediaStreamingConfiguration() {
-        return mediaStreamingOptions;
-    }
-
-    /**
      * Get the Repeatability headers configuration.
      *
      * @return the repeatabilityHeaders
@@ -148,17 +134,6 @@ public class CreateCallOptions {
      */
     public CreateCallOptions setSourceCallerId(String sourceCallerId) {
         this.sourceCallerId = sourceCallerId;
-        return this;
-    }
-
-    /**
-     * Set the media streaming configuration.
-     *
-     * @param mediaStreamingOptions The media streaming configuration.
-     * @return the CreateCallOptions object itself.
-     */
-    public CreateCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
-        this.mediaStreamingOptions = mediaStreamingOptions;
         return this;
     }
 
