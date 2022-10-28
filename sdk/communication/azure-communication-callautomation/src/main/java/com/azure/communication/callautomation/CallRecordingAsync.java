@@ -52,12 +52,10 @@ import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidParameterException;
-import java.time.Instant;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
@@ -123,18 +121,15 @@ public class CallRecordingAsync {
             }
             StartCallRecordingRequestInternal request = getStartCallRecordingRequest(options);
 
-            if (options.getRepeatabilityHeaders() == null) {
-                RepeatabilityHeaders autoRepeatabilityHeaders = new RepeatabilityHeaders(UUID.randomUUID(), Instant.now());
-                options.setRepeatabilityHeaders(autoRepeatabilityHeaders);
-            }
+            options.setRepeatabilityHeaders(handleApiIdempotency(options.getRepeatabilityHeaders()));
 
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return contentsInternal
                     .recordingWithResponseAsync(
                         request,
-                        options.getRepeatabilityHeaders().getRepeatabilityRequestId(),
-                        options.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat(),
+                        options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityRequestId() : null,
+                        options.getRepeatabilityHeaders() != null ? options.getRepeatabilityHeaders().getRepeatabilityFirstSentInHttpDateFormat() : null,
                         contextValue)
                     .onErrorMap(HttpResponseException.class, ErrorConstructorProxy::create)
                     .map(response ->
@@ -577,4 +572,15 @@ public class CallRecordingAsync {
             throw logger.logExceptionAsError(new IllegalArgumentException(ex));
         }
     }
+
+    //region helper functions
+    /***
+     * Make sure repeatability headers of the request are correctly set.
+     *
+     * @return a verified RepeatabilityHeaders object.
+     */
+    private RepeatabilityHeaders handleApiIdempotency(RepeatabilityHeaders repeatabilityHeaders) {
+        return CallAutomationAsyncClient.handleApiIdempotency(repeatabilityHeaders);
+    }
+    //endregion
 }
