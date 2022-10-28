@@ -20,7 +20,10 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
@@ -77,14 +80,21 @@ class UserPrincipalManagerTests {
     }
 
     @Test
-    void testRolesExtracted() {
+    void getRolesTest() {
+        rolesExtractedAsExpected(null, new ArrayList<>());
+        rolesExtractedAsExpected("role1", Arrays.asList("role1"));
+        rolesExtractedAsExpected(Arrays.asList("role1", "role2"), Arrays.asList("role1", "role2"));
+        rolesExtractedAsExpected(new HashSet<>(Arrays.asList("role1", "role2")), Arrays.asList("role1", "role2"));
+    }
+
+    private void rolesExtractedAsExpected(Object rolesClaimValue, Collection<String> expected) {
         JWTClaimsSet set = new JWTClaimsSet.Builder()
-                .claim("roles", Arrays.asList("role1", "role2"))
+                .claim("roles", rolesClaimValue)
                 .build();
-        Set<String> result = new UserPrincipalManager(null).getRoles(set);
-        assertEquals(2, result.size());
-        assertTrue(result.contains("role1"));
-        assertTrue(result.contains("role2"));
+        Set<String> actual = new UserPrincipalManager(null).getRoles(set);
+        assertEquals(expected.size(), actual.size());
+        assertTrue(expected.containsAll(actual));
+        assertTrue(actual.containsAll(expected));
     }
 
     private String readJwtValidIssuerTxt() {
