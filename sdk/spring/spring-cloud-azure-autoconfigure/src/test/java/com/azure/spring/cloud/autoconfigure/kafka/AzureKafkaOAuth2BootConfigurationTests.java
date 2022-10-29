@@ -11,11 +11,8 @@ import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConf
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
-import org.springframework.boot.autoconfigure.kafka.DefaultKafkaConsumerFactoryCustomizer;
-import org.springframework.boot.autoconfigure.kafka.DefaultKafkaProducerFactoryCustomizer;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -30,11 +27,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import java.util.Map;
 
-import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
-import static com.azure.spring.cloud.service.implementation.kafka.AzureKafkaPropertiesUtils.AZURE_TOKEN_CREDENTIAL;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -46,6 +40,7 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
             .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class,
                     AzureGlobalPropertiesAutoConfiguration.class, AzureTokenCredentialAutoConfiguration.class,
                     KafkaAutoConfiguration.class));
+
     @Override
     protected ApplicationContextRunner getContextRunner() {
         return this.contextRunner;
@@ -65,39 +60,6 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
                 .run(context -> {
                     assertThat(context).doesNotHaveBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
                 });
-    }
-
-    @Test
-    @Disabled
-    void testTokenCredentialConfiguredWithKafkaConfig() {
-        this.contextRunner
-            .withPropertyValues(
-                String.format(JAAS_PROPERTY_FORMAT, SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX, MANAGED_IDENTITY_ENABLED, "true")
-            )
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubsKafkaOAuth2AutoConfiguration.class);
-                assertThat(context).hasSingleBean(DefaultKafkaConsumerFactoryCustomizer.class);
-                assertThat(context).hasSingleBean(DefaultKafkaProducerFactoryCustomizer.class);
-                assertThat(context).hasSingleBean(ConsumerFactory.class);
-                assertThat(context).hasSingleBean(ProducerFactory.class);
-                assertThat(context).hasBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME);
-
-                TokenCredential defaultAzureCredential =
-                    (TokenCredential) context.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME);
-                assertTrue(defaultAzureCredential instanceof DefaultAzureCredential);
-
-                DefaultKafkaConsumerFactory<?, ?> consumerFactory =
-                    (DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class);
-                Map<String, Object> consumerProperties = consumerFactory.getConfigurationProperties();
-                assertEquals(defaultAzureCredential, consumerProperties.get(AZURE_TOKEN_CREDENTIAL));
-                shouldConfigureOAuthProperties(consumerProperties);
-
-                DefaultKafkaProducerFactory<?, ?> producerFactory =
-                    (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);
-                Map<String, Object> producerProperties = producerFactory.getConfigurationProperties();
-                assertTrue(producerProperties.get(AZURE_TOKEN_CREDENTIAL) instanceof ManagedIdentityCredential);
-                shouldConfigureOAuthProperties(producerProperties);
-            });
     }
 
     @Test
@@ -128,42 +90,6 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
                 properties = (AzurePasswordlessProperties) ReflectionTestUtils.getField(callbackHandler, "properties");
                 azureTokenCredentialResolver = (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(callbackHandler, "tokenCredentialResolver");
                 assertNotNull(azureTokenCredentialResolver);
-                assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof DefaultAzureCredential);
-            });
-    }
-
-    @Test
-    @Disabled
-    void testOAuthConfiguredToCallbackHandlerWithJaasProperties() {
-        this.contextRunner
-            .withPropertyValues(
-                "spring.kafka.bootstrap-servers=test:9093",
-                String.format(JAAS_PROPERTY_FORMAT, SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX, MANAGED_IDENTITY_ENABLED, "true")
-            )
-            .run(context -> {
-                DefaultKafkaProducerFactory<?, ?> producerFactory =
-                    (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);
-                Map<String, Object> producerProperties = producerFactory.getConfigurationProperties();
-
-                KafkaOAuth2AuthenticateCallbackHandler callbackHandler = new KafkaOAuth2AuthenticateCallbackHandler();
-                callbackHandler.configure(producerProperties, null, null);
-
-                AzurePasswordlessProperties properties = (AzurePasswordlessProperties) ReflectionTestUtils
-                    .getField(callbackHandler, "properties");
-                AzureCredentialResolver<TokenCredential> azureTokenCredentialResolver =
-                    (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(callbackHandler, "tokenCredentialResolver");
-                assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof ManagedIdentityCredential);
-
-
-                DefaultKafkaConsumerFactory<?, ?> consumerFactory =
-                    (DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class);
-                Map<String, Object> consumerProperties = consumerFactory.getConfigurationProperties();
-
-                callbackHandler.configure(consumerProperties, null, null);
-                properties = (AzurePasswordlessProperties) ReflectionTestUtils
-                    .getField(callbackHandler, "properties");
-                azureTokenCredentialResolver =
-                    (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(callbackHandler, "tokenCredentialResolver");
                 assertTrue(azureTokenCredentialResolver.resolve(properties) instanceof DefaultAzureCredential);
             });
     }

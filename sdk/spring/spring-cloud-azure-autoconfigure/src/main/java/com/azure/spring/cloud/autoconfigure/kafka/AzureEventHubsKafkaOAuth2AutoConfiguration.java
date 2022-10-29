@@ -91,19 +91,6 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
         return factory -> factory.updateConfigs(updateConfigs);
     }
 
-
-//    private void configureFactoryOAuth2Properties(AzurePasswordlessProperties azurePasswordlessProperties, Map<String, Object> updateConfigs) {
-//        updateConfigs.putAll(KAFKA_OAUTH_CONFIGS);
-//        if (!sourceKafkaProperties.containsKey(SASL_JAAS_CONFIG)
-//                || (sourceKafkaProperties.get(SASL_JAAS_CONFIG) != null
-//                && !((String) sourceKafkaProperties.get(SASL_JAAS_CONFIG)).startsWith(AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX))) {
-//            updateConfigs.put(SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
-//        }
-//
-//        updateConfigs.put(AZURE_TOKEN_CREDENTIAL, resolveSpringCloudAzureTokenCredential(azurePasswordlessProperties));
-//        logConfigureOAuthProperties();
-//    }
-
     private TokenCredential resolveSpringCloudAzureTokenCredential(AzurePasswordlessProperties azurePasswordlessProperties) {
         TokenCredential tokenCredential = tokenCredentialResolver.resolve(azurePasswordlessProperties);
         return tokenCredential == null ? defaultTokenCredential : tokenCredential;
