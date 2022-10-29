@@ -5,7 +5,13 @@
             "placeholder": [
                 "serverappsecret"
             ],
-            "_justification": "Secret used by test code, it is fake."
+            "_justification": "Secret used by jackson json property and test code, it is fake."
+        },
+        {
+            "placeholder": [
+              "administratorLoginPassword"
+            ],
+            "_justification": "Secret used by spring-cloud-azure-integration-tests/test-resources/jdbc/mysql/test-resources.json"
         },
         {
             "placeholder": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
@@ -30,7 +36,7 @@
             "_justification": "Javadoc in azure resourcemanagerhybrid"
         },
         {
-            "file":[
+            "file": [
                 "eng/common/testproxy/dotnet-devcert.pfx",
                 "sdk/cosmos/azure-cosmos/src/test/resources/server.jks",
                 "sdk/cosmos/azure-cosmos/src/test/resources/client.jks",
@@ -47,6 +53,12 @@
                 "sdk/keyvault/microsoft-azure-keyvault-cryptography/src/test/resources/secp256keynew.pem"
             ],
             "_justification": "File contains private key used by test code."
+        },
+        {
+            "file": [
+                "sdk/appconfiguration/azure-data-appconfiguration/src/main/java/com/azure/data/appconfiguration/implementation/FakeCredentialConstants.java"
+            ],
+            "_justification": "File contains fake key used by implementation code."
         },
         {
             "file": [
