@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.security.keyvault.administration;
 
 import com.azure.core.exception.HttpResponseException;
@@ -7,20 +10,31 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 import com.azure.security.keyvault.administration.implementation.models.*;
 import com.azure.security.keyvault.administration.models.*;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils.createKeyVaultErrorFromError;
+
+/**
+ * Internal utility class for KeyVault Administration clients.
+ */
 class KeyVaultAdministrationUtil {
+    private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
 
     /**
      * Deserializes a given {@link Response HTTP response} including headers to a given class.
@@ -288,5 +302,58 @@ class KeyVaultAdministrationUtil {
         public T getValue() {
             return output;
         }
+    }
+
+    static LongRunningOperationStatus toLongRunningOperationStatus(String operationStatus) {
+        switch (operationStatus) {
+            case "inprogress":
+                return LongRunningOperationStatus.IN_PROGRESS;
+            case "succeeded":
+                return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+            case "failed":
+                return LongRunningOperationStatus.FAILED;
+            default:
+                // Should not reach here
+                return LongRunningOperationStatus.fromString("POLLING_FAILED", true);
+        }
+    }
+
+    static <O> KeyVaultLongRunningOperation transformToLongRunningOperation(O operation) {
+        if (operation instanceof RestoreOperation) {
+            RestoreOperation restoreOperation = (RestoreOperation) operation;
+
+            return new KeyVaultRestoreOperation(restoreOperation.getStatus(), restoreOperation.getStatusDetails(),
+                createKeyVaultErrorFromError(restoreOperation.getError()), restoreOperation.getJobId(),
+                longToOffsetDateTime(restoreOperation.getStartTime()),
+                longToOffsetDateTime(restoreOperation.getEndTime()));
+        } else if (operation instanceof SelectiveKeyRestoreOperation) {
+            SelectiveKeyRestoreOperation selectiveKeyRestoreOperation = (SelectiveKeyRestoreOperation) operation;
+
+            return new KeyVaultSelectiveKeyRestoreOperation(selectiveKeyRestoreOperation.getStatus(),
+                selectiveKeyRestoreOperation.getStatusDetails(),
+                createKeyVaultErrorFromError(selectiveKeyRestoreOperation.getError()),
+                selectiveKeyRestoreOperation.getJobId(),
+                longToOffsetDateTime(selectiveKeyRestoreOperation.getStartTime()),
+                longToOffsetDateTime(selectiveKeyRestoreOperation.getEndTime()));
+        } else if (operation instanceof FullBackupOperation) {
+            FullBackupOperation fullBackupOperation = (FullBackupOperation) operation;
+
+            return new KeyVaultBackupOperation(fullBackupOperation.getStatus(), fullBackupOperation.getStatusDetails(),
+                createKeyVaultErrorFromError(fullBackupOperation.getError()), fullBackupOperation.getJobId(),
+                longToOffsetDateTime(fullBackupOperation.getStartTime()),
+                longToOffsetDateTime(fullBackupOperation.getEndTime()),
+                fullBackupOperation.getAzureStorageBlobContainerUri());
+        } else {
+            throw new UnsupportedOperationException();
+        }
+    }
+
+    static OffsetDateTime longToOffsetDateTime(Long epochInSeconds) {
+        return epochInSeconds == null ? null
+            : OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochInSeconds), ZoneOffset.UTC);
+    }
+
+    static Context enableSyncRestProxy(Context context) {
+        return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }
 }

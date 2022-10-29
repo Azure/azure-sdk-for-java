@@ -169,9 +169,10 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleScope roleScope, Context context) {
+        final Context contextToUse = enableSyncRestProxy(context);
         return new PagedIterable<>(
-            () -> listRoleDefinitionsFirstPage(vaultUrl, roleScope, context),
-            continuationToken -> listRoleDefinitionsNextPage(continuationToken, context));
+            () -> listRoleDefinitionsFirstPage(vaultUrl, roleScope, contextToUse),
+            continuationToken -> listRoleDefinitionsNextPage(continuationToken, contextToUse));
     }
 
     /**
@@ -356,6 +357,7 @@ public final class KeyVaultAccessControlClient {
     public Response<KeyVaultRoleDefinition> setRoleDefinitionWithResponse(SetRoleDefinitionOptions options,
                                                                           Context context) {
         try {
+            context = enableSyncRestProxy(context);
             RoleDefinitionCreateParameters parameters = validateAndGetRoleDefinitionCreateParameters(options);
             try {
                 Response<RoleDefinition> roleDefinitionResponse = clientImpl.getRoleDefinitions()
@@ -440,6 +442,7 @@ public final class KeyVaultAccessControlClient {
         try {
             validateRoleDefinitionParameters(roleScope, roleDefinitionName);
             try {
+                context = enableSyncRestProxy(context);
                 Response<RoleDefinition> roleDefinitionResponse = clientImpl.getRoleDefinitions()
                     .getSyncWithResponse(vaultUrl, roleScope.toString(), roleDefinitionName,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
@@ -515,6 +518,7 @@ public final class KeyVaultAccessControlClient {
         try {
             validateRoleDefinitionParameters(roleScope, roleDefinitionName);
             try {
+                context = enableSyncRestProxy(context);
                 Response<RoleDefinition> roleDefinitionResponse = clientImpl.getRoleDefinitions()
                     .deleteSyncWithResponse(vaultUrl, roleScope.toString(), roleDefinitionName,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
@@ -588,8 +592,9 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleScope roleScope, Context context) {
+        final Context contextToUse = enableSyncRestProxy(context);
         return new PagedIterable<>(
-            () -> listRoleAssignmentsFirstPage(vaultUrl, roleScope, context),
+            () -> listRoleAssignmentsFirstPage(vaultUrl, roleScope, contextToUse),
             continuationToken -> listRoleAssignmentsNextPage(continuationToken, context));
     }
 
@@ -782,7 +787,7 @@ public final class KeyVaultAccessControlClient {
                                                                              Context context) {
         try {
             RoleAssignmentCreateParameters parameters = validateAndGetRoleAssignmentCreateParameters(roleScope, roleDefinitionId, principalId, roleAssignmentName);
-
+            context = enableSyncRestProxy(context);
             try {
                 Response<RoleAssignment> roleAssignmentResponse = clientImpl.getRoleAssignments()
                     .createSyncWithResponse(vaultUrl, roleScope.toString(), roleAssignmentName, parameters,
@@ -862,6 +867,7 @@ public final class KeyVaultAccessControlClient {
         try {
             validateRoleAssignmentParameters(roleScope, roleAssignmentName);
             try {
+                context = enableSyncRestProxy(context);
                 Response<RoleAssignment> roleAssignmentResponse = clientImpl.getRoleAssignments()
                     .getSyncWithResponse(vaultUrl, roleScope.toString(), roleAssignmentName,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
@@ -935,6 +941,7 @@ public final class KeyVaultAccessControlClient {
         try {
             validateRoleAssignmentParameters(roleScope, roleAssignmentName);
             try {
+                context = enableSyncRestProxy(context);
                 Response<RoleAssignment> roleAssignmentResponse = clientImpl.getRoleAssignments()
                     .deleteSyncWithResponse(vaultUrl, roleScope.toString(), roleAssignmentName,
                         context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));

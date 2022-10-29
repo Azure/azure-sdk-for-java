@@ -47,6 +47,7 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.*;
 import static com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils.createKeyVaultErrorFromError;
 
 /**
@@ -306,20 +307,6 @@ public final class KeyVaultBackupAsyncClient {
             toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)), response.getValue()));
     }
 
-    private static LongRunningOperationStatus toLongRunningOperationStatus(String operationStatus) {
-        switch (operationStatus) {
-            case "inprogress":
-                return LongRunningOperationStatus.IN_PROGRESS;
-            case "succeeded":
-                return LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
-            case "failed":
-                return LongRunningOperationStatus.FAILED;
-            default:
-                // Should not reach here
-                return LongRunningOperationStatus.fromString("POLLING_FAILED", true);
-        }
-    }
-
     /**
      * Initiates a full restore of the Key Vault.
      *
@@ -471,7 +458,7 @@ public final class KeyVaultBackupAsyncClient {
         };
     }
 
-    private static Mono<PollResponse<KeyVaultRestoreOperation>> processRestoreOperationResponse(
+    static Mono<PollResponse<KeyVaultRestoreOperation>> processRestoreOperationResponse(
         Response<KeyVaultRestoreOperation> response) {
 
         String operationStatus = response.getValue().getStatus().toLowerCase(Locale.US);
@@ -656,47 +643,12 @@ public final class KeyVaultBackupAsyncClient {
             toLongRunningOperationStatus(operationStatus.toLowerCase(Locale.US)), response.getValue()));
     }
 
-    private static <O> KeyVaultLongRunningOperation transformToLongRunningOperation(O operation) {
-        if (operation instanceof RestoreOperation) {
-            RestoreOperation restoreOperation = (RestoreOperation) operation;
-
-            return new KeyVaultRestoreOperation(restoreOperation.getStatus(), restoreOperation.getStatusDetails(),
-                createKeyVaultErrorFromError(restoreOperation.getError()), restoreOperation.getJobId(),
-                longToOffsetDateTime(restoreOperation.getStartTime()),
-                longToOffsetDateTime(restoreOperation.getEndTime()));
-        } else if (operation instanceof SelectiveKeyRestoreOperation) {
-            SelectiveKeyRestoreOperation selectiveKeyRestoreOperation = (SelectiveKeyRestoreOperation) operation;
-
-            return new KeyVaultSelectiveKeyRestoreOperation(selectiveKeyRestoreOperation.getStatus(),
-                selectiveKeyRestoreOperation.getStatusDetails(),
-                createKeyVaultErrorFromError(selectiveKeyRestoreOperation.getError()),
-                selectiveKeyRestoreOperation.getJobId(),
-                longToOffsetDateTime(selectiveKeyRestoreOperation.getStartTime()),
-                longToOffsetDateTime(selectiveKeyRestoreOperation.getEndTime()));
-        } else if (operation instanceof FullBackupOperation) {
-            FullBackupOperation fullBackupOperation = (FullBackupOperation) operation;
-
-            return new KeyVaultBackupOperation(fullBackupOperation.getStatus(), fullBackupOperation.getStatusDetails(),
-                createKeyVaultErrorFromError(fullBackupOperation.getError()), fullBackupOperation.getJobId(),
-                longToOffsetDateTime(fullBackupOperation.getStartTime()),
-                longToOffsetDateTime(fullBackupOperation.getEndTime()),
-                fullBackupOperation.getAzureStorageBlobContainerUri());
-        } else {
-            throw new UnsupportedOperationException();
-        }
-    }
-
-    private static KeyVaultLongRunningOperation restoreOperationToSelectiveKeyRestoreOperation(RestoreOperation operation) {
+    static KeyVaultLongRunningOperation restoreOperationToSelectiveKeyRestoreOperation(RestoreOperation operation) {
         return new KeyVaultSelectiveKeyRestoreOperation(operation.getStatus(),
             operation.getStatusDetails(),
             createKeyVaultErrorFromError(operation.getError()),
             operation.getJobId(),
             longToOffsetDateTime(operation.getStartTime()),
             longToOffsetDateTime(operation.getEndTime()));
-    }
-
-    private static OffsetDateTime longToOffsetDateTime(Long epochInSeconds) {
-        return epochInSeconds == null ? null
-            : OffsetDateTime.ofInstant(Instant.ofEpochSecond(epochInSeconds), ZoneOffset.UTC);
     }
 }
