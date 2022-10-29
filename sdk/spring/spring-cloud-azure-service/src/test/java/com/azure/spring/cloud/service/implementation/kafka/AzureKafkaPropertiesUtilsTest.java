@@ -30,6 +30,7 @@ class AzureKafkaPropertiesUtilsTest {
         configs.put(cloudType.propertyKey(), "AZURE_CHINA");
         return configs;
     }
+
     @Test
     void testConvertConfigMapToAzureProperties() {
         AzurePasswordlessProperties properties = new AzurePasswordlessProperties();
@@ -133,7 +134,6 @@ class AzureKafkaPropertiesUtilsTest {
                     assertEquals(mapping.getter().apply(properties), mapping.propertyKey() + ".test");
                 }
             });
-
     }
 
 }

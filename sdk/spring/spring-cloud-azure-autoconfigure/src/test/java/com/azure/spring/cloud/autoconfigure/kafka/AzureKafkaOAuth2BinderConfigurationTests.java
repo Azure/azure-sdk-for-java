@@ -24,16 +24,18 @@ import org.springframework.cloud.stream.binder.kafka.provisioning.KafkaTopicProv
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@SuppressWarnings("unchecked")
 class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2AutoConfigurationTests {
 
     private static final String SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX = "spring.cloud.stream.kafka.binder.configuration.";
@@ -62,27 +64,50 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     }
 
     @Test
-    @Disabled
-    void testNotBindKafkaBinderProperties() {
+    void testBindKafkaBinderProperties() {
         this.contextRunner
                 .withPropertyValues(
                         SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-client-id",
-                        SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id"
+                        SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id",
+                        SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-client-id",
+                        SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-producer-client-id",
+                        "spring.cloud.azure.credential.client-id=azure-client-id",
+                        "spring.kafka.bootstrap-servers=myehnamespace.servicebus.windows.net:9093"
                 )
                 .run(context -> {
-                    assertThat(context).hasSingleBean(AzureKafkaSpringCloudStreamConfiguration.class);
-                    assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
-                    assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
-                    assertThat(context).hasSingleBean(KafkaProperties.class);
+                    KafkaBinderConfigurationProperties kafkaProperties = context.getBean(KafkaBinderConfigurationProperties.class);
+                    Map<String, String> kafkaConfiguration = kafkaProperties.getConfiguration();
+                    assertFalse(kafkaConfiguration.containsKey(CLIENT_ID));
+                    assertTrue(kafkaConfiguration.get(SASL_JAAS_CONFIG).contains(CLIENT_ID + "=\"cloud-client-id\""));
 
-                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
-                    assertNull(kafkaProperties.getProperties().get(CLIENT_ID));
-                    assertNull(kafkaProperties.buildConsumerProperties().get(CLIENT_ID));
-                    assertNull(kafkaProperties.buildProducerProperties().get(CLIENT_ID));
+                    assertPropertiesConfigured(getAdminProperties(context), getAdminJaasProperties(context), CLIENT_ID, CLIENT_ID + "=\"cloud-client-id\"");
+                    assertPropertiesConfigured(getConsumerProperties(context), getConsumerJaasProperties(context), CLIENT_ID, CLIENT_ID + "=\"cloud-consumer-client-id\"");
+                    assertPropertiesConfigured(getProducerProperties(context), getProducerJaasProperties(context), CLIENT_ID, CLIENT_ID + "=\"cloud-client-id\"");
                 });
     }
 
     @Test
+    void testNotBindBinderPropertiesOnBoot() {
+        this.contextRunner
+                .withPropertyValues(
+                        SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-client-id",
+                        SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id",
+                        "spring.kafka.bootstrap-servers=myehnamespace.servicebus.windows.net:9093"
+                )
+                .run(context -> {
+                    KafkaProperties kafkaProperties = context.getBean(KafkaProperties.class);
+                    assertFalse(kafkaProperties.getProperties().containsKey(CLIENT_ID));
+                    assertFalse(kafkaProperties.buildConsumerProperties().containsKey(CLIENT_ID));
+                    assertFalse(kafkaProperties.getProducer().getProperties().get(SASL_JAAS_CONFIG).contains(CLIENT_ID));
+                    assertFalse(kafkaProperties.buildProducerProperties().containsKey(CLIENT_ID));
+                    assertFalse(kafkaProperties.getConsumer().getProperties().get(SASL_JAAS_CONFIG).contains(CLIENT_ID));
+                    assertFalse(kafkaProperties.buildAdminProperties().containsKey(CLIENT_ID));
+                    assertFalse(kafkaProperties.getAdmin().getProperties().get(SASL_JAAS_CONFIG).contains(CLIENT_ID));
+                });
+    }
+
+    @Test
+    @Disabled
     void testKafkaBinderPropertiesNotBindOnBoot() {
         this.contextRunner
             .withPropertyValues(
@@ -103,45 +128,7 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     @Disabled
-    void testBindKafkaBinderProperties() {
-        this.contextRunner
-                .withPropertyValues(
-                        SPRING_CLOUD_STREAM_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-client-id",
-                        SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + CLIENT_ID + "=cloud-consumer-client-id",
-                        SPRING_BOOT_KAFKA_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-client-id",
-                        SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX + CLIENT_ID + "=kafka-producer-client-id",
-                        "spring.cloud.azure.credential.client-id=azure-client-id"
-                )
-                .run(context -> {
-                    assertThat(context).hasSingleBean(AzureKafkaSpringCloudStreamConfiguration.class);
-                    assertThat(context).hasSingleBean(KafkaBinderConfigurationPropertiesBeanPostProcessor.class);
-                    assertThat(context).hasSingleBean(KafkaBinderConfigurationProperties.class);
-                    assertThat(context).hasSingleBean(KafkaTopicProvisioner.class);
-
-                    KafkaBinderConfigurationProperties kafkaProperties = context.getBean(KafkaBinderConfigurationProperties.class);
-
-                    Map<String, String> kafkaConfiguration = kafkaProperties.getConfiguration();
-                    assertEquals("cloud-client-id", kafkaConfiguration.get(CLIENT_ID));
-
-                    KafkaTopicProvisioner kafkaTopicProvisioner = context.getBean(KafkaTopicProvisioner.class);
-                    Map<String, Object> adminClientProperties = (Map<String, Object>) ReflectionTestUtils.getField(kafkaTopicProvisioner,
-                            "adminClientProperties");
-                    shouldConfigureOAuthProperties(adminClientProperties);
-
-                    Map<String, Object> consumerConfiguration = kafkaProperties.mergedConsumerConfiguration();
-                    assertEquals("cloud-consumer-client-id", consumerConfiguration.get(CLIENT_ID));
-                    shouldConfigureOAuthProperties(consumerConfiguration);
-
-                    Map<String, Object> producerConfiguration = kafkaProperties.mergedProducerConfiguration();
-                    assertEquals("kafka-producer-client-id", producerConfiguration.get(CLIENT_ID));
-                    shouldConfigureOAuthProperties(producerConfiguration);
-                });
-    }
-
-    @Test
-    @SuppressWarnings("unchecked")
     void testBindKafkaBinderJaasProperties() {
         this.contextRunner
             .withPropertyValues(
@@ -179,7 +166,7 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     }
 
     @Test
-    @SuppressWarnings("unchecked")
+    @Disabled
     void testBindKafkaBootJaasProperties() {
         this.contextRunner
             .withPropertyValues(
@@ -210,17 +197,17 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
     }
 
     @Test
-    @SuppressWarnings("unchecked")
-    void testOAuthConfiguredToCallbackHandlerWithKafkaBinderProperties() {
+    void testOAuth2ConfiguredToCallbackHandlerWithKafkaBinderProperties() {
         this.contextRunner
             .withPropertyValues(
-                String.format(JAAS_PROPERTY_FORMAT, SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX, MANAGED_IDENTITY_ENABLED, "true")
+                    SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX + MANAGED_IDENTITY_ENABLED + "=true"
+//                String.format(JAAS_PROPERTY_FORMAT, SPRING_CLOUD_STREAM_KAFKA_CONSUMER_PROPERTIES_PREFIX, MANAGED_IDENTITY_ENABLED, "true")
             )
             .run(context -> {
                 KafkaBinderConfigurationProperties kafkaProperties = context.getBean(KafkaBinderConfigurationProperties.class);
                 Map<String, Object> consumerConfiguration = kafkaProperties.mergedConsumerConfiguration();
                 HashMap<String, Object> modifiedConfigs = new HashMap<>(consumerConfiguration);
-                modifiedConfigs.put(BOOTSTRAP_SERVERS_CONFIG, List.of("myehnamespace.servicebus.windows.net:9093"));
+                modifiedConfigs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList("myehnamespace.servicebus.windows.net:9093"));
                 KafkaOAuth2AuthenticateCallbackHandler callbackHandler = new KafkaOAuth2AuthenticateCallbackHandler();
                 callbackHandler.configure(modifiedConfigs, null, null);
 
@@ -233,7 +220,7 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                 Map<String, Object> producerConfiguration = kafkaProperties.mergedProducerConfiguration();
                 modifiedConfigs.clear();
                 modifiedConfigs.putAll(producerConfiguration);
-                modifiedConfigs.put(BOOTSTRAP_SERVERS_CONFIG, List.of("myehnamespace.servicebus.windows.net:9093"));
+                modifiedConfigs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList("myehnamespace.servicebus.windows.net:9093"));
                 callbackHandler.configure(modifiedConfigs, null, null);
                 properties = (AzurePasswordlessProperties) ReflectionTestUtils.getField(callbackHandler, "properties");
                 azureTokenCredentialResolver =
@@ -252,4 +239,30 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
         return context.getBean(KafkaBinderConfigurationProperties.class).mergedProducerConfiguration();
     }
 
+    @Override
+    protected Map<String, Object> getAdminProperties(ApplicationContext context) {
+//        KafkaBinderConfigurationProperties configuration = context.getBean(KafkaBinderConfigurationProperties.class);
+//        KafkaProperties kafkaProperties = configuration.getKafkaProperties();
+//        Map<String, Object> adminProperties = kafkaProperties.buildAdminProperties();
+//        normalalizeBootPropsWithBinder(adminProperties, kafkaProperties, configuration);
+//        return adminProperties;
+        KafkaTopicProvisioner kafkaTopicProvisioner = context.getBean(KafkaTopicProvisioner.class);
+        return (Map<String, Object>) ReflectionTestUtils.getField(kafkaTopicProvisioner,
+                "adminClientProperties");
+    }
+
+    @Override
+    protected String getProducerJaasProperties(ApplicationContext context) {
+        return (String) getProducerProperties(context).get(SASL_JAAS_CONFIG);
+    }
+
+    @Override
+    protected String getConsumerJaasProperties(ApplicationContext context) {
+        return (String) getConsumerProperties(context).get(SASL_JAAS_CONFIG);
+    }
+
+    @Override
+    protected String getAdminJaasProperties(ApplicationContext context) {
+        return (String) getAdminProperties(context).get(SASL_JAAS_CONFIG);
+    }
 }

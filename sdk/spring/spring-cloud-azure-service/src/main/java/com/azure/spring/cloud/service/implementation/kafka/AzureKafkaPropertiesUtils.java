@@ -41,6 +41,7 @@ public final class AzureKafkaPropertiesUtils {
 
     public static void convertAzurePropertiesToConfigMap(AzurePasswordlessProperties source,
                                                          Map<String, String> target) {
+        //TODO(yiliu6): used only in tests now, remove it after merged with passwordless-branch
         for (Mapping m : Mapping.values()) {
             PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> target.putIfAbsent(m.propertyKey, p));
         }
@@ -71,6 +72,18 @@ public final class AzureKafkaPropertiesUtils {
             PROPERTY_MAPPER.from(m.getter.apply(source)).to(p -> builder.append(String.format(JAAS_KEY_VALUE_PATTERN, m.propertyKey, p)));
         }
         return builder.append(";").toString();
+    }
+
+    public static void clearAzureProperties(Map<String, ?> source) {
+        for (Mapping m : Mapping.values()) {
+            source.remove(m.propertyKey);
+        }
+    }
+
+    public static void copyAzureProperties(Map<String, ?> source, Map<String, Object> target) {
+        for (Mapping m : Mapping.values()) {
+            PROPERTY_MAPPER.from(source.get(m.propertyKey)).to(p -> target.putIfAbsent(m.propertyKey, p));
+        }
     }
 
     enum Mapping {
