@@ -19,7 +19,14 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.administration.implementation.KeyVaultBackupClientImpl;
 import com.azure.security.keyvault.administration.implementation.KeyVaultBackupClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
-import com.azure.security.keyvault.administration.implementation.models.*;
+import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
+import com.azure.security.keyvault.administration.implementation.models.RestoreOperationParameters;
+import com.azure.security.keyvault.administration.implementation.models.SASTokenParameter;
+import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationParameters;
+import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
+import com.azure.security.keyvault.administration.implementation.models.FullBackupResponse;
+import com.azure.security.keyvault.administration.implementation.models.FullRestoreOperationResponse;
+import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationResponse;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultRestoreOperation;
@@ -34,8 +41,10 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.*;
-import static com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.*;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.enableSyncRestProxy;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToLongRunningOperation;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
+import static com.azure.security.keyvault.administration.KeyVaultBackupAsyncClient.restoreOperationToSelectiveKeyRestoreOperation;
 
 /**
  * The {@link KeyVaultBackupClient} provides synchronous methods to perform backup and restore operations of an Azure
@@ -69,7 +78,7 @@ public final class KeyVaultBackupClient {
     /**
      * The logger to be used.
      */
-    private final ClientLogger logger = new ClientLogger(KeyVaultBackupAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(KeyVaultBackupClient.class);
 
     /**
      * The underlying AutoRest client used to interact with the Key Vault service.

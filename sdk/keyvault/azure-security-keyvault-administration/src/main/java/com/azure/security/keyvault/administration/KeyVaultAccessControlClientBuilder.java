@@ -23,9 +23,13 @@ import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
-import com.azure.core.util.*;
+import com.azure.core.util.ClientOptions;
+import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.builder.ClientBuilderUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.ServiceVersion;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 
@@ -125,7 +129,7 @@ public final class KeyVaultAccessControlClientBuilder implements
         if (pipeline != null) {
             return new KeyVaultAccessControlClient(vaultUrl, pipeline, serviceVersion);
         }
-        HttpPipeline buildPipeline = buildPipeline(buildConfiguration, serviceVersion);
+        HttpPipeline buildPipeline = getPipeline(buildConfiguration, serviceVersion);
         return new KeyVaultAccessControlClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
@@ -149,7 +153,7 @@ public final class KeyVaultAccessControlClientBuilder implements
         if (pipeline != null) {
             return new KeyVaultAccessControlAsyncClient(vaultUrl, pipeline, serviceVersion);
         }
-        HttpPipeline buildPipeline = buildPipeline(buildConfiguration, serviceVersion);
+        HttpPipeline buildPipeline = getPipeline(buildConfiguration, serviceVersion);
         return new KeyVaultAccessControlAsyncClient(vaultUrl, buildPipeline, serviceVersion);
     }
 
@@ -174,7 +178,7 @@ public final class KeyVaultAccessControlClientBuilder implements
     }
 
 
-    private HttpPipeline buildPipeline(Configuration buildConfiguration, ServiceVersion serviceVersion) {
+    private HttpPipeline getPipeline(Configuration buildConfiguration, ServiceVersion serviceVersion) {
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 

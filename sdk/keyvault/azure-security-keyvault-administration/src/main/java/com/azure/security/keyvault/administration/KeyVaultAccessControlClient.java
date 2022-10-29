@@ -17,7 +17,11 @@ import com.azure.security.keyvault.administration.implementation.KeyVaultAccessC
 import com.azure.security.keyvault.administration.implementation.KeyVaultAccessControlClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
-import com.azure.security.keyvault.administration.implementation.models.*;
+import com.azure.security.keyvault.administration.implementation.models.KeyVaultErrorException;
+import com.azure.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
+import com.azure.security.keyvault.administration.implementation.models.RoleDefinitionCreateParameters;
+import com.azure.security.keyvault.administration.implementation.models.RoleAssignment;
+import com.azure.security.keyvault.administration.implementation.models.RoleDefinition;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleAssignment;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
@@ -30,7 +34,12 @@ import java.util.Objects;
 import java.util.UUID;
 
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.*;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.enableSyncRestProxy;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleDefinitionParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleDefinitionCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleAssignmentCreateParameters;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.swallowExceptionForStatusCodeSync;
 
 /**
  * The {@link KeyVaultAccessControlClient} provides synchronous methods to view and manage Role Based Access for the
@@ -61,7 +70,7 @@ public final class KeyVaultAccessControlClient {
     /**
      * The logger to be used.
      */
-    private final ClientLogger logger = new ClientLogger(KeyVaultAccessControlAsyncClient.class);
+    private final ClientLogger logger = new ClientLogger(KeyVaultAccessControlClient.class);
 
     /**
      * The underlying AutoRest client used to interact with the Key Vault service.
@@ -202,7 +211,7 @@ public final class KeyVaultAccessControlClient {
                         context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
                 return KeyVaultAdministrationUtil.transformRoleDefinitionsPagedResponse(roleDefinitionPagedResponse);
             } catch (KeyVaultErrorException e) {
-                throw KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e);
+                throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
             }
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
@@ -231,7 +240,7 @@ public final class KeyVaultAccessControlClient {
                         KEYVAULT_TRACING_NAMESPACE_VALUE));
                 return KeyVaultAdministrationUtil.transformRoleDefinitionsPagedResponse(roleDefinitionPagedResponse);
             } catch (KeyVaultErrorException e) {
-                throw KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e);
+                throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
             }
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
@@ -366,7 +375,7 @@ public final class KeyVaultAccessControlClient {
                         context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
                 return KeyVaultAdministrationUtil.transformRoleDefinitionResponse(roleDefinitionResponse);
             } catch (KeyVaultErrorException e) {
-                throw KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e);
+                throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
             }
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
@@ -448,7 +457,7 @@ public final class KeyVaultAccessControlClient {
                         context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
                 return KeyVaultAdministrationUtil.transformRoleDefinitionResponse(roleDefinitionResponse);
             } catch (KeyVaultErrorException e) {
-                throw KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e);
+                throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
             }
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
@@ -625,7 +634,7 @@ public final class KeyVaultAccessControlClient {
                         context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
                 return KeyVaultAdministrationUtil.transformRoleAssignmentsPagedResponse(roleAssignmentPagedResponse);
             } catch (KeyVaultErrorException e) {
-                throw KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e);
+                throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
             }
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
@@ -653,7 +662,7 @@ public final class KeyVaultAccessControlClient {
                         context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
                 return KeyVaultAdministrationUtil.transformRoleAssignmentsPagedResponse(roleAssignmentPagedResponse);
             } catch (KeyVaultErrorException e) {
-                throw KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e);
+                throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
             }
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
@@ -794,7 +803,7 @@ public final class KeyVaultAccessControlClient {
                         context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
                 return KeyVaultAdministrationUtil.transformRoleAssignmentResponse(roleAssignmentResponse);
             } catch (KeyVaultErrorException e) {
-                throw KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e);
+                throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
             }
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);
@@ -873,7 +882,7 @@ public final class KeyVaultAccessControlClient {
                         context.addData(AZ_TRACING_NAMESPACE_KEY, KEYVAULT_TRACING_NAMESPACE_VALUE));
                 return KeyVaultAdministrationUtil.transformRoleAssignmentResponse(roleAssignmentResponse);
             } catch (KeyVaultErrorException e) {
-                throw KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e);
+                throw logger.logExceptionAsError(KeyVaultAdministrationUtils.toKeyVaultAdministrationException(e));
             }
         } catch (RuntimeException e) {
             throw logger.logExceptionAsError(e);

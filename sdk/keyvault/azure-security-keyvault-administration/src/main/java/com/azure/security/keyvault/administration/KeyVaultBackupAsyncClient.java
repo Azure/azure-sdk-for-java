@@ -19,11 +19,9 @@ import com.azure.core.util.polling.PollingContext;
 import com.azure.security.keyvault.administration.implementation.KeyVaultBackupClientImpl;
 import com.azure.security.keyvault.administration.implementation.KeyVaultBackupClientImplBuilder;
 import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
-import com.azure.security.keyvault.administration.implementation.models.FullBackupOperation;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperation;
 import com.azure.security.keyvault.administration.implementation.models.RestoreOperationParameters;
 import com.azure.security.keyvault.administration.implementation.models.SASTokenParameter;
-import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperation;
 import com.azure.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationParameters;
 import com.azure.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
@@ -37,9 +35,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.URL;
 import java.time.Duration;
-import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneOffset;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Function;
@@ -47,7 +42,9 @@ import java.util.function.Function;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
-import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.*;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.transformToLongRunningOperation;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
+import static com.azure.security.keyvault.administration.KeyVaultAdministrationUtil.longToOffsetDateTime;
 import static com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationUtils.createKeyVaultErrorFromError;
 
 /**
