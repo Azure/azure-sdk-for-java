@@ -1,8 +1,7 @@
 package com.azure.messaging.servicebus.administration;
 
-import com.azure.core.exception.ClientAuthenticationException;
-import com.azure.core.exception.ResourceExistsException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.FixedDelayOptions;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -10,16 +9,44 @@ import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
+import com.azure.core.test.TestMode;
+import com.azure.core.test.implementation.TestingHelpers;
 import com.azure.messaging.servicebus.TestUtils;
-import com.azure.messaging.servicebus.administration.models.*;
+import com.azure.messaging.servicebus.administration.implementation.models.ServiceBusManagementErrorException;
+import com.azure.messaging.servicebus.administration.models.AccessRights;
+import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
+import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
+import com.azure.messaging.servicebus.administration.models.CreateSubscriptionOptions;
+import com.azure.messaging.servicebus.administration.models.CreateTopicOptions;
+import com.azure.messaging.servicebus.administration.models.EmptyRuleAction;
+import com.azure.messaging.servicebus.administration.models.EntityStatus;
+import com.azure.messaging.servicebus.administration.models.FalseRuleFilter;
+import com.azure.messaging.servicebus.administration.models.NamespaceProperties;
+import com.azure.messaging.servicebus.administration.models.NamespaceType;
+import com.azure.messaging.servicebus.administration.models.QueueProperties;
+import com.azure.messaging.servicebus.administration.models.QueueRuntimeProperties;
+import com.azure.messaging.servicebus.administration.models.RuleProperties;
+import com.azure.messaging.servicebus.administration.models.SharedAccessAuthorizationRule;
+import com.azure.messaging.servicebus.administration.models.SqlRuleAction;
+import com.azure.messaging.servicebus.administration.models.SqlRuleFilter;
+import com.azure.messaging.servicebus.administration.models.SubscriptionProperties;
+import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeProperties;
+import com.azure.messaging.servicebus.administration.models.TopicProperties;
+import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
+import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import java.time.Clock;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 import static com.azure.messaging.servicebus.TestUtils.*;
@@ -31,6 +58,44 @@ import static org.junit.jupiter.api.Assertions.*;
 @Tag("integration")
 public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(20);
+
+    //@AfterAll
+    static void cleanup() {
+
+        if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {
+            return;
+        }
+        final ServiceBusAdministrationClient client = new ServiceBusAdministrationClientBuilder()
+            .connectionString(getConnectionString(false))
+            .buildClient();
+        // Clear all queues
+        client.listQueues().stream()
+            .filter(queueProperties -> !queueProperties.getName().toLowerCase(Locale.ROOT)
+                                        .equals(getEntityName(getQueueBaseName(), 5)))
+            .forEach(property -> client.deleteQueue(property.getName()));
+
+        //Clear all topics
+        client.listTopics().stream()
+            .filter(properties -> !(properties.getName().toLowerCase(Locale.ROOT)
+                .equals(getEntityName(getTopicBaseName(), 2))
+            || properties.getName().toLowerCase(Locale.ROOT)
+                .equals(getEntityName(getTopicBaseName(), 1))))
+            .forEach(property -> client.deleteTopic(property.getName()));
+
+        //Clear all subscriptions
+        final String topicName = getEntityName(getTopicBaseName(), 2);
+        client.listSubscriptions(topicName).stream()
+            .filter(properties -> !properties.getSubscriptionName().toLowerCase(Locale.ROOT)
+                .equals(getEntityName(getSubscriptionBaseName(), 2)))
+            .forEach(property -> client.deleteSubscription(topicName, property.getSubscriptionName()));
+
+        //Clear rules in subscription
+        final String subscriptionName = getEntityName(getSubscriptionBaseName(), 2);
+        client.listRules(topicName, subscriptionName).stream()
+            .filter(properties -> !properties.getName().toLowerCase(Locale.ROOT)
+                .equals(getEntityName(getRuleBaseName(), 2)))
+            .forEach(property -> client.deleteRule(topicName, subscriptionName, property.getName()));
+    }
 
     @Test
     void createQueue() {
@@ -53,7 +118,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             .setMaxSizeInMegabytes(1024)
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
-            .setSessionRequired(true)
             .setDuplicateDetectionRequired(true)
             .setDuplicateDetectionHistoryTimeWindow(Duration.ofMinutes(2))
             .setUserMetadata("some-metadata-for-testing")
@@ -73,7 +137,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertEquals(expected.isDeadLetteringOnMessageExpiration(), actual.isDeadLetteringOnMessageExpiration());
         assertEquals(expected.isPartitioningEnabled(), actual.isPartitioningEnabled());
         assertEquals(expected.isDuplicateDetectionRequired(), actual.isDuplicateDetectionRequired());
-        assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
 
         assertEquals(expected.getForwardTo(), actual.getForwardTo());
         assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
@@ -84,6 +147,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertEquals(0, runtimeProperties.getTotalMessageCount());
         assertEquals(0, runtimeProperties.getSizeInBytes());
         assertNotNull(runtimeProperties.getCreatedAt());
+
+        //cleanup
+        //client.deleteQueue(queueName);
     }
 
     @Test
@@ -113,6 +179,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertEquals(0, runtimeProperties.getSubscriptionCount());
         assertEquals(0, runtimeProperties.getSizeInBytes());
         assertNotNull(runtimeProperties.getCreatedAt());
+
+        //client.deleteTopic(topicName);
     }
 
     @Test
@@ -124,7 +192,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         final String forwardToTopic = interceptorManager.isPlaybackMode()
             ? "topic-1"
             : getEntityName(getTopicBaseName(), 1);
-        final String subscriptionName = testResourceNamer.randomName(getSubscriptionBaseName(), 1);
+        final String subscriptionName = testResourceNamer.randomName(getSubscriptionBaseName(), 10);
         final CreateSubscriptionOptions expected = new CreateSubscriptionOptions()
             .setMaxDeliveryCount(7)
             .setLockDuration(Duration.ofSeconds(45))
@@ -144,14 +212,13 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertEquals(expected.isSessionRequired(), actual.isSessionRequired());
         assertEquals(expected.getForwardTo(), actual.getForwardTo());
         assertEquals(expected.getForwardDeadLetteredMessagesTo(), actual.getForwardDeadLetteredMessagesTo());
-
     }
 
     @Test
     void createRule() {
         final ServiceBusAdministrationClient client = getClient();
 
-        final String ruleName = testResourceNamer.randomName("rule", 100);
+        final String ruleName = testResourceNamer.randomName("rule", 5);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
@@ -163,7 +230,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             .setAction(action)
             .setFilter(new FalseRuleFilter());
 
-        final RuleProperties actual = client.createRule(topicName, subscriptionName, ruleName, options);
+        final RuleProperties actual = client.createRule(topicName, ruleName, subscriptionName, options);
         assertNotNull(actual);
         assertEquals(ruleName, actual.getName());
         assertNotNull(actual.getAction());
@@ -179,7 +246,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void createRuleDefaults() {
         final ServiceBusAdministrationClient client = getClient();
 
-        final String ruleName = testResourceNamer.randomName("rule", 101);
+        final String ruleName = testResourceNamer.randomName("rule", 7);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
@@ -197,19 +264,15 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void createRuleResponse() {
         final ServiceBusAdministrationClient client = getClient();
 
-        final String ruleName = testResourceNamer.randomName("rule", 102);
+        final String ruleName = testResourceNamer.randomName("rule", 7);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
         final String subscriptionName = interceptorManager.isPlaybackMode()
             ? "subscription-2"
             : getEntityName(getSubscriptionBaseName(), 2);
-        final SqlRuleFilter filter = !interceptorManager.isLiveMode()
-            ? new SqlRuleFilter("sys.To=[parameters('bar')] OR sys.MessageId IS NULL")
-            : new SqlRuleFilter("sys.To='foo' OR sys.MessageId IS NULL");
-        if (!interceptorManager.isLiveMode()) {
-            filter.getParameters().put("bar", "foo");
-        }
+        final SqlRuleFilter filter = new SqlRuleFilter("sys.To='foo' OR sys.MessageId IS NULL");
+
         final CreateRuleOptions options = new CreateRuleOptions()
             .setAction(new EmptyRuleAction())
             .setFilter(filter);
@@ -236,12 +299,14 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void createQueueExistingName() {
         final String queueName = interceptorManager.isPlaybackMode()
             ? "queue-5"
-            : getEntityName(TestUtils.getQueueBaseName(), 5);
+            : getEntityName(getQueueBaseName(), 5);
         final CreateQueueOptions options = new CreateQueueOptions();
         final ServiceBusAdministrationClient client = getClient();
 
-        assertThrows(ResourceExistsException.class, () -> client.createQueue(queueName, options),
+        ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
+            () -> client.createQueue(queueName, options),
             "Queue exists exception not thrown when creating a queue with existing name");
+        assertTrue(exception.getMessage().contains("409"));
     }
 
     @Test
@@ -254,8 +319,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getSubscriptionBaseName(), 2);
         final ServiceBusAdministrationClient client = getClient();
 
-        assertThrows(ResourceExistsException.class, () ->client.createSubscription(topicName, subscriptionName),
+        ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
+            () ->client.createSubscription(topicName, subscriptionName),
             "Queue exists exception not thrown when creating a queue with existing name");
+        assertTrue(exception.getMessage().contains("409"));
     }
 
     @Test
@@ -288,55 +355,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertTrue(rule.getAction() instanceof SqlRuleAction);
         assertEquals(expectedAction.getSqlExpression(),
             ((SqlRuleAction) rule.getAction()).getSqlExpression());
-    }
-
-    @Test
-    void deleteQueue() {
-        final ServiceBusAdministrationClient client = getClient();
-        final String queueName = testResourceNamer.randomName(getQueueBaseName(), 9);
-        client.createQueue(queueName);
-
-        client.deleteQueue(queueName);
-    }
-
-    @Test
-    void deleteTopic() {
-        final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-9"
-            : getEntityName(getTopicBaseName(), 9);
-        client.createTopic(topicName);
-
-        client.deleteTopic(topicName);
-    }
-
-    @Test
-    void deleteSubscription() {
-        final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-2"
-            : getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-9"
-            : getEntityName(getSubscriptionBaseName(), 9);
-        client.createSubscription(topicName, subscriptionName);
-
-        client.deleteSubscription(topicName, subscriptionName);
-    }
-
-    @Test
-    void deleteRule() {
-        final ServiceBusAdministrationClient client = getClient();
-        final String ruleName = testResourceNamer.randomName("rule-", 9);
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-2"
-            : getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-2"
-            : getEntityName(getSubscriptionBaseName(), 2);
-        client.createRule(topicName, subscriptionName, ruleName);
-
-        client.deleteRule(topicName, subscriptionName, ruleName);
     }
 
     @Test
@@ -512,7 +530,7 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertEquals(topicName, properties.getTopicName());
         assertEquals(subscriptionName, properties.getSubscriptionName());
 
-        assertTrue(properties.isSessionRequired());
+        assertFalse(properties.isSessionRequired());
         assertNotNull(properties.getLockDuration());
 
         final SubscriptionRuntimeProperties runtimeProperties = new SubscriptionRuntimeProperties(properties);
@@ -531,8 +549,10 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "subscription-99"
             : getEntityName(getSubscriptionBaseName(), 99);
 
-        assertThrows(ResourceNotFoundException.class, () -> client.getSubscription(topicName, subscriptionName),
+        ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
+            () ->  client.getSubscription(topicName, subscriptionName),
             "Subscription exists! But should not. Incorrect getSubscription behavior");
+        assertTrue(exception.getMessage().contains("Status code 404"));
     }
 
     @Test
@@ -546,19 +566,6 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             : getEntityName(getSubscriptionBaseName(), 2);
 
         assertTrue(client.getSubscriptionExists(topicName, subscriptionName));
-    }
-
-    @Test
-    void getSubscriptionExistsFalse() {
-        final ServiceBusAdministrationClient client = getClient();
-        final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-2"
-            : getEntityName(getTopicBaseName(), 2);
-        final String subscriptionName = interceptorManager.isPlaybackMode()
-            ? "subscription-99"
-            : getEntityName(getSubscriptionBaseName(), 99);
-
-        assertFalse(client.getSubscriptionExists(topicName, subscriptionName));
     }
 
     @Test
@@ -615,17 +622,19 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
             ? "subscription-2"
             : getEntityName(getSubscriptionBaseName(), 2);
 
-        assertThrows(ClientAuthenticationException.class, () ->
-                client.getSubscriptionRuntimeProperties(topicName, subscriptionName),
+        ServiceBusManagementErrorException exception = assertThrows(ServiceBusManagementErrorException.class,
+            () -> client.getSubscriptionRuntimeProperties(topicName, subscriptionName),
             "Subscription runtime properties accessible by unauthorized client! This should not be possible.");
+        assertTrue(exception.getMessage().contains("Status code 401"));
     }
 
     @Test
     void getRule() {
         final ServiceBusAdministrationClient client = getClient();
 
-        // There is a single default rule created.
-        final String ruleName = "$Default";
+        final String ruleName = interceptorManager.isPlaybackMode()
+            ? "rule-2"
+            : getEntityName(getRuleBaseName(), 2);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
@@ -641,10 +650,66 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         assertNotNull(contents);
         assertEquals(ruleName, contents.getName());
         assertNotNull(contents.getFilter());
-        assertTrue(contents.getFilter() instanceof TrueRuleFilter);
+        assertTrue(contents.getFilter() instanceof SqlRuleFilter);
 
         assertNotNull(contents.getAction());
         assertTrue(contents.getAction() instanceof EmptyRuleAction);
+    }
+
+
+    @Test
+    void deleteQueue() {
+        final ServiceBusAdministrationClient client = getClient();
+        final String queueName = interceptorManager.isPlaybackMode()
+            ? "queue-9"
+            : getEntityName(getQueueBaseName(), 9);
+
+        client.createQueue(queueName);
+
+        client.deleteQueue(queueName);
+    }
+
+    @Test
+    void deleteRule() {
+        final ServiceBusAdministrationClient client = getClient();
+        final String ruleName = interceptorManager.isPlaybackMode()
+            ? "rule-9"
+            : getEntityName(getRuleBaseName(), 9);
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-2"
+            : getEntityName(getTopicBaseName(), 2);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription-2"
+            : getEntityName(getSubscriptionBaseName(), 2);
+        client.createRule(topicName, subscriptionName, ruleName);
+
+        client.deleteRule(topicName, subscriptionName, ruleName);
+    }
+
+    @Test
+    void deleteSubscription() {
+        final ServiceBusAdministrationClient client = getClient();
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-2"
+            : getEntityName(getTopicBaseName(), 2);
+        final String subscriptionName = interceptorManager.isPlaybackMode()
+            ? "subscription-9"
+            : getEntityName(getSubscriptionBaseName(), 9);
+
+        client.createSubscription(topicName, subscriptionName);
+
+        client.deleteSubscription(topicName, subscriptionName);
+    }
+
+    @Test
+    void deleteTopic() {
+        final ServiceBusAdministrationClient client = getClient();
+        final String topicName = interceptorManager.isPlaybackMode()
+            ? "topic-9"
+            : getEntityName(getTopicBaseName(), 9);
+        client.createTopic(topicName);
+
+        client.deleteTopic(topicName);
     }
 
     // List Methods
@@ -655,10 +720,9 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
 
         PagedIterable<QueueProperties> queueProperties = client.listQueues();
         queueProperties.forEach(queueDescription -> {
-                assertNotNull(queueDescription.getName());
-                assertTrue(queueDescription.isBatchedOperationsEnabled());
-                assertFalse(queueDescription.isDuplicateDetectionRequired());
-                assertFalse(queueDescription.isPartitioningEnabled());
+            assertNotNull(queueDescription.getName());
+            assertTrue(queueDescription.getMaxDeliveryCount() > 0);
+            assertSame(queueDescription.getStatus(), EntityStatus.ACTIVE);
         });
         assertTrue(queueProperties.stream().findAny().isPresent());
     }
@@ -680,22 +744,24 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     void listSubscriptions() {
         final ServiceBusAdministrationClient client = getClient();
         final String topicName = interceptorManager.isPlaybackMode()
-            ? "topic-1"
-            : getEntityName(getTopicBaseName(), 1);
+            ? "topic-2"
+            : getEntityName(getTopicBaseName(), 2);
 
         PagedIterable<SubscriptionProperties> subscriptionProperties = client.listSubscriptions(topicName);
         subscriptionProperties.forEach(subscription -> {
             assertEquals(topicName, subscription.getTopicName());
             assertNotNull(subscription.getSubscriptionName());
         });
-        assertEquals(subscriptionProperties.stream().count(), 1);
+        assertTrue(subscriptionProperties.stream().findAny().isPresent());
     }
 
     @Test
     void listRules() {
         final ServiceBusAdministrationClient client = getClient();
 
-        final String ruleName = "rule-2";
+        final String ruleName = interceptorManager.isPlaybackMode()
+            ? "rule-2"
+            : getEntityName(getRuleBaseName(), 2);
         final String topicName = interceptorManager.isPlaybackMode()
             ? "topic-2"
             : getEntityName(getTopicBaseName(), 2);
@@ -706,7 +772,8 @@ public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
         PagedIterable<RuleProperties> ruleProperties = client.listRules(topicName, subscriptionName);
 
         assertTrue(ruleProperties.stream().findAny().isPresent());
-        Optional<RuleProperties> ruleOptional = ruleProperties.stream().findFirst();
+        Optional<RuleProperties> ruleOptional = ruleProperties.stream()
+            .filter(rule1 -> rule1.getName().equals(ruleName)).findFirst();
         assertTrue(ruleOptional.isPresent());
         RuleProperties rule = ruleOptional.get();
 
