@@ -16,4 +16,14 @@ public class FakeCredentialInTest {
      * Password placeholder
      */
     public static final String PASSWORD_PLACEHOLDER = "password";
+
+    /**
+     * Client ID placeholder
+     */
+    public static final String CLIENT_ID_PLACEHOLDER = "client-id";
+
+    /**
+     * Secret placeholder
+     */
+    public static final String SECRET = "secret";
 }
