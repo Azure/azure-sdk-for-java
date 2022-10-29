@@ -43,19 +43,19 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
     private final ProxyOptions proxyOptions;
     private final String fullyQualifiedNamespace;
     /**
-     * The value of 'host-name:port' field for the 'HTTP CONNECT host-name:port HTTP/1.1'
+     * The value of 'hostname:port' field for the 'HTTP CONNECT hostname:port HTTP/1.1'
      * request to the Proxy.
      * e.g.
      *   CONNECT &lt;eventubs-namespace&gt;.servicebus.windows.net:443 HTTP/1.1 <br/>
      *   CONNECT order-events.contoso.com:443 HTTP/1.1 <br/>
      *   CONNECT shipping-events.contoso.com:200 HTTP/1.1 <br/>
      *
-     * The 'host-name' addresses the target host to which the HTTP Proxy server should forward
+     * The 'hostname' addresses the target host to which the HTTP Proxy server should forward
      * the connection. It is usually the FQDN of the Event Hubs or Service Bus, or the host
      * part of CustomEndpointAddress when a custom endpoint frontends the Event Hubs
      * or Service Bus.
      */
-    private final String connectHostAndPort;
+    private final String connectHostNameAndPort;
 
     /**
      * Creates a handler that handles proton-j's connection through a proxy using web sockets.
@@ -74,7 +74,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
-        this.connectHostAndPort = connectionOptions.getHostname() + ":" + connectionOptions.getPort();
+        this.connectHostNameAndPort = connectionOptions.getHostname() + ":" + connectionOptions.getPort();
 
         if (proxyOptions.isProxyAddressConfigured()) {
             this.proxyHostAddress = (InetSocketAddress) proxyOptions.getProxyAddress().address();
@@ -207,12 +207,12 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             : new ProxyImpl();
 
         final ProxyHandler proxyHandler = new ProxyHandlerImpl();
-        proxy.configure(connectHostAndPort, null, proxyHandler, transport);
+        proxy.configure(connectHostNameAndPort, null, proxyHandler, transport);
 
         transport.addTransportLayer(proxy);
 
         logger.atInfo()
-            .addKeyValue(HOSTNAME_KEY, connectHostAndPort)
+            .addKeyValue(HOSTNAME_KEY, connectHostNameAndPort)
             .log("addProxyHandshake");
     }
 
