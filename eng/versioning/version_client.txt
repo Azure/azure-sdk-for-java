@@ -64,7 +64,7 @@ com.azure:azure-communication-common;1.2.2;1.3.0-beta.2
 com.azure:azure-communication-common-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-sms;1.1.7;1.2.0-beta.1
 com.azure:azure-communication-identity;1.4.0;1.5.0-beta.1
-com.azure:azure-communication-phonenumbers;1.0.15;1.1.0-beta.12
+com.azure:azure-communication-phonenumbers;1.0.16;1.1.0-beta.12
 com.azure:azure-communication-networktraversal;1.1.0-beta.2;1.1.0-beta.3
 com.azure:azure-communication-jobrouter;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-communication-rooms;1.0.0-beta.2;1.0.0-beta.3
@@ -124,7 +124,7 @@ com.azure:azure-messaging-eventhubs-checkpointstore-jedis;1.0.0-beta.1;1.0.0-bet
 com.azure:azure-messaging-eventhubs-stress;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-eventhubs-track2-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure:azure-messaging-servicebus;7.12.0;7.13.0-beta.1
+com.azure:azure-messaging-servicebus;7.12.1;7.13.0-beta.1
 com.azure:azure-messaging-servicebus-track1-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-servicebus-track2-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-messaging-webpubsub;1.1.7;1.2.0-beta.1
@@ -137,7 +137,7 @@ com.azure:azure-monitor-query;1.0.11;1.1.0-beta.1
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-search-documents;11.5.0;11.6.0-beta.3
+com.azure:azure-search-documents;11.5.1;11.6.0-beta.3
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.1.7;1.2.0-beta.1
 com.azure:azure-security-confidentialledger;1.0.3;1.1.0-beta.1
@@ -224,32 +224,32 @@ com.azure.spring:spring-cloud-azure-stream-binder-servicebus-core;4.4.0;4.5.0-be
 com.azure.spring:spring-cloud-azure-stream-binder-servicebus;4.4.0;4.5.0-beta.2
 com.azure.spring:spring-cloud-azure-trace-sleuth;4.4.0;4.5.0-beta.2
 com.azure.spring:spring-cloud-azure-native-configuration;4.0.0-beta.1;4.0.0-beta.2
-com.azure.resourcemanager:azure-resourcemanager;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-appplatform;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-appservice;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-authorization;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-cdn;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-compute;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-containerservice;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-cosmos;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-dns;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-keyvault;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-monitor;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-msi;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-network;2.19.0;2.20.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-appplatform;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-appservice;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-authorization;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-cdn;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-compute;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-containerinstance;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-containerregistry;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-containerservice;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-cosmos;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-dns;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-eventhubs;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-keyvault;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-monitor;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-msi;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-network;2.20.0;2.21.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-perf;1.0.0-beta.1;1.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-privatedns;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-resources;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-redis;2.19.0;2.20.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-privatedns;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-resources;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-redis;2.20.0;2.21.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-samples;2.0.0-beta.1;2.0.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-search;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-servicebus;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-sql;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-storage;2.19.0;2.20.0-beta.1
-com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.19.0;2.20.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-search;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-servicebus;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-sql;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-storage;2.20.0;2.21.0-beta.1
+com.azure.resourcemanager:azure-resourcemanager-trafficmanager;2.20.0;2.21.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-test;2.0.0-beta.1;2.0.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mediaservices;2.2.0;2.3.0-beta.1
 com.azure.resourcemanager:azure-resourcemanager-mysql;1.0.2;1.1.0-beta.1
@@ -395,7 +395,9 @@ com.azure.tools:azure-sdk-build-tool;1.0.0-beta.1;1.0.0-beta.2
 # In the pom, the version update tag after the version should name the unreleased package and the dependency version:
 # <!-- {x-version-update;unreleased_com.azure:azure-core;dependency} -->
 unreleased_com.azure:azure-identity;1.7.0-beta.2
-unreleased_com.azure:azure-core;1.34.0-beta.1
+unreleased_com.azure:azure-identity-providers-core;1.0.0-beta.2
+unreleased_com.azure:azure-identity-providers-jdbc-mysql;1.0.0-beta.2
+unreleased_com.azure:azure-identity-providers-jdbc-postgresql;1.0.0-beta.2
 
 # Released Beta dependencies: Copy the entry from above, prepend "beta_", remove the current
 # version and set the version to the released beta. Released beta dependencies are only valid
