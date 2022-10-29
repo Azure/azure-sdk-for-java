@@ -927,16 +927,16 @@ public final class ServiceBusAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SubscriptionProperties> getSubscriptionWithResponse(String topicName,
                                                                         String subscriptionName, Context context) {
-            return getSubscriptionInternal(topicName, subscriptionName, context);
+        return getSubscriptionInternal(topicName, subscriptionName, context);
     }
 
-    private Response<SubscriptionProperties> getSubscriptionInternal(String topicName, String subscriptionName, Context context) {
+    private Response<SubscriptionProperties> getSubscriptionInternal(String topicName,
+                                                                     String subscriptionName, Context context) {
         validateTopicName(topicName);
         validateSubscriptionName(subscriptionName);
 
-        final Response<Object> response =
-            managementClient.getSubscriptions().getSyncWithResponse(topicName, subscriptionName, true,
-                enableSyncContext(context));
+        final Response<Object> response = managementClient.getSubscriptions()
+            .getSyncWithResponse(topicName, subscriptionName, true, enableSyncContext(context));
         return deserializeSubscription(topicName, response);
     }
 
