@@ -199,7 +199,7 @@ public class WebSocketsProxyConnectionHandlerTest {
      * the FQDN host field in {@link ConnectionOptions}.
      */
     @Test
-    public void proxyConfigureConnectHostNameAndPortDerivesFromFqdn() {
+    public void proxyConfigureConnectHostnameAndPortDerivesFromFqdn() {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
@@ -228,7 +228,7 @@ public class WebSocketsProxyConnectionHandlerTest {
      * the Custom host fields in {@link ConnectionOptions}.
      */
     @Test
-    public void proxyConfigureConnectHostNameAndPortDerivesFromCustomEndpoint() {
+    public void proxyConfigureConnectHostnameAndPortDerivesFromCustomEndpoint() {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
