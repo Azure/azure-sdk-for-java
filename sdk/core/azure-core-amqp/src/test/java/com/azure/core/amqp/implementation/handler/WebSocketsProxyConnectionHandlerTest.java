@@ -63,8 +63,6 @@ public class WebSocketsProxyConnectionHandlerTest {
     private static final String CONNECTION_ID = "some-connection-id";
     private static final String HOSTNAME = "event-hubs.windows.core.net";
     private static final int AMQP_PORT = 5671;
-    private static final String CUSTOM_ENDPOINT_HOSTNAME = "order-events.contoso.com";
-    private static final int CUSTOM_ENDPOINT_PORT = 200;
     private static final InetSocketAddress PROXY_ADDRESS = InetSocketAddress.createUnresolved("foo.proxy.com", 3138);
     private static final Proxy PROXY = new Proxy(Proxy.Type.HTTP, PROXY_ADDRESS);
     private static final String USERNAME = "test-user";
@@ -91,7 +89,6 @@ public class WebSocketsProxyConnectionHandlerTest {
     private Scheduler scheduler;
 
     private ConnectionOptions connectionOptions;
-    private ConnectionOptions connectionOptionsWithCustomEndpoint;
     private WebSocketsProxyConnectionHandler handler;
     private AutoCloseable mocksCloseable;
 
@@ -106,11 +103,6 @@ public class WebSocketsProxyConnectionHandlerTest {
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP,
             new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
             CLIENT_VERSION);
-
-        this.connectionOptionsWithCustomEndpoint = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP_WEB_SOCKETS,
-            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
-            CLIENT_VERSION, CUSTOM_ENDPOINT_HOSTNAME, CUSTOM_ENDPOINT_PORT);
 
         this.originalProxySelector = ProxySelector.getDefault();
         this.proxySelector = mock(ProxySelector.class, Mockito.CALLS_REAL_METHODS);
@@ -207,7 +199,7 @@ public class WebSocketsProxyConnectionHandlerTest {
      * the FQDN host field in {@link ConnectionOptions}.
      */
     @Test
-    public void connectHostnameAndPortUsesFqdnFromOptions() {
+    public void proxyConfigureConnectHostNameAndPortDerivesFromFqdn() {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
@@ -236,12 +228,19 @@ public class WebSocketsProxyConnectionHandlerTest {
      * the Custom host fields in {@link ConnectionOptions}.
      */
     @Test
-    public void connectHostnameAndPortUsesCustomEndpointFromOptions() {
+    public void proxyConfigureConnectHostNameAndPortDerivesFromCustomEndpoint() {
         // Arrange
         final InetSocketAddress address = InetSocketAddress.createUnresolved("my-new.proxy.com", 8888);
         final Proxy newProxy = new Proxy(Proxy.Type.HTTP, address);
         final ProxyOptions proxyOptions = new ProxyOptions(ProxyAuthenticationType.BASIC, newProxy, USERNAME,
             PASSWORD);
+        final String customEndpointHostname = "order-events.contoso.com";
+        final int customEndpointPort = 200;
+
+        final ConnectionOptions connectionOptionsWithCustomEndpoint = new ConnectionOptions(HOSTNAME, tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP_WEB_SOCKETS,
+            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
+            CLIENT_VERSION, customEndpointHostname, customEndpointPort);
 
         this.handler = new WebSocketsProxyConnectionHandler(CONNECTION_ID, connectionOptionsWithCustomEndpoint,
             proxyOptions, peerDetails, AmqpMetricsProvider.noop());
@@ -255,7 +254,7 @@ public class WebSocketsProxyConnectionHandlerTest {
             assertEquals(1, constructed.size());
             // The ProxyImpl object constructed inside addTransportLayer method.
             final ProxyImpl proxyImpl = constructed.get(0);
-            final String expectedConnectHostNameAndPort = CUSTOM_ENDPOINT_HOSTNAME + ":" + CUSTOM_ENDPOINT_PORT;
+            final String expectedConnectHostNameAndPort = customEndpointHostname + ":" + customEndpointPort;
             verify(proxyImpl).configure(eq(expectedConnectHostNameAndPort), any(), any(), any());
         }
     }
