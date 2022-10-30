@@ -31,7 +31,7 @@ public class UploadLogsAsyncClientSample {
         List<Object> dataList = getLogs();
         try {
 
-            // More details on Mono<> can be found at :
+            // More details on Mono<> can be found in the project reactor documentation at :
             // https://projectreactor.io/docs/core/release/api/reactor/core/publisher/Mono.html
 
             Mono<UploadLogsResult> resultMono = client.upload("<data-collection-rule-id>",
