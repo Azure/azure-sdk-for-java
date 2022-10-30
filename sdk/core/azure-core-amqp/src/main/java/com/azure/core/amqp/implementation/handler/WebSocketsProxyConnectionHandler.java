@@ -55,7 +55,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
      * part of CustomEndpointAddress when a custom endpoint frontends the Event Hubs
      * or Service Bus.
      */
-    private final String connectHostNameAndPort;
+    private final String connectHostnameAndPort;
 
     /**
      * Creates a handler that handles proton-j's connection through a proxy using web sockets.
@@ -74,7 +74,7 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
 
         this.proxyOptions = Objects.requireNonNull(proxyOptions, "'proxyConfiguration' cannot be null.");
         this.fullyQualifiedNamespace = connectionOptions.getFullyQualifiedNamespace();
-        this.connectHostNameAndPort = connectionOptions.getHostname() + ":" + connectionOptions.getPort();
+        this.connectHostnameAndPort = connectionOptions.getHostname() + ":" + connectionOptions.getPort();
 
         if (proxyOptions.isProxyAddressConfigured()) {
             this.proxyHostAddress = (InetSocketAddress) proxyOptions.getProxyAddress().address();
@@ -207,12 +207,12 @@ public class WebSocketsProxyConnectionHandler extends WebSocketsConnectionHandle
             : new ProxyImpl();
 
         final ProxyHandler proxyHandler = new ProxyHandlerImpl();
-        proxy.configure(connectHostNameAndPort, null, proxyHandler, transport);
+        proxy.configure(connectHostnameAndPort, null, proxyHandler, transport);
 
         transport.addTransportLayer(proxy);
 
         logger.atInfo()
-            .addKeyValue(HOSTNAME_KEY, connectHostNameAndPort)
+            .addKeyValue(HOSTNAME_KEY, connectHostnameAndPort)
             .log("addProxyHandshake");
     }
 

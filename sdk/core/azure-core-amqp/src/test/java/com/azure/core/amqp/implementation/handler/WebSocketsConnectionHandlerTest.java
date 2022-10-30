@@ -251,7 +251,7 @@ public class WebSocketsConnectionHandlerTest {
     }
 
     @Test
-    public void websocketConfigureUsesCustomEndpointAsHostname() {
+    public void websocketConfigureUsesCustomEndpointHostnameAsHostname() {
         final String customEndpointHostname = "order-events.contoso.com";
         final ConnectionOptions connectionOptionsWithCustomEndpoint = new ConnectionOptions(HOSTNAME, tokenCredential,
             CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP_WEB_SOCKETS,

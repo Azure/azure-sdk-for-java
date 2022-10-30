@@ -218,8 +218,8 @@ public class WebSocketsProxyConnectionHandlerTest {
             assertEquals(1, constructed.size());
             // The ProxyImpl object constructed inside addTransportLayer method.
             final ProxyImpl proxyImpl = constructed.get(0);
-            final String expectedConnectHostNameAndPort = HOSTNAME + ":" + AMQP_PORT;
-            verify(proxyImpl).configure(eq(expectedConnectHostNameAndPort), any(), any(), any());
+            final String expectedConnectHostnameAndPort = HOSTNAME + ":" + AMQP_PORT;
+            verify(proxyImpl).configure(eq(expectedConnectHostnameAndPort), any(), any(), any());
         }
     }
 
@@ -254,8 +254,8 @@ public class WebSocketsProxyConnectionHandlerTest {
             assertEquals(1, constructed.size());
             // The ProxyImpl object constructed inside addTransportLayer method.
             final ProxyImpl proxyImpl = constructed.get(0);
-            final String expectedConnectHostNameAndPort = customEndpointHostname + ":" + customEndpointPort;
-            verify(proxyImpl).configure(eq(expectedConnectHostNameAndPort), any(), any(), any());
+            final String expectedConnectHostnameAndPort = customEndpointHostname + ":" + customEndpointPort;
+            verify(proxyImpl).configure(eq(expectedConnectHostnameAndPort), any(), any(), any());
         }
     }
 
