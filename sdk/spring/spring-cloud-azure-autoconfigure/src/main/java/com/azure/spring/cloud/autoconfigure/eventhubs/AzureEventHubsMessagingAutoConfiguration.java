@@ -19,6 +19,7 @@ import com.azure.spring.messaging.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -127,8 +128,9 @@ public class AzureEventHubsMessagingAutoConfiguration {
          */
         @Bean
         @ConditionalOnMissingBean
-        public EventHubsMessageConverter eventHubsMessageConverter() {
-            return new EventHubsMessageConverter();
+        @ConditionalOnClass({ObjectMapper.class})
+        public EventHubsMessageConverter eventHubsMessageConverter(ObjectMapper objectMapper) {
+            return new EventHubsMessageConverter(objectMapper);
         }
 
         /**

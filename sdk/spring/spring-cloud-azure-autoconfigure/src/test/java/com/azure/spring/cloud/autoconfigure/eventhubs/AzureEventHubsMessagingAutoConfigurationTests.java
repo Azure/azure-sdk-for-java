@@ -6,6 +6,8 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
+import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -54,6 +56,7 @@ class AzureEventHubsMessagingAutoConfigurationTests {
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(ObjectMapper.class)
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
     }
 
@@ -65,10 +68,29 @@ class AzureEventHubsMessagingAutoConfigurationTests {
             )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
+            .withBean(ObjectMapper.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubsProcessorFactory.class);
                 assertThat(context).hasSingleBean(AzureEventHubsMessagingAutoConfiguration.ProcessorContainerConfiguration.class);
             });
     }
 
+    @Test
+    void createConvertorWithOneOM() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
+            )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(ObjectMapper.class)
+            .run(context -> assertThat(context).hasSingleBean(EventHubsMessageConverter.class));
+    }
+
+    @Test
+    void notCreateConvertorWithoutOM() {
+
+    }
+
+    @Test
+    void createConvertorWithMultipleOM() {}
 }

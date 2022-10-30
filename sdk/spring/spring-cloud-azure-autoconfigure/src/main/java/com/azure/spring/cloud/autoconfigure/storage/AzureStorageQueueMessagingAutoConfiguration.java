@@ -10,6 +10,7 @@ import com.azure.spring.messaging.storage.queue.core.factory.StorageQueueClientF
 import com.azure.spring.messaging.storage.queue.core.properties.StorageQueueProperties;
 import com.azure.spring.messaging.storage.queue.implementation.factory.DefaultStorageQueueClientFactory;
 import com.azure.spring.messaging.storage.queue.support.converter.StorageQueueMessageConverter;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -64,7 +65,8 @@ public class AzureStorageQueueMessagingAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean
-    public StorageQueueMessageConverter messageConverter() {
-        return new StorageQueueMessageConverter();
+    @ConditionalOnClass({ObjectMapper.class})
+    public StorageQueueMessageConverter messageConverter(ObjectMapper objectMapper) {
+        return new StorageQueueMessageConverter(objectMapper);
     }
 }
