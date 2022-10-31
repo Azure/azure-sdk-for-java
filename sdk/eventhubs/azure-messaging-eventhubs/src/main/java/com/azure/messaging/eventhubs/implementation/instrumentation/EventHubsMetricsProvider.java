@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs.implementation;
+package com.azure.messaging.eventhubs.implementation.instrumentation;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.TelemetryAttributes;
 import com.azure.core.util.metrics.DoubleHistogram;
 import com.azure.core.util.metrics.LongCounter;
 import com.azure.core.util.metrics.Meter;
-import com.azure.messaging.eventhubs.EventDataBatch;
-import com.azure.messaging.eventhubs.models.PartitionEvent;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -57,16 +55,23 @@ public class EventHubsMetricsProvider {
         }
     }
 
-    public void reportBatchSend(EventDataBatch batch, String partitionId, Throwable throwable, Context context) {
+    public boolean isSendCountEnabled() {
+        return isEnabled && sentEventsCounter.isEnabled();
+    }
+
+    public void reportBatchSend(int batchSize, String partitionId, Throwable throwable, Context context) {
         if (isEnabled && sentEventsCounter.isEnabled()) {
             AttributeCache cache = throwable == null ? sendAttributeCacheSuccess : sendAttributeCacheFailure;
-            sentEventsCounter.add(batch.getCount(), cache.getOrCreate(partitionId), context);
+            sentEventsCounter.add(batchSize, cache.getOrCreate(partitionId), context);
         }
     }
 
-    public void reportReceive(PartitionEvent event) {
+    public boolean isConsumerLagEnabled() {
+        return isEnabled && consumerLag.isEnabled();
+    }
+
+    public void reportReceive(Instant enqueuedTime, String partitionId, Context context) {
         if (isEnabled && consumerLag.isEnabled()) {
-            Instant enqueuedTime = event.getData().getEnqueuedTime();
             double diff = 0d;
             if (enqueuedTime != null) {
                 diff = Instant.now().toEpochMilli() - enqueuedTime.toEpochMilli();
@@ -75,9 +80,7 @@ public class EventHubsMetricsProvider {
                     diff = 0;
                 }
             }
-            consumerLag.record(diff / 1000d,
-                receiveAttributeCache.getOrCreate(event.getPartitionContext().getPartitionId()),
-                Context.NONE);
+            consumerLag.record(diff / 1000d, receiveAttributeCache.getOrCreate(partitionId), context);
         }
     }
 
