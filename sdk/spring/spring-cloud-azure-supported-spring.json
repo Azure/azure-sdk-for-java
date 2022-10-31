@@ -13,7 +13,7 @@
     "snapshot" : false,
     "supportStatus" : "SUPPORTED",
     "spring-boot-version" : "3.0.0-RC1",
-    "spring-cloud-version" : "2022.0.0-M5"
+    "spring-cloud-version" : "2022.0.0-RC1"
   },
   {
     "current" : false,

@@ -12,23 +12,24 @@ Upgrade Spring Boot dependencies version to 3.0.0-RC1 and Spring Cloud dependenc
 - Fix bug: Proxy setting not work in Azure AD B2C web application [31593](https://github.com/Azure/azure-sdk-for-java/issues/31593)
 
 #### Breaking Changes
-- Delete the artifact `spring-cloud-azure-trace-sleuth`.
+- Delete the artifact `spring-cloud-azure-trace-sleuth`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Breaking Changes
-- Delete the class `com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadOAuth2AuthenticatedPrincipal`.
-- Delete the class `com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadOboOAuth2AuthorizedClientProvider`.
-- Delete the class `com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType`.
-- Delete the class `com.azure.spring.cloud.autoconfigure.aad.AadJwtBearerTokenAuthenticationConverter`.
-- Delete the `AuthorizationGrantType.PASSWORD` support.
-- Delete the auto configuration for Spring Cloud Sleuth support.
-- Use the `com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier#DefaultJWTClaimsVerifier(com.nimbusds.jwt.JWTClaimsSet, java.util.Set<java.lang.String>)` instead of `com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier#DefaultJWTClaimsVerifier()`.
-- Use the `org.springframework.http.ResponseEntity#getStatusCode` instead of `org.springframework.http.ResponseEntity#getStatusCodeValue`.
-- Use the `com.azure.core.util.ConfigurationBuilder#ConfigurationBuilder()` instead the default constructor method `com.azure.core.util.Configuration#Configuration()`.
-- Use an abstract configurer `AbstractHttpConfigurer` instead of `org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter`.
-
+- Delete the class `com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AadOAuth2AuthenticatedPrincipal`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
+- Delete the class `com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AadOboOAuth2AuthorizedClientProvider`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
+- Delete the class `com.azure.spring.cloud.autoconfigure.aad.properties.AadAuthorizationGrantType`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
+- Delete the class `com.azure.spring.cloud.autoconfigure.aad.AadJwtBearerTokenAuthenticationConverter`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
+- Delete the `AuthorizationGrantType.PASSWORD` support[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
+- Delete the auto configuration for Spring Cloud Sleuth support[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
+- Use the `com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier#DefaultJWTClaimsVerifier(com.nimbusds.jwt.JWTClaimsSet, java.util.Set<java.lang.String>)` instead of `com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier#DefaultJWTClaimsVerifier()`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
+- Use the `org.springframework.http.ResponseEntity#getStatusCode` instead of `org.springframework.http.ResponseEntity#getStatusCodeValue`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
+- Use the `com.azure.core.util.ConfigurationBuilder#ConfigurationBuilder()` instead the default constructor method `com.azure.core.util.Configuration#Configuration()`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
+- Use an abstract configurer `AbstractHttpConfigurer` instead of `org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter`[#31543](https://github.com/Azure/azure-sdk-for-java/pull/31543).
+- Use the annotation `org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity` instead the `org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity`[#31808](https://github.com/Azure/azure-sdk-for-java/pull/31808).
+- Use the class `org.springframework.security.oauth2.server.resource.authentication.BearerTokenAuthenticationToken` instead of `org.springframework.security.oauth2.server.resource.BearerTokenAuthenticationToken`[#31808](https://github.com/Azure/azure-sdk-for-java/pull/31808).
 
 ## 6.0.0-beta.2 (2022-09-30)
 Upgrade Spring Boot dependencies version to 3.0.0-M4 and Spring Cloud dependencies version to 2022.0.0-M4.
