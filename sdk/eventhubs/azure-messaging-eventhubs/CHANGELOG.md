@@ -7,7 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-
+- Fixed incorrect proxy configuration using environment variables. ([24230](https://github.com/Azure/azure-sdk-for-java/issues/24230)) 
 ### Other Changes
 
 ## 5.14.0 (2022-10-13)
