@@ -1,12 +1,6 @@
 trigger: none
 
-
 stages:
-  variables:
-    - template: ../../eng/pipelines/templates/variables/globals.yml
-    - name: DefaultOptions
-      value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions) -Dcompiler.failondeprecatedstatus=-'
-
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
       SupportedClouds: 'Public,UsGov,China'
