@@ -33,8 +33,6 @@ public class ServiceBusManagementSerializer implements SerializerAdapter {
         Pattern.MULTILINE);
     private static final Pattern FILTER_VALUE_PATTERN = Pattern.compile("<(Value)",
         Pattern.MULTILINE);
-    private static final Pattern DEFAULT_RULE_PATTERN = Pattern.compile("<(DefaultRuleDescription)",
-        Pattern.MULTILINE);
     private static final String RULE_VALUE_ATTRIBUTE_XML = "<$1 xmlns:d6p1=\"http://www.w3.org/2001/XMLSchema\" ns0:type=\"d6p1:string\"";
     private static final SerializerAdapter SERIALIZER_ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 

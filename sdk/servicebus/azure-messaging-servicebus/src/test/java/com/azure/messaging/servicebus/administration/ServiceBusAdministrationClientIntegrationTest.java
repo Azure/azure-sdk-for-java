@@ -36,6 +36,7 @@ import com.azure.messaging.servicebus.administration.models.SubscriptionRuntimeP
 import com.azure.messaging.servicebus.administration.models.TopicProperties;
 import com.azure.messaging.servicebus.administration.models.TopicRuntimeProperties;
 import com.azure.messaging.servicebus.administration.models.TrueRuleFilter;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
@@ -57,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class ServiceBusAdministrationClientIntegrationTest extends TestBase {
     protected static final Duration TIMEOUT = Duration.ofSeconds(20);
 
-    //@AfterAll
+    @AfterAll
     static void cleanup() {
 
         if (TestingHelpers.getTestMode() == TestMode.PLAYBACK) {

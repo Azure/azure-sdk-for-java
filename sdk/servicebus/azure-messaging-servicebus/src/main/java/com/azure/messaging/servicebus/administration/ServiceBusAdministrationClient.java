@@ -357,12 +357,13 @@ public final class ServiceBusAdministrationClient {
     }
 
     /**
-     * Creates a subscription with default rule using the {@link CreateSubscriptionOptions} .
+     * Creates a subscription with default rule using the {@link CreateSubscriptionOptions} and
+     * {@link CreateRuleOptions}.
      *
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
      * @param ruleName Name of the default rule the subscription should be created with.
-     * @param subscriptionOptions Information about the subscription to create.
+     * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
      * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
      *                    If null, then pass-through filter will be created.
      *
@@ -436,7 +437,7 @@ public final class ServiceBusAdministrationClient {
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
      * @param ruleName Name of the default rule the subscription should be created with.
-     * @param subscriptionOptions Information about the subscription to create.
+     * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
      * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
      *                    If null, then pass-through filter will be created.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.

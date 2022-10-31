@@ -1373,7 +1373,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
      * @param ruleName Name of the default rule the subscription should be created with.
-     * @param subscriptionOptions Information about the subscription to create.
+     * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
      * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
      *                    If null, then pass-through filter will be created.
      *
@@ -1402,7 +1402,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
      * @param ruleName Name of the default rule the subscription should be created with.
-     * @param subscriptionOptions Information about the subscription to create.
+     * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
      * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
      *                    If null, then pass-through filter will be created.
      *
@@ -1510,8 +1510,9 @@ public final class ServiceBusAdministrationAsyncClient {
      * @param topicName Name of the topic associated with subscription.
      * @param subscriptionName Name of the subscription.
      * @param ruleName Name of the default rule the subscription should be created with.
-     * @param subscriptionOptions Information about the subscription to create.
-     * @param ruleOptions Information about the rule to be created.
+     * @param subscriptionOptions A {@link CreateSubscriptionOptions} object describing the subscription to create.
+     * @param ruleOptions A {@link CreateRuleOptions} object describing the default rule.
+     *                    If null, then pass-through filter will be created.
      * @param context Context to pass into request.
      *
      * @return A Mono that completes with the created {@link SubscriptionProperties}.
@@ -1544,7 +1545,9 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         if (ruleOptions != null) {
-            Objects.requireNonNull(ruleOptions.getFilter(), "'RuleFilter' cannot be null.");
+            if (ruleOptions.getFilter() == null) {
+                return monoError(LOGGER, new IllegalArgumentException("'RuleFilter' cannot be null."));
+            }
             final RuleDescription rule = new RuleDescription()
                 .setAction(ruleOptions.getAction() != null ? EntityHelper.toImplementation(ruleOptions.getAction()) : null)
                 .setFilter(EntityHelper.toImplementation(ruleOptions.getFilter()))
