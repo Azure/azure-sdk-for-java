@@ -9,6 +9,7 @@ import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import org.apache.kafka.common.config.types.Password;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -85,7 +86,8 @@ class KafkaOAuth2AuthenticateCallbackHandlerTest {
     void testCreateTokenCredentialByResolver() {
         Map<String, Object> configs = new HashMap<>();
         configs.put(BOOTSTRAP_SERVERS_CONFIG, KAFKA_BOOTSTRAP_SERVER);
-        configs.put(SASL_JAAS_CONFIG, String.format(JAAS_PROPERTY_FORMAT, managedIdentityEnabled.propertyKey(), "true"));
+
+        configs.put(SASL_JAAS_CONFIG, new Password(String.format(JAAS_PROPERTY_FORMAT, managedIdentityEnabled.propertyKey(), "true")));
 
         KafkaOAuth2AuthenticateCallbackHandler handler = new KafkaOAuth2AuthenticateCallbackHandler();
         handler.configure(configs, null, null);
