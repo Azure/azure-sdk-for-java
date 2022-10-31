@@ -61,6 +61,9 @@ public final class ListBlobsHierarchySegmentResponse {
     @JsonProperty(value = "NextMarker", required = true)
     private String nextMarker;
 
+    /** Creates an instance of ListBlobsHierarchySegmentResponse class. */
+    public ListBlobsHierarchySegmentResponse() {}
+
     /**
      * Get the serviceEndpoint property: The ServiceEndpoint property.
      *

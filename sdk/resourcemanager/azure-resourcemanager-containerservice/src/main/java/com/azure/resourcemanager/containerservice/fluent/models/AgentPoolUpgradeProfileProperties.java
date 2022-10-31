@@ -38,6 +38,10 @@ public final class AgentPoolUpgradeProfileProperties {
     @JsonProperty(value = "latestNodeImageVersion")
     private String latestNodeImageVersion;
 
+    /** Creates an instance of AgentPoolUpgradeProfileProperties class. */
+    public AgentPoolUpgradeProfileProperties() {
+    }
+
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
      *

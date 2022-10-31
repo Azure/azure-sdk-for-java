@@ -7,7 +7,6 @@ import com.azure.core.annotation.Fluent;
 
 import java.time.Instant;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.UUID;
@@ -26,7 +25,7 @@ public final class RepeatabilityHeaders {
     /**
      * The value should be the date and time at which the request was first created.
      */
-    private final ZonedDateTime repeatabilityFirstSent;
+    private final Instant repeatabilityFirstSent;
 
     /**
      * Constructor
@@ -37,7 +36,7 @@ public final class RepeatabilityHeaders {
      */
     public RepeatabilityHeaders(UUID repeatabilityRequestId, Instant repeatabilityFirstSent) {
         this.repeatabilityRequestId = repeatabilityRequestId;
-        this.repeatabilityFirstSent = repeatabilityFirstSent.atZone(ZoneId.of("UTC"));
+        this.repeatabilityFirstSent = repeatabilityFirstSent;
     }
 
     /**
@@ -55,14 +54,14 @@ public final class RepeatabilityHeaders {
      */
     public String getRepeatabilityFirstSentInHttpDateFormat() {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ENGLISH).withZone(ZoneId.of("GMT"));
-        return repeatabilityFirstSent.format(formatter);
+        return repeatabilityFirstSent.atZone(ZoneId.of("UTC")).format(formatter);
     }
 
     /**
      * Get the repeatabilityFirstSent : The value should be the date and time at which the request was first created.
      * @return the repeatabilityFirstSent.
      */
-    public ZonedDateTime getRepeatabilityFirstSent() {
+    public Instant getRepeatabilityFirstSent() {
         return repeatabilityFirstSent;
     }
 }

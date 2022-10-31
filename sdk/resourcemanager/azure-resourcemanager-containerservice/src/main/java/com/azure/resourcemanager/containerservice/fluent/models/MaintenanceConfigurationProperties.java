@@ -28,6 +28,10 @@ public final class MaintenanceConfigurationProperties {
     @JsonProperty(value = "notAllowedTime")
     private List<TimeSpan> notAllowedTime;
 
+    /** Creates an instance of MaintenanceConfigurationProperties class. */
+    public MaintenanceConfigurationProperties() {
+    }
+
     /**
      * Get the timeInWeek property: Time slots during the week when planned maintenance is allowed to proceed.
      *

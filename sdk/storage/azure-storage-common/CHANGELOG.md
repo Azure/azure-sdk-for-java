@@ -242,7 +242,7 @@
 
 ## 12.0.0 (2019-10-31)
 - Removed BaseClientBuilder
-- Renamed RequestRetryOptions maxTries, tryTimeout, secondaryHost, retryDelayInMs, maxRetryDelayInMs to getMaxTries, getTryTimeout, getSecondaryHosy, getRetryDelayInMs, getMaxRetryDelayInMs
+- Renamed RequestRetryOptions maxTries, tryTimeout, secondaryHost, retryDelayInMs, maxRetryDelayInMs to getMaxTries, getTryTimeout, getSecondaryHost, getRetryDelayInMs, getMaxRetryDelayInMs
 - Renamed IpRange to SasIpRange
 - Moved AccountSasQueryParameters, AccountSasSignatureValues, BaseSasQueryParameters, SasIpRange into Sas package
 - Removed SR class from public API

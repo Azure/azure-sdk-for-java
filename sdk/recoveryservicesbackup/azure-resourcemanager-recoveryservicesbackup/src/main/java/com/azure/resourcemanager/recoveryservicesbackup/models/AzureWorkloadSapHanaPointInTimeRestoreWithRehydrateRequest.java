@@ -23,6 +23,10 @@ public final class AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest
     @JsonProperty(value = "recoveryPointRehydrationInfo")
     private RecoveryPointRehydrationInfo recoveryPointRehydrationInfo;
 
+    /** Creates an instance of AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest class. */
+    public AzureWorkloadSapHanaPointInTimeRestoreWithRehydrateRequest() {
+    }
+
     /**
      * Get the recoveryPointRehydrationInfo property: RP Rehydration Info.
      *

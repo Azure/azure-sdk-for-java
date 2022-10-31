@@ -41,6 +41,10 @@ public final class AzureWorkloadErrorInfo {
     @JsonProperty(value = "additionalDetails")
     private String additionalDetails;
 
+    /** Creates an instance of AzureWorkloadErrorInfo class. */
+    public AzureWorkloadErrorInfo() {
+    }
+
     /**
      * Get the errorCode property: Error code.
      *

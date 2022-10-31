@@ -30,6 +30,10 @@ public final class OperationStatusJobsExtendedInfo extends OperationStatusExtend
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> failedJobsError;
 
+    /** Creates an instance of OperationStatusJobsExtendedInfo class. */
+    public OperationStatusJobsExtendedInfo() {
+    }
+
     /**
      * Get the jobIds property: IDs of the jobs created for the protected item.
      *

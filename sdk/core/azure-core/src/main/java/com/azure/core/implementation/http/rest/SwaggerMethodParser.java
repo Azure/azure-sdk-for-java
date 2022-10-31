@@ -102,6 +102,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final boolean isStreamResponse;
     private final boolean returnTypeDecodeable;
     private final boolean responseEagerlyRead;
+    private final boolean headersEagerlyConverted;
     private final String spanName;
 
     private Map<Integer, UnexpectedExceptionInformation> exceptionMapping;
@@ -264,9 +265,12 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         this.isReactive = isReactiveMethod;
         if (isReactiveMethod) {
-            this.isStreamResponse = isStreamResponseType(TypeUtil.getTypeArgument(returnType));
+            Type reactiveTypeArgument = TypeUtil.getTypeArgument(returnType);
+            this.isStreamResponse = isStreamResponseType(reactiveTypeArgument);
+            this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, reactiveTypeArgument);
         } else {
             this.isStreamResponse = isStreamResponseType(returnType);
+            this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, returnType);
         }
         this.contextPosition = contextPosition;
         this.requestOptionsPosition = requestOptionsPosition;
@@ -702,6 +706,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     @Override
     public boolean isResponseEagerlyRead() {
         return responseEagerlyRead;
+    }
+
+    @Override
+    public boolean isHeadersEagerlyConverted() {
+        return headersEagerlyConverted;
     }
 
     /**

@@ -205,21 +205,6 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public BackupResourceEncryptionConfigExtendedResourceInner get(String vaultName, String resourceGroupName) {
-        return getAsync(vaultName, resourceGroupName).block();
-    }
-
-    /**
-     * Fetches Vault Encryption config.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -230,6 +215,21 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
     public Response<BackupResourceEncryptionConfigExtendedResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, context).block();
+    }
+
+    /**
+     * Fetches Vault Encryption config.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupResourceEncryptionConfigExtendedResourceInner get(String vaultName, String resourceGroupName) {
+        return getWithResponse(vaultName, resourceGroupName, Context.NONE).getValue();
     }
 
     /**
@@ -366,21 +366,6 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param parameters Vault encryption input config request.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void update(String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
-        updateAsync(vaultName, resourceGroupName, parameters).block();
-    }
-
-    /**
-     * Updates Vault encryption config.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param parameters Vault encryption input config request.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -394,5 +379,20 @@ public final class BackupResourceEncryptionConfigsClientImpl implements BackupRe
         BackupResourceEncryptionConfigResource parameters,
         Context context) {
         return updateWithResponseAsync(vaultName, resourceGroupName, parameters, context).block();
+    }
+
+    /**
+     * Updates Vault encryption config.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param parameters Vault encryption input config request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void update(String vaultName, String resourceGroupName, BackupResourceEncryptionConfigResource parameters) {
+        updateWithResponse(vaultName, resourceGroupName, parameters, Context.NONE);
     }
 }

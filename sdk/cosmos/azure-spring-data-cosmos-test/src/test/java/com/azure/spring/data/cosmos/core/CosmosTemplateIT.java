@@ -116,8 +116,6 @@ public class CosmosTemplateIT {
     private CosmosConfig cosmosConfig;
     @Autowired
     private ResponseDiagnosticsTestUtils responseDiagnosticsTestUtils;
-    @Autowired
-    private AuditableRepository auditableRepository;
 
     @Before
     public void setUp() throws ClassNotFoundException {
@@ -814,23 +812,6 @@ public class CosmosTemplateIT {
         final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(ageBetween));
         List<Person> people = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, Person.class, Person.class));
         assertThat(people).containsExactly(TEST_PERSON);
-    }
-
-    @Test
-    public void testRunQueryWithReturnTypeContainingLocalDateTime() {
-        final AuditableEntity entity = new AuditableEntity();
-        entity.setId(UUID.randomUUID().toString());
-
-        auditableRepository.save(entity);
-
-        Criteria equals = Criteria.getInstance(CriteriaType.IS_EQUAL, "id", Collections.singletonList(entity.getId()), Part.IgnoreCaseType.NEVER);
-        final SqlQuerySpec sqlQuerySpec = new FindQuerySpecGenerator().generateCosmos(new CosmosQuery(equals));
-        List<AuditableEntity> results = TestUtils.toList(cosmosTemplate.runQuery(sqlQuerySpec, AuditableEntity.class, AuditableEntity.class));
-        assertEquals(results.size(), 1);
-        AuditableEntity foundEntity = results.get(0);
-        assertEquals(entity.getId(), foundEntity.getId());
-        assertNotNull(foundEntity.getCreatedDate());
-        assertNotNull(foundEntity.getLastModifiedByDate());
     }
 
     @Test

@@ -13,8 +13,8 @@ public class ExceptionClassifier {
     // 410: partition key range is gone.
     public static final int SubStatusCode_PartitionKeyRangeGone = 1002;
 
-    // 410: partition splitting.
-    public static final int SubStatusCode_Splitting = 1007;
+    // 410: split and merge use the same exception status code and substatus code.
+    public static final int SubStatusCode_Splitting_Or_Merging = 1007;
 
     // 404: LSN in session token is higher.
     public static final int SubStatusCode_ReadSessionNotAvailable = 1002;
@@ -27,8 +27,9 @@ public class ExceptionClassifier {
             return StatusCodeErrorType.PARTITION_NOT_FOUND;
         }
 
-        if (clientException.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_GONE && (subStatusCode == SubStatusCode_PartitionKeyRangeGone || subStatusCode == SubStatusCode_Splitting)) {
-            return StatusCodeErrorType.PARTITION_SPLIT;
+        if (clientException.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_GONE
+                && (subStatusCode == SubStatusCode_PartitionKeyRangeGone || subStatusCode == SubStatusCode_Splitting_Or_Merging)) {
+            return StatusCodeErrorType.PARTITION_SPLIT_OR_MERGE;
         }
 
         if (clientException.getStatusCode() == ChangeFeedHelper.HTTP_STATUS_CODE_TOO_MANY_REQUESTS || clientException.getStatusCode() >= ChangeFeedHelper.HTTP_STATUS_CODE_INTERNAL_SERVER_ERROR) {

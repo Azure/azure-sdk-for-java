@@ -42,6 +42,9 @@ public final class QueueAnalyticsLogging {
     @JsonProperty(value = "RetentionPolicy", required = true)
     private QueueRetentionPolicy retentionPolicy;
 
+    /** Creates an instance of QueueAnalyticsLogging class. */
+    public QueueAnalyticsLogging() {}
+
     /**
      * Get the version property: The version of Storage Analytics to configure.
      *

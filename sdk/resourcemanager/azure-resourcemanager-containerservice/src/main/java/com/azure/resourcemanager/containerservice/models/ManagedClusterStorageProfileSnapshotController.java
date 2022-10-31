@@ -16,6 +16,10 @@ public final class ManagedClusterStorageProfileSnapshotController {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
+    /** Creates an instance of ManagedClusterStorageProfileSnapshotController class. */
+    public ManagedClusterStorageProfileSnapshotController() {
+    }
+
     /**
      * Get the enabled property: Whether to enable Snapshot Controller. The default value is true.
      *
