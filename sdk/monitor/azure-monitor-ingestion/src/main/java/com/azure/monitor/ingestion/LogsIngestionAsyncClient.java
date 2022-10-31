@@ -191,8 +191,8 @@ public final class LogsIngestionAsyncClient {
     private Mono<UploadLogsResult> splitAndUpload(String ruleId, String streamName, List<Object> logs, UploadLogsOptions options, Context context) {
         try {
             Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
-            Objects.requireNonNull(ruleId, "'streamName' cannot be null.");
-            Objects.requireNonNull(ruleId, "'logs' cannot be null.");
+            Objects.requireNonNull(streamName, "'streamName' cannot be null.");
+            Objects.requireNonNull(logs, "'logs' cannot be null.");
 
             if (logs.isEmpty()) {
                 throw LOGGER.logExceptionAsError(new IllegalArgumentException("'logs' cannot be empty."));

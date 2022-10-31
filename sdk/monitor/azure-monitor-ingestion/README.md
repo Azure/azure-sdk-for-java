@@ -154,9 +154,6 @@ UploadLogsResult
     |--- responseError (ResponseError)
         |--- code 
         |--- message
-        |--- target
-        |--- innerError
-        |--- errorDetails (list of `ResponseError` objects)
     |--- failedLogs (list of logs objects - the logs that failed to upload)
 ```
 ## Troubleshooting

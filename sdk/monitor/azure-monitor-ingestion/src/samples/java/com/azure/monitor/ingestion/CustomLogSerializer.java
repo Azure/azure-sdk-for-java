@@ -15,6 +15,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.time.format.DateTimeFormatter;
 
+/***
+ * Custom serializer sample for the `CustomLogData` class.
+ * Only the `serialize` method is implemented as we are not expected to deserialize the data here.
+ */
 public class CustomLogSerializer implements ObjectSerializer {
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ssZZZ");
