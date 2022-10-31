@@ -4,10 +4,14 @@ stages:
     - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
       parameters:
           SupportedClouds: 'Public,UsGov,China'
+          Clouds: 'Public,UsGov,China'
           TestResourceDirectories:
           Artifacts:
+              - name: azure-identity-providers-jdbc-mysql
+                groupId: com.azure
+                safeName: azureidentityprovidersjdbcmysql
           TimeoutInMinutes: 240
           ServiceDirectory: jdbc
-          TestName: IntegrationTestInAzureGlobal
+          TestName: JdbcIntegrationTests
           TestGoals: 'verify'
           TestOptions: '-DskipSpringITs=false'
