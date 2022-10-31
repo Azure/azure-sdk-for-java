@@ -25,6 +25,9 @@ public final class TrafficState {
     @JsonProperty(value = "@trafficModelId", access = JsonProperty.Access.WRITE_ONLY)
     private String trafficModelId;
 
+    /** Set default constructor to private */
+    private TrafficState() {}
+
     /**
      * Get the trafficAge property: The elapsed time (in seconds) from the Traffic Model ID creation.
      *

@@ -1,6 +1,7 @@
 import java.util.Arrays;
 
 import com.azure.autorest.customization.ClassCustomization;
+import com.azure.autorest.customization.ConstructorCustomization;
 import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.MethodCustomization;
@@ -26,6 +27,33 @@ public class TrafficCustomization extends Customization {
 
         // customize TrafficIncidentViewportViewpResp
         customizeTrafficIncidentViewportViewpResp(models);
+
+        // customize Point
+        customizePoint(models);
+
+        // customize TrafficFlowSegmentData
+        customizeTrafficFlowSegmentData(models);
+
+        // customize TrafficFlowSegmentDataProperties
+        customizeTrafficFlowSegmentDataProperties(models);
+
+        // customize TrafficFlowSegmentDataPropertiesCoordinates
+        customizeTrafficFlowSegmentDataPropertiesCoordinates(models);
+
+        // customize TrafficIncidentDetail
+        customizeTrafficIncidentDetail(models);
+
+        // customize TrafficIncidentDetailTm
+        customizeTrafficIncidentDetailTm(models);
+
+        // customize TrafficIncidentPointOfInterest
+        customizeTrafficIncidentPointOfInterest(models);
+
+        // customize TrafficState
+        customizeTrafficState(models);
+
+        // customize TrafficIncidentViewportResponse
+        customizeTrafficIncidentViewportResponse(models);
     }
 
     // Customizes the TrafficFlowSegmentDataFlowSegmentDataCoordinates class
@@ -59,6 +87,11 @@ public class TrafficCustomization extends Customization {
         ClassCustomization classCustomization = models.getClass("TrafficIncidentViewport");
         MethodCustomization mc = classCustomization.getMethod("getViewpResp");
         mc.rename("getViewportResponse");
+        classCustomization.addConstructor(
+            "private TrafficIncidentViewport() {\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Set default constructor to private");
     }
 
     // Customizes the TrafficFlowSegmentDataFlowSegmentData class
@@ -67,9 +100,99 @@ public class TrafficCustomization extends Customization {
         classCustomization.rename("TrafficFlowSegmentDataProperties");
     }
 
-    // Customizes the TrafficFlowSegmentDataFlowSegmentData class
+    // Customizes the TrafficIncidentViewportResponse class
     private void customizeTrafficIncidentViewportViewpResp(PackageCustomization models) {
         ClassCustomization classCustomization = models.getClass("TrafficIncidentViewportViewpResp");
         classCustomization.rename("TrafficIncidentViewportResponse");
     }
+
+     // Customizes the Point class
+     private void customizePoint(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("Point");
+        classCustomization.addConstructor(
+            "private Point() {\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Set default constructor to private");
+     }
+
+     // Customizes the TrafficFlowSegmentData class
+     private void customizeTrafficFlowSegmentData(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TrafficFlowSegmentData");
+        classCustomization.addConstructor(
+            "private TrafficFlowSegmentData() {\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Set default constructor to private");
+     }
+
+     // Customizes the TrafficFlowSegmentDataProperties class
+     private void customizeTrafficFlowSegmentDataProperties(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TrafficFlowSegmentDataProperties");
+        classCustomization.addConstructor(
+            "private TrafficFlowSegmentDataProperties() {\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Set default constructor to private");
+     }
+
+     // Customizes the TrafficFlowSegmentDataPropertiesCoordinates class
+     private void customizeTrafficFlowSegmentDataPropertiesCoordinates(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TrafficFlowSegmentDataPropertiesCoordinates");
+        classCustomization.addConstructor(
+            "private TrafficFlowSegmentDataPropertiesCoordinates() {\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Set default constructor to private");
+     }
+
+     // Customizes the TrafficIncidentDetail class
+     private void customizeTrafficIncidentDetail(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TrafficIncidentDetail");
+        classCustomization.addConstructor(
+            "private TrafficIncidentDetail() {\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Set default constructor to private");
+     }
+
+     // Customizes the TrafficIncidentDetailTm class
+     private void customizeTrafficIncidentDetailTm(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TrafficIncidentDetailTm");
+        classCustomization.addConstructor(
+            "private TrafficIncidentDetailTm() {\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Set default constructor to private");
+     }
+
+     // Customizes the TrafficIncidentPointOfInterest class
+     private void customizeTrafficIncidentPointOfInterest(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TrafficIncidentPointOfInterest");
+        classCustomization.addConstructor(
+            "private TrafficIncidentPointOfInterest() {\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Set default constructor to private");
+     }
+
+     // Customizes the TrafficState class
+     private void customizeTrafficState(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TrafficState");
+        classCustomization.addConstructor(
+            "private TrafficState() {\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Set default constructor to private");
+     }
+
+     // Customizes the TrafficIncidentViewport class
+     private void customizeTrafficIncidentViewportResponse(PackageCustomization models) {
+        ClassCustomization classCustomization = models.getClass("TrafficIncidentViewportResponse");
+        classCustomization.addConstructor(
+            "private TrafficIncidentViewportResponse() {\n" +
+            "}")
+            .getJavadoc()
+            .setDescription("Set default constructor to private");
+     }
 }

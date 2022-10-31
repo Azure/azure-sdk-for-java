@@ -16,6 +16,9 @@ public final class TrafficIncidentDetail {
     @JsonProperty(value = "tm", access = JsonProperty.Access.WRITE_ONLY)
     private TrafficIncidentDetailTm tm;
 
+    /** Set default constructor to private */
+    private TrafficIncidentDetail() {}
+
     /**
      * Get the tm property: Main response element.
      *

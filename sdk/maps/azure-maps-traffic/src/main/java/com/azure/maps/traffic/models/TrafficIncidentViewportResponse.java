@@ -38,6 +38,9 @@ public final class TrafficIncidentViewportResponse {
     @JsonProperty(value = "@maps", access = JsonProperty.Access.WRITE_ONLY)
     private String maps;
 
+    /** Set default constructor to private */
+    private TrafficIncidentViewportResponse() {}
+
     /**
      * Get the trafficState property: Traffic State information.
      *

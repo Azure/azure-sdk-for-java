@@ -88,6 +88,9 @@ public final class TrafficFlowSegmentDataProperties {
     @JsonProperty(value = "openlr", access = JsonProperty.Access.WRITE_ONLY)
     private String openLrCode;
 
+    /** Set default constructor to private */
+    private TrafficFlowSegmentDataProperties() {}
+
     /**
      * Get the functionalRoadClass property: Functional Road Class. This indicates the road type: 0: Motorway, freeway
      * or other major road. 1: Major road, less important than a motorway. 2: Other major road. 3: Secondary road. 4:

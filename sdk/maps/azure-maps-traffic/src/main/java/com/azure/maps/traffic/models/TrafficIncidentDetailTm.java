@@ -23,6 +23,9 @@ public final class TrafficIncidentDetailTm {
     @JsonProperty(value = "poi", access = JsonProperty.Access.WRITE_ONLY)
     private List<TrafficIncidentPointOfInterest> pointsOfInterest;
 
+    /** Set default constructor to private */
+    private TrafficIncidentDetailTm() {}
+
     /**
      * Get the id property: ID of the traffic model for this incident.
      *

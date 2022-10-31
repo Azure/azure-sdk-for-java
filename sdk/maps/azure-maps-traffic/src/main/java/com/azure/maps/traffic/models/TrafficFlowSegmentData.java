@@ -16,6 +16,9 @@ public final class TrafficFlowSegmentData {
     @JsonProperty(value = "flowSegmentData", access = JsonProperty.Access.WRITE_ONLY)
     private TrafficFlowSegmentDataProperties flowSegmentData;
 
+    /** Set default constructor to private */
+    private TrafficFlowSegmentData() {}
+
     /**
      * Get the flowSegmentData property: Flow Segment Data property.
      *

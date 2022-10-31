@@ -119,6 +119,9 @@ public final class TrafficIncidentPointOfInterest {
     @JsonProperty(value = "c", access = JsonProperty.Access.WRITE_ONLY)
     private String cause;
 
+    /** Set default constructor to private */
+    private TrafficIncidentPointOfInterest() {}
+
     /**
      * Get the id property: ID of the traffic incident.
      *

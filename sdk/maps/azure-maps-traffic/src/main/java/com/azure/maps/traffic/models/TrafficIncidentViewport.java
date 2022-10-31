@@ -16,6 +16,9 @@ public final class TrafficIncidentViewport {
     @JsonProperty(value = "viewpResp", access = JsonProperty.Access.WRITE_ONLY)
     private TrafficIncidentViewportResponse viewpResp;
 
+    /** Set default constructor to private */
+    private TrafficIncidentViewport() {}
+
     /**
      * Get the viewpResp property: Viewport Response object.
      *

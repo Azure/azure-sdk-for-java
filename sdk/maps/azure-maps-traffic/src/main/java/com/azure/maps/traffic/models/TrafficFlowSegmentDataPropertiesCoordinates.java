@@ -23,6 +23,9 @@ public final class TrafficFlowSegmentDataPropertiesCoordinates {
     @JsonProperty(value = "coordinate", access = JsonProperty.Access.WRITE_ONLY)
     private List<LatLongPair> coordinates;
 
+    /** Set default constructor to private */
+    private TrafficFlowSegmentDataPropertiesCoordinates() {}
+
     /**
      * Return the coordinates
      *

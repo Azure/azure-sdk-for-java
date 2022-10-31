@@ -19,7 +19,6 @@ autorest --java --use:@autorest/java@4.0.x
 
 ``` yaml
 directive:
-
   - from: swagger-document
     where: "$"
     transform: >
@@ -28,6 +27,9 @@ directive:
     where: "$"
     transform: >
         $["security"] = [];
+  - rename-model:
+        from: TrafficIncidentViewportViewpResp
+        to: TrafficIncidentViewportResponse
 
 title: TrafficClient
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/maps/data-plane/Traffic/preview/1.0/traffic.json

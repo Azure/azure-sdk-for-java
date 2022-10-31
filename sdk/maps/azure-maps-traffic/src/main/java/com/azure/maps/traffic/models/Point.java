@@ -22,6 +22,9 @@ public final class Point {
     @JsonProperty(value = "y", access = JsonProperty.Access.WRITE_ONLY)
     private Float y;
 
+    /** Set default constructor to private */
+    private Point() {}
+
     /**
      * Get the x property: x coordinate.
      *
