@@ -6,7 +6,6 @@ package com.azure.spring.cloud.service.implementation.eventhubs.factory;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.eventhubs.CheckpointStore;
@@ -149,11 +148,6 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     @Override
     protected BiConsumer<EventProcessorClientBuilder, Configuration> consumeConfiguration() {
         return EventProcessorClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<EventProcessorClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, tokenCredential) -> builder.credential(tokenCredential);
     }
 
     @Override

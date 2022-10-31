@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.service.implementation.cosmos;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
 import com.azure.cosmos.ConnectionMode;
@@ -139,11 +138,6 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     protected BiConsumer<CosmosClientBuilder, Configuration> consumeConfiguration() {
         LOGGER.warn("Configuration instance is not supported to configure in CosmosClientBuilder");
         return (a, b) -> { };
-    }
-
-    @Override
-    protected BiConsumer<CosmosClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return CosmosClientBuilder::credential;
     }
 
     @Override

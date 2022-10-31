@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.service.implementation.storage.fileshare;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -96,12 +95,6 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected BiConsumer<ShareServiceClientBuilder, Configuration> consumeConfiguration() {
         return ShareServiceClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<ShareServiceClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        LOGGER.warn("TokenCredential is not supported to configure in ShareServiceClientBuilder.");
-        return (a, b) -> { };
     }
 
     @Override

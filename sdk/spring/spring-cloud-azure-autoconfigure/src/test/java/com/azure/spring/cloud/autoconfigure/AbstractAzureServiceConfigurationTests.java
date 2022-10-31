@@ -11,7 +11,7 @@ import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.implementation.IdentityClient;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConfiguration;
-import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import org.junit.jupiter.api.Assertions;
@@ -95,7 +95,7 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
         assertThat(context).hasSingleBean(getConfigurationPropertiesType());
         P properties = context.getBean(getConfigurationPropertiesType());
 
-        AzureTokenCredentialResolver tokenCredentialResolver = getAzureTokenCredentialResolver(builderFactory);
+        AzureCredentialResolver<TokenCredential> tokenCredentialResolver = getAzureTokenCredentialResolver(builderFactory);
 
         TokenCredential tokenCredential = tokenCredentialResolver.resolve(properties);
         Assertions.assertTrue(credentialType.isAssignableFrom(tokenCredential.getClass()));
@@ -104,8 +104,9 @@ public abstract class AbstractAzureServiceConfigurationTests<T extends AbstractA
         Assertions.assertEquals(AzureAuthorityHosts.AZURE_GOVERNMENT, identityClient.getIdentityClientOptions().getAuthorityHost());
     }
 
-    private AzureTokenCredentialResolver getAzureTokenCredentialResolver(T builderFactory) {
-        return (AzureTokenCredentialResolver) getField(getBuilderFactoryType(),
+    @SuppressWarnings("unchecked")
+    private AzureCredentialResolver<TokenCredential> getAzureTokenCredentialResolver(T builderFactory) {
+        return (AzureCredentialResolver<TokenCredential>) getField(getBuilderFactoryType(),
             "tokenCredentialResolver", builderFactory);
     }
 

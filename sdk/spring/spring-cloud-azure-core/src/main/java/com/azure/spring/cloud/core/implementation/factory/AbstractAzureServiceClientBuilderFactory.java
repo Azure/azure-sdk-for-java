@@ -37,7 +37,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureServiceClientBuilderFactory.class);
     private static final TokenCredential DEFAULT_DEFAULT_TOKEN_CREDENTIAL = new DefaultAzureCredentialBuilder().build();
-    private static final AzureTokenCredentialResolver DEFAULT_TOKEN_CREDENTIAL_RESOLVER = new AzureTokenCredentialResolver();
+    private static final AzureCredentialResolver<TokenCredential> DEFAULT_TOKEN_CREDENTIAL_RESOLVER
+        = new AzureTokenCredentialResolver();
 
     /**
      * Create an instance of Azure sdk client builder.
@@ -91,12 +92,6 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     protected abstract BiConsumer<T, Configuration> consumeConfiguration();
 
     /**
-     * Return a {@link BiConsumer} of how the {@link T} builder consume a default {@link TokenCredential}.
-     * @return The consumer of how the {@link T} builder consume a default {@link TokenCredential}.
-     */
-    protected abstract BiConsumer<T, TokenCredential> consumeDefaultTokenCredential();
-
-    /**
      * Return a {@link BiConsumer} of how the {@link T} builder consume a connection string.
      * @return The consumer of how the {@link T} builder consume a connection string.
      */
@@ -148,9 +143,8 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         configureConfiguration(builder);
         configureRetry(builder);
         configureProxy(builder);
-        configureCredential(builder);
         configureConnectionString(builder);
-        configureDefaultCredential(builder);
+        configureCredential(builder);
     }
 
     /**
@@ -183,24 +177,42 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     protected void configureCredential(T builder) {
-        List<AuthenticationDescriptor<?>> descriptors = getAuthenticationDescriptors(builder);
-        Object azureCredential = resolveAzureCredential(getAzureProperties(), descriptors);
-        if (azureCredential == null) {
-            LOGGER.debug("No authentication credential configured for class {}.", builder.getClass().getSimpleName());
+        if (credentialConfigured) {
+            LOGGER.debug("Credential has been configured for {}", builder.getClass());
             return;
         }
 
-        final Consumer consumer = descriptors.stream()
-                                             .filter(d -> (d.getAzureCredentialType()
-                                                            .isAssignableFrom(azureCredential.getClass())))
-                                             .map(AuthenticationDescriptor::getConsumer)
-                                             .findFirst()
-                                             .orElseThrow(
-                                                 () -> new IllegalArgumentException("Consumer should not be null"));
+        List<AuthenticationDescriptor<?>> descriptors = getAuthenticationDescriptors(builder);
+        Object azureCredential = resolveAzureCredential(getAzureProperties(), descriptors);
 
+        if (azureCredential != null) {
+            final Consumer consumer = descriptors
+                .stream()
+                .filter(d -> (d.getAzureCredentialType().isAssignableFrom(azureCredential.getClass())))
+                .map(AuthenticationDescriptor::getConsumer)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("Consumer should not be null"));
 
-        consumer.accept(azureCredential);
-        credentialConfigured = true;
+            LOGGER.debug("Configure the credential of type {} to {}.", azureCredential.getClass().getSimpleName(),
+                builder.getClass().getSimpleName());
+            consumer.accept(azureCredential);
+            credentialConfigured = true;
+        } else {
+            LOGGER.debug("No credential found for class {}. Will try to use the default token credential.",
+                builder.getClass().getSimpleName());
+            for (AuthenticationDescriptor descriptor : descriptors) {
+                if (descriptor.getAzureCredentialType().equals(TokenCredential.class)) {
+                    descriptor.getConsumer().accept(this.defaultTokenCredential);
+                    LOGGER.debug("Configure the default token credential to {}.", builder.getClass().getSimpleName());
+                    credentialConfigured = true;
+                    break;
+                }
+            }
+        }
+
+        if (!credentialConfigured) {
+            LOGGER.debug("No credential configured for {}", builder.getClass().getSimpleName());
+        }
     }
 
     /**
@@ -232,20 +244,6 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
             consumeConnectionString().accept(builder, this.connectionStringProvider.getConnectionString());
             credentialConfigured = true;
             LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
-        }
-    }
-
-    /**
-     * Configure the default token credential to the builder. The default credential will be set if and only if the
-     * {@link #credentialConfigured} is false.
-     *
-     * @param builder The service client builder.
-     */
-    protected void configureDefaultCredential(T builder) {
-        if (!credentialConfigured) {
-            LOGGER.info("Will configure the default credential of type {} for {}.",
-                this.defaultTokenCredential.getClass().getSimpleName(), builder.getClass());
-            consumeDefaultTokenCredential().accept(builder, this.defaultTokenCredential);
         }
     }
 

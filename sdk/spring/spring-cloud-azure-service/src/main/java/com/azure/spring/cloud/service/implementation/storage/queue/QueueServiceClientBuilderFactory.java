@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.service.implementation.storage.queue;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -94,11 +93,6 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected BiConsumer<QueueServiceClientBuilder, Configuration> consumeConfiguration() {
         return QueueServiceClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<QueueServiceClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return QueueServiceClientBuilder::credential;
     }
 
     @Override

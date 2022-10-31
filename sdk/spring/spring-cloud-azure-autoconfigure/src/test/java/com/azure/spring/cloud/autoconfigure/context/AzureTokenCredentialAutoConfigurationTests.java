@@ -144,7 +144,7 @@ class AzureTokenCredentialAutoConfigurationTests {
 
 
     @Test
-    void emptyPropertiesShouldNotResolve() {
+    void emptyPropertiesShouldResolveDAC() {
         AzureGlobalProperties properties = new AzureGlobalProperties();
 
         contextRunner
@@ -152,7 +152,7 @@ class AzureTokenCredentialAutoConfigurationTests {
                 .run(context -> {
                     assertThat(context).hasSingleBean(AzureTokenCredentialResolver.class);
                     AzureTokenCredentialResolver resolver = context.getBean(AzureTokenCredentialResolver.class);
-                    Assertions.assertNull(resolver.resolve(properties));
+                    Assertions.assertEquals(DefaultAzureCredential.class, resolver.resolve(properties).getClass());
                 });
     }
 

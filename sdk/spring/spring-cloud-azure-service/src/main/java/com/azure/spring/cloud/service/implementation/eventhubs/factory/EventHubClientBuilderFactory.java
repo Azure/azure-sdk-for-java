@@ -75,11 +75,6 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
     }
 
     @Override
-    protected BiConsumer<EventHubClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, tokenCredential) -> builder.credential(tokenCredential);
-    }
-
-    @Override
     protected BiConsumer<EventHubClientBuilder, String> consumeConnectionString() {
         return (builder, connectionString) -> {
             if (StringUtils.hasText(this.eventHubsProperties.getEventHubName())) {

@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.service.implementation.storage.blob;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -83,11 +82,6 @@ public class BlobServiceClientBuilderFactory extends AbstractAzureStorageClientB
     @Override
     protected BiConsumer<BlobServiceClientBuilder, Configuration> consumeConfiguration() {
         return BlobServiceClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<BlobServiceClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return BlobServiceClientBuilder::credential;
     }
 
     @Override

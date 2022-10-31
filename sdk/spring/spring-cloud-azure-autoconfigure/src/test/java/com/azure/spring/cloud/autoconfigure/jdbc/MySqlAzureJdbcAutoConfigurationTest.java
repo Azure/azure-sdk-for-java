@@ -36,10 +36,10 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
     private static final String MYSQL_USE_SSL_PROPERTY
         = MYSQL_PROPERTY_NAME_USE_SSL + "=" + MYSQL_PROPERTY_VALUE_USE_SSL;
 
-    private static final String AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
+    static final String AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
         = AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName();
 
-    private static final String AUTHPROPERTY_CREDENTIAL_BEAN_NAME
+    static final String AUTHPROPERTY_CREDENTIAL_BEAN_NAME
         = AuthProperty.TOKEN_CREDENTIAL_BEAN_NAME.getPropertyKey() + "=" + "passwordlessTokenCredential";
 
     private static final String MYSQL_USER_AGENT = MYSQL_PROPERTY_NAME_CONNECTION_ATTRIBUTES + "="
@@ -85,6 +85,7 @@ class MySqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConfigura
                     false,
                     connectionString,
                     AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
                     MYSQL_USER_AGENT
                 );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());

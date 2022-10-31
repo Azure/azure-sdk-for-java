@@ -6,6 +6,7 @@ package com.azure.spring.cloud.core.implementation.credential.resolver;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.UsernamePasswordCredential;
 import com.azure.identity.implementation.IdentityClient;
@@ -21,9 +22,9 @@ class AzureTokenCredentialResolverTests {
     private final AzureTokenCredentialResolver resolver = new AzureTokenCredentialResolver();
 
     @Test
-    void emptyPropertiesShouldNotResolve() {
+    void emptyPropertiesShouldResolveDAC() {
         AzureTestProperties properties = new AzureTestProperties();
-        Assertions.assertNull(resolver.resolve(properties));
+        Assertions.assertEquals(DefaultAzureCredential.class, resolver.resolve(properties).getClass());
     }
 
     @Test
@@ -125,5 +126,5 @@ class AzureTokenCredentialResolverTests {
     private static class AzureTestProperties extends AzureAmqpSdkProperties {
 
     }
-    
+
 }

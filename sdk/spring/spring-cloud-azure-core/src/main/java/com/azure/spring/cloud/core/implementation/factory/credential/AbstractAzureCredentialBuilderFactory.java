@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.core.implementation.factory.credential;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -94,11 +93,6 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
     }
 
     @Override
-    protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {
-        return (a, b) -> { };
-    }
-
-    @Override
     protected BiConsumer<T, String> consumeConnectionString() {
         return (a, b) -> { };
     }
@@ -122,5 +116,15 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
     @Override
     protected void configureService(T builder) {
 
+    }
+
+    @Override
+    protected void configureCredential(T builder) {
+        LOGGER.debug("No credential will be configured for a {} instance", this.getClass().getSimpleName());
+    }
+
+    @Override
+    protected void configureConnectionString(T builder) {
+        LOGGER.debug("No connection string will be configured for a {}", this.getClass().getSimpleName());
     }
 }

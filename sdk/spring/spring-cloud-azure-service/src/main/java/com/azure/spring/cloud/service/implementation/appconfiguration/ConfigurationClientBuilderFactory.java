@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.service.implementation.appconfiguration;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -90,11 +89,6 @@ public class ConfigurationClientBuilderFactory extends AbstractAzureHttpClientBu
     @Override
     protected BiConsumer<ConfigurationClientBuilder, Configuration> consumeConfiguration() {
         return ConfigurationClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<ConfigurationClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return ConfigurationClientBuilder::credential;
     }
 
     @Override

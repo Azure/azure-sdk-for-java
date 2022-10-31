@@ -6,7 +6,6 @@ package com.azure.spring.cloud.service.implementation.servicebus.factory;
 import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
@@ -131,15 +130,6 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
         return (builder, configuration) -> {
             if (!isShareServiceBusClientBuilder()) {
                 this.serviceBusClientBuilder.configuration(configuration);
-            }
-        };
-    }
-
-    @Override
-    protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, credential) -> {
-            if (!isShareServiceBusClientBuilder()) {
-                this.serviceBusClientBuilder.credential(credential);
             }
         };
     }

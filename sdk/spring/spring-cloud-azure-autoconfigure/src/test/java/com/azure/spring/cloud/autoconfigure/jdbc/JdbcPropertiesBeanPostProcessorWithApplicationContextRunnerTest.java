@@ -76,7 +76,8 @@ class JdbcPropertiesBeanPostProcessorWithApplicationContextRunnerTest {
                         DatabaseType.MYSQL,
                         MYSQL_CONNECTION_STRING,
                         PropertyKey.connectionAttributes.getKeyName()  + "=_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-                        AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+                        MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+                        MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_CREDENTIAL_BEAN_NAME
                     );
                     assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
                 }

@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.service.implementation.keyvault.secrets;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -93,11 +92,6 @@ public class SecretClientBuilderFactory extends AbstractAzureHttpClientBuilderFa
     @Override
     protected BiConsumer<SecretClientBuilder, Configuration> consumeConfiguration() {
         return SecretClientBuilder::configuration;
-    }
-
-    @Override
-    protected BiConsumer<SecretClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return SecretClientBuilder::credential;
     }
 
     @Override

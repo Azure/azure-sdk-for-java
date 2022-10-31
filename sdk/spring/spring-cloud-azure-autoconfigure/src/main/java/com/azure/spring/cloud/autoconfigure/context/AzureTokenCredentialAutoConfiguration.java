@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.identity.ClientCertificateCredentialBuilder;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import com.azure.identity.DefaultAzureCredentialBuilder;
@@ -12,8 +11,15 @@ import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
+import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
+import com.azure.spring.cloud.core.implementation.credential.resolver.ClientCertificateCredentialResolver;
+import com.azure.spring.cloud.core.implementation.credential.resolver.ClientSecretCredentialResolver;
+import com.azure.spring.cloud.core.implementation.credential.resolver.DefaultAzureCredentialResolver;
+import com.azure.spring.cloud.core.implementation.credential.resolver.DefaultTokenCredentialResolver;
+import com.azure.spring.cloud.core.implementation.credential.resolver.ManagedIdentityCredentialResolver;
+import com.azure.spring.cloud.core.implementation.credential.resolver.UsernamePasswordCredentialResolver;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.AbstractAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ClientCertificateCredentialBuilderFactory;
@@ -21,7 +27,6 @@ import com.azure.spring.cloud.core.implementation.factory.credential.ClientSecre
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.ManagedIdentityCredentialBuilderFactory;
 import com.azure.spring.cloud.core.implementation.factory.credential.UsernamePasswordCredentialBuilderFactory;
-import com.azure.spring.cloud.core.provider.authentication.TokenCredentialOptionsProvider;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -37,7 +42,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
-import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_CREDENTIAL_TASK_EXECUTOR_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_CREDENTIAL_THREAD_NAME_PREFIX;
@@ -62,14 +69,21 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
-    TokenCredential tokenCredential(DefaultAzureCredentialBuilderFactory factory,
-                                    AzureTokenCredentialResolver resolver) {
-        TokenCredential globalTokenCredential = resolver.resolve(this.identityClientProperties);
-        if (globalTokenCredential != null) {
-            return globalTokenCredential;
-        } else {
-            return factory.build().build();
-        }
+    TokenCredential tokenCredential(ClientSecretCredentialBuilderFactory clientSecretCredentialBuilderFactory,
+                                    ClientCertificateCredentialBuilderFactory clientCertificateCredentialBuilderFactory,
+                                    UsernamePasswordCredentialBuilderFactory usernamePasswordCredentialBuilderFactory,
+                                    ManagedIdentityCredentialBuilderFactory managedIdentityCredentialBuilderFactory,
+                                    DefaultAzureCredentialBuilderFactory defaultAzureCredentialBuilderFactory) {
+
+        List<AzureCredentialResolver<TokenCredential>> resolverList = new ArrayList<>();
+        resolverList.add(new ClientSecretCredentialResolver(clientSecretCredentialBuilderFactory));
+        resolverList.add(new ClientCertificateCredentialResolver(clientCertificateCredentialBuilderFactory));
+        resolverList.add(new UsernamePasswordCredentialResolver(usernamePasswordCredentialBuilderFactory));
+        resolverList.add(new ManagedIdentityCredentialResolver(managedIdentityCredentialBuilderFactory));
+        resolverList.add(new DefaultAzureCredentialResolver(defaultAzureCredentialBuilderFactory));
+
+        AzureTokenCredentialResolver resolver = new AzureTokenCredentialResolver(resolverList);
+        return resolver.resolve(this.identityClientProperties);
     }
 
     @Bean
@@ -86,76 +100,24 @@ public class AzureTokenCredentialAutoConfiguration extends AzureServiceConfigura
     @Bean
     @ConditionalOnMissingBean
     AzureTokenCredentialResolver azureTokenCredentialResolver(
+        @Qualifier(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME) TokenCredential defaultTokenCredential,
         ClientSecretCredentialBuilderFactory clientSecretCredentialBuilderFactory,
         ClientCertificateCredentialBuilderFactory clientCertificateCredentialBuilderFactory,
         UsernamePasswordCredentialBuilderFactory usernamePasswordCredentialBuilderFactory,
-        ManagedIdentityCredentialBuilderFactory managedIdentityCredentialBuilderFactory) {
+        ManagedIdentityCredentialBuilderFactory managedIdentityCredentialBuilderFactory,
+        DefaultAzureCredentialBuilderFactory defaultAzureCredentialBuilderFactory) {
 
-        return new AzureTokenCredentialResolver(azureProperties -> {
+        List<AzureCredentialResolver<TokenCredential>> resolverList = new ArrayList<>();
+        resolverList.add(new ClientSecretCredentialResolver(clientSecretCredentialBuilderFactory));
+        resolverList.add(new ClientCertificateCredentialResolver(clientCertificateCredentialBuilderFactory));
+        resolverList.add(new UsernamePasswordCredentialResolver(usernamePasswordCredentialBuilderFactory));
+        resolverList.add(new ManagedIdentityCredentialResolver(managedIdentityCredentialBuilderFactory));
+        resolverList.add(new DefaultTokenCredentialResolver(defaultTokenCredential, this.identityClientProperties));
+        resolverList.add(new DefaultAzureCredentialResolver(defaultAzureCredentialBuilderFactory));
 
-            if (azureProperties.getCredential() == null) {
-                return null;
-            }
+        AzureTokenCredentialResolver azureTokenCredentialResolver = new AzureTokenCredentialResolver(resolverList);
 
-            final TokenCredentialOptionsProvider.TokenCredentialOptions properties = azureProperties.getCredential();
-            final String tenantId = azureProperties.getProfile().getTenantId();
-            final String clientId = properties.getClientId();
-            final boolean isClientIdSet = StringUtils.hasText(clientId);
-            String authorityHost = azureProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint();
-
-            if (authorityHost == null) {
-                authorityHost = AzureEnvironment.AZURE.getActiveDirectoryEndpoint();
-            }
-
-            if (StringUtils.hasText(tenantId)) {
-
-                if (isClientIdSet && StringUtils.hasText(properties.getClientSecret())) {
-                    return clientSecretCredentialBuilderFactory.build()
-                                                               .authorityHost(authorityHost)
-                                                               .clientId(clientId)
-                                                               .clientSecret(properties.getClientSecret())
-                                                               .tenantId(tenantId)
-                                                               .build();
-                }
-
-                String clientCertificatePath = properties.getClientCertificatePath();
-                if (StringUtils.hasText(clientCertificatePath)) {
-                    ClientCertificateCredentialBuilder builder = clientCertificateCredentialBuilderFactory
-                        .build()
-                        .authorityHost(authorityHost)
-                        .tenantId(tenantId)
-                        .clientId(clientId);
-
-                    if (StringUtils.hasText(properties.getClientCertificatePassword())) {
-                        builder.pfxCertificate(clientCertificatePath, properties.getClientCertificatePassword());
-                    } else {
-                        builder.pemCertificate(clientCertificatePath);
-                    }
-
-                    return builder.build();
-                }
-            }
-
-            if (isClientIdSet && StringUtils.hasText(properties.getUsername())
-                && StringUtils.hasText(properties.getPassword())) {
-                return usernamePasswordCredentialBuilderFactory.build()
-                                                               .authorityHost(authorityHost)
-                                                               .username(properties.getUsername())
-                                                               .password(properties.getPassword())
-                                                               .clientId(clientId)
-                                                               .tenantId(tenantId)
-                                                               .build();
-            }
-
-            if (properties.isManagedIdentityEnabled()) {
-                ManagedIdentityCredentialBuilder builder = managedIdentityCredentialBuilderFactory.build();
-                if (isClientIdSet) {
-                    builder.clientId(clientId);
-                }
-                return builder.build();
-            }
-            return null;
-        });
+        return azureTokenCredentialResolver;
     }
 
     @Bean

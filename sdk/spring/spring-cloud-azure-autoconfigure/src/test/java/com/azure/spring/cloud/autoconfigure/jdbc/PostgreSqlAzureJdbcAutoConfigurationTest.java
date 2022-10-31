@@ -70,7 +70,8 @@ class PostgreSqlAzureJdbcAutoConfigurationTest extends AbstractAzureJdbcAutoConf
                     false,
                     connectionString,
                     POSTGRESQL_USER_AGENT,
-                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY
+                    AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+                    AUTHPROPERTY_CREDENTIAL_BEAN_NAME
                 );
                 assertEquals(expectedUrl, dataSourceProperties.getUrl());
             });

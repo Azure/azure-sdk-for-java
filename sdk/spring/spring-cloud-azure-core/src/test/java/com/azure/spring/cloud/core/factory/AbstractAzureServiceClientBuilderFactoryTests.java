@@ -163,11 +163,6 @@ class AbstractAzureServiceClientBuilderFactoryTests {
         }
 
         @Override
-        protected BiConsumer<TestClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-            return (a, b) -> { };
-        }
-
-        @Override
         protected BiConsumer<TestClientBuilder, String> consumeConnectionString() {
             return TestClientBuilder::setConnectionString;
         }

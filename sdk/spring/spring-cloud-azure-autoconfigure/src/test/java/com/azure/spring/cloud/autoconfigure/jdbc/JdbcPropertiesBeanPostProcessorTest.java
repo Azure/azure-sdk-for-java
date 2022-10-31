@@ -3,11 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.jdbc;
 
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.jdbc.DatabaseType;
 import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
-import com.azure.spring.cloud.service.implementation.identity.credential.provider.SpringTokenCredentialProvider;
 import com.mysql.cj.conf.PropertyKey;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -85,7 +83,8 @@ class JdbcPropertiesBeanPostProcessorTest {
             DatabaseType.MYSQL,
             MYSQL_CONNECTION_STRING,
             PropertyKey.connectionAttributes.getKeyName()  + "=_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_CREDENTIAL_BEAN_NAME
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -103,7 +102,9 @@ class JdbcPropertiesBeanPostProcessorTest {
             DatabaseType.MYSQL,
             MYSQL_CONNECTION_STRING,
             PropertyKey.connectionAttributes.getKeyName()  + "=_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_CREDENTIAL_BEAN_NAME
+
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -123,7 +124,8 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
             baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_CREDENTIAL_BEAN_NAME
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
@@ -143,7 +145,8 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.MYSQL,
             baseUrl + ",_extension_version:" + AzureSpringIdentifier.AZURE_SPRING_MYSQL_OAUTH,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_CREDENTIAL_BEAN_NAME
         );
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
     }
@@ -160,7 +163,8 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.POSTGRESQL,
             baseUrl,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName(),
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_CREDENTIAL_BEAN_NAME,
             APPLICATION_NAME.getName() + "=" + AzureSpringIdentifier.AZURE_SPRING_POSTGRESQL_OAUTH
         );
 
@@ -181,7 +185,8 @@ class JdbcPropertiesBeanPostProcessorTest {
         String expectedJdbcUrl = enhanceJdbcUrl(
             DatabaseType.POSTGRESQL,
             baseUrl,
-            AuthProperty.TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME.getPropertyKey() + "=" + SpringTokenCredentialProvider.class.getName()
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_TOKENCREDENTIALPROVIDERCLASSNAME_PROPERTY,
+            MySqlAzureJdbcAutoConfigurationTest.AUTHPROPERTY_CREDENTIAL_BEAN_NAME
         );
 
         assertEquals(expectedJdbcUrl, dataSourceProperties.getUrl());
