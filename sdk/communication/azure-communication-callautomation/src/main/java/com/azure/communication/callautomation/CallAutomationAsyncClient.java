@@ -77,10 +77,10 @@ public final class CallAutomationAsyncClient {
         this.contentsInternal = callServiceClient.getContents();
         this.logger = new ClientLogger(CallAutomationAsyncClient.class);
         this.contentDownloader = new ContentDownloader(
-            callServiceClient.getEndpoint(),
+            callServiceClient.getEndpoint().toString(),
             callServiceClient.getHttpPipeline());
         this.httpPipelineInternal = callServiceClient.getHttpPipeline();
-        this.resourceEndpoint = callServiceClient.getEndpoint();
+        this.resourceEndpoint = callServiceClient.getEndpoint().toString();
     }
 
     //region Pre-call Actions
