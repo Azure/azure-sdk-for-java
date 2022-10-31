@@ -10,6 +10,9 @@ Upgrade Spring Boot dependencies version to 2.7.4 and Spring Cloud dependencies 
 - Fix bug: Duplicated "scope" parameter. [#31191](https://github.com/Azure/azure-sdk-for-java/issues/31191).
 - Fix bug: NimbusJwtDecoder still uses `RestTemplate()` instead `RestTemplateBuilder` [#31233](https://github.com/Azure/azure-sdk-for-java/issues/31233)
 
+#### Features Added
+- Remove warning logs of Kafka passwordless autoconfiguration. [#31182](https://github.com/Azure/azure-sdk-for-java/issues/31182)
+
 ## 4.4.0 (2022-09-26)
 Upgrade Spring Boot dependencies version to 2.7.3 and Spring Cloud dependencies version to 2021.0.3
 Upgrade Spring Boot dependencies version to 2.7.2 and Spring Cloud dependencies version to 2021.0.3.
