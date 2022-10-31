@@ -10,6 +10,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConf
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import org.apache.kafka.common.config.types.Password;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
@@ -115,6 +116,7 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                 Map<String, Object> consumerConfiguration = kafkaProperties.mergedConsumerConfiguration();
                 HashMap<String, Object> modifiedConfigs = new HashMap<>(consumerConfiguration);
                 modifiedConfigs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList("myehnamespace.servicebus.windows.net:9093"));
+                modifiedConfigs.put(SASL_JAAS_CONFIG, new Password((String) modifiedConfigs.get(SASL_JAAS_CONFIG)));
                 KafkaOAuth2AuthenticateCallbackHandler callbackHandler = new KafkaOAuth2AuthenticateCallbackHandler();
                 callbackHandler.configure(modifiedConfigs, null, null);
 
@@ -128,6 +130,7 @@ class AzureKafkaOAuth2BinderConfigurationTests extends AbstractAzureKafkaOAuth2A
                 modifiedConfigs.clear();
                 modifiedConfigs.putAll(producerConfiguration);
                 modifiedConfigs.put(BOOTSTRAP_SERVERS_CONFIG, Arrays.asList("myehnamespace.servicebus.windows.net:9093"));
+                modifiedConfigs.put(SASL_JAAS_CONFIG, new Password((String) modifiedConfigs.get(SASL_JAAS_CONFIG)));
                 callbackHandler.configure(modifiedConfigs, null, null);
                 properties = (AzurePasswordlessProperties) ReflectionTestUtils.getField(callbackHandler, "properties");
                 azureTokenCredentialResolver =

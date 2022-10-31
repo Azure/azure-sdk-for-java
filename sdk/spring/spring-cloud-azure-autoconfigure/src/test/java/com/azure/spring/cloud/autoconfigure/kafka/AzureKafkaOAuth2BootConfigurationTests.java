@@ -11,6 +11,7 @@ import com.azure.spring.cloud.autoconfigure.context.AzureTokenCredentialAutoConf
 import com.azure.spring.cloud.core.credential.AzureCredentialResolver;
 import com.azure.spring.cloud.service.implementation.kafka.KafkaOAuth2AuthenticateCallbackHandler;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import org.apache.kafka.common.config.types.Password;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration;
@@ -25,6 +26,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.apache.kafka.common.config.SaslConfigs.SASL_JAAS_CONFIG;
@@ -72,9 +74,10 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
                 DefaultKafkaProducerFactory<?, ?> producerFactory =
                     (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);
                 Map<String, Object> producerProperties = producerFactory.getConfigurationProperties();
-
+                HashMap<String, Object> modifiedConfigs = new HashMap<>(producerProperties);
+                modifiedConfigs.put(SASL_JAAS_CONFIG, new Password((String) modifiedConfigs.get(SASL_JAAS_CONFIG)));
                 KafkaOAuth2AuthenticateCallbackHandler callbackHandler = new KafkaOAuth2AuthenticateCallbackHandler();
-                callbackHandler.configure(producerProperties, null, null);
+                callbackHandler.configure(modifiedConfigs, null, null);
 
                 AzurePasswordlessProperties properties = (AzurePasswordlessProperties) ReflectionTestUtils
                     .getField(callbackHandler, "properties");
@@ -86,7 +89,10 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
                 DefaultKafkaConsumerFactory<?, ?> consumerFactory =
                     (DefaultKafkaConsumerFactory<?, ?>) context.getBean(ConsumerFactory.class);
                 Map<String, Object> consumerProperties = consumerFactory.getConfigurationProperties();
-                callbackHandler.configure(consumerProperties, null, null);
+                modifiedConfigs.clear();
+                modifiedConfigs.putAll(consumerProperties);
+                modifiedConfigs.put(SASL_JAAS_CONFIG, new Password((String) modifiedConfigs.get(SASL_JAAS_CONFIG)));
+                callbackHandler.configure(modifiedConfigs, null, null);
                 properties = (AzurePasswordlessProperties) ReflectionTestUtils.getField(callbackHandler, "properties");
                 azureTokenCredentialResolver = (AzureCredentialResolver<TokenCredential>) ReflectionTestUtils.getField(callbackHandler, "tokenCredentialResolver");
                 assertNotNull(azureTokenCredentialResolver);
@@ -105,7 +111,8 @@ class AzureKafkaOAuth2BootConfigurationTests extends AbstractAzureKafkaOAuth2Aut
                 DefaultKafkaProducerFactory<?, ?> producerFactory =
                     (DefaultKafkaProducerFactory<?, ?>) context.getBean(ProducerFactory.class);
                 Map<String, Object> producerProperties = producerFactory.getConfigurationProperties();
-
+                HashMap<String, Object> modifiedConfigs = new HashMap<>(producerProperties);
+                modifiedConfigs.put(SASL_JAAS_CONFIG, new Password((String) modifiedConfigs.get(SASL_JAAS_CONFIG)));
                 KafkaOAuth2AuthenticateCallbackHandler callbackHandler = new KafkaOAuth2AuthenticateCallbackHandler();
                 callbackHandler.configure(producerProperties, null, null);
 
