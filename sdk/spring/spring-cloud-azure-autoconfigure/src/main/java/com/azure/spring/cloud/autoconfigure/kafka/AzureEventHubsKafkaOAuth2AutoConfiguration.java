@@ -54,12 +54,15 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
         this.tokenCredentialResolver = resolver;
         this.defaultTokenCredential = defaultTokenCredential;
         this.azureGlobalProperties = azureGlobalProperties;
+        //Move customized properties to a new map to parse since we need to remove it from KafkaProperties.
         this.consumerCustomizedProperties.putAll(kafkaProperties.buildConsumerProperties());
         this.producerCustomizedProperties.putAll(kafkaProperties.buildProducerProperties());
+        //Configure admin with OAuth2 configs in the ctor instead of customizer bean, since the configuration for KafkaAdmin only accept properties
         if (needConfigureSaslOAuth(kafkaProperties.buildAdminProperties())) {
             configureKafkaOAuth2Properties(kafkaProperties.buildAdminProperties(), azureGlobalProperties,
                     kafkaProperties.getAdmin().getProperties());
         }
+        //TODO(yiliu6): refactor this class to KafkaPropertiesBeanPostProcessor
         clearAzurePropertiesInKafkaProperties();
     }
 
@@ -67,8 +70,10 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
     DefaultKafkaConsumerFactoryCustomizer azureOAuth2KafkaConsumerFactoryCustomizer() {
         Map<String, Object> updateConfigs = new HashMap<>();
         if (needConfigureSaslOAuth(consumerCustomizedProperties)) {
+            //Merge all configured consumer OAuth2 properties to KafkaProperties in order to pass to SCS properties
             configureKafkaOAuth2Properties(consumerCustomizedProperties, azureGlobalProperties, kafkaProperties.getConsumer()
                     .getProperties());
+            //Pass all merged OAuth2 properties to consumer factory for the usage of Spring Boot Kafka
             updateConfigs.putAll(kafkaProperties.getConsumer().getProperties());
             updateConfigs.put(AZURE_TOKEN_CREDENTIAL, resolveSpringCloudAzureTokenCredential(
                     buildAzureProperties(consumerCustomizedProperties, azureGlobalProperties)));
@@ -81,8 +86,10 @@ public class AzureEventHubsKafkaOAuth2AutoConfiguration {
     DefaultKafkaProducerFactoryCustomizer azureOAuth2KafkaProducerFactoryCustomizer() {
         Map<String, Object> updateConfigs = new HashMap<>();
         if (needConfigureSaslOAuth(producerCustomizedProperties)) {
+            //Merge all configured producer OAuth2 properties to KafkaProperties in order to pass to SCS properties
             configureKafkaOAuth2Properties(producerCustomizedProperties, azureGlobalProperties, kafkaProperties.getProducer()
                     .getProperties());
+            //Pass all merged OAuth2 properties to producer factory for the usage of Spring Boot Kafka
             updateConfigs.putAll(kafkaProperties.getProducer().getProperties());
             updateConfigs.put(AZURE_TOKEN_CREDENTIAL, resolveSpringCloudAzureTokenCredential(
                     buildAzureProperties(producerCustomizedProperties, azureGlobalProperties)));
