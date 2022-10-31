@@ -8,7 +8,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
-- Fixed `listQueues`, `listTopics`, `listRules`, `listSubscriptions`, `createQueue` and `createSubscriptionWithResponse` in `ServiceBusAdministrationClient` class. ([#31712](https://github.com/Azure/azure-sdk-for-java/issues/31712))
+- Fixed incorrect proxy configuration using environment variables. ([24230](https://github.com/Azure/azure-sdk-for-java/issues/24230))
 ### Other Changes
 
 ## 7.12.1 (2022-10-25)

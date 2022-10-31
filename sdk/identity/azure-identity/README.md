@@ -242,7 +242,7 @@ While the `DefaultAzureCredential` is generally the quickest way to get started 
 
     ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder().build();
     AzureCliCredential cliCredential = new AzureCliCredentialBuilder().build();
-    
+
     ChainedTokenCredential credential = new ChainedTokenCredentialBuilder().addLast(managedIdentityCredential).addLast(cliCredential).build();
 
     // Azure SDK client builders accept the credential as a parameter
@@ -476,7 +476,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
     </tr>
     <tr>
       <td><code>AZURE_CLIENT_CERTIFICATE_PATH</code></td>
-      <td>path to a PEM-encoded certificate file including private key</td>
+      <td>path to a PFX or PEM-encoded certificate file including private key</td>
     </tr>
     <tr>
         <td><code>AZURE_CLIENT_CERTIFICATE_PASSWORD</code></td>
@@ -499,6 +499,10 @@ Credentials can be chained together to be tried in turn until one succeeds using
     <tr>
       <td><code>AZURE_CLIENT_ID</code></td>
       <td>ID of an Azure AD application</td>
+    </tr>
+    <tr>
+      <td><code>AZURE_TENANT_ID</code></td>
+      <td>(optional) ID of the application's Azure AD tenant</td>
     </tr>
     <tr>
       <td><code>AZURE_USERNAME</code></td>
