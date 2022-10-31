@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.spring.messaging.eventhubs.core.EventHubsProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -51,6 +52,7 @@ class AzureEventHubsTemplateConfigurationTests {
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(ObjectMapper.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubsTemplate.class);
                 assertThat(context).hasSingleBean(EventHubsProducerFactory.class);
