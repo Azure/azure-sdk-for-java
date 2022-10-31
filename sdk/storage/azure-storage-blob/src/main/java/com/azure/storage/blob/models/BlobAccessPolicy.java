@@ -31,6 +31,9 @@ public final class BlobAccessPolicy {
     @JsonProperty(value = "Permission")
     private String permissions;
 
+    /** Creates an instance of BlobAccessPolicy class. */
+    public BlobAccessPolicy() {}
+
     /**
      * Get the startsOn property: the date-time the policy is active.
      *

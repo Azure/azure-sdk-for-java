@@ -40,6 +40,10 @@ public class BackupResourceEncryptionConfig {
     @JsonProperty(value = "infrastructureEncryptionState")
     private InfrastructureEncryptionState infrastructureEncryptionState;
 
+    /** Creates an instance of BackupResourceEncryptionConfig class. */
+    public BackupResourceEncryptionConfig() {
+    }
+
     /**
      * Get the encryptionAtRestType property: Encryption At Rest Type.
      *

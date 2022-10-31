@@ -25,8 +25,7 @@ public final class QueueMetrics {
     private boolean enabled;
 
     /*
-     * Indicates whether metrics should generate summary statistics for called
-     * API operations.
+     * Indicates whether metrics should generate summary statistics for called API operations.
      */
     @JsonProperty(value = "IncludeAPIs")
     private Boolean includeApis;
@@ -36,6 +35,9 @@ public final class QueueMetrics {
      */
     @JsonProperty(value = "RetentionPolicy")
     private QueueRetentionPolicy retentionPolicy;
+
+    /** Creates an instance of QueueMetrics class. */
+    public QueueMetrics() {}
 
     /**
      * Get the version property: The version of Storage Analytics to configure.

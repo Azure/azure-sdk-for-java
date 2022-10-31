@@ -188,21 +188,6 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
      *
      * @param azureRegion Azure region to hit Api.
      * @param parameters Feature support request object.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for feature support requests for Azure IaasVm.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public AzureVMResourceFeatureSupportResponseInner validate(String azureRegion, FeatureSupportRequest parameters) {
-        return validateAsync(azureRegion, parameters).block();
-    }
-
-    /**
-     * It will validate if given feature with resource properties is supported in service.
-     *
-     * @param azureRegion Azure region to hit Api.
-     * @param parameters Feature support request object.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -213,5 +198,20 @@ public final class FeatureSupportsClientImpl implements FeatureSupportsClient {
     public Response<AzureVMResourceFeatureSupportResponseInner> validateWithResponse(
         String azureRegion, FeatureSupportRequest parameters, Context context) {
         return validateWithResponseAsync(azureRegion, parameters, context).block();
+    }
+
+    /**
+     * It will validate if given feature with resource properties is supported in service.
+     *
+     * @param azureRegion Azure region to hit Api.
+     * @param parameters Feature support request object.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response for feature support requests for Azure IaasVm.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AzureVMResourceFeatureSupportResponseInner validate(String azureRegion, FeatureSupportRequest parameters) {
+        return validateWithResponse(azureRegion, parameters, Context.NONE).getValue();
     }
 }

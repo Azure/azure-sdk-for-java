@@ -19,6 +19,10 @@ public final class ManagedClusterAutoUpgradeProfile {
     @JsonProperty(value = "upgradeChannel")
     private UpgradeChannel upgradeChannel;
 
+    /** Creates an instance of ManagedClusterAutoUpgradeProfile class. */
+    public ManagedClusterAutoUpgradeProfile() {
+    }
+
     /**
      * Get the upgradeChannel property: The upgrade channel for auto upgrade. The default is 'none'.
      *

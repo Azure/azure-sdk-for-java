@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkloadNetworks DeleteDnsZone. */
 public final class WorkloadNetworksDeleteDnsZoneSamples {
     /*
-     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2021-12-01/examples/WorkloadNetworks_DeleteDnsZones.json
+     * x-ms-original-file: specification/vmware/resource-manager/Microsoft.AVS/stable/2022-05-01/examples/WorkloadNetworks_DeleteDnsZones.json
      */
     /**
      * Sample code: WorkloadNetworks_DeleteDnsZone.

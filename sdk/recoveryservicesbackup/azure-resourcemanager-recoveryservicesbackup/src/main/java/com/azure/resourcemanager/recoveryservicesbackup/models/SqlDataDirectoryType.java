@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SqlDataDirectoryType. */
+/** Type of data directory mapping. */
 public final class SqlDataDirectoryType extends ExpandableStringEnum<SqlDataDirectoryType> {
     /** Static value Invalid for SqlDataDirectoryType. */
     public static final SqlDataDirectoryType INVALID = fromString("Invalid");

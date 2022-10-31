@@ -69,6 +69,10 @@ public class DpmContainer extends ProtectionContainer {
     @JsonProperty(value = "extendedInfo")
     private DpmContainerExtendedInfo extendedInfo;
 
+    /** Creates an instance of DpmContainer class. */
+    public DpmContainer() {
+    }
+
     /**
      * Get the canReRegister property: Specifies whether the container is re-registrable.
      *

@@ -197,22 +197,6 @@ public final class JobDetailsClientImpl implements JobDetailsClient {
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param jobName Name of the job whose details are to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return extended information associated with the job.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public JobResourceInner get(String vaultName, String resourceGroupName, String jobName) {
-        return getAsync(vaultName, resourceGroupName, jobName).block();
-    }
-
-    /**
-     * Gets extended information associated with the job.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param jobName Name of the job whose details are to be fetched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -223,5 +207,21 @@ public final class JobDetailsClientImpl implements JobDetailsClient {
     public Response<JobResourceInner> getWithResponse(
         String vaultName, String resourceGroupName, String jobName, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, jobName, context).block();
+    }
+
+    /**
+     * Gets extended information associated with the job.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param jobName Name of the job whose details are to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return extended information associated with the job.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public JobResourceInner get(String vaultName, String resourceGroupName, String jobName) {
+        return getWithResponse(vaultName, resourceGroupName, jobName, Context.NONE).getValue();
     }
 }
