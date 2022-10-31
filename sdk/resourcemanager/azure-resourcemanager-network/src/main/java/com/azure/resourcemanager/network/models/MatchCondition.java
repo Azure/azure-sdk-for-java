@@ -42,6 +42,10 @@ public final class MatchCondition {
     @JsonProperty(value = "transforms")
     private List<WebApplicationFirewallTransform> transforms;
 
+    /** Creates an instance of MatchCondition class. */
+    public MatchCondition() {
+    }
+
     /**
      * Get the matchVariables property: List of match variables.
      *

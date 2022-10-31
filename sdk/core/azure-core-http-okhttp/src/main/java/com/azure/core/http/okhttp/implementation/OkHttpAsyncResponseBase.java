@@ -18,13 +18,14 @@ import java.nio.charset.Charset;
  */
 abstract class OkHttpAsyncResponseBase extends HttpResponse {
     private final int statusCode;
-    private Headers okhttpHeaders;
-    private HttpHeaders headers;
+    private final HttpHeaders headers;
 
-    OkHttpAsyncResponseBase(Response response, HttpRequest request) {
+    OkHttpAsyncResponseBase(Response response, HttpRequest request, boolean eagerlyConvertHeaders) {
         super(request);
         this.statusCode = response.code();
-        this.okhttpHeaders = response.headers();
+        this.headers = eagerlyConvertHeaders
+            ? fromOkHttpHeaders(response.headers())
+            : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers());
     }
 
     @Override
@@ -34,21 +35,11 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
 
     @Override
     public final String getHeaderValue(String name) {
-        if (this.headers == null) {
-            this.headers = fromOkHttpHeaders(okhttpHeaders);
-            this.okhttpHeaders = null;
-        }
-
         return this.headers.getValue(name);
     }
 
     @Override
     public final HttpHeaders getHeaders() {
-        if (this.headers == null) {
-            this.headers = fromOkHttpHeaders(okhttpHeaders);
-            this.okhttpHeaders = null;
-        }
-
         return this.headers;
     }
 
@@ -68,7 +59,7 @@ abstract class OkHttpAsyncResponseBase extends HttpResponse {
      * @param okHttpHeaders okhttp headers
      * @return azure-core HttpHeaders
      */
-    private static HttpHeaders fromOkHttpHeaders(Headers okHttpHeaders) {
+    static HttpHeaders fromOkHttpHeaders(Headers okHttpHeaders) {
         /*
          * While OkHttp's Headers class offers a method which converts the headers into a Map<String, List<String>>,
          * which matches one of the setters in our HttpHeaders, the method implicitly lower cases header names while

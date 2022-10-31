@@ -15,19 +15,6 @@ public interface ProtectionIntents {
      *
      * @param azureRegion Azure region to hit Api.
      * @param parameters Enable backup validation request on Virtual Machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response contract for enable backup validation request.
-     */
-    PreValidateEnableBackupResponse validate(String azureRegion, PreValidateEnableBackupRequest parameters);
-
-    /**
-     * It will validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed
-     * in properties.
-     *
-     * @param azureRegion Azure region to hit Api.
-     * @param parameters Enable backup validation request on Virtual Machine.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -38,20 +25,17 @@ public interface ProtectionIntents {
         String azureRegion, PreValidateEnableBackupRequest parameters, Context context);
 
     /**
-     * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
-     * the operation, call the GetItemOperationResult API.
+     * It will validate followings 1. Vault capacity 2. VM is already protected 3. Any VM related configuration passed
+     * in properties.
      *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the backed up item.
-     * @param intentObjectName Backed up item name whose details are to be fetched.
+     * @param azureRegion Azure region to hit Api.
+     * @param parameters Enable backup validation request on Virtual Machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup ProtectionIntent.
+     * @return response contract for enable backup validation request.
      */
-    ProtectionIntentResource get(
-        String vaultName, String resourceGroupName, String fabricName, String intentObjectName);
+    PreValidateEnableBackupResponse validate(String azureRegion, PreValidateEnableBackupRequest parameters);
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
@@ -71,17 +55,20 @@ public interface ProtectionIntents {
         String vaultName, String resourceGroupName, String fabricName, String intentObjectName, Context context);
 
     /**
-     * Used to remove intent from an item.
+     * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of
+     * the operation, call the GetItemOperationResult API.
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the intent.
-     * @param intentObjectName Intent to be deleted.
+     * @param fabricName Fabric name associated with the backed up item.
+     * @param intentObjectName Backed up item name whose details are to be fetched.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for backup ProtectionIntent.
      */
-    void delete(String vaultName, String resourceGroupName, String fabricName, String intentObjectName);
+    ProtectionIntentResource get(
+        String vaultName, String resourceGroupName, String fabricName, String intentObjectName);
 
     /**
      * Used to remove intent from an item.
@@ -98,6 +85,19 @@ public interface ProtectionIntents {
      */
     Response<Void> deleteWithResponse(
         String vaultName, String resourceGroupName, String fabricName, String intentObjectName, Context context);
+
+    /**
+     * Used to remove intent from an item.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the intent.
+     * @param intentObjectName Intent to be deleted.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void delete(String vaultName, String resourceGroupName, String fabricName, String intentObjectName);
 
     /**
      * Provides the details of the protection intent up item. This is an asynchronous operation. To know the status of

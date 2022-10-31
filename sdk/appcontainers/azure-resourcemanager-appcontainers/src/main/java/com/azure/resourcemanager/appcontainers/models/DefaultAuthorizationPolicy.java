@@ -12,18 +12,20 @@ import java.util.List;
 @Fluent
 public final class DefaultAuthorizationPolicy {
     /*
-     * The configuration settings of the Azure Active Directory allowed
-     * principals.
+     * The configuration settings of the Azure Active Directory allowed principals.
      */
     @JsonProperty(value = "allowedPrincipals")
     private AllowedPrincipals allowedPrincipals;
 
     /*
-     * The configuration settings of the Azure Active Directory allowed
-     * applications.
+     * The configuration settings of the Azure Active Directory allowed applications.
      */
     @JsonProperty(value = "allowedApplications")
     private List<String> allowedApplications;
+
+    /** Creates an instance of DefaultAuthorizationPolicy class. */
+    public DefaultAuthorizationPolicy() {
+    }
 
     /**
      * Get the allowedPrincipals property: The configuration settings of the Azure Active Directory allowed principals.

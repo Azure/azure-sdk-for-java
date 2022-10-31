@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.StoredProcedure;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.UserDefinedFunction;
@@ -115,7 +116,10 @@ public class CosmosAsyncScripts {
                 spanName,
                 client.getServiceEndpoint(),
                 this.container.getDatabase().getId(),
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .readStoredProcedures(container.getLink(), options)
@@ -238,7 +242,10 @@ public class CosmosAsyncScripts {
                 spanName,
                 client.getServiceEndpoint(),
                 this.container.getDatabase().getId(),
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .readUserDefinedFunctions(container.getLink(), options)
@@ -360,7 +367,10 @@ public class CosmosAsyncScripts {
                 spanName,
                 client.getServiceEndpoint(),
                 this.container.getDatabase().getId(),
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .readTriggers(container.getLink(), options)
@@ -433,7 +443,10 @@ public class CosmosAsyncScripts {
                 spanName,
                 client.getServiceEndpoint(),
                 this.container.getDatabase().getId(),
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .queryStoredProcedures(container.getLink(), querySpec, options)
@@ -454,7 +467,10 @@ public class CosmosAsyncScripts {
                 spanName,
                 client.getServiceEndpoint(),
                 this.container.getDatabase().getId(),
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .queryUserDefinedFunctions(container.getLink(), querySpec, options)
@@ -482,7 +498,10 @@ public class CosmosAsyncScripts {
                 spanName,
                 client.getServiceEndpoint(),
                 this.container.getDatabase().getId(),
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ? ImplementationBridgeHelpers
+                    .CosmosQueryRequestOptionsHelper
+                    .getCosmosQueryRequestOptionsAccessor()
+                    .getQueryNameOrDefault(options, spanName) : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return database.getDocClientWrapper()
                 .queryTriggers(container.getLink(), querySpec, options)

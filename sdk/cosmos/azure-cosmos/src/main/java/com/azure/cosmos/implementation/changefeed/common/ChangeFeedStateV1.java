@@ -169,7 +169,7 @@ public class ChangeFeedStateV1 extends ChangeFeedState {
             case FULL_FIDELITY:
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.A_IM,
-                    HttpConstants.A_IMHeaderValues.FullFidelityFeed);
+                    HttpConstants.A_IMHeaderValues.FULL_FIDELITY_FEED);
                 //  This is the new wire format, which only gets passed for Full Fidelity Change Feed
                 request.getHeaders().put(
                     HttpConstants.HttpHeaders.CHANGE_FEED_WIRE_FORMAT_VERSION,

@@ -100,4 +100,4 @@ After pull request is ready, comment `/azp run prepare-pipelines` to let the aut
 
 The live tests will be automatically run, before SDK release.
 
-In pull request, comment `/azp run java - <service> - tests.mgmt` to run it manually.
+In pull request, comment `/azp run java - <service> - mgmt - tests` to run it manually.

@@ -17,6 +17,10 @@ public final class DailyRetentionFormat {
     @JsonProperty(value = "daysOfTheMonth")
     private List<Day> daysOfTheMonth;
 
+    /** Creates an instance of DailyRetentionFormat class. */
+    public DailyRetentionFormat() {
+    }
+
     /**
      * Get the daysOfTheMonth property: List of days of the month.
      *

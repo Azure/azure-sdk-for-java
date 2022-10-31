@@ -30,6 +30,10 @@ public final class CouchbaseLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of CouchbaseLinkedServiceTypeProperties class. */
+    public CouchbaseLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: An ODBC connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference.

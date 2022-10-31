@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.education.fluent.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.education.models.GrantStatus;
@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Grant details. */
-@Fluent
+@Immutable
 public final class GrantDetailsInner extends ProxyResource {
     /*
      * Grant detail properties.
@@ -22,11 +22,14 @@ public final class GrantDetailsInner extends ProxyResource {
     private GrantDetailProperties innerProperties;
 
     /*
-     * Azure Resource Manager metadata containing createdBy and modifiedBy
-     * information.
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
      */
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
+
+    /** Creates an instance of GrantDetailsInner class. */
+    public GrantDetailsInner() {
+    }
 
     /**
      * Get the innerProperties property: Grant detail properties.

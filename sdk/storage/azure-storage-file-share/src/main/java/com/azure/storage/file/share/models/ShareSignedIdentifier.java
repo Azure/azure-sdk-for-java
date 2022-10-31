@@ -24,6 +24,9 @@ public final class ShareSignedIdentifier {
     @JsonProperty(value = "AccessPolicy")
     private ShareAccessPolicy accessPolicy;
 
+    /** Creates an instance of ShareSignedIdentifier class. */
+    public ShareSignedIdentifier() {}
+
     /**
      * Get the id property: A unique id.
      *

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for VirtualMachineSizeTypes. */
+/** The size of the virtual machine. */
 public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualMachineSizeTypes> {
     /** Static value Unknown for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes UNKNOWN = fromString("Unknown");
@@ -102,7 +102,11 @@ public final class VirtualMachineSizeTypes extends ExpandableStringEnum<VirtualM
         return fromString(name, VirtualMachineSizeTypes.class);
     }
 
-    /** @return known VirtualMachineSizeTypes values. */
+    /**
+     * Gets known VirtualMachineSizeTypes values.
+     *
+     * @return known VirtualMachineSizeTypes values.
+     */
     public static Collection<VirtualMachineSizeTypes> values() {
         return values(VirtualMachineSizeTypes.class);
     }

@@ -47,7 +47,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
          * 5. verify existing call is still ongoing and has 2 participants now.
          */
 
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("removeAPSTNUserFromAnOngoingCallTest", next))
             .buildAsyncClient();
 
@@ -68,7 +68,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(result.getValue());
             assertNotNull(result.getValue().getCallConnection());
             assertNotNull(result.getValue().getCallConnectionProperties());
-            Thread.sleep(15000);
+            waitForOperationCompletion(15000);
 
             CallConnectionAsync callConnectionAsync = callClient.getCallConnectionAsync(result.getValue().getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnectionAsync);
@@ -82,8 +82,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
             assertEquals(3, listParticipantsResultResponse.getValue().getValues().size());
 
             RemoveParticipantsResult removeParticipantsResult = callConnectionAsync.removeParticipants(
-                new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1))),
-                null).block();
+                new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1)))).block();
 
             callConnectionProperties = callConnectionAsync.getCallProperties().block();
             assertNotNull(callConnectionProperties);
@@ -94,7 +93,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
             assertEquals(2, listParticipantsResultResponse.getValue().getValues().size());
 
             callConnectionAsync.hangUp(true).block();
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
             assertThrows(Exception.class, () -> callConnectionAsync.getCallProperties().block());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
@@ -116,7 +115,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
          * 5. verify existing call is still ongoing and has 2 participants now.
          */
 
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("removeAPSTNUserAndAcsUserFromAnOngoingCallTest", next))
             .buildAsyncClient();
 
@@ -137,7 +136,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(result.getValue());
             assertNotNull(result.getValue().getCallConnection());
             assertNotNull(result.getValue().getCallConnectionProperties());
-            Thread.sleep(20000);
+            waitForOperationCompletion(20000);
 
             CallConnectionAsync callConnectionAsync = callClient.getCallConnectionAsync(result.getValue().getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnectionAsync);
@@ -151,7 +150,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
             assertEquals(4, listParticipantsResultResponse.getValue().getValues().size());
 
             callConnectionAsync.removeParticipants(new ArrayList<>(Arrays.asList(new PhoneNumberIdentifier(PHONE_USER_1),
-                new CommunicationUserIdentifier(ACS_USER_2))), null).block();
+                new CommunicationUserIdentifier(ACS_USER_2)))).block();
 
             callConnectionProperties = callConnectionAsync.getCallProperties().block();
             assertNotNull(callConnectionProperties);
@@ -162,7 +161,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
             assertEquals(2, listParticipantsResultResponse.getValue().getValues().size());
 
             callConnectionAsync.hangUp(true).block();
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
             assertThrows(Exception.class, () -> callConnectionAsync.getCallProperties().block());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
@@ -183,7 +182,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
          * 4. transfer the call to another target.
          */
 
-        CallAutomationAsyncClient callClient = getCallingServerClientUsingConnectionString(httpClient)
+        CallAutomationAsyncClient callClient = getCallAutomationClientUsingConnectionString(httpClient)
             .addPolicy((context, next) -> logHeaders("removeAPSTNUserAndAcsUserFromAnOngoingCallTest", next))
             .buildAsyncClient();
 
@@ -203,7 +202,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(result.getValue());
             assertNotNull(result.getValue().getCallConnection());
             assertNotNull(result.getValue().getCallConnectionProperties());
-            Thread.sleep(10000);
+            waitForOperationCompletion(10000);
 
             CallConnectionAsync callConnectionAsync = callClient.getCallConnectionAsync(result.getValue().getCallConnectionProperties().getCallConnectionId());
             assertNotNull(callConnectionAsync);
@@ -216,7 +215,7 @@ public class CallConnectionAsyncLiveTests extends CallAutomationLiveTestBase {
             assertNotNull(transferCallResultResponse);
             assertNotNull(transferCallResultResponse.getValue());
 
-            Thread.sleep(5000);
+            waitForOperationCompletion(5000);
             assertThrows(Exception.class, () -> callConnectionAsync.getCallProperties().block());
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);

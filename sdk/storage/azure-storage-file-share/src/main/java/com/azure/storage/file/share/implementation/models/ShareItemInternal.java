@@ -49,6 +49,9 @@ public final class ShareItemInternal {
     @JsonProperty(value = "Metadata")
     private Map<String, String> metadata;
 
+    /** Creates an instance of ShareItemInternal class. */
+    public ShareItemInternal() {}
+
     /**
      * Get the name property: The Name property.
      *

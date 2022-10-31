@@ -18,6 +18,10 @@ public final class BgpPeerStatusListResultInner {
     @JsonProperty(value = "value")
     private List<BgpPeerStatus> value;
 
+    /** Creates an instance of BgpPeerStatusListResultInner class. */
+    public BgpPeerStatusListResultInner() {
+    }
+
     /**
      * Get the value property: List of BGP peers.
      *

@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.policyinsights.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** The restrictions on a field imposed by a specific policy. */
 @Immutable
 public final class FieldRestriction {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FieldRestriction.class);
-
     /*
      * The type of restriction that is imposed on the field.
      */
@@ -22,8 +18,7 @@ public final class FieldRestriction {
     private FieldRestrictionResult result;
 
     /*
-     * The value that policy will set for the field if the user does not
-     * provide a value.
+     * The value that policy will set for the field if the user does not provide a value.
      */
     @JsonProperty(value = "defaultValue", access = JsonProperty.Access.WRITE_ONLY)
     private String defaultValue;
@@ -39,6 +34,10 @@ public final class FieldRestriction {
      */
     @JsonProperty(value = "policy", access = JsonProperty.Access.WRITE_ONLY)
     private PolicyReference policy;
+
+    /** Creates an instance of FieldRestriction class. */
+    public FieldRestriction() {
+    }
 
     /**
      * Get the result property: The type of restriction that is imposed on the field.

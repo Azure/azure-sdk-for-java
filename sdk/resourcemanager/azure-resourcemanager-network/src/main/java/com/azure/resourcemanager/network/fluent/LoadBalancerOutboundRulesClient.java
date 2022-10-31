@@ -91,20 +91,6 @@ public interface LoadBalancerOutboundRulesClient {
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param outboundRuleName The name of the outbound rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified load balancer outbound rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    OutboundRuleInner get(String resourceGroupName, String loadBalancerName, String outboundRuleName);
-
-    /**
-     * Gets the specified load balancer outbound rule.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param loadBalancerName The name of the load balancer.
-     * @param outboundRuleName The name of the outbound rule.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -114,4 +100,18 @@ public interface LoadBalancerOutboundRulesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<OutboundRuleInner> getWithResponse(
         String resourceGroupName, String loadBalancerName, String outboundRuleName, Context context);
+
+    /**
+     * Gets the specified load balancer outbound rule.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param loadBalancerName The name of the load balancer.
+     * @param outboundRuleName The name of the outbound rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified load balancer outbound rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    OutboundRuleInner get(String resourceGroupName, String loadBalancerName, String outboundRuleName);
 }

@@ -42,6 +42,10 @@ public final class IpConfigurationPropertiesFormatInner {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
+    /** Creates an instance of IpConfigurationPropertiesFormatInner class. */
+    public IpConfigurationPropertiesFormatInner() {
+    }
+
     /**
      * Get the privateIpAddress property: The private IP address of the IP configuration.
      *

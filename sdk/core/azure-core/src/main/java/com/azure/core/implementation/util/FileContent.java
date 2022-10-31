@@ -24,19 +24,21 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
 /**
  * A {@link BinaryDataContent} backed by a file.
  */
 public final class FileContent extends BinaryDataContent {
     private static final ClientLogger LOGGER = new ClientLogger(FileContent.class);
-    private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private final Path file;
     private final int chunkSize;
     private final long position;
     private final long length;
-    private final AtomicReference<byte[]> bytes = new AtomicReference<>();
+
+    private volatile byte[] bytes;
+    private static final AtomicReferenceFieldUpdater<FileContent, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(FileContent.class, byte[].class, "bytes");
 
     /**
      * Creates a new instance of {@link FileContent}.
@@ -114,12 +116,7 @@ public final class FileContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        byte[] data = this.bytes.get();
-        if (data == null) {
-            bytes.set(getBytes());
-            data = this.bytes.get();
-        }
-        return data;
+        return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 
     @Override
@@ -141,10 +138,9 @@ public final class FileContent extends BinaryDataContent {
     @Override
     public ByteBuffer toByteBuffer() {
         if (length > Integer.MAX_VALUE) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                String.format("'length' cannot be greater than %d when mapping file to ByteBuffer.",
-                    Integer.MAX_VALUE)));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
         }
+
         /*
          * A mapping, once established, is not dependent upon the file channel that was used to create it.
          * Closing the channel, in particular, has no effect upon the validity of the mapping.
@@ -205,10 +201,9 @@ public final class FileContent extends BinaryDataContent {
 
     private byte[] getBytes() {
         if (length > MAX_ARRAY_SIZE) {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                String.format("'length' cannot be greater than %d when buffering content.",
-                    MAX_ARRAY_SIZE)));
+            throw LOGGER.logExceptionAsError(new IllegalStateException(TOO_LARGE_FOR_BYTE_ARRAY + length));
         }
+
         try (InputStream is = this.toStream()) {
             byte[] bytes = new byte[(int) length];
             int pendingBytes = bytes.length;

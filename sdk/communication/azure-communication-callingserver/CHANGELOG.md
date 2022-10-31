@@ -16,6 +16,7 @@ This is the first version of the restart of Azure Communication Service Calling 
 - Call recording.
 - Get, add and remove participants from the call.
 - Recording download apis.
+- Optimized the logic for deserializing types derived from the `CommunicationIdentifier`.
 
 ### Breaking Changes
 - Incompatible with previous version of service
@@ -52,7 +53,7 @@ This is a Public Preview version, so breaking changes are possible in subsequent
 - Hangup and delete the existing call.
 - Play audio in the call.
 - Out-call apis for call recording including start, pause, resume stop and get state.
-- Subscribe to and receive [DTMF][DTMF] tones via events.
+- Subscribe to and receive [DTMF][DTMF] dtmfTones via events.
 - Add and remove participants from the call.
 - Recording download apis.
 

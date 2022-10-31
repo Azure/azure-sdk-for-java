@@ -259,32 +259,6 @@ public final class ProtectedItemOperationResultsClientImpl implements ProtectedI
      * @param containerName Container name associated with the backup item.
      * @param protectedItemName Backup item name whose details are to be fetched.
      * @param operationId OperationID which represents the operation whose result needs to be fetched.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return base class for backup items.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectedItemResourceInner get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String operationId) {
-        return getAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId)
-            .block();
-    }
-
-    /**
-     * Fetches the result of any operation on the backup item.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @param fabricName Fabric name associated with the backup item.
-     * @param containerName Container name associated with the backup item.
-     * @param protectedItemName Backup item name whose details are to be fetched.
-     * @param operationId OperationID which represents the operation whose result needs to be fetched.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -303,5 +277,32 @@ public final class ProtectedItemOperationResultsClientImpl implements ProtectedI
         return getWithResponseAsync(
                 vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId, context)
             .block();
+    }
+
+    /**
+     * Fetches the result of any operation on the backup item.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param fabricName Fabric name associated with the backup item.
+     * @param containerName Container name associated with the backup item.
+     * @param protectedItemName Backup item name whose details are to be fetched.
+     * @param operationId OperationID which represents the operation whose result needs to be fetched.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return base class for backup items.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public ProtectedItemResourceInner get(
+        String vaultName,
+        String resourceGroupName,
+        String fabricName,
+        String containerName,
+        String protectedItemName,
+        String operationId) {
+        return getWithResponse(
+                vaultName, resourceGroupName, fabricName, containerName, protectedItemName, operationId, Context.NONE)
+            .getValue();
     }
 }

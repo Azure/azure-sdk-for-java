@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for WorkloadNetworkPortMirroringProvisioningState. */
+/** The provisioning state. */
 public final class WorkloadNetworkPortMirroringProvisioningState
     extends ExpandableStringEnum<WorkloadNetworkPortMirroringProvisioningState> {
     /** Static value Succeeded for WorkloadNetworkPortMirroringProvisioningState. */
@@ -26,6 +26,9 @@ public final class WorkloadNetworkPortMirroringProvisioningState
     /** Static value Updating for WorkloadNetworkPortMirroringProvisioningState. */
     public static final WorkloadNetworkPortMirroringProvisioningState UPDATING = fromString("Updating");
 
+    /** Static value Canceled for WorkloadNetworkPortMirroringProvisioningState. */
+    public static final WorkloadNetworkPortMirroringProvisioningState CANCELED = fromString("Canceled");
+
     /**
      * Creates or finds a WorkloadNetworkPortMirroringProvisioningState from its string representation.
      *
@@ -37,7 +40,11 @@ public final class WorkloadNetworkPortMirroringProvisioningState
         return fromString(name, WorkloadNetworkPortMirroringProvisioningState.class);
     }
 
-    /** @return known WorkloadNetworkPortMirroringProvisioningState values. */
+    /**
+     * Gets known WorkloadNetworkPortMirroringProvisioningState values.
+     *
+     * @return known WorkloadNetworkPortMirroringProvisioningState values.
+     */
     public static Collection<WorkloadNetworkPortMirroringProvisioningState> values() {
         return values(WorkloadNetworkPortMirroringProvisioningState.class);
     }

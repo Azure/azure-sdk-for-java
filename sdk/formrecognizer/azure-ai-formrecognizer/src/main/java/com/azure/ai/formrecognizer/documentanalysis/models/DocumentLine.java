@@ -5,6 +5,7 @@ package com.azure.ai.formrecognizer.documentanalysis.models;
 
 import com.azure.ai.formrecognizer.documentanalysis.implementation.util.DocumentLineHelper;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,8 @@ import java.util.List;
  */
 @Immutable
 public final class DocumentLine {
+    // Ignore custom getters in the class to prevent serialization and deserialization issues
+
     /*
      * Concatenated content of the contained elements in reading order.
      */
@@ -101,6 +104,7 @@ public final class DocumentLine {
      *
      * @return the list of {@link DocumentWord} in this DocumentLine
      */
+    @JsonIgnore
     public List<DocumentWord> getWords() {
         List<DocumentWord> containedWords = new ArrayList<>();
         pageWords.forEach(documentWord ->

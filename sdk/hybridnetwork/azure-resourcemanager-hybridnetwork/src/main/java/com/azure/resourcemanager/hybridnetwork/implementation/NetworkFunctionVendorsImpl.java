@@ -11,10 +11,9 @@ import com.azure.resourcemanager.hybridnetwork.fluent.NetworkFunctionVendorsClie
 import com.azure.resourcemanager.hybridnetwork.fluent.models.NetworkFunctionVendorInner;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionVendor;
 import com.azure.resourcemanager.hybridnetwork.models.NetworkFunctionVendors;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class NetworkFunctionVendorsImpl implements NetworkFunctionVendors {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkFunctionVendorsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(NetworkFunctionVendorsImpl.class);
 
     private final NetworkFunctionVendorsClient innerClient;
 

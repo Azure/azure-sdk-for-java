@@ -37,6 +37,10 @@ public final class IntegrationRuntimeResourceInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
+    /** Creates an instance of IntegrationRuntimeResourceInner class. */
+    public IntegrationRuntimeResourceInner() {
+    }
+
     /**
      * Get the properties property: Integration runtime properties.
      *

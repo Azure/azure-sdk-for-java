@@ -40,6 +40,10 @@ public final class VirtualNetworkGatewayNatRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of VirtualNetworkGatewayNatRuleInner class. */
+    public VirtualNetworkGatewayNatRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the Virtual Network Gateway NAT rule.
      *

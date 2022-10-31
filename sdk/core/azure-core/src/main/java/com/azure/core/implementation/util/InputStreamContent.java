@@ -19,7 +19,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicReference;
+import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 import java.util.function.Supplier;
 
 /**
@@ -32,8 +32,11 @@ public final class InputStreamContent extends BinaryDataContent {
     private static final int MAX_ARRAY_LENGTH = Integer.MAX_VALUE - 8;
     private final Supplier<InputStream> content;
     private final Long length;
-    private final AtomicReference<byte[]> bytes = new AtomicReference<>();
     private final boolean isReplayable;
+
+    private volatile byte[] bytes;
+    private static final AtomicReferenceFieldUpdater<InputStreamContent, byte[]> BYTES_UPDATER
+        = AtomicReferenceFieldUpdater.newUpdater(InputStreamContent.class, byte[].class, "bytes");
 
 
     /**
@@ -57,8 +60,9 @@ public final class InputStreamContent extends BinaryDataContent {
 
     @Override
     public Long getLength() {
-        if (bytes.get() != null) {
-            return (long) bytes.get().length;
+        byte[] data = BYTES_UPDATER.get(this);
+        if (data != null) {
+            return (long) data.length;
         }
         return length;
     }
@@ -70,12 +74,7 @@ public final class InputStreamContent extends BinaryDataContent {
 
     @Override
     public byte[] toBytes() {
-        byte[] data = this.bytes.get();
-        if (data == null) {
-            bytes.set(getBytes());
-            data = this.bytes.get();
-        }
-        return data;
+        return BYTES_UPDATER.updateAndGet(this, bytes -> bytes == null ? getBytes() : bytes);
     }
 
     @Override

@@ -42,14 +42,12 @@ import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 import reactor.core.publisher.Mono;
 
-import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
-import java.util.ArrayList;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -417,7 +415,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
         containerProperties.setChangeFeedPolicy(
-            ChangeFeedPolicy.createFullFidelityPolicy(
+            ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(
                 Duration.ofMinutes(8)));
         int throughput = 1000;
 
@@ -427,7 +425,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, containerResponse);
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
-        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDuration())
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getRetentionDurationForAllVersionsAndDeletesPolicy())
             .isEqualTo(Duration.ofMinutes(8));
     }
 
@@ -435,7 +433,7 @@ public class CosmosContainerTest extends TestSuiteBase {
     public void createContainer_withIncrementalChangeFeedPolicy() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
-        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createIncrementalPolicy());
+        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createLatestVersionPolicy());
         int throughput = 1000;
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties,
@@ -444,7 +442,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, containerResponse);
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
-        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDuration())
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getRetentionDurationForAllVersionsAndDeletesPolicy())
             .isEqualTo(Duration.ZERO);
     }
 
@@ -460,7 +458,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, containerResponse);
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
-        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDuration())
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getRetentionDurationForAllVersionsAndDeletesPolicy())
             .isEqualTo(Duration.ZERO);
     }
 
@@ -846,7 +844,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         this.createdContainer = createdDatabase.getContainer(collectionName);
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
-        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDuration())
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getRetentionDurationForAllVersionsAndDeletesPolicy())
             .isEqualTo(Duration.ZERO);
 
         CosmosContainerResponse replaceResponse =
@@ -854,10 +852,10 @@ public class CosmosContainerTest extends TestSuiteBase {
                            .replace(containerResponse
                                  .getProperties()
                                  .setChangeFeedPolicy(
-                                     ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(4))));
+                                     ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(4))));
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
-        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDuration())
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getRetentionDurationForAllVersionsAndDeletesPolicy())
             .isEqualTo(Duration.ofMinutes(4));
     }
 
@@ -865,7 +863,7 @@ public class CosmosContainerTest extends TestSuiteBase {
     public void changeFullFidelityChangeFeedRetentionDurationForExistingContainer() throws Exception {
         String collectionName = UUID.randomUUID().toString();
         CosmosContainerProperties containerProperties = getCollectionDefinition(collectionName);
-        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(3)));
+        containerProperties.setChangeFeedPolicy(ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(3)));
         CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
 
         CosmosContainerResponse containerResponse = createdDatabase.createContainer(containerProperties);
@@ -873,7 +871,7 @@ public class CosmosContainerTest extends TestSuiteBase {
         validateContainerResponse(containerProperties, containerResponse);
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
-        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDuration())
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getRetentionDurationForAllVersionsAndDeletesPolicy())
             .isEqualTo(Duration.ofMinutes(3));
 
         CosmosContainerResponse replaceResponse =
@@ -881,10 +879,10 @@ public class CosmosContainerTest extends TestSuiteBase {
                            .replace(containerResponse
                                .getProperties()
                                .setChangeFeedPolicy(
-                                   ChangeFeedPolicy.createFullFidelityPolicy(Duration.ofMinutes(6))));
+                                   ChangeFeedPolicy.createAllVersionsAndDeletesPolicy(Duration.ofMinutes(6))));
         assertThat(containerResponse.getProperties()).isNotNull();
         assertThat(containerResponse.getProperties().getChangeFeedPolicy()).isNotNull();
-        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getFullFidelityRetentionDuration())
+        assertThat(containerResponse.getProperties().getChangeFeedPolicy().getRetentionDurationForAllVersionsAndDeletesPolicy())
             .isEqualTo(Duration.ofMinutes(6));
     }
 

@@ -5,17 +5,11 @@
 package com.azure.resourcemanager.trafficmanager.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Parameters supplied to check Traffic Manager name operation. */
 @Fluent
 public final class CheckTrafficManagerRelativeDnsNameAvailabilityParameters {
-    @JsonIgnore
-    private final ClientLogger logger =
-        new ClientLogger(CheckTrafficManagerRelativeDnsNameAvailabilityParameters.class);
-
     /*
      * The name of the resource.
      */
@@ -27,6 +21,10 @@ public final class CheckTrafficManagerRelativeDnsNameAvailabilityParameters {
      */
     @JsonProperty(value = "type")
     private String type;
+
+    /** Creates an instance of CheckTrafficManagerRelativeDnsNameAvailabilityParameters class. */
+    public CheckTrafficManagerRelativeDnsNameAvailabilityParameters() {
+    }
 
     /**
      * Get the name property: The name of the resource.

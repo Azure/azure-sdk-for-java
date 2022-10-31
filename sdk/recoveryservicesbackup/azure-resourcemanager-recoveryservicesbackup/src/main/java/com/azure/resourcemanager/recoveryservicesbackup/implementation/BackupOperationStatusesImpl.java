@@ -27,15 +27,6 @@ public final class BackupOperationStatusesImpl implements BackupOperationStatuse
         this.serviceManager = serviceManager;
     }
 
-    public OperationStatus get(String vaultName, String resourceGroupName, String operationId) {
-        OperationStatusInner inner = this.serviceClient().get(vaultName, resourceGroupName, operationId);
-        if (inner != null) {
-            return new OperationStatusImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<OperationStatus> getWithResponse(
         String vaultName, String resourceGroupName, String operationId, Context context) {
         Response<OperationStatusInner> inner =
@@ -46,6 +37,15 @@ public final class BackupOperationStatusesImpl implements BackupOperationStatuse
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public OperationStatus get(String vaultName, String resourceGroupName, String operationId) {
+        OperationStatusInner inner = this.serviceClient().get(vaultName, resourceGroupName, operationId);
+        if (inner != null) {
+            return new OperationStatusImpl(inner, this.manager());
         } else {
             return null;
         }

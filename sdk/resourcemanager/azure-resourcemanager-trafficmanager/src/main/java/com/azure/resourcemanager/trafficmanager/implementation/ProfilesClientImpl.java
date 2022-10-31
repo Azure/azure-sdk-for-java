@@ -30,7 +30,6 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
@@ -48,8 +47,6 @@ public final class ProfilesClientImpl
         InnerSupportsListing<ProfileInner>,
         InnerSupportsDelete<DeleteOperationResultInner>,
         ProfilesClient {
-    private final ClientLogger logger = new ClientLogger(ProfilesClientImpl.class);
-
     /** The proxy service used to perform REST calls. */
     private final ProfilesService service;
 
@@ -180,7 +177,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager Name Availability response.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TrafficManagerNameAvailabilityInner>>
@@ -216,7 +214,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager Name Availability response.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TrafficManagerNameAvailabilityInner>>
@@ -248,20 +247,30 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager Name Availability response.
+     * @return class representing a Traffic Manager Name Availability response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityAsync(
         CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) {
         return checkTrafficManagerRelativeDnsNameAvailabilityWithResponseAsync(parameters)
-            .flatMap(
-                (Response<TrafficManagerNameAvailabilityInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Checks the availability of a Traffic Manager Relative DNS name.
+     *
+     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
+     *     operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager Name Availability response along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityWithResponse(
+        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context) {
+        return checkTrafficManagerRelativeDnsNameAvailabilityWithResponseAsync(parameters, context).block();
     }
 
     /**
@@ -277,24 +286,7 @@ public final class ProfilesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public TrafficManagerNameAvailabilityInner checkTrafficManagerRelativeDnsNameAvailability(
         CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters) {
-        return checkTrafficManagerRelativeDnsNameAvailabilityAsync(parameters).block();
-    }
-
-    /**
-     * Checks the availability of a Traffic Manager Relative DNS name.
-     *
-     * @param parameters The Traffic Manager name parameters supplied to the CheckTrafficManagerNameAvailability
-     *     operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager Name Availability response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TrafficManagerNameAvailabilityInner> checkTrafficManagerRelativeDnsNameAvailabilityWithResponse(
-        CheckTrafficManagerRelativeDnsNameAvailabilityParameters parameters, Context context) {
-        return checkTrafficManagerRelativeDnsNameAvailabilityWithResponseAsync(parameters, context).block();
+        return checkTrafficManagerRelativeDnsNameAvailabilityWithResponse(parameters, Context.NONE).getValue();
     }
 
     /**
@@ -304,7 +296,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
@@ -351,7 +344,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listByResourceGroupSinglePageAsync(
@@ -395,7 +389,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProfileInner> listByResourceGroupAsync(String resourceGroupName) {
@@ -410,7 +404,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProfileInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
@@ -424,7 +418,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName) {
@@ -439,7 +433,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> listByResourceGroup(String resourceGroupName, Context context) {
@@ -451,7 +445,8 @@ public final class ProfilesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listSinglePageAsync() {
@@ -492,7 +487,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response along with {@link PagedResponse} on successful
+     *     completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProfileInner>> listSinglePageAsync(Context context) {
@@ -528,7 +524,7 @@ public final class ProfilesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ProfileInner> listAsync() {
@@ -542,7 +538,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ProfileInner> listAsync(Context context) {
@@ -554,7 +550,7 @@ public final class ProfilesClientImpl
      *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> list() {
@@ -568,7 +564,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list Traffic Manager profiles operation response.
+     * @return the list Traffic Manager profiles operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ProfileInner> list(Context context) {
@@ -583,7 +579,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Manager profile.
+     * @return a Traffic Manager profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(
@@ -632,7 +628,7 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Manager profile.
+     * @return a Traffic Manager profile along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProfileInner>> getByResourceGroupWithResponseAsync(
@@ -677,19 +673,29 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Manager profile.
+     * @return a Traffic Manager profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProfileInner> getByResourceGroupAsync(String resourceGroupName, String profileName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, profileName)
-            .flatMap(
-                (Response<ProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Gets a Traffic Manager profile.
+     *
+     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param profileName The name of the Traffic Manager profile.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a Traffic Manager profile along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProfileInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String profileName, Context context) {
+        return getByResourceGroupWithResponseAsync(resourceGroupName, profileName, context).block();
     }
 
     /**
@@ -704,24 +710,7 @@ public final class ProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner getByResourceGroup(String resourceGroupName, String profileName) {
-        return getByResourceGroupAsync(resourceGroupName, profileName).block();
-    }
-
-    /**
-     * Gets a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProfileInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String profileName, Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, profileName, context).block();
+        return getByResourceGroupWithResponse(resourceGroupName, profileName, Context.NONE).getValue();
     }
 
     /**
@@ -733,7 +722,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
+     * @return class representing a Traffic Manager profile along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProfileInner>> createOrUpdateWithResponseAsync(
@@ -789,7 +779,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
+     * @return class representing a Traffic Manager profile along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProfileInner>> createOrUpdateWithResponseAsync(
@@ -841,20 +832,31 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
+     * @return class representing a Traffic Manager profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProfileInner> createOrUpdateAsync(
         String resourceGroupName, String profileName, ProfileInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, profileName, parameters)
-            .flatMap(
-                (Response<ProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create or update a Traffic Manager profile.
+     *
+     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param profileName The name of the Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager profile along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProfileInner> createOrUpdateWithResponse(
+        String resourceGroupName, String profileName, ProfileInner parameters, Context context) {
+        return createOrUpdateWithResponseAsync(resourceGroupName, profileName, parameters, context).block();
     }
 
     /**
@@ -870,25 +872,7 @@ public final class ProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner createOrUpdate(String resourceGroupName, String profileName, ProfileInner parameters) {
-        return createOrUpdateAsync(resourceGroupName, profileName, parameters).block();
-    }
-
-    /**
-     * Create or update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param parameters The Traffic Manager profile parameters supplied to the CreateOrUpdate operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProfileInner> createOrUpdateWithResponse(
-        String resourceGroupName, String profileName, ProfileInner parameters, Context context) {
-        return createOrUpdateWithResponseAsync(resourceGroupName, profileName, parameters, context).block();
+        return createOrUpdateWithResponse(resourceGroupName, profileName, parameters, Context.NONE).getValue();
     }
 
     /**
@@ -899,7 +883,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
+     * @return the result of the request or operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
@@ -948,7 +933,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
+     * @return the result of the request or operation along with {@link Response} on successful completion of {@link
+     *     Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<DeleteOperationResultInner>> deleteWithResponseAsync(
@@ -993,19 +979,28 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
+     * @return the result of the request or operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<DeleteOperationResultInner> deleteAsync(String resourceGroupName, String profileName) {
-        return deleteWithResponseAsync(resourceGroupName, profileName)
-            .flatMap(
-                (Response<DeleteOperationResultInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+        return deleteWithResponseAsync(resourceGroupName, profileName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Deletes a Traffic Manager profile.
+     *
+     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
+     * @param profileName The name of the Traffic Manager profile to be deleted.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the result of the request or operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<DeleteOperationResultInner> deleteWithResponse(
+        String resourceGroupName, String profileName, Context context) {
+        return deleteWithResponseAsync(resourceGroupName, profileName, context).block();
     }
 
     /**
@@ -1020,24 +1015,7 @@ public final class ProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeleteOperationResultInner delete(String resourceGroupName, String profileName) {
-        return deleteAsync(resourceGroupName, profileName).block();
-    }
-
-    /**
-     * Deletes a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile to be deleted.
-     * @param profileName The name of the Traffic Manager profile to be deleted.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of the request or operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeleteOperationResultInner> deleteWithResponse(
-        String resourceGroupName, String profileName, Context context) {
-        return deleteWithResponseAsync(resourceGroupName, profileName, context).block();
+        return deleteWithResponse(resourceGroupName, profileName, Context.NONE).getValue();
     }
 
     /**
@@ -1049,7 +1027,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
+     * @return class representing a Traffic Manager profile along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ProfileInner>> updateWithResponseAsync(
@@ -1105,7 +1084,8 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
+     * @return class representing a Traffic Manager profile along with {@link Response} on successful completion of
+     *     {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ProfileInner>> updateWithResponseAsync(
@@ -1157,19 +1137,30 @@ public final class ProfilesClientImpl
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
+     * @return class representing a Traffic Manager profile on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ProfileInner> updateAsync(String resourceGroupName, String profileName, ProfileInner parameters) {
         return updateWithResponseAsync(resourceGroupName, profileName, parameters)
-            .flatMap(
-                (Response<ProfileInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Update a Traffic Manager profile.
+     *
+     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
+     * @param profileName The name of the Traffic Manager profile.
+     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return class representing a Traffic Manager profile along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<ProfileInner> updateWithResponse(
+        String resourceGroupName, String profileName, ProfileInner parameters, Context context) {
+        return updateWithResponseAsync(resourceGroupName, profileName, parameters, context).block();
     }
 
     /**
@@ -1185,24 +1176,6 @@ public final class ProfilesClientImpl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ProfileInner update(String resourceGroupName, String profileName, ProfileInner parameters) {
-        return updateAsync(resourceGroupName, profileName, parameters).block();
-    }
-
-    /**
-     * Update a Traffic Manager profile.
-     *
-     * @param resourceGroupName The name of the resource group containing the Traffic Manager profile.
-     * @param profileName The name of the Traffic Manager profile.
-     * @param parameters The Traffic Manager profile parameters supplied to the Update operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a Traffic Manager profile.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProfileInner> updateWithResponse(
-        String resourceGroupName, String profileName, ProfileInner parameters, Context context) {
-        return updateWithResponseAsync(resourceGroupName, profileName, parameters, context).block();
+        return updateWithResponse(resourceGroupName, profileName, parameters, Context.NONE).getValue();
     }
 }

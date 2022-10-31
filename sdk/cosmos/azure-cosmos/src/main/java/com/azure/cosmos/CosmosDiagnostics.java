@@ -17,6 +17,8 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URI;
 import java.time.Duration;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -113,10 +115,29 @@ public final class CosmosDiagnostics {
      *
      * @return set of regions contacted for this request
      */
-    @Beta(value = Beta.SinceVersion.V4_22_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Set<String> getContactedRegionNames() {
         if (this.feedResponseDiagnostics != null) {
-            return null;
+            Set<String> aggregatedRegionsContacted = Collections.synchronizedSet(new HashSet<>());
+
+            if (this.clientSideRequestStatistics != null) {
+                Set<String> temp = this.clientSideRequestStatistics.getContactedRegionNames();
+                if (temp != null && temp.size() > 0) {
+                    aggregatedRegionsContacted.addAll(temp);
+                }
+            }
+
+            List<ClientSideRequestStatistics> clientStatisticList =
+                this.feedResponseDiagnostics.getClientSideRequestStatisticsList();
+            if (clientStatisticList != null) {
+                for (ClientSideRequestStatistics clientStatistics : clientStatisticList) {
+                    Set<String> temp = clientStatistics.getContactedRegionNames();
+                    if (temp != null && temp.size() > 0) {
+                        aggregatedRegionsContacted.addAll(temp);
+                    }
+                }
+            }
+
+            return aggregatedRegionsContacted;
         }
         return this.clientSideRequestStatistics.getContactedRegionNames();
     }

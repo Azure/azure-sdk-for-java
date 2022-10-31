@@ -11,6 +11,7 @@ import com.azure.core.http.rest.Page;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
+import com.azure.core.implementation.http.rest.ReflectionSerializable;
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.logging.ClientLogger;
@@ -113,7 +114,7 @@ public final class HttpResponseBodyDecoder {
 
     /**
      * Deserialize the given string value representing content of a REST API response.
-     *
+     * <p>
      * If the {@link ReturnValueWireType} is of type {@link Page}, then the returned object will be an instance of that
      * {@param wireType}. Otherwise, the returned object is converted back to its {@param resultType}.
      *
@@ -125,25 +126,44 @@ public final class HttpResponseBodyDecoder {
      * @return Deserialized object
      * @throws IOException When the body cannot be deserialized
      */
-    private static Object deserializeBody(final byte[] value, final Type resultType, final Type wireType,
-        final SerializerAdapter serializer, final SerializerEncoding encoding) throws IOException {
+    private static Object deserializeBody(byte[] value, Type resultType, Type wireType, SerializerAdapter serializer,
+        SerializerEncoding encoding) throws IOException {
         if (wireType == null) {
-            return serializer.deserialize(value, resultType, encoding);
+            return deserialize(value, resultType, serializer, encoding);
         } else if (TypeUtil.isTypeOrSubTypeOf(wireType, Page.class)) {
-            return deserializePage(value, resultType, wireType, serializer, encoding);
+            // If the type is the 'Page' interface [@ReturnValueWireType(Page.class)] we will use the 'ItemPage' class.
+            Type wireResponseType = (wireType == Page.class)
+                ? TypeUtil.createParameterizedType(ItemPage.class, resultType)
+                : wireType;
+
+            return deserialize(value, wireResponseType, serializer, encoding);
         } else {
-            final Type wireResponseType = constructWireResponseType(resultType, wireType);
-            final Object wireResponse = serializer.deserialize(value, wireResponseType, encoding);
+            Type wireResponseType = constructWireResponseType(resultType, wireType);
+            Object wireResponse = deserialize(value, wireResponseType, serializer, encoding);
 
             return convertToResultType(wireResponse, resultType, wireType);
         }
     }
 
+    private static Object deserialize(byte[] value, Type type, SerializerAdapter serializer,
+        SerializerEncoding encoding) throws IOException {
+        Class<?> rawType = TypeUtil.getRawClass(type);
+        if (encoding == SerializerEncoding.JSON && ReflectionSerializable.supportsJsonSerializable(rawType)) {
+            return ReflectionSerializable.deserializeAsJsonSerializable(rawType, value);
+        }
+
+        if (encoding == SerializerEncoding.XML && ReflectionSerializable.supportsXmlSerializable(rawType)) {
+            return ReflectionSerializable.deserializeAsXmlSerializable(rawType, value);
+        }
+
+        return serializer.deserialize(value, type, encoding);
+    }
+
     /**
-     * Given: (1). the {@code java.lang.reflect.Type} (resultType) of java proxy method return value (2). and {@link
-     * ReturnValueWireType} annotation value indicating 'entity type' (wireType) of same REST API's wire response body
-     * this method construct 'response body Type'.
-     *
+     * Given: (1). the {@code java.lang.reflect.Type} (resultType) of java proxy method return value (2). and
+     * {@link ReturnValueWireType} annotation value indicating 'entity type' (wireType) of same REST API's wire response
+     * body this method construct 'response body Type'.
+     * <p>
      * Note: When {@link ReturnValueWireType} annotation is applied to a proxy method, then the raw HTTP response
      * content will need to parsed using the derived 'response body Type' then converted to actual {@code returnType}.
      *
@@ -181,33 +201,8 @@ public final class HttpResponseBodyDecoder {
     }
 
     /**
-     * Deserializes a response body as a Page&lt;T&gt; given that {@param wireType} is either: 1. A type that implements
-     * the interface 2. Is of {@link Page}
-     *
-     * @param value The data to deserialize
-     * @param resultType The type T, of the page contents.
-     * @param wireType The {@link Type} that either is, or implements {@link Page}
-     * @param serializer The serializer used to deserialize the value.
-     * @param encoding Encoding used to deserialize string
-     * @return An object representing an instance of {@param wireType}
-     * @throws IOException if the serializer is unable to deserialize the value.
-     */
-    private static Object deserializePage(final byte[] value,
-        final Type resultType,
-        final Type wireType,
-        final SerializerAdapter serializer,
-        final SerializerEncoding encoding) throws IOException {
-        // If the type is the 'Page' interface [@ReturnValueWireType(Page.class)] we will use the 'ItemPage' class.
-        final Type wireResponseType = (wireType == Page.class)
-            ? TypeUtil.createParameterizedType(ItemPage.class, resultType)
-            : wireType;
-
-        return serializer.deserialize(value, wireResponseType, encoding);
-    }
-
-    /**
-     * Converts the object {@code wireResponse} that was deserialized using 'response body Type' (produced by {@code
-     * constructWireResponseType(args)} method) to resultType.
+     * Converts the object {@code wireResponse} that was deserialized using 'response body Type' (produced by
+     * {@code constructWireResponseType(args)} method) to resultType.
      *
      * @param wireResponse the object to convert
      * @param resultType the {@code java.lang.reflect.Type} to convert wireResponse to
@@ -264,18 +259,15 @@ public final class HttpResponseBodyDecoder {
 
     /**
      * Get the {@link Type} of the REST API 'returned entity'.
-     *
+     * <p>
      * In the declaration of a java proxy method corresponding to the REST API, the 'returned entity' can be:
-     *
-     * 1. emission value of the reactor publisher returned by proxy method
-     *
-     * e.g. {@code Mono<Foo> getFoo(args);} {@code Flux<Foo> getFoos(args);} where Foo is the REST API 'returned
-     * entity'.
-     *
-     * 2. OR content (value) of {@link ResponseBase} emitted by the reactor publisher returned from proxy method
-     *
-     * e.g. {@code Mono<RestResponseBase<headers, Foo>> getFoo(args);} {@code Flux<RestResponseBase<headers, Foo>>
-     * getFoos(args);} where Foo is the REST API return entity.
+     * <p>
+     * 1. emission value of the reactor publisher returned by proxy method, e.g. {@code Mono<Foo> getFoo(args);}
+     * {@code Flux<Foo> getFoos(args);} where Foo is the REST API 'returned entity'.
+     * <p>
+     * 2. OR content (value) of {@link ResponseBase} emitted by the reactor publisher returned from proxy method, e.g.
+     * {@code Mono<RestResponseBase<headers, Foo>> getFoo(args);}
+     * {@code Flux<RestResponseBase<headers, Foo>> getFoos(args);} where Foo is the REST API return entity.
      *
      * @return the entity type.
      */

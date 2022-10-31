@@ -32,7 +32,6 @@ import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
-import com.azure.cosmos.util.Beta;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import io.micrometer.core.instrument.MeterRegistry;
@@ -110,31 +109,31 @@ public final class CosmosAsyncClient implements Closeable {
         this.tokenCredential = builder.getTokenCredential();
         this.sessionCapturingOverride = builder.isSessionCapturingOverrideEnabled();
         this.enableTransportClientSharing = builder.isConnectionSharingAcrossClientsEnabled();
-        this.clientTelemetryConfig = builder.clientTelemetryConfig();
-        this.isSendClientTelemetryToServiceEnabled = ImplementationBridgeHelpers
+        ImplementationBridgeHelpers.CosmosClientTelemetryConfigHelper.CosmosClientTelemetryConfigAccessor
+            telemetryConfigAccessor = ImplementationBridgeHelpers
             .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
+            .getCosmosClientTelemetryConfigAccessor();
+
+        CosmosClientTelemetryConfig effectiveTelemetryConfig = telemetryConfigAccessor
+            .createSnapshot(
+                builder.getClientTelemetryConfig(),
+                builder.isClientTelemetryEnabled());
+
+        this.clientTelemetryConfig = effectiveTelemetryConfig;
+        this.isSendClientTelemetryToServiceEnabled = telemetryConfigAccessor
+            .isSendClientTelemetryToServiceEnabled(effectiveTelemetryConfig);
         this.contentResponseOnWriteEnabled = builder.isContentResponseOnWriteEnabled();
         this.tracerProvider = new TracerProvider(
             TRACER,
-            ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
-                .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig),
-            ImplementationBridgeHelpers
-                .CosmosClientTelemetryConfigHelper
-                .getCosmosClientTelemetryConfigAccessor()
-                .isClientMetricsEnabled(this.clientTelemetryConfig));
+            telemetryConfigAccessor
+                .isSendClientTelemetryToServiceEnabled(effectiveTelemetryConfig),
+            telemetryConfigAccessor
+                .isClientMetricsEnabled(effectiveTelemetryConfig));
         this.apiType = builder.apiType();
-        this.clientCorrelationId =  ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .getClientCorrelationId(this.clientTelemetryConfig);
-        this.metricTagNames = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .getMetricTagNames(this.clientTelemetryConfig);
+        this.clientCorrelationId =  telemetryConfigAccessor
+            .getClientCorrelationId(effectiveTelemetryConfig);
+        this.metricTagNames = telemetryConfigAccessor
+            .getMetricTagNames(effectiveTelemetryConfig);
 
         List<Permission> permissionList = new ArrayList<>();
         if (this.permissions != null) {
@@ -183,10 +182,8 @@ public final class CosmosAsyncClient implements Closeable {
             TagName.ClientCorrelationId.toString(),
             ClientTelemetryMetrics.escape(effectiveClientCorrelationId));
 
-        this.clientMetricRegistrySnapshot = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .getClientMetricRegistry(this.clientTelemetryConfig);
+        this.clientMetricRegistrySnapshot = telemetryConfigAccessor
+            .getClientMetricRegistry(effectiveTelemetryConfig);
         this.clientMetricsEnabled = clientMetricRegistrySnapshot != null;
         if (clientMetricRegistrySnapshot != null) {
             ClientTelemetryMetrics.add(clientMetricRegistrySnapshot);
@@ -483,7 +480,11 @@ public final class CosmosAsyncClient implements Closeable {
                 spanName,
                 this.serviceEndpoint,
                 null,
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ?
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor().getQueryNameOrDefault(options, spanName)
+                    : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().readDatabases(options)
                 .map(response ->
@@ -587,7 +588,6 @@ public final class CosmosAsyncClient implements Closeable {
      * @param containerId The container id of the control container.
      * @return A {@link GlobalThroughputControlConfigBuilder}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public GlobalThroughputControlConfigBuilder createGlobalThroughputControlConfigBuilder(String databaseId, String containerId) {
         return new GlobalThroughputControlConfigBuilder(this, databaseId, containerId);
     }
@@ -600,7 +600,11 @@ public final class CosmosAsyncClient implements Closeable {
                 spanName,
                 this.serviceEndpoint,
                 null,
-                options != null ? options.getQueryNameOrDefault(spanName) : spanName);
+                options != null ?
+                    ImplementationBridgeHelpers
+                        .CosmosQueryRequestOptionsHelper
+                        .getCosmosQueryRequestOptionsAccessor().getQueryNameOrDefault(options, spanName)
+                    : spanName);
             setContinuationTokenAndMaxItemCount(pagedFluxOptions, options);
             return getDocClientWrapper().queryDatabases(querySpec, options)
                 .map(response -> BridgeInternal.createFeedResponse(

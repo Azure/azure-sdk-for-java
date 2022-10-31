@@ -40,6 +40,10 @@ public final class TrafficAnalyticsConfigurationProperties {
     @JsonProperty(value = "trafficAnalyticsInterval")
     private Integer trafficAnalyticsInterval;
 
+    /** Creates an instance of TrafficAnalyticsConfigurationProperties class. */
+    public TrafficAnalyticsConfigurationProperties() {
+    }
+
     /**
      * Get the enabled property: Flag to enable/disable traffic analytics.
      *

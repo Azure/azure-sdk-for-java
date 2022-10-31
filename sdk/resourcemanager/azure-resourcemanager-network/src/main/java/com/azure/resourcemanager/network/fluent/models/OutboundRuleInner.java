@@ -39,6 +39,10 @@ public final class OutboundRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
+    /** Creates an instance of OutboundRuleInner class. */
+    public OutboundRuleInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of load balancer outbound rule.
      *

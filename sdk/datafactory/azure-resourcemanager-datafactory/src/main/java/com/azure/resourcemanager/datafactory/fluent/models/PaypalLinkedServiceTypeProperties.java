@@ -56,6 +56,10 @@ public final class PaypalLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of PaypalLinkedServiceTypeProperties class. */
+    public PaypalLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the host property: The URL of the PayPal instance. (i.e. api.sandbox.paypal.com).
      *

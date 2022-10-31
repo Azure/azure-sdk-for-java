@@ -443,7 +443,6 @@ public class CosmosQueryRequestOptions {
      * Gets the {@link FeedRange}
      * @return the {@link FeedRange}
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public FeedRange getFeedRange() {
         return feedRange;
     }
@@ -453,7 +452,6 @@ public class CosmosQueryRequestOptions {
      * @param feedRange the {@link FeedRange}
      * @return the CosmosQueryRequestOptions.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setFeedRange(FeedRange feedRange) {
         this.feedRange = feedRange;
         return this;
@@ -463,7 +461,6 @@ public class CosmosQueryRequestOptions {
      * Get throughput control group name.
      * @return The throughput control group name.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getThroughputControlGroupName() {
         return this.throughputControlGroupName;
     }
@@ -474,7 +471,6 @@ public class CosmosQueryRequestOptions {
      * @param throughputControlGroupName The throughput control group name.
      * @return A {@link CosmosQueryRequestOptions}.
      */
-    @Beta(value = Beta.SinceVersion.V4_13_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setThroughputControlGroupName(String throughputControlGroupName) {
         this.throughputControlGroupName = throughputControlGroupName;
         return this;
@@ -560,8 +556,7 @@ public class CosmosQueryRequestOptions {
      * @param defaultQueryName the default query name that should be used if none is specified on request options
      * @return the logical query name
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public String getQueryNameOrDefault(String defaultQueryName) {
+    String getQueryNameOrDefault(String defaultQueryName) {
         return !Strings.isNullOrWhiteSpace(queryName) ? queryName : defaultQueryName;
     }
 
@@ -573,7 +568,6 @@ public class CosmosQueryRequestOptions {
      * @param queryName a logical query name to distinguish this query pattern from others
      * @return the logical query name
      */
-    @Beta(value = Beta.SinceVersion.V4_37_0, warningText =Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosQueryRequestOptions setQueryName(String queryName) {
         this.queryName = queryName;
 
@@ -729,6 +723,13 @@ public class CosmosQueryRequestOptions {
                     Function<JsonNode, ?> factoryMethod) {
 
                     return queryRequestOptions.setItemFactoryMethod(factoryMethod);
+                }
+
+                @Override
+                public String getQueryNameOrDefault(CosmosQueryRequestOptions queryRequestOptions,
+                                                    String defaultQueryName) {
+
+                    return queryRequestOptions.getQueryNameOrDefault(defaultQueryName);
                 }
             });
     }

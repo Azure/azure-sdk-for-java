@@ -24,6 +24,10 @@ public final class SftpServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private SftpServerLinkedServiceTypeProperties innerTypeProperties = new SftpServerLinkedServiceTypeProperties();
 
+    /** Creates an instance of SftpServerLinkedService class. */
+    public SftpServerLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this linked service type.
      *
