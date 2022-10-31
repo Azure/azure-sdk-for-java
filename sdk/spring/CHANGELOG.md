@@ -1,6 +1,6 @@
 # Release History
 
-## 4.4.1 (2022-10-25)
+## 4.4.1 (2022-10-31)
 
 ### Spring Cloud Azure Autoconfigure
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
