@@ -1,9 +1,9 @@
 trigger: none
 
-  variables:
-    - template: /eng/pipelines/templates/variables/globals.yml
-    - name: DefaultOptions
-      value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions) -Dcompiler.failondeprecatedstatus=-'
+variables:
+  - template: ../../eng/pipelines/templates/variables/globals.yml
+  - name: DefaultOptions
+    value: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER) --batch-mode --fail-at-end --settings eng/settings.xml $(WagonOptions) -Dcompiler.failondeprecatedstatus=-'
 
 stages:
   - template: ../../eng/pipelines/templates/stages/archetype-sdk-tests.yml
