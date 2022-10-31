@@ -4,7 +4,6 @@
 package com.azure.identity.providers.mysql;
 
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.providers.jdbc.implementation.enums.AuthProperty;
 import com.azure.identity.providers.jdbc.implementation.template.AzureAuthenticationTemplate;
 import com.mysql.cj.callback.MysqlCallbackHandler;
 import com.mysql.cj.protocol.AuthenticationPlugin;
@@ -20,7 +19,6 @@ import java.util.Properties;
  */
 public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlugin<NativePacketPayload> {
     private static final ClientLogger LOGGER = new ClientLogger(AzureIdentityMysqlAuthenticationPlugin.class);
-    private static final String OSSRDBMS_SCOPE = "https://ossrdbms-aad.database.windows.net/.default";
     private static final String PLUGIN_NAME = "mysql_clear_password";
 
     private final AzureAuthenticationTemplate azureAuthenticationTemplate;
@@ -60,7 +58,6 @@ public class AzureIdentityMysqlAuthenticationPlugin implements AuthenticationPlu
     public void init(Protocol<NativePacketPayload> protocol) {
         this.protocol = protocol;
         Properties properties = protocol.getPropertySet().exposeAsProperties();
-        AuthProperty.SCOPES.setProperty(properties, OSSRDBMS_SCOPE);
         azureAuthenticationTemplate.init(properties);
     }
 

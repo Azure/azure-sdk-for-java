@@ -5,9 +5,11 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.AddParticipantsOptions;
 import com.azure.communication.callautomation.models.AddParticipantsResult;
+import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CreateCallOptions;
 import com.azure.communication.callautomation.models.CreateCallResult;
+import com.azure.communication.callautomation.models.HangUpOptions;
 import com.azure.communication.callautomation.models.ListParticipantsResult;
 import com.azure.communication.callautomation.models.RemoveParticipantsResult;
 import com.azure.communication.callautomation.models.RepeatabilityHeaders;
@@ -24,6 +26,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -67,7 +70,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             // create a call
             List<CommunicationIdentifier> targets = new ArrayList<>(Arrays.asList(receiver));
             CreateCallOptions createCallOptions = new CreateCallOptions(caller, targets,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId));
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
             Response<CreateCallResult> createCallResultResponse = callAsyncClient.createCallWithResponse(createCallOptions).block();
             assertNotNull(createCallResultResponse);
             CreateCallResult createCallResult = createCallResultResponse.getValue();
@@ -81,8 +84,9 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             assertNotNull(incomingCallContext);
 
             // answer the call
-            AnswerCallResult answerCallResult = callAsyncClient.answerCall(incomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).block();
+            AnswerCallOptions answerCallOptions = new AnswerCallOptions(incomingCallContext,
+                DISPATCHER_CALLBACK + String.format("?q=%s", uniqueId)).setRepeatabilityHeaders(null);
+            AnswerCallResult answerCallResult = Objects.requireNonNull(callAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
             assertNotNull(answerCallResult);
             assertNotNull(answerCallResult.getCallConnectionAsync());
             assertNotNull(answerCallResult.getCallConnectionProperties());
@@ -112,8 +116,9 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             assertNotNull(anotherIncomingCallContext);
 
             // answer the call
-            AnswerCallResult anotherAnswerCallResult = callAsyncClient.answerCall(anotherIncomingCallContext,
-                DISPATCHER_CALLBACK + String.format("?q=%s", anotherUniqueId)).block();
+            answerCallOptions = new AnswerCallOptions(anotherIncomingCallContext,
+                DISPATCHER_CALLBACK + String.format("?q=%s", anotherUniqueId)).setRepeatabilityHeaders(null);
+            AnswerCallResult anotherAnswerCallResult = Objects.requireNonNull(callAsyncClient.answerCallWithResponse(answerCallOptions).block()).getValue();
             assertNotNull(anotherAnswerCallResult);
             assertNotNull(anotherAnswerCallResult.getCallConnectionAsync());
             assertNotNull(anotherAnswerCallResult.getCallConnectionProperties());
@@ -148,7 +153,7 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
         } finally {
             if (!callDestructors.isEmpty()) {
                 try {
-                    callDestructors.forEach(callConnection -> callConnection.hangUp(true).block());
+                    callDestructors.forEach(callConnection -> callConnection.hangUpWithResponse(new HangUpOptions(true).setRepeatabilityHeaders(null)).block());
                 } catch (Exception ignored) {
                     // Some call might have been terminated during the test, and it will cause exceptions here.
                     // Do nothing and iterate to next call connection.
