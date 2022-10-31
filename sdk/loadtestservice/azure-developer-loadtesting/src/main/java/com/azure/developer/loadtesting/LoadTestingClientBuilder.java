@@ -43,9 +43,9 @@ import java.util.stream.Collectors;
 @ServiceClientBuilder(
         serviceClients = {
             LoadTestAdministrationClient.class,
-            TestRunClient.class,
+            LoadTestRunClient.class,
             LoadTestAdministrationAsyncClient.class,
-            TestRunAsyncClient.class
+            LoadTestRunAsyncClient.class
         })
 public final class LoadTestingClientBuilder
         implements HttpTrait<LoadTestingClientBuilder>,
@@ -298,16 +298,6 @@ public final class LoadTestingClientBuilder
     }
 
     /**
-     * Builds an instance of TestRunAsyncClient class.
-     *
-     * @return an instance of TestRunAsyncClient.
-     */
-    @Generated
-    public TestRunAsyncClient buildTestRunAsyncClient() {
-        return new TestRunAsyncClient(buildInnerClient().getTestRuns());
-    }
-
-    /**
      * Builds an instance of LoadTestAdministrationClient class.
      *
      * @return an instance of LoadTestAdministrationClient.
@@ -319,12 +309,22 @@ public final class LoadTestingClientBuilder
     }
 
     /**
-     * Builds an instance of TestRunClient class.
+     * Builds an instance of LoadTestRunAsyncClient class.
      *
-     * @return an instance of TestRunClient.
+     * @return an instance of LoadTestRunAsyncClient.
      */
     @Generated
-    public TestRunClient buildTestRunClient() {
-        return new TestRunClient(new TestRunAsyncClient(buildInnerClient().getTestRuns()));
+    public LoadTestRunAsyncClient buildLoadTestRunAsyncClient() {
+        return new LoadTestRunAsyncClient(buildInnerClient().getLoadTestRuns());
+    }
+
+    /**
+     * Builds an instance of LoadTestRunClient class.
+     *
+     * @return an instance of LoadTestRunClient.
+     */
+    @Generated
+    public LoadTestRunClient buildLoadTestRunClient() {
+        return new LoadTestRunClient(new LoadTestRunAsyncClient(buildInnerClient().getLoadTestRuns()));
     }
 }

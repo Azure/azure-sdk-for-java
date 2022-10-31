@@ -38,31 +38,32 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in TestRuns. */
-public final class TestRunsImpl {
+/** An instance of this class provides access to all the operations defined in LoadTestRuns. */
+public final class LoadTestRunsImpl {
     /** The proxy service used to perform REST calls. */
-    private final TestRunsService service;
+    private final LoadTestRunsService service;
 
     /** The service client containing this operation class. */
     private final LoadTestingClientImpl client;
 
     /**
-     * Initializes an instance of TestRunsImpl.
+     * Initializes an instance of LoadTestRunsImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    TestRunsImpl(LoadTestingClientImpl client) {
-        this.service = RestProxy.create(TestRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    LoadTestRunsImpl(LoadTestingClientImpl client) {
+        this.service =
+                RestProxy.create(LoadTestRunsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for LoadTestingClientTestRuns to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for LoadTestingClientLoadTestRuns to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("https://{Endpoint}")
-    @ServiceInterface(name = "LoadTestingClientTes")
-    private interface TestRunsService {
+    @ServiceInterface(name = "LoadTestingClientLoa")
+    private interface LoadTestRunsService {
         @Delete("/test-runs/{testRunId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(

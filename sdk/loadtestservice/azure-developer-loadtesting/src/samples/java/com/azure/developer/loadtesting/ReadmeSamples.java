@@ -28,9 +28,9 @@ public final class ReadmeSamples {
             .credential(credential)
             .endpoint("<Enter Azure Load Testing Data-Plane URL>");
         LoadTestAdministrationClient adminClient = builder.buildLoadTestAdministrationClient();
-        TestRunClient testRunClient = builder.buildTestRunClient();
+        LoadTestRunClient testRunClient = builder.buildLoadTestRunClient();
 
-        adminClient.listTests(null);
+        adminClient.list(null);
         testRunClient.list(null);
         // END: java-readme-sample-auth
     }
@@ -83,7 +83,7 @@ public final class ReadmeSamples {
         BinaryData test = BinaryData.fromObject(testMap);
 
         // receive response with BinaryData content
-        Response<BinaryData> testOutResponse = adminClient.createOrUpdateTestWithResponse("test12345", test, null);
+        Response<BinaryData> testOutResponse = adminClient.createOrUpdateWithResponse("test12345", test, null);
         System.out.println(testOutResponse.getValue().toString());
         // END: java-readme-sample-createTest
     }
@@ -106,10 +106,10 @@ public final class ReadmeSamples {
 
     public void runTest() {
         // BEGIN: java-readme-sample-runTest
-        TestRunClient testRunClient = new LoadTestingClientBuilder()
+        LoadTestRunClient testRunClient = new LoadTestingClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("<endpoint>")
-            .buildTestRunClient();
+            .buildLoadTestRunClient();
 
         // construct Test Run object using nested String:Object Maps
         Map<String, Object> testRunMap = new HashMap<String, Object>();
@@ -149,7 +149,7 @@ public final class ReadmeSamples {
         endDateTime = testRunJson.get("endDateTime").asText();
 
         // get list of all metric namespaces and pick the first one
-        Response<BinaryData> metricNamespacesOut = testRunClient.getMetricNamespacesWithResponse("testrun12345", null);
+        Response<BinaryData> metricNamespacesOut = testRunClient.listMetricNamespacesWithResponse("testrun12345", null);
         String metricNamespace = null;
         // parse JSON and read first value
         try {
@@ -161,7 +161,7 @@ public final class ReadmeSamples {
         }
 
         // get list of all metric definitions and pick the first one
-        Response<BinaryData> metricDefinitionsOut = testRunClient.getMetricDefinitionsWithResponse("testrun12345", metricNamespace, null);
+        Response<BinaryData> metricDefinitionsOut = testRunClient.listMetricDefinitionsWithResponse("testrun12345", metricNamespace, null);
         String metricName = null;
         // parse JSON and read first value
         try {
