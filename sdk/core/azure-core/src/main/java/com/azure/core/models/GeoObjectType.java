@@ -17,7 +17,10 @@ public final class GeoObjectType extends ExpandableStringEnum<GeoObjectType> {
      * <p>
      * This constructor shouldn't be called as it will produce a {@link GeoObjectType} which doesn't
      * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String)} factory method.
      */
+    @Deprecated
     public GeoObjectType() {
     }
 

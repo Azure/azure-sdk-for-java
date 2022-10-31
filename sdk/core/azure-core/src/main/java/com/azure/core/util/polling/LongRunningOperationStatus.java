@@ -23,7 +23,10 @@ public final class LongRunningOperationStatus extends ExpandableStringEnum<LongR
      * <p>
      * This constructor shouldn't be called as it will produce a {@link LongRunningOperationStatus} which doesn't
      * have a String enum value.
+     *
+     * @deprecated Use one of the constants or the {@link #fromString(String, boolean)} factory method.
      */
+    @Deprecated
     public LongRunningOperationStatus() {
     }
 
