@@ -9,6 +9,7 @@ import com.azure.spring.cloud.core.implementation.credential.resolver.AzureToken
 import com.azure.spring.cloud.core.implementation.factory.credential.DefaultAzureCredentialBuilderFactory;
 import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
+import org.apache.kafka.common.config.types.Password;
 import org.apache.kafka.common.security.auth.AuthenticateCallbackHandler;
 import org.apache.kafka.common.security.oauthbearer.OAuthBearerTokenCallback;
 import reactor.core.publisher.Mono;
@@ -51,7 +52,9 @@ public class KafkaOAuth2AuthenticateCallbackHandler implements AuthenticateCallb
 
     @Override
     public void configure(Map<String, ?> configs, String mechanism, List<AppConfigurationEntry> jaasConfigEntries) {
-        AzureKafkaPropertiesUtils.convertJaasPropertyToAzureProperties((String) configs.get(SASL_JAAS_CONFIG), properties);
+        if (configs.get(SASL_JAAS_CONFIG) instanceof Password) {
+            AzureKafkaPropertiesUtils.convertJaasPropertyToAzureProperties(((Password) configs.get(SASL_JAAS_CONFIG)).value(), properties);
+        }
         TokenRequestContext request = buildTokenRequestContext(configs);
         this.resolveToken = tokenCredential -> tokenCredential.getToken(request).map(AzureOAuthBearerToken::new);
         this.tokenCredentialResolver = new InternalCredentialResolver(externalTokenCredentialResolver, configs);
