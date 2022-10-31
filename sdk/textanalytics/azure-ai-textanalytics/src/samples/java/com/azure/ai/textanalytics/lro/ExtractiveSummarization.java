@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Sample demonstrates how to synchronously execute an "Extractive Summarization" action in a batch of documents.
  */
-public class AnalyzeExtractiveSummarization {
+public class ExtractiveSummarization {
     /**
      * Main method to invoke this demo about how to analyze an "Extractive Summarization" action.
      *

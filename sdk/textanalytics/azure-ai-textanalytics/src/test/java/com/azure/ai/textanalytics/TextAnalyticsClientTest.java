@@ -32,6 +32,7 @@ import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
 import com.azure.ai.textanalytics.models.TextAnalyticsException;
 import com.azure.ai.textanalytics.models.TextAnalyticsRequestOptions;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeActionsResultPagedIterable;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesPagedIterable;
 import com.azure.ai.textanalytics.util.ClassifyDocumentPagedIterable;
@@ -66,9 +67,11 @@ import static com.azure.ai.textanalytics.TestUtils.LINKED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.TIME_NOW;
+import static com.azure.ai.textanalytics.TestUtils.getAbstractSummaryActionResult;
 import static com.azure.ai.textanalytics.TestUtils.getAnalyzeSentimentResultCollectionForActions;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageEnglish;
 import static com.azure.ai.textanalytics.TestUtils.getDetectedLanguageSpanish;
+import static com.azure.ai.textanalytics.TestUtils.getExpectedAbstractiveSummaryResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeActionsResultListForMultiplePages;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeBatchActionsResult;
 import static com.azure.ai.textanalytics.TestUtils.getExpectedAnalyzeHealthcareEntitiesActionResult;
@@ -2254,6 +2257,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null))),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList())
                 )),
                 result.stream().collect(Collectors.toList()));
@@ -2285,6 +2289,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getAnalyzeSentimentResultCollectionForActions(), null))),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList())
                 )),
                 result.stream().collect(Collectors.toList()));
@@ -2392,6 +2397,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList())
                     )),
                     result.stream().collect(Collectors.toList()));
@@ -2443,6 +2449,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList())
                     )),
                     result.stream().collect(Collectors.toList()));
@@ -2475,6 +2482,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList()),
+                        IterableStream.of(Collections.emptyList()),
                         IterableStream.of(Collections.emptyList())
                     )),
                     result.stream().collect(Collectors.toList()));
@@ -2500,6 +2508,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(asList(getExpectedRecognizeLinkedEntitiesActionResult(false, null,
                         TIME_NOW, getRecognizeLinkedEntitiesResultCollection(), null))),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
@@ -2532,6 +2541,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(asList(getExpectedExtractKeyPhrasesActionResult(false, null,
                         TIME_NOW, getExtractKeyPhrasesResultCollection(), null))),
                     IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList())
                 )),
                 result.stream().collect(Collectors.toList()));
@@ -2560,6 +2570,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(false, null,
                         TIME_NOW, getExpectedBatchTextSentiment(), null))),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList())
                 )),
                 result.stream().collect(Collectors.toList()));
@@ -2588,6 +2599,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                                 getRecognizeHealthcareEntitiesResultWithFhir1("0"),
                                 getRecognizeHealthcareEntitiesResultWithFhir2())),
                         null))),
+                    IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList())
@@ -2792,7 +2804,9 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(asList(getExtractSummaryActionResult(false, null,
                         TIME_NOW,
                         getExpectedExtractSummaryResultCollection(getExpectedExtractSummaryResultSortByOffset()),
-                        null))))),
+                        null))),
+                    IterableStream.of(Collections.emptyList())
+                )),
                 result.stream().collect(Collectors.toList()));
         }, null, null);
     }
@@ -2908,9 +2922,10 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void abstractiveSummaryAction(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
+    public void analyzeAbstractiveSummaryActionWithDefaultParameterValues(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion) {
         client = getTextAnalyticsClient(httpClient, serviceVersion);
-        analyzeExtractSummaryRunner((documents, tasks) -> {
+        abstractSummaryRunner((documents, tasks) -> {
             SyncPoller<AnalyzeActionsOperationDetail, AnalyzeActionsResultPagedIterable> syncPoller =
                 client.beginAnalyzeActions(documents, tasks, "en", new AnalyzeActionsOptions());
             syncPoller = setPollInterval(syncPoller);
@@ -2925,10 +2940,14 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
                     IterableStream.of(Collections.emptyList()),
-                    IterableStream.of(asList(getExtractSummaryActionResult(false, null,
+                    IterableStream.of(Collections.emptyList()),
+                    IterableStream.of(asList(getAbstractSummaryActionResult(false, null,
                         TIME_NOW,
-                        getExpectedExtractSummaryResultCollection(getExpectedExtractSummaryResultSortByOffset()),
-                        null))))),
+                        new AbstractiveSummaryResultCollection(
+                                asList(getExpectedAbstractiveSummaryResult()), null, null),
+                        null
+                    )))
+                )),
                 result.stream().collect(Collectors.toList()));
         }, null, null);
     }

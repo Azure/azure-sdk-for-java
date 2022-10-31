@@ -1437,10 +1437,15 @@ public final class Utility {
         List<AbstractiveSummarizationResultBaseDocumentsItem> documentResults = abstractiveSummarizationResult.getDocuments();
         List<AbstractiveSummaryResult> summaryResults = new ArrayList<>();
         for (AbstractiveSummarizationResultBaseDocumentsItem documentResult : documentResults) {
-            toAbstractiveSummaryResult(documentResult);
-
+            summaryResults.add(toAbstractiveSummaryResult(documentResult));
         }
-        // TODO: convert the document errors, abstractiveSummarizationResult.getErrors();
+
+        // Document errors
+        for (InputError documentError : abstractiveSummarizationResult.getErrors()) {
+            summaryResults.add(new AbstractiveSummaryResult(documentError.getId(), null,
+                    toTextAnalyticsError(documentError.getError())));
+        }
+
         return new AbstractiveSummaryResultCollection(summaryResults, abstractiveSummarizationResult.getModelVersion(),
             abstractiveSummarizationResult.getStatistics() == null ? null
                 : toBatchStatistics(abstractiveSummarizationResult.getStatistics()));
@@ -1448,24 +1453,27 @@ public final class Utility {
 
     public static AbstractiveSummaryResult toAbstractiveSummaryResult(
         AbstractiveSummarizationResultBaseDocumentsItem documentResult) {
-//        // Warnings TODO: convert warnings
-//        final List<TextAnalyticsWarning> warnings = documentResult.getWarnings().stream().map(
-//            warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
-
-        return new AbstractiveSummaryResult(
+        AbstractiveSummaryResult summaryResult = new AbstractiveSummaryResult(
             documentResult.getId(),
             documentResult.getStatistics() == null ? null : toTextDocumentStatistics(documentResult.getStatistics()),
-            null,
-            new IterableStream<>(toAbstractiveSummaries(documentResult.getSummaries()))
+            null
         );
+
+        AbstractiveSummaryResultPropertiesHelper.setSummaries(summaryResult,
+            new IterableStream<>(toAbstractiveSummaries(documentResult.getSummaries())));
+
+        // Warnings
+        final List<TextAnalyticsWarning> warnings = documentResult.getWarnings().stream().map(
+                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+        AbstractiveSummaryResultPropertiesHelper.setWarnings(summaryResult, IterableStream.of(warnings));
+
+        return summaryResult;
     }
 
     public static List<AbstractiveSummary> toAbstractiveSummaries(
         List<com.azure.ai.textanalytics.implementation.models.AbstractiveSummary> abstractiveSummariesImpl) {
         List<AbstractiveSummary> summaries = new ArrayList<>();
-        abstractiveSummariesImpl.forEach(summaryImpl -> {
-            summaries.add(toAbstractiveSummary(summaryImpl));
-        });
+        abstractiveSummariesImpl.forEach(summaryImpl -> summaries.add(toAbstractiveSummary(summaryImpl)));
         return summaries;
     }
 
@@ -1478,7 +1486,7 @@ public final class Utility {
         return abstractiveSummary;
     }
 
-    public static List<SummaryContext> toSummaryContexts(
+    public static IterableStream<SummaryContext> toSummaryContexts(
         List<com.azure.ai.textanalytics.implementation.models.SummaryContext> contexts) {
         List<SummaryContext> summaryContexts = new ArrayList<>();
         contexts.forEach(context -> {
@@ -1487,7 +1495,7 @@ public final class Utility {
             SummaryContextPropertiesHelper.setLength(summaryContext, context.getLength());
             summaryContexts.add(summaryContext);
         });
-        return summaryContexts;
+        return IterableStream.of(summaryContexts);
     }
 
     /**

@@ -3,6 +3,7 @@
 
 package com.azure.ai.textanalytics.models;
 
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryResultPropertiesHelper;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.IterableStream;
 
@@ -11,7 +12,25 @@ import com.azure.core.util.IterableStream;
  */
 @Immutable
 public final class AbstractiveSummaryResult extends TextAnalyticsResult {
-    private final IterableStream<AbstractiveSummary> summaries;
+    private IterableStream<AbstractiveSummary> summaries;
+    private IterableStream<TextAnalyticsWarning> warnings;
+
+    static {
+        AbstractiveSummaryResultPropertiesHelper.setAccessor(
+                new AbstractiveSummaryResultPropertiesHelper.AbstractiveSummaryResultAccessor() {
+                    @Override
+                    public void setWarnings(AbstractiveSummaryResult summaryResult,
+                        IterableStream<TextAnalyticsWarning> warnings) {
+                        summaryResult.setWarnings(warnings);
+                    }
+
+                    @Override
+                    public void setSummaries(AbstractiveSummaryResult summaryResult,
+                        IterableStream<AbstractiveSummary> summaries) {
+                        summaryResult.setSummaries(summaries);
+                    }
+                });
+    }
 
     /**
      * Creates a {@link AbstractiveSummaryResult} model that describes analyzed sentiment result.
@@ -19,12 +38,9 @@ public final class AbstractiveSummaryResult extends TextAnalyticsResult {
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
      * @param error The document error.
-     * @param summaries The document sentiment.
      */
-    public AbstractiveSummaryResult(String id, TextDocumentStatistics textDocumentStatistics,
-                                  TextAnalyticsError error, IterableStream<AbstractiveSummary> summaries) {
+    public AbstractiveSummaryResult(String id, TextDocumentStatistics textDocumentStatistics, TextAnalyticsError error) {
         super(id, textDocumentStatistics, error);
-        this.summaries = summaries;
     }
 
     /**
@@ -38,5 +54,22 @@ public final class AbstractiveSummaryResult extends TextAnalyticsResult {
     public IterableStream<AbstractiveSummary> getSummaries() {
         throwExceptionIfError();
         return summaries;
+    }
+
+    /**
+     * Gets the {@link IterableStream} of {@link TextAnalyticsWarning Text Analytics warnings}.
+     *
+     * @return {@link IterableStream} of {@link TextAnalyticsWarning}.
+     */
+    public IterableStream<TextAnalyticsWarning> getWarnings() {
+        return this.warnings;
+    }
+
+    private void setWarnings(IterableStream<TextAnalyticsWarning> warnings) {
+        this.warnings = warnings;
+    }
+
+    private void setSummaries(IterableStream<AbstractiveSummary> summaries) {
+        this.summaries = summaries;
     }
 }

@@ -239,8 +239,8 @@ The following sections provide several code snippets covering some of the most c
 * [Analyze Multiple Actions](#analyze-multiple-actions "Analyze multiple actions")
 * [Custom Entities Recognition](#custom-entities-recognition "Custom entities recognition")
 * [Custom Text Classification](#custom-text-classification "Custom text classification")
-* [Extractive Text Summarization](#extractive-text-summarization "Extractive text summarization")
-* [Abstractive Text Summarization](#abstractive-text-summarization "Abstractive text summarization")
+* [Extractive Text Summarization][abstractive_summary_action_sample]
+* [Abstractive Text Summarization][extractive_summary_action_sample]
 
 ### Text Analytics Client
 Language service supports both synchronous and asynchronous client creation by using
@@ -531,15 +531,6 @@ syncPoller.getFinalResult().forEach(documentsResults -> {
 
 For more information see [How to use: Custom Text Classification][custom_text_classification_overview].
 
-### Extractive Text Summarization
-
-### Abstractive Text Summarization
-Abstractive summarization generates a summary for the input documents. Abstractive summarization
-is different from extractive summarization in that extractive summarization is the strategy of
-concatenating extracted sentences from the input document into a summary, while abstractive
-summarization involves paraphrasing the document using novel sentences.
-
-
 ### Analyze multiple actions
 The `Analyze` functionality allows choosing which of the supported Language service features to execute in the same
 set of documents. Currently, the supported features are:
@@ -553,8 +544,8 @@ set of documents. Currently, the supported features are:
 - Custom Entity Recognition (API version 2022-05-01 and newer)
 - Custom Single-Label Classification (API version 2022-05-01 and newer)
 - Custom Multi-Label Classification (API version 2022-05-01 and newer)
-- Extractive Text Summarization (API version 2022-05-01 and newer)
-- Abstractive Text Summarization (API version 2022-05-01 and newer)
+- Extractive Text Summarization (API version 2022-10-01-preview and newer)
+- Abstractive Text Summarization (API version 2022-10-01-preview and newer)
 
 ```java readme-sample-analyzeActions
     List<TextDocumentInput> documents = Arrays.asList(
@@ -709,5 +700,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [recognize_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeEntitiesBatchDocuments.java
 [recognize_pii_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizePiiEntitiesBatchDocuments.java
 [recognize_linked_entities_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/batch/RecognizeLinkedEntitiesBatchDocuments.java
+[abstractive_summary_action_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/AbstractiveSummarization.java
+[extractive_summary_action_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/textanalytics/azure-ai-textanalytics/src/samples/java/com/azure/ai/textanalytics/lro/ExtractiveSummarization.java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftextanalytics%2Fazure-ai-textanalytics%2FREADME.png)

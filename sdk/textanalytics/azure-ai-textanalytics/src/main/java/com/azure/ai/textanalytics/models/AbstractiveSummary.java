@@ -5,8 +5,7 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.ai.textanalytics.implementation.AbstractiveSummaryPropertiesHelper;
 import com.azure.core.annotation.Immutable;
-
-import java.util.List;
+import com.azure.core.util.IterableStream;
 
 /** An object representing a single summary with context for given document. */
 @Immutable
@@ -19,7 +18,7 @@ public final class AbstractiveSummary {
     /*
      * The context list of the summary.
      */
-    private List<SummaryContext> summaryContexts;
+    private IterableStream<SummaryContext> summaryContexts;
 
     static {
         AbstractiveSummaryPropertiesHelper.setAccessor(
@@ -31,7 +30,7 @@ public final class AbstractiveSummary {
 
                 @Override
                 public void setSummaryContexts(AbstractiveSummary abstractiveSummary,
-                                               List<SummaryContext> summaryContexts) {
+                                               IterableStream<SummaryContext> summaryContexts) {
                     abstractiveSummary.setSummaryContexts(summaryContexts);
                 }
             });
@@ -47,33 +46,19 @@ public final class AbstractiveSummary {
     }
 
     /**
-     * Set the text property: The text of the summary.
-     *
-     * @param text the text value to set.
-     * @return the AbstractiveSummary object itself.
-     */
-    public AbstractiveSummary setText(String text) {
-        this.text = text;
-        return this;
-    }
-
-    /**
      * Get the contexts property: The context list of the summary.
      *
      * @return the contexts value.
      */
-    public List<SummaryContext> getSummaryContexts() {
+    public IterableStream<SummaryContext> getSummaryContexts() {
         return this.summaryContexts;
     }
 
-    /**
-     * Set the contexts property: The context list of the summary.
-     *
-     * @param summaryContexts the contexts value to set.
-     * @return the AbstractiveSummary object itself.
-     */
-    public AbstractiveSummary setSummaryContexts(List<SummaryContext> summaryContexts) {
+    private void setText(String text) {
+        this.text = text;
+    }
+
+    private void setSummaryContexts(IterableStream<SummaryContext> summaryContexts) {
         this.summaryContexts = summaryContexts;
-        return this;
     }
 }

@@ -3,7 +3,10 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.AbstractiveSummaryAction;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AgeResolution;
 import com.azure.ai.textanalytics.models.AgeUnit;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
@@ -53,6 +56,7 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesOptions;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SingleLabelClassifyAction;
+import com.azure.ai.textanalytics.models.SummaryContext;
 import com.azure.ai.textanalytics.models.SummarySentence;
 import com.azure.ai.textanalytics.models.SummarySentencesOrder;
 import com.azure.ai.textanalytics.models.TargetSentiment;
@@ -65,6 +69,7 @@ import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.WeightResolution;
 import com.azure.ai.textanalytics.models.WeightUnit;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
@@ -726,6 +731,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
 
     @Test
     abstract void multiLabelClassification(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion);
+
+    // Abstractive Summarization
+    @Test
+    abstract void analyzeAbstractiveSummaryActionWithDefaultParameterValues(HttpClient httpClient,
+        TextAnalyticsServiceVersion serviceVersion);
 
     // Extractive Summarization
     @Test
@@ -1907,6 +1917,9 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
         validateExtractSummaryActionResults(showStatistics,
             expected.getExtractSummaryResults().stream().collect(Collectors.toList()),
             actual.getExtractSummaryResults().stream().collect(Collectors.toList()));
+        validateAbstractiveSummaryActionResults(showStatistics,
+            expected.getAbstractiveSummaryResults().stream().collect(Collectors.toList()),
+            actual.getAbstractiveSummaryResults().stream().collect(Collectors.toList()));
     }
 
     // Action results validation
@@ -2250,5 +2263,68 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
             }
         }
         return true;
+    }
+
+    static void validateAbstractiveSummaryActionResults(boolean showStatistics,
+                                                        List<AbstractiveSummaryActionResult> expected,
+                                                        List<AbstractiveSummaryActionResult> actual) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < actual.size(); i++) {
+            validateAbstractiveSummaryActionResult(showStatistics, expected.get(i), actual.get(i));
+        }
+    }
+
+    static void validateAbstractiveSummaryActionResult(boolean showStatistics,
+                                                       AbstractiveSummaryActionResult expected, AbstractiveSummaryActionResult actual) {
+        assertEquals(expected.isError(), actual.isError());
+        if (actual.isError()) {
+            if (expected.getError() == null) {
+                assertNull(actual.getError());
+            } else {
+                assertNotNull(actual.getError());
+                validateErrorDocument(expected.getError(), actual.getError());
+            }
+        } else {
+            validateAbstractiveSummaryResultCollection(showStatistics,
+                    expected.getDocumentsResults(), actual.getDocumentsResults());
+        }
+    }
+
+    static void validateAbstractiveSummaryResultCollection(boolean showStatistics,
+                                                           AbstractiveSummaryResultCollection expected, AbstractiveSummaryResultCollection actual) {
+        validateTextAnalyticsResult(showStatistics, expected, actual,
+                (expectedItem, actualItem) -> validateDocumentAbstractiveSummaryResult(expectedItem, actualItem));
+    }
+
+    static void validateDocumentAbstractiveSummaryResult(AbstractiveSummaryResult expect,
+                                                         AbstractiveSummaryResult actual) {
+        validateAbstractiveSummaries(
+                expect.getSummaries().stream().collect(Collectors.toList()),
+                actual.getSummaries().stream().collect(Collectors.toList())
+        );
+    }
+
+    static void validateAbstractiveSummaries(List<AbstractiveSummary> expect, List<AbstractiveSummary> actual) {
+        assertEquals(expect.size(), actual.size());
+        for (int i = 0; i < expect.size(); i++) {
+            validateAbstractiveSummary(expect.get(i), actual.get(i));
+        }
+    }
+
+    static void validateAbstractiveSummary(AbstractiveSummary expect, AbstractiveSummary actual) {
+        assertEquals(expect.getText(), actual.getText());
+        validateSummaryContextList(
+                expect.getSummaryContexts().stream().collect(Collectors.toList()),
+                actual.getSummaryContexts().stream().collect(Collectors.toList()));
+    }
+
+    static void validateSummaryContextList(List<SummaryContext> expect, List<SummaryContext> actual) {
+        assertEquals(expect.size(), actual.size());
+        for (int i = 0; i < expect.size(); i++) {
+            SummaryContext expectSummaryContext = expect.get(i);
+            SummaryContext actualSummaryContext = actual.get(i);
+            assertEquals(expectSummaryContext.getOffset(), actualSummaryContext.getOffset());
+            assertEquals(expectSummaryContext.getLength(), actualSummaryContext.getLength());
+        }
     }
 }

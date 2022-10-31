@@ -12,6 +12,7 @@ import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOperationDetail;
 import com.azure.ai.textanalytics.models.AnalyzeActionsOptions;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
+import com.azure.ai.textanalytics.models.SummaryContext;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.core.credential.AzureKeyCredential;
 
@@ -97,6 +98,10 @@ public class AbstractiveSummarizationAsync {
                         System.out.println("\tAbstract summary sentences:");
                         for (AbstractiveSummary summarySentence : documentResult.getSummaries()) {
                             System.out.printf("\t\t Summary text: %s.%n", summarySentence.getText());
+                            for (SummaryContext summaryContext : summarySentence.getSummaryContexts()) {
+                                System.out.printf("\t\t offset: %d, length: %d%n",
+                                    summaryContext.getOffset(), summaryContext.getLength());
+                            }
                         }
                     } else {
                         System.out.printf("\tCannot get abstract summary. Error: %s%n",

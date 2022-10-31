@@ -5,8 +5,7 @@ package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.models.AbstractiveSummary;
 import com.azure.ai.textanalytics.models.SummaryContext;
-
-import java.util.List;
+import com.azure.core.util.IterableStream;
 
 /**
  * The helper class to set the non-public properties of an {@link AbstractiveSummary} instance.
@@ -22,7 +21,7 @@ public final class AbstractiveSummaryPropertiesHelper {
      */
     public interface AbstractiveSummaryAccessor {
         void setText(AbstractiveSummary abstractiveSummary, String text);
-        void setSummaryContexts(AbstractiveSummary abstractiveSummary, List<SummaryContext> summaryContexts);
+        void setSummaryContexts(AbstractiveSummary abstractiveSummary, IterableStream<SummaryContext> summaryContexts);
     }
 
     /**
@@ -38,8 +37,8 @@ public final class AbstractiveSummaryPropertiesHelper {
         accessor.setText(abstractiveSummary, text);
     }
 
-
-    public static void setSummaryContexts(AbstractiveSummary abstractiveSummary, List<SummaryContext> summaryContexts) {
+    public static void setSummaryContexts(AbstractiveSummary abstractiveSummary,
+        IterableStream<SummaryContext> summaryContexts) {
         accessor.setSummaryContexts(abstractiveSummary, summaryContexts);
     }
 }
