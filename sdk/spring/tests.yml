@@ -28,6 +28,6 @@ stages:
       ServiceDirectory: spring
       TestName: SpringIntegrationTests
       TestGoals: 'verify'
-      TestOptions: '-DskipSpringITs=false'
+      TestOptions: '-DskipSpringITs=false -Dcompiler.failondeprecatedstatus=-'
       MatrixFilters:
         - JavaTestVersion=^(?!1.8|1.11).*
