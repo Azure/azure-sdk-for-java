@@ -8,6 +8,9 @@
 
 ### Bugs Fixed
 
+- Updating the host value for the Websocket upgrade request to match with the HTTP host ([31825](https://github.com/Azure/azure-sdk-for-java/issues/31825))
+- Enabling HTTP Proxy for custom endpoint and updating Proxy CONNECT request to use the actual front-end host ([31826](https://github.com/Azure/azure-sdk-for-java/issues/31826))
+
 ### Other Changes
 
 ## 2.7.2 (2022-10-07)

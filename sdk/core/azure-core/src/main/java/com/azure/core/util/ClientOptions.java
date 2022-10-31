@@ -28,6 +28,12 @@ public class ClientOptions {
     private MetricsOptions metricsOptions;
 
     /**
+     * Creates a new instance of {@link ClientOptions}.
+     */
+    public ClientOptions() {
+    }
+
+    /**
      * Gets the application ID.
      *
      * @return The application ID.

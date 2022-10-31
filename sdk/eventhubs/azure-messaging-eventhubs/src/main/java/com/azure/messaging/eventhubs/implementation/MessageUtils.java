@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.messaging.eventhubs;
+package com.azure.messaging.eventhubs.implementation;
 
 import com.azure.core.amqp.models.AmqpAddress;
 import com.azure.core.amqp.models.AmqpAnnotatedMessage;
@@ -27,13 +27,14 @@ import java.time.Instant;
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 /**
  * Converts {@link AmqpAnnotatedMessage messages} to and from proton-j messages.
  */
-final class MessageUtils {
+public final class MessageUtils {
     private static final ClientLogger LOGGER = new ClientLogger(MessageUtils.class);
     private static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 
@@ -46,7 +47,7 @@ final class MessageUtils {
      *
      * @throws NullPointerException if {@code message} is null.
      */
-    static Message toProtonJMessage(AmqpAnnotatedMessage message) {
+    public static Message toProtonJMessage(AmqpAnnotatedMessage message) {
         Objects.requireNonNull(message, "'message' to serialize cannot be null.");
 
         final Message protonJMessage = Proton.message();
@@ -192,7 +193,7 @@ final class MessageUtils {
      *
      * @throws NullPointerException if {@code message} is null.
      */
-    static AmqpAnnotatedMessage toAmqpAnnotatedMessage(Message message) {
+    public static AmqpAnnotatedMessage toAmqpAnnotatedMessage(Message message) {
         Objects.requireNonNull(message, "'message' cannot be null");
 
         final byte[] bytes;
@@ -327,7 +328,7 @@ final class MessageUtils {
      *
      * @return A map with corresponding keys as symbols.
      */
-    static Map<Symbol, Object> convert(Map<String, Object> sourceMap) {
+    public static Map<Symbol, Object> convert(Map<String, Object> sourceMap) {
         if (sourceMap == null) {
             return null;
         }
@@ -343,6 +344,27 @@ final class MessageUtils {
                     }
                 },
                 (HashMap::putAll));
+    }
+
+    /**
+     * Reads and validates enqueued time from message annotations.
+     *
+     * @param messageAnnotations Message annotations: either {@code Map<Symbol, Object>} from raw {@link Message}
+     *                           or {@code Map<String, Object>} from {@link AmqpAnnotatedMessage}
+     * @return {@link Instant} enqueued time.
+     * @throws IllegalStateException if enqueued time is not {@link Date} or {@link Instant}
+     */
+    public static <T>Instant getEnqueuedTime(Map<T, Object> messageAnnotations, T enqueuedTimeKey) {
+        final Object enqueuedTimeObject = messageAnnotations.get(enqueuedTimeKey);
+        if (enqueuedTimeObject instanceof Date) {
+            return ((Date) enqueuedTimeObject).toInstant();
+        } else if (enqueuedTimeObject instanceof Instant) {
+            return (Instant) enqueuedTimeObject;
+        }
+
+        throw LOGGER.logExceptionAsError(new IllegalStateException(new IllegalStateException(
+            String.format(Locale.US, "enqueuedTime is not a known type. Value: %s. Type: %s",
+                enqueuedTimeObject, enqueuedTimeObject.getClass()))));
     }
 
     private static void setValues(Map<Symbol, Object> sourceMap, Map<String, Object> targetMap) {
