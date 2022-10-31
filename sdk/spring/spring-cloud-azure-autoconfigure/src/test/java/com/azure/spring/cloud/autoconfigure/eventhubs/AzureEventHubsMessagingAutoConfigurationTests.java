@@ -9,12 +9,17 @@ import com.azure.spring.messaging.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import static com.azure.spring.cloud.autoconfigure.eventhubs.EventHubsTestUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AzureEventHubsMessagingAutoConfigurationTests {
 
@@ -76,7 +81,17 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     }
 
     @Test
-    void createConvertorWithOneOM() {
+    void withoutObjectMapperShouldNotConfigure() {
+        this.contextRunner
+            .withClassLoader(new FilteredClassLoader(ObjectMapper.class))
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
+            )
+            .run(context -> assertThat(context).doesNotHaveBean(EventHubsMessageConverter.class));
+    }
+
+    @Test
+    void withObjectMapperShouldConfigure() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
@@ -87,10 +102,28 @@ class AzureEventHubsMessagingAutoConfigurationTests {
     }
 
     @Test
-    void notCreateConvertorWithoutOM() {
-
+    void withCustomizeObjectMapperShouldConfigure() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
+            )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean(ObjectMapper.class)
+            .withUserConfiguration(UserCustomizeObjectMapperConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(EventHubsMessageConverter.class);
+                ObjectMapper mapper = (ObjectMapper) context.getBean("UserObjectMapper");
+                assertTrue(mapper instanceof ObjectMapper);
+                assertThrows(NoSuchBeanDefinitionException.class, () -> context.getBean(ObjectMapper.class));
+            });
     }
 
-    @Test
-    void createConvertorWithMultipleOM() {}
+    @Configuration
+    static class UserCustomizeObjectMapperConfiguration {
+        @Bean(name = "UserObjectMapper")
+        public ObjectMapper objectMapper() {
+            return new ObjectMapper();
+        }
+    }
+
 }
