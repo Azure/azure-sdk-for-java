@@ -10,6 +10,9 @@
 
 ### Other Changes
 
+#### Dependency Updates
+- Upgraded `msal4j` from `1.13.2` to `1.13.3`
+
 ## 1.7.0-beta.2 (2022-10-13)
 
 ### Features Added
