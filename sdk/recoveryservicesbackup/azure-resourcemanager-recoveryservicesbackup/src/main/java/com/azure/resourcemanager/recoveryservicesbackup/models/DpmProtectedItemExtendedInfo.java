@@ -98,6 +98,10 @@ public final class DpmProtectedItemExtendedInfo {
     @JsonProperty(value = "totalDiskStorageSizeInBytes")
     private String totalDiskStorageSizeInBytes;
 
+    /** Creates an instance of DpmProtectedItemExtendedInfo class. */
+    public DpmProtectedItemExtendedInfo() {
+    }
+
     /**
      * Get the protectableObjectLoadPath property: Attribute to provide information on various DBs.
      *

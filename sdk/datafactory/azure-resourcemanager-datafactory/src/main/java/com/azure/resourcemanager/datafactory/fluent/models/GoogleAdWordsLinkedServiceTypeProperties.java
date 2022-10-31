@@ -92,6 +92,10 @@ public final class GoogleAdWordsLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of GoogleAdWordsLinkedServiceTypeProperties class. */
+    public GoogleAdWordsLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionProperties property: Properties used to connect to GoogleAds. It is mutually exclusive with any
      * other properties in the linked service. Type: object.

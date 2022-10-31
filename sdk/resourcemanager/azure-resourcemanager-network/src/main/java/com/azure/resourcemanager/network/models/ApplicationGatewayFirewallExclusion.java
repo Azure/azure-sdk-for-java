@@ -31,6 +31,10 @@ public final class ApplicationGatewayFirewallExclusion {
     @JsonProperty(value = "selector", required = true)
     private String selector;
 
+    /** Creates an instance of ApplicationGatewayFirewallExclusion class. */
+    public ApplicationGatewayFirewallExclusion() {
+    }
+
     /**
      * Get the matchVariable property: The variable to be excluded.
      *

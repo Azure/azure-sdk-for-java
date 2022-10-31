@@ -24,6 +24,10 @@ public final class PaypalLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private PaypalLinkedServiceTypeProperties innerTypeProperties = new PaypalLinkedServiceTypeProperties();
 
+    /** Creates an instance of PaypalLinkedService class. */
+    public PaypalLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: Paypal Service linked service properties.
      *

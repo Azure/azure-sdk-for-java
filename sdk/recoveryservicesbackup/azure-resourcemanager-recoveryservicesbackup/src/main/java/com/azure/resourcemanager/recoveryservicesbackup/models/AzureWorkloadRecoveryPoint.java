@@ -55,6 +55,10 @@ public class AzureWorkloadRecoveryPoint extends RecoveryPoint {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, RecoveryPointMoveReadinessInfo> recoveryPointMoveReadinessInfo;
 
+    /** Creates an instance of AzureWorkloadRecoveryPoint class. */
+    public AzureWorkloadRecoveryPoint() {
+    }
+
     /**
      * Get the recoveryPointTimeInUtc property: UTC time at which recovery point was created.
      *

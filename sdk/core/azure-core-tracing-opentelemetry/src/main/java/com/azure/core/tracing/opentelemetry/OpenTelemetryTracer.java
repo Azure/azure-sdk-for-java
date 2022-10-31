@@ -258,7 +258,6 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
 
         io.opentelemetry.context.Context traceContext = getTraceContextOrDefault(context, null);
         if (traceContext == null) {
-            LOGGER.verbose("There is no OpenTelemetry Context on the context, cannot make it current");
             return NOOP_CLOSEABLE;
         }
         return traceContext.makeCurrent();
@@ -506,10 +505,7 @@ public class OpenTelemetryTracer implements com.azure.core.util.tracing.Tracer {
     @SuppressWarnings("unchecked")
     private static <T> T getOrNull(Context context, String key, Class<T> clazz) {
         final Optional<Object> optional = context.getData(key);
-        final Object result = optional.filter(value -> clazz.isAssignableFrom(value.getClass())).orElseGet(() -> {
-            LOGGER.verbose("Could not extract key '{}' of type '{}' from context.", key, clazz);
-            return null;
-        });
+        final Object result = optional.filter(value -> clazz.isAssignableFrom(value.getClass())).orElse(null);
 
         return (T) result;
     }

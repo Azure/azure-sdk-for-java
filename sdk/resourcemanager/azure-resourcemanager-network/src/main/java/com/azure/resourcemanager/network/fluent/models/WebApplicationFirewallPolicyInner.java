@@ -37,6 +37,10 @@ public final class WebApplicationFirewallPolicyInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
+    /** Creates an instance of WebApplicationFirewallPolicyInner class. */
+    public WebApplicationFirewallPolicyInner() {
+    }
+
     /**
      * Get the innerProperties property: Properties of the web application firewall policy.
      *

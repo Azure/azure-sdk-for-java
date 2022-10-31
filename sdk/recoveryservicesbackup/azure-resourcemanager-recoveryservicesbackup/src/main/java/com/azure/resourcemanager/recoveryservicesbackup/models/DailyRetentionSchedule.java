@@ -24,6 +24,10 @@ public final class DailyRetentionSchedule {
     @JsonProperty(value = "retentionDuration")
     private RetentionDuration retentionDuration;
 
+    /** Creates an instance of DailyRetentionSchedule class. */
+    public DailyRetentionSchedule() {
+    }
+
     /**
      * Get the retentionTimes property: Retention times of retention policy.
      *

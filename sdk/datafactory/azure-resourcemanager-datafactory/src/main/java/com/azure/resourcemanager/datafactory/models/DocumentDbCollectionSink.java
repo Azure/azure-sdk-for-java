@@ -27,6 +27,10 @@ public final class DocumentDbCollectionSink extends CopySink {
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
 
+    /** Creates an instance of DocumentDbCollectionSink class. */
+    public DocumentDbCollectionSink() {
+    }
+
     /**
      * Get the nestingSeparator property: Nested properties separator. Default is . (dot). Type: string (or Expression
      * with resultType string).

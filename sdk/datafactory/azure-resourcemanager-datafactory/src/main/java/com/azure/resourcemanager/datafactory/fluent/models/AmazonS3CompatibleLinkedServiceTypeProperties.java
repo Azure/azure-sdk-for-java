@@ -46,6 +46,10 @@ public final class AmazonS3CompatibleLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private Object encryptedCredential;
 
+    /** Creates an instance of AmazonS3CompatibleLinkedServiceTypeProperties class. */
+    public AmazonS3CompatibleLinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the accessKeyId property: The access key identifier of the Amazon S3 Compatible Identity and Access
      * Management (IAM) user. Type: string (or Expression with resultType string).

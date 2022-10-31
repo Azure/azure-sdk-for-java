@@ -24,6 +24,10 @@ public final class CosmosDbLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties", required = true)
     private CosmosDbLinkedServiceTypeProperties innerTypeProperties = new CosmosDbLinkedServiceTypeProperties();
 
+    /** Creates an instance of CosmosDbLinkedService class. */
+    public CosmosDbLinkedService() {
+    }
+
     /**
      * Get the innerTypeProperties property: CosmosDB linked service properties.
      *

@@ -35,8 +35,7 @@ public class AzureWorkloadRestoreRequest extends RestoreRequest {
     private RecoveryType recoveryType;
 
     /*
-     * Fully qualified ARM ID of the VM on which workload that was running is
-     * being recovered.
+     * Fully qualified ARM ID of the VM on which workload that was running is being recovered.
      */
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;
@@ -55,19 +54,21 @@ public class AzureWorkloadRestoreRequest extends RestoreRequest {
     private TargetRestoreInfo targetInfo;
 
     /*
-     * Defines whether the current recovery mode is file restore or database
-     * restore
+     * Defines whether the current recovery mode is file restore or database restore
      */
     @JsonProperty(value = "recoveryMode")
     private RecoveryMode recoveryMode;
 
     /*
      * This is the complete ARM Id of the target VM
-     * For e.g.
-     * /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
+     * For e.g. /subscriptions/{subId}/resourcegroups/{rg}/provider/Microsoft.Compute/virtualmachines/{vm}
      */
     @JsonProperty(value = "targetVirtualMachineId")
     private String targetVirtualMachineId;
+
+    /** Creates an instance of AzureWorkloadRestoreRequest class. */
+    public AzureWorkloadRestoreRequest() {
+    }
 
     /**
      * Get the recoveryType property: Type of this recovery.

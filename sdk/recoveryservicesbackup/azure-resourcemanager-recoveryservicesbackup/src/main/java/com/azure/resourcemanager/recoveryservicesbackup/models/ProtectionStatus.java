@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProtectionStatus. */
+/** Specifies whether the container is registered or not. */
 public final class ProtectionStatus extends ExpandableStringEnum<ProtectionStatus> {
     /** Static value Invalid for ProtectionStatus. */
     public static final ProtectionStatus INVALID = fromString("Invalid");

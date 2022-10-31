@@ -15,6 +15,7 @@
     <module>azure-maps-render</module>
     <module>azure-maps-timezone</module>
     <module>azure-maps-geolocation</module>
+    <module>azure-maps-elevation</module>
     <module>azure-resourcemanager-maps</module>
   </modules>
 </project>

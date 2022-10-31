@@ -30,17 +30,6 @@ public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProx
         this.serviceManager = serviceManager;
     }
 
-    public ResourceGuardProxyBaseResource get(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName) {
-        ResourceGuardProxyBaseResourceInner inner =
-            this.serviceClient().get(vaultName, resourceGroupName, resourceGuardProxyName);
-        if (inner != null) {
-            return new ResourceGuardProxyBaseResourceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
     public Response<ResourceGuardProxyBaseResource> getWithResponse(
         String vaultName, String resourceGroupName, String resourceGuardProxyName, Context context) {
         Response<ResourceGuardProxyBaseResourceInner> inner =
@@ -56,8 +45,15 @@ public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProx
         }
     }
 
-    public void delete(String vaultName, String resourceGroupName, String resourceGuardProxyName) {
-        this.serviceClient().delete(vaultName, resourceGroupName, resourceGuardProxyName);
+    public ResourceGuardProxyBaseResource get(
+        String vaultName, String resourceGroupName, String resourceGuardProxyName) {
+        ResourceGuardProxyBaseResourceInner inner =
+            this.serviceClient().get(vaultName, resourceGroupName, resourceGuardProxyName);
+        if (inner != null) {
+            return new ResourceGuardProxyBaseResourceImpl(inner, this.manager());
+        } else {
+            return null;
+        }
     }
 
     public Response<Void> deleteWithResponse(
@@ -65,15 +61,8 @@ public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProx
         return this.serviceClient().deleteWithResponse(vaultName, resourceGroupName, resourceGuardProxyName, context);
     }
 
-    public UnlockDeleteResponse unlockDelete(
-        String vaultName, String resourceGroupName, String resourceGuardProxyName, UnlockDeleteRequest parameters) {
-        UnlockDeleteResponseInner inner =
-            this.serviceClient().unlockDelete(vaultName, resourceGroupName, resourceGuardProxyName, parameters);
-        if (inner != null) {
-            return new UnlockDeleteResponseImpl(inner, this.manager());
-        } else {
-            return null;
-        }
+    public void delete(String vaultName, String resourceGroupName, String resourceGuardProxyName) {
+        this.serviceClient().delete(vaultName, resourceGroupName, resourceGuardProxyName);
     }
 
     public Response<UnlockDeleteResponse> unlockDeleteWithResponse(
@@ -92,6 +81,17 @@ public final class ResourceGuardProxyOperationsImpl implements ResourceGuardProx
                 inner.getStatusCode(),
                 inner.getHeaders(),
                 new UnlockDeleteResponseImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
+    public UnlockDeleteResponse unlockDelete(
+        String vaultName, String resourceGroupName, String resourceGuardProxyName, UnlockDeleteRequest parameters) {
+        UnlockDeleteResponseInner inner =
+            this.serviceClient().unlockDelete(vaultName, resourceGroupName, resourceGuardProxyName, parameters);
+        if (inner != null) {
+            return new UnlockDeleteResponseImpl(inner, this.manager());
         } else {
             return null;
         }

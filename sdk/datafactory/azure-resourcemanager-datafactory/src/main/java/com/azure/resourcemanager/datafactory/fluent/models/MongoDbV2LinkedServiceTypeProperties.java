@@ -24,6 +24,10 @@ public final class MongoDbV2LinkedServiceTypeProperties {
     @JsonProperty(value = "database", required = true)
     private Object database;
 
+    /** Creates an instance of MongoDbV2LinkedServiceTypeProperties class. */
+    public MongoDbV2LinkedServiceTypeProperties() {
+    }
+
     /**
      * Get the connectionString property: The MongoDB connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.

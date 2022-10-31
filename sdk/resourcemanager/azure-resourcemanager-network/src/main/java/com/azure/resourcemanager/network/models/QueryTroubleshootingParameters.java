@@ -17,6 +17,10 @@ public final class QueryTroubleshootingParameters {
     @JsonProperty(value = "targetResourceId", required = true)
     private String targetResourceId;
 
+    /** Creates an instance of QueryTroubleshootingParameters class. */
+    public QueryTroubleshootingParameters() {
+    }
+
     /**
      * Get the targetResourceId property: The target resource ID to query the troubleshooting result.
      *

@@ -60,6 +60,10 @@ public final class ConnectivityConfigurationProperties {
     @JsonProperty(value = "deleteExistingPeering")
     private DeleteExistingPeering deleteExistingPeering;
 
+    /** Creates an instance of ConnectivityConfigurationProperties class. */
+    public ConnectivityConfigurationProperties() {
+    }
+
     /**
      * Get the description property: A description of the connectivity configuration.
      *

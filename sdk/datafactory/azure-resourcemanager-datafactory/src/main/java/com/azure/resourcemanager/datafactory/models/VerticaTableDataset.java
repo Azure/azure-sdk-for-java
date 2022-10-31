@@ -23,6 +23,10 @@ public final class VerticaTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private VerticaDatasetTypeProperties innerTypeProperties;
 
+    /** Creates an instance of VerticaTableDataset class. */
+    public VerticaTableDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
      *

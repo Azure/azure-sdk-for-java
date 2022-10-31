@@ -14,17 +14,6 @@ public interface Jobs {
      *
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void export(String vaultName, String resourceGroupName);
-
-    /**
-     * Triggers export of jobs specified by filters and returns an OperationID to track.
-     *
-     * @param vaultName The name of the recovery services vault.
-     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param filter OData filter options.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -33,4 +22,15 @@ public interface Jobs {
      * @return the {@link Response}.
      */
     Response<Void> exportWithResponse(String vaultName, String resourceGroupName, String filter, Context context);
+
+    /**
+     * Triggers export of jobs specified by filters and returns an OperationID to track.
+     *
+     * @param vaultName The name of the recovery services vault.
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void export(String vaultName, String resourceGroupName);
 }

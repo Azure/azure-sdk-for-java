@@ -25,6 +25,10 @@ public final class MongoDbV2CollectionDataset extends Dataset {
     private MongoDbV2CollectionDatasetTypeProperties innerTypeProperties =
         new MongoDbV2CollectionDatasetTypeProperties();
 
+    /** Creates an instance of MongoDbV2CollectionDataset class. */
+    public MongoDbV2CollectionDataset() {
+    }
+
     /**
      * Get the innerTypeProperties property: MongoDB database dataset properties.
      *

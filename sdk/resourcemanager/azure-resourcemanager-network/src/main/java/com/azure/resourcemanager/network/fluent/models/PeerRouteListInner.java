@@ -18,6 +18,10 @@ public final class PeerRouteListInner {
     @JsonProperty(value = "value")
     private List<PeerRoute> value;
 
+    /** Creates an instance of PeerRouteListInner class. */
+    public PeerRouteListInner() {
+    }
+
     /**
      * Get the value property: List of peer routes.
      *

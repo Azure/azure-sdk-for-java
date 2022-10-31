@@ -38,6 +38,13 @@ public interface WorkloadNetworkDhcp {
     WorkloadNetworkDhcpEntity properties();
 
     /**
+     * Gets the name of the resource group.
+     *
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.WorkloadNetworkDhcpInner object.
      *
      * @return the inner object.

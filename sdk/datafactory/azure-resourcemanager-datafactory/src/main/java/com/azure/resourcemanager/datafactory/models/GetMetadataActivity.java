@@ -23,6 +23,10 @@ public final class GetMetadataActivity extends ExecutionActivity {
     @JsonProperty(value = "typeProperties", required = true)
     private GetMetadataActivityTypeProperties innerTypeProperties = new GetMetadataActivityTypeProperties();
 
+    /** Creates an instance of GetMetadataActivity class. */
+    public GetMetadataActivity() {
+    }
+
     /**
      * Get the innerTypeProperties property: GetMetadata activity properties.
      *
