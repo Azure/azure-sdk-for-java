@@ -41,7 +41,7 @@ public final class ClientEncryptionPolicy {
      */
     public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths) {
         this.policyFormatVersion = 1;
-        this.validateIncludedPaths(paths, policyFormatVersion);
+        validateIncludedPaths(paths, policyFormatVersion);
         this.includedPaths = paths;
     }
 
@@ -57,7 +57,7 @@ public final class ClientEncryptionPolicy {
             throw new IllegalArgumentException("Supported versions of client encryption policy are 1 and 2.");
         }
         this.policyFormatVersion = policyFormatVersion;
-        this.validateIncludedPaths(paths, policyFormatVersion);
+        validateIncludedPaths(paths, policyFormatVersion);
         this.includedPaths = paths;
     }
 
@@ -123,7 +123,7 @@ public final class ClientEncryptionPolicy {
                     if (this.policyFormatVersion < 2) {
                         throw new IllegalArgumentException(String.format("Path %s which is part of the partition key " +
                             "cannot be encrypted" +
-                            " with PolicyFormatVersion %s", topLevelToken, policyFormatVersion));
+                            " with PolicyFormatVersion %s. Please use PolicyFormatVersion 2.", topLevelToken, policyFormatVersion));
                     }
 
                     // for the ClientEncryptionIncludedPath found check the encryption type.
