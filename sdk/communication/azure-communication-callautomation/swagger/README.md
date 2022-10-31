@@ -33,7 +33,7 @@ To update generated files for call automation, run the following command
 ``` yaml
 tag: package-2022-04-07-preview
 require:
-    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/ac4677cd31042657c21bf40e0506c7c2752bbe70/specification/communication/data-plane/CallAutomation/readme.md
+    - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/communication/data-plane/CallAutomation/readme.md
 java: true
 output-folder: ../
 license-header: MICROSOFT_MIT_SMALL
@@ -135,6 +135,9 @@ directive:
 - rename-model:
     from: DtmfOptions
     to: DtmfOptionsInternal
+- rename-model:
+    from: MediaStreamingConfiguration
+    to: MediaStreamingConfigurationInternal
 - rename-model:
     from: RecognizeOptions
     to: RecognizeOptionsInternal
@@ -247,6 +250,32 @@ directive:
     $.name = "StopTonesInternal";
 ```
 
+### Rename MediaStreamingAudioChannelType to MediaStreamingAudioChannelTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingAudioChannelType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingAudioChannelTypeInternal";
+```
+
+### Rename MediaStreamingContentType to MediaStreamingContentTypeInternal
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingContentType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingContentTypeInternal";
+```
+
+### Rename MediaStreamingTransportType to MediaStreamingTransportType
+``` yaml
+directive:
+- from: swagger-document
+  where: $.definitions.MediaStreamingTransportType["x-ms-enum"]
+  transform: >
+    $.name = "MediaStreamingTransportTypeInternal";
+```
 
 ### Rename RecognizeInputType to RecognizeInputTypeInternal
 ``` yaml
