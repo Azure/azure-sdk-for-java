@@ -14,6 +14,7 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 - Fix bug: NimbusJwtDecoder still uses `RestTemplate()` instead `RestTemplateBuilder` [#31233](https://github.com/Azure/azure-sdk-for-java/issues/31233)
 - Fix bug: Proxy setting not work in Azure AD B2C web application. [31593](https://github.com/Azure/azure-sdk-for-java/issues/31593)
 - Fix Bug: NoClassDefFoundError for JSONArray. [31716](https://github.com/Azure/azure-sdk-for-java/issues/31716)
+- Fix bug: `spring.main.sources` configuration from Spring Cloud Stream Kafka binder cannot take effect. [#31715](https://github.com/Azure/azure-sdk-for-java/pull/31715)
 
 #### Breaking Changes
 - Delete the artifact `spring-cloud-azure-trace-sleuth`.
