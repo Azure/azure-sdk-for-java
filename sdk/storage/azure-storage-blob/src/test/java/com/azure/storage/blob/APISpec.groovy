@@ -15,6 +15,7 @@ import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.CoreUtils
 import com.azure.core.util.FluxUtil
+import com.azure.identity.ClientSecretCredentialBuilder
 import com.azure.identity.EnvironmentCredentialBuilder
 import com.azure.storage.blob.models.BlobErrorCode
 import com.azure.storage.blob.models.BlobProperties

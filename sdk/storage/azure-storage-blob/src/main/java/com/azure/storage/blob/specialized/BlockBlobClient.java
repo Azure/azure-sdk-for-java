@@ -481,12 +481,12 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadWithResponse(BlockBlobSimpleUploadOptions options, Duration timeout,
         Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Mono<Response<BlockBlobItem>> upload = client.uploadWithResponse(options, context);
-        try {
-            return blockWithOptionalTimeout(upload, timeout);
-        } catch (UncheckedIOException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
+        return client.uploadWithResponseSync(options, context);
+//        try {
+//            return blockWithOptionalTimeout(upload, timeout);
+//        } catch (UncheckedIOException e) {
+//            throw LOGGER.logExceptionAsError(e);
+//        }
     }
 
     /**
@@ -595,12 +595,12 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<BlockBlobItem> uploadFromUrlWithResponse(BlobUploadFromUrlOptions options, Duration timeout,
                                                              Context context) {
         StorageImplUtils.assertNotNull("options", options);
-        Mono<Response<BlockBlobItem>> upload = client.uploadFromUrlWithResponse(options, context);
-        try {
-            return blockWithOptionalTimeout(upload, timeout);
-        } catch (UncheckedIOException e) {
-            throw LOGGER.logExceptionAsError(e);
-        }
+        return client.uploadFromUrlWithResponseSync(options, context);
+//        try {
+//            return blockWithOptionalTimeout(upload, timeout);
+//        } catch (UncheckedIOException e) {
+//            throw LOGGER.logExceptionAsError(e);
+//        }
     }
 
     /**
@@ -692,12 +692,10 @@ public final class BlockBlobClient extends BlobClientBase {
     public Response<Void> stageBlockWithResponse(String base64BlockId, InputStream data, long length, byte[] contentMd5,
         String leaseId, Duration timeout, Context context) {
         StorageImplUtils.assertNotNull("data", data);
-        Flux<ByteBuffer> fbb = Utility.convertStreamToByteBuffer(data, length,
-            BlobAsyncClient.BLOB_DEFAULT_UPLOAD_BLOCK_SIZE, true);
 
-        Mono<Response<Void>> response = client.stageBlockWithResponse(base64BlockId,
-            fbb.subscribeOn(Schedulers.boundedElastic()), length, contentMd5, leaseId, context);
-        return blockWithOptionalTimeout(response, timeout);
+        return client.stageBlockWithResponseSync(base64BlockId,
+            BinaryData.fromStream(data, length), contentMd5, leaseId, context);
+//        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -731,9 +729,9 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockWithResponse(BlockBlobStageBlockOptions options, Duration timeout, Context context) {
         Objects.requireNonNull(options, "options must not be null");
-        Mono<Response<Void>> response = client.stageBlockWithResponse(
+        return client.stageBlockWithResponseSync(
             options.getBase64BlockId(), options.getData(), options.getContentMd5(), options.getLeaseId(), context);
-        return blockWithOptionalTimeout(response, timeout);
+//        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -840,8 +838,8 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stageBlockFromUrlWithResponse(BlockBlobStageBlockFromUrlOptions options, Duration timeout,
         Context context) {
-        Mono<Response<Void>> response = client.stageBlockFromUrlWithResponse(options, context);
-        return blockWithOptionalTimeout(response, timeout);
+        return client.stageBlockFromUrlWithResponseSync(options, context);
+//        return blockWithOptionalTimeout(response, timeout);
     }
 
     /**
@@ -934,7 +932,8 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockList> listBlocksWithResponse(BlockBlobListBlocksOptions options, Duration timeout,
         Context context) {
-        return blockWithOptionalTimeout(client.listBlocksWithResponse(options, context), timeout);
+        return client.listBlocksWithResponseSync(options, context);
+//        return blockWithOptionalTimeout(, timeout);
     }
 
     /**
@@ -1089,9 +1088,9 @@ public final class BlockBlobClient extends BlobClientBase {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BlockBlobItem> commitBlockListWithResponse(BlockBlobCommitBlockListOptions options,
         Duration timeout, Context context) {
-        Mono<Response<BlockBlobItem>> response = client.commitBlockListWithResponse(
+        return client.commitBlockListWithResponseSync(
             options, context);
 
-        return blockWithOptionalTimeout(response, timeout);
+//        return blockWithOptionalTimeout(response, timeout);
     }
 }

@@ -67,18 +67,12 @@ public final class ServicesGetAccountInfoHeaders {
      */
     public ServicesGetAccountInfoHeaders(HttpHeaders rawHeaders) {
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        String xMsAccountKind = rawHeaders.getValue("x-ms-account-kind");
-        if (xMsAccountKind != null) {
-            this.xMsAccountKind = AccountKind.fromString(xMsAccountKind);
-        }
+        this.xMsAccountKind = AccountKind.fromString(rawHeaders.getValue("x-ms-account-kind"));
         String xMsIsHnsEnabled = rawHeaders.getValue("x-ms-is-hns-enabled");
         if (xMsIsHnsEnabled != null) {
             this.xMsIsHnsEnabled = Boolean.parseBoolean(xMsIsHnsEnabled);
         }
-        String xMsSkuName = rawHeaders.getValue("x-ms-sku-name");
-        if (xMsSkuName != null) {
-            this.xMsSkuName = SkuName.fromString(xMsSkuName);
-        }
+        this.xMsSkuName = SkuName.fromString(rawHeaders.getValue("x-ms-sku-name"));
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
         String date = rawHeaders.getValue("Date");

@@ -231,30 +231,18 @@ public final class BlobsQueryHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsQueryHeaders(HttpHeaders rawHeaders) {
-        String xMsLeaseStatus = rawHeaders.getValue("x-ms-lease-status");
-        if (xMsLeaseStatus != null) {
-            this.xMsLeaseStatus = LeaseStatusType.fromString(xMsLeaseStatus);
-        }
+        this.xMsLeaseStatus = LeaseStatusType.fromString(rawHeaders.getValue("x-ms-lease-status"));
         this.contentRange = rawHeaders.getValue("Content-Range");
-        String xMsLeaseState = rawHeaders.getValue("x-ms-lease-state");
-        if (xMsLeaseState != null) {
-            this.xMsLeaseState = LeaseStateType.fromString(xMsLeaseState);
-        }
+        this.xMsLeaseState = LeaseStateType.fromString(rawHeaders.getValue("x-ms-lease-state"));
         String lastModified = rawHeaders.getValue("Last-Modified");
         if (lastModified != null) {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
         this.xMsEncryptionKeySha256 = rawHeaders.getValue("x-ms-encryption-key-sha256");
-        String xMsBlobType = rawHeaders.getValue("x-ms-blob-type");
-        if (xMsBlobType != null) {
-            this.xMsBlobType = BlobType.fromString(xMsBlobType);
-        }
+        this.xMsBlobType = BlobType.fromString(rawHeaders.getValue("x-ms-blob-type"));
         this.contentEncoding = rawHeaders.getValue("Content-Encoding");
         this.xMsCopyStatusDescription = rawHeaders.getValue("x-ms-copy-status-description");
-        String xMsLeaseDuration = rawHeaders.getValue("x-ms-lease-duration");
-        if (xMsLeaseDuration != null) {
-            this.xMsLeaseDuration = LeaseDurationType.fromString(xMsLeaseDuration);
-        }
+        this.xMsLeaseDuration = LeaseDurationType.fromString(rawHeaders.getValue("x-ms-lease-duration"));
         String contentLength = rawHeaders.getValue("Content-Length");
         if (contentLength != null) {
             this.contentLength = Long.parseLong(contentLength);
@@ -301,10 +289,7 @@ public final class BlobsQueryHeaders {
         this.cacheControl = rawHeaders.getValue("Cache-Control");
         this.eTag = rawHeaders.getValue("ETag");
         this.contentDisposition = rawHeaders.getValue("Content-Disposition");
-        String xMsCopyStatus = rawHeaders.getValue("x-ms-copy-status");
-        if (xMsCopyStatus != null) {
-            this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
-        }
+        this.xMsCopyStatus = CopyStatusType.fromString(rawHeaders.getValue("x-ms-copy-status"));
         this.contentLanguage = rawHeaders.getValue("Content-Language");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
         this.xMsEncryptionScope = rawHeaders.getValue("x-ms-encryption-scope");

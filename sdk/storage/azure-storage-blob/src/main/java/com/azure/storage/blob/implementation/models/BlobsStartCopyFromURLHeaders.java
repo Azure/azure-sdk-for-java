@@ -85,10 +85,7 @@ public final class BlobsStartCopyFromURLHeaders {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
         this.xMsVersionId = rawHeaders.getValue("x-ms-version-id");
-        String xMsCopyStatus = rawHeaders.getValue("x-ms-copy-status");
-        if (xMsCopyStatus != null) {
-            this.xMsCopyStatus = CopyStatusType.fromString(xMsCopyStatus);
-        }
+        this.xMsCopyStatus = CopyStatusType.fromString(rawHeaders.getValue("x-ms-copy-status"));
         this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
         this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
         String date = rawHeaders.getValue("Date");

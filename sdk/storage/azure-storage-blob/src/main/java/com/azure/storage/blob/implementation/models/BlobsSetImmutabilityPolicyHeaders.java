@@ -59,10 +59,8 @@ public final class BlobsSetImmutabilityPolicyHeaders {
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public BlobsSetImmutabilityPolicyHeaders(HttpHeaders rawHeaders) {
-        String xMsImmutabilityPolicyMode = rawHeaders.getValue("x-ms-immutability-policy-mode");
-        if (xMsImmutabilityPolicyMode != null) {
-            this.xMsImmutabilityPolicyMode = BlobImmutabilityPolicyMode.fromString(xMsImmutabilityPolicyMode);
-        }
+        this.xMsImmutabilityPolicyMode =
+                BlobImmutabilityPolicyMode.fromString(rawHeaders.getValue("x-ms-immutability-policy-mode"));
         this.xMsVersion = rawHeaders.getValue("x-ms-version");
         String xMsImmutabilityPolicyUntilDate = rawHeaders.getValue("x-ms-immutability-policy-until-date");
         if (xMsImmutabilityPolicyUntilDate != null) {
