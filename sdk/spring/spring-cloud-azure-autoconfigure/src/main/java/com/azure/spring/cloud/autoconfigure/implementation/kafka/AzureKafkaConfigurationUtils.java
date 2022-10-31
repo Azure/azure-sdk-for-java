@@ -137,11 +137,6 @@ public final class AzureKafkaConfigurationUtils {
      */
     public static void configureOAuth2Properties(Map<String, String> propertiesToConfigure) {
         propertiesToConfigure.putAll(AzureKafkaConfigurationUtils.KAFKA_OAUTH_CONFIGS);
-//        if (!propertiesToConfigure.containsKey(SASL_JAAS_CONFIG)
-//            || (propertiesToConfigure.get(SASL_JAAS_CONFIG) != null
-//                && !propertiesToConfigure.get(SASL_JAAS_CONFIG).startsWith(AzureKafkaPropertiesUtils.SASL_JAAS_CONFIG_OAUTH_PREFIX))) {
-//            propertiesToConfigure.put(SASL_JAAS_CONFIG, SASL_JAAS_CONFIG_OAUTH);
-//        }
     }
 
     /**
@@ -175,7 +170,6 @@ public final class AzureKafkaConfigurationUtils {
         }
         //kafkaProperties always stand for the highest priority for both boot and scs.
         convertConfigMapToAzureProperties(kafkaProperties, azurePasswordlessProperties);
-//        convertJaasPropertyToAzureProperties((String) kafkaProperties.get(SASL_JAAS_CONFIG), azurePasswordlessProperties);
         return azurePasswordlessProperties;
     }
 

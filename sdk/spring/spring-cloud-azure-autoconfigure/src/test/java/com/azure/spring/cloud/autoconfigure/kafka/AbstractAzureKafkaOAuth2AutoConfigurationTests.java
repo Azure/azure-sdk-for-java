@@ -37,8 +37,6 @@ abstract class AbstractAzureKafkaOAuth2AutoConfigurationTests {
     protected static final String SPRING_BOOT_KAFKA_PRODUCER_PROPERTIES_PREFIX = "spring.kafka.producer.properties.";
     protected static final String CLIENT_ID = "azure.credential.client-id";
 
-    protected static final String JAAS_PROPERTY_FORMAT = "%s" + SASL_JAAS_CONFIG
-        + "=" + SASL_JAAS_CONFIG_OAUTH_PREFIX + " %s=\"%s\";";
     protected static final String MANAGED_IDENTITY_ENABLED = "azure.credential.managed-identity-enabled";
 
     protected abstract ApplicationContextRunner getContextRunner();
