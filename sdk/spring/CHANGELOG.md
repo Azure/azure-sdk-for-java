@@ -1,7 +1,7 @@
 # Release History
 
 ## 6.0.0-beta.3 (Unreleased)
-Upgrade Spring Boot dependencies version to 3.0.0-RC1 and Spring Cloud dependencies version to 2022.0.0-M5.
+Upgrade Spring Boot dependencies version to 3.0.0-RC1 and Spring Cloud dependencies version to 2022.0.0-RC1.
 
 #### Bugs Fixed
 - Fix bug: Put a value into Collections.emptyMap(). [#31190](https://github.com/Azure/azure-sdk-for-java/issues/31190).
