@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -35,6 +36,8 @@ public final class ClientEncryptionPolicy {
      * Constructor.
      *
      * @param paths list of path of the item that need encryption along with path-specific settings.
+     *              the PolicyFormatVersion will be set to 1 which is the default value.
+     *              Note: If you need to include partition key or id field paths as part of the ClientEncryptionPolicy, please set PolicyFormatVersion to 2.
      */
     public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths) {
         this.policyFormatVersion = 1;
@@ -47,8 +50,8 @@ public final class ClientEncryptionPolicy {
      *
      * @param paths list of path of the item that need encryption along with path-specific settings.
      * @param policyFormatVersion version of the client encryption policy definition. Current supported versions are 1 and 2. Default version is 1.
+     *                            Note: If you need to include partition key or id field paths as part of the ClientEncryptionPolicy, please set PolicyFormatVersion to 2.
      */
-    @Beta(value = Beta.SinceVersion.V4_14_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public ClientEncryptionPolicy(List<ClientEncryptionIncludedPath> paths, int policyFormatVersion) {
         if (policyFormatVersion > 2 || policyFormatVersion < 1) {
             throw new IllegalArgumentException("Supported versions of client encryption policy are 1 and 2.");
