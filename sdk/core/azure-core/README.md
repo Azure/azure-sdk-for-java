@@ -135,7 +135,7 @@ correlates to (valid options are case-insensitive):
 | `bodyandheaders` | `HttpLogDetailLevel.BODY_AND_HEADERS` |
 
 All other values, or unsupported values, result in `HttpLogDetailLevel.NONE`, or disabled HTTP request and response 
-logging. No matter the configuration set general logging must be enabled. Logging of HTTP headers requires `verbose`
+logging. Logging [must be enabled](#enabling-logging) to log HTTP requests and responses. Logging of HTTP headers requires `verbose`
 logging to be enabled. The following table explains what logging is enabled for each `HttpLogDetailLevel`:
 
 | `HttpLogDetailLevel` value | Logging enabled                                                         |
