@@ -125,6 +125,18 @@ directive:
     $.KeyVaultSecretExpiredEventData["properties"]["EXP"]["x-ms-client-name"] = "Exp";
 ```
 
+### Mark a discriminator property as "required"
+
+Newer versions of AutoRest complain during validation about the discriminator property being required
+
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.MediaJobOutput
+    transform: >
+      $.required.push("@odata.type");
+```
+
 ### Customization
 
 ```java
