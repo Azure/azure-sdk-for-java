@@ -634,6 +634,19 @@
       ]
     },
     {
+      "filename": "sdk/spring/README.md",
+      "words": [
+        "Dcheckstyle",
+        "Dcodesnippet",
+        "Djacoco",
+        "Drevapi",
+        "Dskip",
+        "Dspotbugs",
+        "Pdev",
+        ""
+      ]
+    },
+    {
       "filename": "sdk/storage/azure-storage-common/**",
       "words": [
         "alzimmer",
