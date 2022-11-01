@@ -545,7 +545,7 @@ public class ConfigurationTests {
 
     private static Stream<Arguments> validIntStrings() {
         return Stream.of(
-            Arguments.of("123", 123),
+            Arguments.of("132", 132),
             Arguments.of("-321", -321),
             Arguments.of("0", 0),
             Arguments.of("2147483647", Integer.MAX_VALUE)
@@ -563,7 +563,7 @@ public class ConfigurationTests {
     private static Stream<Arguments> validDurationStrings() {
         return Stream.of(
             Arguments.of("0", Duration.ofMillis(0)),
-            Arguments.of("123", Duration.ofMillis(123)),
+            Arguments.of("132", Duration.ofMillis(132)),
             Arguments.of("2147483648", Duration.ofMillis(2147483648L))
         );
     }

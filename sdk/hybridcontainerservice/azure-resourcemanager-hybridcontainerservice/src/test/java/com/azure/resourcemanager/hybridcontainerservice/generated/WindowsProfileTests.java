@@ -16,26 +16,26 @@ public final class WindowsProfileTests {
         WindowsProfile model =
             BinaryData
                 .fromString(
-                    "{\"adminPassword\":\"skpbhenbtkcxywn\",\"adminUsername\":\"nrs\",\"enableCsiProxy\":false,\"licenseType\":\"None\"}")
+                    "{\"adminPassword\":\"fakePasswordPlaceholder\",\"adminUsername\":\"fakeUsernamePlaceholder\",\"enableCsiProxy\":false,\"licenseType\":\"None\"}")
                 .toObject(WindowsProfile.class);
-        Assertions.assertEquals("nrs", model.adminUsername());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.adminUsername());
         Assertions.assertEquals(false, model.enableCsiProxy());
         Assertions.assertEquals(LicenseType.NONE, model.licenseType());
-        Assertions.assertEquals("skpbhenbtkcxywn", model.adminPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.adminPassword());
     }
 
     @Test
     public void testSerialize() {
         WindowsProfile model =
             new WindowsProfile()
-                .withAdminUsername("nrs")
+                .withAdminUsername("fakeUsernamePlaceholder")
                 .withEnableCsiProxy(false)
                 .withLicenseType(LicenseType.NONE)
-                .withAdminPassword("skpbhenbtkcxywn");
+                .withAdminPassword("fakePasswordPlaceholder");
         model = BinaryData.fromObject(model).toObject(WindowsProfile.class);
-        Assertions.assertEquals("nrs", model.adminUsername());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.adminUsername());
         Assertions.assertEquals(false, model.enableCsiProxy());
         Assertions.assertEquals(LicenseType.NONE, model.licenseType());
-        Assertions.assertEquals("skpbhenbtkcxywn", model.adminPassword());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.adminPassword());
     }
 }

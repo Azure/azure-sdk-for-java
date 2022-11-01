@@ -346,8 +346,8 @@ public class UrlBuilderTests {
     public void portStringWhenPortIsNotEmpty() {
         final UrlBuilder builder = new UrlBuilder()
             .setPort(8080);
-        builder.setPort("123");
-        assertEquals(123, builder.getPort());
+        builder.setPort("132");
+        assertEquals(132, builder.getPort());
     }
 
     @Test
