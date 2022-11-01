@@ -19,8 +19,8 @@
   `ExtractSummaryResultCollection`, `ExtractSummaryResult`, `SummarySentenceCollection`, `SummarySentence` 
   and `SummarySentenceOrder`. Access the feature through the `beginAnalyzeActions` API.
 - Added the Abstractive Summarization feature and related models: `AbstractSummaryAction`, `AbstractSummaryActionResult`,
- `AbstractSummaryResultCollection`, `AbstractSummaryResult`, `AbstractiveSummary`, `SummaryContext`, `PhraseControl`, 
-  and `PhraseControlStrategy`. Access the feature through the `beginAnalyzeActions` API.
+ `AbstractSummaryResultCollection`, `AbstractSummaryResult`, `AbstractiveSummary`, and `SummaryContext`. 
+  Access the feature through the `beginAnalyzeActions` API.
 
 ### Breaking Changes
 

@@ -44,7 +44,6 @@ import com.azure.ai.textanalytics.implementation.models.CustomSingleClassificati
 import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationLROResult;
 import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationLROTask;
 import com.azure.ai.textanalytics.implementation.models.CustomSingleLabelClassificationTaskParameters;
-import com.azure.ai.textanalytics.implementation.models.DocumentType;
 import com.azure.ai.textanalytics.implementation.models.EntitiesLROTask;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTask;
@@ -62,6 +61,7 @@ import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationR
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationSortingCriteria;
 import com.azure.ai.textanalytics.implementation.models.ExtractiveSummarizationTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.FhirVersion;
+import com.azure.ai.textanalytics.implementation.models.HealthcareDocumentType;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROResult;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROTask;
 import com.azure.ai.textanalytics.implementation.models.HealthcareResult;
@@ -109,7 +109,6 @@ import com.azure.ai.textanalytics.models.ExtractSummaryAction;
 import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyActionResult;
-import com.azure.ai.textanalytics.models.PhraseControl;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
@@ -574,8 +573,8 @@ class AnalyzeActionsAsyncClient {
     private HealthcareTaskParameters getHealthcareTaskParameters(AnalyzeHealthcareEntitiesAction action) {
         final com.azure.ai.textanalytics.models.FhirVersion fhirVersion = action.getFhirVersion();
         final FhirVersion fhirVersionImpl = fhirVersion == null ? null : FhirVersion.fromString(fhirVersion.toString());
-        final DocumentType documentTypeImpl = action.getDocumentType() == null ? null
-            : DocumentType.fromString(action.getDocumentType().toString());
+        final HealthcareDocumentType documentTypeImpl = action.getDocumentType() == null ? null
+            : HealthcareDocumentType.fromString(action.getDocumentType().toString());
         return new HealthcareTaskParameters()
             .setDocumentType(documentTypeImpl)
             .setFhirVersion(fhirVersionImpl)
@@ -796,31 +795,9 @@ class AnalyzeActionsAsyncClient {
         AbstractiveSummaryAction action) {
         return new AbstractiveSummarizationTaskParameters()
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
-            .setPhraseControls(toPhraseControlsImpl(action.getPhraseControls()))
             .setSentenceCount(action.getMaxSentenceCount())
             .setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());
-    }
-
-    private List<com.azure.ai.textanalytics.implementation.models.PhraseControl> toPhraseControlsImpl(
-        List<PhraseControl> phraseControls) {
-        if (phraseControls == null) {
-            return null;
-        }
-
-        List<com.azure.ai.textanalytics.implementation.models.PhraseControl> phraseControlsImpl = new ArrayList<>();
-        if (phraseControls.isEmpty()) {
-            return phraseControlsImpl;
-        }
-
-        for (PhraseControl phraseControl : phraseControls) {
-            phraseControlsImpl.add(
-                new com.azure.ai.textanalytics.implementation.models.PhraseControl()
-                    .setTargetPhrase(phraseControl.getTargetPhrase())
-                    .setStrategy(com.azure.ai.textanalytics.implementation.models.PhraseControlStrategy.fromString(
-                        phraseControl.getStrategy().toString())));
-        }
-        return phraseControlsImpl;
     }
 
     private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<AnalyzeActionsOperationDetail>>

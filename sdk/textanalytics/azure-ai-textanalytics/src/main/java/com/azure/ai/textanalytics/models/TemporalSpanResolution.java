@@ -31,6 +31,12 @@ public final class TemporalSpanResolution extends BaseResolution {
      */
     private TemporalModifier modifier;
 
+    /*
+     * An optional triplet containing the beginning, the end, and the duration all stated as ISO 8601 formatted
+     * strings.
+     */
+    private String timex;
+
     static {
         TemporalSpanResolutionPropertiesHelper.setAccessor(
                 new TemporalSpanResolutionPropertiesHelper.TemporalSpanResolutionAccessor() {
@@ -52,6 +58,11 @@ public final class TemporalSpanResolution extends BaseResolution {
                     @Override
                     public void setModifier(TemporalSpanResolution temporalSpanResolution, TemporalModifier modifier) {
                         temporalSpanResolution.setModifier(modifier);
+                    }
+
+                    @Override
+                    public void setTimex(TemporalSpanResolution temporalSpanResolution, String timex) {
+                        temporalSpanResolution.setTimex(timex);
                     }
                 });
     }
@@ -95,6 +106,16 @@ public final class TemporalSpanResolution extends BaseResolution {
         return this.modifier;
     }
 
+    /**
+     * Get the timex property: An optional triplet containing the beginning, the end, and the duration all stated as ISO
+     * 8601 formatted strings.
+     *
+     * @return the timex value.
+     */
+    public String getTimex() {
+        return this.timex;
+    }
+
     private void setBegin(String begin) {
         this.begin = begin;
     }
@@ -109,5 +130,9 @@ public final class TemporalSpanResolution extends BaseResolution {
 
     private void setModifier(TemporalModifier modifier) {
         this.modifier = modifier;
+    }
+
+    private void setTimex(String timex) {
+        this.timex = timex;
     }
 }

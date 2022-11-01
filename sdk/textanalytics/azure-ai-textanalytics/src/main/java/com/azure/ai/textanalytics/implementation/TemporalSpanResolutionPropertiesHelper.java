@@ -19,6 +19,7 @@ public final class TemporalSpanResolutionPropertiesHelper {
         void setEnd(TemporalSpanResolution temporalSpanResolution, String end);
         void setDuration(TemporalSpanResolution temporalSpanResolution, String duration);
         void setModifier(TemporalSpanResolution temporalSpanResolution, TemporalModifier modifier);
+        void setTimex(TemporalSpanResolution temporalSpanResolution, String timex);
     }
 
     /**
@@ -44,5 +45,9 @@ public final class TemporalSpanResolutionPropertiesHelper {
 
     public static void setModifier(TemporalSpanResolution temporalSpanResolution, TemporalModifier modifier) {
         accessor.setModifier(temporalSpanResolution, modifier);
+    }
+
+    public static void setTimex(TemporalSpanResolution temporalSpanResolution, String timex) {
+        accessor.setTimex(temporalSpanResolution, timex);
     }
 }

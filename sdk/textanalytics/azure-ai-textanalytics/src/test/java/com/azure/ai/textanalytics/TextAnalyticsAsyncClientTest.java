@@ -3004,6 +3004,6 @@ public class TextAnalyticsAsyncClientTest extends TextAnalyticsClientTestBase {
                     )))
                 )),
                 result.toStream().collect(Collectors.toList()));
-        }, null, null);
+        }, null);
     }
 }

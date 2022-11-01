@@ -5,8 +5,6 @@ package com.azure.ai.textanalytics.models;
 
 import com.azure.core.annotation.Fluent;
 
-import java.util.List;
-
 /**
  * Configurations that allow callers to specify details about how to execute an abstractive summarization action in a
  * set of documents.
@@ -16,9 +14,7 @@ public final class AbstractiveSummaryAction {
     private String actionName;
     private String modelVersion;
     private Boolean disableServiceLogs;
-
     private Integer maxSentenceCount;
-    private List<PhraseControl> phraseControls;
 
     /**
      * Get the name of action.
@@ -107,26 +103,4 @@ public final class AbstractiveSummaryAction {
         this.maxSentenceCount = maxSentenceCount;
         return this;
     }
-
-
-    /**
-     * Get the phraseControls property: Control the phrases to be used in the summary.
-     *
-     * @return the phraseControls value.
-     */
-    public List<PhraseControl> getPhraseControls() {
-        return this.phraseControls;
-    }
-
-    /**
-     * Set the phraseControls property: Control the phrases to be used in the summary.
-     *
-     * @param phraseControls the phraseControls value to set.
-     * @return the AbstractiveSummaryAction object itself.
-     */
-    public AbstractiveSummaryAction setPhraseControls(List<PhraseControl> phraseControls) {
-        this.phraseControls = phraseControls;
-        return this;
-    }
-
 }

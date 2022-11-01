@@ -2949,6 +2949,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                     )))
                 )),
                 result.stream().collect(Collectors.toList()));
-        }, null, null);
+        }, null);
     }
 }
