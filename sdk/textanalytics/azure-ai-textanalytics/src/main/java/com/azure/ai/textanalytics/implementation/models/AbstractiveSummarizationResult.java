@@ -94,7 +94,7 @@ public final class AbstractiveSummarizationResult extends AbstractiveSummarizati
     /** {@inheritDoc} */
     @Override
     public AbstractiveSummarizationResult setDocuments(
-            List<AbstractiveSummarizationResultBaseDocumentsItem> documents) {
+            List<AbstractiveSummaryDocumentResultWithDetectedLanguage> documents) {
         super.setDocuments(documents);
         return this;
     }
