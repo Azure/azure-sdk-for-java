@@ -165,8 +165,8 @@ public final class LogsIngestionAsyncClient {
     public Mono<Response<Void>> uploadWithResponse(
             String ruleId, String streamName, BinaryData logs, RequestOptions requestOptions) {
         Objects.requireNonNull(ruleId, "'ruleId' cannot be null.");
-        Objects.requireNonNull(ruleId, "'streamName' cannot be null.");
-        Objects.requireNonNull(ruleId, "'logs' cannot be null.");
+        Objects.requireNonNull(streamName, "'streamName' cannot be null.");
+        Objects.requireNonNull(logs, "'logs' cannot be null.");
 
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
