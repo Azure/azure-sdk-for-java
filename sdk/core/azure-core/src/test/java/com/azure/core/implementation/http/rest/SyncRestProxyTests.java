@@ -21,6 +21,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.http.rest.StreamResponseBase;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.Header;
@@ -62,6 +63,10 @@ public class SyncRestProxyTests {
         @Get("my/url/path")
         @ExpectedResponses({200})
         StreamResponse testDownload(Context context);
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        StreamResponseBase<Void> testDownloadBase(Context context);
 
         @Get("my/url/path")
         @ExpectedResponses({200})
@@ -108,6 +113,21 @@ public class SyncRestProxyTests {
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         Context context =  new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
         StreamResponse streamResponse = testInterface.testDownload(context);
+        streamResponse.close();
+        // This indirectly tests that StreamResponse has HttpResponse reference
+        Mockito.verify(client.getLastResponseSpy()).close();
+    }
+
+    @Test
+    public void streamResponseBaseShouldHaveHttpResponseReference() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        Context context =  new Context(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
+        StreamResponseBase<Void> streamResponse = testInterface.testDownloadBase(context);
         streamResponse.close();
         // This indirectly tests that StreamResponse has HttpResponse reference
         Mockito.verify(client.getLastResponseSpy()).close();

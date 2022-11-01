@@ -99,6 +99,14 @@ public class RestProxyTests {
         @Get("my/url/path")
         @ExpectedResponses({200})
         Mono<StreamResponse> testDownloadAsync();
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        StreamResponseBase<Void> testDownloadBase();
+
+        @Get("my/url/path")
+        @ExpectedResponses({200})
+        Mono<StreamResponseBase<Void>> testDownloadBaseAsync();
     }
 
     @Test
@@ -141,6 +149,35 @@ public class RestProxyTests {
         StepVerifier.create(
                 testInterface.testDownloadAsync()
                     .doOnNext(StreamResponse::close))
+            .expectNextCount(1)
+            .verifyComplete();
+        // This indirectly tests that StreamResponse has HttpResponse reference
+        Mockito.verify(client.lastResponseSpy).close();
+    }
+
+    @Test
+    public void streamResponseBaseShouldHaveHttpResponseReferenceSync() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        StreamResponseBase<Void> streamResponse = testInterface.testDownloadBase();
+        streamResponse.close();
+        // This indirectly tests that StreamResponse has HttpResponse reference
+        Mockito.verify(client.getLastResponseSpy()).close();
+    }
+
+    @Test
+    public void streamResponseBaseShouldHaveHttpResponseReferenceAsync() {
+        LocalHttpClient client = new LocalHttpClient();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(client)
+            .build();
+
+        TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
+        StepVerifier.create(testInterface.testDownloadBaseAsync().doOnNext(StreamResponseBase::close))
             .expectNextCount(1)
             .verifyComplete();
         // This indirectly tests that StreamResponse has HttpResponse reference

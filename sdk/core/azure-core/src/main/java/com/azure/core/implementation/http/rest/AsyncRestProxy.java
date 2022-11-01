@@ -10,6 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.http.rest.StreamResponseBase;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.serializer.HttpResponseDecoder;
 import com.azure.core.util.Base64Url;
@@ -127,6 +128,9 @@ public class AsyncRestProxy extends RestProxyBase {
         final SwaggerMethodParser methodParser, final Type entityType) {
         if (methodParser.isStreamResponse()) {
             return Mono.fromSupplier(() -> new StreamResponse(response.getSourceResponse()));
+        } else if (methodParser.isStreamResponseBase()) {
+            return Mono.fromSupplier(() -> new StreamResponseBase<>(response.getSourceResponse(),
+                response.getDecodedHeaders()));
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {

@@ -31,6 +31,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.http.rest.StreamResponse;
+import com.azure.core.http.rest.StreamResponseBase;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.HttpHeadersHelper;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
@@ -100,6 +101,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     private final int requestOptionsPosition;
     private final boolean isReactive;
     private final boolean isStreamResponse;
+    private final boolean isStreamResponseBase;
     private final boolean returnTypeDecodeable;
     private final boolean responseEagerlyRead;
     private final boolean headersEagerlyConverted;
@@ -267,9 +269,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         if (isReactiveMethod) {
             Type reactiveTypeArgument = TypeUtil.getTypeArgument(returnType);
             this.isStreamResponse = isStreamResponseType(reactiveTypeArgument);
+            this.isStreamResponseBase = isStreamResponseBaseType(reactiveTypeArgument);
             this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, reactiveTypeArgument);
         } else {
             this.isStreamResponse = isStreamResponseType(returnType);
+            this.isStreamResponseBase = isStreamResponseBaseType(returnType);
             this.headersEagerlyConverted = TypeUtil.isTypeOrSubTypeOf(ResponseBase.class, returnType);
         }
         this.contextPosition = contextPosition;
@@ -689,13 +693,26 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         return TypeUtil.getRawClass(type).equals(StreamResponse.class);
     }
 
+    boolean isStreamResponseBaseType(Type type) {
+        return TypeUtil.getRawClass(type).equals(StreamResponseBase.class);
+    }
+
     /**
-     * Indicates whether the swagger method is of Stream Response type or not.
+     * Whether the swagger method return type is {@link StreamResponse}.
      *
-     * @return the boolean flag indicating whether the swagger method is Stream Response return type or not.
+     * @return Whether the swagger method return type is {@link StreamResponse}.
      */
     public boolean isStreamResponse() {
         return isStreamResponse;
+    }
+
+    /**
+     * Whether the swagger method return type is {@link StreamResponseBase}.
+     *
+     * @return Whether the swagger method return type is {@link StreamResponseBase}.
+     */
+    public boolean isStreamResponseBase() {
+        return isStreamResponseBase;
     }
 
     @Override
