@@ -61,7 +61,7 @@ public class AbstractiveSummarizationAsync {
             new TextAnalyticsActions()
                 .setDisplayName("{tasks_display_name}")
                 .setAbstractiveSummaryActions(
-                    new AbstractiveSummaryAction().setSentenceCount(3)),
+                    new AbstractiveSummaryAction().setMaxSentenceCount(3)),
             "en",
             new AnalyzeActionsOptions())
             .flatMap(result -> {

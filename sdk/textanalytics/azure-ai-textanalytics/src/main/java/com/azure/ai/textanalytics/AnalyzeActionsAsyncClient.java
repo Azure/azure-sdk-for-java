@@ -797,7 +797,7 @@ class AnalyzeActionsAsyncClient {
         return new AbstractiveSummarizationTaskParameters()
             .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
             .setPhraseControls(toPhraseControlsImpl(action.getPhraseControls()))
-            .setSentenceCount(action.getSentenceCount())
+            .setSentenceCount(action.getMaxSentenceCount())
             .setModelVersion(action.getModelVersion())
             .setLoggingOptOut(action.isServiceLogsDisabled());
     }

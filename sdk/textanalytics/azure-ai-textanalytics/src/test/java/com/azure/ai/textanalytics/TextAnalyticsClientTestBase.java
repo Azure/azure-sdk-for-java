@@ -1382,7 +1382,7 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                 .setAbstractiveSummaryActions(
                     new AbstractiveSummaryAction()
                             .setPhraseControls(phraseControls)
-                        .setSentenceCount(maxSentenceCount)));
+                        .setMaxSentenceCount(maxSentenceCount)));
     }
 
     String getEndpoint() {

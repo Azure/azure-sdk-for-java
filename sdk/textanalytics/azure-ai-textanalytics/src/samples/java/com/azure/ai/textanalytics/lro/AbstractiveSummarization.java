@@ -60,7 +60,7 @@ public class AbstractiveSummarization {
             client.beginAnalyzeActions(documents,
                 new TextAnalyticsActions()
                     .setDisplayName("{tasks_display_name}")
-                    .setAbstractiveSummaryActions(new AbstractiveSummaryAction().setSentenceCount(3)),
+                    .setAbstractiveSummaryActions(new AbstractiveSummaryAction().setMaxSentenceCount(3)),
                 "en",
                 new AnalyzeActionsOptions());
 

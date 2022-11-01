@@ -17,7 +17,7 @@ public final class AbstractiveSummaryAction {
     private String modelVersion;
     private Boolean disableServiceLogs;
 
-    private Integer sentenceCount;
+    private Integer maxSentenceCount;
     private List<PhraseControl> phraseControls;
 
     /**
@@ -89,22 +89,22 @@ public final class AbstractiveSummaryAction {
     }
 
     /**
-     * Get the sentenceCount property: It controls the approximate number of sentences in the output summaries.
+     * Get the maxSentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
-     * @return the sentenceCount value.
+     * @return the maxSentenceCount value.
      */
-    public Integer getSentenceCount() {
-        return this.sentenceCount;
+    public Integer getMaxSentenceCount() {
+        return this.maxSentenceCount;
     }
 
     /**
-     * Set the sentenceCount property: It controls the approximate number of sentences in the output summaries.
+     * Set the maxSentenceCount property: It controls the approximate number of sentences in the output summaries.
      *
-     * @param sentenceCount the sentenceCount value to set.
+     * @param maxSentenceCount the maxSentenceCount value to set.
      * @return the AbstractiveSummaryAction object itself.
      */
-    public AbstractiveSummaryAction setSentenceCount(Integer sentenceCount) {
-        this.sentenceCount = sentenceCount;
+    public AbstractiveSummaryAction setMaxSentenceCount(Integer maxSentenceCount) {
+        this.maxSentenceCount = maxSentenceCount;
         return this;
     }
 
