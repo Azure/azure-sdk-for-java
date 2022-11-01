@@ -994,7 +994,7 @@ public class IdentityClient extends IdentityClientBase {
      * @param request the details of the token request
      * @return a Publisher that emits an AccessToken
      */
-    private Mono<AccessToken> authenticateToManagedIdentityEndpoint(String identityEndpoint, String identityHeader,
+    public Mono<AccessToken> authenticateToManagedIdentityEndpoint(String identityEndpoint, String identityHeader,
                                                                    String msiEndpoint, String msiSecret,
                                                                    TokenRequestContext request) {
         return Mono.fromCallable(() -> {
