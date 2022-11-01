@@ -16,14 +16,14 @@ public final class HttpProxyConfigTests {
         HttpProxyConfig model =
             BinaryData
                 .fromString(
-                    "{\"password\":\"clha\",\"httpProxy\":\"dbabp\",\"httpsProxy\":\"wrqlfktsthsuco\",\"noProxy\":[\"yyazttbt\",\"wrqpue\",\"ckzywbiexzfeyue\",\"xibxujwbhqwalm\"],\"trustedCa\":\"yoxa\",\"username\":\"dkzjancuxrh\"}")
+                    "{\"password\":\"fakePasswordPlaceholder\",\"httpProxy\":\"dbabp\",\"httpsProxy\":\"wrqlfktsthsuco\",\"noProxy\":[\"yyazttbt\",\"wrqpue\",\"ckzywbiexzfeyue\",\"xibxujwbhqwalm\"],\"trustedCa\":\"yoxa\",\"username\":\"fakeUsernamePlaceholder\"}")
                 .toObject(HttpProxyConfig.class);
         Assertions.assertEquals("dbabp", model.httpProxy());
         Assertions.assertEquals("wrqlfktsthsuco", model.httpsProxy());
         Assertions.assertEquals("yyazttbt", model.noProxy().get(0));
         Assertions.assertEquals("yoxa", model.trustedCa());
-        Assertions.assertEquals("dkzjancuxrh", model.username());
-        Assertions.assertEquals("clha", model.password());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.username());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.password());
     }
 
     @Test
@@ -34,14 +34,14 @@ public final class HttpProxyConfigTests {
                 .withHttpsProxy("wrqlfktsthsuco")
                 .withNoProxy(Arrays.asList("yyazttbt", "wrqpue", "ckzywbiexzfeyue", "xibxujwbhqwalm"))
                 .withTrustedCa("yoxa")
-                .withUsername("dkzjancuxrh")
-                .withPassword("clha");
+                .withUsername("fakeUsernamePlaceholder")
+                .withPassword("fakePasswordPlaceholder");
         model = BinaryData.fromObject(model).toObject(HttpProxyConfig.class);
         Assertions.assertEquals("dbabp", model.httpProxy());
         Assertions.assertEquals("wrqlfktsthsuco", model.httpsProxy());
         Assertions.assertEquals("yyazttbt", model.noProxy().get(0));
         Assertions.assertEquals("yoxa", model.trustedCa());
-        Assertions.assertEquals("dkzjancuxrh", model.username());
-        Assertions.assertEquals("clha", model.password());
+        Assertions.assertEquals("fakeUsernamePlaceholder", model.username());
+        Assertions.assertEquals("fakePasswordPlaceholder", model.password());
     }
 }
