@@ -13,7 +13,7 @@ public final class ErrorResponse {
     /*
      * The error object.
      */
-    @JsonProperty(value = "error")
+    @JsonProperty(value = "error", required = true)
     private Error error;
 
     /**
