@@ -38,11 +38,21 @@ public interface Snapshot
     /** @return the details of the source from which snapshot is created */
     CreationSource source();
 
-    /** @return Percentage complete for the background copy when a resource is created via the CopyStart operation.
-                Ranging from 0 to 100. */
+    /**
+     * Gets the percentage complete for the background copy when a resource is created via the CopyStart operation.
+     * <p>For latest progress,{@link Snapshot#refresh()} or {@link Snapshot#refreshAsync()} should be called prior to this method.</p>
+     *
+     * @return the percentage complete, ranging from 0 to 100
+     */
     Float copyCompletionPercent();
 
-    /** @return Indicates the error details if the background copy of a resource created via the CopyStart operation fails. */
+    /**
+     * Gets the error details if the background copy of a resource created via the CopyStart operation fails.
+     * <p>For latest progress,{@link Snapshot#refresh()} or {@link Snapshot#refreshAsync()} should be called
+     * prior to this method. </p>
+     *
+     * @return the error details
+     */
     CopyCompletionError copyCompletionError();
 
     /**
@@ -296,8 +306,7 @@ public interface Snapshot
              * Specifies to wait for CopyStart completion for a specified timeout. If the operation is not complete when
              * the timeout is reached, simply stop waiting and proceed without throwing exceptions.
              * <p>Operation progress can be retrieved through {@link Snapshot#copyCompletionPercent()} and any errors through
-             * {@link Snapshot#copyCompletionError()}. {@link Snapshot#refresh()} or {@link Snapshot#refreshAsync()}
-             * Should be called for the latest progress.</p>
+             * {@link Snapshot#copyCompletionError()}.
              * <p>Note: Before you can use the copied snapshot for future use (e.g. create disk), you should wait for
              * the CopyStart completion.</p>
              * @param maxWaitTime max timeout to wait for the CopyStart operation to finish
@@ -309,8 +318,7 @@ public interface Snapshot
              * Specifies to wait for CopyStart completion for a specified timeout. If the operation is not complete when
              * the timeout is reached, simply stop waiting and proceed without throwing exceptions.
              * <p>Operation progress can be retrieved through {@link Snapshot#copyCompletionPercent()} and any errors through
-             * {@link Snapshot#copyCompletionError()}. {@link Snapshot#refresh()} or {@link Snapshot#refreshAsync()}
-             * Should be called for the latest progress.</p>
+             * {@link Snapshot#copyCompletionError()}.
              * <p>Note: Before you can use the copied snapshot for future use (e.g. create disk), you should wait for
              * the CopyStart completion.</p>
              *
@@ -323,8 +331,7 @@ public interface Snapshot
             /**
              * Specifies not to wait for the CopyStart completion.
              * <p>Operation progress can be retrieved through {@link Snapshot#copyCompletionPercent()} and any errors through
-             * {@link Snapshot#copyCompletionError()}. {@link Snapshot#refresh()} or {@link Snapshot#refreshAsync()}
-             * Should be called for the latest progress.</p>
+             * {@link Snapshot#copyCompletionError()}.
              * <p>Note: Before you can use the copied snapshot for future use (e.g. create disk), you should wait for
              * the CopyStart completion.</p>
              *
