@@ -100,6 +100,7 @@
   <suppress checks="IllegalImport" files=".*[/\\]com[/\\]azure[/\\]identity[/\\]*"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.TracingIntegrationTests.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.TracingIntegrationTests.java"/>
+  <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.PublishEventsTracingWithCustomContextSample.java"/>
 
   <!-- Suppress warnings for Event Processor until the usage of "Client" is discussed and resolved:
     https://github.com/Azure/azure-sdk/issues/321 -->
