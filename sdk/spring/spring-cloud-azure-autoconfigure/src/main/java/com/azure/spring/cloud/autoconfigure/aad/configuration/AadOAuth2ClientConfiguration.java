@@ -101,8 +101,8 @@ public class AadOAuth2ClientConfiguration {
     @Conditional(ClientCertificatePropertiesCondition.class)
     OAuth2ClientAuthenticationJwkResolver oAuth2ClientAuthenticationJwkResolver(AadAuthenticationProperties properties) {
         return new AadOAuth2ClientAuthenticationJwkResolver(
-            properties.getCredential().getClientCertificatePath(),
-            properties.getCredential().getClientCertificatePassword());
+                properties.getCredential().getClientCertificatePath(),
+                properties.getCredential().getClientCertificatePassword());
     }
 
     /**
@@ -124,21 +124,21 @@ public class AadOAuth2ClientConfiguration {
             JwtBearerOAuth2AuthorizedClientProvider jwtBearerProvider,
             ObjectProvider<OAuth2ClientAuthenticationJwkResolver> jwkResolvers) {
         DefaultOAuth2AuthorizedClientManager manager =
-            new DefaultOAuth2AuthorizedClientManager(clientRegistrations, authorizedClients);
+                new DefaultOAuth2AuthorizedClientManager(clientRegistrations, authorizedClients);
 
         OAuth2ClientAuthenticationJwkResolver jwkResolver = jwkResolvers.getIfUnique();
         // @formatter:off
         OAuth2AuthorizedClientProvider providers =
-            OAuth2AuthorizedClientProviderBuilder
-                .builder()
-                .authorizationCode()
-                .clientCredentials(builder ->
-                    clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(builder, jwkResolver))
-                .password(builder -> passwordGrantBuilderAccessTokenResponseClientCustomizer(builder, jwkResolver))
-                .provider(refreshTokenProvider)
-                .provider(jwtBearerProvider)
-                .provider(azureDelegatedOAuth2AuthorizedClientProvider(refreshTokenProvider, authorizedClients))
-                .build();
+                OAuth2AuthorizedClientProviderBuilder
+                        .builder()
+                        .authorizationCode()
+                        .clientCredentials(builder ->
+                                clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(builder, jwkResolver))
+                        .password(builder -> passwordGrantBuilderAccessTokenResponseClientCustomizer(builder, jwkResolver))
+                        .provider(refreshTokenProvider)
+                        .provider(jwtBearerProvider)
+                        .provider(azureDelegatedOAuth2AuthorizedClientProvider(refreshTokenProvider, authorizedClients))
+                        .build();
         // @formatter:on
         manager.setAuthorizedClientProvider(providers);
         return manager;
@@ -214,7 +214,7 @@ public class AadOAuth2ClientConfiguration {
         client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         if (resolver != null) {
             OAuth2ClientCredentialsGrantRequestEntityConverter converter =
-                new OAuth2ClientCredentialsGrantRequestEntityConverter();
+                    new OAuth2ClientCredentialsGrantRequestEntityConverter();
             converter.addParametersConverter(new AadJwtClientAuthenticationParametersConverter<>(resolver::resolve));
             client.setRequestEntityConverter(converter);
         }
@@ -222,8 +222,8 @@ public class AadOAuth2ClientConfiguration {
     }
 
     private AadAzureDelegatedOAuth2AuthorizedClientProvider azureDelegatedOAuth2AuthorizedClientProvider(
-        RefreshTokenOAuth2AuthorizedClientProvider refreshTokenProvider,
-        OAuth2AuthorizedClientRepository authorizedClients) {
+            RefreshTokenOAuth2AuthorizedClientProvider refreshTokenProvider,
+            OAuth2AuthorizedClientRepository authorizedClients) {
         return new AadAzureDelegatedOAuth2AuthorizedClientProvider(refreshTokenProvider, authorizedClients);
     }
 }

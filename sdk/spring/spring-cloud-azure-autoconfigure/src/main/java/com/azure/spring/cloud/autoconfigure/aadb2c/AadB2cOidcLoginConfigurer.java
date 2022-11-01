@@ -83,12 +83,12 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
         http.logout()
                 .logoutSuccessHandler(handler)
                 .and()
-            .oauth2Login()
+                .oauth2Login()
                 .authorizationEndpoint()
-                    .authorizationRequestResolver(resolver)
-                    .and()
+                .authorizationRequestResolver(resolver)
+                .and()
                 .tokenEndpoint()
-                    .accessTokenResponseClient(accessTokenResponseClient());
+                .accessTokenResponseClient(accessTokenResponseClient());
         // @formatter:on
     }
 

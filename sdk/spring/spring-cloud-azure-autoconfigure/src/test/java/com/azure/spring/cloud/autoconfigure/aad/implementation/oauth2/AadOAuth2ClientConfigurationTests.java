@@ -52,9 +52,9 @@ class AadOAuth2ClientConfigurationTests {
     @Test
     void testWithoutAnyPropertiesSet() {
         new WebApplicationContextRunner()
-             .withConfiguration(AutoConfigurations.of(
-                 HttpMessageConvertersAutoConfiguration.class,
-                 RestTemplateAutoConfiguration.class))
+            .withConfiguration(AutoConfigurations.of(
+                HttpMessageConvertersAutoConfiguration.class,
+                RestTemplateAutoConfiguration.class))
             .withUserConfiguration(AadOAuth2ClientConfiguration.class)
             .run(context -> {
                 assertThat(context).doesNotHaveBean(AadAuthenticationProperties.class);
@@ -104,9 +104,9 @@ class AadOAuth2ClientConfigurationTests {
                 "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=https://graph.microsoft.com/User.Read")
             .run(context -> {
                 final AadClientRegistrationRepository oboRepo = context.getBean(
-                    AadClientRegistrationRepository.class);
+                        AadClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    OAuth2AuthorizedClientRepository.class);
+                        OAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 Set<String> graphScopes = graph.getScopes();
@@ -153,9 +153,9 @@ class AadOAuth2ClientConfigurationTests {
             )
             .run(context -> {
                 final AadClientRegistrationRepository oboRepo = context.getBean(
-                    AadClientRegistrationRepository.class);
+                        AadClientRegistrationRepository.class);
                 final OAuth2AuthorizedClientRepository aadOboRepo = context.getBean(
-                    OAuth2AuthorizedClientRepository.class);
+                        OAuth2AuthorizedClientRepository.class);
 
                 ClientRegistration graph = oboRepo.findByRegistrationId("graph");
                 ClientRegistration custom = oboRepo.findByRegistrationId("custom");
@@ -184,9 +184,9 @@ class AadOAuth2ClientConfigurationTests {
             .run(context -> {
                 assertThat(context).doesNotHaveBean(OAuth2ClientAuthenticationJwkResolver.class);
                 final JwtBearerOAuth2AuthorizedClientProvider jwtBearerProvider = context.getBean(
-                    JwtBearerOAuth2AuthorizedClientProvider.class);
+                        JwtBearerOAuth2AuthorizedClientProvider.class);
                 final ClientRegistrationRepository clientRepository = context.getBean(
-                    ClientRegistrationRepository.class);
+                        ClientRegistrationRepository.class);
                 MultiValueMap<String, String> parameters = convertParameters(jwtBearerProvider, clientRepository);
                 assertThat(parameters).containsEntry("requested_token_use", Arrays.asList("on_behalf_of"));
             });
@@ -214,9 +214,9 @@ class AadOAuth2ClientConfigurationTests {
             .run(context -> {
                 assertThat(context).hasSingleBean(OAuth2ClientAuthenticationJwkResolver.class);
                 final JwtBearerOAuth2AuthorizedClientProvider jwtBearerProvider = context.getBean(
-                    JwtBearerOAuth2AuthorizedClientProvider.class);
+                        JwtBearerOAuth2AuthorizedClientProvider.class);
                 final ClientRegistrationRepository clientRepository = context.getBean(
-                    ClientRegistrationRepository.class);
+                        ClientRegistrationRepository.class);
 
                 MultiValueMap<String, String> parameters = convertParameters(jwtBearerProvider, clientRepository);
                 assertThat(parameters).containsEntry("requested_token_use", Arrays.asList("on_behalf_of"));
@@ -228,44 +228,44 @@ class AadOAuth2ClientConfigurationTests {
     @Test
     void restTemplateWellConfiguredWhenNotUsingPrivateKeyJwtMethod() {
         webApplicationContextRunner()
-                .withUserConfiguration(AadOAuth2ClientConfiguration.class, RestTemplateProxyCustomizerConfiguration.class)
-                .run(context -> {
-                    assertThat(context).doesNotHaveBean(OAuth2ClientAuthenticationJwkResolver.class);
-                    assertRestTemplateWellConfigured(context);
-                });
+            .withUserConfiguration(AadOAuth2ClientConfiguration.class, RestTemplateProxyCustomizerConfiguration.class)
+            .run(context -> {
+                assertThat(context).doesNotHaveBean(OAuth2ClientAuthenticationJwkResolver.class);
+                assertRestTemplateWellConfigured(context);
+            });
     }
 
     @Test
     void restTemplateWellConfiguredWhenUsingPrivateKeyJwtMethod() {
         webApplicationContextRunner()
-                .withPropertyValues(
-                        "spring.cloud.azure.active-directory.enabled=true",
-                        "spring.cloud.azure.active-directory.credential.client-certificate-path=/test/test.pfx",
-                        "spring.cloud.azure.active-directory.credential.client-certificate-password=test",
-                        "spring.cloud.azure.active-directory.authorization-clients.graph.client-authentication-method=private_key_jwt",
-                        "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=https://graph.microsoft.com/User.Read",
-                        "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=api://52261059-e515-488e-84fd-a09a3f372814/File.Read"
-                )
-                .withUserConfiguration(AadOAuth2ClientConfiguration.class, RestTemplateProxyCustomizerConfiguration.class)
-                .run(context -> {
-                    assertThat(context).hasSingleBean(OAuth2ClientAuthenticationJwkResolver.class);
-                    assertRestTemplateWellConfigured(context);
-                });
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.credential.client-certificate-path=/test/test.pfx",
+                "spring.cloud.azure.active-directory.credential.client-certificate-password=test",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.client-authentication-method=private_key_jwt",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=https://graph.microsoft.com/User.Read",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=api://52261059-e515-488e-84fd-a09a3f372814/File.Read"
+            )
+            .withUserConfiguration(AadOAuth2ClientConfiguration.class, RestTemplateProxyCustomizerConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(OAuth2ClientAuthenticationJwkResolver.class);
+                assertRestTemplateWellConfigured(context);
+            });
     }
 
     @SuppressWarnings("unchecked")
     private MultiValueMap<String, String> convertParameters(JwtBearerOAuth2AuthorizedClientProvider jwtBearerProvider,
                                                             ClientRegistrationRepository clientRepository) {
         OAuth2AccessTokenResponseClient<JwtBearerGrantRequest> client =
-            (OAuth2AccessTokenResponseClient<JwtBearerGrantRequest>) ReflectionTestUtils.getField(jwtBearerProvider, "accessTokenResponseClient");
+                (OAuth2AccessTokenResponseClient<JwtBearerGrantRequest>) ReflectionTestUtils.getField(jwtBearerProvider, "accessTokenResponseClient");
         assertThat(client.getClass().getSimpleName()).isEqualTo(DefaultJwtBearerTokenResponseClient.class.getSimpleName());
 
         JwtBearerGrantRequestEntityConverter requestEntityConverter =
-            (JwtBearerGrantRequestEntityConverter) ReflectionTestUtils.getField(client, "requestEntityConverter");
+                (JwtBearerGrantRequestEntityConverter) ReflectionTestUtils.getField(client, "requestEntityConverter");
         assertThat(requestEntityConverter.getClass().getSimpleName()).isEqualTo(AadJwtBearerGrantRequestEntityConverter.class.getSimpleName());
 
         Converter<JwtBearerGrantRequest, MultiValueMap<String, String>> parametersConverter =
-            (Converter<JwtBearerGrantRequest, MultiValueMap<String, String>>) ReflectionTestUtils.getField(requestEntityConverter, "parametersConverter");
+                (Converter<JwtBearerGrantRequest, MultiValueMap<String, String>>) ReflectionTestUtils.getField(requestEntityConverter, "parametersConverter");
         JwtBearerGrantRequest request = new JwtBearerGrantRequest(clientRepository.findByRegistrationId("graph"), mock(Jwt.class));
         return parametersConverter.convert(request);
     }
