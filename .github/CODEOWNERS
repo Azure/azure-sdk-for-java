@@ -43,6 +43,9 @@
 # PRLabel: %Batch
 /sdk/batch/                                         @gingi @paterasMSFT @dpwatrous
 
+# PRLabel: %Communication
+/sdk/communication/
+
 # PRLabel: %Communication - Calling Server
 /sdk/communication/sdk/communication/azure-communication-callingserver/ @minwoolee-msft
 
