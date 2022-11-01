@@ -12,7 +12,8 @@
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
     "TestFromSource": false,
     "TestGoals": "surefire:test",
-    "TestOptions": ""
+    "TestOptions": "",
+    "LatestJdk": false
   },
   "exclude": [
     {
@@ -29,7 +30,8 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": true,
       "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
+      "LatestJdk": false
     },
     {
       "Agent": {
@@ -39,7 +41,8 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "TestGoals": "verify",
-      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false"
+      "TestOptions": "-DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false",
+      "LatestJdk": false
     },
     {
       "Agent": {
@@ -49,7 +52,8 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "TestGoals": "surefire:test",
-      "TestOptions": ""
+      "TestOptions": "",
+      "LatestJdk": false
     },
     {
       "Agent": {
@@ -59,7 +63,8 @@
       "AZURE_TEST_HTTP_CLIENTS": "netty",
       "TestFromSource": false,
       "TestGoals": "surefire:test",
-      "TestOptions": ""
+      "TestOptions": "",
+      "LatestJdk": true
     }
   ]
 }

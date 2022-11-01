@@ -95,4 +95,3 @@ jobs:
           TestOptions: ${{ parameters.TestOptions }}
           TestParallelization: ${{ parameters.TestParallelization }}
           BuildParallelization: ${{ parameters.BuildParallelization }}
-          ContinueLatestBuildOnError: ${{ eq(variables['LatestJdkVersion'], variables['JavaTestVersion']) }}
