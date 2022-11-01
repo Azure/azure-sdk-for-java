@@ -20,7 +20,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
 import java.util.List;
@@ -28,6 +27,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
+import static java.net.http.HttpResponse.BodyHandlers.discarding;
 import static java.net.http.HttpResponse.BodyHandlers.ofByteArray;
 import static java.net.http.HttpResponse.BodyHandlers.ofInputStream;
 import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
@@ -37,6 +37,9 @@ import static java.net.http.HttpResponse.BodyHandlers.ofPublisher;
  */
 class JdkHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(JdkHttpClient.class);
+    private static final String AZURE_EAGERLY_READ_RESPONSE = "azure-eagerly-read-response";
+    private static final String AZURE_IGNORE_RESPONSE_BODY = "azure-ignore-response-body";
+    private static final byte[] IGNORED_BODY = new byte[0];
 
     private final java.net.http.HttpClient jdkHttpClient;
 
@@ -61,11 +64,24 @@ class JdkHttpClient implements HttpClient {
 
     @Override
     public Mono<HttpResponse> send(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
 
         return Mono.fromCallable(() -> toJdkHttpRequest(request, context))
             .flatMap(jdkRequest -> Mono.fromCompletionStage(jdkHttpClient.sendAsync(jdkRequest, ofPublisher()))
                 .flatMap(jdKResponse -> {
+                    // Ignoring the response body takes precedent over eagerly reading the response body.
+                    // Both should never be true at the same time but this is acts as a safeguard.
+                    if (ignoreResponseBody) {
+                        HttpHeaders headers = fromJdkHttpHeaders(jdKResponse.headers());
+                        int statusCode = jdKResponse.statusCode();
+
+                        return JdkFlowAdapter.flowPublisherToFlux(jdKResponse.body())
+                            .ignoreElements()
+                            .then(Mono.fromSupplier(() ->
+                                new JdkHttpResponseSync(request, statusCode, headers, IGNORED_BODY)));
+                    }
+
                     if (eagerlyReadResponse) {
                         HttpHeaders headers = fromJdkHttpHeaders(jdKResponse.headers());
                         int statusCode = jdKResponse.statusCode();
@@ -82,16 +98,23 @@ class JdkHttpClient implements HttpClient {
 
     @Override
     public HttpResponse sendSync(HttpRequest request, Context context) {
-        boolean eagerlyReadResponse = (boolean) context.getData("azure-eagerly-read-response").orElse(false);
+        boolean eagerlyReadResponse = (boolean) context.getData(AZURE_EAGERLY_READ_RESPONSE).orElse(false);
+        boolean ignoreResponseBody = (boolean) context.getData(AZURE_IGNORE_RESPONSE_BODY).orElse(false);
 
         java.net.http.HttpRequest jdkRequest = toJdkHttpRequest(request, context);
         try {
-            if (eagerlyReadResponse) {
+            // Ignoring the response body takes precedent over eagerly reading the response body.
+            // Both should never be true at the same time but this is acts as a safeguard.
+            if (ignoreResponseBody) {
+                java.net.http.HttpResponse<Void> jdKResponse = jdkHttpClient.send(jdkRequest, discarding());
+                return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
+                    fromJdkHttpHeaders(jdKResponse.headers()), IGNORED_BODY);
+            } else if (eagerlyReadResponse) {
                 java.net.http.HttpResponse<byte[]> jdKResponse = jdkHttpClient.send(jdkRequest, ofByteArray());
-                return new JdkHttpResponseSync(request, jdKResponse.statusCode(), fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
+                return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
+                    fromJdkHttpHeaders(jdKResponse.headers()), jdKResponse.body());
             } else {
-                java.net.http.HttpResponse<InputStream> jdKResponse = jdkHttpClient.send(jdkRequest, ofInputStream());
-                return new JdkHttpResponseSync(request, jdKResponse);
+                return new JdkHttpResponseSync(request, jdkHttpClient.send(jdkRequest, ofInputStream()));
             }
         } catch (IOException e) {
             throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
