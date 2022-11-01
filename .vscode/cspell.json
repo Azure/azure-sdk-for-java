@@ -165,7 +165,6 @@
     "sdk/parents/azure-client-sdk-parent/**",
     "sdk/parents/azure-sdk-parent/**",
     "sdk/parents/azure-data-sdk-parent/**",
-    "sdk/metricsadvisor/azure-ai-metricsadvisor/**",
     "sdk/personalizer/azure-ai-personalizer/**",
     "sdk/purview/azure-analytics-purview-administration/**",
     "sdk/quantum/azure-quantum-jobs/**",
@@ -257,6 +256,7 @@
   "words": [
     "adal",
     "amqp",
+    "Apim",
     "AUHours",
     "autoscale",
     "autodetection",
@@ -672,12 +672,32 @@
       ]
     },
     {
+      "filename": "sdk/metricsadvisor/azure-ai-metricsadvisor/**",
+      "words": [
+        "APIV",
+        "bacf",
+        "alertme",
+        "adwiki",
+        "howto",
+        "bpfdfee",
+        "deduped",
+        "dedupe",
+        "POSTGRE",
+        "dgfbbbb",
+        "gdgfbbbb",
+        "dvhkl",
+        "yufrjo",
+        "kldn",
+        "dccf"
+      ]
+    },
+    {
       "filename": "sdk/servicebus/azure-messaging-servicebus/**",
       "words": [
         "Conniey",
         "qpid",
         "unretriable"
-      ]
+        ]
     }
   ],
   "allowCompoundWords": true
