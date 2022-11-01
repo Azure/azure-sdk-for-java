@@ -22,7 +22,7 @@ class AzureTokenCredentialResolverTests {
     private final AzureTokenCredentialResolver resolver = new AzureTokenCredentialResolver();
 
     @Test
-    void emptyPropertiesShouldResolveDAC() {
+    void emptyPropertiesShouldResolveDac() {
         AzureTestProperties properties = new AzureTestProperties();
         Assertions.assertEquals(DefaultAzureCredential.class, resolver.resolve(properties).getClass());
     }
@@ -46,7 +46,7 @@ class AzureTokenCredentialResolverTests {
     }
 
     @Test
-    void shouldResolveUserAssignedMITokenCredential() {
+    void shouldResolveUserAssignedManagedIdentityTokenCredential() {
         AzureTestProperties properties = new AzureTestProperties();
         properties.getCredential().setClientId("test-mi-client-id");
         properties.getCredential().setManagedIdentityEnabled(true);
@@ -54,7 +54,7 @@ class AzureTokenCredentialResolverTests {
     }
 
     @Test
-    void shouldResolveSystemAssignedMITokenCredential() {
+    void shouldResolveSystemAssignedManagedIdentityTokenCredential() {
         AzureTestProperties properties = new AzureTestProperties();
         properties.getCredential().setManagedIdentityEnabled(true);
         Assertions.assertEquals(ManagedIdentityCredential.class, resolver.resolve(properties).getClass());

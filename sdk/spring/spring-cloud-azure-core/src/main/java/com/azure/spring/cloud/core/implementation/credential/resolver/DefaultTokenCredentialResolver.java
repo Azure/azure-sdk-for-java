@@ -32,7 +32,7 @@ public class DefaultTokenCredentialResolver implements AzureCredentialResolver<T
         return this.defaultTokenCredential;
     }
 
-    private static String buildCredentialKey(AzureProperties azureProperties) {
+    static String buildCredentialKey(AzureProperties azureProperties) {
         String clientId = Optional.ofNullable(azureProperties)
             .map(AzureProperties::getCredential)
             .map(TokenCredentialOptionsProvider.TokenCredentialOptions::getClientId)
@@ -49,6 +49,6 @@ public class DefaultTokenCredentialResolver implements AzureCredentialResolver<T
             .map(AzureProfileOptionsProvider.AzureEnvironmentOptions::getActiveDirectoryEndpoint)
             .orElse(null);
 
-        return String.join("_", clientId, tenantId, authorityHost);
+        return String.join(",", clientId, tenantId, authorityHost);
     }
 }
