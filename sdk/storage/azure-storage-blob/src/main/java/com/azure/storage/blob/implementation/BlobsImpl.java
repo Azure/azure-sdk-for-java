@@ -22,6 +22,7 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.RestProxy;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.Base64Util;
 import com.azure.core.util.Context;
 import com.azure.core.util.DateTimeRfc1123;
@@ -37,7 +38,6 @@ import com.azure.storage.blob.implementation.models.BlobsCopyFromURLHeaders;
 import com.azure.storage.blob.implementation.models.BlobsCreateSnapshotHeaders;
 import com.azure.storage.blob.implementation.models.BlobsDeleteHeaders;
 import com.azure.storage.blob.implementation.models.BlobsDeleteImmutabilityPolicyHeaders;
-import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetAccountInfoHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetPropertiesHeaders;
 import com.azure.storage.blob.implementation.models.BlobsGetTagsHeaders;
@@ -64,11 +64,12 @@ import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
 import com.azure.storage.blob.models.RehydratePriority;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 
 /** An instance of this class provides access to all the operations defined in Blobs. */
 public final class BlobsImpl {
@@ -98,7 +99,7 @@ public final class BlobsImpl {
         @Get("/{containerName}/{blob}")
         @ExpectedResponses({200, 206})
         @UnexpectedResponseExceptionType(BlobStorageException.class)
-        Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>> download(
+        Mono<StreamResponse> download(
                 @HostParam("url") String url,
                 @PathParam("containerName") String containerName,
                 @PathParam("blob") String blob,
@@ -647,7 +648,7 @@ public final class BlobsImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponseAsync(
+    public Mono<StreamResponse> downloadWithResponseAsync(
             String containerName,
             String blob,
             String snapshot,
@@ -749,7 +750,7 @@ public final class BlobsImpl {
      * @return the response body along with {@link ResponseBase} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>> downloadWithResponseAsync(
+    public Mono<StreamResponse> downloadWithResponseAsync(
             String containerName,
             String blob,
             String snapshot,

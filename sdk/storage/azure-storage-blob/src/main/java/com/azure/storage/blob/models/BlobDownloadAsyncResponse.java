@@ -7,31 +7,54 @@ import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.core.http.rest.StreamResponse;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressReporter;
+import com.azure.core.util.io.IOUtils;
 import com.azure.storage.blob.implementation.accesshelpers.BlobDownloadAsyncResponseConstructorProxy;
 import com.azure.storage.blob.implementation.models.BlobsDownloadHeaders;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.io.BufferedOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
  * This class contains the response information returned from the server when downloading a blob.
  */
-public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>> implements Closeable {
+public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHeaders, Flux<ByteBuffer>>
+    implements Closeable {
 
     static {
-        BlobDownloadAsyncResponseConstructorProxy.setAccessor(BlobDownloadAsyncResponse::new);
+        BlobDownloadAsyncResponseConstructorProxy.setAccessor(
+            new BlobDownloadAsyncResponseConstructorProxy.BlobDownloadAsyncResponseConstructorAccessor() {
+                @Override
+                public BlobDownloadAsyncResponse create(StreamResponse sourceResponse,
+                    BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume,
+                    DownloadRetryOptions retryOptions) {
+                    return new BlobDownloadAsyncResponse(sourceResponse, onErrorResume, retryOptions);
+                }
+
+                @Override
+                public Mono<Void> writeTo(BlobDownloadAsyncResponse response, WritableByteChannel writableByteChannel,
+                    ProgressReporter progressReporter) {
+                    return response.writeValueTo(writableByteChannel, progressReporter);
+                }
+            });
     }
 
     private static final ByteBuffer EMPTY_BUFFER = ByteBuffer.allocate(0);
+    private final StreamResponse sourceResponse;
+    private final BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume;
+    private final DownloadRetryOptions retryOptions;
 
     /**
      * Constructs a {@link BlobDownloadAsyncResponse}.
@@ -45,6 +68,9 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
     public BlobDownloadAsyncResponse(HttpRequest request, int statusCode, HttpHeaders headers, Flux<ByteBuffer> value,
         BlobDownloadHeaders deserializedHeaders) {
         super(request, statusCode, headers, value, deserializedHeaders);
+        this.sourceResponse = null;
+        this.onErrorResume = null;
+        this.retryOptions = null;
     }
 
     /**
@@ -54,40 +80,75 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
      * @param onErrorResume Function used to resume.
      * @param retryOptions Retry options.
      */
-    BlobDownloadAsyncResponse(ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>> sourceResponse,
-        BiFunction<Throwable, Long, Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>>> onErrorResume,
-        DownloadRetryOptions retryOptions) {
+    BlobDownloadAsyncResponse(StreamResponse sourceResponse,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions) {
         super(sourceResponse.getRequest(), sourceResponse.getStatusCode(), sourceResponse.getHeaders(),
-            createResponseFlux(sourceResponse,
-                Objects.requireNonNull(onErrorResume, "'onErrorResume' must not be null"),
-                Objects.requireNonNull(retryOptions, "'retryOptions' must not be null")),
-            extractHeaders(sourceResponse));
+            createResponseFlux(sourceResponse, onErrorResume, retryOptions), extractHeaders(sourceResponse));
+        this.sourceResponse = Objects.requireNonNull(sourceResponse, "'sourceResponse' must not be null");
+        this.onErrorResume = Objects.requireNonNull(onErrorResume, "'onErrorResume' must not be null");
+        this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' must not be null");
     }
 
-    private static BlobDownloadHeaders extractHeaders(ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>> response) {
-        return ModelHelper.populateBlobDownloadHeaders(response.getDeserializedHeaders(),
+    private static BlobDownloadHeaders extractHeaders(StreamResponse response) {
+        return ModelHelper.populateBlobDownloadHeaders(new BlobsDownloadHeaders(response.getHeaders()),
             ModelHelper.getErrorCode(response.getHeaders()));
     }
 
-    private static Flux<ByteBuffer> createResponseFlux(
-        ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>> sourceResponse,
-        BiFunction<Throwable, Long, Mono<ResponseBase<BlobsDownloadHeaders, Flux<ByteBuffer>>>> onErrorResume,
-        DownloadRetryOptions retryOptions) {
+    private static Flux<ByteBuffer> createResponseFlux(StreamResponse sourceResponse,
+        BiFunction<Throwable, Long, Mono<StreamResponse>> onErrorResume, DownloadRetryOptions retryOptions) {
         return FluxUtil.createRetriableDownloadFlux(sourceResponse::getValue,
                 (throwable, position) -> onErrorResume.apply(throwable, position).flatMapMany(Response::getValue),
                 retryOptions.getMaxRetryRequests())
             .defaultIfEmpty(EMPTY_BUFFER);
     }
 
+    Mono<Void> writeValueTo(WritableByteChannel writableByteChannel, ProgressReporter progressReporter) {
+        if (sourceResponse != null) {
+            sourceResponse.writeValueTo(Channels.newChannel());
+        } else if (super.getValue() != null) {
+            return FluxUtil.writeToOutputStream(FluxUtil.addProgressReporting(super.getValue(), progressReporter),
+                new BufferedOutputStream(Channels.newOutputStream(writableByteChannel), 64 * 1024));
+        } else {
+            return Mono.empty();
+        }
+    }
+
+    private static final class BufferedWritableByteChannel implements WritableByteChannel {
+        private final WritableByteChannel innerChannel;
+
+        private BufferedWritableByteChannel(WritableByteChannel innerChannel) {
+            this.innerChannel = innerChannel;
+        }
+
+        @Override
+        public int write(ByteBuffer src) throws IOException {
+            return 0;
+        }
+
+        @Override
+        public boolean isOpen() {
+            return innerChannel.isOpen();
+        }
+
+        @Override
+        public void close() throws IOException {
+            innerChannel.close();
+        }
+    }
+
     /**
      * Transfers content bytes to the {@link AsynchronousByteChannel}.
+     *
      * @param channel The destination {@link AsynchronousByteChannel}.
      * @param progressReporter Optional {@link ProgressReporter}.
      * @return A {@link Mono} that completes when transfer is completed.
      */
     public Mono<Void> writeValueToAsync(AsynchronousByteChannel channel, ProgressReporter progressReporter) {
         Objects.requireNonNull(channel, "'channel' must not be null");
-        if (super.getValue() != null) {
+        if (sourceResponse != null) {
+            return IOUtils.transferStreamResponseToAsynchronousByteChannel(channel,
+                sourceResponse, onErrorResume, progressReporter, retryOptions.getMaxRetryRequests());
+        } else if (super.getValue() != null) {
             return FluxUtil.writeToAsynchronousByteChannel(
                 FluxUtil.addProgressReporting(super.getValue(), progressReporter), channel);
         } else {
@@ -97,6 +158,10 @@ public final class BlobDownloadAsyncResponse extends ResponseBase<BlobDownloadHe
 
     @Override
     public void close() throws IOException {
-        super.getValue().subscribe().dispose();
+        if (sourceResponse != null) {
+            sourceResponse.close();
+        } else {
+            super.getValue().subscribe().dispose();
+        }
     }
 }
