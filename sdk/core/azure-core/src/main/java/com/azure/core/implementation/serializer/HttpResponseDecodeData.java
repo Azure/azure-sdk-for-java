@@ -9,6 +9,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.implementation.TypeUtil;
 import com.azure.core.implementation.http.UnexpectedExceptionInformation;
+import com.azure.core.implementation.http.rest.SwaggerMethodParser;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -104,7 +105,9 @@ public interface HttpResponseDecodeData {
      *
      * @return Whether the return type is decode-able.
      */
-    boolean isReturnTypeDecodeable();
+    default boolean isReturnTypeDecodeable() {
+        return SwaggerMethodParser.isReturnTypeDecodeable(SwaggerMethodParser.unwrapReturnType(getReturnType()));
+    }
 
     /**
      * Whether the network response body should be eagerly read based on its {@link #getReturnType() returnType}.
@@ -115,6 +118,8 @@ public interface HttpResponseDecodeData {
      * <li>byte[]</li>
      * <li>ByteBuffer</li>
      * <li>InputStream</li>
+     * <li>Void</li>
+     * <li>void</li>
      * </ul>
      *
      * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
@@ -122,7 +127,28 @@ public interface HttpResponseDecodeData {
      *
      * @return Whether the network response body should be eagerly read.
      */
-    boolean isResponseEagerlyRead();
+    default boolean isResponseEagerlyRead() {
+        return SwaggerMethodParser.isResponseEagerlyRead(SwaggerMethodParser.unwrapReturnType(getReturnType()));
+    }
+
+    /**
+     * Whether the network response body will be ignored based on its {@link #getReturnType() returnType}.
+     * <p>
+     * The following types, including subtypes, ignored the network response body:
+     * <ul>
+     * <li>Void</li>
+     * <li>void</li>
+     * </ul>
+     *
+     * Reactive, {@link Mono} and {@link Flux}, and Response, {@link Response} and {@link ResponseBase}, generics are
+     * cracked open and their generic types are inspected for being one of the types above.
+     *
+     * @return Whether the network response body will be ignored.
+     */
+    default boolean isResponseBodyIgnored() {
+        return SwaggerMethodParser.isResponseBodyIgnored(SwaggerMethodParser.unwrapReturnType(getReturnType()));
+
+    }
 
     /**
      * Whether the return type contains strongly-typed headers.
