@@ -3,6 +3,9 @@
 
 package com.azure.ai.textanalytics;
 
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.AbstractiveSummaryResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.AnalyzeHealthcareEntitiesResultCollectionPropertiesHelper;
@@ -24,9 +27,13 @@ import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionRe
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceOpinionPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SentenceSentimentPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SummaryContextPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.SummarySentencePropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TargetSentimentPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryActionResult;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AnalyzeActionsResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesActionResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
@@ -65,6 +72,7 @@ import com.azure.ai.textanalytics.models.RecognizePiiEntitiesResult;
 import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
+import com.azure.ai.textanalytics.models.SummaryContext;
 import com.azure.ai.textanalytics.models.SummarySentence;
 import com.azure.ai.textanalytics.models.SummarySentenceCollection;
 import com.azure.ai.textanalytics.models.TargetSentiment;
@@ -74,6 +82,7 @@ import com.azure.ai.textanalytics.models.TextDocumentBatchStatistics;
 import com.azure.ai.textanalytics.models.TextDocumentInput;
 import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
 import com.azure.ai.textanalytics.util.DetectLanguageResultCollection;
@@ -1190,7 +1199,8 @@ final class TestUtils {
         IterableStream<AnalyzeHealthcareEntitiesActionResult> analyzeHealthcareEntitiesActionResults,
         IterableStream<ExtractKeyPhrasesActionResult> extractKeyPhrasesActionResults,
         IterableStream<AnalyzeSentimentActionResult> analyzeSentimentActionResults,
-        IterableStream<ExtractSummaryActionResult> extractSummaryActionResults) {
+        IterableStream<ExtractSummaryActionResult> extractSummaryActionResults,
+        IterableStream<AbstractiveSummaryActionResult> abstractiveSummaryActionResults) {
 
         final AnalyzeActionsResult analyzeActionsResult = new AnalyzeActionsResult();
         AnalyzeActionsResultPropertiesHelper.setRecognizeEntitiesResults(analyzeActionsResult,
@@ -1207,6 +1217,8 @@ final class TestUtils {
             analyzeSentimentActionResults);
         AnalyzeActionsResultPropertiesHelper.setExtractSummaryResults(analyzeActionsResult,
             extractSummaryActionResults);
+        AnalyzeActionsResultPropertiesHelper.setAbstractiveSummaryResults(analyzeActionsResult,
+            abstractiveSummaryActionResults);
         return analyzeActionsResult;
     }
 
@@ -1315,6 +1327,7 @@ final class TestUtils {
                 false, null, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, firstPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
                 false, null, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, firstPage), null))),
+            IterableStream.of(Collections.emptyList()),
             IterableStream.of(Collections.emptyList())
         ));
         // Second Page
@@ -1331,6 +1344,7 @@ final class TestUtils {
                 false, null, TIME_NOW, getExtractKeyPhrasesResultCollectionForPagination(startIndex, secondPage), null))),
             IterableStream.of(asList(getExpectedAnalyzeSentimentActionResult(
                 false, null, TIME_NOW, getAnalyzeSentimentResultCollectionForPagination(startIndex, secondPage), null))),
+            IterableStream.of(Collections.emptyList()),
             IterableStream.of(Collections.emptyList())
         ));
         return analyzeActionsResults;
@@ -1386,6 +1400,47 @@ final class TestUtils {
         SummarySentencePropertiesHelper.setOffset(summarySentence, offset);
         SummarySentencePropertiesHelper.setLength(summarySentence, length);
         return summarySentence;
+    }
+
+    static AbstractiveSummaryResult getExpectedAbstractiveSummaryResult() {
+        AbstractiveSummaryResult abstractiveSummaryResult = new AbstractiveSummaryResult("0",
+                null, null);
+
+        final IterableStream<AbstractiveSummary> abstractiveSummaries = IterableStream.of(asList(
+                getExpectedAbstractiveSummary(
+                    "Microsoft is taking a more holistic, human-centric approach to"
+                            + " learning and understanding. The goal is to achieve a leap in AI capabilities, "
+                            + "achieving multisensory and multilingual learning that is closer to how humans learn"
+                            + " and understand.",
+                        0, 1627)
+        ));
+
+        AbstractiveSummaryResultPropertiesHelper.setSummaries(abstractiveSummaryResult, abstractiveSummaries);
+        return abstractiveSummaryResult;
+    }
+
+    static AbstractiveSummaryActionResult getAbstractSummaryActionResult(boolean isError, String actionName,
+        OffsetDateTime completeAt, AbstractiveSummaryResultCollection resultCollection,
+        TextAnalyticsError actionError) {
+        AbstractiveSummaryActionResult actionResult = new AbstractiveSummaryActionResult();
+        AbstractiveSummaryActionResultPropertiesHelper.setDocumentsResults(actionResult, resultCollection);
+        TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, actionName);
+        TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult, completeAt);
+        TextAnalyticsActionResultPropertiesHelper.setIsError(actionResult, isError);
+        TextAnalyticsActionResultPropertiesHelper.setError(actionResult, actionError);
+        return actionResult;
+    }
+
+    static AbstractiveSummary getExpectedAbstractiveSummary(String text, int offset, int length) {
+        AbstractiveSummary abstractiveSummary = new AbstractiveSummary();
+        AbstractiveSummaryPropertiesHelper.setText(abstractiveSummary, text);
+        List<SummaryContext> summaryContexts = new ArrayList<>();
+        SummaryContext summaryContext = new SummaryContext();
+        SummaryContextPropertiesHelper.setOffset(summaryContext, offset);
+        SummaryContextPropertiesHelper.setLength(summaryContext, length);
+        summaryContexts.add(summaryContext);
+        AbstractiveSummaryPropertiesHelper.setSummaryContexts(abstractiveSummary, IterableStream.of(summaryContexts));
+        return abstractiveSummary;
     }
 
     /**

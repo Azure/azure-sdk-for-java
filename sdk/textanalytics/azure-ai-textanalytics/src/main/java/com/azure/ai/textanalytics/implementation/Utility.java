@@ -5,6 +5,8 @@ package com.azure.ai.textanalytics.implementation;
 
 import com.azure.ai.textanalytics.TextAnalyticsServiceVersion;
 import com.azure.ai.textanalytics.implementation.models.AgeResolution;
+import com.azure.ai.textanalytics.implementation.models.AbstractiveSummarizationResult;
+import com.azure.ai.textanalytics.implementation.models.AbstractiveSummarizationResultBaseDocumentsItem;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextTaskResult;
 import com.azure.ai.textanalytics.implementation.models.AreaResolution;
 import com.azure.ai.textanalytics.implementation.models.Association;
@@ -79,6 +81,8 @@ import com.azure.ai.textanalytics.implementation.models.VolumeResolution;
 import com.azure.ai.textanalytics.implementation.models.WarningCodeValue;
 import com.azure.ai.textanalytics.implementation.models.WeightResolution;
 import com.azure.ai.textanalytics.models.AgeUnit;
+import com.azure.ai.textanalytics.models.AbstractiveSummary;
+import com.azure.ai.textanalytics.models.AbstractiveSummaryResult;
 import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesResult;
 import com.azure.ai.textanalytics.models.AnalyzeSentimentResult;
 import com.azure.ai.textanalytics.models.AreaUnit;
@@ -123,6 +127,7 @@ import com.azure.ai.textanalytics.models.SentenceOpinion;
 import com.azure.ai.textanalytics.models.SentenceSentiment;
 import com.azure.ai.textanalytics.models.SentimentConfidenceScores;
 import com.azure.ai.textanalytics.models.SpeedUnit;
+import com.azure.ai.textanalytics.models.SummaryContext;
 import com.azure.ai.textanalytics.models.SummarySentence;
 import com.azure.ai.textanalytics.models.SummarySentenceCollection;
 import com.azure.ai.textanalytics.models.TargetSentiment;
@@ -138,6 +143,7 @@ import com.azure.ai.textanalytics.models.TextDocumentStatistics;
 import com.azure.ai.textanalytics.models.TextSentiment;
 import com.azure.ai.textanalytics.models.VolumeUnit;
 import com.azure.ai.textanalytics.models.WarningCode;
+import com.azure.ai.textanalytics.util.AbstractiveSummaryResultCollection;
 import com.azure.ai.textanalytics.models.WeightUnit;
 import com.azure.ai.textanalytics.util.AnalyzeHealthcareEntitiesResultCollection;
 import com.azure.ai.textanalytics.util.AnalyzeSentimentResultCollection;
@@ -1424,6 +1430,72 @@ public final class Utility {
             classifications.add(classification);
         }
         return classifications;
+    }
+
+    public static AbstractiveSummaryResultCollection toAbstractiveSummaryResultCollection(
+        AbstractiveSummarizationResult abstractiveSummarizationResult) {
+        List<AbstractiveSummarizationResultBaseDocumentsItem> documentResults = abstractiveSummarizationResult.getDocuments();
+        List<AbstractiveSummaryResult> summaryResults = new ArrayList<>();
+        for (AbstractiveSummarizationResultBaseDocumentsItem documentResult : documentResults) {
+            summaryResults.add(toAbstractiveSummaryResult(documentResult));
+        }
+
+        // Document errors
+        for (InputError documentError : abstractiveSummarizationResult.getErrors()) {
+            summaryResults.add(new AbstractiveSummaryResult(documentError.getId(), null,
+                    toTextAnalyticsError(documentError.getError())));
+        }
+
+        return new AbstractiveSummaryResultCollection(summaryResults, abstractiveSummarizationResult.getModelVersion(),
+            abstractiveSummarizationResult.getStatistics() == null ? null
+                : toBatchStatistics(abstractiveSummarizationResult.getStatistics()));
+    }
+
+    public static AbstractiveSummaryResult toAbstractiveSummaryResult(
+        AbstractiveSummarizationResultBaseDocumentsItem documentResult) {
+        AbstractiveSummaryResult summaryResult = new AbstractiveSummaryResult(
+            documentResult.getId(),
+            documentResult.getStatistics() == null ? null : toTextDocumentStatistics(documentResult.getStatistics()),
+            null
+        );
+
+        AbstractiveSummaryResultPropertiesHelper.setSummaries(summaryResult,
+            new IterableStream<>(toAbstractiveSummaries(documentResult.getSummaries())));
+
+        // Warnings
+        final List<TextAnalyticsWarning> warnings = documentResult.getWarnings().stream().map(
+                warning -> toTextAnalyticsWarning(warning)).collect(Collectors.toList());
+        AbstractiveSummaryResultPropertiesHelper.setWarnings(summaryResult, IterableStream.of(warnings));
+
+        return summaryResult;
+    }
+
+    public static List<AbstractiveSummary> toAbstractiveSummaries(
+        List<com.azure.ai.textanalytics.implementation.models.AbstractiveSummary> abstractiveSummariesImpl) {
+        List<AbstractiveSummary> summaries = new ArrayList<>();
+        abstractiveSummariesImpl.forEach(summaryImpl -> summaries.add(toAbstractiveSummary(summaryImpl)));
+        return summaries;
+    }
+
+    public static AbstractiveSummary toAbstractiveSummary(
+        com.azure.ai.textanalytics.implementation.models.AbstractiveSummary summary) {
+        AbstractiveSummary abstractiveSummary = new AbstractiveSummary();
+        AbstractiveSummaryPropertiesHelper.setText(abstractiveSummary, summary.getText());
+        AbstractiveSummaryPropertiesHelper.setSummaryContexts(abstractiveSummary,
+            toSummaryContexts(summary.getContexts()));
+        return abstractiveSummary;
+    }
+
+    public static IterableStream<SummaryContext> toSummaryContexts(
+        List<com.azure.ai.textanalytics.implementation.models.SummaryContext> contexts) {
+        List<SummaryContext> summaryContexts = new ArrayList<>();
+        contexts.forEach(context -> {
+            SummaryContext summaryContext = new SummaryContext();
+            SummaryContextPropertiesHelper.setOffset(summaryContext, context.getOffset());
+            SummaryContextPropertiesHelper.setLength(summaryContext, context.getLength());
+            summaryContexts.add(summaryContext);
+        });
+        return IterableStream.of(summaryContexts);
     }
 
     /**
