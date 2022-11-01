@@ -5,10 +5,10 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
-import com.google.common.collect.ImmutableList;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
+import java.util.Arrays;
 import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -23,7 +23,7 @@ public class CosmosClientBuilderTest {
             CosmosAsyncClient client = new CosmosClientBuilder()
                 .key(TestConfigurations.MASTER_KEY)
                 .endpoint(hostName)
-                .preferredRegions(ImmutableList.of("westus1,eastus1"))
+                .preferredRegions(Arrays.asList("westus1", "eastus1"))
                 .buildAsyncClient();
             client.close();
         } catch (Exception e) {
