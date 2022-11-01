@@ -1,4 +1,4 @@
-package com.azure.cosmos.implementation.apachecommons.codecz.digest;
+package com.azure.cosmos.implementation.apachecommons.codec.digest;
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
  * contributor license agreements.  See the NOTICE file distributed with
@@ -17,7 +17,7 @@ package com.azure.cosmos.implementation.apachecommons.codecz.digest;
  */
 
 
-import com.azure.cosmos.implementation.apachecommons.codecz.binary.StringUtils;
+import com.azure.cosmos.implementation.apachecommons.codec.binary.StringUtils;
 
 
 /**

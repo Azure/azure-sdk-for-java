@@ -1,4 +1,4 @@
-package com.azure.cosmos.implementation.apachecommons.codecz.binary;
+package com.azure.cosmos.implementation.apachecommons.codec.binary;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more

@@ -1,4 +1,4 @@
-package com.azure.cosmos.implementation.apachecommons.codecz.binary;
+package com.azure.cosmos.implementation.apachecommons.codec.binary;
 
 /*
  * Licensed to the Apache Software Foundation (ASF) under one or more
@@ -18,7 +18,7 @@ package com.azure.cosmos.implementation.apachecommons.codecz.binary;
  */
 
 
-import com.azure.cosmos.implementation.apachecommons.codecz.CharEncoding;
+import com.azure.cosmos.implementation.apachecommons.codec.CharEncoding;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
