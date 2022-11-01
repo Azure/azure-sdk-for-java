@@ -1309,7 +1309,7 @@ public final class ServiceBusReceiverAsyncClient implements AutoCloseable {
 
         try {
             // Related with issue https://github.com/Azure/azure-sdk-for-java/issues/25709. When defining ServiceBusProcessorClient as bean in SpringBoot application and throw error in processMessage(), the application can not be shutdown gracefully using ctrl-c.
-            // The cause is completionLock's acquire stuck. So we add a timeout for acquiring lock here to avoid the stuck.
+            // The cause is completionLock's acquire method is stuck. So we have added a timeout for acquiring the lock, to work around the issue.
             boolean acquired = completionLock.tryAcquire(5, TimeUnit.SECONDS);
             if (!acquired) {
                 LOGGER.info("Unable to obtain completion lock.");
