@@ -344,6 +344,7 @@ public class RxDocumentClientImplTest {
         return routingMap;
     }
 
+    @SuppressWarnings("unchecked")
     private static <T> IDocumentQueryExecutionContext<T> dummyExecutionContextForQuery(List<String> results, Map<String, String> headers) {
         List<Document> documentResults = results.stream().map(str -> new Document(str)).collect(Collectors.toList());
         return () -> Flux.just((FeedResponse<T>) ModelBridgeInternal.createFeedResponse(documentResults, headers));
