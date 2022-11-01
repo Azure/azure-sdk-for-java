@@ -69,7 +69,7 @@
           "GroupId": "commons-codec",
           "Version": "1.14"
         }
-      },
+      }
   ],
   "Version": 1
 }
