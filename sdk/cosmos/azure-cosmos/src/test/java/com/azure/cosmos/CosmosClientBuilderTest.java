@@ -2,14 +2,17 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.*;
+import com.azure.cosmos.implementation.ApiType;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.RxDocumentClientImpl;
+import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -39,7 +42,7 @@ public class CosmosClientBuilderTest {
             CosmosAsyncClient client = new CosmosClientBuilder()
                 .key(TestConfigurations.MASTER_KEY)
                 .endpoint(hostName)
-                .preferredRegions(Collections.emptyList())
+                .preferredRegions(Arrays.asList(" "))
                 .buildAsyncClient();
             client.close();
         } catch (Exception e) {
