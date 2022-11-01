@@ -634,25 +634,6 @@ public class CosmosQueryRequestOptions {
         return this;
     }
 
-    RequestOptions toRequestOptions() {
-        RequestOptions requestOptions = new RequestOptions();
-        requestOptions.setConsistencyLevel(getConsistencyLevel());
-        requestOptions.setSessionToken(getSessionToken());
-        requestOptions.setPartitionKey(getPartitionKey());
-        requestOptions.setThroughputControlGroupName(getThroughputControlGroupName());
-        requestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
-        requestOptions.setDedicatedGatewayRequestOptions(dedicatedGatewayRequestOptions);
-        requestOptions.setThresholdForDiagnosticsOnTracer(thresholdForDiagnosticsOnTracer);
-
-        if (this.customOptions != null) {
-            for(Map.Entry<String, String> entry : this.customOptions.entrySet()) {
-                requestOptions.setHeader(entry.getKey(), entry.getValue());
-            }
-        }
-
-        return requestOptions;
-    }
-
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
