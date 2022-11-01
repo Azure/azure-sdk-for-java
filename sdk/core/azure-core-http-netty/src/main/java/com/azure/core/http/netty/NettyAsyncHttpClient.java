@@ -263,12 +263,14 @@ class NettyAsyncHttpClient implements HttpClient {
             // Both should never be true at the same time but this is acts as a safeguard.
             if (ignoreResponseBody) {
                 AtomicBoolean firstNext = new AtomicBoolean(true);
-                return reactorNettyConnection.inbound().receive().doOnNext(ignored -> {
+                return reactorNettyConnection.inbound().receive()
+                    .doOnNext(ignored -> {
                         if (!firstNext.compareAndSet(true, false)) {
                             LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
                                 + "Response body will be ignored as directed.");
                         }
-                    }).ignoreElements()
+                    })
+                    .ignoreElements()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
                     .then(Mono.fromSupplier(() -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
                         EMPTY_BYTES, headersEagerlyConverted)));
