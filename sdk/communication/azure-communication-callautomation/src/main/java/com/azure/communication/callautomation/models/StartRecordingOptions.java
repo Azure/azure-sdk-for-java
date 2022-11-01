@@ -6,8 +6,10 @@ package com.azure.communication.callautomation.models;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * The options for creating a call.
@@ -38,8 +40,8 @@ public class StartRecordingOptions {
      */
     public StartRecordingOptions(CallLocator callLocator) {
         Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
-
         this.callLocator = callLocator;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**

@@ -36,6 +36,7 @@ import reactor.core.publisher.Mono;
  *     <li>{@link Configuration#PROPERTY_AZURE_CLIENT_ID AZURE_CLIENT_ID}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_USERNAME AZURE_USERNAME}</li>
  *     <li>{@link Configuration#PROPERTY_AZURE_PASSWORD AZURE_PASSWORD}</li>
+ *     <li>{@link Configuration#PROPERTY_AZURE_TENANT_ID AZURE_TENANT_ID}</li>
  * </ul>
  */
 @Immutable

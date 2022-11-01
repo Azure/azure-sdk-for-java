@@ -153,6 +153,10 @@ public class ConfigurationJavaDocCodeSnippet {
         public static final SampleEnumProperty MODE_1 = fromString("mode1", SampleEnumProperty.class);
         public static final SampleEnumProperty MODE_2 = fromString("mode2", SampleEnumProperty.class);
 
+        @Deprecated
+        public SampleEnumProperty() {
+        }
+
         public static SampleEnumProperty fromString(String str) {
             return fromString(str, SampleEnumProperty.class);
         }

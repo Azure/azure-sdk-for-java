@@ -2,7 +2,7 @@
 
 The Azure Identity library provides [Azure Active Directory (Azure AD)](https://learn.microsoft.com/azure/active-directory/fundamentals/active-directory-whatis) token authentication support across the Azure SDK. It provides a set of [TokenCredential](https://learn.microsoft.com/java/api/com.azure.core.credential.tokencredential?view=azure-java-stable) implementations that can be used to construct Azure SDK clients that support Azure AD token authentication.
 
-  [Source code][source] | [API reference documentation][javadoc] | [Azure AD documentation][azuread_doc]
+[Source code][source] | [API reference documentation][javadoc] | [Azure AD documentation][azuread_doc]
 
 ## Getting started
 
@@ -39,9 +39,7 @@ Then include the direct dependency in the `dependencies` section without the ver
 
 #### Include direct dependency
 
-To take dependency on a particular version of the library that isn't present in the BOM, add the direct dependency to your project as follows.
-
-Maven dependency for Azure Secret Client library. Add it to your project's POM file.
+To take dependency on a particular version of the library that isn't present in the BOM, add the direct dependency to your project as follows:
 
 [//]: # ({x-version-update-start;com.azure:azure-identity;current})
 ```xml
@@ -244,7 +242,7 @@ While the `DefaultAzureCredential` is generally the quickest way to get started 
 
     ManagedIdentityCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder().build();
     AzureCliCredential cliCredential = new AzureCliCredentialBuilder().build();
-    
+
     ChainedTokenCredential credential = new ChainedTokenCredentialBuilder().addLast(managedIdentityCredential).addLast(cliCredential).build();
 
     // Azure SDK client builders accept the credential as a parameter
@@ -478,7 +476,7 @@ Credentials can be chained together to be tried in turn until one succeeds using
     </tr>
     <tr>
       <td><code>AZURE_CLIENT_CERTIFICATE_PATH</code></td>
-      <td>path to a PEM-encoded certificate file including private key</td>
+      <td>path to a PFX or PEM-encoded certificate file including private key</td>
     </tr>
     <tr>
         <td><code>AZURE_CLIENT_CERTIFICATE_PASSWORD</code></td>
@@ -501,6 +499,10 @@ Credentials can be chained together to be tried in turn until one succeeds using
     <tr>
       <td><code>AZURE_CLIENT_ID</code></td>
       <td>ID of an Azure AD application</td>
+    </tr>
+    <tr>
+      <td><code>AZURE_TENANT_ID</code></td>
+      <td>(optional) ID of the application's Azure AD tenant</td>
     </tr>
     <tr>
       <td><code>AZURE_USERNAME</code></td>
