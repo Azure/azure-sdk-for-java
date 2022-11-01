@@ -630,7 +630,8 @@
       "filename": "sdk/spring/CHANGELOG.md",
       "words": [
         "AADB",
-        "JPMS"
+        "JPMS",
+        "nimbusds"
       ]
     },
     {

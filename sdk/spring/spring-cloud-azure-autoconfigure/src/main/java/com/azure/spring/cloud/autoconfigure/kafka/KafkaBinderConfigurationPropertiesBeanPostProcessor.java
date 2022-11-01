@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.kafka;
 
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
-import com.azure.spring.cloud.service.implementation.kafka.AzureKafkaProperties;
+import com.azure.spring.cloud.service.implementation.passwordless.AzurePasswordlessProperties;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
@@ -63,9 +63,9 @@ class KafkaBinderConfigurationPropertiesBeanPostProcessor implements BeanPostPro
     }
 
     private void configureKafkaBinderProperties(Map<String, Object> mergedConfiguration, Map<String, String> sourceProperties) {
-        AzureKafkaProperties azureKafkaProperties =
+        AzurePasswordlessProperties azurePasswordlessProperties =
             buildAzureProperties(mergedConfiguration, azureGlobalProperties);
-        convertAzurePropertiesToConfigMap(azureKafkaProperties, sourceProperties);
+        convertAzurePropertiesToConfigMap(azurePasswordlessProperties, sourceProperties);
         configureOAuthProperties(sourceProperties);
         logConfigureOAuthProperties();
     }

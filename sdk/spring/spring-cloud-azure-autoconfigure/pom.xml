@@ -273,6 +273,20 @@
       <version>3.0.2</version> <!-- {x-version-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
     </dependency>
 
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity-providers-jdbc-mysql</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;unreleased_com.azure:azure-identity-providers-jdbc-mysql;dependency} -->
+      <optional>true</optional>
+    </dependency>
+
+    <dependency>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-identity-providers-jdbc-postgresql</artifactId>
+      <version>1.0.0-beta.2</version> <!-- {x-version-update;unreleased_com.azure:azure-identity-providers-jdbc-postgresql;dependency} -->
+      <optional>true</optional>
+    </dependency>
+
     <!-- TEST-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -300,6 +314,29 @@
       <version>4.5.13</version> <!-- {x-version-update;org.apache.httpcomponents:httpclient;external_dependency} -->
       <scope>test</scope>
     </dependency>
+
+    <!-- used to test AzureJdbcAutoConfiguration -->
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>8.0.30</version> <!-- {x-version-update;mysql:mysql-connector-java;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>42.5.0</version> <!-- {x-version-update;org.postgresql:postgresql;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.springframework</groupId>
+      <artifactId>spring-jdbc</artifactId>
+      <version>6.0.0-M6</version> <!-- {x-version-update;org.springframework:spring-jdbc;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -364,6 +401,9 @@
                 <include>org.springframework.security:spring-security-config:[6.0.0-RC1]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework:spring-jms:[6.0.0-RC2]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
                 <include>org.springframework:spring-tx:[6.0.0-RC2]</include> <!-- {x-include-update;org.springframework:spring-tx;external_dependency} -->
+                <include>mysql:mysql-connector-java:[8.0.30]</include> <!-- {x-include-update;mysql:mysql-connector-java;external_dependency} -->
+                <include>org.postgresql:postgresql:[42.5.0]</include> <!-- {x-include-update;org.postgresql:postgresql;external_dependency} -->
+                <include>org.springframework:spring-jdbc:[6.0.0-M6]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
