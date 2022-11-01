@@ -7,6 +7,9 @@ import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
+import java.time.Instant;
+import java.util.UUID;
+
 /**
  * The options for adding participants.
  */
@@ -44,6 +47,7 @@ public class TransferToParticipantCallOptions {
      */
     public TransferToParticipantCallOptions(CommunicationIdentifier targetParticipant) {
         this.targetParticipant = targetParticipant;
+        this.repeatabilityHeaders = new RepeatabilityHeaders(UUID.fromString("0-0-0-0-0"), Instant.MIN);
     }
 
     /**
