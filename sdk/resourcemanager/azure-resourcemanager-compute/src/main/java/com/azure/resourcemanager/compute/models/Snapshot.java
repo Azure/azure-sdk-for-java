@@ -309,6 +309,7 @@ public interface Snapshot
              * {@link Snapshot#copyCompletionError()}.
              * <p>Note: Before you can use the copied snapshot for future use (e.g. create disk), you should wait for
              * the CopyStart completion.</p>
+             *
              * @param maxWaitTime max timeout to wait for the CopyStart operation to finish
              * @return the next stage of the definition
              */
@@ -316,7 +317,7 @@ public interface Snapshot
 
             /**
              * Specifies to wait for CopyStart completion for a specified timeout. If the operation is not complete when
-             * the timeout is reached, simply stop waiting and proceed without throwing exceptions.
+             * the timeout is reached, stop waiting and proceed with or without exception by specified parameter.
              * <p>Operation progress can be retrieved through {@link Snapshot#copyCompletionPercent()} and any errors through
              * {@link Snapshot#copyCompletionError()}.
              * <p>Note: Before you can use the copied snapshot for future use (e.g. create disk), you should wait for
