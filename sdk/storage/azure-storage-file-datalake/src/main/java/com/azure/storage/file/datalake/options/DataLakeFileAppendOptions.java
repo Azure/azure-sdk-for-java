@@ -134,11 +134,11 @@ public class DataLakeFileAppendOptions {
      * A non-infinite lease can be between 15 and 60 seconds.
      *
      * Sets the lease duration.
-     * @param leaseDuration the new lease duration.
+     * @param leaseDurationInSeconds the new lease duration.
      * @return the updated DataLakeFileAppendOptions object.
      */
-    public DataLakeFileAppendOptions setLeaseDuration(Integer leaseDuration) {
-        this.leaseDuration = leaseDuration;
+    public DataLakeFileAppendOptions setLeaseDuration(Integer leaseDurationInSeconds) {
+        this.leaseDuration = leaseDurationInSeconds;
         return this;
     }
 

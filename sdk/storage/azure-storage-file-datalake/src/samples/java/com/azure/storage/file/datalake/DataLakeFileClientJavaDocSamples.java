@@ -437,7 +437,7 @@ public class DataLakeFileClientJavaDocSamples {
 
         DataLakeFileFlushOptions flushOptions = new DataLakeFileFlushOptions()
             .setUncommittedDataRetained(retainUncommittedData)
-            .setClosed(close)
+            .setClose(close)
             .setPathHttpHeaders(httpHeaders)
             .setRequestConditions(requestConditions)
             .setLeaseAction(LeaseAction.ACQUIRE)
