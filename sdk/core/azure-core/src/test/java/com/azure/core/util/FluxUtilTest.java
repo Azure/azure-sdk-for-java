@@ -236,17 +236,18 @@ public class FluxUtilTest {
     @MethodSource("writeFileDoesNotSwallowErrorSupplier")
     public void writeFileDoesNotSwallowError(Flux<ByteBuffer> data, AsynchronousFileChannel channel,
         Class<? extends Throwable> expectedException) {
-        Flux<Void> writeFile = Flux.using(() -> channel, c -> FluxUtil.writeFile(data, c), c -> {
-            try {
-                c.close();
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-        });
-
-        StepVerifier.create(writeFile)
-            .expectError(expectedException)
-            .verify(Duration.ofSeconds(30));
+        throw new RuntimeException("Test");
+//        Flux<Void> writeFile = Flux.using(() -> channel, c -> FluxUtil.writeFile(data, c), c -> {
+//            try {
+//                c.close();
+//            } catch (IOException ex) {
+//                throw new UncheckedIOException(ex);
+//            }
+//        });
+//
+//        StepVerifier.create(writeFile)
+//            .expectError(expectedException)
+//            .verify(Duration.ofSeconds(30));
     }
 
     private static Stream<Arguments> writeFileDoesNotSwallowErrorSupplier() throws IOException {

@@ -38,6 +38,9 @@ parameters:
   - name: ExcludeProjectList
     type: string
     default: 'com.azure.resourcemanager:azure-resourcemanager-samples'
+  - name: ContinueLatestBuildOnError
+    type: boolean
+    default: false
 
 steps:
   - task: Maven@3
@@ -54,7 +57,7 @@ steps:
     env:
       AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-    continueOnError: ${{ eq(variables['LatestJdkVersion'], variables['JavaTestVersion']) }}
+    continueOnError: ${{ parameters.ContinueLatestBuildOnError }}
 
   - task: Maven@3
     displayName: 'Run tests'
@@ -70,7 +73,7 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     # we want to run this when TestFromSource isn't true
     condition: and(succeeded(), ne(variables['TestFromSource'], 'true'))
-    continueOnError: ${{ eq(variables['LatestJdkVersion'], variables['JavaTestVersion']) }}
+    continueOnError: ${{ parameters.ContinueLatestBuildOnError }}
 
   # Generate the pom file with all the modules required for creating an aggregate code coverage report
   - task: PythonScript@0
