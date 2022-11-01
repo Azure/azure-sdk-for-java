@@ -270,7 +270,7 @@ public class PerfStressProgram {
 
                 Flux.range(0, parallel)
                     .parallel(parallel)
-                    .runOn(Schedulers.boundedElastic())
+                    .runOn(Schedulers.parallel())
                     .flatMap(i -> tests[i].runAllAsync(endNanoTime), false, Math.min(parallel, 1000 / parallel), 1)
                     .then()
                     .block();
