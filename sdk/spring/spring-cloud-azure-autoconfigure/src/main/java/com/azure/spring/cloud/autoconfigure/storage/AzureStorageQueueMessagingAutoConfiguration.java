@@ -61,6 +61,8 @@ public class AzureStorageQueueMessagingAutoConfiguration {
 
     /**
      * Autoconfigure the {@link StorageQueueMessageConverter} instance.
+     *
+     * @param objectMapper A default/customize ObjectMapper
      * @return the storage queue message converter.
      */
     @Bean

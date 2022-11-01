@@ -118,6 +118,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
         /**
          * Creates a Service Bus message converter.
          *
+         * @param objectMapper A default/customize ObjectMapper
          * @return A Service Bus message converter.
          */
         @Bean

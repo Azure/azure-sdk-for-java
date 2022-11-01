@@ -124,6 +124,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
         /**
          * Creates an Event Hubs message converter.
          *
+         * @param objectMapper A default/customize ObjectMapper
          * @return An Event Hubs message converter.
          */
         @Bean
