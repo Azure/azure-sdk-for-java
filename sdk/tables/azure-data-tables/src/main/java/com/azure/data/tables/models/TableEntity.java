@@ -141,7 +141,6 @@ public final class TableEntity {
     private void validateProperty(String key, Object value) {
         Objects.requireNonNull(key, "'key' cannot be null.");
 
-
         if (TablesConstants.TIMESTAMP_KEY.equals(key) && value != null && !(value instanceof OffsetDateTime)) {
             throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
                 "'%s' must be an OffsetDateTime.", key)));
