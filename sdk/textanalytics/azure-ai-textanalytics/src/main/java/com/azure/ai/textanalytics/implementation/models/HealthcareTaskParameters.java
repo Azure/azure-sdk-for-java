@@ -22,7 +22,7 @@ public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
      * Behavior of using None enum is the same as not using the documentType parameter.
      */
     @JsonProperty(value = "documentType")
-    private DocumentType documentType;
+    private HealthcareDocumentType documentType;
 
     /*
      * Specifies the method used to interpret string offsets.  Defaults to Text Elements (Graphemes) according to
@@ -59,7 +59,7 @@ public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
      *
      * @return the documentType value.
      */
-    public DocumentType getDocumentType() {
+    public HealthcareDocumentType getDocumentType() {
         return this.documentType;
     }
 
@@ -70,7 +70,7 @@ public final class HealthcareTaskParameters extends PreBuiltTaskParameters {
      * @param documentType the documentType value to set.
      * @return the HealthcareTaskParameters object itself.
      */
-    public HealthcareTaskParameters setDocumentType(DocumentType documentType) {
+    public HealthcareTaskParameters setDocumentType(HealthcareDocumentType documentType) {
         this.documentType = documentType;
         return this;
     }

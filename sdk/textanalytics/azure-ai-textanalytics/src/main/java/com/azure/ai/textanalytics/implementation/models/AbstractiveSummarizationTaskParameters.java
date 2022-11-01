@@ -6,7 +6,6 @@ package com.azure.ai.textanalytics.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** Supported parameters for the pre-build Abstractive Summarization task. */
 @Fluent
@@ -74,13 +73,6 @@ public final class AbstractiveSummarizationTaskParameters extends AbstractiveSum
     @Override
     public AbstractiveSummarizationTaskParameters setStringIndexType(StringIndexType stringIndexType) {
         super.setStringIndexType(stringIndexType);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AbstractiveSummarizationTaskParameters setPhraseControls(List<PhraseControl> phraseControls) {
-        super.setPhraseControls(phraseControls);
         return this;
     }
 }

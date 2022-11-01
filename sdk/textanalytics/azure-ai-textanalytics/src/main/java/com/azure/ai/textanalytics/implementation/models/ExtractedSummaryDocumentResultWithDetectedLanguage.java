@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ExtractiveSummarizationResultDocumentsItem model. */
+/** The ExtractedSummaryDocumentResultWithDetectedLanguage model. */
 @Fluent
-public final class ExtractiveSummarizationResultDocumentsItem extends ExtractedSummaryDocumentResult {
+public final class ExtractedSummaryDocumentResultWithDetectedLanguage extends ExtractedSummaryDocumentResult {
     /*
      * If 'language' is set to 'auto' for the document in the request this field will contain a 2 letter ISO 639-1
      * representation of the language detected for this document.
@@ -33,37 +33,37 @@ public final class ExtractiveSummarizationResultDocumentsItem extends ExtractedS
      * contain a 2 letter ISO 639-1 representation of the language detected for this document.
      *
      * @param detectedLanguage the detectedLanguage value to set.
-     * @return the ExtractiveSummarizationResultDocumentsItem object itself.
+     * @return the ExtractedSummaryDocumentResultWithDetectedLanguage object itself.
      */
-    public ExtractiveSummarizationResultDocumentsItem setDetectedLanguage(DetectedLanguage detectedLanguage) {
+    public ExtractedSummaryDocumentResultWithDetectedLanguage setDetectedLanguage(DetectedLanguage detectedLanguage) {
         this.detectedLanguage = detectedLanguage;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ExtractiveSummarizationResultDocumentsItem setSentences(List<ExtractedSummarySentence> sentences) {
+    public ExtractedSummaryDocumentResultWithDetectedLanguage setSentences(List<ExtractedSummarySentence> sentences) {
         super.setSentences(sentences);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ExtractiveSummarizationResultDocumentsItem setId(String id) {
+    public ExtractedSummaryDocumentResultWithDetectedLanguage setId(String id) {
         super.setId(id);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ExtractiveSummarizationResultDocumentsItem setWarnings(List<DocumentWarning> warnings) {
+    public ExtractedSummaryDocumentResultWithDetectedLanguage setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public ExtractiveSummarizationResultDocumentsItem setStatistics(DocumentStatistics statistics) {
+    public ExtractedSummaryDocumentResultWithDetectedLanguage setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }

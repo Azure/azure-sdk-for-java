@@ -40,7 +40,6 @@ import com.azure.ai.textanalytics.models.HealthcareEntityRelationRole;
 import com.azure.ai.textanalytics.models.LinkedEntity;
 import com.azure.ai.textanalytics.models.LinkedEntityMatch;
 import com.azure.ai.textanalytics.models.MultiLabelClassifyAction;
-import com.azure.ai.textanalytics.models.PhraseControl;
 import com.azure.ai.textanalytics.models.PiiEntity;
 import com.azure.ai.textanalytics.models.PiiEntityCategory;
 import com.azure.ai.textanalytics.models.PiiEntityCollection;
@@ -1375,14 +1374,11 @@ public abstract class TextAnalyticsClientTestBase extends TestBase {
                         .setOrderBy(summarySentencesOrder)));
     }
 
-    void abstractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner,
-                               List<PhraseControl> phraseControls, Integer maxSentenceCount) {
+    void abstractSummaryRunner(BiConsumer<List<String>, TextAnalyticsActions> testRunner, Integer maxSentenceCount) {
         testRunner.accept(SUMMARY_INPUTS,
             new TextAnalyticsActions()
                 .setAbstractiveSummaryActions(
-                    new AbstractiveSummaryAction()
-                            .setPhraseControls(phraseControls)
-                        .setMaxSentenceCount(maxSentenceCount)));
+                    new AbstractiveSummaryAction().setMaxSentenceCount(maxSentenceCount)));
     }
 
     String getEndpoint() {

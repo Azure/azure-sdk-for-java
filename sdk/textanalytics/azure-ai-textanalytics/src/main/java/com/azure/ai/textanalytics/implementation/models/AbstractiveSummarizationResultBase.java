@@ -15,14 +15,14 @@ public class AbstractiveSummarizationResultBase {
      * Response by document
      */
     @JsonProperty(value = "documents", required = true)
-    private List<AbstractiveSummarizationResultBaseDocumentsItem> documents;
+    private List<AbstractiveSummaryDocumentResultWithDetectedLanguage> documents;
 
     /**
      * Get the documents property: Response by document.
      *
      * @return the documents value.
      */
-    public List<AbstractiveSummarizationResultBaseDocumentsItem> getDocuments() {
+    public List<AbstractiveSummaryDocumentResultWithDetectedLanguage> getDocuments() {
         return this.documents;
     }
 
@@ -33,7 +33,7 @@ public class AbstractiveSummarizationResultBase {
      * @return the AbstractiveSummarizationResultBase object itself.
      */
     public AbstractiveSummarizationResultBase setDocuments(
-            List<AbstractiveSummarizationResultBaseDocumentsItem> documents) {
+            List<AbstractiveSummaryDocumentResultWithDetectedLanguage> documents) {
         this.documents = documents;
         return this;
     }

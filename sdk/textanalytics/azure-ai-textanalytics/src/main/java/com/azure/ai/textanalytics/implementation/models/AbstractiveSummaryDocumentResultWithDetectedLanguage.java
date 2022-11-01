@@ -8,9 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The AbstractiveSummarizationResultBaseDocumentsItem model. */
+/** An object representing the summarization result of a single document with detected language. */
 @Fluent
-public final class AbstractiveSummarizationResultBaseDocumentsItem extends AbstractiveSummaryDocumentResult {
+public final class AbstractiveSummaryDocumentResultWithDetectedLanguage extends AbstractiveSummaryDocumentResult {
     /*
      * If 'language' is set to 'auto' for the document in the request this field will contain a 2 letter ISO 639-1
      * representation of the language detected for this document.
@@ -33,37 +33,37 @@ public final class AbstractiveSummarizationResultBaseDocumentsItem extends Abstr
      * contain a 2 letter ISO 639-1 representation of the language detected for this document.
      *
      * @param detectedLanguage the detectedLanguage value to set.
-     * @return the AbstractiveSummarizationResultBaseDocumentsItem object itself.
+     * @return the AbstractiveSummaryDocumentResultWithDetectedLanguage object itself.
      */
-    public AbstractiveSummarizationResultBaseDocumentsItem setDetectedLanguage(DetectedLanguage detectedLanguage) {
+    public AbstractiveSummaryDocumentResultWithDetectedLanguage setDetectedLanguage(DetectedLanguage detectedLanguage) {
         this.detectedLanguage = detectedLanguage;
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AbstractiveSummarizationResultBaseDocumentsItem setSummaries(List<AbstractiveSummary> summaries) {
+    public AbstractiveSummaryDocumentResultWithDetectedLanguage setSummaries(List<AbstractiveSummary> summaries) {
         super.setSummaries(summaries);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AbstractiveSummarizationResultBaseDocumentsItem setId(String id) {
+    public AbstractiveSummaryDocumentResultWithDetectedLanguage setId(String id) {
         super.setId(id);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AbstractiveSummarizationResultBaseDocumentsItem setWarnings(List<DocumentWarning> warnings) {
+    public AbstractiveSummaryDocumentResultWithDetectedLanguage setWarnings(List<DocumentWarning> warnings) {
         super.setWarnings(warnings);
         return this;
     }
 
     /** {@inheritDoc} */
     @Override
-    public AbstractiveSummarizationResultBaseDocumentsItem setStatistics(DocumentStatistics statistics) {
+    public AbstractiveSummaryDocumentResultWithDetectedLanguage setStatistics(DocumentStatistics statistics) {
         super.setStatistics(statistics);
         return this;
     }

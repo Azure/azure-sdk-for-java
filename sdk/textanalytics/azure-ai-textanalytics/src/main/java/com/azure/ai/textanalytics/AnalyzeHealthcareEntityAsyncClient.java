@@ -14,9 +14,9 @@ import com.azure.ai.textanalytics.implementation.models.AnalyzeTextJobsInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextLROResult;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeTextsCancelJobHeaders;
 import com.azure.ai.textanalytics.implementation.models.CancelHealthJobHeaders;
-import com.azure.ai.textanalytics.implementation.models.DocumentType;
 import com.azure.ai.textanalytics.implementation.models.Error;
 import com.azure.ai.textanalytics.implementation.models.FhirVersion;
+import com.azure.ai.textanalytics.implementation.models.HealthcareDocumentType;
 import com.azure.ai.textanalytics.implementation.models.HealthcareJobState;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROResult;
 import com.azure.ai.textanalytics.implementation.models.HealthcareLROTask;
@@ -113,8 +113,8 @@ class AnalyzeHealthcareEntityAsyncClient {
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final FhirVersion finalFhirVersion = toFhirVersion(options.getFhirVersion());
-            final DocumentType finalDocumentType = options.getDocumentType() == null ? null
-                : DocumentType.fromString(options.getDocumentType().toString());
+            final HealthcareDocumentType finalDocumentType = options.getDocumentType() == null ? null
+                : HealthcareDocumentType.fromString(options.getDocumentType().toString());
 
             if (service != null) {
                 final String displayName = options.getDisplayName();
@@ -198,8 +198,8 @@ class AnalyzeHealthcareEntityAsyncClient {
             final String finalModelVersion = options.getModelVersion();
             final boolean finalLoggingOptOut = options.isServiceLogsDisabled();
             final FhirVersion finalFhirVersion = toFhirVersion(options.getFhirVersion());
-            final DocumentType finalDocumentType = options.getDocumentType() == null ? null
-                : DocumentType.fromString(options.getDocumentType().toString());
+            final HealthcareDocumentType finalDocumentType = options.getDocumentType() == null ? null
+                : HealthcareDocumentType.fromString(options.getDocumentType().toString());
 
             if (service != null) {
                 final String displayName = options.getDisplayName();
