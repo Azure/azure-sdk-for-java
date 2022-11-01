@@ -16,8 +16,8 @@ import java.util.Map;
 public final class SerializerUtils {
     private static final ObjectMapper OBJECT_MAPPER;
     private static final TypeReference<Map<String, OAuth2AuthorizedClient>> TYPE_REFERENCE =
-            new TypeReference<Map<String, OAuth2AuthorizedClient>>() {
-            };
+        new TypeReference<Map<String, OAuth2AuthorizedClient>>() {
+        };
 
     static {
         OBJECT_MAPPER = new ObjectMapper();
