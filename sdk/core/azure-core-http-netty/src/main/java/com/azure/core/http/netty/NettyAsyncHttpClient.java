@@ -26,6 +26,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.EventLoopGroup;
@@ -51,6 +52,7 @@ import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.BiFunction;
 
 import static com.azure.core.http.netty.implementation.Utility.closeConnection;
@@ -58,9 +60,9 @@ import static com.azure.core.http.netty.implementation.Utility.closeConnection;
 /**
  * This class provides a Netty-based implementation for the {@link HttpClient} interface. Creating an instance of this
  * class can be achieved by using the {@link NettyAsyncHttpClientBuilder} class, which offers Netty-specific API for
- * features such as {@link NettyAsyncHttpClientBuilder#eventLoopGroup(EventLoopGroup) thread pooling}, {@link
- * NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping}, {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions)
- * setProxy configuration}, and much more.
+ * features such as {@link NettyAsyncHttpClientBuilder#eventLoopGroup(EventLoopGroup) thread pooling},
+ * {@link NettyAsyncHttpClientBuilder#wiretap(boolean) wiretapping},
+ * {@link NettyAsyncHttpClientBuilder#proxy(ProxyOptions) setProxy configuration}, and much more.
  *
  * @see HttpClient
  * @see NettyAsyncHttpClientBuilder
@@ -260,7 +262,13 @@ class NettyAsyncHttpClient implements HttpClient {
             // Ignoring the response body takes precedent over eagerly reading the response body.
             // Both should never be true at the same time but this is acts as a safeguard.
             if (ignoreResponseBody) {
-                return reactorNettyConnection.inbound().receive().ignoreElements()
+                AtomicBoolean firstNext = new AtomicBoolean(true);
+                return reactorNettyConnection.inbound().receive().doOnNext(ignored -> {
+                        if (!firstNext.compareAndSet(true, false)) {
+                            LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
+                                + "Response body will be ignored as directed.");
+                        }
+                    }).ignoreElements()
                     .doFinally(ignored -> closeConnection(reactorNettyConnection))
                     .then(Mono.fromSupplier(() -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
                         EMPTY_BYTES, headersEagerlyConverted)));

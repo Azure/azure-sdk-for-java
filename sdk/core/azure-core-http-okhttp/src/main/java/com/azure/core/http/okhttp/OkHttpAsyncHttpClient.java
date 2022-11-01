@@ -27,6 +27,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.ProgressReporter;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -209,6 +210,10 @@ class OkHttpAsyncHttpClient implements HttpClient {
         if (ignoreResponseBody) {
             ResponseBody body = response.body();
             if (body != null) {
+                if (body.contentLength() > 0) {
+                    LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
+                        + "Response body will be ignored as directed.");
+                }
                 body.close();
             }
 

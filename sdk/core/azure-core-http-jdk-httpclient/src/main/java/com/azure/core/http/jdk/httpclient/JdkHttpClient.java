@@ -8,6 +8,7 @@ import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.jdk.httpclient.implementation.BodyIgnoringSubscriber;
 import com.azure.core.util.Context;
 import com.azure.core.util.Contexts;
 import com.azure.core.util.CoreUtils;
@@ -22,9 +23,12 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletionStage;
+import java.util.concurrent.Flow;
 
 import static java.net.http.HttpRequest.BodyPublishers.noBody;
 import static java.net.http.HttpResponse.BodyHandlers.discarding;
@@ -106,7 +110,8 @@ class JdkHttpClient implements HttpClient {
             // Ignoring the response body takes precedent over eagerly reading the response body.
             // Both should never be true at the same time but this is acts as a safeguard.
             if (ignoreResponseBody) {
-                java.net.http.HttpResponse<Void> jdKResponse = jdkHttpClient.send(jdkRequest, discarding());
+                java.net.http.HttpResponse<Void> jdKResponse = jdkHttpClient.send(jdkRequest,
+                    responseInfo -> new BodyIgnoringSubscriber(LOGGER));
                 return new JdkHttpResponseSync(request, jdKResponse.statusCode(),
                     fromJdkHttpHeaders(jdKResponse.headers()), IGNORED_BODY);
             } else if (eagerlyReadResponse) {
