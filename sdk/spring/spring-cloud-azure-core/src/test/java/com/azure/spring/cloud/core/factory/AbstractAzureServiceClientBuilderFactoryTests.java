@@ -3,19 +3,18 @@
 
 package com.azure.spring.cloud.core.factory;
 
-import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
-import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
-import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
-import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.cloud.core.implementation.factory.AbstractAzureServiceClientBuilderFactory;
-import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.implementation.properties.AzureSdkProperties;
+import com.azure.spring.cloud.core.properties.AzureProperties;
 import com.azure.spring.cloud.core.properties.client.ClientProperties;
 import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
 import com.azure.spring.cloud.core.properties.retry.RetryProperties;
+import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.ConnectionStringProvider;
+import com.azure.spring.cloud.core.provider.connectionstring.StaticConnectionStringProvider;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
