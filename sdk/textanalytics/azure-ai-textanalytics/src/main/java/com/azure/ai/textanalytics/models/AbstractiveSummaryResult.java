@@ -33,7 +33,7 @@ public final class AbstractiveSummaryResult extends TextAnalyticsResult {
     }
 
     /**
-     * Creates a {@link AbstractiveSummaryResult} model that describes analyzed sentiment result.
+     * Creates a {@link AbstractiveSummaryResult} model that describes the abstractive summarization result.
      *
      * @param id Unique, non-empty document identifier.
      * @param textDocumentStatistics The text document statistics.
@@ -44,9 +44,9 @@ public final class AbstractiveSummaryResult extends TextAnalyticsResult {
     }
 
     /**
-     * Gets the document sentiment.
+     * Gets the abstractive summaries of document.
      *
-     * @return The document sentiment.
+     * @return The abstractive summaries of document.
      *
      * @throws TextAnalyticsException if result has {@code isError} equals to true and when a non-error property
      * was accessed.
