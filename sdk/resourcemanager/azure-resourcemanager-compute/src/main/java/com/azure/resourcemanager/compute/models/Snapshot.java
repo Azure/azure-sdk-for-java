@@ -92,7 +92,7 @@ public interface Snapshot
             DefinitionStages.WithDataSnapshotFromVhd,
             DefinitionStages.WithDataSnapshotFromDisk,
             DefinitionStages.WithDataSnapshotFromSnapshot,
-            DefinitionStages.WithWaitCopyEndForCopyStart,
+        DefinitionStages.WithWaitForCopyStartCompletion,
             DefinitionStages.WithCreate {
     }
 
@@ -290,11 +290,11 @@ public interface Snapshot
              * @see DiskCreateOption
              * @return the next stage of the definition
              */
-            WithWaitCopyEndForCopyStart withCopyStart();
+            WithWaitForCopyStartCompletion withCopyStart();
         }
 
         /** The stage of the managed snapshot definition allowing to wait for CopyStart completion.*/
-        interface WithWaitCopyEndForCopyStart {
+        interface WithWaitForCopyStartCompletion {
             /**
              * Specifies to wait for CopyStart completion indefinitely unless errors are encountered.
              *
