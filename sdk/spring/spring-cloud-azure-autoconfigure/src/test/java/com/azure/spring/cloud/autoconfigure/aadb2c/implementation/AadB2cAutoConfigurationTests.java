@@ -255,9 +255,9 @@ class AadB2cAutoConfigurationTests extends AbstractAadB2cOAuth2ClientTestConfigu
             AadB2cConditions.ClientRegistrationCondition clientRegistrationCondition =
                 spy(AadB2cConditions.ClientRegistrationCondition.class);
             beanUtils.when(() -> BeanUtils.instantiateClass(AadB2cConditions.UserFlowCondition.class))
-                        .thenReturn(userFlowCondition);
+                    .thenReturn(userFlowCondition);
             beanUtils.when(() -> BeanUtils.instantiateClass(AadB2cConditions.ClientRegistrationCondition.class))
-                        .thenReturn(clientRegistrationCondition);
+                    .thenReturn(clientRegistrationCondition);
             new WebApplicationContextRunner()
                 .withConfiguration(AutoConfigurations.of(
                         WebResourceServerApp.class,

@@ -81,14 +81,14 @@ public class AadB2cOidcLoginConfigurer extends AbstractHttpConfigurer<AadB2cOidc
     public void init(HttpSecurity http) throws Exception {
         // @formatter:off
         http.logout()
-            .logoutSuccessHandler(handler)
-            .and()
+                .logoutSuccessHandler(handler)
+                .and()
             .oauth2Login()
-            .authorizationEndpoint()
-            .authorizationRequestResolver(resolver)
-            .and()
-            .tokenEndpoint()
-            .accessTokenResponseClient(accessTokenResponseClient());
+                .authorizationEndpoint()
+                    .authorizationRequestResolver(resolver)
+                    .and()
+                .tokenEndpoint()
+                    .accessTokenResponseClient(accessTokenResponseClient());
         // @formatter:on
     }
 

@@ -106,8 +106,8 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
             new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes());
         RequestEntity<?> entity = converter.convert(request);
         return Optional.ofNullable(entity)
-                        .map(HttpEntity::getHeaders)
-                        .orElse(null);
+                       .map(HttpEntity::getHeaders)
+                       .orElse(null);
     }
 
     private void testHttpHeaders(HttpHeaders headers) {

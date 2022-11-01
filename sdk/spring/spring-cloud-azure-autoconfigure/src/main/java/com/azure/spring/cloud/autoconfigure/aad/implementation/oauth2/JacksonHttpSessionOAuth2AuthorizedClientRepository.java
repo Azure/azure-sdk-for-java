@@ -76,9 +76,9 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
     private Map<String, OAuth2AuthorizedClient> getAuthorizedClients(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         return Optional.ofNullable(session)
-                        .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
-                        .map(Object::toString)
-                        .map(SerializerUtils::deserializeOAuth2AuthorizedClientMap)
-                        .orElse(Collections.emptyMap());
+                       .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
+                       .map(Object::toString)
+                       .map(SerializerUtils::deserializeOAuth2AuthorizedClientMap)
+                       .orElse(Collections.emptyMap());
     }
 }
