@@ -118,11 +118,11 @@ public class AadOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     OAuth2AuthorizedClientManager authorizedClientManager(
-        ClientRegistrationRepository clientRegistrations,
-        OAuth2AuthorizedClientRepository authorizedClients,
-        RefreshTokenOAuth2AuthorizedClientProvider refreshTokenProvider,
-        JwtBearerOAuth2AuthorizedClientProvider jwtBearerProvider,
-        ObjectProvider<OAuth2ClientAuthenticationJwkResolver> jwkResolvers) {
+            ClientRegistrationRepository clientRegistrations,
+            OAuth2AuthorizedClientRepository authorizedClients,
+            RefreshTokenOAuth2AuthorizedClientProvider refreshTokenProvider,
+            JwtBearerOAuth2AuthorizedClientProvider jwtBearerProvider,
+            ObjectProvider<OAuth2ClientAuthenticationJwkResolver> jwkResolvers) {
         DefaultOAuth2AuthorizedClientManager manager =
             new DefaultOAuth2AuthorizedClientManager(clientRegistrations, authorizedClients);
 
@@ -147,7 +147,7 @@ public class AadOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     JwtBearerOAuth2AuthorizedClientProvider azureAdJwtBearerProvider(
-        ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
+            ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
         JwtBearerOAuth2AuthorizedClientProvider provider = new JwtBearerOAuth2AuthorizedClientProvider();
         OAuth2ClientAuthenticationJwkResolver resolver = resolvers.getIfUnique();
         DefaultJwtBearerTokenResponseClient client = new DefaultJwtBearerTokenResponseClient();
@@ -164,7 +164,7 @@ public class AadOAuth2ClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     RefreshTokenOAuth2AuthorizedClientProvider azureRefreshTokenProvider(
-        ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
+            ObjectProvider<OAuth2ClientAuthenticationJwkResolver> resolvers) {
         RefreshTokenOAuth2AuthorizedClientProvider provider = new RefreshTokenOAuth2AuthorizedClientProvider();
         OAuth2ClientAuthenticationJwkResolver resolver = resolvers.getIfUnique();
         DefaultRefreshTokenTokenResponseClient client = new DefaultRefreshTokenTokenResponseClient();
@@ -190,13 +190,13 @@ public class AadOAuth2ClientConfiguration {
     JwtDecoderFactory<ClientRegistration> azureAdJwtDecoderFactory(AadAuthenticationProperties properties) {
         AadProfileProperties profile = properties.getProfile();
         AadAuthorizationServerEndpoints endpoints = new AadAuthorizationServerEndpoints(
-            profile.getEnvironment().getActiveDirectoryEndpoint(), profile.getTenantId());
+                profile.getEnvironment().getActiveDirectoryEndpoint(), profile.getTenantId());
         return new AadOidcIdTokenDecoderFactory(endpoints.getJwkSetEndpoint(), createRestTemplate(restTemplateBuilder));
     }
 
     private void passwordGrantBuilderAccessTokenResponseClientCustomizer(
-        OAuth2AuthorizedClientProviderBuilder.PasswordGrantBuilder builder,
-        OAuth2ClientAuthenticationJwkResolver resolver) {
+            OAuth2AuthorizedClientProviderBuilder.PasswordGrantBuilder builder,
+            OAuth2ClientAuthenticationJwkResolver resolver) {
         DefaultPasswordTokenResponseClient client = new DefaultPasswordTokenResponseClient();
         client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         if (resolver != null) {
@@ -208,8 +208,8 @@ public class AadOAuth2ClientConfiguration {
     }
 
     private void clientCredentialsGrantBuilderAccessTokenResponseClientCustomizer(
-        OAuth2AuthorizedClientProviderBuilder.ClientCredentialsGrantBuilder builder,
-        OAuth2ClientAuthenticationJwkResolver resolver) {
+            OAuth2AuthorizedClientProviderBuilder.ClientCredentialsGrantBuilder builder,
+            OAuth2ClientAuthenticationJwkResolver resolver) {
         DefaultClientCredentialsTokenResponseClient client = new DefaultClientCredentialsTokenResponseClient();
         client.setRestOperations(createOAuth2AccessTokenResponseClientRestTemplate(restTemplateBuilder));
         if (resolver != null) {

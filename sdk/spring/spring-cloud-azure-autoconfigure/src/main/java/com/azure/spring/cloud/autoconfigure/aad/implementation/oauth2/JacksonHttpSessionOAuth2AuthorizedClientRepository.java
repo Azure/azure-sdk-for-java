@@ -29,7 +29,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.jackson.Se
  */
 public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth2AuthorizedClientRepository {
     private static final String AUTHORIZED_CLIENTS_ATTR_NAME =
-            JacksonHttpSessionOAuth2AuthorizedClientRepository.class.getName() + ".AUTHORIZED_CLIENTS";
+        JacksonHttpSessionOAuth2AuthorizedClientRepository.class.getName() + ".AUTHORIZED_CLIENTS";
 
     private static final String MSG_REQUEST_CANNOT_BE_NULL = "request cannot be null";
 
@@ -53,7 +53,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
                 new HashMap<>(this.getAuthorizedClients(request));
         authorizedClients.put(authorizedClient.getClientRegistration().getRegistrationId(), authorizedClient);
         request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME,
-                serializeOAuth2AuthorizedClientMap(authorizedClients));
+            serializeOAuth2AuthorizedClientMap(authorizedClients));
     }
 
     @Override
@@ -67,7 +67,7 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
                 request.getSession().removeAttribute(AUTHORIZED_CLIENTS_ATTR_NAME);
             } else {
                 request.getSession().setAttribute(AUTHORIZED_CLIENTS_ATTR_NAME,
-                        serializeOAuth2AuthorizedClientMap(authorizedClients));
+                    serializeOAuth2AuthorizedClientMap(authorizedClients));
             }
         }
 
@@ -76,9 +76,9 @@ public class JacksonHttpSessionOAuth2AuthorizedClientRepository implements OAuth
     private Map<String, OAuth2AuthorizedClient> getAuthorizedClients(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         return Optional.ofNullable(session)
-                .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
-                .map(Object::toString)
-                .map(SerializerUtils::deserializeOAuth2AuthorizedClientMap)
-                .orElse(Collections.emptyMap());
+                        .map(s -> s.getAttribute(AUTHORIZED_CLIENTS_ATTR_NAME))
+                        .map(Object::toString)
+                        .map(SerializerUtils::deserializeOAuth2AuthorizedClientMap)
+                        .orElse(Collections.emptyMap());
     }
 }

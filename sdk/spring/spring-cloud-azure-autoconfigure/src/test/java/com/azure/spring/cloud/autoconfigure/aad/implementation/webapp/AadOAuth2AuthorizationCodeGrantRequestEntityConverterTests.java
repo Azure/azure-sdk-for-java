@@ -30,20 +30,20 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
 
     private WebApplicationContextRunner getContextRunner() {
         return WebApplicationContextRunnerUtils
-                .webApplicationContextRunner()
-                .withPropertyValues(
-                        "spring.cloud.azure.active-directory.enabled = true",
-                        "spring.cloud.azure.active-directory.base-uri = fake-uri",
-                        "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = Graph.Scope",
-                        "spring.cloud.azure.active-directory.authorization-clients.arm.scopes = Arm.Scope",
-                        "spring.cloud.azure.active-directory.authorization-clients.arm.authorization-grant-type = authorization_code");
+            .webApplicationContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled = true",
+                "spring.cloud.azure.active-directory.base-uri = fake-uri",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = Graph.Scope",
+                "spring.cloud.azure.active-directory.authorization-clients.arm.scopes = Arm.Scope",
+                "spring.cloud.azure.active-directory.authorization-clients.arm.authorization-grant-type = authorization_code");
     }
 
     @Test
     void addScopeForAzureClient() {
         getContextRunner().run(context -> {
             AadClientRegistrationRepository repository =
-                    (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
+                (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
             MultiValueMap<String, String> body = convertedBodyOf(repository, createCodeGrantRequest(azure));
             assertEquals("openid profile offline_access", body.getFirst("scope"));
@@ -54,7 +54,7 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
     void addScopeForAuthorizationCodeClient() {
         getContextRunner().run(context -> {
             AadClientRegistrationRepository repository =
-                    (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
+                (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration arm = repository.findByRegistrationId("arm");
             MultiValueMap<String, String> body = convertedBodyOf(repository, createCodeGrantRequest(arm));
             assertEquals("Arm.Scope openid profile offline_access", body.getFirst("scope"));
@@ -82,7 +82,7 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
     void addHeadersForAzureClient() {
         getContextRunner().run(context -> {
             AadClientRegistrationRepository repository =
-                    (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
+                (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
             HttpHeaders httpHeaders = convertedHeaderOf(repository, createCodeGrantRequest(azure));
             testHttpHeaders(httpHeaders);
@@ -93,7 +93,7 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
     void addHeadersForAuthorizationCodeClient() {
         getContextRunner().run(context -> {
             AadClientRegistrationRepository repository =
-                    (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
+                (AadClientRegistrationRepository) context.getBean(ClientRegistrationRepository.class);
             ClientRegistration arm = repository.findByRegistrationId("arm");
             HttpHeaders httpHeaders = convertedHeaderOf(repository, createCodeGrantRequest(arm));
             testHttpHeaders(httpHeaders);
@@ -103,11 +103,11 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
     private HttpHeaders convertedHeaderOf(AadClientRegistrationRepository repository,
                                           OAuth2AuthorizationCodeGrantRequest request) {
         AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-                new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes());
+            new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes());
         RequestEntity<?> entity = converter.convert(request);
         return Optional.ofNullable(entity)
-                .map(HttpEntity::getHeaders)
-                .orElse(null);
+                        .map(HttpEntity::getHeaders)
+                        .orElse(null);
     }
 
     private void testHttpHeaders(HttpHeaders headers) {
@@ -121,7 +121,7 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
     private MultiValueMap<String, String> convertedBodyOf(AadClientRegistrationRepository repository,
                                                           OAuth2AuthorizationCodeGrantRequest request) {
         AadOAuth2AuthorizationCodeGrantRequestEntityConverter converter =
-                new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes());
+            new AadOAuth2AuthorizationCodeGrantRequestEntityConverter(repository.getAzureClientAccessTokenScopes());
         RequestEntity<?> entity = converter.convert(request);
         return WebApplicationContextRunnerUtils.toMultiValueMap(entity);
     }
@@ -132,8 +132,8 @@ class AadOAuth2AuthorizationCodeGrantRequestEntityConverterTests {
 
     private OAuth2AuthorizationExchange createExchange(ClientRegistration client) {
         return new OAuth2AuthorizationExchange(
-                createAuthorizationRequest(client),
-                createAuthorizationResponse());
+            createAuthorizationRequest(client),
+            createAuthorizationResponse());
     }
 
     private OAuth2AuthorizationRequest createAuthorizationRequest(ClientRegistration client) {
